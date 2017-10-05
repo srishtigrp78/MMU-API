@@ -1,0 +1,9 @@
+package com.iemr.mmu.repo.nurse;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
+
+public interface BenPersonalCancerDietHistoryRepo extends CrudRepository<BenPersonalCancerDietHistory, Long> {
+
+}
