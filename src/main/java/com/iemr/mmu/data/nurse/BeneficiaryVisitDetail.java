@@ -46,15 +46,15 @@ public class BeneficiaryVisitDetail {
 	
 	@Expose
 	@Column(name = "VisitReasonID")
-	private Short VisitReasonID;
-	
+	private Short visitReasonID;
+
 	@Expose
 	@Column(name = "VisitReason")
 	private String visitReason;
 	
 	@Expose
 	@Column(name = "VisitCategoryID")
-	private Integer VisitCategoryID;
+	private Integer visitCategoryID;
 	
 	@Expose
 	@Column(name = "VisitCategory")
@@ -272,6 +272,20 @@ public class BeneficiaryVisitDetail {
 		return benVisitID;
 	}
 	
-	
+	public Short getVisitReasonID() {
+		return visitReasonID;
+	}
+
+	public void setVisitReasonID(Short visitReasonID) {
+		visitReasonID = visitReasonID;
+	}
+
+	public Integer getVisitCategoryID() {
+		return visitCategoryID;
+	}
+
+	public void setVisitCategoryID(Integer visitCategoryID) {
+		visitCategoryID = visitCategoryID;
+	}
 	
 }

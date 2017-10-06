@@ -16,12 +16,12 @@ import com.iemr.mmu.data.registrar.BeneficiaryData;
 
 @Entity
 @Table(name = "t_cancervitals")
-public class CancerPatientVitalDetail {
+public class BenCancerVitalDetail {
 	@Id
 	@GeneratedValue
 	@Expose
 	@Column(name = "ID")
-	private Long iD;
+	private Long ID;
 	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
@@ -117,18 +117,18 @@ public class CancerPatientVitalDetail {
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 	
-	public CancerPatientVitalDetail() {
+	public BenCancerVitalDetail() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public CancerPatientVitalDetail(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
+	public BenCancerVitalDetail(Long ID, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			Double weight_Kg, Double height_cm, Double waistCircumference_cm, Short bloodGlucose_Fasting,
 			Short bloodGlucose_Random, Short bloodGlucose_2HrPostPrandial, Short systolicBP_1stReading,
 			Short diastolicBP_1stReading, Short systolicBP_2ndReading, Short diastolicBP_2ndReading,
 			Short systolicBP_3rdReading, Short diastolicBP_3rdReading, Short hbA1C, Short hemoglobin, Boolean deleted) {
 		super();
-		this.iD = iD;
+		this.ID = ID;
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
 		this.providerServiceMapID = providerServiceMapID;
@@ -349,8 +349,8 @@ public class CancerPatientVitalDetail {
 		this.lastModDate = lastModDate;
 	}
 
-	public Long getiD() {
-		return iD;
+	public Long getID() {
+		return ID;
 	}
 	
 	

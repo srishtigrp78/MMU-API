@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 
 @Repository
-public interface NurseRepoBenVisitDetail extends CrudRepository<BeneficiaryVisitDetail, Long>{
+public interface BenVisitDetailRepo extends CrudRepository<BeneficiaryVisitDetail, Long>{
 
 }

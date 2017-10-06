@@ -22,7 +22,7 @@ public class CancerSignAndSymptoms {
 	@GeneratedValue
 	@Expose
 	@Column(name = "ID")
-	private Long iD;
+	private Long ID;
 	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
@@ -129,7 +129,7 @@ public class CancerSignAndSymptoms {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CancerSignAndSymptoms(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
+	public CancerSignAndSymptoms(Long ID, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			Boolean shortnessOfBreath, Boolean coughGTE2Weeks, Boolean bloodInSputum, Boolean difficultyInOpeningMouth,
 			Boolean nonHealingUlcerOrPatchOrGrowth, Boolean changeInTheToneOfVoice, Boolean lumpInTheBreast,
 			Boolean bloodStainedDischargeFromNipple, Boolean changeInShapeAndSizeOfBreasts,
@@ -137,7 +137,7 @@ public class CancerSignAndSymptoms {
 			Boolean vaginalBleedingAfterIntercourse, Boolean foulSmellingVaginalDischarge, Boolean lymphNode_Enlarged,
 			Boolean deleted) {
 		super();
-		this.iD = iD;
+		this.ID = ID;
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
 		this.providerServiceMapID = providerServiceMapID;
@@ -358,8 +358,8 @@ public class CancerSignAndSymptoms {
 		this.lastModDate = lastModDate;
 	}
 
-	public Long getiD() {
-		return iD;
+	public Long getID() {
+		return ID;
 	}
 	
 	

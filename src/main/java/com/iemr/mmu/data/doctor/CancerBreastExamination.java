@@ -23,7 +23,7 @@ public class CancerBreastExamination {
 	@GeneratedValue
 	@Expose
 	@Column(name = "ID")
-	private Long iD;
+	private Long ID;
 	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
@@ -130,13 +130,13 @@ public class CancerBreastExamination {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CancerBreastExamination(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
+	public CancerBreastExamination(Long ID, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			Boolean everBreastFed, Boolean breastFeedingDurationGTE6months, Boolean breastsAppear_Normal,
 			Boolean rashOnBreast, Boolean dimplingSkinOnBreast, Boolean dischargeFromNipple, Boolean peaudOrange,
 			Boolean lumpInBreast, String lumpSize, String lumpShape, String lumpTexture, Boolean referredToMammogram,
 			String mamogramReport, Blob image, Boolean deleted) {
 		super();
-		this.iD = iD;
+		this.ID = ID;
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
 		this.providerServiceMapID = providerServiceMapID;
@@ -357,8 +357,8 @@ public class CancerBreastExamination {
 		this.lastModDate = lastModDate;
 	}
 
-	public Long getiD() {
-		return iD;
+	public Long getID() {
+		return ID;
 	}
 	
 	
