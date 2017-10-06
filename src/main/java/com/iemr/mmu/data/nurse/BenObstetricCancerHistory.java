@@ -3,12 +3,14 @@ package com.iemr.mmu.data.nurse;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
 
+@Entity
 @Table(name = "t_CancerObstetricHistory")
 public class BenObstetricCancerHistory {
 	@Id
@@ -94,6 +96,9 @@ public class BenObstetricCancerHistory {
 	@Expose
 	@Column(name = "LastModDate")
 	private Timestamp lastModDate;
+
+	public BenObstetricCancerHistory() {
+	}
 
 	public BenObstetricCancerHistory(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			String pregnancyStatus, Boolean isUrinePregTest, String pregnant_No, Integer noOfLivingChild,

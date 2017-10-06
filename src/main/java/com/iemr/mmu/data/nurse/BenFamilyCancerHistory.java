@@ -3,11 +3,13 @@ package com.iemr.mmu.data.nurse;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
+@Entity
 
 @Table(name = "t_cancerfamilyhistory")
 public class BenFamilyCancerHistory {
@@ -32,22 +34,22 @@ public class BenFamilyCancerHistory {
 	@Column(name = "FamilyMember")
 	private String familyMember;
 	@Expose
-	@Column(name = "Deleted")
+	@Column(name = "Deleted", insertable = false)
 	private Boolean deleted;
 	@Expose
-	@Column(name = "Processed")
+	@Column(name = "Processed", insertable = false, updatable = false)
 	private Character processed;
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
 	@Expose
-	@Column(name = "CreatedDate")
+	@Column(name = "CreatedDate", insertable = false, updatable = false)
 	private Timestamp createdDate;
 	@Expose
 	@Column(name = "ModifiedBy")
 	private String modifiedBy;
 	@Expose
-	@Column(name = "LastModDate")
+	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
 	public BenFamilyCancerHistory() {
