@@ -1,5 +1,8 @@
 package com.iemr.mmu.controller.nurse;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,11 +23,16 @@ import com.iemr.utils.response.OutputResponse;
 @Controller
 @RequestMapping("/nurse")
 public class NurseController {
-	private InputMapper inputMapper = new InputMapper();
+
+	private InputMapper inputMapper;
 	private OutputResponse response;
 
-	@Autowired
 	private NurseServiceImpl nurseServiceImpl;
+
+	@Autowired
+	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
+		this.nurseServiceImpl = nurseServiceImpl;
+	}
 
 	@CrossOrigin
 	@RequestMapping(value = { "/testrest" }, method = { RequestMethod.POST }, produces = { "application/json" })
@@ -37,30 +45,12 @@ public class NurseController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = { "/testrest1" }, method = { RequestMethod.POST }, produces = { "application/json" })
-	public String testRest1(@RequestBody String comingRequest) {
-		return "hello...";
-	}
-
-	@CrossOrigin
-	@RequestMapping(value = { "/testrest2" }, method = { RequestMethod.POST }, produces = { "application/json" })
-	public String testRest2(@RequestBody String comingRequest) {
-		response = new OutputResponse();
-		return "hello";
-	}
-
-	@CrossOrigin
-	@RequestMapping(value = { "/testrest3" }, method = { RequestMethod.POST }, produces = { "application/json" })
-	public String testRest3(@RequestBody String comingRequest) {
-		return "hello...";
-	}
-
-	@CrossOrigin
 	@RequestMapping(value = { "/save/visitDetailScreen/VisitDetail" }, method = { RequestMethod.POST }, produces = {
 			"application/json" })
 	public String saveBeneficiaryVisitDetail(@RequestBody String requestObj) {
 
 		response = new OutputResponse();
+		inputMapper = new InputMapper();
 
 		BeneficiaryVisitDetail beneficiaryVisitDetail = InputMapper.gson().fromJson(requestObj,
 				BeneficiaryVisitDetail.class);
@@ -90,14 +80,21 @@ public class NurseController {
 
 		response = new OutputResponse();
 
-		BenFamilyCancerHistory benFamilyCancerHistory = InputMapper.gson().fromJson(requestObj,
-				BenFamilyCancerHistory.class);
 		try {
-			BenFamilyCancerHistory responseObj = nurseServiceImpl.saveBenFamilyCancerHistory(benFamilyCancerHistory);
-			if (responseObj.getID() > 0) {
-				response.setResponse("Beneficiary Family Cancer History Details Stored Successfully");
+			BenFamilyCancerHistory[] benFamilyCancerHistoryArray = InputMapper.gson().fromJson(requestObj,
+					BenFamilyCancerHistory[].class);
+
+			List<BenFamilyCancerHistory> benFamilyCancerHistoryList = Arrays.asList(benFamilyCancerHistoryArray);
+
+			if (benFamilyCancerHistoryList.size() > 0) {
+				int responseData = nurseServiceImpl.saveBenFamilyCancerHistory(benFamilyCancerHistoryList);
+				if (responseData > 0) {
+					response.setResponse("Beneficiary Visit Data saved successfully.");
+				} else {
+					response.setError(0, "Data not saved successfully. Please see log file for detailed info");
+				}
 			} else {
-				response.setResponse("Failed to Store Beneficiary Family Cancer History Details");
+				response.setError(0, "There is no data to save");
 			}
 		} catch (Exception e) {
 			response.setError(e);

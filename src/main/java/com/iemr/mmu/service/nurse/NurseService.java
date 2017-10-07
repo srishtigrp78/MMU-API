@@ -1,5 +1,7 @@
 package com.iemr.mmu.service.nurse;
 
+import java.util.List;
+
 import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
 import com.iemr.mmu.data.nurse.BenFamilyCancerHistory;
 import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
@@ -11,7 +13,7 @@ public interface NurseService {
 
 	public BeneficiaryVisitDetail saveBeneficiaryVisitDetails(BeneficiaryVisitDetail beneficiaryVisitDetail);
 	
-	public BenFamilyCancerHistory saveBenFamilyCancerHistory(BenFamilyCancerHistory benFamilyCancerHistory);
+	public int saveBenFamilyCancerHistory(List<BenFamilyCancerHistory> benFamilyCancerHistory);
 	
 	public BenObstetricCancerHistory saveBenObstetricCancerHistory(BenObstetricCancerHistory benObstetricCancerHistory);
 	

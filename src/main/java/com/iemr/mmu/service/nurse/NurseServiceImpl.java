@@ -1,5 +1,7 @@
 package com.iemr.mmu.service.nurse;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -23,19 +25,11 @@ public class NurseServiceImpl implements NurseService {
 
 	private BenFamilyCancerHistoryRepo benFamilyCancerHistoryRepo;
 	private BenObstetricCancerHistoryRepo benObstetricCancerHistoryRepo;
-
-	@Autowired
 	private BenVisitDetailRepo benVisitDetailRepo;
-	
-	@Autowired
 	private BenPersonalCancerDietHistoryRepo benPersonalCancerDietHistoryRepo;
-	
-	@Autowired
 	private BenPersonalCancerHistoryRepo benPersonalCancerHistoryRepo;
-	
-	@Autowired
 	private BenCancerVitalDetailRepo benCancerVitalDetailRepo;
-	
+
 	@Autowired
 	public void setBenFamilyCancerHistoryRepo(BenFamilyCancerHistoryRepo benFamilyCancerHistoryRepo) {
 		this.benFamilyCancerHistoryRepo = benFamilyCancerHistoryRepo;
@@ -44,6 +38,26 @@ public class NurseServiceImpl implements NurseService {
 	@Autowired
 	public void setBenObstetricCancerHistoryRepo(BenObstetricCancerHistoryRepo benObstetricCancerHistoryRepo) {
 		this.benObstetricCancerHistoryRepo = benObstetricCancerHistoryRepo;
+	}
+
+	@Autowired
+	public void setBenVisitDetailRepo(BenVisitDetailRepo benVisitDetailRepo) {
+		this.benVisitDetailRepo = benVisitDetailRepo;
+	}
+
+	@Autowired
+	public void setBenPersonalCancerDietHistoryRepo(BenPersonalCancerDietHistoryRepo benPersonalCancerDietHistoryRepo) {
+		this.benPersonalCancerDietHistoryRepo = benPersonalCancerDietHistoryRepo;
+	}
+
+	@Autowired
+	public void BenPersonalCancerHistoryRepo(BenPersonalCancerHistoryRepo benPersonalCancerHistoryRepo) {
+		this.benPersonalCancerHistoryRepo = benPersonalCancerHistoryRepo;
+	}
+
+	@Autowired
+	public void BenCancerVitalDetailRepo(BenCancerVitalDetailRepo benCancerVitalDetailRepo) {
+		this.benCancerVitalDetailRepo = benCancerVitalDetailRepo;
 	}
 
 	@Override
@@ -55,7 +69,6 @@ public class NurseServiceImpl implements NurseService {
 
 		System.out.println("helloooo");
 		RestTemplate restTemplate = new RestTemplate();
-		
 
 		ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:8080/nurse/testrest1", obj,
 				String.class);
@@ -74,9 +87,15 @@ public class NurseServiceImpl implements NurseService {
 	}
 
 	@Override
-	public BenFamilyCancerHistory saveBenFamilyCancerHistory(BenFamilyCancerHistory benFamilyCancerHistory) {
-		BenFamilyCancerHistory response = benFamilyCancerHistoryRepo.save(benFamilyCancerHistory);
-		return response;
+	public int saveBenFamilyCancerHistory(List<BenFamilyCancerHistory> benFamilyCancerHistory) {
+		int responseData = 0;
+		List<BenFamilyCancerHistory> response = (List<BenFamilyCancerHistory>) benFamilyCancerHistoryRepo
+				.save(benFamilyCancerHistory);
+		for (BenFamilyCancerHistory obj : response) {
+			if (obj.getID() > 0)
+				responseData = 1;
+		}
+		return responseData;
 	}
 
 	@Override
