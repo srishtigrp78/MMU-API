@@ -1,5 +1,8 @@
 package com.iemr.mmu.controller.doctor;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,6 +17,8 @@ import com.iemr.mmu.data.doctor.CancerGynecologicalExamination;
 import com.iemr.mmu.data.doctor.CancerLymphNodeDetails;
 import com.iemr.mmu.data.doctor.CancerOralExamination;
 import com.iemr.mmu.data.doctor.CancerSignAndSymptoms;
+import com.iemr.mmu.data.doctor.WrapperCancerSymptoms;
+import com.iemr.mmu.data.nurse.BenFamilyCancerHistory;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.service.doctor.DoctorServiceImpl;
 import com.iemr.utils.mapper.InputMapper;
@@ -128,11 +133,13 @@ public class DoctorController {
 
 		response = new OutputResponse();
 
-		CancerLymphNodeDetails cancerLymphNodeDetails = InputMapper.gson().fromJson(requestObj,
-				CancerLymphNodeDetails.class);
+		CancerLymphNodeDetails[] cancerLymphNodeDetails = InputMapper.gson().fromJson(requestObj,
+				CancerLymphNodeDetails[].class);
+		
+		List<CancerLymphNodeDetails> cancerLymphNodeDetailsList = Arrays.asList(cancerLymphNodeDetails);
 		try {
-			CancerLymphNodeDetails responseObj = doctorServiceImpl.saveLymphNodeDetails(cancerLymphNodeDetails);
-			if (responseObj.getID() > 0) {
+			int result = doctorServiceImpl.saveLymphNodeDetails(cancerLymphNodeDetailsList);
+			if (result > 0) {
 				response.setResponse("LymphNode Examination Detail Stored Successfully");
 			} else {
 				response.setError(0, "Failed to Store LymphNode Examination Detail");
@@ -174,18 +181,35 @@ public class DoctorController {
 
 		response = new OutputResponse();
 
-		CancerSignAndSymptoms cancerSignAndSymptoms = InputMapper.gson().fromJson(requestObj,
-				CancerSignAndSymptoms.class);
+		WrapperCancerSymptoms wrapperCancerSymptoms = InputMapper.gson().fromJson(requestObj,
+				WrapperCancerSymptoms.class);
+		
+//		CancerLymphNodeDetails[] cancerLymphNodeDetails = InputMapper.gson().fromJson(requestObj,
+//				CancerLymphNodeDetails[].class);
+//		
+//		List<CancerLymphNodeDetails> cancerLymphNodeDetailsList = Arrays.asList(cancerLymphNodeDetails);
+		
 		try {
-			CancerSignAndSymptoms responseObj = doctorServiceImpl.saveCancerSignAndSymptomsData(cancerSignAndSymptoms);
+			CancerSignAndSymptoms responseObj = doctorServiceImpl.saveCancerSignAndSymptomsData(wrapperCancerSymptoms.getCancerSignAndSymptoms());
+			
 			if (responseObj.getID() > 0) {
 				response.setResponse("Cancer Sign and Symptoms Detail Stored Successfully");
+				
+				int result = doctorServiceImpl.saveLymphNodeDetails(wrapperCancerSymptoms.getCancerLymphNodeDetails());
+				if (result > 0) {
+					response.setResponse("Cancer Sign and Symptoms Detail and LymphNode Examination Detail Stored Successfully");
+				} else {
+					response.setError(0, "Cancer Sign and Symptoms Detail Stored but Failed to Store LymphNode Examination Detail");
+				}
+				
 			} else {
 				response.setError(0, "Failed to Store Cancer Sign and Symptoms Detail");
 			}
 		} catch (Exception e) {
 			response.setError(e);
 		}
+		
+	
 
 		return response.toString();
 	}
