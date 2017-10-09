@@ -11,18 +11,18 @@ import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 
 public interface NurseService {
 
-	public BeneficiaryVisitDetail saveBeneficiaryVisitDetails(BeneficiaryVisitDetail beneficiaryVisitDetail);
-	
+	public Long saveBeneficiaryVisitDetails(BeneficiaryVisitDetail beneficiaryVisitDetail);
+
 	public int saveBenFamilyCancerHistory(List<BenFamilyCancerHistory> benFamilyCancerHistory);
-	
-	public BenObstetricCancerHistory saveBenObstetricCancerHistory(BenObstetricCancerHistory benObstetricCancerHistory);
-	
-	public BenPersonalCancerDietHistory saveBenPersonalCancerDietHistory(BenPersonalCancerDietHistory benPersonalCancerDietHistory);
-	
-	public BenPersonalCancerHistory saveBenPersonalCancerHistory(BenPersonalCancerHistory benPersonalCancerHistory);
-	
+
+	public Long saveBenObstetricCancerHistory(BenObstetricCancerHistory benObstetricCancerHistory);
+
+	public Long saveBenPersonalCancerDietHistory(BenPersonalCancerDietHistory benPersonalCancerDietHistory);
+
+	public Long saveBenPersonalCancerHistory(BenPersonalCancerHistory benPersonalCancerHistory);
+
 	public BenCancerVitalDetail saveBenVitalDetail(BenCancerVitalDetail benCancerVitalDetail);
-	
+
 	public String savePatientVisitDetails();
 
 }

@@ -58,22 +58,22 @@ public class BenPersonalCancerDietHistory {
 	@Column(name = "IsThyroidDisorder")
 	private Boolean isThyroidDisorder;
 	@Expose
-	@Column(name = "Deleted")
+	@Column(name = "Deleted", insertable = false)
 	private Boolean deleted;
 	@Expose
-	@Column(name = "Processed")
+	@Column(name = "Processed", insertable = false)
 	private Character processed;
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
 	@Expose
-	@Column(name = "CreatedDate")
+	@Column(name = "CreatedDate", insertable = false, updatable = false)
 	private Timestamp CreatedDate;
 	@Expose
 	@Column(name = "ModifiedBy")
 	private String modifiedBy;
 	@Expose
-	@Column(name = "LastModDate")
+	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
 	public BenPersonalCancerDietHistory(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,

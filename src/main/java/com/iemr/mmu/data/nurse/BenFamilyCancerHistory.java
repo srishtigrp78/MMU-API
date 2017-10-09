@@ -1,14 +1,18 @@
 package com.iemr.mmu.data.nurse;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
+
 @Entity
 
 @Table(name = "t_cancerfamilyhistory")
@@ -52,12 +56,16 @@ public class BenFamilyCancerHistory {
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
+	@JsonIgnore
+	@Transient
+	private List<String> familyMemberList;
+
 	public BenFamilyCancerHistory() {
 	}
 
 	public BenFamilyCancerHistory(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			String cancerDiseaseType, String familyMember, Boolean deleted, Character processed, String createdBy,
-			Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
+			Timestamp createdDate, String modifiedBy, Timestamp lastModDate, List<String> familyMemberList) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -71,6 +79,7 @@ public class BenFamilyCancerHistory {
 		this.createdDate = createdDate;
 		this.modifiedBy = modifiedBy;
 		this.lastModDate = lastModDate;
+		this.familyMemberList = familyMemberList;
 	}
 
 	public Long getID() {
@@ -167,6 +176,14 @@ public class BenFamilyCancerHistory {
 
 	public void setLastModDate(Timestamp lastModDate) {
 		this.lastModDate = lastModDate;
+	}
+
+	public List<String> getFamilyMemberList() {
+		return familyMemberList;
+	}
+
+	public void setFamilyMemberList(List<String> familyMemberList) {
+		this.familyMemberList = familyMemberList;
 	}
 
 }

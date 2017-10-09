@@ -76,25 +76,25 @@ public class BenObstetricCancerHistory {
 	@Column(name = "IsPostMenopauseBleeding")
 	private Boolean isPostMenopauseBleeding;
 	@Expose
-	@Column(name = "IsFoulSmellingDischarge")
-	private Boolean IsFoulSmellingDischarge;
+	@Column(name = "isFoulSmellingDischarge")
+	private Boolean isFoulSmellingDischarge;
 	@Expose
-	@Column(name = "Deleted")
+	@Column(name = "Deleted", insertable = false)
 	private Boolean deleted;
 	@Expose
-	@Column(name = "Processed")
+	@Column(name = "Processed", insertable = false)
 	private Character processed;
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
 	@Expose
-	@Column(name = "CreatedDate")
+	@Column(name = "CreatedDate", insertable = false, updatable = false)
 	private Timestamp createdDate;
 	@Expose
 	@Column(name = "ModifiedBy")
 	private String modifiedBy;
 	@Expose
-	@Column(name = "LastModDate")
+	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
 	public BenObstetricCancerHistory() {
@@ -109,7 +109,7 @@ public class BenObstetricCancerHistory {
 			Boolean isFoulSmellingDischarge, Boolean deleted, Character processed, String createdBy,
 			Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
 		super();
-		ID = iD;
+		this.ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
 		this.providerServiceMapID = providerServiceMapID;
@@ -129,7 +129,7 @@ public class BenObstetricCancerHistory {
 		this.isInterMenstrualBleeding = isInterMenstrualBleeding;
 		this.menopauseAge = menopauseAge;
 		this.isPostMenopauseBleeding = isPostMenopauseBleeding;
-		IsFoulSmellingDischarge = isFoulSmellingDischarge;
+		this.isFoulSmellingDischarge = isFoulSmellingDischarge;
 		this.deleted = deleted;
 		this.processed = processed;
 		this.createdBy = createdBy;
@@ -299,11 +299,11 @@ public class BenObstetricCancerHistory {
 	}
 
 	public Boolean getIsFoulSmellingDischarge() {
-		return IsFoulSmellingDischarge;
+		return isFoulSmellingDischarge;
 	}
 
 	public void setIsFoulSmellingDischarge(Boolean isFoulSmellingDischarge) {
-		IsFoulSmellingDischarge = isFoulSmellingDischarge;
+		isFoulSmellingDischarge = isFoulSmellingDischarge;
 	}
 
 	public Boolean getDeleted() {

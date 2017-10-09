@@ -81,16 +81,36 @@ public class NurseServiceImpl implements NurseService {
 	}
 
 	@Override
-	public BeneficiaryVisitDetail saveBeneficiaryVisitDetails(BeneficiaryVisitDetail beneficiaryVisitDetail) {
-		BeneficiaryVisitDetail response = benVisitDetailRepo.save(beneficiaryVisitDetail);
-		return response;
+	public Long saveBeneficiaryVisitDetails(BeneficiaryVisitDetail beneficiaryVisitDetail) {
+		BeneficiaryVisitDetail response = null;
+		try {
+			response = benVisitDetailRepo.save(beneficiaryVisitDetail);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+		if (response != null)
+			return response.getBenVisitID();
+		else
+			return null;
+
 	}
 
 	@Override
-	public int saveBenFamilyCancerHistory(List<BenFamilyCancerHistory> benFamilyCancerHistory) {
+	public int saveBenFamilyCancerHistory(List<BenFamilyCancerHistory> benFamilyCancerHistoryList) {
+		for (BenFamilyCancerHistory benFamilyCancerHistoryOBJ : benFamilyCancerHistoryList) {
+			List<String> familyMenberList = benFamilyCancerHistoryOBJ.getFamilyMemberList();
+			String familyMemberData = "";
+			for (String familyMember : familyMenberList) {
+				familyMemberData += familyMember + ",";
+			}
+			benFamilyCancerHistoryOBJ.setFamilyMember(familyMemberData);
+			System.out.println("hello...");
+		}
 		int responseData = 0;
 		List<BenFamilyCancerHistory> response = (List<BenFamilyCancerHistory>) benFamilyCancerHistoryRepo
-				.save(benFamilyCancerHistory);
+				.save(benFamilyCancerHistoryList);
 		for (BenFamilyCancerHistory obj : response) {
 			if (obj.getID() > 0)
 				responseData = 1;
@@ -99,23 +119,36 @@ public class NurseServiceImpl implements NurseService {
 	}
 
 	@Override
-	public BenObstetricCancerHistory saveBenObstetricCancerHistory(
-			BenObstetricCancerHistory benObstetricCancerHistory) {
+	public Long saveBenObstetricCancerHistory(BenObstetricCancerHistory benObstetricCancerHistory) {
 		BenObstetricCancerHistory response = benObstetricCancerHistoryRepo.save(benObstetricCancerHistory);
-		return response;
+		if (response != null)
+			return response.getID();
+		else
+			return null;
 	}
 
 	@Override
-	public BenPersonalCancerDietHistory saveBenPersonalCancerDietHistory(
-			BenPersonalCancerDietHistory benPersonalCancerDietHistory) {
+	public Long saveBenPersonalCancerDietHistory(BenPersonalCancerDietHistory benPersonalCancerDietHistory) {
 		BenPersonalCancerDietHistory response = benPersonalCancerDietHistoryRepo.save(benPersonalCancerDietHistory);
-		return response;
+		if (response != null)
+			return response.getID();
+		else
+			return null;
 	}
 
 	@Override
-	public BenPersonalCancerHistory saveBenPersonalCancerHistory(BenPersonalCancerHistory benPersonalCancerHistory) {
+	public Long saveBenPersonalCancerHistory(BenPersonalCancerHistory benPersonalCancerHistory) {
+		List<String> typeOfTobaccoProductUseList = benPersonalCancerHistory.getTypeOfTobaccoProductList();
+		String typeOfTobaccoProductUseConcat = "";
+		for (String s : typeOfTobaccoProductUseList) {
+			typeOfTobaccoProductUseConcat += s + ",";
+		}
+		benPersonalCancerHistory.setTypeOfTobaccoProduct(typeOfTobaccoProductUseConcat);
 		BenPersonalCancerHistory response = benPersonalCancerHistoryRepo.save(benPersonalCancerHistory);
-		return response;
+		if (response != null)
+			return response.getID();
+		else
+			return null;
 	}
 
 	@Override

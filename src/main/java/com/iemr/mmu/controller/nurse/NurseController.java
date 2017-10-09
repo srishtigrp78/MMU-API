@@ -1,7 +1,9 @@
 package com.iemr.mmu.controller.nurse;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.google.gson.Gson;
 import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
 import com.iemr.mmu.data.nurse.BenFamilyCancerHistory;
 import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
@@ -55,10 +58,12 @@ public class NurseController {
 		BeneficiaryVisitDetail beneficiaryVisitDetail = InputMapper.gson().fromJson(requestObj,
 				BeneficiaryVisitDetail.class);
 		try {
-			BeneficiaryVisitDetail responseObj = nurseServiceImpl.saveBeneficiaryVisitDetails(beneficiaryVisitDetail);
-			if (responseObj.getBenVisitID() > 0) {
+			Long benVisitID = nurseServiceImpl.saveBeneficiaryVisitDetails(beneficiaryVisitDetail);
+			if (benVisitID != null && benVisitID > 0) {
 				System.out.println("hellooo");
-				response.setResponse("Beneficiary Visit Details Stored Successfully");
+				Map<String, Long> resMap = new HashMap<String, Long>();
+				resMap.put("benVisitID", benVisitID);
+				response.setResponse(new Gson().toJson(resMap));
 			} else {
 				response.setError(0, "Failed to Store Beneficiary Visit Details");
 				System.out.println("hellooo");
@@ -110,12 +115,12 @@ public class NurseController {
 
 		response = new OutputResponse();
 
-		BenObstetricCancerHistory benObstetricCancerHistory = InputMapper.gson().fromJson(requestObj,
-				BenObstetricCancerHistory.class);
 		try {
-			BenObstetricCancerHistory responseObj = nurseServiceImpl
-					.saveBenObstetricCancerHistory(benObstetricCancerHistory);
-			if (responseObj.getID() > 0) {
+			BenObstetricCancerHistory benObstetricCancerHistory = InputMapper.gson().fromJson(requestObj,
+					BenObstetricCancerHistory.class);
+
+			Long responseObj = nurseServiceImpl.saveBenObstetricCancerHistory(benObstetricCancerHistory);
+			if (responseObj != null && responseObj > 0) {
 				response.setResponse("Beneficiary Obstetric Cancer History Details Stored Successfully");
 			} else {
 				response.setResponse("Failed to Store Beneficiary Obstetric Cancer History Details");
@@ -124,48 +129,52 @@ public class NurseController {
 		} catch (Exception e) {
 			response.setError(e);
 		}
-
+		System.out.println(response.toString());
 		return response.toString();
 	}
 
-	@CrossOrigin
-	@RequestMapping(value = { "/save/historyScreen/benPersonalCancerDietHistory" }, method = {
-			RequestMethod.POST }, produces = { "application/json" })
-	public String saveBenPersonalCancerDietHistory(@RequestBody String requestObj) {
-
-		response = new OutputResponse();
-
-		BenPersonalCancerDietHistory benPersonalCancerDietHistory = InputMapper.gson().fromJson(requestObj,
-				BenPersonalCancerDietHistory.class);
-		try {
-			BenPersonalCancerDietHistory responseObj = nurseServiceImpl
-					.saveBenPersonalCancerDietHistory(benPersonalCancerDietHistory);
-			if (responseObj.getID() > 0) {
-				response.setResponse("Beneficiary Personal Cancer Diet History Details Stored Successfully");
-			} else {
-				response.setResponse("Failed to Store Beneficiary Personal Cancer Diet History Details");
-			}
-			response.setResponse(response.toString());
-		} catch (Exception e) {
-			response.setError(e);
-		}
-
-		return response.toString();
-	}
-
+	/*
+	 * @CrossOrigin
+	 * 
+	 * @RequestMapping(value = {
+	 * "/save/historyScreen/benPersonalCancerDietHistory" }, method = {
+	 * RequestMethod.POST }, produces = { "application/json" }) public String
+	 * saveBenPersonalCancerDietHistory(@RequestBody String requestObj) {
+	 * 
+	 * response = new OutputResponse();
+	 * 
+	 * BenPersonalCancerDietHistory benPersonalCancerDietHistory =
+	 * InputMapper.gson().fromJson(requestObj,
+	 * BenPersonalCancerDietHistory.class); try { BenPersonalCancerDietHistory
+	 * responseObj = nurseServiceImpl
+	 * .saveBenPersonalCancerDietHistory(benPersonalCancerDietHistory); if
+	 * (responseObj.getID() > 0) { response.
+	 * setResponse("Beneficiary Personal Cancer Diet History Details Stored Successfully"
+	 * ); } else { response.
+	 * setResponse("Failed to Store Beneficiary Personal Cancer Diet History Details"
+	 * ); } response.setResponse(response.toString()); } catch (Exception e) {
+	 * response.setError(e); }
+	 * 
+	 * return response.toString(); }
+	 */
 	@CrossOrigin
 	@RequestMapping(value = { "/save/historyScreen/benPersonalCancerHistory" }, method = {
 			RequestMethod.POST }, produces = { "application/json" })
 	public String saveBenPersonalCancerHistory(@RequestBody String requestObj) {
 
 		response = new OutputResponse();
-
-		BenPersonalCancerHistory benPersonalCancerHistory = InputMapper.gson().fromJson(requestObj,
-				BenPersonalCancerHistory.class);
 		try {
-			BenPersonalCancerHistory responseObj = nurseServiceImpl
-					.saveBenPersonalCancerHistory(benPersonalCancerHistory);
-			if (responseObj.getID() > 0) {
+			BenPersonalCancerHistory benPersonalCancerHistory = InputMapper.gson().fromJson(requestObj,
+					BenPersonalCancerHistory.class);
+
+			BenPersonalCancerDietHistory benPersonalCancerDietHistory = InputMapper.gson().fromJson(requestObj,
+					BenPersonalCancerDietHistory.class);
+
+			Long responseObjP = nurseServiceImpl.saveBenPersonalCancerHistory(benPersonalCancerHistory);
+
+			Long responseObjD = nurseServiceImpl.saveBenPersonalCancerDietHistory(benPersonalCancerDietHistory);
+
+			if (responseObjP != null && responseObjP > 0 && responseObjD != null && responseObjD > 0) {
 				response.setResponse("Beneficiary Personal Cancer History Details Stored Successfully");
 			} else {
 				response.setResponse("Failed to Store Beneficiary Personal Cancer History Details");
@@ -174,7 +183,7 @@ public class NurseController {
 		} catch (Exception e) {
 			response.setError(e);
 		}
-
+		System.out.println(response.toString());
 		return response.toString();
 	}
 

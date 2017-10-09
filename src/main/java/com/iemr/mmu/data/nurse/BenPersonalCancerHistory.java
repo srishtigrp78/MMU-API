@@ -1,13 +1,16 @@
 package com.iemr.mmu.data.nurse;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
 
 @Entity
@@ -64,30 +67,37 @@ public class BenPersonalCancerHistory {
 	@Column(name = "FrequencyOfAlcoholUsed")
 	private String frequencyOfAlcoholUsed;
 	@Expose
-	@Column(name = "Deleted")
+	@Column(name = "Deleted", insertable = false)
 	private Boolean deleted;
 	@Expose
-	@Column(name = "Processed")
+	@Column(name = "Processed", insertable = false)
 	private Character processed;
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
 	@Expose
-	@Column(name = "CreatedDate")
+	@Column(name = "CreatedDate", insertable = false, updatable = false)
 	private Timestamp createdDate;
 	@Expose
 	@Column(name = "ModifiedBy")
 	private String modifiedBy;
 	@Expose
-	@Column(name = "LastModDate")
+	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
+
+	@Transient
+	@JsonIgnore
+	private List<String> typeOfTobaccoProductList;
+
+	public BenPersonalCancerHistory() {
+	}
 
 	public BenPersonalCancerHistory(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			String tobaccoUse, Integer startAge_year, Integer endAge_year, String typeOfTobaccoProduct,
 			Integer quantityPerDay, Boolean isFilteredCigaerette, Boolean isCigaretteExposure,
 			Boolean isBetelNutChewing, Integer durationOfBetelQuid, String alcoholUse, Boolean ssAlcoholUsed,
 			String frequencyOfAlcoholUsed, Boolean deleted, Character processed, String createdBy,
-			Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
+			Timestamp createdDate, String modifiedBy, Timestamp lastModDate, List<String> typeOfTobaccoProductList) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -111,6 +121,7 @@ public class BenPersonalCancerHistory {
 		this.createdDate = createdDate;
 		this.modifiedBy = modifiedBy;
 		this.lastModDate = lastModDate;
+		this.typeOfTobaccoProductList = typeOfTobaccoProductList;
 	}
 
 	public Long getID() {
@@ -287,6 +298,14 @@ public class BenPersonalCancerHistory {
 
 	public void setLastModDate(Timestamp lastModDate) {
 		this.lastModDate = lastModDate;
+	}
+
+	public List<String> getTypeOfTobaccoProductList() {
+		return typeOfTobaccoProductList;
+	}
+
+	public void setTypeOfTobaccoProductList(List<String> typeOfTobaccoProductList) {
+		this.typeOfTobaccoProductList = typeOfTobaccoProductList;
 	}
 
 }
