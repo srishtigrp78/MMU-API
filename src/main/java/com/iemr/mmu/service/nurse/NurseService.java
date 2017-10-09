@@ -21,7 +21,7 @@ public interface NurseService {
 
 	public Long saveBenPersonalCancerHistory(BenPersonalCancerHistory benPersonalCancerHistory);
 
-	public BenCancerVitalDetail saveBenVitalDetail(BenCancerVitalDetail benCancerVitalDetail);
+	public Long saveBenVitalDetail(BenCancerVitalDetail benCancerVitalDetail);
 
 	public String savePatientVisitDetails();
 

@@ -4,15 +4,11 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
-import com.iemr.mmu.data.registrar.BeneficiaryData;
 
 @Entity
 @Table(name = "t_cancervitals")
@@ -22,87 +18,79 @@ public class BenCancerVitalDetail {
 	@Expose
 	@Column(name = "ID")
 	private Long ID;
-	
+
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
-	@Expose
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(updatable = false, insertable = false, name = "BeneficiaryRegID")
-	private BeneficiaryData beneficiaryData;
-	
+
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	@Expose
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(updatable = false, insertable = false, name = "BenVisitID")
-	private BeneficiaryVisitDetail beneficiaryVisitDetail;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "Weight_Kg")
 	private Double weight_Kg;
-	
+
 	@Expose
 	@Column(name = "Height_cm")
 	private Double height_cm;
-	
+
 	@Expose
 	@Column(name = "WaistCircumference_cm")
 	private Double waistCircumference_cm;
-	
+
 	@Expose
 	@Column(name = "BloodGlucose_Fasting")
 	private Short bloodGlucose_Fasting;
-	
+
 	@Expose
 	@Column(name = "BloodGlucose_Random")
 	private Short bloodGlucose_Random;
-	
+
 	@Expose
 	@Column(name = "BloodGlucose_2HrPostPrandial")
 	private Short bloodGlucose_2HrPostPrandial;
-	
+
 	@Expose
 	@Column(name = "SystolicBP_1stReading")
 	private Short systolicBP_1stReading;
-	
+
 	@Expose
 	@Column(name = "DiastolicBP_1stReading")
 	private Short diastolicBP_1stReading;
-	
+
 	@Expose
 	@Column(name = "SystolicBP_2ndReading")
 	private Short systolicBP_2ndReading;
-	
+
 	@Expose
 	@Column(name = "DiastolicBP_2ndReading")
 	private Short diastolicBP_2ndReading;
 	@Expose
 	@Column(name = "SystolicBP_3rdReading")
 	private Short systolicBP_3rdReading;
-	
+
 	@Expose
 	@Column(name = "DiastolicBP_3rdReading")
 	private Short diastolicBP_3rdReading;
-	
+
 	@Expose
 	@Column(name = "HbA1C")
 	private Short hbA1C;
-	
+
 	@Expose
 	@Column(name = "Hemoglobin")
 	private Short hemoglobin;
-	
+
 	@Expose
-	@Column(name = "Deleted",insertable = false, updatable = true)
-	private Boolean deleted; 
+	@Column(name = "Deleted", insertable = false, updatable = true)
+	private Boolean deleted;
 	@Expose
-	@Column(name = "Processed",insertable = false, updatable = true)
+	@Column(name = "Processed", insertable = false, updatable = true)
 	private String processed;
 	@Expose
 	@Column(name = "CreatedBy")
@@ -116,19 +104,20 @@ public class BenCancerVitalDetail {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
-	
+
 	public BenCancerVitalDetail() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public BenCancerVitalDetail(Long ID, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
+	public BenCancerVitalDetail(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			Double weight_Kg, Double height_cm, Double waistCircumference_cm, Short bloodGlucose_Fasting,
 			Short bloodGlucose_Random, Short bloodGlucose_2HrPostPrandial, Short systolicBP_1stReading,
 			Short diastolicBP_1stReading, Short systolicBP_2ndReading, Short diastolicBP_2ndReading,
-			Short systolicBP_3rdReading, Short diastolicBP_3rdReading, Short hbA1C, Short hemoglobin, Boolean deleted) {
+			Short systolicBP_3rdReading, Short diastolicBP_3rdReading, Short hbA1C, Short hemoglobin, Boolean deleted,
+			String processed, String createdBy, Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
 		super();
-		this.ID = ID;
+		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
 		this.providerServiceMapID = providerServiceMapID;
@@ -147,6 +136,19 @@ public class BenCancerVitalDetail {
 		this.hbA1C = hbA1C;
 		this.hemoglobin = hemoglobin;
 		this.deleted = deleted;
+		this.processed = processed;
+		this.createdBy = createdBy;
+		this.createdDate = createdDate;
+		this.modifiedBy = modifiedBy;
+		this.lastModDate = lastModDate;
+	}
+
+	public Long getID() {
+		return ID;
+	}
+
+	public void setID(Long iD) {
+		ID = iD;
 	}
 
 	public Long getBeneficiaryRegID() {
@@ -157,28 +159,12 @@ public class BenCancerVitalDetail {
 		this.beneficiaryRegID = beneficiaryRegID;
 	}
 
-	public BeneficiaryData getBeneficiaryData() {
-		return beneficiaryData;
-	}
-
-	public void setBeneficiaryData(BeneficiaryData beneficiaryData) {
-		this.beneficiaryData = beneficiaryData;
-	}
-
 	public Long getBenVisitID() {
 		return benVisitID;
 	}
 
 	public void setBenVisitID(Long benVisitID) {
 		this.benVisitID = benVisitID;
-	}
-
-	public BeneficiaryVisitDetail getBeneficiaryVisitDetail() {
-		return beneficiaryVisitDetail;
-	}
-
-	public void setBeneficiaryVisitDetail(BeneficiaryVisitDetail beneficiaryVisitDetail) {
-		this.beneficiaryVisitDetail = beneficiaryVisitDetail;
 	}
 
 	public Integer getProviderServiceMapID() {
@@ -349,9 +335,4 @@ public class BenCancerVitalDetail {
 		this.lastModDate = lastModDate;
 	}
 
-	public Long getID() {
-		return ID;
-	}
-	
-	
 }

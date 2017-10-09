@@ -152,8 +152,11 @@ public class NurseServiceImpl implements NurseService {
 	}
 
 	@Override
-	public BenCancerVitalDetail saveBenVitalDetail(BenCancerVitalDetail benCancerVitalDetail) {
+	public Long saveBenVitalDetail(BenCancerVitalDetail benCancerVitalDetail) {
 		BenCancerVitalDetail response = benCancerVitalDetailRepo.save(benCancerVitalDetail);
-		return response;
+		if (response != null)
+			return response.getID();
+		else
+			return null;
 	}
 }

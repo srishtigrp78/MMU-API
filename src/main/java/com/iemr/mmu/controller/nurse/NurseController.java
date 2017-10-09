@@ -94,7 +94,7 @@ public class NurseController {
 			if (benFamilyCancerHistoryList.size() > 0) {
 				int responseData = nurseServiceImpl.saveBenFamilyCancerHistory(benFamilyCancerHistoryList);
 				if (responseData > 0) {
-					response.setResponse("Beneficiary Visit Data saved successfully.");
+					response.setResponse("Beneficiary benFamily Data saved successfully.");
 				} else {
 					response.setError(0, "Data not saved successfully. Please see log file for detailed info");
 				}
@@ -196,8 +196,8 @@ public class NurseController {
 
 		BenCancerVitalDetail benCancerVitalDetail = InputMapper.gson().fromJson(requestObj, BenCancerVitalDetail.class);
 		try {
-			BenCancerVitalDetail responseObj = nurseServiceImpl.saveBenVitalDetail(benCancerVitalDetail);
-			if (responseObj.getID() > 0) {
+			Long responseObj = nurseServiceImpl.saveBenVitalDetail(benCancerVitalDetail);
+			if (responseObj != null && responseObj > 0) {
 				response.setResponse("Beneficiary Vital Details Stored Successfully");
 			} else {
 				response.setResponse("Failed to Store Beneficiary Vital Details");
