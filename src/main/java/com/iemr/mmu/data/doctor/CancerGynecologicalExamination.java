@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.doctor;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.registrar.BeneficiaryData;
@@ -52,6 +55,10 @@ public class CancerGynecologicalExamination {
 	@Column(name = "TypeOfLesion")
 	private String typeOfLesion;
 	
+	@JsonIgnore
+	@Transient
+	private List<String> typeOfLesionList;
+
 	@Expose
 	@Column(name = "VulvalInvolvement")
 	private Boolean vulvalInvolvement;
@@ -307,5 +314,12 @@ public class CancerGynecologicalExamination {
 		return ID;
 	}
 	
+	public List<String> getTypeOfLesionList() {
+		return typeOfLesionList;
+	}
+
+	public void setTypeOfLesionList(List<String> typeOfLesionList) {
+		this.typeOfLesionList = typeOfLesionList;
+	}
 	
 }

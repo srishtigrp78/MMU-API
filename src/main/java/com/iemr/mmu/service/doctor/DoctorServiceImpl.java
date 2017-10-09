@@ -66,6 +66,13 @@ public class DoctorServiceImpl implements DoctorService{
 	@Override
 	public CancerGynecologicalExamination saveCancerGynecologicalExaminationData(
 			CancerGynecologicalExamination cancerGynecologicalExamination) {
+		
+		String typeOfLesionData = "";
+		for(String typeOfLesion:cancerGynecologicalExamination.getTypeOfLesionList()){
+			typeOfLesionData+=typeOfLesion+",";
+		}
+		cancerGynecologicalExamination.setTypeOfLesion(typeOfLesionData);
+		
 		CancerGynecologicalExamination response = cancerGynecologicalExaminationRepo.save(cancerGynecologicalExamination);
 		return response;
 	}
