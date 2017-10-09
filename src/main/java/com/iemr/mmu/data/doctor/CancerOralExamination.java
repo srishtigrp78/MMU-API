@@ -2,6 +2,7 @@ package com.iemr.mmu.data.doctor;
 
 import java.sql.Blob;
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.registrar.BeneficiaryData;
@@ -57,6 +60,10 @@ public class CancerOralExamination {
 	@Column(name = "PreMalignantLesionType")
 	private String preMalignantLesionType;
 	
+	@JsonIgnore
+	@Transient
+	private List<String> preMalignantLesionTypeList;
+
 	@Expose
 	@Column(name = "ProlongedIrritation")
 	private Boolean prolongedIrritation;
@@ -269,5 +276,12 @@ public class CancerOralExamination {
 		return ID;
 	}
 	
+	public List<String> getPreMalignantLesionTypeList() {
+		return preMalignantLesionTypeList;
+	}
+
+	public void setPreMalignantLesionTypeList(List<String> preMalignantLesionTypeList) {
+		this.preMalignantLesionTypeList = preMalignantLesionTypeList;
+	}
 	
 }

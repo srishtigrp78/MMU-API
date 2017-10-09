@@ -1,5 +1,7 @@
 package com.iemr.mmu.service.doctor;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,7 @@ import com.iemr.mmu.data.doctor.CancerGynecologicalExamination;
 import com.iemr.mmu.data.doctor.CancerLymphNodeDetails;
 import com.iemr.mmu.data.doctor.CancerOralExamination;
 import com.iemr.mmu.data.doctor.CancerSignAndSymptoms;
+import com.iemr.mmu.data.nurse.BenFamilyCancerHistory;
 import com.iemr.mmu.repo.doctor.CancerAbdominalExaminationRepo;
 import com.iemr.mmu.repo.doctor.CancerBreastExaminationRepo;
 import com.iemr.mmu.repo.doctor.CancerDiagnosisRepo;
@@ -68,13 +71,26 @@ public class DoctorServiceImpl implements DoctorService{
 	}
 
 	@Override
-	public CancerLymphNodeDetails saveLymphNodeDetails(CancerLymphNodeDetails cancerLymphNodeDetails) {
-		CancerLymphNodeDetails response = cancerLymphNodeExaminationRepo.save(cancerLymphNodeDetails);
-		return response;
+	public int saveLymphNodeDetails(List<CancerLymphNodeDetails> cancerLymphNodeDetails) {
+		int responseData = 0;
+		List<CancerLymphNodeDetails> response = (List<CancerLymphNodeDetails>) cancerLymphNodeExaminationRepo
+				.save(cancerLymphNodeDetails);
+		for (CancerLymphNodeDetails obj : response) {
+			if (obj.getID() > 0)
+				responseData = 1;
+		}
+		return responseData;
 	}
 
 	@Override
 	public CancerOralExamination saveCancerOralExaminationData(CancerOralExamination cancerOralExamination) {
+		
+		String preMalignantLesionTypeData="";
+		for(String preMalignantLesionType : cancerOralExamination.getPreMalignantLesionTypeList()){
+			preMalignantLesionTypeData += preMalignantLesionType+",";
+		}
+		cancerOralExamination.setPreMalignantLesionType(preMalignantLesionTypeData);
+		
 		CancerOralExamination response = cancerOralExaminationRepo.save(cancerOralExamination);
 		return response;
 	}
