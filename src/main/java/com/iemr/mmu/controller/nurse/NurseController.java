@@ -209,4 +209,20 @@ public class NurseController {
 		return response.toString();
 	}
 
+	@CrossOrigin()
+	@RequestMapping(value = { "/MasterData" }, method = { RequestMethod.POST }, produces = { "application/json" })
+	public String masterDataForNurse() {
+
+		OutputResponse response = new OutputResponse();
+
+		try {
+			response.setResponse(nurseServiceImpl.getNurseMasterData());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setError(e);
+		}
+		return response.toString();
+	}
+
 }
