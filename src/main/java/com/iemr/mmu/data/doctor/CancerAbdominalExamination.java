@@ -5,16 +5,11 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
-import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
-import com.iemr.mmu.data.registrar.BeneficiaryData;
 
 @Entity
 @Table(name = "t_cancerabdominalexamination")
@@ -24,43 +19,35 @@ public class CancerAbdominalExamination {
 	@Expose
 	@Column(name = "ID")
 	private Long ID;
-	
+
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
-	@Expose
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(updatable = false, insertable = false, name = "BeneficiaryRegID")
-	private BeneficiaryData beneficiaryData;
-	
+
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	@Expose
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(updatable = false, insertable = false, name = "BenVisitID")
-	private BeneficiaryVisitDetail beneficiaryVisitDetail;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "AbdominalInspection_Normal")
 	private Boolean abdominalInspection_Normal;
-	
+
 	@Expose
 	@Column(name = "Liver")
 	private String liver;
-	
+
 	@Expose
 	@Column(name = "Ascites_Present")
 	private Boolean ascites_Present;
-	
+
 	@Expose
 	@Column(name = "AnyOtherMass_Present")
 	private Boolean anyOtherMass_Present;
-	
+
 	@Expose
 	@Column(name = "LymphNodes_Enlarged")
 	private Boolean lymphNodes_Enlarged;
@@ -76,7 +63,7 @@ public class CancerAbdominalExamination {
 	@Expose
 	@Column(name = "LymphNode_ExternalIliac_Left")
 	private Boolean lymphNode_ExternalIliac_Left;
-	
+
 	@Expose
 	@Column(name = "LymphNode_ExternalIliac_Right")
 	private Boolean lymphNode_ExternalIliac_Right;
@@ -89,7 +76,6 @@ public class CancerAbdominalExamination {
 	@Column(name = "LymphNode_ParaAortic_Right")
 	private Boolean lymphNode_ParaAortic_Right;
 
-
 	@Expose
 	@Column(name = "Observation")
 	private String observation;
@@ -97,27 +83,27 @@ public class CancerAbdominalExamination {
 	@Expose
 	@Column(name = "Image")
 	private Blob image;
-	
+
 	@Expose
-	@Column(name = "Deleted",insertable = false, updatable = true)
-	private Boolean deleted; 
-	
+	@Column(name = "Deleted", insertable = false, updatable = true)
+	private Boolean deleted;
+
 	@Expose
-	@Column(name = "Processed",insertable = false, updatable = true)
+	@Column(name = "Processed", insertable = false, updatable = true)
 	private String processed;
-	
+
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
-	
+
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
 	private Timestamp createdDate;
-	
+
 	@Expose
 	@Column(name = "ModifiedBy")
 	private String modifiedBy;
-	
+
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
@@ -127,14 +113,15 @@ public class CancerAbdominalExamination {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CancerAbdominalExamination(Long ID, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
+	public CancerAbdominalExamination(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			Boolean abdominalInspection_Normal, String liver, Boolean ascites_Present, Boolean anyOtherMass_Present,
 			Boolean lymphNodes_Enlarged, Boolean lymphNode_Inguinal_Left, Boolean lymphNode_Inguinal_Right,
 			Boolean lymphNode_ExternalIliac_Left, Boolean lymphNode_ExternalIliac_Right,
 			Boolean lymphNode_ParaAortic_Left, Boolean lymphNode_ParaAortic_Right, String observation, Blob image,
-			Boolean deleted) {
+			Boolean deleted, String processed, String createdBy, Timestamp createdDate, String modifiedBy,
+			Timestamp lastModDate) {
 		super();
-		this.ID = ID;
+		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
 		this.providerServiceMapID = providerServiceMapID;
@@ -152,6 +139,19 @@ public class CancerAbdominalExamination {
 		this.observation = observation;
 		this.image = image;
 		this.deleted = deleted;
+		this.processed = processed;
+		this.createdBy = createdBy;
+		this.createdDate = createdDate;
+		this.modifiedBy = modifiedBy;
+		this.lastModDate = lastModDate;
+	}
+
+	public Long getID() {
+		return ID;
+	}
+
+	public void setID(Long iD) {
+		ID = iD;
 	}
 
 	public Long getBeneficiaryRegID() {
@@ -162,28 +162,12 @@ public class CancerAbdominalExamination {
 		this.beneficiaryRegID = beneficiaryRegID;
 	}
 
-	public BeneficiaryData getBeneficiaryData() {
-		return beneficiaryData;
-	}
-
-	public void setBeneficiaryData(BeneficiaryData beneficiaryData) {
-		this.beneficiaryData = beneficiaryData;
-	}
-
 	public Long getBenVisitID() {
 		return benVisitID;
 	}
 
 	public void setBenVisitID(Long benVisitID) {
 		this.benVisitID = benVisitID;
-	}
-
-	public BeneficiaryVisitDetail getBeneficiaryVisitDetail() {
-		return beneficiaryVisitDetail;
-	}
-
-	public void setBeneficiaryVisitDetail(BeneficiaryVisitDetail beneficiaryVisitDetail) {
-		this.beneficiaryVisitDetail = beneficiaryVisitDetail;
 	}
 
 	public Integer getProviderServiceMapID() {
@@ -346,10 +330,4 @@ public class CancerAbdominalExamination {
 		this.lastModDate = lastModDate;
 	}
 
-	public Long getID() {
-		return ID;
-	}
-	
-	
-	
 }

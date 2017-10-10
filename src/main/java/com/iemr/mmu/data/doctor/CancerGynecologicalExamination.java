@@ -5,18 +5,13 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
-import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
-import com.iemr.mmu.data.registrar.BeneficiaryData;
 
 @Entity
 @Table(name = "t_cancergynecologicalexamination")
@@ -26,35 +21,27 @@ public class CancerGynecologicalExamination {
 	@Expose
 	@Column(name = "ID")
 	private Long ID;
-	
+
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
-	@Expose
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(updatable = false, insertable = false, name = "BeneficiaryRegID")
-	private BeneficiaryData beneficiaryData;
-	
+
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	@Expose
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(updatable = false, insertable = false, name = "BenVisitID")
-	private BeneficiaryVisitDetail beneficiaryVisitDetail;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "AppearanceOfCervix")
 	private String appearanceOfCervix;
-	
+
 	@Expose
 	@Column(name = "TypeOfLesion")
 	private String typeOfLesion;
-	
+
 	@JsonIgnore
 	@Transient
 	private List<String> typeOfLesionList;
@@ -62,55 +49,55 @@ public class CancerGynecologicalExamination {
 	@Expose
 	@Column(name = "VulvalInvolvement")
 	private Boolean vulvalInvolvement;
-	
+
 	@Expose
 	@Column(name = "VaginalInvolvement")
 	private Boolean vaginalInvolvement;
-	
+
 	@Expose
 	@Column(name = "Uterus_Normal")
 	private Boolean uterus_Normal;
-	
+
 	@Expose
 	@Column(name = "SufferedFromRTIOrSTI")
 	private Boolean sufferedFromRTIOrSTI;
-	
+
 	@Expose
 	@Column(name = "RTIOrSTIDetail")
 	private String rTIOrSTIDetail;
-	
+
 	@Expose
 	@Column(name = "FilePath")
 	private String filePath;
-	
+
 	@Expose
 	@Column(name = "ExperiencedPostCoitalBleeding")
 	private Boolean experiencedPostCoitalBleeding;
-	
+
 	@Expose
 	@Column(name = "Observation")
 	private String observation;
-	
+
 	@Expose
-	@Column(name = "Deleted",insertable = false, updatable = true)
-	private Boolean deleted; 
-	
+	@Column(name = "Deleted", insertable = false, updatable = true)
+	private Boolean deleted;
+
 	@Expose
-	@Column(name = "Processed",insertable = false, updatable = true)
+	@Column(name = "Processed", insertable = false, updatable = true)
 	private String processed;
-	
+
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
-	
+
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
 	private Timestamp createdDate;
-	
+
 	@Expose
 	@Column(name = "ModifiedBy")
 	private String modifiedBy;
-	
+
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
@@ -120,17 +107,19 @@ public class CancerGynecologicalExamination {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CancerGynecologicalExamination(Long ID, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
-			String appearanceOfCervix, String typeOfLesion, Boolean vulvalInvolvement, Boolean vaginalInvolvement,
-			Boolean uterus_Normal, Boolean sufferedFromRTIOrSTI, String rTIOrSTIDetail, String filePath,
-			Boolean experiencedPostCoitalBleeding, String observation, Boolean deleted) {
+	public CancerGynecologicalExamination(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
+			String appearanceOfCervix, String typeOfLesion, List<String> typeOfLesionList, Boolean vulvalInvolvement,
+			Boolean vaginalInvolvement, Boolean uterus_Normal, Boolean sufferedFromRTIOrSTI, String rTIOrSTIDetail,
+			String filePath, Boolean experiencedPostCoitalBleeding, String observation, Boolean deleted,
+			String processed, String createdBy, Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
 		super();
-		this.ID = ID;
+		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
 		this.providerServiceMapID = providerServiceMapID;
 		this.appearanceOfCervix = appearanceOfCervix;
 		this.typeOfLesion = typeOfLesion;
+		this.typeOfLesionList = typeOfLesionList;
 		this.vulvalInvolvement = vulvalInvolvement;
 		this.vaginalInvolvement = vaginalInvolvement;
 		this.uterus_Normal = uterus_Normal;
@@ -140,6 +129,19 @@ public class CancerGynecologicalExamination {
 		this.experiencedPostCoitalBleeding = experiencedPostCoitalBleeding;
 		this.observation = observation;
 		this.deleted = deleted;
+		this.processed = processed;
+		this.createdBy = createdBy;
+		this.createdDate = createdDate;
+		this.modifiedBy = modifiedBy;
+		this.lastModDate = lastModDate;
+	}
+
+	public Long getID() {
+		return ID;
+	}
+
+	public void setID(Long iD) {
+		ID = iD;
 	}
 
 	public Long getBeneficiaryRegID() {
@@ -150,28 +152,12 @@ public class CancerGynecologicalExamination {
 		this.beneficiaryRegID = beneficiaryRegID;
 	}
 
-	public BeneficiaryData getBeneficiaryData() {
-		return beneficiaryData;
-	}
-
-	public void setBeneficiaryData(BeneficiaryData beneficiaryData) {
-		this.beneficiaryData = beneficiaryData;
-	}
-
 	public Long getBenVisitID() {
 		return benVisitID;
 	}
 
 	public void setBenVisitID(Long benVisitID) {
 		this.benVisitID = benVisitID;
-	}
-
-	public BeneficiaryVisitDetail getBeneficiaryVisitDetail() {
-		return beneficiaryVisitDetail;
-	}
-
-	public void setBeneficiaryVisitDetail(BeneficiaryVisitDetail beneficiaryVisitDetail) {
-		this.beneficiaryVisitDetail = beneficiaryVisitDetail;
 	}
 
 	public Integer getProviderServiceMapID() {
@@ -196,6 +182,14 @@ public class CancerGynecologicalExamination {
 
 	public void setTypeOfLesion(String typeOfLesion) {
 		this.typeOfLesion = typeOfLesion;
+	}
+
+	public List<String> getTypeOfLesionList() {
+		return typeOfLesionList;
+	}
+
+	public void setTypeOfLesionList(List<String> typeOfLesionList) {
+		this.typeOfLesionList = typeOfLesionList;
 	}
 
 	public Boolean getVulvalInvolvement() {
@@ -310,16 +304,4 @@ public class CancerGynecologicalExamination {
 		this.lastModDate = lastModDate;
 	}
 
-	public Long getID() {
-		return ID;
-	}
-	
-	public List<String> getTypeOfLesionList() {
-		return typeOfLesionList;
-	}
-
-	public void setTypeOfLesionList(List<String> typeOfLesionList) {
-		this.typeOfLesionList = typeOfLesionList;
-	}
-	
 }

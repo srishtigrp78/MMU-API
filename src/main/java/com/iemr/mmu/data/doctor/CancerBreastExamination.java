@@ -5,16 +5,11 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
-import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
-import com.iemr.mmu.data.registrar.BeneficiaryData;
 
 @Entity
 @Table(name = "t_cancerbreastexamination")
@@ -24,103 +19,95 @@ public class CancerBreastExamination {
 	@Expose
 	@Column(name = "ID")
 	private Long ID;
-	
+
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
-	@Expose
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(updatable = false, insertable = false, name = "BeneficiaryRegID")
-	private BeneficiaryData beneficiaryData;
-	
+
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	@Expose
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(updatable = false, insertable = false, name = "BenVisitID")
-	private BeneficiaryVisitDetail beneficiaryVisitDetail;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "EverBreastFed")
 	private Boolean everBreastFed;
-	
+
 	@Expose
 	@Column(name = "BreastFeedingDuration_>6months")
 	private Boolean breastFeedingDurationGTE6months;
-	
+
 	@Expose
 	@Column(name = "BreastsAppear_Normal")
 	private Boolean breastsAppear_Normal;
-	
+
 	@Expose
 	@Column(name = "RashOnBreast")
 	private Boolean rashOnBreast;
-	
+
 	@Expose
 	@Column(name = "DimplingSkinOnBreast")
 	private Boolean dimplingSkinOnBreast;
-	
+
 	@Expose
 	@Column(name = "DischargeFromNipple")
 	private Boolean dischargeFromNipple;
-	
+
 	@Expose
 	@Column(name = "PeaudOrange")
 	private Boolean peaudOrange;
-	
+
 	@Expose
 	@Column(name = "LumpInBreast")
 	private Boolean lumpInBreast;
-	
+
 	@Expose
 	@Column(name = "LumpSize")
 	private String lumpSize;
-	
+
 	@Expose
 	@Column(name = "LumpShape")
-	private String lumpShape;	
-	
+	private String lumpShape;
+
 	@Expose
 	@Column(name = "LumpTexture")
 	private String lumpTexture;
-	
+
 	@Expose
 	@Column(name = "ReferredToMammogram")
 	private Boolean referredToMammogram;
-	
+
 	@Expose
 	@Column(name = "MamogramReport")
 	private String mamogramReport;
-	
+
 	@Expose
 	@Column(name = "Image")
 	private Blob image;
-	
+
 	@Expose
-	@Column(name = "Deleted",insertable = false, updatable = true)
-	private Boolean deleted; 
-	
+	@Column(name = "Deleted", insertable = false, updatable = true)
+	private Boolean deleted;
+
 	@Expose
-	@Column(name = "Processed",insertable = false, updatable = true)
+	@Column(name = "Processed", insertable = false, updatable = true)
 	private String processed;
-	
+
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
-	
+
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
 	private Timestamp createdDate;
-	
+
 	@Expose
 	@Column(name = "ModifiedBy")
 	private String modifiedBy;
-	
+
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
@@ -130,13 +117,14 @@ public class CancerBreastExamination {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CancerBreastExamination(Long ID, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
+	public CancerBreastExamination(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			Boolean everBreastFed, Boolean breastFeedingDurationGTE6months, Boolean breastsAppear_Normal,
 			Boolean rashOnBreast, Boolean dimplingSkinOnBreast, Boolean dischargeFromNipple, Boolean peaudOrange,
 			Boolean lumpInBreast, String lumpSize, String lumpShape, String lumpTexture, Boolean referredToMammogram,
-			String mamogramReport, Blob image, Boolean deleted) {
+			String mamogramReport, Blob image, Boolean deleted, String processed, String createdBy,
+			Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
 		super();
-		this.ID = ID;
+		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
 		this.providerServiceMapID = providerServiceMapID;
@@ -155,6 +143,19 @@ public class CancerBreastExamination {
 		this.mamogramReport = mamogramReport;
 		this.image = image;
 		this.deleted = deleted;
+		this.processed = processed;
+		this.createdBy = createdBy;
+		this.createdDate = createdDate;
+		this.modifiedBy = modifiedBy;
+		this.lastModDate = lastModDate;
+	}
+
+	public Long getID() {
+		return ID;
+	}
+
+	public void setID(Long iD) {
+		ID = iD;
 	}
 
 	public Long getBeneficiaryRegID() {
@@ -165,28 +166,12 @@ public class CancerBreastExamination {
 		this.beneficiaryRegID = beneficiaryRegID;
 	}
 
-	public BeneficiaryData getBeneficiaryData() {
-		return beneficiaryData;
-	}
-
-	public void setBeneficiaryData(BeneficiaryData beneficiaryData) {
-		this.beneficiaryData = beneficiaryData;
-	}
-
 	public Long getBenVisitID() {
 		return benVisitID;
 	}
 
 	public void setBenVisitID(Long benVisitID) {
 		this.benVisitID = benVisitID;
-	}
-
-	public BeneficiaryVisitDetail getBeneficiaryVisitDetail() {
-		return beneficiaryVisitDetail;
-	}
-
-	public void setBeneficiaryVisitDetail(BeneficiaryVisitDetail beneficiaryVisitDetail) {
-		this.beneficiaryVisitDetail = beneficiaryVisitDetail;
 	}
 
 	public Integer getProviderServiceMapID() {
@@ -357,9 +342,4 @@ public class CancerBreastExamination {
 		this.lastModDate = lastModDate;
 	}
 
-	public Long getID() {
-		return ID;
-	}
-	
-	
 }

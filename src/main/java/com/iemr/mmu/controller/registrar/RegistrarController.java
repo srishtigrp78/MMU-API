@@ -18,12 +18,12 @@ import com.iemr.mmu.service.registrar.RegistrarServiceImpl;
 import com.iemr.utils.mapper.InputMapper;
 import com.iemr.utils.response.OutputResponse;
 
+@CrossOrigin
 @RestController
-@RequestMapping("/registrar")
+@RequestMapping({ "/registrar" })
 public class RegistrarController {
 
 	private InputMapper inputMapper = new InputMapper();
-	private OutputResponse response = null;
 	private RegistrarServiceImpl registrarServiceImpl;
 	private RegistrarServiceMasterDataImpl registrarServiceMasterDataImpl;
 
@@ -42,8 +42,9 @@ public class RegistrarController {
 	@RequestMapping(value = { "/registrarWorkListData" }, method = { RequestMethod.POST }, produces = {
 			"application/json" })
 	public String getRegistrarWorkList(@RequestBody String comingRequest) throws JSONException {
+		OutputResponse response = new OutputResponse();
 		try {
-			response = new OutputResponse();
+
 			JSONObject obj = new JSONObject(comingRequest);
 
 			// wrapperRegWorklistArray =
@@ -61,8 +62,9 @@ public class RegistrarController {
 	@RequestMapping(value = { "/registrarBeneficaryRegistration" }, method = { RequestMethod.POST }, produces = {
 			"application/json" })
 	public String createBeneficiary(@RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
 		try {
-			response = new OutputResponse();
+
 			// JsonObject responseOBJ = new JsonObject();
 			WrapperBeneficiaryRegistration wrapperBeneficiaryRegistrationOBJ = InputMapper.gson()
 					.fromJson(comingRequest, WrapperBeneficiaryRegistration.class);
@@ -111,8 +113,9 @@ public class RegistrarController {
 	@CrossOrigin()
 	@RequestMapping(value = { "/quickSearch" }, method = { RequestMethod.POST }, produces = { "application/json" })
 	public String quickSearchBeneficiary(@RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
 		try {
-			response = new OutputResponse();
+
 			JSONObject obj = new JSONObject(comingRequest);
 
 			// wrapperRegWorklistArray =
@@ -130,8 +133,9 @@ public class RegistrarController {
 	@CrossOrigin()
 	@RequestMapping(value = { "/advanceSearch" }, method = { RequestMethod.POST }, produces = { "application/json" })
 	public String advanceSearch(@RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
 		try {
-			response = new OutputResponse();
+
 			// JSONObject obj = new JSONObject(comingRequest);
 			V_BenAdvanceSearch v_BenAdvanceSearch = inputMapper.gson().fromJson(comingRequest,
 					V_BenAdvanceSearch.class);
@@ -151,8 +155,9 @@ public class RegistrarController {
 	@RequestMapping(value = { "/registrarMasterData" }, method = { RequestMethod.POST }, produces = {
 			"application/json" })
 	public String masterDataForRegistration(@RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
 		try {
-			response = new OutputResponse();
+
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("spID")) {
 				if (obj.getInt("spID") > 0) {
@@ -171,6 +176,5 @@ public class RegistrarController {
 		}
 		return response.toString();
 	}
-	
 
 }

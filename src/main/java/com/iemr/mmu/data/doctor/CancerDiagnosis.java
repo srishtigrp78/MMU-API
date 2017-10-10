@@ -27,18 +27,11 @@ public class CancerDiagnosis {
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
-	@Expose
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(updatable = false, insertable = false, name = "BeneficiaryRegID")
-	private BeneficiaryData beneficiaryData;
 	
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	@Expose
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(updatable = false, insertable = false, name = "BenVisitID")
-	private BeneficiaryVisitDetail beneficiaryVisitDetail;
+	
 	
 	@Expose
 	@Column(name = "ProviderServiceMapID")
@@ -93,11 +86,12 @@ public class CancerDiagnosis {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CancerDiagnosis(Long ID, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
+	public CancerDiagnosis(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			String provisionalDiagnosisPrimaryDoctor, String provisionalDiagnosisOncologist, String remarks,
-			Integer referredToInstituteID, String refrredToAdditionalService, Boolean deleted) {
+			Integer referredToInstituteID, String refrredToAdditionalService, Boolean deleted, String processed,
+			String createdBy, Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
 		super();
-		this.ID = ID;
+		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
 		this.providerServiceMapID = providerServiceMapID;
@@ -107,6 +101,19 @@ public class CancerDiagnosis {
 		this.referredToInstituteID = referredToInstituteID;
 		this.refrredToAdditionalService = refrredToAdditionalService;
 		this.deleted = deleted;
+		this.processed = processed;
+		this.createdBy = createdBy;
+		this.createdDate = createdDate;
+		this.modifiedBy = modifiedBy;
+		this.lastModDate = lastModDate;
+	}
+
+	public Long getID() {
+		return ID;
+	}
+
+	public void setID(Long iD) {
+		ID = iD;
 	}
 
 	public Long getBeneficiaryRegID() {
@@ -117,28 +124,12 @@ public class CancerDiagnosis {
 		this.beneficiaryRegID = beneficiaryRegID;
 	}
 
-	public BeneficiaryData getBeneficiaryData() {
-		return beneficiaryData;
-	}
-
-	public void setBeneficiaryData(BeneficiaryData beneficiaryData) {
-		this.beneficiaryData = beneficiaryData;
-	}
-
 	public Long getBenVisitID() {
 		return benVisitID;
 	}
 
 	public void setBenVisitID(Long benVisitID) {
 		this.benVisitID = benVisitID;
-	}
-
-	public BeneficiaryVisitDetail getBeneficiaryVisitDetail() {
-		return beneficiaryVisitDetail;
-	}
-
-	public void setBeneficiaryVisitDetail(BeneficiaryVisitDetail beneficiaryVisitDetail) {
-		this.beneficiaryVisitDetail = beneficiaryVisitDetail;
 	}
 
 	public Integer getProviderServiceMapID() {
@@ -237,9 +228,5 @@ public class CancerDiagnosis {
 		this.lastModDate = lastModDate;
 	}
 
-	public Long getID() {
-		return ID;
-	}
-	
 	
 }

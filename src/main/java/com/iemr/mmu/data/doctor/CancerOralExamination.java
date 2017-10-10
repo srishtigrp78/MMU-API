@@ -6,18 +6,13 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
-import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
-import com.iemr.mmu.data.registrar.BeneficiaryData;
 
 @Entity
 @Table(name = "t_canceroralexamination")
@@ -27,39 +22,31 @@ public class CancerOralExamination {
 	@Expose
 	@Column(name = "ID")
 	private Long ID;
-	
+
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
-	@Expose
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(updatable = false, insertable = false, name = "BeneficiaryRegID")
-	private BeneficiaryData beneficiaryData;
-	
+
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	@Expose
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(updatable = false, insertable = false, name = "BenVisitID")
-	private BeneficiaryVisitDetail beneficiaryVisitDetail;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "LimitedMouthOpening")
 	private String limitedMouthOpening;
-	
+
 	@Expose
 	@Column(name = "PremalignantLesions")
 	private Boolean premalignantLesions;
-	
+
 	@Expose
 	@Column(name = "PreMalignantLesionType")
 	private String preMalignantLesionType;
-	
+
 	@JsonIgnore
 	@Transient
 	private List<String> preMalignantLesionTypeList;
@@ -67,39 +54,39 @@ public class CancerOralExamination {
 	@Expose
 	@Column(name = "ProlongedIrritation")
 	private Boolean prolongedIrritation;
-	
+
 	@Expose
 	@Column(name = "ChronicBurningSensation")
 	private Boolean chronicBurningSensation;
-	
+
 	@Expose
 	@Column(name = "Observation")
 	private String observation;
-	
+
 	@Expose
 	@Column(name = "Image")
 	private Blob image;
-	
+
 	@Expose
-	@Column(name = "Deleted",insertable = false, updatable = true)
-	private Boolean deleted; 
-	
+	@Column(name = "Deleted", insertable = false, updatable = true)
+	private Boolean deleted;
+
 	@Expose
-	@Column(name = "Processed",insertable = false, updatable = true)
+	@Column(name = "Processed", insertable = false, updatable = true)
 	private String processed;
-	
+
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
-	
+
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
 	private Timestamp createdDate;
-	
+
 	@Expose
 	@Column(name = "ModifiedBy")
 	private String modifiedBy;
-	
+
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
@@ -109,23 +96,38 @@ public class CancerOralExamination {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CancerOralExamination(Long ID, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
+	public CancerOralExamination(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			String limitedMouthOpening, Boolean premalignantLesions, String preMalignantLesionType,
-			Boolean prolongedIrritation, Boolean chronicBurningSensation, String observation, Blob image,
-			Boolean deleted) {
+			List<String> preMalignantLesionTypeList, Boolean prolongedIrritation, Boolean chronicBurningSensation,
+			String observation, Blob image, Boolean deleted, String processed, String createdBy, Timestamp createdDate,
+			String modifiedBy, Timestamp lastModDate) {
 		super();
-		this.ID = ID;
+		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
 		this.providerServiceMapID = providerServiceMapID;
 		this.limitedMouthOpening = limitedMouthOpening;
 		this.premalignantLesions = premalignantLesions;
 		this.preMalignantLesionType = preMalignantLesionType;
+		this.preMalignantLesionTypeList = preMalignantLesionTypeList;
 		this.prolongedIrritation = prolongedIrritation;
 		this.chronicBurningSensation = chronicBurningSensation;
 		this.observation = observation;
 		this.image = image;
 		this.deleted = deleted;
+		this.processed = processed;
+		this.createdBy = createdBy;
+		this.createdDate = createdDate;
+		this.modifiedBy = modifiedBy;
+		this.lastModDate = lastModDate;
+	}
+
+	public Long getID() {
+		return ID;
+	}
+
+	public void setID(Long iD) {
+		ID = iD;
 	}
 
 	public Long getBeneficiaryRegID() {
@@ -136,28 +138,12 @@ public class CancerOralExamination {
 		this.beneficiaryRegID = beneficiaryRegID;
 	}
 
-	public BeneficiaryData getBeneficiaryData() {
-		return beneficiaryData;
-	}
-
-	public void setBeneficiaryData(BeneficiaryData beneficiaryData) {
-		this.beneficiaryData = beneficiaryData;
-	}
-
 	public Long getBenVisitID() {
 		return benVisitID;
 	}
 
 	public void setBenVisitID(Long benVisitID) {
 		this.benVisitID = benVisitID;
-	}
-
-	public BeneficiaryVisitDetail getBeneficiaryVisitDetail() {
-		return beneficiaryVisitDetail;
-	}
-
-	public void setBeneficiaryVisitDetail(BeneficiaryVisitDetail beneficiaryVisitDetail) {
-		this.beneficiaryVisitDetail = beneficiaryVisitDetail;
 	}
 
 	public Integer getProviderServiceMapID() {
@@ -190,6 +176,14 @@ public class CancerOralExamination {
 
 	public void setPreMalignantLesionType(String preMalignantLesionType) {
 		this.preMalignantLesionType = preMalignantLesionType;
+	}
+
+	public List<String> getPreMalignantLesionTypeList() {
+		return preMalignantLesionTypeList;
+	}
+
+	public void setPreMalignantLesionTypeList(List<String> preMalignantLesionTypeList) {
+		this.preMalignantLesionTypeList = preMalignantLesionTypeList;
 	}
 
 	public Boolean getProlongedIrritation() {
@@ -272,16 +266,4 @@ public class CancerOralExamination {
 		this.lastModDate = lastModDate;
 	}
 
-	public Long getID() {
-		return ID;
-	}
-	
-	public List<String> getPreMalignantLesionTypeList() {
-		return preMalignantLesionTypeList;
-	}
-
-	public void setPreMalignantLesionTypeList(List<String> preMalignantLesionTypeList) {
-		this.preMalignantLesionTypeList = preMalignantLesionTypeList;
-	}
-	
 }

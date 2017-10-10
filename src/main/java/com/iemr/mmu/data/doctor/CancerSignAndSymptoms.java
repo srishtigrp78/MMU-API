@@ -4,16 +4,11 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
-import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
-import com.iemr.mmu.data.registrar.BeneficiaryData;
 
 @Entity
 @Table(name = "t_cancersignandsymptoms")
@@ -23,103 +18,95 @@ public class CancerSignAndSymptoms {
 	@Expose
 	@Column(name = "ID")
 	private Long ID;
-	
+
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
-	@Expose
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(updatable = false, insertable = false, name = "BeneficiaryRegID")
-	private BeneficiaryData beneficiaryData;
-	
+
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	@Expose
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(updatable = false, insertable = false, name = "BenVisitID")
-	private BeneficiaryVisitDetail beneficiaryVisitDetail;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "ShortnessOfBreath")
 	private Boolean shortnessOfBreath;
-	
+
 	@Expose
 	@Column(name = "Cough≥2Weeks")
 	private Boolean coughGTE2Weeks;
-	
+
 	@Expose
 	@Column(name = "BloodInSputum")
 	private Boolean bloodInSputum;
-	
+
 	@Expose
 	@Column(name = "DifficultyInOpeningMouth")
-	private Boolean difficultyInOpeningMouth;	
-	
+	private Boolean difficultyInOpeningMouth;
+
 	@Expose
 	@Column(name = "NonHealingUlcerOrPatchOrGrowth")
-	private Boolean nonHealingUlcerOrPatchOrGrowth;	
-	
+	private Boolean nonHealingUlcerOrPatchOrGrowth;
+
 	@Expose
 	@Column(name = "ChangeInTheToneOfVoice")
-	private Boolean changeInTheToneOfVoice;	
-	
+	private Boolean changeInTheToneOfVoice;
+
 	@Expose
 	@Column(name = "LumpInTheBreast")
-	private Boolean lumpInTheBreast;	
-	
+	private Boolean lumpInTheBreast;
+
 	@Expose
 	@Column(name = "BloodStainedDischargeFromNipple")
-	private Boolean bloodStainedDischargeFromNipple;	
-	
+	private Boolean bloodStainedDischargeFromNipple;
+
 	@Expose
 	@Column(name = "ChangeInShapeAndSizeOfBreasts")
-	private Boolean changeInShapeAndSizeOfBreasts;	
-	
+	private Boolean changeInShapeAndSizeOfBreasts;
+
 	@Expose
 	@Column(name = "VaginalBleedingBetweenPeriods")
 	private Boolean vaginalBleedingBetweenPeriods;
-	
+
 	@Expose
 	@Column(name = "VaginalBleedingAfterMenopause")
 	private Boolean vaginalBleedingAfterMenopause;
-	
+
 	@Expose
 	@Column(name = "VaginalBleedingAfterIntercourse")
 	private Boolean vaginalBleedingAfterIntercourse;
-	
+
 	@Expose
 	@Column(name = "FoulSmellingVaginalDischarge")
 	private Boolean foulSmellingVaginalDischarge;
-	
+
 	@Expose
 	@Column(name = "LymphNode_Enlarged")
 	private Boolean lymphNode_Enlarged;
-	
+
 	@Expose
-	@Column(name = "Deleted",insertable = false, updatable = true)
-	private Boolean deleted; 
-	
+	@Column(name = "Deleted", insertable = false, updatable = true)
+	private Boolean deleted;
+
 	@Expose
-	@Column(name = "Processed",insertable = false, updatable = true)
+	@Column(name = "Processed", insertable = false, updatable = true)
 	private String processed;
-	
+
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
-	
+
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
 	private Timestamp createdDate;
-	
+
 	@Expose
 	@Column(name = "ModifiedBy")
 	private String modifiedBy;
-	
+
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
@@ -129,15 +116,16 @@ public class CancerSignAndSymptoms {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CancerSignAndSymptoms(Long ID, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
+	public CancerSignAndSymptoms(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			Boolean shortnessOfBreath, Boolean coughGTE2Weeks, Boolean bloodInSputum, Boolean difficultyInOpeningMouth,
 			Boolean nonHealingUlcerOrPatchOrGrowth, Boolean changeInTheToneOfVoice, Boolean lumpInTheBreast,
 			Boolean bloodStainedDischargeFromNipple, Boolean changeInShapeAndSizeOfBreasts,
 			Boolean vaginalBleedingBetweenPeriods, Boolean vaginalBleedingAfterMenopause,
 			Boolean vaginalBleedingAfterIntercourse, Boolean foulSmellingVaginalDischarge, Boolean lymphNode_Enlarged,
-			Boolean deleted) {
+			Boolean deleted, String processed, String createdBy, Timestamp createdDate, String modifiedBy,
+			Timestamp lastModDate) {
 		super();
-		this.ID = ID;
+		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
 		this.providerServiceMapID = providerServiceMapID;
@@ -156,6 +144,19 @@ public class CancerSignAndSymptoms {
 		this.foulSmellingVaginalDischarge = foulSmellingVaginalDischarge;
 		this.lymphNode_Enlarged = lymphNode_Enlarged;
 		this.deleted = deleted;
+		this.processed = processed;
+		this.createdBy = createdBy;
+		this.createdDate = createdDate;
+		this.modifiedBy = modifiedBy;
+		this.lastModDate = lastModDate;
+	}
+
+	public Long getID() {
+		return ID;
+	}
+
+	public void setID(Long iD) {
+		ID = iD;
 	}
 
 	public Long getBeneficiaryRegID() {
@@ -166,28 +167,12 @@ public class CancerSignAndSymptoms {
 		this.beneficiaryRegID = beneficiaryRegID;
 	}
 
-	public BeneficiaryData getBeneficiaryData() {
-		return beneficiaryData;
-	}
-
-	public void setBeneficiaryData(BeneficiaryData beneficiaryData) {
-		this.beneficiaryData = beneficiaryData;
-	}
-
 	public Long getBenVisitID() {
 		return benVisitID;
 	}
 
 	public void setBenVisitID(Long benVisitID) {
 		this.benVisitID = benVisitID;
-	}
-
-	public BeneficiaryVisitDetail getBeneficiaryVisitDetail() {
-		return beneficiaryVisitDetail;
-	}
-
-	public void setBeneficiaryVisitDetail(BeneficiaryVisitDetail beneficiaryVisitDetail) {
-		this.beneficiaryVisitDetail = beneficiaryVisitDetail;
 	}
 
 	public Integer getProviderServiceMapID() {
@@ -358,9 +343,4 @@ public class CancerSignAndSymptoms {
 		this.lastModDate = lastModDate;
 	}
 
-	public Long getID() {
-		return ID;
-	}
-	
-	
 }
