@@ -22,6 +22,8 @@ import com.iemr.mmu.data.doctor.WrapperCancerSymptoms;
 import com.iemr.mmu.data.nurse.BenFamilyCancerHistory;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.service.doctor.DoctorServiceImpl;
+import com.iemr.mmu.service.masterservice.DoctorMasterDataService;
+import com.iemr.mmu.service.masterservice.DoctorMasterDataServiceImpl;
 import com.iemr.utils.mapper.InputMapper;
 import com.iemr.utils.response.OutputResponse;
 
@@ -33,8 +35,16 @@ public class DoctorController {
 	private InputMapper inputMapper = new InputMapper();
 	private OutputResponse response;
 
+	private DoctorMasterDataService doctorMasterDataService;
+	private DoctorMasterDataServiceImpl doctorMasterDataServiceImpl;
+	
 	@Autowired
 	private DoctorServiceImpl doctorServiceImpl;
+	
+	@Autowired
+	public void setDoctorMasterDataServiceImpl(DoctorMasterDataServiceImpl doctorMasterDataServiceImpl) {
+		this.doctorMasterDataServiceImpl = doctorMasterDataServiceImpl;
+	}
 
 	@CrossOrigin
 	@RequestMapping(value = { "/save/examinationScreen/abdominal" }, method = { RequestMethod.POST }, produces = {
@@ -218,6 +228,23 @@ public class DoctorController {
 			response.setError(e);
 		}
 
+		return response.toString();
+	}
+	
+	@CrossOrigin()
+	@RequestMapping(value = { "/doctorMasterData" }, method = { RequestMethod.POST }, produces = {
+			"application/json" })
+	public String getMasterDataForDoctor() {
+		
+		OutputResponse response = new OutputResponse();
+		
+		try {
+			response.setResponse(doctorMasterDataServiceImpl.getDoctorMasterData());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setError(e);
+		}
 		return response.toString();
 	}
 }

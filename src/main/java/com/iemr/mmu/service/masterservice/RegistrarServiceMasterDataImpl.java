@@ -8,14 +8,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
-import com.iemr.mmu.data.masterdata.CommunityMaster;
-import com.iemr.mmu.data.masterdata.GenderMaster;
-import com.iemr.mmu.data.masterdata.GovIdEntityType;
-import com.iemr.mmu.data.masterdata.IncomeStatusMaster;
-import com.iemr.mmu.data.masterdata.MaritalStatusMaster;
-import com.iemr.mmu.data.masterdata.OccupationMaster;
-import com.iemr.mmu.data.masterdata.QualificationMaster;
-import com.iemr.mmu.data.masterdata.ReligionMaster;
+import com.iemr.mmu.data.masterdata.doctor.PreMalignantLesion;
+import com.iemr.mmu.data.masterdata.nurse.CancerDiseaseType;
+import com.iemr.mmu.data.masterdata.nurse.CancerPersonalHabitType;
+import com.iemr.mmu.data.masterdata.nurse.FamilyMemberType;
+import com.iemr.mmu.data.masterdata.nurse.VisitCategory;
+import com.iemr.mmu.data.masterdata.nurse.VisitReason;
+import com.iemr.mmu.data.masterdata.registrar.CommunityMaster;
+import com.iemr.mmu.data.masterdata.registrar.GenderMaster;
+import com.iemr.mmu.data.masterdata.registrar.GovIdEntityType;
+import com.iemr.mmu.data.masterdata.registrar.IncomeStatusMaster;
+import com.iemr.mmu.data.masterdata.registrar.MaritalStatusMaster;
+import com.iemr.mmu.data.masterdata.registrar.OccupationMaster;
+import com.iemr.mmu.data.masterdata.registrar.QualificationMaster;
+import com.iemr.mmu.data.masterdata.registrar.ReligionMaster;
 import com.iemr.mmu.repo.masterrepo.CommunityMasterRepo;
 import com.iemr.mmu.repo.masterrepo.GenderMasterRepo;
 import com.iemr.mmu.repo.masterrepo.GovIdEntityTypeRepo;
@@ -24,6 +30,12 @@ import com.iemr.mmu.repo.masterrepo.MaritalStatusMasterRepo;
 import com.iemr.mmu.repo.masterrepo.OccupationMasterRepo;
 import com.iemr.mmu.repo.masterrepo.QualificationMasterRepo;
 import com.iemr.mmu.repo.masterrepo.ReligionMasterRepo;
+import com.iemr.mmu.repo.masterrepo.doctor.PreMalignantLesionMasterRepo;
+import com.iemr.mmu.repo.masterrepo.nurse.CancerDiseaseMasterRepo;
+import com.iemr.mmu.repo.masterrepo.nurse.CancerPersonalHabitMasterRepo;
+import com.iemr.mmu.repo.masterrepo.nurse.FamilyMemberMasterRepo;
+import com.iemr.mmu.repo.masterrepo.nurse.VisitCategoryMasterRepo;
+import com.iemr.mmu.repo.masterrepo.nurse.VisitReasonMasterRepo;
 
 @Service
 public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterData {
@@ -76,7 +88,7 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 	public void setReligionMasterRepo(ReligionMasterRepo religionMasterRepo) {
 		this.religionMasterRepo = religionMasterRepo;
 	}
-
+	
 	public String getRegMasterData() {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 		ArrayList<Object[]> cm = communityMasterRepo.getCommunityMaster();
@@ -108,5 +120,7 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 		return new Gson().toJson(resMap);
 
 	}
+	
+	
 
 }

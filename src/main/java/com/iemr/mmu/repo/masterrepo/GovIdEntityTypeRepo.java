@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.iemr.mmu.data.masterdata.GovIdEntityType;
+import com.iemr.mmu.data.masterdata.registrar.GovIdEntityType;
 
 @Repository
 public interface GovIdEntityTypeRepo extends CrudRepository<GovIdEntityType, Short> {

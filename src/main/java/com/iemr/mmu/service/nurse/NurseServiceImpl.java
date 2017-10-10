@@ -10,23 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.google.gson.Gson;
-import com.iemr.mmu.data.masterdata.nurse.CancerDiseaseType;
-import com.iemr.mmu.data.masterdata.nurse.CancerPersonalHabitType;
-import com.iemr.mmu.data.masterdata.nurse.FamilyMemberType;
-import com.iemr.mmu.data.masterdata.nurse.VisitCategory;
-import com.iemr.mmu.data.masterdata.nurse.VisitReason;
 import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
 import com.iemr.mmu.data.nurse.BenFamilyCancerHistory;
 import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
-import com.iemr.mmu.repo.masterrepo.nurse.CancerDiseaseMasterRepo;
-import com.iemr.mmu.repo.masterrepo.nurse.CancerPersonalHabitMasterRepo;
-import com.iemr.mmu.repo.masterrepo.nurse.FamilyMemberMasterRepo;
-import com.iemr.mmu.repo.masterrepo.nurse.VisitCategoryMasterRepo;
-import com.iemr.mmu.repo.masterrepo.nurse.VisitReasonMasterRepo;
 import com.iemr.mmu.repo.nurse.BenCancerVitalDetailRepo;
 import com.iemr.mmu.repo.nurse.BenFamilyCancerHistoryRepo;
 import com.iemr.mmu.repo.nurse.BenObstetricCancerHistoryRepo;
@@ -43,21 +32,6 @@ public class NurseServiceImpl implements NurseService {
 	private BenPersonalCancerDietHistoryRepo benPersonalCancerDietHistoryRepo;
 	private BenPersonalCancerHistoryRepo benPersonalCancerHistoryRepo;
 	private BenCancerVitalDetailRepo benCancerVitalDetailRepo;
-	
-	@Autowired
-	private CancerDiseaseMasterRepo cancerDiseaseMasterRepo;
-	
-	@Autowired
-	private CancerPersonalHabitMasterRepo cancerPersonalHabitMasterRepo;
-	
-	@Autowired
-	private FamilyMemberMasterRepo familyMemberMasterRepo;
-	
-	@Autowired
-	private VisitCategoryMasterRepo visitCategoryMasterRepo;
-	
-	@Autowired
-	private VisitReasonMasterRepo visitReasonMasterRepo;
 
 	@Autowired
 	public void setBenFamilyCancerHistoryRepo(BenFamilyCancerHistoryRepo benFamilyCancerHistoryRepo) {
@@ -187,41 +161,6 @@ public class NurseServiceImpl implements NurseService {
 			return response.getID();
 		else
 			return null;
-	}
-	
-	public String getNurseMasterData() {
-		Map<String, Object> resMap = new HashMap<String, Object>();
-		ArrayList<Object[]> DiseaseTypes = cancerDiseaseMasterRepo.getCancerDiseaseMaster();
-		ArrayList<Object[]> tobaccoUseStatus= cancerPersonalHabitMasterRepo.getCancerPersonalHabitTypeMaster("Tobacco Use Status");
-		ArrayList<Object[]> alcoholUseStatus= cancerPersonalHabitMasterRepo.getCancerPersonalHabitTypeMaster("Alcohol Usage");
-		ArrayList<Object[]> dietTypes= cancerPersonalHabitMasterRepo.getCancerPersonalHabitTypeMaster("Dietary Type ");
-		ArrayList<Object[]> oilConsumed= cancerPersonalHabitMasterRepo.getCancerPersonalHabitTypeMaster("Oil Consumed");
-		ArrayList<Object[]> physicalActivityType= cancerPersonalHabitMasterRepo.getCancerPersonalHabitTypeMaster("Physical Activity Type ");
-		
-		ArrayList<Object[]> familyMemberTypes= familyMemberMasterRepo.getFamilyMemberTypeMaster();
-		ArrayList<Object[]> visitCategories= visitCategoryMasterRepo.getVisitCategoryMaster();
-		ArrayList<Object[]> visitReasons= visitReasonMasterRepo.getVisitReasonMaster();
-		
-		try {
-			resMap.put("CancerDiseaseType", CancerDiseaseType.getCancerDiseaseTypeMasterData(DiseaseTypes));
-			resMap.put("tobaccoUseStatus", CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(tobaccoUseStatus));
-			resMap.put("alcoholUseStatus", CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(alcoholUseStatus));
-			resMap.put("dietTypes", CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(dietTypes));
-			resMap.put("oilConsumed", CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(oilConsumed));
-			resMap.put("physicalActivityType", CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(physicalActivityType));
-			
-			resMap.put("familyMemberTypes", FamilyMemberType.getFamilyMemberTypeMasterData(familyMemberTypes));
-			resMap.put("visitCategories", VisitCategory.getVisitCategoryMasterData(visitCategories));
-			resMap.put("visitReasons", VisitReason.getVisitReasonMasterData(visitReasons));
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		System.out.println(new Gson().toJson(resMap));
-		return new Gson().toJson(resMap);
-
 	}
 	
 }

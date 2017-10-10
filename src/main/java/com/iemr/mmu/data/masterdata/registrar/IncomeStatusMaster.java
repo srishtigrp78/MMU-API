@@ -1,4 +1,4 @@
-package com.iemr.mmu.data.masterdata;
+package com.iemr.mmu.data.masterdata.registrar;
 
 import java.util.ArrayList;
 

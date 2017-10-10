@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.iemr.mmu.data.masterdata.IncomeStatusMaster;
+import com.iemr.mmu.data.masterdata.registrar.IncomeStatusMaster;
 
 @Repository
 public interface IncomeStatusMasterRepo extends CrudRepository<IncomeStatusMaster, Short> {
