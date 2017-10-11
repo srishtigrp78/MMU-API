@@ -25,4 +25,10 @@ public interface NurseService {
 
 	public String savePatientVisitDetails();
 
+	int updateBeneficiaryVisitDetails(BeneficiaryVisitDetail beneficiaryVisitDetail);
+
+	int updateBeneficiaryFamilyCancerHistory(List<BenFamilyCancerHistory> benFamilyCancerHistory);
+
+	int updateBenObstetricCancerHistory(BenObstetricCancerHistory benObstetricCancerHistory);
+
 }

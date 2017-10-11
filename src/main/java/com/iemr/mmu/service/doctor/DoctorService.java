@@ -14,17 +14,17 @@ import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 
 public interface DoctorService {
 	
-	public CancerAbdominalExamination saveCancerAbdominalExaminationData(CancerAbdominalExamination cancerAbdominalExamination);
+	public Long saveCancerAbdominalExaminationData(CancerAbdominalExamination cancerAbdominalExamination);
 	
-	public CancerBreastExamination saveCancerBreastExaminationData(CancerBreastExamination cancerBreastExamination);
+	public Long saveCancerBreastExaminationData(CancerBreastExamination cancerBreastExamination);
 	
-	public CancerDiagnosis saveCancerDiagnosisData(CancerDiagnosis cancerDiagnosis);
+	public Long saveCancerDiagnosisData(CancerDiagnosis cancerDiagnosis);
 	
-	public CancerGynecologicalExamination saveCancerGynecologicalExaminationData(CancerGynecologicalExamination cancerGynecologicalExamination);
+	public Long saveCancerGynecologicalExaminationData(CancerGynecologicalExamination cancerGynecologicalExamination);
 	
 	public int saveLymphNodeDetails(List<CancerLymphNodeDetails> cancerLymphNodeDetails);
 	
-	public CancerOralExamination saveCancerOralExaminationData(CancerOralExamination cancerOralExamination);
+	public Long saveCancerOralExaminationData(CancerOralExamination cancerOralExamination);
 	
-	public CancerSignAndSymptoms saveCancerSignAndSymptomsData(CancerSignAndSymptoms cancerSignAndSymptoms);
+	public Long saveCancerSignAndSymptomsData(CancerSignAndSymptoms cancerSignAndSymptoms);
 }

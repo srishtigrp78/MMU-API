@@ -242,5 +242,75 @@ public class NurseServiceImpl implements NurseService {
 		return new Gson().toJson(resMap);
 
 	}
+	
+	@Override
+	public int updateBeneficiaryVisitDetails(BeneficiaryVisitDetail beneficiaryVisitDetail) {
+		int response = 0;
+		try {
+			response = benVisitDetailRepo.updateBeneficiaryVisitDetail(beneficiaryVisitDetail.getVisitReasonID(),
+					beneficiaryVisitDetail.getVisitReason(), beneficiaryVisitDetail.getVisitCategoryID(),
+					beneficiaryVisitDetail.getVisitCategory(), beneficiaryVisitDetail.getPregnancyStatus(),
+					beneficiaryVisitDetail.getrCHID(), beneficiaryVisitDetail.getHealthFacilityType(),
+					beneficiaryVisitDetail.getHealthFacilityLocation(), beneficiaryVisitDetail.getModifiedBy(),
+					beneficiaryVisitDetail.getBenVisitID());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+		return response;
+
+	}
+
+	@Override
+	public int updateBeneficiaryFamilyCancerHistory(List<BenFamilyCancerHistory> benFamilyCancerHistoryList) {
+		int response = 0;
+		try {
+			for (BenFamilyCancerHistory benFamilyCancerHistory : benFamilyCancerHistoryList) {
+				List<String> familyMenberList = benFamilyCancerHistory.getFamilyMemberList();
+				String familyMemberData = "";
+				for (String familyMember : familyMenberList) {
+					familyMemberData += familyMember + ",";
+				}
+				benFamilyCancerHistory.setFamilyMember(familyMemberData);
+				response = benFamilyCancerHistoryRepo.updateBenFamilyCancerHistory(
+						benFamilyCancerHistory.getCancerDiseaseType(), benFamilyCancerHistory.getFamilyMember(),
+						benFamilyCancerHistory.getModifiedBy(), benFamilyCancerHistory.getID());
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+		return response;
+
+	}
+
+	@Override
+	public int updateBenObstetricCancerHistory(BenObstetricCancerHistory benObstetricCancerHistory) {
+		int response = 0;
+		try {
+
+			response = benObstetricCancerHistoryRepo.updateBenObstetricCancerHistory(
+					benObstetricCancerHistory.getPregnancyStatus(), benObstetricCancerHistory.getIsUrinePregTest(),
+					benObstetricCancerHistory.getPregnant_No(), benObstetricCancerHistory.getNoOfLivingChild(),
+					benObstetricCancerHistory.getIsAbortion(), benObstetricCancerHistory.getIsOralContraceptiveUsed(),
+					benObstetricCancerHistory.getIsHormoneReplacementTherapy(),
+					benObstetricCancerHistory.getMenarche_Age(), benObstetricCancerHistory.getIsMenstrualCycleRegular(),
+					benObstetricCancerHistory.getMenstrualCycleLength(),
+					benObstetricCancerHistory.getMenstrualFlowDuration(),
+					benObstetricCancerHistory.getMenstrualFlowType(), benObstetricCancerHistory.getIsDysmenorrhea(),
+					benObstetricCancerHistory.getIsInterMenstrualBleeding(),
+					benObstetricCancerHistory.getMenopauseAge(), benObstetricCancerHistory.getIsPostMenopauseBleeding(),
+					benObstetricCancerHistory.getIsFoulSmellingDischarge(), benObstetricCancerHistory.getModifiedBy(),
+					benObstetricCancerHistory.getID());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+		return response;
+
+	}
 
 }

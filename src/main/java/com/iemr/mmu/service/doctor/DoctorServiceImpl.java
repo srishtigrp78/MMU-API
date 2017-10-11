@@ -31,62 +31,100 @@ import com.iemr.mmu.repo.doctor.CancerLymphNodeExaminationRepo;
 import com.iemr.mmu.repo.doctor.CancerOralExaminationRepo;
 import com.iemr.mmu.repo.doctor.CancerSignAndSymptomsRepo;
 import com.iemr.mmu.repo.masterrepo.doctor.PreMalignantLesionMasterRepo;
+import com.iemr.mmu.repo.nurse.BenFamilyCancerHistoryRepo;
 
 @Service
 public class DoctorServiceImpl implements DoctorService{
 
-	@Autowired
 	private CancerAbdominalExaminationRepo cancerAbdominalExaminationRepo;
-	
-	@Autowired
 	private CancerBreastExaminationRepo cancerBreastExaminationRepo;
-	
-	@Autowired
 	private CancerDiagnosisRepo cancerDiagnosisRepo;
-	
-	@Autowired
 	private CancerGynecologicalExaminationRepo cancerGynecologicalExaminationRepo;
-	
-	@Autowired
 	private CancerLymphNodeExaminationRepo cancerLymphNodeExaminationRepo;
-	
-	@Autowired
 	private CancerOralExaminationRepo cancerOralExaminationRepo;
-	
-	@Autowired 
 	private CancerSignAndSymptomsRepo cancerSignAndSymptomsRepo;
 	
+	@Autowired
+	public void setCancerAbdominalExaminationRepo(CancerAbdominalExaminationRepo cancerAbdominalExaminationRepo) {
+		this.cancerAbdominalExaminationRepo = cancerAbdominalExaminationRepo;
+	}
+	
+	@Autowired
+	public void setCancerBreastExaminationRepo(CancerBreastExaminationRepo cancerBreastExaminationRepo) {
+		this.cancerBreastExaminationRepo = cancerBreastExaminationRepo;
+	}
+	
+	@Autowired
+	public void setCancerDiagnosisRepo(CancerDiagnosisRepo cancerDiagnosisRepo) {
+		this.cancerDiagnosisRepo = cancerDiagnosisRepo;
+	}
+	
+	@Autowired
+	public void setCancerGynecologicalExaminationRepo(
+			CancerGynecologicalExaminationRepo cancerGynecologicalExaminationRepo) {
+		this.cancerGynecologicalExaminationRepo = cancerGynecologicalExaminationRepo;
+	}
+	
+	@Autowired
+	public void setCancerLymphNodeExaminationRepo(CancerLymphNodeExaminationRepo cancerLymphNodeExaminationRepo) {
+		this.cancerLymphNodeExaminationRepo = cancerLymphNodeExaminationRepo;
+	}
+	
+	@Autowired
+	public void setCancerOralExaminationRepo(CancerOralExaminationRepo cancerOralExaminationRepo) {
+		this.cancerOralExaminationRepo = cancerOralExaminationRepo;
+	}
+	
+	@Autowired
+	public void setCancerSignAndSymptomsRepo(CancerSignAndSymptomsRepo cancerSignAndSymptomsRepo) {
+		this.cancerSignAndSymptomsRepo = cancerSignAndSymptomsRepo;
+	}
+	
 	@Override
-	public CancerAbdominalExamination saveCancerAbdominalExaminationData(
+	public Long saveCancerAbdominalExaminationData(
 			CancerAbdominalExamination cancerAbdominalExamination) {
 		CancerAbdominalExamination response = cancerAbdominalExaminationRepo.save(cancerAbdominalExamination);
-		return response;
+		if (response != null)
+			return response.getID();
+		else
+			return null;
 	}
 
 	@Override
-	public CancerBreastExamination saveCancerBreastExaminationData(CancerBreastExamination cancerBreastExamination) {
+	public Long saveCancerBreastExaminationData(CancerBreastExamination cancerBreastExamination) {
 		CancerBreastExamination response = cancerBreastExaminationRepo.save(cancerBreastExamination);
-		return response;
+		if (response != null)
+			return response.getID();
+		else
+			return null;
 	}
 
 	@Override
-	public CancerDiagnosis saveCancerDiagnosisData(CancerDiagnosis cancerDiagnosis) {
+	public Long saveCancerDiagnosisData(CancerDiagnosis cancerDiagnosis) {
 		CancerDiagnosis response = cancerDiagnosisRepo.save(cancerDiagnosis);
-		return response;
+		if (response != null)
+			return response.getID();
+		else
+			return null;
 	}
 
 	@Override
-	public CancerGynecologicalExamination saveCancerGynecologicalExaminationData(
+	public Long saveCancerGynecologicalExaminationData(
 			CancerGynecologicalExamination cancerGynecologicalExamination) {
-		
+		List<String> typeOfLesionList = cancerGynecologicalExamination.getTypeOfLesionList();
 		String typeOfLesionData = "";
-		for(String typeOfLesion:cancerGynecologicalExamination.getTypeOfLesionList()){
-			typeOfLesionData+=typeOfLesion+",";
+		if(typeOfLesionList != null && typeOfLesionList.size()>0){
+			for(String typeOfLesion:typeOfLesionList){
+				typeOfLesionData+=typeOfLesion+",";
+			}
 		}
 		cancerGynecologicalExamination.setTypeOfLesion(typeOfLesionData);
 		
 		CancerGynecologicalExamination response = cancerGynecologicalExaminationRepo.save(cancerGynecologicalExamination);
-		return response;
+		if (response != null)
+			return response.getID();
+		else
+			return null;
 	}
 
 	@Override
@@ -102,22 +140,30 @@ public class DoctorServiceImpl implements DoctorService{
 	}
 
 	@Override
-	public CancerOralExamination saveCancerOralExaminationData(CancerOralExamination cancerOralExamination) {
-		
+	public Long saveCancerOralExaminationData(CancerOralExamination cancerOralExamination) {
+		List<String> preMalignantLesionTypeList = cancerOralExamination.getPreMalignantLesionTypeList();
 		String preMalignantLesionTypeData="";
-		for(String preMalignantLesionType : cancerOralExamination.getPreMalignantLesionTypeList()){
-			preMalignantLesionTypeData += preMalignantLesionType+",";
+		if(preMalignantLesionTypeList != null && preMalignantLesionTypeList.size()>0){
+			for(String preMalignantLesionType : cancerOralExamination.getPreMalignantLesionTypeList()){
+				preMalignantLesionTypeData += preMalignantLesionType+",";
+			}
 		}
 		cancerOralExamination.setPreMalignantLesionType(preMalignantLesionTypeData);
 		
 		CancerOralExamination response = cancerOralExaminationRepo.save(cancerOralExamination);
-		return response;
+		if (response != null)
+			return response.getID();
+		else
+			return null;
 	}
 
 	@Override
-	public CancerSignAndSymptoms saveCancerSignAndSymptomsData(CancerSignAndSymptoms cancerSignAndSymptoms) {
+	public Long saveCancerSignAndSymptomsData(CancerSignAndSymptoms cancerSignAndSymptoms) {
 		CancerSignAndSymptoms response = cancerSignAndSymptomsRepo.save(cancerSignAndSymptoms);
-		return response;
+		if (response != null)
+			return response.getID();
+		else
+			return null;
 	}
 
 }
