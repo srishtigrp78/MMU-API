@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.iemr.mmu.data.masterdata.CommunityMaster;
+import com.iemr.mmu.data.masterdata.registrar.CommunityMaster;
 
 @Repository
 public interface CommunityMasterRepo extends CrudRepository<CommunityMaster, Short> {

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.iemr.mmu.data.masterdata.GenderMaster;
+import com.iemr.mmu.data.masterdata.registrar.GenderMaster;
 
 @Repository
 public interface GenderMasterRepo extends CrudRepository<GenderMaster, Short> {

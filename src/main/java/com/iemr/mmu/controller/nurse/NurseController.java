@@ -19,6 +19,10 @@ import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
+import com.iemr.mmu.service.masterservice.DoctorMasterDataService;
+import com.iemr.mmu.service.masterservice.DoctorMasterDataServiceImpl;
+import com.iemr.mmu.service.masterservice.NurseMasterDataService;
+import com.iemr.mmu.service.masterservice.NurseMasterDataServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.utils.mapper.InputMapper;
 import com.iemr.utils.response.OutputResponse;
@@ -31,12 +35,19 @@ public class NurseController {
 	private InputMapper inputMapper;
 
 	private NurseServiceImpl nurseServiceImpl;
-
+	private NurseMasterDataService nurseMasterDataService;
+	private NurseMasterDataServiceImpl nurseMasterDataServiceImpl;
+	
 	@Autowired
 	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
 		this.nurseServiceImpl = nurseServiceImpl;
 	}
-
+	
+	@Autowired
+	public void setNurseMasterDataServiceImpl(NurseMasterDataServiceImpl nurseMasterDataServiceImpl){
+		this.nurseMasterDataServiceImpl = nurseMasterDataServiceImpl;
+	}
+	
 	@CrossOrigin
 	@RequestMapping(value = { "/testrest" }, method = { RequestMethod.POST }, produces = { "application/json" })
 	public String testRestTemplate(@RequestBody String comingRequest) {
@@ -208,15 +219,15 @@ public class NurseController {
 
 		return response.toString();
 	}
-
+	
 	@CrossOrigin()
-	@RequestMapping(value = { "/MasterData" }, method = { RequestMethod.POST }, produces = { "application/json" })
+	@RequestMapping(value = { "/nurseMasterData" }, method = { RequestMethod.POST }, produces = { "application/json" })
 	public String masterDataForNurse() {
 
 		OutputResponse response = new OutputResponse();
 
 		try {
-			response.setResponse(nurseServiceImpl.getNurseMasterData());
+			response.setResponse(nurseMasterDataServiceImpl.getNurseMasterData());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -224,5 +235,6 @@ public class NurseController {
 		}
 		return response.toString();
 	}
+	
 
 }

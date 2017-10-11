@@ -1,10 +1,14 @@
 package com.iemr.mmu.service.doctor;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
 import com.iemr.mmu.data.doctor.CancerAbdominalExamination;
 import com.iemr.mmu.data.doctor.CancerBreastExamination;
 import com.iemr.mmu.data.doctor.CancerDiagnosis;
@@ -12,6 +16,12 @@ import com.iemr.mmu.data.doctor.CancerGynecologicalExamination;
 import com.iemr.mmu.data.doctor.CancerLymphNodeDetails;
 import com.iemr.mmu.data.doctor.CancerOralExamination;
 import com.iemr.mmu.data.doctor.CancerSignAndSymptoms;
+import com.iemr.mmu.data.masterdata.doctor.PreMalignantLesion;
+import com.iemr.mmu.data.masterdata.nurse.CancerDiseaseType;
+import com.iemr.mmu.data.masterdata.nurse.CancerPersonalHabitType;
+import com.iemr.mmu.data.masterdata.nurse.FamilyMemberType;
+import com.iemr.mmu.data.masterdata.nurse.VisitCategory;
+import com.iemr.mmu.data.masterdata.nurse.VisitReason;
 import com.iemr.mmu.data.nurse.BenFamilyCancerHistory;
 import com.iemr.mmu.repo.doctor.CancerAbdominalExaminationRepo;
 import com.iemr.mmu.repo.doctor.CancerBreastExaminationRepo;
@@ -20,6 +30,7 @@ import com.iemr.mmu.repo.doctor.CancerGynecologicalExaminationRepo;
 import com.iemr.mmu.repo.doctor.CancerLymphNodeExaminationRepo;
 import com.iemr.mmu.repo.doctor.CancerOralExaminationRepo;
 import com.iemr.mmu.repo.doctor.CancerSignAndSymptomsRepo;
+import com.iemr.mmu.repo.masterrepo.doctor.PreMalignantLesionMasterRepo;
 
 @Service
 public class DoctorServiceImpl implements DoctorService{
@@ -42,7 +53,8 @@ public class DoctorServiceImpl implements DoctorService{
 	@Autowired
 	private CancerOralExaminationRepo cancerOralExaminationRepo;
 	
-	@Autowired CancerSignAndSymptomsRepo cancerSignAndSymptomsRepo;
+	@Autowired 
+	private CancerSignAndSymptomsRepo cancerSignAndSymptomsRepo;
 	
 	@Override
 	public CancerAbdominalExamination saveCancerAbdominalExaminationData(

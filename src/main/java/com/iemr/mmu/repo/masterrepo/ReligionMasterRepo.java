@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.iemr.mmu.data.masterdata.ReligionMaster;
+import com.iemr.mmu.data.masterdata.registrar.ReligionMaster;
 
 @Repository
 public interface ReligionMasterRepo extends CrudRepository<ReligionMaster, Short> {
