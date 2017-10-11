@@ -160,6 +160,14 @@ public class NurseServiceImpl implements NurseService {
 
 	@Override
 	public Long saveBenPersonalCancerDietHistory(BenPersonalCancerDietHistory benPersonalCancerDietHistory) {
+		List<String> personalOilConsumedList = benPersonalCancerDietHistory.getTypeOfOilConsumedList();
+		String oilConsumedData = "";
+		if (personalOilConsumedList != null && personalOilConsumedList.size() > 0) {
+			for (String s : personalOilConsumedList) {
+				oilConsumedData += s + ",";
+			}
+		}
+		benPersonalCancerDietHistory.setTypeOfOilConsumed(oilConsumedData);
 		BenPersonalCancerDietHistory response = benPersonalCancerDietHistoryRepo.save(benPersonalCancerDietHistory);
 		if (response != null)
 			return response.getID();
@@ -171,8 +179,10 @@ public class NurseServiceImpl implements NurseService {
 	public Long saveBenPersonalCancerHistory(BenPersonalCancerHistory benPersonalCancerHistory) {
 		List<String> typeOfTobaccoProductUseList = benPersonalCancerHistory.getTypeOfTobaccoProductList();
 		String typeOfTobaccoProductUseConcat = "";
-		for (String s : typeOfTobaccoProductUseList) {
-			typeOfTobaccoProductUseConcat += s + ",";
+		if (typeOfTobaccoProductUseList != null && typeOfTobaccoProductUseList.size() > 0) {
+			for (String s : typeOfTobaccoProductUseList) {
+				typeOfTobaccoProductUseConcat += s + ",";
+			}
 		}
 		benPersonalCancerHistory.setTypeOfTobaccoProduct(typeOfTobaccoProductUseConcat);
 		BenPersonalCancerHistory response = benPersonalCancerHistoryRepo.save(benPersonalCancerHistory);

@@ -1,13 +1,16 @@
 package com.iemr.mmu.data.nurse;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
 
 @Entity
@@ -76,12 +79,16 @@ public class BenPersonalCancerDietHistory {
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
+	@Transient
+	@JsonIgnore
+	private List<String> typeOfOilConsumedList;
+
 	public BenPersonalCancerDietHistory(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			String dietType, Integer fruitConsumptionDays, Integer fruitQuantityPerDay,
 			Integer vegetableConsumptionDays, Integer vegetableQuantityPerDay, Integer intakeOfOutsidePreparedMeal,
 			String typeOfOilConsumed, String physicalActivityType, Boolean ssRadiationExposure,
 			Boolean isThyroidDisorder, Boolean deleted, Character processed, String createdBy, Timestamp createdDate,
-			String modifiedBy, Timestamp lastModDate) {
+			String modifiedBy, Timestamp lastModDate, List<String> typeOfOilConsumedList) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -103,6 +110,7 @@ public class BenPersonalCancerDietHistory {
 		CreatedDate = createdDate;
 		this.modifiedBy = modifiedBy;
 		this.lastModDate = lastModDate;
+		this.typeOfOilConsumedList = typeOfOilConsumedList;
 	}
 
 	public Long getID() {
@@ -263,6 +271,14 @@ public class BenPersonalCancerDietHistory {
 
 	public void setLastModDate(Timestamp lastModDate) {
 		this.lastModDate = lastModDate;
+	}
+
+	public List<String> getTypeOfOilConsumedList() {
+		return typeOfOilConsumedList;
+	}
+
+	public void setTypeOfOilConsumedList(List<String> typeOfOilConsumedList) {
+		this.typeOfOilConsumedList = typeOfOilConsumedList;
 	}
 
 }
