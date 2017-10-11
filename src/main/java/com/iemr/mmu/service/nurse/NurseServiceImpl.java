@@ -10,12 +10,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.google.gson.Gson;
+import com.iemr.mmu.data.masterdata.nurse.CancerDiseaseType;
+import com.iemr.mmu.data.masterdata.nurse.CancerPersonalHabitType;
+import com.iemr.mmu.data.masterdata.nurse.FamilyMemberType;
+import com.iemr.mmu.data.masterdata.nurse.VisitCategory;
+import com.iemr.mmu.data.masterdata.nurse.VisitReason;
 import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
 import com.iemr.mmu.data.nurse.BenFamilyCancerHistory;
 import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
+import com.iemr.mmu.repo.masterrepo.nurse.CancerDiseaseMasterRepo;
+import com.iemr.mmu.repo.masterrepo.nurse.CancerPersonalHabitMasterRepo;
+import com.iemr.mmu.repo.masterrepo.nurse.FamilyMemberMasterRepo;
+import com.iemr.mmu.repo.masterrepo.nurse.VisitCategoryMasterRepo;
+import com.iemr.mmu.repo.masterrepo.nurse.VisitReasonMasterRepo;
 import com.iemr.mmu.repo.nurse.BenCancerVitalDetailRepo;
 import com.iemr.mmu.repo.nurse.BenFamilyCancerHistoryRepo;
 import com.iemr.mmu.repo.nurse.BenObstetricCancerHistoryRepo;
@@ -32,7 +43,6 @@ public class NurseServiceImpl implements NurseService {
 	private BenPersonalCancerDietHistoryRepo benPersonalCancerDietHistoryRepo;
 	private BenPersonalCancerHistoryRepo benPersonalCancerHistoryRepo;
 	private BenCancerVitalDetailRepo benCancerVitalDetailRepo;
-<<<<<<< HEAD
 
 	@Autowired
 	private CancerDiseaseMasterRepo cancerDiseaseMasterRepo;
@@ -48,8 +58,6 @@ public class NurseServiceImpl implements NurseService {
 
 	@Autowired
 	private VisitReasonMasterRepo visitReasonMasterRepo;
-=======
->>>>>>> 40a077368b41fcbb0b6c8ba0706dfb8ed8cacf49
 
 	@Autowired
 	public void setBenFamilyCancerHistoryRepo(BenFamilyCancerHistoryRepo benFamilyCancerHistoryRepo) {
@@ -182,7 +190,6 @@ public class NurseServiceImpl implements NurseService {
 		else
 			return null;
 	}
-<<<<<<< HEAD
 
 	public String getNurseMasterData() {
 		Map<String, Object> resMap = new HashMap<String, Object>();
@@ -226,7 +233,4 @@ public class NurseServiceImpl implements NurseService {
 
 	}
 
-=======
-	
->>>>>>> 40a077368b41fcbb0b6c8ba0706dfb8ed8cacf49
 }
