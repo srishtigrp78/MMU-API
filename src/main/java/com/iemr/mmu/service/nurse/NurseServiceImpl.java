@@ -43,19 +43,19 @@ public class NurseServiceImpl implements NurseService {
 	private BenPersonalCancerDietHistoryRepo benPersonalCancerDietHistoryRepo;
 	private BenPersonalCancerHistoryRepo benPersonalCancerHistoryRepo;
 	private BenCancerVitalDetailRepo benCancerVitalDetailRepo;
-	
+
 	@Autowired
 	private CancerDiseaseMasterRepo cancerDiseaseMasterRepo;
-	
+
 	@Autowired
 	private CancerPersonalHabitMasterRepo cancerPersonalHabitMasterRepo;
-	
+
 	@Autowired
 	private FamilyMemberMasterRepo familyMemberMasterRepo;
-	
+
 	@Autowired
 	private VisitCategoryMasterRepo visitCategoryMasterRepo;
-	
+
 	@Autowired
 	private VisitReasonMasterRepo visitReasonMasterRepo;
 
@@ -131,8 +131,10 @@ public class NurseServiceImpl implements NurseService {
 		for (BenFamilyCancerHistory benFamilyCancerHistoryOBJ : benFamilyCancerHistoryList) {
 			List<String> familyMenberList = benFamilyCancerHistoryOBJ.getFamilyMemberList();
 			String familyMemberData = "";
-			for (String familyMember : familyMenberList) {
-				familyMemberData += familyMember + ",";
+			if (familyMenberList != null && familyMenberList.size() > 0) {
+				for (String familyMember : familyMenberList) {
+					familyMemberData += familyMember + ",";
+				}
 			}
 			benFamilyCancerHistoryOBJ.setFamilyMember(familyMemberData);
 			System.out.println("hello...");
@@ -188,32 +190,39 @@ public class NurseServiceImpl implements NurseService {
 		else
 			return null;
 	}
-	
+
 	public String getNurseMasterData() {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 		ArrayList<Object[]> DiseaseTypes = cancerDiseaseMasterRepo.getCancerDiseaseMaster();
-		ArrayList<Object[]> tobaccoUseStatus= cancerPersonalHabitMasterRepo.getCancerPersonalHabitTypeMaster("Tobacco Use Status");
-		ArrayList<Object[]> alcoholUseStatus= cancerPersonalHabitMasterRepo.getCancerPersonalHabitTypeMaster("Alcohol Usage");
-		ArrayList<Object[]> dietTypes= cancerPersonalHabitMasterRepo.getCancerPersonalHabitTypeMaster("Dietary Type ");
-		ArrayList<Object[]> oilConsumed= cancerPersonalHabitMasterRepo.getCancerPersonalHabitTypeMaster("Oil Consumed");
-		ArrayList<Object[]> physicalActivityType= cancerPersonalHabitMasterRepo.getCancerPersonalHabitTypeMaster("Physical Activity Type ");
-		
-		ArrayList<Object[]> familyMemberTypes= familyMemberMasterRepo.getFamilyMemberTypeMaster();
-		ArrayList<Object[]> visitCategories= visitCategoryMasterRepo.getVisitCategoryMaster();
-		ArrayList<Object[]> visitReasons= visitReasonMasterRepo.getVisitReasonMaster();
-		
+		ArrayList<Object[]> tobaccoUseStatus = cancerPersonalHabitMasterRepo
+				.getCancerPersonalHabitTypeMaster("Tobacco Use Status");
+		ArrayList<Object[]> alcoholUseStatus = cancerPersonalHabitMasterRepo
+				.getCancerPersonalHabitTypeMaster("Alcohol Usage");
+		ArrayList<Object[]> dietTypes = cancerPersonalHabitMasterRepo.getCancerPersonalHabitTypeMaster("Dietary Type ");
+		ArrayList<Object[]> oilConsumed = cancerPersonalHabitMasterRepo
+				.getCancerPersonalHabitTypeMaster("Oil Consumed");
+		ArrayList<Object[]> physicalActivityType = cancerPersonalHabitMasterRepo
+				.getCancerPersonalHabitTypeMaster("Physical Activity Type ");
+
+		ArrayList<Object[]> familyMemberTypes = familyMemberMasterRepo.getFamilyMemberTypeMaster();
+		ArrayList<Object[]> visitCategories = visitCategoryMasterRepo.getVisitCategoryMaster();
+		ArrayList<Object[]> visitReasons = visitReasonMasterRepo.getVisitReasonMaster();
+
 		try {
 			resMap.put("CancerDiseaseType", CancerDiseaseType.getCancerDiseaseTypeMasterData(DiseaseTypes));
-			resMap.put("tobaccoUseStatus", CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(tobaccoUseStatus));
-			resMap.put("alcoholUseStatus", CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(alcoholUseStatus));
+			resMap.put("tobaccoUseStatus",
+					CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(tobaccoUseStatus));
+			resMap.put("alcoholUseStatus",
+					CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(alcoholUseStatus));
 			resMap.put("dietTypes", CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(dietTypes));
 			resMap.put("oilConsumed", CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(oilConsumed));
-			resMap.put("physicalActivityType", CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(physicalActivityType));
-			
+			resMap.put("physicalActivityType",
+					CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(physicalActivityType));
+
 			resMap.put("familyMemberTypes", FamilyMemberType.getFamilyMemberTypeMasterData(familyMemberTypes));
 			resMap.put("visitCategories", VisitCategory.getVisitCategoryMasterData(visitCategories));
 			resMap.put("visitReasons", VisitReason.getVisitReasonMasterData(visitReasons));
-			
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -223,5 +232,5 @@ public class NurseServiceImpl implements NurseService {
 		return new Gson().toJson(resMap);
 
 	}
-	
+
 }
