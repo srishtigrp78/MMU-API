@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
 
 @Repository
-public interface BenCancerVitalDetailRepo extends CrudRepository<BenCancerVitalDetail, Long>{
-	
+public interface BenCancerVitalDetailRepo extends CrudRepository<BenCancerVitalDetail, Long> {
+
 	@Transactional
 	@Modifying
 	@Query("update BenCancerVitalDetail set weight_Kg=:weight_Kg, height_cm=:height_cm, waistCircumference_cm=:waistCircumference_cm, bloodGlucose_Fasting=:bloodGlucose_Fasting,"
@@ -35,4 +35,8 @@ public interface BenCancerVitalDetailRepo extends CrudRepository<BenCancerVitalD
 			@Param("hemoglobin") Short hemoglobin,
 			@Param("modifiedBy") String modifiedBy,
 			@Param("iD") Long iD);
+
+	@Query(" SELECT bvd from BenCancerVitalDetail bvd WHERE bvd.beneficiaryRegID = :benRegID AND bvd.benVisitID = :benVisitID ")
+	public BenCancerVitalDetail getBenCancerVitalDetail(@Param("benRegID") Long benRegID,
+			@Param("benVisitID") Long benVisitID);
 }

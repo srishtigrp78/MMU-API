@@ -285,4 +285,27 @@ public class NurseController {
 		return response.toString();
 	}
 
+	@CrossOrigin()
+	@RequestMapping(value = { "/getBenDataFrmNurseToDocVitalScreen" }, method = { RequestMethod.POST }, produces = {
+			"application/json" })
+	public String getBenDataFrmNurseScrnToDocScrnVital(@RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.length() > 1) {
+				Long benRegID = obj.getLong("benRegID");
+				Long benVisitID = obj.getLong("benVisitID");
+
+				String s = nurseServiceImpl.getBenDataFrmNurseToDocVitalScreen(benRegID, benVisitID);
+				response.setResponse(s);
+			} else {
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setError(e);
+		}
+		return response.toString();
+	}
+
 }

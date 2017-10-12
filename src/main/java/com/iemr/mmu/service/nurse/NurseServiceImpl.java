@@ -472,4 +472,16 @@ public class NurseServiceImpl implements NurseService {
 		return benObstetricCancerHistoryData;
 	}
 
+	public String getBenDataFrmNurseToDocVitalScreen(Long benRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+		resMap.put("benVitalDetails", getBenCancerVitalDetailData(benRegID, benVisitID));
+		return new Gson().toJson(resMap);
+	}
+
+	private BenCancerVitalDetail getBenCancerVitalDetailData(Long benRegID, Long benVisitID) {
+		BenCancerVitalDetail benCancerVitalDetail = benCancerVitalDetailRepo.getBenCancerVitalDetail(benRegID,
+				benVisitID);
+		return benCancerVitalDetail;
+	}
+
 }
