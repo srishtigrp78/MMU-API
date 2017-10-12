@@ -312,5 +312,61 @@ public class NurseServiceImpl implements NurseService {
 		return response;
 
 	}
+	
+	@Override
+	public int updateBenPersonalCancerHistory(BenPersonalCancerHistory benPersonalCancerHistory) {
+		int response = 0;
+		try {
+
+			List<String> typeOfTobaccoProductList = benPersonalCancerHistory.getTypeOfTobaccoProductList();
+			String typeOfTobaccoProductData = "";
+			for (String typeOfTobaccoProduct : typeOfTobaccoProductList) {
+				typeOfTobaccoProductData += typeOfTobaccoProduct + ",";
+			}
+			benPersonalCancerHistory.setTypeOfTobaccoProduct(typeOfTobaccoProductData);
+			
+			response = benPersonalCancerHistoryRepo.updateBenPersonalCancerHistory(benPersonalCancerHistory.getTobaccoUse(), 
+					benPersonalCancerHistory.getStartAge_year(), benPersonalCancerHistory.getEndAge_year(),
+					benPersonalCancerHistory.getTypeOfTobaccoProduct(),benPersonalCancerHistory.getQuantityPerDay(),
+					benPersonalCancerHistory.getIsFilteredCigaerette(), benPersonalCancerHistory.getIsCigaretteExposure(), 
+					benPersonalCancerHistory.getIsBetelNutChewing(), benPersonalCancerHistory.getDurationOfBetelQuid(), 
+					benPersonalCancerHistory.getAlcoholUse(), benPersonalCancerHistory.getSsAlcoholUsed(), 
+					benPersonalCancerHistory.getFrequencyOfAlcoholUsed(), benPersonalCancerHistory.getModifiedBy(), 
+					benPersonalCancerHistory.getID());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+		return response;
+
+	}
+	
+	@Override
+	public int updateBenPersonalCancerDietHistory(BenPersonalCancerDietHistory benPersonalCancerDietHistory) {
+		int response = 0;
+		try {
+			List<String> typeOfOilConsumedList = benPersonalCancerDietHistory.getTypeOfOilConsumedList();
+			String typeOfOilConsumedData = "";
+			for (String typeOfOilConsumed : typeOfOilConsumedList) {
+				typeOfOilConsumedData += typeOfOilConsumed + ",";
+			}
+			benPersonalCancerDietHistory.setTypeOfOilConsumed(typeOfOilConsumedData);
+			
+			response = benPersonalCancerDietHistoryRepo.updateBenPersonalCancerDietHistory(benPersonalCancerDietHistory.getDietType(), 
+					benPersonalCancerDietHistory.getFruitConsumptionDays(), benPersonalCancerDietHistory.getFruitQuantityPerDay(), 
+					benPersonalCancerDietHistory.getVegetableConsumptionDays(), benPersonalCancerDietHistory.getVegetableQuantityPerDay(), 
+					benPersonalCancerDietHistory.getIntakeOfOutsidePreparedMeal(), benPersonalCancerDietHistory.getTypeOfOilConsumed(), 
+					benPersonalCancerDietHistory.getPhysicalActivityType(), benPersonalCancerDietHistory.getSsRadiationExposure(), 
+					benPersonalCancerDietHistory.getIsThyroidDisorder(), benPersonalCancerDietHistory.getModifiedBy(), benPersonalCancerDietHistory.getID());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+		return response;
+
+	}
+	
 
 }

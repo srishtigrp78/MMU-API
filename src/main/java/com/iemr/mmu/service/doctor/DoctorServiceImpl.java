@@ -101,6 +101,16 @@ public class DoctorServiceImpl implements DoctorService{
 
 	@Override
 	public Long saveCancerDiagnosisData(CancerDiagnosis cancerDiagnosis) {
+		
+		
+		List<String> refrredToAdditionalServiceList = cancerDiagnosis.getRefrredToAdditionalServiceList();
+		String refrredToAdditionalServiceData ="";
+		if(refrredToAdditionalServiceList!=null && refrredToAdditionalServiceList.size()>0){
+			for(String refrredToAdditionalService: refrredToAdditionalServiceList){
+				refrredToAdditionalServiceData += refrredToAdditionalService+",";
+			}
+		}
+		cancerDiagnosis.setRefrredToAdditionalService(refrredToAdditionalServiceData);
 		CancerDiagnosis response = cancerDiagnosisRepo.save(cancerDiagnosis);
 		if (response != null)
 			return response.getID();

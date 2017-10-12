@@ -235,6 +235,5 @@ public class NurseController {
 		}
 		return response.toString();
 	}
-	
 
 }
