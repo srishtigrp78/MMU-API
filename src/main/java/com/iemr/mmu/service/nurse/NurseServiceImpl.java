@@ -368,5 +368,15 @@ public class NurseServiceImpl implements NurseService {
 
 	}
 	
+	@Override
+	public int updateBenVitalDetail(BenCancerVitalDetail benCancerVitalDetail) {
+		int response = benCancerVitalDetailRepo.updateBenCancerVitalDetail(benCancerVitalDetail.getWeight_Kg(), benCancerVitalDetail.getHeight_cm(), 
+				benCancerVitalDetail.getWaistCircumference_cm(), benCancerVitalDetail.getBloodGlucose_Fasting(), benCancerVitalDetail.getBloodGlucose_Random(), 
+				benCancerVitalDetail.getBloodGlucose_2HrPostPrandial(), benCancerVitalDetail.getSystolicBP_1stReading(), benCancerVitalDetail.getDiastolicBP_1stReading(),
+				benCancerVitalDetail.getSystolicBP_2ndReading(), benCancerVitalDetail.getDiastolicBP_2ndReading(), benCancerVitalDetail.getSystolicBP_3rdReading(), 
+				benCancerVitalDetail.getDiastolicBP_3rdReading(), benCancerVitalDetail.getHbA1C(), benCancerVitalDetail.getHemoglobin(), 
+				benCancerVitalDetail.getModifiedBy(), benCancerVitalDetail.getID());
+			return response;
+	}
 
 }

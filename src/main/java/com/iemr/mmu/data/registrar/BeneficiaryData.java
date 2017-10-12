@@ -1,6 +1,10 @@
 package com.iemr.mmu.data.registrar;
 
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.Period;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 
@@ -14,8 +18,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.masterdata.registrar.CommunityMaster;
 
 @Entity
 @Table(name = "i_beneficiary")
@@ -41,17 +47,27 @@ public class BeneficiaryData {
 	@Column(name = "LastName")
 	private String lastName;
 	@Expose
+	@Transient
+	private String beneficiaryName;
+	
+	@Expose
 	@Column(name = "StatusID")
 	private Short statusID;
 	@Expose
 	@Column(name = "GenderID")
 	private Short genderID;
 	@Expose
+	@Transient String genderName;
+
+	@Expose
 	@Column(name = "MaritalStatusID")
 	private Short maritalStatusID;
 	@Expose
 	@Column(name = "DOB")
 	private Timestamp dob;
+	
+	@Expose 
+	private String age;
 	@Expose
 	@Column(name = "FatherName")
 	private String fatherName;
@@ -151,6 +167,55 @@ public class BeneficiaryData {
 		this.benPhoneMap = benPhoneMap;
 	}
 
+	public BeneficiaryData(Long beneficiaryRegID, String beneficiaryID, String beneficiaryName, Date dob, Short genderID, Timestamp createdDate) {
+		this.beneficiaryRegID = beneficiaryRegID;
+		this.beneficiaryID = beneficiaryID;
+		this.beneficiaryName = beneficiaryName;
+		this.genderID = genderID;
+		//this.dob = dob;
+		if (dob != null) {
+			Date date = (Date) dob;
+			Calendar cal = Calendar.getInstance();
+
+			cal.setTime(date);
+
+			int year = cal.get(Calendar.YEAR);
+			int month = cal.get(Calendar.MONTH) + 1;
+			int day = cal.get(Calendar.DAY_OF_MONTH);
+
+			java.time.LocalDate todayDate = java.time.LocalDate.now();
+			java.time.LocalDate birthdate = java.time.LocalDate.of(year, month, day);
+			Period p = Period.between(birthdate, todayDate);
+
+			int d = p.getDays();
+			int m = p.getMonths();
+			int y = p.getYears();
+			System.out.println("helloo...");
+
+			if (y > 0) {
+				this.age = y + " years - " + m + " months";
+			} else {
+				if (m > 0) {
+					this.age = m + " months - " + d + " days";
+				} else {
+					this.age = d + " days";
+				}
+			}
+
+		}
+		this.createdDate = createdDate;
+	}
+	
+	public static ArrayList<BeneficiaryData> getBeneficiaryData(List<Object[]> resList) {
+		ArrayList<BeneficiaryData> resArray = new ArrayList<BeneficiaryData>();
+		for (Object[] obj : resList) {
+			BeneficiaryData cOBJ = new BeneficiaryData((Long) obj[0], (String) obj[1],(String) obj[2], (Date) obj[3], (Short) obj[4], (Timestamp) obj[5]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
+	}
+	
+	
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
@@ -373,6 +438,14 @@ public class BeneficiaryData {
 
 	public void setBenPhoneMap(Set<BeneficiaryPhoneMapping> benPhoneMap) {
 		this.benPhoneMap = benPhoneMap;
+	}
+	
+	public String getGenderName() {
+		return genderName;
+	}
+
+	public void setGenderName(String genderName) {
+		this.genderName = genderName;
 	}
 
 }

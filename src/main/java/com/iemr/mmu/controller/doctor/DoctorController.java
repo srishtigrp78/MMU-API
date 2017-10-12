@@ -22,6 +22,7 @@ import com.iemr.mmu.data.doctor.CancerLymphNodeDetails;
 import com.iemr.mmu.data.doctor.CancerOralExamination;
 import com.iemr.mmu.data.doctor.CancerSignAndSymptoms;
 import com.iemr.mmu.data.doctor.WrapperCancerSymptoms;
+import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
 import com.iemr.mmu.data.nurse.BenFamilyCancerHistory;
 import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
@@ -377,6 +378,28 @@ public class DoctorController {
 			response.setError(e);
 		}
 		System.out.println(response.toString());
+		return response.toString();
+	}
+	
+	@CrossOrigin
+	@RequestMapping(value = { "/update/vitalScreen/benVitalDetail" }, method = { RequestMethod.POST }, produces = {
+			"application/json" })
+	public String upodateBenVitalDetail(@RequestBody String requestObj) {
+
+		OutputResponse response = new OutputResponse();
+
+		BenCancerVitalDetail benCancerVitalDetail = InputMapper.gson().fromJson(requestObj, BenCancerVitalDetail.class);
+		try {
+			int responseObj = nurseServiceImpl.updateBenVitalDetail(benCancerVitalDetail);
+			if (responseObj > 0) {
+				response.setResponse("Beneficiary Vital Details updated Successfully");
+			} else {
+				response.setError(500, "Failed to update Beneficiary Vital Details");
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+
 		return response.toString();
 	}
 	

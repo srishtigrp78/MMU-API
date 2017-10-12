@@ -35,4 +35,6 @@ public interface NurseService {
 
 	int updateBenPersonalCancerDietHistory(BenPersonalCancerDietHistory benPersonalCancerDietHistory);
 
+	int updateBenVitalDetail(BenCancerVitalDetail benCancerVitalDetail);
+
 }

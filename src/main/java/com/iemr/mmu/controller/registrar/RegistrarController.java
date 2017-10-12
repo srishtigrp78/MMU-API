@@ -176,5 +176,34 @@ public class RegistrarController {
 		}
 		return response.toString();
 	}
+	
+	@CrossOrigin()
+	@RequestMapping(value = { "/get/benDetailsByRegID" }, method = { RequestMethod.POST }, produces = {
+			"application/json" })
+	public String getBenDetailsByRegID(@RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+		try {
+
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("beneficiaryRegID")) {
+				if (obj.getLong("beneficiaryRegID") > 0) {
+					
+					String beneficiaryData= registrarServiceMasterDataImpl.getBenDetailsByRegID(obj.getLong("beneficiaryRegID"));
+
+					response.setResponse(beneficiaryData);
+				} else {
+					response.setError(0, "Please pass beneficiaryRegID");
+				}
+			} else {
+				response.setError(0, "Bad Request... beneficiaryRegID is not there in request");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setError(e);
+		}
+		return response.toString();
+	}
+	
 
 }
