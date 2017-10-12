@@ -242,7 +242,7 @@ public class NurseServiceImpl implements NurseService {
 		return new Gson().toJson(resMap);
 
 	}
-	
+
 	@Override
 	public int updateBeneficiaryVisitDetails(BeneficiaryVisitDetail beneficiaryVisitDetail) {
 		int response = 0;
@@ -311,6 +311,91 @@ public class NurseServiceImpl implements NurseService {
 		}
 		return response;
 
+	}
+
+	public String getBenDataFrmNurseToDocVisitDetailsScreen(Long benRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+		BeneficiaryVisitDetail benVisitDetailsOBJ = benVisitDetailRepo.getVisitDetails(benRegID, benVisitID);
+
+		BeneficiaryVisitDetail benVisitDetailsOBJ1 = new BeneficiaryVisitDetail(benVisitDetailsOBJ.getBenVisitID(),
+				benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitDetailsOBJ.getProviderServiceMapID(),
+				benVisitDetailsOBJ.getVisitDateTime(), benVisitDetailsOBJ.getVisitNo(),
+				benVisitDetailsOBJ.getVisitReasonID(), benVisitDetailsOBJ.getVisitReason(),
+				benVisitDetailsOBJ.getVisitCategoryID(), benVisitDetailsOBJ.getVisitCategory(),
+				benVisitDetailsOBJ.getPregnancyStatus(), benVisitDetailsOBJ.getrCHID(),
+				benVisitDetailsOBJ.getHealthFacilityType(), benVisitDetailsOBJ.getHealthFacilityLocation(),
+				benVisitDetailsOBJ.getReportFilePath(), benVisitDetailsOBJ.getDeleted(),
+				benVisitDetailsOBJ.getProcessed(), benVisitDetailsOBJ.getCreatedBy(),
+				benVisitDetailsOBJ.getCreatedDate(), benVisitDetailsOBJ.getModifiedBy(),
+				benVisitDetailsOBJ.getLastModDate());
+
+		resMap.put("benVisitDetails", benVisitDetailsOBJ1);
+
+		return new Gson().toJson(resMap);
+	}
+
+	public String getBenDataFrmNurseToDocHistoryScreen(Long benRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("benFamilyHistory", getBenFamilyHisData(benRegID, benVisitID));
+
+		resMap.put("benObstetricHistory", getBenObstetricDetailsData(benRegID, benVisitID));
+
+		resMap.put("benPersonalHistory", getBenPersonalCancerHistoryData(benRegID, benVisitID));
+
+		resMap.put("benPersonalDietHistory", getBenPersonalCancerDietHistoryData(benRegID, benVisitID));
+
+		return new Gson().toJson(resMap);
+	}
+
+	private BenPersonalCancerHistory getBenPersonalCancerHistoryData(Long benRegID, Long benVisitID) {
+		BenPersonalCancerHistory benPersonalCancerHistory = benPersonalCancerHistoryRepo.getBenPersonalHistory(benRegID,
+				benVisitID);
+		return benPersonalCancerHistory;
+	}
+
+	private BenPersonalCancerDietHistory getBenPersonalCancerDietHistoryData(Long benRegID, Long benVisitID) {
+		BenPersonalCancerDietHistory benPersonalCancerDietHistory = benPersonalCancerDietHistoryRepo
+				.getBenPersonaDietHistory(benRegID, benVisitID);
+
+		String s = benPersonalCancerDietHistory.getTypeOfOilConsumed();
+		List<String> oilConsumedList = new ArrayList<>();
+		if (s != null) {
+			String[] arr = s.split(",");
+			for (int i = 0; i < arr.length; i++) {
+				oilConsumedList.add(arr[i]);
+			}
+			benPersonalCancerDietHistory.setTypeOfOilConsumedList(oilConsumedList);
+
+		}
+		return benPersonalCancerDietHistory;
+	}
+
+	private List<BenFamilyCancerHistory> getBenFamilyHisData(Long benRegID, Long benVisitID) {
+		List<BenFamilyCancerHistory> benFamilyCancerHistoryList = benFamilyCancerHistoryRepo
+				.getBenFamilyHistory(benRegID, benVisitID);
+		if (benFamilyCancerHistoryList.size() > 0) {
+			for (BenFamilyCancerHistory obj : benFamilyCancerHistoryList) {
+				String s = obj.getFamilyMember();
+				List<String> famMemlist = new ArrayList<>();
+				if (s != null) {
+					String[] arr = s.split(",");
+					for (int i = 0; i < arr.length; i++) {
+						famMemlist.add(arr[i]);
+					}
+				}
+				obj.setFamilyMemberList(famMemlist);
+				System.out.println("hello");
+			}
+		}
+
+		return benFamilyCancerHistoryList;
+	}
+
+	private BenObstetricCancerHistory getBenObstetricDetailsData(Long benRegID, Long benVisitID) {
+		BenObstetricCancerHistory benObstetricCancerHistoryData = benObstetricCancerHistoryRepo
+				.getBenObstetricCancerHistory(benRegID, benVisitID);
+		return benObstetricCancerHistoryData;
 	}
 
 }

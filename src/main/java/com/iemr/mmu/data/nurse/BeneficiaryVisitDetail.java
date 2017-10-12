@@ -1,6 +1,5 @@
 package com.iemr.mmu.data.nurse;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -23,7 +22,7 @@ public class BeneficiaryVisitDetail {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	
+
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
@@ -31,7 +30,7 @@ public class BeneficiaryVisitDetail {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(updatable = false, insertable = false, name = "BeneficiaryRegID")
 	private BeneficiaryData beneficiaryData;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
@@ -39,11 +38,11 @@ public class BeneficiaryVisitDetail {
 	@Expose
 	@Column(name = "VisitDateTime")
 	private Timestamp visitDateTime;
-	
+
 	@Expose
 	@Column(name = "VisitNo")
 	private Short visitNo;
-	
+
 	@Expose
 	@Column(name = "VisitReasonID")
 	private Short visitReasonID;
@@ -51,40 +50,40 @@ public class BeneficiaryVisitDetail {
 	@Expose
 	@Column(name = "VisitReason")
 	private String visitReason;
-	
+
 	@Expose
 	@Column(name = "VisitCategoryID")
 	private Integer visitCategoryID;
-	
+
 	@Expose
 	@Column(name = "VisitCategory")
 	private String visitCategory;
-	
+
 	@Expose
 	@Column(name = "PregnancyStatus")
 	private String pregnancyStatus;
-	
+
 	@Expose
 	@Column(name = "RCHID")
 	private String rCHID;
-	
+
 	@Expose
 	@Column(name = "HealthFacilityType")
 	private String healthFacilityType;
-	
+
 	@Expose
 	@Column(name = "HealthFacilityLocation")
 	private String healthFacilityLocation;
-	
+
 	@Expose
 	@Column(name = "ReportFilePath")
 	private String reportFilePath;
-	
+
 	@Expose
-	@Column(name = "Deleted",insertable = false, updatable = true)
-	private Boolean deleted; 
+	@Column(name = "Deleted", insertable = false, updatable = true)
+	private Boolean deleted;
 	@Expose
-	@Column(name = "Processed",insertable = false, updatable = true)
+	@Column(name = "Processed", insertable = false, updatable = true)
 	private String processed;
 	@Expose
 	@Column(name = "CreatedBy")
@@ -98,23 +97,27 @@ public class BeneficiaryVisitDetail {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
-	
+
 	public BeneficiaryVisitDetail() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public BeneficiaryVisitDetail(Long benVisitID, Long beneficiaryRegID, Integer providerServiceMapID,
-			Timestamp visitDateTime, Short visitNo, String visitReason, String visitCategory, String pregnancyStatus,
-			String rCHID, String healthFacilityType, String healthFacilityLocation, String reportFilePath,
-			Boolean deleted) {
+	public BeneficiaryVisitDetail(Long benVisitID, Long beneficiaryRegID, BeneficiaryData beneficiaryData,
+			Integer providerServiceMapID, Timestamp visitDateTime, Short visitNo, Short visitReasonID,
+			String visitReason, Integer visitCategoryID, String visitCategory, String pregnancyStatus, String rCHID,
+			String healthFacilityType, String healthFacilityLocation, String reportFilePath, Boolean deleted,
+			String processed, String createdBy, Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
 		super();
 		this.benVisitID = benVisitID;
 		this.beneficiaryRegID = beneficiaryRegID;
+		this.beneficiaryData = beneficiaryData;
 		this.providerServiceMapID = providerServiceMapID;
 		this.visitDateTime = visitDateTime;
 		this.visitNo = visitNo;
+		this.visitReasonID = visitReasonID;
 		this.visitReason = visitReason;
+		this.visitCategoryID = visitCategoryID;
 		this.visitCategory = visitCategory;
 		this.pregnancyStatus = pregnancyStatus;
 		this.rCHID = rCHID;
@@ -122,6 +125,47 @@ public class BeneficiaryVisitDetail {
 		this.healthFacilityLocation = healthFacilityLocation;
 		this.reportFilePath = reportFilePath;
 		this.deleted = deleted;
+		this.processed = processed;
+		this.createdBy = createdBy;
+		this.createdDate = createdDate;
+		this.modifiedBy = modifiedBy;
+		this.lastModDate = lastModDate;
+	}
+
+	public BeneficiaryVisitDetail(Long benVisitID, Long beneficiaryRegID,
+			Integer providerServiceMapID, Timestamp visitDateTime, Short visitNo, Short visitReasonID,
+			String visitReason, Integer visitCategoryID, String visitCategory, String pregnancyStatus, String rCHID,
+			String healthFacilityType, String healthFacilityLocation, String reportFilePath, Boolean deleted,
+			String processed, String createdBy, Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
+		super();
+		this.benVisitID = benVisitID;
+		this.beneficiaryRegID = beneficiaryRegID;
+		this.providerServiceMapID = providerServiceMapID;
+		this.visitDateTime = visitDateTime;
+		this.visitNo = visitNo;
+		this.visitReasonID = visitReasonID;
+		this.visitReason = visitReason;
+		this.visitCategoryID = visitCategoryID;
+		this.visitCategory = visitCategory;
+		this.pregnancyStatus = pregnancyStatus;
+		this.rCHID = rCHID;
+		this.healthFacilityType = healthFacilityType;
+		this.healthFacilityLocation = healthFacilityLocation;
+		this.reportFilePath = reportFilePath;
+		this.deleted = deleted;
+		this.processed = processed;
+		this.createdBy = createdBy;
+		this.createdDate = createdDate;
+		this.modifiedBy = modifiedBy;
+		this.lastModDate = lastModDate;
+	}
+	
+	public Long getBenVisitID() {
+		return benVisitID;
+	}
+
+	public void setBenVisitID(Long benVisitID) {
+		this.benVisitID = benVisitID;
 	}
 
 	public Long getBeneficiaryRegID() {
@@ -164,12 +208,28 @@ public class BeneficiaryVisitDetail {
 		this.visitNo = visitNo;
 	}
 
+	public Short getVisitReasonID() {
+		return visitReasonID;
+	}
+
+	public void setVisitReasonID(Short visitReasonID) {
+		this.visitReasonID = visitReasonID;
+	}
+
 	public String getVisitReason() {
 		return visitReason;
 	}
 
 	public void setVisitReason(String visitReason) {
 		this.visitReason = visitReason;
+	}
+
+	public Integer getVisitCategoryID() {
+		return visitCategoryID;
+	}
+
+	public void setVisitCategoryID(Integer visitCategoryID) {
+		this.visitCategoryID = visitCategoryID;
 	}
 
 	public String getVisitCategory() {
@@ -268,24 +328,4 @@ public class BeneficiaryVisitDetail {
 		this.lastModDate = lastModDate;
 	}
 
-	public Long getBenVisitID() {
-		return benVisitID;
-	}
-	
-	public Short getVisitReasonID() {
-		return visitReasonID;
-	}
-
-	public void setVisitReasonID(Short visitReasonID) {
-		visitReasonID = visitReasonID;
-	}
-
-	public Integer getVisitCategoryID() {
-		return visitCategoryID;
-	}
-
-	public void setVisitCategoryID(Integer visitCategoryID) {
-		visitCategoryID = visitCategoryID;
-	}
-	
 }

@@ -83,6 +83,9 @@ public class BenPersonalCancerDietHistory {
 	@JsonIgnore
 	private List<String> typeOfOilConsumedList;
 
+	public BenPersonalCancerDietHistory() {
+	}
+
 	public BenPersonalCancerDietHistory(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			String dietType, Integer fruitConsumptionDays, Integer fruitQuantityPerDay,
 			Integer vegetableConsumptionDays, Integer vegetableQuantityPerDay, Integer intakeOfOutsidePreparedMeal,

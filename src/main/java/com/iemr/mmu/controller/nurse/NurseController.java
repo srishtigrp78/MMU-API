@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,8 +20,6 @@ import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
-import com.iemr.mmu.service.masterservice.DoctorMasterDataService;
-import com.iemr.mmu.service.masterservice.DoctorMasterDataServiceImpl;
 import com.iemr.mmu.service.masterservice.NurseMasterDataService;
 import com.iemr.mmu.service.masterservice.NurseMasterDataServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
@@ -37,17 +36,17 @@ public class NurseController {
 	private NurseServiceImpl nurseServiceImpl;
 	private NurseMasterDataService nurseMasterDataService;
 	private NurseMasterDataServiceImpl nurseMasterDataServiceImpl;
-	
+
 	@Autowired
 	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
 		this.nurseServiceImpl = nurseServiceImpl;
 	}
-	
+
 	@Autowired
-	public void setNurseMasterDataServiceImpl(NurseMasterDataServiceImpl nurseMasterDataServiceImpl){
+	public void setNurseMasterDataServiceImpl(NurseMasterDataServiceImpl nurseMasterDataServiceImpl) {
 		this.nurseMasterDataServiceImpl = nurseMasterDataServiceImpl;
 	}
-	
+
 	@CrossOrigin
 	@RequestMapping(value = { "/testrest" }, method = { RequestMethod.POST }, produces = { "application/json" })
 	public String testRestTemplate(@RequestBody String comingRequest) {
@@ -219,7 +218,7 @@ public class NurseController {
 
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@RequestMapping(value = { "/nurseMasterData" }, method = { RequestMethod.POST }, produces = { "application/json" })
 	public String masterDataForNurse() {
@@ -235,6 +234,55 @@ public class NurseController {
 		}
 		return response.toString();
 	}
-	
+
+	/**
+	 * Fething beneficiary data filled by Nurse for Doctor screen...
+	 */
+
+	@CrossOrigin()
+	@RequestMapping(value = { "/getBenDataFrmNurseToDocVisitDetailsScreen" }, method = {
+			RequestMethod.POST }, produces = { "application/json" })
+	public String getBenDataFrmNurseScrnToDocScrnVisitDetails(@RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.length() > 1) {
+				Long benRegID = obj.getLong("benRegID");
+				Long benVisitID = obj.getLong("benVisitID");
+
+				String s = nurseServiceImpl.getBenDataFrmNurseToDocVisitDetailsScreen(benRegID, benVisitID);
+				response.setResponse(s);
+			} else {
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setError(e);
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin()
+	@RequestMapping(value = { "/getBenDataFrmNurseToDocHistoryScreen" }, method = {
+			RequestMethod.POST }, produces = { "application/json" })
+	public String getBenDataFrmNurseScrnToDocScrnHistory(@RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.length() > 1) {
+				Long benRegID = obj.getLong("benRegID");
+				Long benVisitID = obj.getLong("benVisitID");
+
+				String s = nurseServiceImpl.getBenDataFrmNurseToDocHistoryScreen(benRegID, benVisitID);
+				response.setResponse(s);
+			} else {
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setError(e);
+		}
+		return response.toString();
+	}
 
 }
