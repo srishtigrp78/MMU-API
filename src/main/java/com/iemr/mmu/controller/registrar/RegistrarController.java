@@ -98,7 +98,7 @@ public class RegistrarController {
 					}
 				} else {
 					// i_beneficiary roll-back
-					response.setError(0, "Something Went-Wrong");
+					response.setError(500, "Something Went-Wrong");
 				}
 			}
 			System.out.println("hello");
@@ -163,10 +163,10 @@ public class RegistrarController {
 				if (obj.getInt("spID") > 0) {
 					response.setResponse(registrarServiceMasterDataImpl.getRegMasterData());
 				} else {
-					response.setError(0, "Invalid Service-Point...");
+					response.setError(500, "Invalid Service-Point...");
 				}
 			} else {
-				response.setError(0, "Bad Request... Service-Point is not there in request");
+				response.setError(500, "Bad Request... Service-Point is not there in request");
 			}
 			System.out.println("helloo...");
 
@@ -192,10 +192,10 @@ public class RegistrarController {
 
 					response.setResponse(beneficiaryData);
 				} else {
-					response.setError(0, "Please pass beneficiaryRegID");
+					response.setError(500, "Please pass beneficiaryRegID");
 				}
 			} else {
-				response.setError(0, "Bad Request... beneficiaryRegID is not there in request");
+				response.setError(500, "Bad Request... beneficiaryRegID is not there in request");
 			}
 
 		} catch (Exception e) {

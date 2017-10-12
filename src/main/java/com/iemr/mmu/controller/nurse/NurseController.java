@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +34,8 @@ import com.iemr.utils.response.OutputResponse;
 public class NurseController {
 
 	private InputMapper inputMapper;
-
+	private Logger logger = LoggerFactory.getLogger(NurseController.class);
+	
 	private NurseServiceImpl nurseServiceImpl;
 	private NurseMasterDataService nurseMasterDataService;
 	private NurseMasterDataServiceImpl nurseMasterDataServiceImpl;
@@ -64,27 +67,24 @@ public class NurseController {
 
 		OutputResponse response = new OutputResponse();
 		inputMapper = new InputMapper();
-
+		logger.info("saveBeneficiaryVisitDetail request:"+requestObj);
 		BeneficiaryVisitDetail beneficiaryVisitDetail = InputMapper.gson().fromJson(requestObj,
 				BeneficiaryVisitDetail.class);
 		try {
 			Long benVisitID = nurseServiceImpl.saveBeneficiaryVisitDetails(beneficiaryVisitDetail);
 			if (benVisitID != null && benVisitID > 0) {
-				System.out.println("hellooo");
 				Map<String, Long> resMap = new HashMap<String, Long>();
 				resMap.put("benVisitID", benVisitID);
 				response.setResponse(new Gson().toJson(resMap));
 			} else {
 				response.setError(500, "Failed to Store Beneficiary Visit Details");
-				System.out.println("hellooo");
 			}
-			System.out.println("hellooo");
+			logger.info("saveBeneficiaryVisitDetail response:"+response);
 		} catch (Exception e) {
 			response.setError(e);
-			System.out.println("hellooo");
+			logger.error("Error in saveBeneficiaryVisitDetail:"+e);
 		}
 
-		System.out.println(response.toString());
 		return response.toString();
 	}
 
@@ -94,13 +94,12 @@ public class NurseController {
 	public String saveBenFamilyCancerHistory(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-
+		logger.info("saveBenFamilyCancerHistory request:"+requestObj);
 		try {
 			BenFamilyCancerHistory[] benFamilyCancerHistoryArray = InputMapper.gson().fromJson(requestObj,
 					BenFamilyCancerHistory[].class);
 
 			List<BenFamilyCancerHistory> benFamilyCancerHistoryList = Arrays.asList(benFamilyCancerHistoryArray);
-
 			if (benFamilyCancerHistoryList.size() > 0) {
 				int responseData = nurseServiceImpl.saveBenFamilyCancerHistory(benFamilyCancerHistoryList);
 				if (responseData > 0) {
@@ -111,8 +110,10 @@ public class NurseController {
 			} else {
 				response.setError(500, "There is no data to save");
 			}
+			logger.info("saveBenFamilyCancerHistory response:"+response);
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error in saveBenFamilyCancerHistory:"+e);
 		}
 
 		return response.toString();
@@ -124,7 +125,7 @@ public class NurseController {
 	public String saveBenObstetricCancerHistory(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-
+		logger.info("saveBenObstetricCancerHistory request:"+requestObj);
 		try {
 			BenObstetricCancerHistory benObstetricCancerHistory = InputMapper.gson().fromJson(requestObj,
 					BenObstetricCancerHistory.class);
@@ -136,8 +137,10 @@ public class NurseController {
 				response.setError(500, "Failed to Store Beneficiary Obstetric Cancer History Details");
 			}
 			response.setResponse(response.toString());
+			logger.info("saveBenObstetricCancerHistory response:"+response);
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error in saveBenObstetricCancerHistory:"+e);
 		}
 		System.out.println(response.toString());
 		return response.toString();
@@ -173,7 +176,7 @@ public class NurseController {
 	public String saveBenPersonalCancerHistory(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-
+		logger.info("saveBenPersonalCancerHistory request:"+requestObj);
 		try {
 			BenPersonalCancerHistory benPersonalCancerHistory = InputMapper.gson().fromJson(requestObj,
 					BenPersonalCancerHistory.class);
@@ -190,8 +193,10 @@ public class NurseController {
 			} else {
 				response.setError(500, "Failed to Store Beneficiary Personal Cancer History Details");
 			}
+			logger.info("saveBenPersonalCancerHistory response:"+response);
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error in saveBenPersonalCancerHistory:"+e);
 		}
 		System.out.println(response.toString());
 		return response.toString();
@@ -203,7 +208,7 @@ public class NurseController {
 	public String saveBenVitalDetail(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-
+		logger.info("saveBenVitalDetail request:"+requestObj);
 		BenCancerVitalDetail benCancerVitalDetail = InputMapper.gson().fromJson(requestObj, BenCancerVitalDetail.class);
 		try {
 			Long responseObj = nurseServiceImpl.saveBenVitalDetail(benCancerVitalDetail);
@@ -212,8 +217,10 @@ public class NurseController {
 			} else {
 				response.setError(500, "Failed to Store Beneficiary Vital Details");
 			}
+			logger.info("saveBenVitalDetail response:"+response);
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error in saveBenVitalDetail:"+e);
 		}
 
 		return response.toString();
@@ -224,13 +231,13 @@ public class NurseController {
 	public String masterDataForNurse() {
 
 		OutputResponse response = new OutputResponse();
-
+		logger.info("getting Nurse Master Data ");
 		try {
 			response.setResponse(nurseMasterDataServiceImpl.getNurseMasterData());
-
+			logger.info("masterDataForNurse response:"+response);
 		} catch (Exception e) {
-			e.printStackTrace();
 			response.setError(e);
+			logger.error("Error in masterDataForNurse :"+e);
 		}
 		return response.toString();
 	}
@@ -244,6 +251,7 @@ public class NurseController {
 			RequestMethod.POST }, produces = { "application/json" })
 	public String getBenDataFrmNurseScrnToDocScrnVisitDetails(@RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
+		logger.info("getBenDataFrmNurseScrnToDocScrnVisitDetails request:"+comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
@@ -255,9 +263,10 @@ public class NurseController {
 			} else {
 
 			}
+			logger.info("getBenDataFrmNurseScrnToDocScrnVisitDetails response:"+response);
 		} catch (Exception e) {
-			e.printStackTrace();
 			response.setError(e);
+			logger.error("Error in getBenDataFrmNurseScrnToDocScrnVisitDetails:"+e);
 		}
 		return response.toString();
 	}
@@ -267,6 +276,7 @@ public class NurseController {
 			"application/json" })
 	public String getBenDataFrmNurseScrnToDocScrnHistory(@RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
+		logger.info("getBenDataFrmNurseScrnToDocScrnHistory request:"+comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
@@ -278,9 +288,10 @@ public class NurseController {
 			} else {
 
 			}
+			logger.info("getBenDataFrmNurseScrnToDocScrnHistory response:"+response);
 		} catch (Exception e) {
-			e.printStackTrace();
 			response.setError(e);
+			logger.error("Error in getBenDataFrmNurseScrnToDocScrnHistory:"+e);
 		}
 		return response.toString();
 	}
