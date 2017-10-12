@@ -1,10 +1,13 @@
 package com.iemr.mmu.controller.doctor;
 
+import java.sql.Blob;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
+import com.iemr.mmu.controller.nurse.NurseController;
 import com.iemr.mmu.data.doctor.CancerAbdominalExamination;
 import com.iemr.mmu.data.doctor.CancerBreastExamination;
 import com.iemr.mmu.data.doctor.CancerDiagnosis;
@@ -35,6 +39,9 @@ import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.utils.mapper.InputMapper;
 import com.iemr.utils.response.OutputResponse;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 @CrossOrigin
 @RestController
 @RequestMapping({ "/doctor" })
@@ -42,7 +49,7 @@ public class DoctorController {
 
 	private InputMapper inputMapper = new InputMapper();
 	private OutputResponse response;
-
+	private Logger logger = LoggerFactory.getLogger(DoctorController.class);
 	private DoctorMasterDataService doctorMasterDataService;
 	private DoctorMasterDataServiceImpl doctorMasterDataServiceImpl;
 	
@@ -58,12 +65,20 @@ public class DoctorController {
 	private NurseServiceImpl nurseServiceImpl;
 
 	@CrossOrigin
-	@RequestMapping(value = { "/save/examinationScreen/abdominal" }, method = { RequestMethod.POST }, produces = {
-			"application/json" })
-	public String saveAbdominalExaminationDetail(@RequestBody String requestObj) {
-
+	@ApiOperation(
+			value = "save Abdominal Examination Detail",
+			consumes = "application/json",
+			produces = "application/json")
+	@RequestMapping(value = { "/save/examinationScreen/abdominal" }, method = { RequestMethod.POST })
+	public String saveAbdominalExaminationDetail(@ApiParam(
+			value = "{\"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", \"providerServiceMapID\":\"Integer\", "
+					+ " \"abdominalInspection_Normal\":\"Boolean\", \"liver\":\"string\", \"ascites_Present\":\"Boolean\","
+					+ "\"anyOtherMass_Present\":\"Boolean\",\"lymphNodes_Enlarged\":\"Boolean\", \"lymphNode_Inguinal_Left\":\"Boolean\","
+					+ "\"lymphNode_ExternalIliac_Left\":\"Boolean\", \"lymphNode_ParaAortic_Left\":\"Boolean\", "
+					+ "\"observation\":\"string\",\"image\":\"Blob\",\"createdBy\":\"string\"}") @RequestBody String requestObj) {
+	
 		response = new OutputResponse();
-
+		logger.info("saveAbdominalExaminationDetail request:"+requestObj);
 		CancerAbdominalExamination cancerAbdominalExamination = InputMapper.gson().fromJson(requestObj,
 				CancerAbdominalExamination.class);
 		try {
@@ -76,20 +91,31 @@ public class DoctorController {
 			} else {
 				response.setError(500, "Failed to Store Abdominal Examination Detail");
 			}
+			logger.info("saveAbdominalExaminationDetail response:"+response);
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error in saveAbdominalExaminationDetail:"+e);
 		}
 
 		return response.toString();
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = { "/save/examinationScreen/breast" }, method = { RequestMethod.POST }, produces = {
-			"application/json" })
-	public String saveBreastExaminationDetail(@RequestBody String requestObj) {
-
+	@ApiOperation(
+			value = "save Breast Examination Detail",
+			consumes = "application/json",
+			produces = "application/json")
+	@RequestMapping(value = { "/save/examinationScreen/breast" }, method = { RequestMethod.POST })
+	public String saveBreastExaminationDetail(@ApiParam(
+			value = "{\"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", \"providerServiceMapID\":\"Integer\", "
+					+ " \"everBreastFed\":\"Boolean\", \"breastFeedingDurationGTE6months\":\"Boolean\", \"breastsAppear_Normal\":\"Boolean\","
+					+ "\"rashOnBreast\":\"Boolean\",\"dimplingSkinOnBreast\":\"Boolean\", \"dischargeFromNipple\":\"Boolean\","
+					+ "\"peaudOrange\":\"Boolean\", \"lumpInBreast\":\"Boolean\", \"lumpSize\":\"string\",\"lumpShape\":\"string\","
+					+ "\"lumpTexture\":\"String\", \"referredToMammogram\":\"Boolean\", \"mamogramReport\":\"string\","
+					+ " \"image\":\"Blob\",\"createdBy\":\"string\"}") @RequestBody String requestObj) {
+		
 		response = new OutputResponse();
-
+		logger.info("saveBreastExaminationDetail request:"+requestObj);
 		CancerBreastExamination cancerBreastExamination = InputMapper.gson().fromJson(requestObj,
 				CancerBreastExamination.class);
 		try {
@@ -102,21 +128,30 @@ public class DoctorController {
 			} else {
 				response.setError(500, "Failed to Store Breast Examination Detail");
 			}
+			logger.info("saveBreastExaminationDetail response:"+response);
 			
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error in saveBreastExaminationDetail:"+e);
 		}
 
 		return response.toString();
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = { "/save/examinationScreen/diagnosis" }, method = { RequestMethod.POST }, produces = {
-			"application/json" })
-	public String saveDiagnosisExaminationDetail(@RequestBody String requestObj) {
-
+	@ApiOperation(
+			value = "save Diagnosis Examination Detail",
+			consumes = "application/json",
+			produces = "application/json")
+	@RequestMapping(value = { "/save/examinationScreen/diagnosis" }, method = { RequestMethod.POST })
+	public String saveDiagnosisExaminationDetail(@ApiParam(
+			value = "{\"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", \"providerServiceMapID\":\"Integer\", "
+					+ " \"provisionalDiagnosisPrimaryDoctor\":\"String\", \"provisionalDiagnosisOncologist\":\"String\", "
+					+ "\"remarks\":\"String\", \"referredToInstituteID\":\"Integer\",\"refrredToAdditionalService\":\"String\","
+					+ " \"createdBy\":\"string\"}") @RequestBody String requestObj) {	
+		
 		response = new OutputResponse();
-
+		logger.info("saveDiagnosisExaminationDetail request:"+requestObj);
 		CancerDiagnosis cancerDiagnosis = InputMapper.gson().fromJson(requestObj, CancerDiagnosis.class);
 		try {
 			Long ID = doctorServiceImpl.saveCancerDiagnosisData(cancerDiagnosis);
@@ -127,20 +162,31 @@ public class DoctorController {
 			} else {
 				response.setError(500, "Failed to Store Diagnosis Examination Detail");
 			}
+			logger.info("saveDiagnosisExaminationDetail response:"+response);
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error in saveDiagnosisExaminationDetail:"+e);
 		}
 
 		return response.toString();
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = { "/save/examinationScreen/gynecological" }, method = { RequestMethod.POST }, produces = {
-			"application/json" })
-	public String saveGynecologicalExaminationDetail(@RequestBody String requestObj) {
-
+	@ApiOperation(
+			value = "save Gynecological Examination Detail",
+			consumes = "application/json",
+			produces = "application/json")
+	@RequestMapping(value = { "/save/examinationScreen/gynecological" }, method = { RequestMethod.POST })
+	public String saveGynecologicalExaminationDetail(@ApiParam(
+			value = "{\"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", \"providerServiceMapID\":\"Integer\", "
+					+ " \"appearanceOfCervix\":\"String\", \"typeOfLesionList\":\"List\", "
+					+ "\"vulvalInvolvement\":\"Boolean\", \"vaginalInvolvement\":\"Boolean\",\"uterus_Normal\":\"Boolean\","
+					+ "\"sufferedFromRTIOrSTI\":\"Boolean\", \"rTIOrSTIDetail\":\"String\",\"filePath\":\"String\","
+					+ "\"experiencedPostCoitalBleeding\":\"Boolean\", \"observation\":\"String\","
+					+ " \"createdBy\":\"string\"}") @RequestBody String requestObj) {
+		
 		response = new OutputResponse();
-
+		logger.info("saveGynecologicalExaminationDetail request:"+requestObj);
 		CancerGynecologicalExamination cancerGynecologicalExamination = InputMapper.gson().fromJson(requestObj,
 				CancerGynecologicalExamination.class);
 		try {
@@ -153,20 +199,28 @@ public class DoctorController {
 			} else {
 				response.setError(500, "Failed to Store Gynecological Examination Detail");
 			}
+			logger.info("saveGynecologicalExaminationDetail response:"+response);
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error in saveGynecologicalExaminationDetail:"+e);
 		}
 
 		return response.toString();
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = { "/save/examinationScreen/lymphNode" }, method = { RequestMethod.POST }, produces = {
-			"application/json" })
-	public String saveLymphNodeExaminationDetail(@RequestBody String requestObj) {
+	@ApiOperation(
+			value = "save LymphNode Examination Detail",
+			consumes = "application/json",
+			produces = "application/json")
+	@RequestMapping(value = { "/save/examinationScreen/lymphNode" }, method = { RequestMethod.POST })
+	public String saveLymphNodeExaminationDetail(@ApiParam(
+			value = "[{\"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", \"providerServiceMapID\":\"Integer\", "
+					+ " \"lymphNodeName\":\"String\", \"mobility_Left\":\"Boolean\", \"size_Left\":\"String\""
+					+ "\"mobility_Right\":\"Boolean\", \"size_Right\":\"String\", \"createdBy\":\"string\"}]") @RequestBody String requestObj) {
 
 		response = new OutputResponse();
-
+		logger.info("saveLymphNodeExaminationDetail request:"+requestObj);
 		CancerLymphNodeDetails[] cancerLymphNodeDetails = InputMapper.gson().fromJson(requestObj,
 				CancerLymphNodeDetails[].class);
 
@@ -178,20 +232,29 @@ public class DoctorController {
 			} else {
 				response.setError(0, "Failed to Store LymphNode Examination Detail");
 			}
+			logger.info("saveLymphNodeExaminationDetail response:"+response);
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error in saveLymphNodeExaminationDetail:"+e);
 		}
 
 		return response.toString();
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = { "/save/examinationScreen/oral" }, method = { RequestMethod.POST }, produces = {
-			"application/json" })
-	public String saveOralExaminationDetail(@RequestBody String requestObj) {
-
+	@ApiOperation(
+			value = "save Oral Examination Detail",
+			consumes = "application/json",
+			produces = "application/json")
+	@RequestMapping(value = { "/save/examinationScreen/oral" }, method = { RequestMethod.POST })
+	public String saveOralExaminationDetail(@ApiParam(
+			value = "[{\"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", \"providerServiceMapID\":\"Integer\", "
+					+ " \"limitedMouthOpening\":\"String\", \"premalignantLesions\":\"Boolean\", \"preMalignantLesionTypeList\":\"List\""
+					+ "\"prolongedIrritation\":\"Boolean\", \"chronicBurningSensation\":\"Boolean\", \"observation\":\"String\","
+					+ "\"image\":\"Blob\", \"createdBy\":\"string\"}]") @RequestBody String requestObj) {
+		
 		response = new OutputResponse();
-
+		logger.info("saveOralExaminationDetail request:"+requestObj);
 		CancerOralExamination cancerOralExamination = InputMapper.gson().fromJson(requestObj,
 				CancerOralExamination.class);
 		try {
@@ -203,20 +266,34 @@ public class DoctorController {
 			} else {
 				response.setError(500, "Failed to Store Oral Examination Detail");
 			}
+			logger.info("saveOralExaminationDetail response:"+response);
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error in saveOralExaminationDetail:"+e);
 		}
 
 		return response.toString();
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = { "/save/examinationScreen/signAndSymptoms" }, method = { RequestMethod.POST }, produces = {
-			"application/json" })
-	public String saveCancerSignAndSymptomsDetail(@RequestBody String requestObj) {
-
+	@ApiOperation(
+			value = "save Cancer SignAndSymptoms Examination Detail",
+			consumes = "application/json",
+			produces = "application/json")
+	@RequestMapping(value = { "/save/examinationScreen/signAndSymptoms" }, method = { RequestMethod.POST })
+	public String saveCancerSignAndSymptomsDetail(@ApiParam(
+			value = "{\"cancerSignAndSymptoms\":{\"beneficiaryRegID\": \"Long\", \"benVisitID\": \"Long\", \"providerServiceMapID\": \"Integer\","
+					+ "\"shortnessOfBreath\":\"Boolean\", \"cough=2Weeks\":\"Boolean\", \"bloodInSputum\":\"Boolean\", \"difficultyInOpeningMouth\":\"Boolean\","
+					+ "\"nonHealingUlcerOrPatchOrGrowth\":\"Boolean\", \"changeInTheToneOfVoice\":\"Boolean\", \"lumpInTheBreast\":\"Boolean\","
+					+ "\"bloodStainedDischargeFromNipple\":\"Boolean\", \"changeInShapeAndSizeOfBreasts\":\"Boolean\", \"vaginalBleedingBetweenPeriods\":\"Boolean\","
+					+ "\"vaginalBleedingAfterMenopause\":\"Boolean\", \"vaginalBleedingAfterIntercourse\":\"Boolean\", \"foulSmellingVaginalDischarge\":\"Boolean\", "
+					+ "\"lymphNode_Enlarged\":\"Boolean\",\"createdBy\":\"String\"}, "
+					+ "\"cancerLymphNodeDetails\":[{\"beneficiaryRegID\": \"Long\", \"benVisitID\": \"Long\", \"providerServiceMapID\": \"Integer\", "
+					+ "\"lymphNodeName\":\"String\",\"mobility_Left\":\"Boolean\",\"size_Left\":\"String\", \"mobility_Right\":\"Boolean\", "
+					+ "\"createdBy\":\"String\"}]}") @RequestBody String requestObj) {
+		
 		response = new OutputResponse();
-
+		logger.info("saveCancerSignAndSymptomsDetail request:"+requestObj);
 		WrapperCancerSymptoms wrapperCancerSymptoms = InputMapper.gson().fromJson(requestObj,
 				WrapperCancerSymptoms.class);
 
@@ -246,8 +323,10 @@ public class DoctorController {
 			} else {
 				response.setError(500, "Failed to Store Cancer Sign and Symptoms Detail");
 			}
+			logger.info("saveCancerSignAndSymptomsDetail response:"+response);
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error in saveCancerSignAndSymptomsDetail:"+e);
 		}
 
 		return response.toString();
@@ -259,13 +338,13 @@ public class DoctorController {
 	public String getMasterDataForDoctor() {
 		
 		OutputResponse response = new OutputResponse();
-		
+		logger.info("getMasterDataForDoctor..");
 		try {
 			response.setResponse(doctorMasterDataServiceImpl.getDoctorMasterData());
-
+			logger.info("getMasterDataForDoctor response:"+response);
 		} catch (Exception e) {
-			e.printStackTrace();
 			response.setError(e);
+			logger.error("Error in getMasterDataForDoctor:"+e);
 		}
 		return response.toString();
 	}
@@ -277,7 +356,7 @@ public class DoctorController {
 
 		OutputResponse response = new OutputResponse();
 		inputMapper = new InputMapper();
-
+		logger.info("updateBeneficiaryVisitDetail request:"+requestObj);
 		BeneficiaryVisitDetail beneficiaryVisitDetail = InputMapper.gson().fromJson(requestObj,
 				BeneficiaryVisitDetail.class);
 		try {
@@ -289,8 +368,10 @@ public class DoctorController {
 			} else {
 				response.setError(500, "Failed to update Beneficiary Visit Details");
 			}
+			logger.info("updateBeneficiaryVisitDetail response:"+response);
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error in updateBeneficiaryVisitDetail :"+e);
 		}
 
 		System.out.println(response.toString());
@@ -304,7 +385,7 @@ public class DoctorController {
 
 		OutputResponse response = new OutputResponse();
 		inputMapper = new InputMapper();
-
+		logger.info("updateBenFamilyCancerHistory request:"+requestObj);
 		BenFamilyCancerHistory[] benFamilyCancerHistoryArray = InputMapper.gson().fromJson(requestObj,
 				BenFamilyCancerHistory[].class);
 		
@@ -318,11 +399,12 @@ public class DoctorController {
 			} else {
 				response.setError(500, "Failed to update Beneficiary Family Cancer History");
 			}
+			logger.info("updateBenFamilyCancerHistory response:"+response);
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error in updateBenFamilyCancerHistory :"+e);
 		}
 
-		System.out.println(response.toString());
 		return response.toString();
 	}
 
@@ -332,7 +414,7 @@ public class DoctorController {
 	public String updateBenObstetricCancerHistory(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-
+		logger.info("updateBenObstetricCancerHistory request:"+requestObj);
 		try {
 			BenObstetricCancerHistory benObstetricCancerHistory = InputMapper.gson().fromJson(requestObj,
 					BenObstetricCancerHistory.class);
@@ -344,10 +426,11 @@ public class DoctorController {
 				response.setError(500, "Failed to update Beneficiary Obstetric Cancer History Details");
 			}
 			response.setResponse(response.toString());
+			logger.info("updateBenObstetricCancerHistory response:"+response);
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error in updateBenObstetricCancerHistory :"+e);
 		}
-		System.out.println(response.toString());
 		return response.toString();
 	}
 	
@@ -357,7 +440,7 @@ public class DoctorController {
 	public String updateBenPersonalCancerHistory(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-
+		logger.info("updateBenPersonalCancerHistory request:"+requestObj);
 		try {
 			BenPersonalCancerHistory benPersonalCancerHistory = InputMapper.gson().fromJson(requestObj,
 					BenPersonalCancerHistory.class);
@@ -374,10 +457,11 @@ public class DoctorController {
 			} else {
 				response.setError(500, "Failed to update Beneficiary Personal Cancer History Details");
 			}
+			logger.info("updateBenPersonalCancerHistory response:"+response);
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error in updateBenPersonalCancerHistory:"+e);
 		}
-		System.out.println(response.toString());
 		return response.toString();
 	}
 	
@@ -387,7 +471,7 @@ public class DoctorController {
 	public String upodateBenVitalDetail(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-
+		logger.info("upodateBenVitalDetail request:"+requestObj);
 		BenCancerVitalDetail benCancerVitalDetail = InputMapper.gson().fromJson(requestObj, BenCancerVitalDetail.class);
 		try {
 			int responseObj = nurseServiceImpl.updateBenVitalDetail(benCancerVitalDetail);
@@ -396,8 +480,10 @@ public class DoctorController {
 			} else {
 				response.setError(500, "Failed to update Beneficiary Vital Details");
 			}
+			logger.info("upodateBenVitalDetail response:"+response);
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error in upodateBenVitalDetail:"+e);
 		}
 
 		return response.toString();
