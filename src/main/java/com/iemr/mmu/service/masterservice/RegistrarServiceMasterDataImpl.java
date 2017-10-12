@@ -2,6 +2,7 @@ package com.iemr.mmu.service.masterservice;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import com.iemr.mmu.data.masterdata.registrar.MaritalStatusMaster;
 import com.iemr.mmu.data.masterdata.registrar.OccupationMaster;
 import com.iemr.mmu.data.masterdata.registrar.QualificationMaster;
 import com.iemr.mmu.data.masterdata.registrar.ReligionMaster;
+import com.iemr.mmu.data.registrar.BeneficiaryData;
 import com.iemr.mmu.repo.masterrepo.CommunityMasterRepo;
 import com.iemr.mmu.repo.masterrepo.GenderMasterRepo;
 import com.iemr.mmu.repo.masterrepo.GovIdEntityTypeRepo;
@@ -36,6 +38,7 @@ import com.iemr.mmu.repo.masterrepo.nurse.CancerPersonalHabitMasterRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.FamilyMemberMasterRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.VisitCategoryMasterRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.VisitReasonMasterRepo;
+import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 
 @Service
 public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterData {
@@ -48,6 +51,7 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 	private OccupationMasterRepo occupationMasterRepo;
 	private QualificationMasterRepo qualificationMasterRepo;
 	private ReligionMasterRepo religionMasterRepo;
+	private RegistrarRepoBenData registrarRepoBenData;
 
 	@Autowired
 	public void setCommunityMasterRepo(CommunityMasterRepo communityMasterRepo) {
@@ -89,6 +93,11 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 		this.religionMasterRepo = religionMasterRepo;
 	}
 	
+	@Autowired
+	public void setRegistrarRepoBenData(RegistrarRepoBenData registrarRepoBenData) {
+		this.registrarRepoBenData = registrarRepoBenData;
+	}
+	
 	public String getRegMasterData() {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 		ArrayList<Object[]> cm = communityMasterRepo.getCommunityMaster();
@@ -121,6 +130,20 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 
 	}
 	
+	@Override
+	public String getBenDetailsByRegID(Long beneficiaryRegID){
+		List<Object[]> benDetailsList = registrarRepoBenData.getBenDetailsByRegID(beneficiaryRegID);
+		BeneficiaryData benDetails = BeneficiaryData.getBeneficiaryData(benDetailsList).get(0);
+		if(benDetails != null){
+			if(benDetails.getGenderID()==1){
+				benDetails.setGenderName("Male");
+			}else if(benDetails.getGenderID()==2){
+				benDetails.setGenderName("Female");
+			}else{
+				benDetails.setGenderName("Transgender");
+			}
+		}
+		return new Gson().toJson(benDetails);
+	}
 	
-
 }

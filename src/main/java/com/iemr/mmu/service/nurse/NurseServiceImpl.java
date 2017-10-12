@@ -313,6 +313,80 @@ public class NurseServiceImpl implements NurseService {
 
 	}
 
+	@Override
+	public int updateBenPersonalCancerHistory(BenPersonalCancerHistory benPersonalCancerHistory) {
+		int response = 0;
+		try {
+
+			List<String> typeOfTobaccoProductList = benPersonalCancerHistory.getTypeOfTobaccoProductList();
+			String typeOfTobaccoProductData = "";
+			for (String typeOfTobaccoProduct : typeOfTobaccoProductList) {
+				typeOfTobaccoProductData += typeOfTobaccoProduct + ",";
+			}
+			benPersonalCancerHistory.setTypeOfTobaccoProduct(typeOfTobaccoProductData);
+
+			response = benPersonalCancerHistoryRepo.updateBenPersonalCancerHistory(
+					benPersonalCancerHistory.getTobaccoUse(), benPersonalCancerHistory.getStartAge_year(),
+					benPersonalCancerHistory.getEndAge_year(), benPersonalCancerHistory.getTypeOfTobaccoProduct(),
+					benPersonalCancerHistory.getQuantityPerDay(), benPersonalCancerHistory.getIsFilteredCigaerette(),
+					benPersonalCancerHistory.getIsCigaretteExposure(), benPersonalCancerHistory.getIsBetelNutChewing(),
+					benPersonalCancerHistory.getDurationOfBetelQuid(), benPersonalCancerHistory.getAlcoholUse(),
+					benPersonalCancerHistory.getSsAlcoholUsed(), benPersonalCancerHistory.getFrequencyOfAlcoholUsed(),
+					benPersonalCancerHistory.getModifiedBy(), benPersonalCancerHistory.getID());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+		return response;
+
+	}
+
+	@Override
+	public int updateBenPersonalCancerDietHistory(BenPersonalCancerDietHistory benPersonalCancerDietHistory) {
+		int response = 0;
+		try {
+			List<String> typeOfOilConsumedList = benPersonalCancerDietHistory.getTypeOfOilConsumedList();
+			String typeOfOilConsumedData = "";
+			for (String typeOfOilConsumed : typeOfOilConsumedList) {
+				typeOfOilConsumedData += typeOfOilConsumed + ",";
+			}
+			benPersonalCancerDietHistory.setTypeOfOilConsumed(typeOfOilConsumedData);
+
+			response = benPersonalCancerDietHistoryRepo.updateBenPersonalCancerDietHistory(
+					benPersonalCancerDietHistory.getDietType(), benPersonalCancerDietHistory.getFruitConsumptionDays(),
+					benPersonalCancerDietHistory.getFruitQuantityPerDay(),
+					benPersonalCancerDietHistory.getVegetableConsumptionDays(),
+					benPersonalCancerDietHistory.getVegetableQuantityPerDay(),
+					benPersonalCancerDietHistory.getIntakeOfOutsidePreparedMeal(),
+					benPersonalCancerDietHistory.getTypeOfOilConsumed(),
+					benPersonalCancerDietHistory.getPhysicalActivityType(),
+					benPersonalCancerDietHistory.getSsRadiationExposure(),
+					benPersonalCancerDietHistory.getIsThyroidDisorder(), benPersonalCancerDietHistory.getModifiedBy(),
+					benPersonalCancerDietHistory.getID());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+		return response;
+
+	}
+
+	@Override
+	public int updateBenVitalDetail(BenCancerVitalDetail benCancerVitalDetail) {
+		int response = benCancerVitalDetailRepo.updateBenCancerVitalDetail(benCancerVitalDetail.getWeight_Kg(),
+				benCancerVitalDetail.getHeight_cm(), benCancerVitalDetail.getWaistCircumference_cm(),
+				benCancerVitalDetail.getBloodGlucose_Fasting(), benCancerVitalDetail.getBloodGlucose_Random(),
+				benCancerVitalDetail.getBloodGlucose_2HrPostPrandial(), benCancerVitalDetail.getSystolicBP_1stReading(),
+				benCancerVitalDetail.getDiastolicBP_1stReading(), benCancerVitalDetail.getSystolicBP_2ndReading(),
+				benCancerVitalDetail.getDiastolicBP_2ndReading(), benCancerVitalDetail.getSystolicBP_3rdReading(),
+				benCancerVitalDetail.getDiastolicBP_3rdReading(), benCancerVitalDetail.getHbA1C(),
+				benCancerVitalDetail.getHemoglobin(), benCancerVitalDetail.getModifiedBy(),
+				benCancerVitalDetail.getID());
+		return response;
+	}
+
 	public String getBenDataFrmNurseToDocVisitDetailsScreen(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
 		BeneficiaryVisitDetail benVisitDetailsOBJ = benVisitDetailRepo.getVisitDetails(benRegID, benVisitID);

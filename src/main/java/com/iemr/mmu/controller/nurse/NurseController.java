@@ -263,8 +263,8 @@ public class NurseController {
 	}
 
 	@CrossOrigin()
-	@RequestMapping(value = { "/getBenDataFrmNurseToDocHistoryScreen" }, method = {
-			RequestMethod.POST }, produces = { "application/json" })
+	@RequestMapping(value = { "/getBenDataFrmNurseToDocHistoryScreen" }, method = { RequestMethod.POST }, produces = {
+			"application/json" })
 	public String getBenDataFrmNurseScrnToDocScrnHistory(@RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		try {

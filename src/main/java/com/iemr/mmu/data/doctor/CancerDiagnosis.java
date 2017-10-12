@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.doctor;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.registrar.BeneficiaryData;
@@ -57,6 +60,10 @@ public class CancerDiagnosis {
 	@Column(name = "RefrredToAdditionalService")
 	private String refrredToAdditionalService;
 	
+	@JsonIgnore
+	@Transient
+	private List<String> refrredToAdditionalServiceList;
+
 	@Expose
 	@Column(name = "Deleted",insertable = false, updatable = true)
 	private Boolean deleted; 
@@ -226,6 +233,14 @@ public class CancerDiagnosis {
 
 	public void setLastModDate(Timestamp lastModDate) {
 		this.lastModDate = lastModDate;
+	}
+	
+	public List<String> getRefrredToAdditionalServiceList() {
+		return refrredToAdditionalServiceList;
+	}
+
+	public void setRefrredToAdditionalServiceList(List<String> refrredToAdditionalServiceList) {
+		this.refrredToAdditionalServiceList = refrredToAdditionalServiceList;
 	}
 
 	

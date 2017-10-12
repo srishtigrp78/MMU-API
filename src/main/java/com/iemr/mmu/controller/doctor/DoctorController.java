@@ -22,8 +22,11 @@ import com.iemr.mmu.data.doctor.CancerLymphNodeDetails;
 import com.iemr.mmu.data.doctor.CancerOralExamination;
 import com.iemr.mmu.data.doctor.CancerSignAndSymptoms;
 import com.iemr.mmu.data.doctor.WrapperCancerSymptoms;
+import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
 import com.iemr.mmu.data.nurse.BenFamilyCancerHistory;
 import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
+import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
+import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.service.doctor.DoctorServiceImpl;
 import com.iemr.mmu.service.masterservice.DoctorMasterDataService;
@@ -345,6 +348,58 @@ public class DoctorController {
 			response.setError(e);
 		}
 		System.out.println(response.toString());
+		return response.toString();
+	}
+	
+	@CrossOrigin
+	@RequestMapping(value = { "/update/historyScreen/benPersonalCancerHistory" }, method = {
+			RequestMethod.POST }, produces = { "application/json" })
+	public String updateBenPersonalCancerHistory(@RequestBody String requestObj) {
+
+		OutputResponse response = new OutputResponse();
+
+		try {
+			BenPersonalCancerHistory benPersonalCancerHistory = InputMapper.gson().fromJson(requestObj,
+					BenPersonalCancerHistory.class);
+
+			BenPersonalCancerDietHistory benPersonalCancerDietHistory = InputMapper.gson().fromJson(requestObj,
+					BenPersonalCancerDietHistory.class);
+
+			int responseObjP = nurseServiceImpl.updateBenPersonalCancerHistory(benPersonalCancerHistory);
+
+			int responseObjD = nurseServiceImpl.updateBenPersonalCancerDietHistory(benPersonalCancerDietHistory);
+
+			if (responseObjP > 0 && responseObjD > 0) {
+				response.setResponse("Beneficiary Personal Cancer History Details updated Successfully");
+			} else {
+				response.setError(500, "Failed to update Beneficiary Personal Cancer History Details");
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+		System.out.println(response.toString());
+		return response.toString();
+	}
+	
+	@CrossOrigin
+	@RequestMapping(value = { "/update/vitalScreen/benVitalDetail" }, method = { RequestMethod.POST }, produces = {
+			"application/json" })
+	public String upodateBenVitalDetail(@RequestBody String requestObj) {
+
+		OutputResponse response = new OutputResponse();
+
+		BenCancerVitalDetail benCancerVitalDetail = InputMapper.gson().fromJson(requestObj, BenCancerVitalDetail.class);
+		try {
+			int responseObj = nurseServiceImpl.updateBenVitalDetail(benCancerVitalDetail);
+			if (responseObj > 0) {
+				response.setResponse("Beneficiary Vital Details updated Successfully");
+			} else {
+				response.setError(500, "Failed to update Beneficiary Vital Details");
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+
 		return response.toString();
 	}
 	

@@ -1,5 +1,6 @@
 package com.iemr.mmu.repo.registrar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
@@ -34,5 +35,10 @@ public interface RegistrarRepoBenData extends CrudRepository<BeneficiaryData, Lo
 			+ " FROM BeneficiaryData bd INNER JOIN  bd.benDemoData bdd INNER JOIN bd.benPhoneMap bpm "
 			+ " WHERE bd.beneficiaryID = :benID ")
 	public List<Object[]> getQuickSearch(@Param("benID") String benID);
+	
+	@Query("SELECT i.beneficiaryRegID, i.beneficiaryID,"
+			+ "concat(IFNULL(i.firstName, ''), ' ', IFNULL(i.middleName, ''), ' ',IFNULL(i.lastName,'')) as benName, Date(i.dob), i.genderID, i.createdDate"
+			+ " from BeneficiaryData i WHERE i.beneficiaryRegID =:beneficiaryRegID")
+	public List<Object[]> getBenDetailsByRegID(@Param("beneficiaryRegID") Long beneficiaryRegID);
 
 }
