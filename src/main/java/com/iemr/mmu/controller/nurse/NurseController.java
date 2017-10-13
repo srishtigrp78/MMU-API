@@ -319,4 +319,18 @@ public class NurseController {
 		return response.toString();
 	}
 
+	@CrossOrigin()
+	@RequestMapping(value = { "/getNurseWorklist" }, method = { RequestMethod.GET }, produces = { "application/json" })
+	public String getNurseWorkList() {
+		OutputResponse response = new OutputResponse();
+		try {
+			String s = nurseServiceImpl.getNurseWorkList();
+			response.setResponse(s);
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setError(e);
+		}
+		return response.toString();
+	}
+
 }

@@ -36,7 +36,7 @@ public class CancerSignAndSymptoms {
 	private Boolean shortnessOfBreath;
 
 	@Expose
-	@Column(name = "Cough≥2Weeks")
+	@Column(name = "Cough_gtr_eq_2Weeks")
 	private Boolean coughGTE2Weeks;
 
 	@Expose

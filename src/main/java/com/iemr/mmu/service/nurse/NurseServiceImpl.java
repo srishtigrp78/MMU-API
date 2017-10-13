@@ -22,6 +22,7 @@ import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
+import com.iemr.mmu.data.registrar.WrapperRegWorklist;
 import com.iemr.mmu.repo.masterrepo.nurse.CancerDiseaseMasterRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.CancerPersonalHabitMasterRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.FamilyMemberMasterRepo;
@@ -33,6 +34,7 @@ import com.iemr.mmu.repo.nurse.BenObstetricCancerHistoryRepo;
 import com.iemr.mmu.repo.nurse.BenPersonalCancerDietHistoryRepo;
 import com.iemr.mmu.repo.nurse.BenPersonalCancerHistoryRepo;
 import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
+import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
 
 @Service
 public class NurseServiceImpl implements NurseService {
@@ -43,6 +45,13 @@ public class NurseServiceImpl implements NurseService {
 	private BenPersonalCancerDietHistoryRepo benPersonalCancerDietHistoryRepo;
 	private BenPersonalCancerHistoryRepo benPersonalCancerHistoryRepo;
 	private BenCancerVitalDetailRepo benCancerVitalDetailRepo;
+
+	private ReistrarRepoBenSearch reistrarRepoBenSearch;
+
+	@Autowired
+	public void setReistrarRepoBenSearch(ReistrarRepoBenSearch reistrarRepoBenSearch) {
+		this.reistrarRepoBenSearch = reistrarRepoBenSearch;
+	}
 
 	@Autowired
 	private CancerDiseaseMasterRepo cancerDiseaseMasterRepo;
@@ -482,6 +491,12 @@ public class NurseServiceImpl implements NurseService {
 		BenCancerVitalDetail benCancerVitalDetail = benCancerVitalDetailRepo.getBenCancerVitalDetail(benRegID,
 				benVisitID);
 		return benCancerVitalDetail;
+	}
+
+	public String getNurseWorkList() {
+		List<Object[]> nurseWorkListData = reistrarRepoBenSearch.getNurseWorkList();
+		System.out.println("hello");
+		return WrapperRegWorklist.getRegistrarWorkList(nurseWorkListData);
 	}
 
 }

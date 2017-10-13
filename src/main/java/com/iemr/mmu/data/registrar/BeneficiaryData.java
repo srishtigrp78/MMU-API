@@ -21,7 +21,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
-import com.iemr.mmu.data.masterdata.registrar.CommunityMaster;
 
 @Entity
 @Table(name = "i_beneficiary")
@@ -49,7 +48,7 @@ public class BeneficiaryData {
 	@Expose
 	@Transient
 	private String beneficiaryName;
-	
+
 	@Expose
 	@Column(name = "StatusID")
 	private Short statusID;
@@ -57,7 +56,8 @@ public class BeneficiaryData {
 	@Column(name = "GenderID")
 	private Short genderID;
 	@Expose
-	@Transient String genderName;
+	@Transient
+	String genderName;
 
 	@Expose
 	@Column(name = "MaritalStatusID")
@@ -65,8 +65,8 @@ public class BeneficiaryData {
 	@Expose
 	@Column(name = "DOB")
 	private Timestamp dob;
-	
-	@Expose 
+	@Transient
+	@Expose
 	private String age;
 	@Expose
 	@Column(name = "FatherName")
@@ -117,6 +117,10 @@ public class BeneficiaryData {
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
+	@Expose
+	@Column(name = "FlowStatusFlag", insertable = false)
+	private Character flowStatusFlag;
+
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "beneficiaryRegID", referencedColumnName = "beneficiaryRegID", insertable = false, updatable = false)
 	@Expose
@@ -130,11 +134,12 @@ public class BeneficiaryData {
 	}
 
 	public BeneficiaryData(Long beneficiaryRegID, String beneficiaryID, Short titleID, String firstName,
-			String middleName, String lastName, Short statusID, Short genderID, Short maritalStatusID, Timestamp dob,
-			String fatherName, String spouseName, String aadharNo, String govIdentityNo, Short govIdentityTypeID,
-			Short registeredServiceID, Short sexuaOrientationID, String placeOfWork, String sourseOfInformation,
-			String emergencyRegistration, Boolean isHivPos, Boolean deleted, String createdBy, Timestamp createdDate,
-			String modifiedBy, Timestamp lastModDate, BeneficiaryDemographicData benDemoData,
+			String middleName, String lastName, String beneficiaryName, Short statusID, Short genderID,
+			String genderName, Short maritalStatusID, Timestamp dob, String age, String fatherName, String spouseName,
+			String aadharNo, String govIdentityNo, Short govIdentityTypeID, Short registeredServiceID,
+			Short sexuaOrientationID, String placeOfWork, String sourseOfInformation, String emergencyRegistration,
+			Boolean isHivPos, Boolean deleted, String createdBy, Timestamp createdDate, String modifiedBy,
+			Timestamp lastModDate, Character flowStatusFlag, BeneficiaryDemographicData benDemoData,
 			Set<BeneficiaryPhoneMapping> benPhoneMap) {
 		super();
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -143,10 +148,13 @@ public class BeneficiaryData {
 		this.firstName = firstName;
 		this.middleName = middleName;
 		this.lastName = lastName;
+		this.beneficiaryName = beneficiaryName;
 		this.statusID = statusID;
 		this.genderID = genderID;
+		this.genderName = genderName;
 		this.maritalStatusID = maritalStatusID;
 		this.dob = dob;
+		this.age = age;
 		this.fatherName = fatherName;
 		this.spouseName = spouseName;
 		this.aadharNo = aadharNo;
@@ -163,16 +171,18 @@ public class BeneficiaryData {
 		this.createdDate = createdDate;
 		this.modifiedBy = modifiedBy;
 		this.lastModDate = lastModDate;
+		this.flowStatusFlag = flowStatusFlag;
 		this.benDemoData = benDemoData;
 		this.benPhoneMap = benPhoneMap;
 	}
 
-	public BeneficiaryData(Long beneficiaryRegID, String beneficiaryID, String beneficiaryName, Date dob, Short genderID, Timestamp createdDate) {
+	public BeneficiaryData(Long beneficiaryRegID, String beneficiaryID, String beneficiaryName, Date dob,
+			Short genderID, Timestamp createdDate) {
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.beneficiaryID = beneficiaryID;
 		this.beneficiaryName = beneficiaryName;
 		this.genderID = genderID;
-		//this.dob = dob;
+		// this.dob = dob;
 		if (dob != null) {
 			Date date = (Date) dob;
 			Calendar cal = Calendar.getInstance();
@@ -205,17 +215,17 @@ public class BeneficiaryData {
 		}
 		this.createdDate = createdDate;
 	}
-	
+
 	public static ArrayList<BeneficiaryData> getBeneficiaryData(List<Object[]> resList) {
 		ArrayList<BeneficiaryData> resArray = new ArrayList<BeneficiaryData>();
 		for (Object[] obj : resList) {
-			BeneficiaryData cOBJ = new BeneficiaryData((Long) obj[0], (String) obj[1],(String) obj[2], (Date) obj[3], (Short) obj[4], (Timestamp) obj[5]);
+			BeneficiaryData cOBJ = new BeneficiaryData((Long) obj[0], (String) obj[1], (String) obj[2], (Date) obj[3],
+					(Short) obj[4], (Timestamp) obj[5]);
 			resArray.add(cOBJ);
 		}
 		return resArray;
 	}
-	
-	
+
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
@@ -264,6 +274,14 @@ public class BeneficiaryData {
 		this.lastName = lastName;
 	}
 
+	public String getBeneficiaryName() {
+		return beneficiaryName;
+	}
+
+	public void setBeneficiaryName(String beneficiaryName) {
+		this.beneficiaryName = beneficiaryName;
+	}
+
 	public Short getStatusID() {
 		return statusID;
 	}
@@ -280,6 +298,14 @@ public class BeneficiaryData {
 		this.genderID = genderID;
 	}
 
+	public String getGenderName() {
+		return genderName;
+	}
+
+	public void setGenderName(String genderName) {
+		this.genderName = genderName;
+	}
+
 	public Short getMaritalStatusID() {
 		return maritalStatusID;
 	}
@@ -294,6 +320,14 @@ public class BeneficiaryData {
 
 	public void setDob(Timestamp dob) {
 		this.dob = dob;
+	}
+
+	public String getAge() {
+		return age;
+	}
+
+	public void setAge(String age) {
+		this.age = age;
 	}
 
 	public String getFatherName() {
@@ -424,6 +458,14 @@ public class BeneficiaryData {
 		this.lastModDate = lastModDate;
 	}
 
+	public Character getFlowStatusFlag() {
+		return flowStatusFlag;
+	}
+
+	public void setFlowStatusFlag(Character flowStatusFlag) {
+		this.flowStatusFlag = flowStatusFlag;
+	}
+
 	public BeneficiaryDemographicData getBenDemoData() {
 		return benDemoData;
 	}
@@ -438,14 +480,6 @@ public class BeneficiaryData {
 
 	public void setBenPhoneMap(Set<BeneficiaryPhoneMapping> benPhoneMap) {
 		this.benPhoneMap = benPhoneMap;
-	}
-	
-	public String getGenderName() {
-		return genderName;
-	}
-
-	public void setGenderName(String genderName) {
-		this.genderName = genderName;
 	}
 
 }

@@ -37,7 +37,7 @@ public class CancerBreastExamination {
 	private Boolean everBreastFed;
 
 	@Expose
-	@Column(name = "BreastFeedingDuration_>6months")
+	@Column(name = "BreastFeedingDuration_gtr_eql_6months")
 	private Boolean breastFeedingDurationGTE6months;
 
 	@Expose

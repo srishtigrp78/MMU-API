@@ -29,4 +29,10 @@ public interface ReistrarRepoBenSearch extends CrudRepository<V_BenAdvanceSearch
 			+ " OR phoneNO = :searchKeyword ")
 
 	public List<Object[]> getQuickSearch(@Param("searchKeyword") String searchKeyword);
+
+	@Query("Select DISTINCT beneficiaryRegID, beneficiaryID, "
+			+ " UPPER( concat(IFNULL(firstName, ''), ' ',IFNULL(lastName,''))) as benName, "
+			+ " Date(dob), genderID, genderName, UPPER(fatherName) as fatherName, "
+			+ " districtID, districtName, districtBranchID, villageName, phoneNo from V_BenAdvanceSearch  Where flowStatusFlag = 'R' ")
+	public List<Object[]> getNurseWorkList();
 }

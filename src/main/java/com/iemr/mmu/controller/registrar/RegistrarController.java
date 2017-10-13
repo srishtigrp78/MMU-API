@@ -89,12 +89,12 @@ public class RegistrarController {
 							// i_beneficiary, i_bendemographics and
 							// m_benphonemap
 							// roll-back
-							response.setError(0, "BeneficiaryID Not Generated");
+							response.setResponse("Registration Done But BeneficiaryID Not Generated!!!");
 						}
 					} else {
 						// i_beneficiary, i_bendemographics and m_benphonemap
 						// roll-back
-						response.setError(0, "Something Went-Wrong");
+						response.setError(500, "Something Went-Wrong");
 					}
 				} else {
 					// i_beneficiary roll-back
@@ -176,7 +176,7 @@ public class RegistrarController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@RequestMapping(value = { "/get/benDetailsByRegID" }, method = { RequestMethod.POST }, produces = {
 			"application/json" })
@@ -187,8 +187,9 @@ public class RegistrarController {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("beneficiaryRegID")) {
 				if (obj.getLong("beneficiaryRegID") > 0) {
-					
-					String beneficiaryData= registrarServiceMasterDataImpl.getBenDetailsByRegID(obj.getLong("beneficiaryRegID"));
+
+					String beneficiaryData = registrarServiceMasterDataImpl
+							.getBenDetailsByRegID(obj.getLong("beneficiaryRegID"));
 
 					response.setResponse(beneficiaryData);
 				} else {
@@ -204,6 +205,5 @@ public class RegistrarController {
 		}
 		return response.toString();
 	}
-	
 
 }

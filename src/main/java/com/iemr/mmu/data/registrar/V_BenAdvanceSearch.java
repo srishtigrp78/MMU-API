@@ -14,6 +14,7 @@ import com.google.gson.annotations.Expose;
 @Entity
 @Table(name = "v_benadvancesearch")
 public class V_BenAdvanceSearch {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -65,14 +66,18 @@ public class V_BenAdvanceSearch {
 	@Column(name = "GovtIdentityNo")
 	private String govtIdentityNo;
 
+	@Expose
+	@Column(name = "FlowStatusFlag")
+	private Character flowStatusFlag;
+
 	public V_BenAdvanceSearch() {
 	}
 
-	public V_BenAdvanceSearch(Long id, Long beneficiaryRegID, String beneficiaryID, String firstName, String lastName,
+	public V_BenAdvanceSearch(Long ID, Long beneficiaryRegID, String beneficiaryID, String firstName, String lastName,
 			Short genderID, String genderName, Timestamp dob, String fatherName, String aadharNo, Integer districtID,
-			String districtName, Integer districtBranchID, String villageName, String phoneNo, String govtIdentityNo) {
+			String districtName, Integer districtBranchID, String villageName, String phoneNo, String govtIdentityNo,
+			Character flowStatusFlag) {
 		super();
-		this.id = id;
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.beneficiaryID = beneficiaryID;
 		this.firstName = firstName;
@@ -88,14 +93,7 @@ public class V_BenAdvanceSearch {
 		this.villageName = villageName;
 		this.phoneNo = phoneNo;
 		this.govtIdentityNo = govtIdentityNo;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
+		this.flowStatusFlag = flowStatusFlag;
 	}
 
 	public Long getBeneficiaryRegID() {
@@ -216,6 +214,14 @@ public class V_BenAdvanceSearch {
 
 	public void setGovtIdentityNo(String govtIdentityNo) {
 		this.govtIdentityNo = govtIdentityNo;
+	}
+
+	public Character getFlowStatusFlag() {
+		return flowStatusFlag;
+	}
+
+	public void setFlowStatusFlag(Character flowStatusFlag) {
+		this.flowStatusFlag = flowStatusFlag;
 	}
 
 }
