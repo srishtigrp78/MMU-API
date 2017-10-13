@@ -43,7 +43,9 @@ public class NurseMasterDataServiceImpl implements NurseMasterDataService{
 		Map<String, Object> resMap = new HashMap<String, Object>();
 		ArrayList<Object[]> DiseaseTypes = cancerDiseaseMasterRepo.getCancerDiseaseMaster();
 		ArrayList<Object[]> tobaccoUseStatus= cancerPersonalHabitMasterRepo.getCancerPersonalHabitTypeMaster("Tobacco Use Status");
+		ArrayList<Object[]> typeOfTobaccoProducts= cancerPersonalHabitMasterRepo.getCancerPersonalHabitTypeMaster("Type of Tobacco Product");
 		ArrayList<Object[]> alcoholUseStatus= cancerPersonalHabitMasterRepo.getCancerPersonalHabitTypeMaster("Alcohol Usage");
+		ArrayList<Object[]> frequencyOfAlcoholIntake= cancerPersonalHabitMasterRepo.getCancerPersonalHabitTypeMaster("Frequency of Alcohol Intake");
 		ArrayList<Object[]> dietTypes= cancerPersonalHabitMasterRepo.getCancerPersonalHabitTypeMaster("Dietary Type ");
 		ArrayList<Object[]> oilConsumed= cancerPersonalHabitMasterRepo.getCancerPersonalHabitTypeMaster("Oil Consumed");
 		ArrayList<Object[]> physicalActivityType= cancerPersonalHabitMasterRepo.getCancerPersonalHabitTypeMaster("Physical Activity Type ");
@@ -55,7 +57,9 @@ public class NurseMasterDataServiceImpl implements NurseMasterDataService{
 		try {
 			resMap.put("CancerDiseaseType", CancerDiseaseType.getCancerDiseaseTypeMasterData(DiseaseTypes));
 			resMap.put("tobaccoUseStatus", CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(tobaccoUseStatus));
+			resMap.put("typeOfTobaccoProducts", CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(typeOfTobaccoProducts));
 			resMap.put("alcoholUseStatus", CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(alcoholUseStatus));
+			resMap.put("frequencyOfAlcoholIntake", CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(frequencyOfAlcoholIntake));
 			resMap.put("dietTypes", CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(dietTypes));
 			resMap.put("oilConsumed", CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(oilConsumed));
 			resMap.put("physicalActivityType", CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(physicalActivityType));
