@@ -34,6 +34,7 @@ import com.iemr.mmu.repo.nurse.BenObstetricCancerHistoryRepo;
 import com.iemr.mmu.repo.nurse.BenPersonalCancerDietHistoryRepo;
 import com.iemr.mmu.repo.nurse.BenPersonalCancerHistoryRepo;
 import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
+import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
 
 @Service
@@ -47,6 +48,12 @@ public class NurseServiceImpl implements NurseService {
 	private BenCancerVitalDetailRepo benCancerVitalDetailRepo;
 
 	private ReistrarRepoBenSearch reistrarRepoBenSearch;
+	private RegistrarRepoBenData registrarRepoBenData;
+
+	@Autowired
+	public void setRegistrarRepoBenData(RegistrarRepoBenData registrarRepoBenData) {
+		this.registrarRepoBenData = registrarRepoBenData;
+	}
 
 	@Autowired
 	public void setReistrarRepoBenSearch(ReistrarRepoBenSearch reistrarRepoBenSearch) {
@@ -497,6 +504,11 @@ public class NurseServiceImpl implements NurseService {
 		List<Object[]> nurseWorkListData = reistrarRepoBenSearch.getNurseWorkList();
 		System.out.println("hello");
 		return WrapperRegWorklist.getRegistrarWorkList(nurseWorkListData);
+	}
+
+	public Integer updateBeneficiaryStatus(Character c, Long benRegID) {
+		Integer i = registrarRepoBenData.updateBenFlowStatus(c, benRegID);
+		return i;
 	}
 
 }

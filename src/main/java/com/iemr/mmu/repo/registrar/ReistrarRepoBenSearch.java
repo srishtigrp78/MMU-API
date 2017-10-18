@@ -33,6 +33,8 @@ public interface ReistrarRepoBenSearch extends CrudRepository<V_BenAdvanceSearch
 	@Query("Select DISTINCT beneficiaryRegID, beneficiaryID, "
 			+ " UPPER( concat(IFNULL(firstName, ''), ' ',IFNULL(lastName,''))) as benName, "
 			+ " Date(dob), genderID, genderName, UPPER(fatherName) as fatherName, "
-			+ " districtID, districtName, districtBranchID, villageName, phoneNo from V_BenAdvanceSearch  Where flowStatusFlag = 'R' ")
+			+ " districtID, districtName, districtBranchID, villageName, phoneNo "
+			+ " from V_BenAdvanceSearch  Where flowStatusFlag = 'R' and Date(regLastModDate) = curdate() ")
 	public List<Object[]> getNurseWorkList();
+	
 }

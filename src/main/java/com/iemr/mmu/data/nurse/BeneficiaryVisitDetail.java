@@ -98,6 +98,10 @@ public class BeneficiaryVisitDetail {
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
+	@Expose
+	@Column(name = "VisitFlowStatusFlag", insertable = false)
+	private String visitFlowStatusFlag;
+
 	public BeneficiaryVisitDetail() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -107,7 +111,8 @@ public class BeneficiaryVisitDetail {
 			Integer providerServiceMapID, Timestamp visitDateTime, Short visitNo, Short visitReasonID,
 			String visitReason, Integer visitCategoryID, String visitCategory, String pregnancyStatus, String rCHID,
 			String healthFacilityType, String healthFacilityLocation, String reportFilePath, Boolean deleted,
-			String processed, String createdBy, Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
+			String processed, String createdBy, Timestamp createdDate, String modifiedBy, Timestamp lastModDate,
+			String visitFlowStatusFlag) {
 		super();
 		this.benVisitID = benVisitID;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -130,13 +135,14 @@ public class BeneficiaryVisitDetail {
 		this.createdDate = createdDate;
 		this.modifiedBy = modifiedBy;
 		this.lastModDate = lastModDate;
+		this.visitFlowStatusFlag = visitFlowStatusFlag;
 	}
 
-	public BeneficiaryVisitDetail(Long benVisitID, Long beneficiaryRegID,
-			Integer providerServiceMapID, Timestamp visitDateTime, Short visitNo, Short visitReasonID,
-			String visitReason, Integer visitCategoryID, String visitCategory, String pregnancyStatus, String rCHID,
-			String healthFacilityType, String healthFacilityLocation, String reportFilePath, Boolean deleted,
-			String processed, String createdBy, Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
+	public BeneficiaryVisitDetail(Long benVisitID, Long beneficiaryRegID, Integer providerServiceMapID,
+			Timestamp visitDateTime, Short visitNo, Short visitReasonID, String visitReason, Integer visitCategoryID,
+			String visitCategory, String pregnancyStatus, String rCHID, String healthFacilityType,
+			String healthFacilityLocation, String reportFilePath, Boolean deleted, String processed, String createdBy,
+			Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
 		super();
 		this.benVisitID = benVisitID;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -159,7 +165,7 @@ public class BeneficiaryVisitDetail {
 		this.modifiedBy = modifiedBy;
 		this.lastModDate = lastModDate;
 	}
-	
+
 	public Long getBenVisitID() {
 		return benVisitID;
 	}
@@ -326,6 +332,14 @@ public class BeneficiaryVisitDetail {
 
 	public void setLastModDate(Timestamp lastModDate) {
 		this.lastModDate = lastModDate;
+	}
+
+	public String getVisitFlowStatusFlag() {
+		return visitFlowStatusFlag;
+	}
+
+	public void setVisitFlowStatusFlag(String visitFlowStatusFlag) {
+		this.visitFlowStatusFlag = visitFlowStatusFlag;
 	}
 
 }

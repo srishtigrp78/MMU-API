@@ -37,6 +37,62 @@ public class WrapperRegWorklist {
 	@Expose
 	private String age;
 
+	@Expose
+	private Long benVisitID;
+	@Expose
+	private Short benVisitNo;
+
+	public static String getDocWorkListData(List<Object[]> resList) {
+		ArrayList<WrapperRegWorklist> resArray = new ArrayList<>();
+		if (resList.size() > 0) {
+			for (Object[] obj : resList) {
+				WrapperRegWorklist wrapperRegWorklist = new WrapperRegWorklist();
+				wrapperRegWorklist.beneficiaryRegID = (Long) obj[0];
+				wrapperRegWorklist.beneficiaryID = (String) obj[1];
+				wrapperRegWorklist.benName = (String) obj[2];
+				wrapperRegWorklist.dob = (Date) obj[3];
+				if (obj[3] != null) {
+					Date date = (Date) obj[3];
+					Calendar cal = Calendar.getInstance();
+
+					cal.setTime(date);
+
+					int year = cal.get(Calendar.YEAR);
+					int month = cal.get(Calendar.MONTH) + 1;
+					int day = cal.get(Calendar.DAY_OF_MONTH);
+
+					java.time.LocalDate todayDate = java.time.LocalDate.now();
+					java.time.LocalDate birthdate = java.time.LocalDate.of(year, month, day);
+					Period p = Period.between(birthdate, todayDate);
+
+					int d = p.getDays();
+					int m = p.getMonths();
+					int y = p.getYears();
+					System.out.println("helloo...");
+
+					if (y > 0) {
+						wrapperRegWorklist.age = y + " years - " + m + " months";
+					} else {
+						if (m > 0) {
+							wrapperRegWorklist.age = m + " months - " + d + " days";
+						} else {
+							wrapperRegWorklist.age = d + " days";
+						}
+					}
+
+					System.out.println("helloo");
+				}
+				wrapperRegWorklist.genderID = (Short) obj[4];
+				wrapperRegWorklist.genderName = (String) obj[5];
+				wrapperRegWorklist.benVisitID = (Long) obj[6];
+				wrapperRegWorklist.benVisitNo = (Short) obj[7];
+				resArray.add(wrapperRegWorklist);
+				System.out.println("helloooo");
+			}
+		}
+		return new Gson().toJson(resArray);
+	}
+
 	public static String getRegistrarWorkList(List<Object[]> resList) {
 		// GsonBuilder gsonBuilder = new GsonBuilder();
 		// gsonBuilder.serializeNulls();

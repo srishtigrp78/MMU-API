@@ -37,7 +37,7 @@ public class CancerSignAndSymptoms {
 
 	@Expose
 	@Column(name = "Cough_gtr_eq_2Weeks")
-	private Boolean coughGTE2Weeks;
+	private Boolean coughgt2Weeks;
 
 	@Expose
 	@Column(name = "BloodInSputum")
@@ -130,7 +130,7 @@ public class CancerSignAndSymptoms {
 		this.benVisitID = benVisitID;
 		this.providerServiceMapID = providerServiceMapID;
 		this.shortnessOfBreath = shortnessOfBreath;
-		this.coughGTE2Weeks = coughGTE2Weeks;
+		this.coughgt2Weeks = coughGTE2Weeks;
 		this.bloodInSputum = bloodInSputum;
 		this.difficultyInOpeningMouth = difficultyInOpeningMouth;
 		this.nonHealingUlcerOrPatchOrGrowth = nonHealingUlcerOrPatchOrGrowth;
@@ -192,11 +192,11 @@ public class CancerSignAndSymptoms {
 	}
 
 	public Boolean getCoughGTE2Weeks() {
-		return coughGTE2Weeks;
+		return coughgt2Weeks;
 	}
 
 	public void setCoughGTE2Weeks(Boolean coughGTE2Weeks) {
-		this.coughGTE2Weeks = coughGTE2Weeks;
+		this.coughgt2Weeks = coughGTE2Weeks;
 	}
 
 	public Boolean getBloodInSputum() {

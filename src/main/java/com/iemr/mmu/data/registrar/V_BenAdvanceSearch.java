@@ -65,18 +65,24 @@ public class V_BenAdvanceSearch {
 	@Expose
 	@Column(name = "GovtIdentityNo")
 	private String govtIdentityNo;
-
 	@Expose
 	@Column(name = "FlowStatusFlag")
 	private Character flowStatusFlag;
 
+	@Expose
+	@Column(name = "RegCreatedDate")
+	private Timestamp regCreatedDate;
+	@Expose
+	@Column(name = "RegLastModDate")
+	private Timestamp regLastModDate;
+
 	public V_BenAdvanceSearch() {
 	}
 
-	public V_BenAdvanceSearch(Long ID, Long beneficiaryRegID, String beneficiaryID, String firstName, String lastName,
+	public V_BenAdvanceSearch(Long id, Long beneficiaryRegID, String beneficiaryID, String firstName, String lastName,
 			Short genderID, String genderName, Timestamp dob, String fatherName, String aadharNo, Integer districtID,
 			String districtName, Integer districtBranchID, String villageName, String phoneNo, String govtIdentityNo,
-			Character flowStatusFlag) {
+			Character flowStatusFlag, Timestamp regCreatedDate, Timestamp regLastModDate) {
 		super();
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.beneficiaryID = beneficiaryID;
@@ -94,6 +100,16 @@ public class V_BenAdvanceSearch {
 		this.phoneNo = phoneNo;
 		this.govtIdentityNo = govtIdentityNo;
 		this.flowStatusFlag = flowStatusFlag;
+		this.regCreatedDate = regCreatedDate;
+		this.regLastModDate = regLastModDate;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Long getBeneficiaryRegID() {
@@ -222,6 +238,22 @@ public class V_BenAdvanceSearch {
 
 	public void setFlowStatusFlag(Character flowStatusFlag) {
 		this.flowStatusFlag = flowStatusFlag;
+	}
+
+	public Timestamp getRegCreatedDate() {
+		return regCreatedDate;
+	}
+
+	public void setRegCreatedDate(Timestamp regCreatedDate) {
+		this.regCreatedDate = regCreatedDate;
+	}
+
+	public Timestamp getRegLastModDate() {
+		return regLastModDate;
+	}
+
+	public void setRegLastModDate(Timestamp regLastModDate) {
+		this.regLastModDate = regLastModDate;
 	}
 
 }

@@ -73,6 +73,9 @@ public class NurseController {
 		try {
 			Long benVisitID = nurseServiceImpl.saveBeneficiaryVisitDetails(beneficiaryVisitDetail);
 			if (benVisitID != null && benVisitID > 0) {
+
+				Integer i = nurseServiceImpl.updateBeneficiaryStatus('N', beneficiaryVisitDetail.getBeneficiaryRegID());
+				//Please handle all cases here......after customer demo
 				Map<String, Long> resMap = new HashMap<String, Long>();
 				resMap.put("benVisitID", benVisitID);
 				response.setResponse(new Gson().toJson(resMap));
@@ -275,10 +278,12 @@ public class NurseController {
 	@RequestMapping(value = { "/getBenDataFrmNurseToDocHistoryScreen" }, method = { RequestMethod.POST }, produces = {
 			"application/json" })
 	public String getBenDataFrmNurseScrnToDocScrnHistory(@RequestBody String comingRequest) {
+		System.out.println(comingRequest);
 		OutputResponse response = new OutputResponse();
 		logger.info("getBenDataFrmNurseScrnToDocScrnHistory request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
+			System.out.println(obj);
 			if (obj.length() > 1) {
 				Long benRegID = obj.getLong("benRegID");
 				Long benVisitID = obj.getLong("benVisitID");
@@ -301,6 +306,7 @@ public class NurseController {
 			"application/json" })
 	public String getBenDataFrmNurseScrnToDocScrnVital(@RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
+		logger.info("getBenDataFrmNurseToDocVitalScreen request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
@@ -312,9 +318,10 @@ public class NurseController {
 			} else {
 
 			}
+			logger.info("getBenDataFrmNurseToDocVitalScreen response:" + response);
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error in getBenDataFrmNurseScrnToDocScrnHistory:" + e);
+			logger.error("Error in getBenDataFrmNurseToDocVitalScreen:" + e);
 		}
 		return response.toString();
 	}

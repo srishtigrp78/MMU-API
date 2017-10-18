@@ -9,12 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
-import com.iemr.mmu.data.masterdata.doctor.PreMalignantLesion;
-import com.iemr.mmu.data.masterdata.nurse.CancerDiseaseType;
-import com.iemr.mmu.data.masterdata.nurse.CancerPersonalHabitType;
-import com.iemr.mmu.data.masterdata.nurse.FamilyMemberType;
-import com.iemr.mmu.data.masterdata.nurse.VisitCategory;
-import com.iemr.mmu.data.masterdata.nurse.VisitReason;
 import com.iemr.mmu.data.masterdata.registrar.CommunityMaster;
 import com.iemr.mmu.data.masterdata.registrar.GenderMaster;
 import com.iemr.mmu.data.masterdata.registrar.GovIdEntityType;
@@ -32,12 +26,6 @@ import com.iemr.mmu.repo.masterrepo.MaritalStatusMasterRepo;
 import com.iemr.mmu.repo.masterrepo.OccupationMasterRepo;
 import com.iemr.mmu.repo.masterrepo.QualificationMasterRepo;
 import com.iemr.mmu.repo.masterrepo.ReligionMasterRepo;
-import com.iemr.mmu.repo.masterrepo.doctor.PreMalignantLesionMasterRepo;
-import com.iemr.mmu.repo.masterrepo.nurse.CancerDiseaseMasterRepo;
-import com.iemr.mmu.repo.masterrepo.nurse.CancerPersonalHabitMasterRepo;
-import com.iemr.mmu.repo.masterrepo.nurse.FamilyMemberMasterRepo;
-import com.iemr.mmu.repo.masterrepo.nurse.VisitCategoryMasterRepo;
-import com.iemr.mmu.repo.masterrepo.nurse.VisitReasonMasterRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 
 @Service
@@ -92,12 +80,12 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 	public void setReligionMasterRepo(ReligionMasterRepo religionMasterRepo) {
 		this.religionMasterRepo = religionMasterRepo;
 	}
-	
+
 	@Autowired
 	public void setRegistrarRepoBenData(RegistrarRepoBenData registrarRepoBenData) {
 		this.registrarRepoBenData = registrarRepoBenData;
 	}
-	
+
 	public String getRegMasterData() {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 		ArrayList<Object[]> cm = communityMasterRepo.getCommunityMaster();
@@ -129,21 +117,23 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 		return new Gson().toJson(resMap);
 
 	}
-	
+
 	@Override
-	public String getBenDetailsByRegID(Long beneficiaryRegID){
+	public String getBenDetailsByRegID(Long beneficiaryRegID) {
 		List<Object[]> benDetailsList = registrarRepoBenData.getBenDetailsByRegID(beneficiaryRegID);
 		BeneficiaryData benDetails = BeneficiaryData.getBeneficiaryData(benDetailsList).get(0);
-		if(benDetails != null){
-			if(benDetails.getGenderID()==1){
-				benDetails.setGenderName("Male");
-			}else if(benDetails.getGenderID()==2){
-				benDetails.setGenderName("Female");
-			}else{
-				benDetails.setGenderName("Transgender");
+		if (benDetails != null) {
+			if (benDetails.getGenderID() != null) {
+				if (benDetails.getGenderID() == 1) {
+					benDetails.setGenderName("Male");
+				} else if (benDetails.getGenderID() == 2) {
+					benDetails.setGenderName("Female");
+				} else {
+					benDetails.setGenderName("Transgender");
+				}
 			}
 		}
 		return new Gson().toJson(benDetails);
 	}
-	
+
 }

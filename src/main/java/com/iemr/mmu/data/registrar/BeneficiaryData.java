@@ -57,7 +57,7 @@ public class BeneficiaryData {
 	private Short genderID;
 	@Expose
 	@Transient
-	String genderName;
+	private String genderName;
 
 	@Expose
 	@Column(name = "MaritalStatusID")
@@ -68,6 +68,9 @@ public class BeneficiaryData {
 	@Transient
 	@Expose
 	private String age;
+	@Transient
+	@Expose
+	private Integer ageVal;
 	@Expose
 	@Column(name = "FatherName")
 	private String fatherName;
@@ -204,11 +207,14 @@ public class BeneficiaryData {
 
 			if (y > 0) {
 				this.age = y + " years - " + m + " months";
+				this.ageVal = y;
 			} else {
 				if (m > 0) {
 					this.age = m + " months - " + d + " days";
+					this.ageVal = 0;
 				} else {
 					this.age = d + " days";
+					this.ageVal = 0;
 				}
 			}
 

@@ -489,5 +489,20 @@ public class DoctorController {
 		return response.toString();
 	}
 	
+	@CrossOrigin()
+	@RequestMapping(value = { "/getDocWorklist" }, method = { RequestMethod.GET }, produces = { "application/json" })
+	public String getNurseWorkList() {
+		OutputResponse response = new OutputResponse();
+		try {
+			String s = doctorServiceImpl.getDocWorkList();
+			response.setResponse(s);
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setError(e);
+		}
+		return response.toString();
+	}
+
+	
 	
 }
