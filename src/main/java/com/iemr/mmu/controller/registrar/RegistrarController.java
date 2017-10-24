@@ -1,8 +1,5 @@
 package com.iemr.mmu.controller.registrar;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -14,10 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.iemr.mmu.controller.nurse.NurseController;
-import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.registrar.BeneficiaryData;
 import com.iemr.mmu.data.registrar.V_BenAdvanceSearch;
 import com.iemr.mmu.data.registrar.WrapperBeneficiaryRegistration;
@@ -98,7 +92,7 @@ public class RegistrarController {
 					Long benDemoID = registrarServiceImpl.createBeneficiaryDemographic(benD, benRegID);
 					Long benPhonMapID = registrarServiceImpl.createBeneficiaryPhoneMapping(benD, benRegID);
 
-					int  benGovIdMapID = registrarServiceImpl.createBenGovIdMapping(benD, benRegID);
+					int benGovIdMapID = registrarServiceImpl.createBenGovIdMapping(benD, benRegID);
 
 					Long benbenDemoOtherID = registrarServiceImpl.createBeneficiaryDemographicAdditional(benD,
 							benRegID);
@@ -227,37 +221,40 @@ public class RegistrarController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin
-	@RequestMapping(value = { "/save/visitDetailScreen/VisitDetail" }, method = { RequestMethod.POST }, produces = {
+	@RequestMapping(value = { "/update/benDetailsAndSubmitToNurse" }, method = { RequestMethod.POST }, produces = {
 			"application/json" })
-	public String saveBeneficiaryVisitDetail(@RequestBody String requestObj) {
+	public String saveBeneficiaryVisitDetail(@RequestBody String comingRequest) {
 
 		OutputResponse response = new OutputResponse();
 		inputMapper = new InputMapper();
-		logger.info("saveBeneficiaryVisitDetail request:" + requestObj);
-		BeneficiaryVisitDetail beneficiaryVisitDetail = InputMapper.gson().fromJson(requestObj,
-				BeneficiaryVisitDetail.class);
+		logger.info("benDetailsAndSubmitToNurse request:" + comingRequest);
 		try {
-			Long benVisitID = nurseServiceImpl.saveBeneficiaryVisitDetails(beneficiaryVisitDetail);
-			if (benVisitID != null && benVisitID > 0) {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("beneficiaryRegID")) {
+				if (obj.getLong("beneficiaryRegID") > 0) {
 
-				Integer i = nurseServiceImpl.updateBeneficiaryStatus('R', beneficiaryVisitDetail.getBeneficiaryRegID());
-				//Please handle all cases here......after customer demo
-				Map<String, Long> resMap = new HashMap<String, Long>();
-				resMap.put("benVisitID", benVisitID);
-				response.setResponse(new Gson().toJson(resMap));
+					Integer i = nurseServiceImpl.updateBeneficiaryStatus('R', obj.getLong("beneficiaryRegID"));
+					if (i != null && i > 0) {
+						response.setResponse("Beneficiary Data Updated Successfully.");
+					} else {
+						response.setError(500, "Something went Wrong please try after Some Time !!!");
+					}
+
+				} else {
+					response.setError(500, "Beneficiary Registration ID is Not valid !!!");
+				}
 			} else {
-				response.setError(500, "Failed to Store Beneficiary Visit Details");
+				response.setError(500, "Beneficiary Registration ID is Not valid !!!");
 			}
-			logger.info("saveBeneficiaryVisitDetail response:" + response);
+			logger.info("benDetailsAndSubmitToNurse response:" + response);
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error in saveBeneficiaryVisitDetail:" + e);
+			logger.error("Error in benDetailsAndSubmitToNurse:" + e);
 		}
 
 		return response.toString();
 	}
-
 
 }
