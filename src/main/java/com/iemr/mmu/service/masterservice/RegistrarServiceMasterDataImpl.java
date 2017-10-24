@@ -91,6 +91,7 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 		ArrayList<Object[]> cm = communityMasterRepo.getCommunityMaster();
 		ArrayList<Object[]> gm = genderMasterRepo.getGenderMaster();
 		ArrayList<Object[]> gietm = govIdEntityTypeRepo.getGovIdEntityMaster();
+		ArrayList<Object[]> ogietm = govIdEntityTypeRepo.getOtherGovIdEntityMaster();
 		ArrayList<Object[]> ism = incomeStatusMasterRepo.getIncomeStatusMaster();
 		ArrayList<Object[]> msm = maritalStatusMasterRepo.getMaritalStatusMaster();
 		ArrayList<Object[]> om = occupationMasterRepo.getOccupationMaster();
@@ -102,6 +103,7 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 			resMap.put("communityMaster", CommunityMaster.getCommunityMasterData(cm));
 			resMap.put("genderMaster", GenderMaster.getGenderMasterData(gm));
 			resMap.put("govIdEntityMaster", GovIdEntityType.getGovIdEntityTypeData(gietm));
+			resMap.put("otherGovIdEntityMaster", GovIdEntityType.getGovIdEntityTypeData(ogietm));
 			resMap.put("incomeMaster", IncomeStatusMaster.getIncomeStatusMasterData(ism));
 			resMap.put("maritalStatusMaster", MaritalStatusMaster.getMaritalStatusMasterData(msm));
 			resMap.put("occupationMaster", OccupationMaster.getOccupationMasterData(om));

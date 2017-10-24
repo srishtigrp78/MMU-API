@@ -24,6 +24,9 @@ public class GovIdEntityType {
 	@Expose
 	@Column(name = "Deleted")
 	private Boolean deleted;
+	@Expose
+	@Column(name = "IsGovtID")
+	private Boolean isGovtID;
 
 	public GovIdEntityType() {
 	}

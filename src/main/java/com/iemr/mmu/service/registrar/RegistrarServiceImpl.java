@@ -12,10 +12,12 @@ import org.springframework.stereotype.Service;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.registrar.BenGovIdMapping;
 import com.iemr.mmu.data.registrar.BeneficiaryData;
+import com.iemr.mmu.data.registrar.BeneficiaryDemographicAdditional;
 import com.iemr.mmu.data.registrar.BeneficiaryDemographicData;
 import com.iemr.mmu.data.registrar.BeneficiaryPhoneMapping;
 import com.iemr.mmu.data.registrar.V_BenAdvanceSearch;
 import com.iemr.mmu.data.registrar.WrapperRegWorklist;
+import com.iemr.mmu.repo.registrar.BeneficiaryDemographicAdditionalRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenDemoData;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenGovIdMapping;
@@ -29,6 +31,13 @@ public class RegistrarServiceImpl implements RegistrarService {
 	private RegistrarRepoBenPhoneMapData registrarRepoBenPhoneMapData;
 	private RegistrarRepoBenGovIdMapping registrarRepoBenGovIdMapping;
 	private ReistrarRepoBenSearch reistrarRepoBenSearch;
+	private BeneficiaryDemographicAdditionalRepo beneficiaryDemographicAdditionalRepo;
+
+	@Autowired
+	public void setBeneficiaryDemographicAdditionalRepo(
+			BeneficiaryDemographicAdditionalRepo beneficiaryDemographicAdditionalRepo) {
+		this.beneficiaryDemographicAdditionalRepo = beneficiaryDemographicAdditionalRepo;
+	}
 
 	@Autowired
 	public void setRegistrarRepoBenData(RegistrarRepoBenData registrarRepoBenData) {
@@ -76,6 +85,49 @@ public class RegistrarServiceImpl implements RegistrarService {
 			tmpBenDemoID = benDemoData.getBenDemographicsID();
 		}
 		return tmpBenDemoID;
+	}
+
+	@Override
+	public Long createBeneficiaryDemographicAdditional(JsonObject benD, Long benRegID) {
+		Long tmpBenDemoAddID = null;
+		BeneficiaryDemographicAdditional beneficiaryDemographicAdditional = beneficiaryDemographicAdditionalRepo
+				.save(getBeneficiaryDemographicAdditional(benD, benRegID));
+		if (beneficiaryDemographicAdditional != null) {
+			tmpBenDemoAddID = beneficiaryDemographicAdditional.getBenDemoAdditionalID();
+		}
+		return tmpBenDemoAddID;
+	}
+
+	private BeneficiaryDemographicAdditional getBeneficiaryDemographicAdditional(JsonObject benD, Long benRegID) {
+		BeneficiaryDemographicAdditional benDemoAd = new BeneficiaryDemographicAdditional();
+		benDemoAd.setBeneficiaryRegID(benRegID);
+
+		if (!benD.get("literacyStatus").isJsonNull()) {
+			benDemoAd.setLiteracyStatus(benD.get("literacyStatus").getAsString());
+		}
+
+		if (!benD.get("motherName").isJsonNull()) {
+			benDemoAd.setMotherName(benD.get("motherName").getAsString());
+		}
+		if (!benD.get("emailID").isJsonNull()) {
+			benDemoAd.setEmailID(benD.get("emailID").getAsString());
+		}
+		if (!benD.get("bankName").isJsonNull()) {
+			benDemoAd.setBankName(benD.get("bankName").getAsString());
+		}
+		if (!benD.get("branchName").isJsonNull()) {
+			benDemoAd.setBranchName(benD.get("branchName").getAsString());
+		}
+		if (!benD.get("IFSCCode").isJsonNull()) {
+			benDemoAd.setiFSCCode(benD.get("IFSCCode").getAsString());
+		}
+		if (!benD.get("accountNumber").isJsonNull()) {
+			benDemoAd.setAccountNo(benD.get("accountNumber").getAsString());
+		}
+		if (!benD.get("createdBy").isJsonNull())
+			benDemoAd.setCreatedBy(benD.get("createdBy").getAsString());
+
+		return benDemoAd;
 	}
 
 	@Override
@@ -224,7 +276,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 		if (!benD.get("districtID").isJsonNull())
 			benDemoData.setDistrictID(benD.get("districtID").getAsInt());
 		if (!benD.get("areaID").isJsonNull())
-			benDemoData.setAreaID(benD.get("areaID").getAsInt());
+			benDemoData.setBlockID(benD.get("areaID").getAsInt());
 		if (!benD.get("servicePointID").isJsonNull())
 			benDemoData.setServicePointID(benD.get("servicePointID").getAsInt());
 		if (!benD.get("villageID").isJsonNull())

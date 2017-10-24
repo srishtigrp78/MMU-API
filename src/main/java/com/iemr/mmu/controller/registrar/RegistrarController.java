@@ -80,9 +80,12 @@ public class RegistrarController {
 					Long benDemoID = registrarServiceImpl.createBeneficiaryDemographic(benD, benRegID);
 					Long benPhonMapID = registrarServiceImpl.createBeneficiaryPhoneMapping(benD, benRegID);
 
-					int benGovIdMapID = registrarServiceImpl.createBenGovIdMapping(benD, benRegID);
+					int  benGovIdMapID = registrarServiceImpl.createBenGovIdMapping(benD, benRegID);
 
-					if (benRegID > 0 && benDemoID > 0 && benPhonMapID > 0) {
+					Long benbenDemoOtherID = registrarServiceImpl.createBeneficiaryDemographicAdditional(benD,
+							benRegID);
+
+					if (benRegID > 0 && benDemoID > 0 && benPhonMapID > 0 && benbenDemoOtherID > 0) {
 						if (benData.getBeneficiaryID() != null) {
 							response.setResponse(benData.getBeneficiaryID());
 						} else {

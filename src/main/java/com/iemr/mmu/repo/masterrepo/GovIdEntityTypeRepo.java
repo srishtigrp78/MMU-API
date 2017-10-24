@@ -10,6 +10,11 @@ import com.iemr.mmu.data.masterdata.registrar.GovIdEntityType;
 
 @Repository
 public interface GovIdEntityTypeRepo extends CrudRepository<GovIdEntityType, Short> {
-	@Query(" select govtIdentityTypeID, identityType from GovIdEntityType where  deleted = false order by identityType ")
+	@Query(" select govtIdentityTypeID, identityType from GovIdEntityType where  deleted = false "
+			+ " and isGovtID = true  order by identityType ")
 	public ArrayList<Object[]> getGovIdEntityMaster();
+	
+	@Query(" select govtIdentityTypeID, identityType from GovIdEntityType where  deleted = false  "
+			+ " and isGovtID = false order by identityType ")
+	public ArrayList<Object[]> getOtherGovIdEntityMaster();
 }
