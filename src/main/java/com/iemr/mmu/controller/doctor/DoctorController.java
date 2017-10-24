@@ -333,8 +333,11 @@ public class DoctorController {
 	}
 	
 	@CrossOrigin()
-	@RequestMapping(value = { "/doctorMasterData" }, method = { RequestMethod.POST }, produces = {
-			"application/json" })
+	@ApiOperation(
+			value = "provides doctor master Data",
+			consumes = "application/json",
+			produces = "application/json")
+	@RequestMapping(value = { "/doctorMasterData" }, method = { RequestMethod.POST })
 	public String getMasterDataForDoctor() {
 		
 		OutputResponse response = new OutputResponse();
@@ -350,9 +353,17 @@ public class DoctorController {
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value = { "/update/visitDetailScreen/VisitDetail" }, method = { RequestMethod.POST }, produces = {
-			"application/json" })
-	public String updateBeneficiaryVisitDetail(@RequestBody String requestObj) {
+	@ApiOperation(
+			value = "update nurse visit detail",
+			consumes = "application/json",
+			produces = "application/json")
+	@RequestMapping(value = { "/update/visitDetailScreen/VisitDetail" }, method = { RequestMethod.POST })
+	public String updateBeneficiaryVisitDetail(@ApiParam(
+			value = "{\"benVisitID\": \"Long\", \"beneficiaryRegID\":\"Long\",\"providerServiceMapID\": \"Integer\","
+					+ "\"visitDateTime\":\"Timestamp\", \"visitNo\":\"Short\", \"visitReasonID\":\"Short\", \"visitReason\":\"String\","
+					+ "\"visitCategoryID\":\"Integer\", \"visitCategory\":\"String\", \"pregnancyStatus\":\"String\","
+					+ "\"rCHID\":\"String\", \"healthFacilityType\":\"String\", \"healthFacilityLocation\":\"String\","
+					+ "\"reportFilePath\":\"String\",\"modifiedBy\":\"String\"}") @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		inputMapper = new InputMapper();
@@ -379,9 +390,14 @@ public class DoctorController {
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value = { "/update/historyScreen/benFamilyCancerHistory" }, method = { RequestMethod.POST }, produces = {
-			"application/json" })
-	public String updateBenFamilyCancerHistory(@RequestBody String requestObj) {
+	@ApiOperation(
+			value = "update Ben Family Cancer History",
+			consumes = "application/json",
+			produces = "application/json")
+	@RequestMapping(value = { "/update/historyScreen/benFamilyCancerHistory" }, method = { RequestMethod.POST })
+	public String updateBenFamilyCancerHistory(@ApiParam(
+			value = "{\"ID\": \"Long\", \"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\",\"providerServiceMapID\": \"Integer\","
+					+ "\"cancerDiseaseType\":\"String\", \"familyMemberList\":\"List\", \"modifiedBy\":\"String\"}") @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		inputMapper = new InputMapper();
@@ -409,9 +425,18 @@ public class DoctorController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = { "/update/historyScreen/benObstetricCancerHistory" }, method = {
-			RequestMethod.POST }, produces = { "application/json" })
-	public String updateBenObstetricCancerHistory(@RequestBody String requestObj) {
+	@ApiOperation(
+			value = "update Ben Obstetric Cancer History",
+			consumes = "application/json",
+			produces = "application/json")
+	@RequestMapping(value = { "/update/historyScreen/benObstetricCancerHistory" }, method = {RequestMethod.POST })
+	public String updateBenObstetricCancerHistory(@ApiParam(
+			value = "{\"ID\": \"Long\", \"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\",\"providerServiceMapID\": \"Integer\","
+					+ "\"pregnancyStatus\":\"String\", \"isUrinePregTest\":\"Boolean\", \"pregnant_No\":\"String\", \"noOfLivingChild\":\"Integer\","
+					+ "\"isAbortion\":\"Boolean\", \"isOralContraceptiveUsed\":\"Boolean\", \"isHormoneReplacementTherapy\":\"Boolean\", \"menarche_Age\":\"Integer\","
+					+ "\"isMenstrualCycleRegular\":\"Boolean\", \"menstrualCycleLength\":\"Integer\", \"menstrualFlowDuration\":\"Integer\", \"menstrualFlowType\":\"String\","
+					+ "\"isDysmenorrhea\":\"Boolean\", \"isInterMenstrualBleeding\":\"Boolean\", \"menopauseAge\":\"Integer\", \"isPostMenopauseBleeding\":\"Boolean\","
+					+ " \"isFoulSmellingDischarge\":\"Boolean\", \"modifiedBy\":\"String\"}") @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("updateBenObstetricCancerHistory request:"+requestObj);
@@ -435,9 +460,19 @@ public class DoctorController {
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value = { "/update/historyScreen/benPersonalCancerHistory" }, method = {
-			RequestMethod.POST }, produces = { "application/json" })
-	public String updateBenPersonalCancerHistory(@RequestBody String requestObj) {
+	@ApiOperation(
+			value = "update Ben Personal Cancer History",
+			consumes = "application/json",
+			produces = "application/json")
+	@RequestMapping(value = { "/update/historyScreen/benPersonalCancerHistory" }, method = {RequestMethod.POST })
+	public String updateBenPersonalCancerHistory(@ApiParam(
+			value = "{\"ID\": \"Long\", \"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\",\"providerServiceMapID\": \"Integer\","
+					+ "\"tobaccoUse\":\"String\", \"startAge_year\":\"Integer\", \"endAge_year\":\"Integer\", \"typeOfTobaccoProductList\":\"List\","
+					+ "\"quantityPerDay\":\"Integer\", \"isFilteredCigaerette\":\"Boolean\", \"isCigaretteExposure\":\"Boolean\", \"isBetelNutChewing\":\"Boolean\","
+					+ "\"durationOfBetelQuid\":\"Integer\", \"alcoholUse\":\"String\", \"ssAlcoholUsed\":\"Boolean\", \"frequencyOfAlcoholUsed\":\"String\","
+					+ " \"dietType\":\"String\",\"fruitConsumptionDays\":\"Integer\",\"fruitQuantityPerDay\":\"Integer\",\"vegetableConsumptionDays\":\"Integer\","
+					+ "\"vegetableQuantityPerDay\":\"Integer\", \"intakeOfOutsidePreparedMeal\":\"Integer\",\"typeOfOilConsumedList\":\"List\","
+					+ "\"physicalActivityType\":\"String\", \"ssRadiationExposure\":\"Boolean\", \"isThyroidDisorder\":\"Boolean\",\"modifiedBy\":\"String\"}") @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("updateBenPersonalCancerHistory request:"+requestObj);
@@ -466,9 +501,18 @@ public class DoctorController {
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value = { "/update/vitalScreen/benVitalDetail" }, method = { RequestMethod.POST }, produces = {
-			"application/json" })
-	public String upodateBenVitalDetail(@RequestBody String requestObj) {
+	@ApiOperation(
+			value = "update Ben Vital Detail",
+			consumes = "application/json",
+			produces = "application/json")
+	@RequestMapping(value = { "/update/vitalScreen/benVitalDetail" }, method = { RequestMethod.POST })
+	public String upodateBenVitalDetail(@ApiParam(
+			value = "{\"ID\": \"Long\", \"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\",\"providerServiceMapID\": \"Integer\","
+					+ "\"weight_Kg\":\"Double\", \"height_cm\":\"Double\", \"waistCircumference_cm\":\"Double\", \"bloodGlucose_Fasting\":\"Short\","
+					+ "\"bloodGlucose_Random\":\"Short\", \"bloodGlucose_2HrPostPrandial\":\"Short\", \"systolicBP_1stReading\":\"Short\", "
+					+ "\"diastolicBP_1stReading\":\"Short\", \"systolicBP_2ndReading\":\"Short\", \"diastolicBP_2ndReading\":\"Short\", "
+					+ "\"systolicBP_3rdReading\":\"Short\", \"diastolicBP_3rdReading\":\"Short\","
+					+ " \"hbA1C\":\"Short\",\"hemoglobin\":\"Short\",\"modifiedBy\":\"String\"}") @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("upodateBenVitalDetail request:"+requestObj);
@@ -490,7 +534,11 @@ public class DoctorController {
 	}
 	
 	@CrossOrigin()
-	@RequestMapping(value = { "/getDocWorklist" }, method = { RequestMethod.GET }, produces = { "application/json" })
+	@ApiOperation(
+			value = "provides doctor worklist",
+			consumes = "application/json",
+			produces = "application/json")
+	@RequestMapping(value = { "/getDocWorklist" }, method = { RequestMethod.GET })
 	public String getNurseWorkList() {
 		OutputResponse response = new OutputResponse();
 		try {

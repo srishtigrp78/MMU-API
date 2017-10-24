@@ -1,7 +1,12 @@
 package com.iemr.mmu.controller.registrar;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,11 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.iemr.mmu.controller.nurse.NurseController;
+import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.registrar.BeneficiaryData;
 import com.iemr.mmu.data.registrar.V_BenAdvanceSearch;
 import com.iemr.mmu.data.registrar.WrapperBeneficiaryRegistration;
 import com.iemr.mmu.service.masterservice.RegistrarServiceMasterDataImpl;
+import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.service.registrar.RegistrarServiceImpl;
 import com.iemr.utils.mapper.InputMapper;
 import com.iemr.utils.response.OutputResponse;
@@ -23,9 +32,11 @@ import com.iemr.utils.response.OutputResponse;
 @RequestMapping({ "/registrar" })
 public class RegistrarController {
 
+	private Logger logger = LoggerFactory.getLogger(RegistrarController.class);
 	private InputMapper inputMapper = new InputMapper();
 	private RegistrarServiceImpl registrarServiceImpl;
 	private RegistrarServiceMasterDataImpl registrarServiceMasterDataImpl;
+	private NurseServiceImpl nurseServiceImpl;
 
 	@Autowired
 	public void setRegistrarServiceImpl(RegistrarServiceImpl registrarServiceImpl) {
@@ -37,12 +48,18 @@ public class RegistrarController {
 		this.registrarServiceMasterDataImpl = registrarServiceMasterDataImpl;
 	}
 
+	@Autowired
+	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
+		this.nurseServiceImpl = nurseServiceImpl;
+	}
+
 	// Registrar Work List API .....
 	@CrossOrigin()
 	@RequestMapping(value = { "/registrarWorkListData" }, method = { RequestMethod.POST }, produces = {
 			"application/json" })
 	public String getRegistrarWorkList(@RequestBody String comingRequest) throws JSONException {
 		OutputResponse response = new OutputResponse();
+		logger.info("getRegistrarWorkList request:" + comingRequest);
 		try {
 
 			JSONObject obj = new JSONObject(comingRequest);
@@ -50,9 +67,10 @@ public class RegistrarController {
 			// wrapperRegWorklistArray =
 			// this.registrarServiceImpl.getRegWorkList(obj.getInt("spID"));
 			response.setResponse(this.registrarServiceImpl.getRegWorkList(obj.getInt("spID")));
+			logger.info("getRegistrarWorkList response:" + response);
 		} catch (Exception e) {
-			e.printStackTrace();
 			response.setError(e);
+			logger.error("Error in getRegistrarWorkList:" + e);
 		}
 		return response.toString();
 	}
@@ -68,7 +86,7 @@ public class RegistrarController {
 			// JsonObject responseOBJ = new JsonObject();
 			WrapperBeneficiaryRegistration wrapperBeneficiaryRegistrationOBJ = InputMapper.gson()
 					.fromJson(comingRequest, WrapperBeneficiaryRegistration.class);
-			System.out.println("helooo");
+			logger.info("createBeneficiary request:" + comingRequest);
 			JsonObject benD = wrapperBeneficiaryRegistrationOBJ.getBenD();
 
 			if (benD == null || benD.isJsonNull()) {
@@ -104,9 +122,9 @@ public class RegistrarController {
 					response.setError(500, "Something Went-Wrong");
 				}
 			}
-			System.out.println("hello");
+			logger.info("createBeneficiary response:" + response);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Error in createBeneficiary :" + e);
 			response.setError(e);
 		}
 		return response.toString();
@@ -117,6 +135,7 @@ public class RegistrarController {
 	@RequestMapping(value = { "/quickSearch" }, method = { RequestMethod.POST }, produces = { "application/json" })
 	public String quickSearchBeneficiary(@RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
+		logger.info("quickSearchBeneficiary request:" + comingRequest);
 		try {
 
 			JSONObject obj = new JSONObject(comingRequest);
@@ -124,9 +143,9 @@ public class RegistrarController {
 			// wrapperRegWorklistArray =
 			// registrarServiceImpl.getQuickSearchBenData(obj.getString("benID"));
 			response.setResponse(registrarServiceImpl.getQuickSearchBenData(obj.getString("benID")));
-			System.out.println("helloo........");
+			logger.info("quickSearchBeneficiary response:" + response);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Error in quickSearchBeneficiary :" + e);
 			response.setError(e);
 		}
 		return response.toString();
@@ -137,17 +156,15 @@ public class RegistrarController {
 	@RequestMapping(value = { "/advanceSearch" }, method = { RequestMethod.POST }, produces = { "application/json" })
 	public String advanceSearch(@RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
+		logger.info("advanceSearch request :" + comingRequest);
 		try {
-
 			// JSONObject obj = new JSONObject(comingRequest);
 			V_BenAdvanceSearch v_BenAdvanceSearch = inputMapper.gson().fromJson(comingRequest,
 					V_BenAdvanceSearch.class);
 			response.setResponse(registrarServiceImpl.getAdvanceSearchBenData(v_BenAdvanceSearch));
-
-			System.out.println("helloooo");
-			System.out.println("helloooo");
+			logger.info("advanceSearch response:" + response);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Error in advanceSearch :" + e);
 			response.setError(e);
 		}
 
@@ -159,6 +176,7 @@ public class RegistrarController {
 			"application/json" })
 	public String masterDataForRegistration(@RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
+		logger.info("masterDataForRegistration request :" + comingRequest);
 		try {
 
 			JSONObject obj = new JSONObject(comingRequest);
@@ -171,10 +189,10 @@ public class RegistrarController {
 			} else {
 				response.setError(500, "Bad Request... Service-Point is not there in request");
 			}
-			System.out.println("helloo...");
+			logger.info("masterDataForRegistration response :" + response);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Error in masterDataForRegistration :" + e);
 			response.setError(e);
 		}
 		return response.toString();
@@ -185,6 +203,7 @@ public class RegistrarController {
 			"application/json" })
 	public String getBenDetailsByRegID(@RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
+		logger.info("getBenDetailsByRegID request :" + comingRequest);
 		try {
 
 			JSONObject obj = new JSONObject(comingRequest);
@@ -201,12 +220,44 @@ public class RegistrarController {
 			} else {
 				response.setError(500, "Bad Request... beneficiaryRegID is not there in request");
 			}
-
+			logger.info("getBenDetailsByRegID response :" + response);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Error in getBenDetailsByRegID :" + e);
 			response.setError(e);
 		}
 		return response.toString();
 	}
+	
+	@CrossOrigin
+	@RequestMapping(value = { "/save/visitDetailScreen/VisitDetail" }, method = { RequestMethod.POST }, produces = {
+			"application/json" })
+	public String saveBeneficiaryVisitDetail(@RequestBody String requestObj) {
+
+		OutputResponse response = new OutputResponse();
+		inputMapper = new InputMapper();
+		logger.info("saveBeneficiaryVisitDetail request:" + requestObj);
+		BeneficiaryVisitDetail beneficiaryVisitDetail = InputMapper.gson().fromJson(requestObj,
+				BeneficiaryVisitDetail.class);
+		try {
+			Long benVisitID = nurseServiceImpl.saveBeneficiaryVisitDetails(beneficiaryVisitDetail);
+			if (benVisitID != null && benVisitID > 0) {
+
+				Integer i = nurseServiceImpl.updateBeneficiaryStatus('R', beneficiaryVisitDetail.getBeneficiaryRegID());
+				//Please handle all cases here......after customer demo
+				Map<String, Long> resMap = new HashMap<String, Long>();
+				resMap.put("benVisitID", benVisitID);
+				response.setResponse(new Gson().toJson(resMap));
+			} else {
+				response.setError(500, "Failed to Store Beneficiary Visit Details");
+			}
+			logger.info("saveBeneficiaryVisitDetail response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in saveBeneficiaryVisitDetail:" + e);
+		}
+
+		return response.toString();
+	}
+
 
 }
