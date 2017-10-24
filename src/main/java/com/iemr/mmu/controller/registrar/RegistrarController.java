@@ -237,7 +237,7 @@ public class RegistrarController {
 
 					Integer i = nurseServiceImpl.updateBeneficiaryStatus('R', obj.getLong("beneficiaryRegID"));
 					if (i != null && i > 0) {
-						response.setResponse("Beneficiary Data Updated Successfully.");
+						response.setResponse("Beneficiary Successfully Submitted to Nurse Work-List.");
 					} else {
 						response.setError(500, "Something went Wrong please try after Some Time !!!");
 					}
