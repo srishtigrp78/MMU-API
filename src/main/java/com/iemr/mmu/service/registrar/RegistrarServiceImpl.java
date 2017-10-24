@@ -9,12 +9,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.registrar.BenGovIdMapping;
 import com.iemr.mmu.data.registrar.BeneficiaryData;
 import com.iemr.mmu.data.registrar.BeneficiaryDemographicAdditional;
 import com.iemr.mmu.data.registrar.BeneficiaryDemographicData;
 import com.iemr.mmu.data.registrar.BeneficiaryPhoneMapping;
+import com.iemr.mmu.data.registrar.FetchBeneficiaryDetails;
 import com.iemr.mmu.data.registrar.V_BenAdvanceSearch;
 import com.iemr.mmu.data.registrar.WrapperRegWorklist;
 import com.iemr.mmu.repo.registrar.BeneficiaryDemographicAdditionalRepo;
@@ -22,6 +24,7 @@ import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenDemoData;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenGovIdMapping;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenPhoneMapData;
+import com.iemr.mmu.repo.registrar.RegistrarRepoBeneficiaryDetails;
 import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
 
 @Service
@@ -32,6 +35,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 	private RegistrarRepoBenGovIdMapping registrarRepoBenGovIdMapping;
 	private ReistrarRepoBenSearch reistrarRepoBenSearch;
 	private BeneficiaryDemographicAdditionalRepo beneficiaryDemographicAdditionalRepo;
+	private RegistrarRepoBeneficiaryDetails registrarRepoBeneficiaryDetails;
 
 	@Autowired
 	public void setBeneficiaryDemographicAdditionalRepo(
@@ -62,6 +66,11 @@ public class RegistrarServiceImpl implements RegistrarService {
 	@Autowired
 	public void setReistrarRepoAdvanceBenSearch(ReistrarRepoBenSearch reistrarRepoBenSearch) {
 		this.reistrarRepoBenSearch = reistrarRepoBenSearch;
+	}
+	
+	@Autowired
+	public void setRegistrarRepoBeneficiaryDetails(RegistrarRepoBeneficiaryDetails registrarRepoBeneficiaryDetails) {
+		this.registrarRepoBeneficiaryDetails = registrarRepoBeneficiaryDetails;
 	}
 
 	@Override
@@ -308,5 +317,16 @@ public class RegistrarServiceImpl implements RegistrarService {
 			benPhoneMap.setCreatedBy(benD.get("createdBy").getAsString());
 		return benPhoneMap;
 	}
-
+	
+	@Override
+	public String getBeneficiaryDetails(Long beneficiaryRegID) {
+		
+		List<Object[]> resList = registrarRepoBeneficiaryDetails.getBeneficiaryDetails(beneficiaryRegID);
+		
+		ArrayList<FetchBeneficiaryDetails> beneficiaryDetails = FetchBeneficiaryDetails.getBeneficiaryDetails(resList);
+		
+		return new Gson().toJson(beneficiaryDetails);
+		
+		
+	}
 }

@@ -256,5 +256,34 @@ public class RegistrarController {
 
 		return response.toString();
 	}
+	
+	@CrossOrigin()
+	@RequestMapping(value = { "/get/beneficiaryDetails" }, method = { RequestMethod.POST }, produces = {
+			"application/json" })
+	public String getBeneficiaryDetails(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		logger.info("getBeneficiaryDetails request :" + requestObj);
+		try {
+
+			JSONObject obj = new JSONObject(requestObj);
+			if (obj.has("beneficiaryRegID")) {
+				if (obj.getLong("beneficiaryRegID") > 0) {
+
+					String beneficiaryData = registrarServiceImpl.getBeneficiaryDetails(obj.getLong("beneficiaryRegID"));
+
+					response.setResponse(beneficiaryData.toString());
+				} else {
+					response.setError(500, "Please pass beneficiaryRegID");
+				}
+			} else {
+				response.setError(500, "Bad Request... beneficiaryRegID is not there in request");
+			}
+			logger.info("getBeneficiaryDetails response :" + response);
+		} catch (Exception e) {
+			logger.error("Error in getBeneficiaryDetails :" + e);
+			response.setError(e);
+		}
+		return response.toString();
+	}
 
 }
