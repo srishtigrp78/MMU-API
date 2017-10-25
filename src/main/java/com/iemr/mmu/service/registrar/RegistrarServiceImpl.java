@@ -183,56 +183,60 @@ public class RegistrarServiceImpl implements RegistrarService {
 	}
 
 	public String getAdvanceSearchBenData(V_BenAdvanceSearch v_BenAdvanceSearch) {
+		String result = "";
 		try {
 			String benID = "%%";
-			String benFirstName = "%%";
-			String benLastName = "%%";
-			String benGenderID = "%%";
-			String fatherName = "%%";
+			String benFirstName = "";
+			String benLastName = "";
+			String fatherName = "";
 			String phoneNo = "%%";
 			String aadharNo = "%%";
 			String govIDNo = "%%";
+			String stateID = "%%";
 			String districtID = "%%";
 
-			if (null != v_BenAdvanceSearch.getBeneficiaryID()) {
+			if (null!= v_BenAdvanceSearch.getBeneficiaryID() && !v_BenAdvanceSearch.getBeneficiaryID().isEmpty()) {
 				benID = v_BenAdvanceSearch.getBeneficiaryID();
 			}
-			if (null != v_BenAdvanceSearch.getFirstName()) {
+			if (null!= v_BenAdvanceSearch.getFirstName() && !v_BenAdvanceSearch.getFirstName().isEmpty()) {
 				benFirstName = v_BenAdvanceSearch.getFirstName();
 			}
-			if (null != v_BenAdvanceSearch.getLastName()) {
+			if (null!= v_BenAdvanceSearch.getLastName() && !v_BenAdvanceSearch.getLastName().isEmpty()) {
 				benLastName = v_BenAdvanceSearch.getLastName();
 			}
-			if (null != v_BenAdvanceSearch.getGenderID()) {
-				benGenderID = v_BenAdvanceSearch.getGenderID() + "";
-			}
-			if (null != v_BenAdvanceSearch.getFatherName()) {
+			if (null!= v_BenAdvanceSearch.getFatherName() && !v_BenAdvanceSearch.getFatherName().isEmpty()) {
 				fatherName = v_BenAdvanceSearch.getFatherName();
 			}
-			if (null != v_BenAdvanceSearch.getPhoneNo()) {
+			if (null!= v_BenAdvanceSearch.getPhoneNo() && !v_BenAdvanceSearch.getPhoneNo().isEmpty()) {
 				phoneNo = v_BenAdvanceSearch.getPhoneNo();
 			}
-			if (null != v_BenAdvanceSearch.getAadharNo()) {
+			if (null!= v_BenAdvanceSearch.getAadharNo() && !v_BenAdvanceSearch.getAadharNo().isEmpty()) {
 				aadharNo = v_BenAdvanceSearch.getAadharNo();
 			}
-			if (null != v_BenAdvanceSearch.getGovtIdentityNo()) {
+			if (null!= v_BenAdvanceSearch.getGovtIdentityNo() && !v_BenAdvanceSearch.getGovtIdentityNo().isEmpty()) {
 				govIDNo = v_BenAdvanceSearch.getGovtIdentityNo();
+			}
+			if (null != v_BenAdvanceSearch.getStateID()) {
+				stateID = v_BenAdvanceSearch.getStateID() + "";
 			}
 			if (null != v_BenAdvanceSearch.getDistrictID()) {
 				districtID = v_BenAdvanceSearch.getDistrictID() + "";
 			}
-			System.out.println("helloo");
 			/*
 			 * reistrarRepoBenSearch.getAdvanceBenSearchList(benID,
 			 * benFirstName, benLastName, benGenderID, fatherName, phoneNo,
 			 * aadharNo, govIDNo, districtID);
 			 */
-			ArrayList<Object[]> resList = reistrarRepoBenSearch.getAdvanceBenSearchList("ben1");
-			System.out.println("helloo");
+			ArrayList<Object[]> resList = reistrarRepoBenSearch.getAdvanceBenSearchList(benID, benFirstName, benLastName, phoneNo, 
+					aadharNo, govIDNo, stateID, districtID);
+			
+			result = v_BenAdvanceSearch.getSearchData(resList);
+			System.out.println(resList);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "helloo";
+		return result;
 	}
 
 	public BeneficiaryData getBenOBJ(JsonObject benD) {

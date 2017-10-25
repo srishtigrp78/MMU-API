@@ -1,5 +1,6 @@
 package com.iemr.mmu.repo.registrar;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,13 +13,28 @@ import com.iemr.mmu.data.registrar.V_BenAdvanceSearch;
 
 @Repository
 public interface ReistrarRepoBenSearch extends CrudRepository<V_BenAdvanceSearch, Long> {
+	
 	@Query("SELECT beneficiaryRegID, beneficiaryID, "
 			+ " UPPER( concat(IFNULL(firstName, ''), ' ',IFNULL(lastName,''))) as benName, "
-			+ " dob, genderID, genderName, UPPER(fatherName) as fatherName, "
-			+ " districtID, districtName, districtBranchID, villageName, phoneNo " + " FROM  V_BenAdvanceSearch "
-			+ " WHERE beneficiaryID =:benID")
+			+ " genderID, genderName, dob, UPPER(fatherName) as fatherName, aadharNo,"
+			+ " districtID, districtName, districtBranchID, villageName, phoneNo, govtIdentityNo " + " FROM  V_BenAdvanceSearch "
+			+ " WHERE (beneficiaryID IS NULL OR beneficiaryID like :beneficiaryID ) AND"
+			+ " (firstName like %:firstName% ) AND"
+			+ " (Isnull(lastName) LIKE %:lastName%  OR lastName like %:lastName% ) AND"
+			+ " (Isnull(phoneNo) LIKE :phoneNo OR phoneNo like :phoneNo ) AND"
+			+ " (Isnull(aadharNo) LIKE :aadharNo OR aadharNo like :aadharNo ) AND"
+			+ " (Isnull(govtIdentityNo) LIKE :govtIdentityNo OR govtIdentityNo like :govtIdentityNo ) AND"
+			+ " cast(stateID as string) like :stateID AND"
+			+ " cast(districtID as string) like :districtID")
 
-	public ArrayList<Object[]> getAdvanceBenSearchList(@Param("benID") String benID);
+	public ArrayList<Object[]> getAdvanceBenSearchList(@Param("beneficiaryID") String beneficiaryID,
+			@Param("firstName") String firstName,
+			@Param("lastName") String lastName,
+			@Param("phoneNo") String phoneNo,
+			@Param("aadharNo") String aadharNo,
+			@Param("govtIdentityNo") String govtIdentityNo,
+			@Param("stateID") String stateID,
+			@Param("districtID") String districtID);
 
 	@Query("SELECT DISTINCT beneficiaryRegID, beneficiaryID, "
 			+ " UPPER( concat(IFNULL(firstName, ''), ' ',IFNULL(lastName,''))) as benName, "
