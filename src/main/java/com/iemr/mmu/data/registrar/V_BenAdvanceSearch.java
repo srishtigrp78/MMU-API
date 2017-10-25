@@ -1,6 +1,11 @@
 package com.iemr.mmu.data.registrar;
 
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.Period;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,7 +13,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 
 @Entity
@@ -31,6 +38,10 @@ public class V_BenAdvanceSearch {
 	@Expose
 	@Column(name = "LastName")
 	private String lastName;
+	
+	@Expose
+	@Transient
+	private String benName;
 	@Expose
 	@Column(name = "GenderID")
 	private Short genderID;
@@ -39,13 +50,20 @@ public class V_BenAdvanceSearch {
 	private String genderName;
 	@Expose
 	@Column(name = "dob")
-	private Timestamp dob;
+	private Date dob;
+	@Expose
+	@Transient
+	private String age;
 	@Expose
 	@Column(name = "FatherName")
 	private String fatherName;
 	@Expose
 	@Column(name = "AadharNo")
 	private String aadharNo;
+
+	@Expose
+	@Column(name = "StateID")
+	private Integer stateID;
 
 	@Expose
 	@Column(name = "DistrictID")
@@ -80,7 +98,7 @@ public class V_BenAdvanceSearch {
 	}
 
 	public V_BenAdvanceSearch(Long id, Long beneficiaryRegID, String beneficiaryID, String firstName, String lastName,
-			Short genderID, String genderName, Timestamp dob, String fatherName, String aadharNo, Integer districtID,
+			Short genderID, String genderName, Date dob, String fatherName, String aadharNo, Integer stateID,Integer districtID,
 			String districtName, Integer districtBranchID, String villageName, String phoneNo, String govtIdentityNo,
 			Character flowStatusFlag, Timestamp regCreatedDate, Timestamp regLastModDate) {
 		super();
@@ -93,6 +111,7 @@ public class V_BenAdvanceSearch {
 		this.dob = dob;
 		this.fatherName = fatherName;
 		this.aadharNo = aadharNo;
+		this.stateID = stateID;
 		this.districtID = districtID;
 		this.districtName = districtName;
 		this.districtBranchID = districtBranchID;
@@ -102,6 +121,62 @@ public class V_BenAdvanceSearch {
 		this.flowStatusFlag = flowStatusFlag;
 		this.regCreatedDate = regCreatedDate;
 		this.regLastModDate = regLastModDate;
+	}
+	
+	public static String getSearchData(List<Object[]> resList) {
+		ArrayList<V_BenAdvanceSearch> resArray = new ArrayList<V_BenAdvanceSearch>();
+		if (resList.size() > 0) {
+			for (Object[] obj : resList) {
+				
+				V_BenAdvanceSearch searchResult = new V_BenAdvanceSearch();
+				searchResult.beneficiaryRegID = (Long) obj[0];
+				searchResult.beneficiaryID = (String) obj[1];
+				searchResult.benName = (String) obj[2];
+				searchResult.genderID = (Short) obj[3];
+				searchResult.genderName = (String) obj[4];
+				searchResult.dob = (Date) obj[5];
+				if (obj[5] != null) {
+					Date date = (Date) obj[5];
+					Calendar cal = Calendar.getInstance();
+
+					cal.setTime(date);
+
+					int year = cal.get(Calendar.YEAR);
+					int month = cal.get(Calendar.MONTH) + 1;
+					int day = cal.get(Calendar.DAY_OF_MONTH);
+
+					java.time.LocalDate todayDate = java.time.LocalDate.now();
+					java.time.LocalDate birthdate = java.time.LocalDate.of(year, month, day);
+					Period p = Period.between(birthdate, todayDate);
+
+					int d = p.getDays();
+					int m = p.getMonths();
+					int y = p.getYears();
+
+					if (y > 0) {
+						searchResult.age = y + " years - " + m + " months";
+					} else {
+						if (m > 0) {
+							searchResult.age = m + " months - " + d + " days";
+						} else {
+							searchResult.age = d + " days";
+						}
+					}
+
+				}
+				searchResult.fatherName = (String) obj[6];
+				searchResult.aadharNo = (String) obj[7];
+				searchResult.districtID = (Integer) obj[8];
+				searchResult.districtName = (String) obj[9];
+				searchResult.districtBranchID = (Integer) obj[10];
+				searchResult.villageName = (String) obj[11];
+				searchResult.phoneNo = (String) obj[12];
+				searchResult.govtIdentityNo = (String) obj[13];
+				
+				resArray.add(searchResult);
+			}
+		}
+		return new Gson().toJson(resArray);
 	}
 
 	public Long getId() {
@@ -160,11 +235,11 @@ public class V_BenAdvanceSearch {
 		this.genderName = genderName;
 	}
 
-	public Timestamp getDob() {
+	public Date getDob() {
 		return dob;
 	}
 
-	public void setDob(Timestamp dob) {
+	public void setDob(Date dob) {
 		this.dob = dob;
 	}
 
@@ -254,6 +329,14 @@ public class V_BenAdvanceSearch {
 
 	public void setRegLastModDate(Timestamp regLastModDate) {
 		this.regLastModDate = regLastModDate;
+	}
+	
+	public Integer getStateID() {
+		return stateID;
+	}
+
+	public void setStateID(Integer stateID) {
+		this.stateID = stateID;
 	}
 
 }
