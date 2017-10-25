@@ -26,6 +26,7 @@ import com.iemr.mmu.repo.masterrepo.MaritalStatusMasterRepo;
 import com.iemr.mmu.repo.masterrepo.OccupationMasterRepo;
 import com.iemr.mmu.repo.masterrepo.QualificationMasterRepo;
 import com.iemr.mmu.repo.masterrepo.ReligionMasterRepo;
+import com.iemr.mmu.repo.registrar.BeneficiaryImageRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 
 @Service
@@ -40,6 +41,12 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 	private QualificationMasterRepo qualificationMasterRepo;
 	private ReligionMasterRepo religionMasterRepo;
 	private RegistrarRepoBenData registrarRepoBenData;
+	private BeneficiaryImageRepo beneficiaryImageRepo;
+
+	@Autowired
+	public void setBeneficiaryImageRepo(BeneficiaryImageRepo beneficiaryImageRepo) {
+		this.beneficiaryImageRepo = beneficiaryImageRepo;
+	}
 
 	@Autowired
 	public void setCommunityMasterRepo(CommunityMasterRepo communityMasterRepo) {
@@ -124,6 +131,8 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 	public String getBenDetailsByRegID(Long beneficiaryRegID) {
 		List<Object[]> benDetailsList = registrarRepoBenData.getBenDetailsByRegID(beneficiaryRegID);
 		BeneficiaryData benDetails = BeneficiaryData.getBeneficiaryData(benDetailsList).get(0);
+		//String benImage = beneficiaryImageRepo.getBenImage(beneficiaryRegID);
+		benDetails.setImage(beneficiaryImageRepo.getBenImage(beneficiaryRegID));
 		if (benDetails != null) {
 			if (benDetails.getGenderID() != null) {
 				if (benDetails.getGenderID() == 1) {
@@ -131,7 +140,9 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 				} else if (benDetails.getGenderID() == 2) {
 					benDetails.setGenderName("Female");
 				} else {
-					benDetails.setGenderName("Transgender");
+					if (benDetails.getGenderID() == 3) {
+						benDetails.setGenderName("Transgender");
+					}
 				}
 			}
 		}

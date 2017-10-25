@@ -36,6 +36,8 @@ public class WrapperRegWorklist {
 	private String phoneNo;
 	@Expose
 	private String age;
+	@Expose
+	private String visitFlowStatusFlag;
 
 	@Expose
 	private Long benVisitID;
@@ -86,6 +88,7 @@ public class WrapperRegWorklist {
 				wrapperRegWorklist.genderName = (String) obj[5];
 				wrapperRegWorklist.benVisitID = (Long) obj[6];
 				wrapperRegWorklist.benVisitNo = (Short) obj[7];
+				wrapperRegWorklist.visitFlowStatusFlag = (String) obj[8];
 				resArray.add(wrapperRegWorklist);
 				System.out.println("helloooo");
 			}

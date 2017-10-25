@@ -132,6 +132,19 @@ public class BeneficiaryData {
 	@OneToMany(mappedBy = "benData", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@Expose
 	private Set<BeneficiaryPhoneMapping> benPhoneMap;
+	
+	@Transient
+	@Expose
+	private String  benImage; 
+	
+
+	public String getImage() {
+		return benImage;
+	}
+
+	public void setImage(String benImage) {
+		this.benImage = benImage;
+	}
 
 	public BeneficiaryData() {
 	}

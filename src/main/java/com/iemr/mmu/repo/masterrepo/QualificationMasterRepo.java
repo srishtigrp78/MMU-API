@@ -10,6 +10,7 @@ import com.iemr.mmu.data.masterdata.registrar.QualificationMaster;
 
 @Repository
 public interface QualificationMasterRepo extends CrudRepository<QualificationMaster, Short> {
-	@Query("select educationID, educationType from QualificationMaster where  deleted = false order by educationType ")
+	@Query("select educationID, educationType from QualificationMaster where  deleted = false "
+			+ " and educationID > 1 order by educationType ")
 	public ArrayList<Object[]> getQualificationMaster();
 }

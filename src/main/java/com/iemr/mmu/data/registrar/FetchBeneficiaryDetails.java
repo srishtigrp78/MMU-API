@@ -1,9 +1,8 @@
 package com.iemr.mmu.data.registrar;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,19 +21,19 @@ public class FetchBeneficiaryDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
-	
+
 	@Expose
 	@Column(name = "BeneficiaryID")
 	private String beneficiaryID;
-	
+
 	@Expose
 	@Column(name = "FirstName")
 	private String firstName;
-	
+
 	@Expose
 	@Column(name = "LastName")
 	private String lastName;
@@ -44,7 +43,7 @@ public class FetchBeneficiaryDetails {
 	@Expose
 	@Column(name = "GenderID")
 	private Short gender;
-	
+
 	@Expose
 	@Column(name = "dob")
 	private Timestamp dob;
@@ -93,20 +92,20 @@ public class FetchBeneficiaryDetails {
 	@Expose
 	@Column(name = "districtName")
 	private String districtName;
-	
+
 	@Expose
 	@Column(name = "DistrictBranchID")
 	private Integer villageID;
 	@Expose
 	@Column(name = "villageName")
 	private String villageName;
-	
+
 	@Expose
 	@Column(name = "PhoneNo")
 	private String phoneNo;
 	@Expose
 	@Column(name = "GovtIdentityTypeID")
-	private Short govID;
+	private Short govtIdentityTypeID;
 	@Expose
 	@Column(name = "GovtIdentityNo")
 	private String govtIdentityNo;
@@ -137,24 +136,36 @@ public class FetchBeneficiaryDetails {
 	@Expose
 	@Column(name = "AccountNo")
 	private String accountNumber;
-	
+
+	@Transient
+	@Expose
+	private ArrayList<Map<String, Object>> govID;
+
+	@Transient
+	@Expose
+	private ArrayList<Map<String, Object>> otherGovID;
+
+	@Transient
+	@Expose
+	private String image;
+
 	public FetchBeneficiaryDetails() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public FetchBeneficiaryDetails(Long beneficiaryRegID, String beneficiaryID, 
-			String firstName,String lastName, Short genderID, Timestamp dob, Short maritalStatusID, String spouseName,
-			Short incomeStatusID, Short educationID, Short occupationID, Integer blockID, String blockName,
-			Integer stateID, String stateName, Integer communityID, Short religionID, String fatherName,
-			String aadharNo, Integer districtID, String districtName, Integer districtBranchID, String villageName,
-			String phoneNo, Short govtIdentityTypeID, String govtIdentityNo, Boolean isGovtID, Timestamp marrigeDate,
-			String literacyStatus, String motherName, String emailID, String bankName, String branchName,
-			String iFSCCode, String accountNo) {
+	public FetchBeneficiaryDetails(Long beneficiaryRegID, String beneficiaryID, String firstName, String lastName,
+			Short genderID, Timestamp dob, Short maritalStatusID, String spouseName, Short incomeStatusID,
+			Short educationID, Short occupationID, Integer blockID, String blockName, Integer stateID, String stateName,
+			Integer communityID, Short religionID, String fatherName, String aadharNo, Integer districtID,
+			String districtName, Integer districtBranchID, String villageName, String phoneNo, Short govtIdentityTypeID,
+			String govtIdentityNo, Boolean isGovtID, Timestamp marrigeDate, String literacyStatus, String motherName,
+			String emailID, String bankName, String branchName, String iFSCCode, String accountNo,
+			ArrayList<Map<String, Object>> govIDArray, String s, ArrayList<Map<String, Object>> otherGovIDArray) {
 		super();
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.beneficiaryID = beneficiaryID;
-	
+
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.gender = genderID;
@@ -177,7 +188,7 @@ public class FetchBeneficiaryDetails {
 		this.villageID = districtBranchID;
 		this.villageName = villageName;
 		this.phoneNo = phoneNo;
-		this.govID = govtIdentityTypeID;
+		this.govtIdentityTypeID = govtIdentityTypeID;
 		this.govtIdentityNo = govtIdentityNo;
 		this.isGovtID = isGovtID;
 		this.ageAtMarriage = marrigeDate;
@@ -188,22 +199,29 @@ public class FetchBeneficiaryDetails {
 		this.branchName = branchName;
 		this.IFSCCode = iFSCCode;
 		this.accountNumber = accountNo;
+		this.govID = govIDArray;
+		this.image = s;
+		this.otherGovID = otherGovIDArray;
 	}
 
-	public static ArrayList<FetchBeneficiaryDetails> getBeneficiaryDetails(List<Object[]> resList) {
-		ArrayList<FetchBeneficiaryDetails> resArray = new ArrayList<FetchBeneficiaryDetails>();
-		for (Object[] obj : resList) {	
-			
-			FetchBeneficiaryDetails cOBJ = new FetchBeneficiaryDetails((Long) obj[0], (String) obj[1], (String) obj[2], (String) obj[3],
-					(Short) obj[4], (Timestamp) obj[5], (Short) obj[6], (String) obj[7], (Short) obj[8], (Short) obj[9], (Short) obj[10], 
-					(Integer) obj[11], (String) obj[12], (Integer) obj[13], (String) obj[14], (Integer) obj[15], (Short) obj[16], (String) obj[17], 
-					(String) obj[18], (Integer) obj[19], (String) obj[20], (Integer) obj[21], (String) obj[22], (String) obj[23], (Short) obj[24], 
-					(String) obj[25], (Boolean) obj[26], (Timestamp) obj[27], (String) obj[28], (String) obj[29], (String) obj[30], (String) obj[31],
-					(String) obj[32], (String) obj[33], (String) obj[34]);	
-			
-			resArray.add(cOBJ);
-		}
-		return resArray;
+	public static FetchBeneficiaryDetails getFetchBeneficiaryDetailsObj(Object[] arrayOBJ,
+			ArrayList<Map<String, Object>> govIDArray) {
+		// FetchBeneficiaryDetails
+		return null;
+	}
+
+	public static FetchBeneficiaryDetails getBeneficiaryDetails(Object[] obj, ArrayList<Map<String, Object>> govIDArray,
+			String s, ArrayList<Map<String, Object>> otherGovIDArray) {
+		FetchBeneficiaryDetails cOBJ = new FetchBeneficiaryDetails((Long) obj[0], (String) obj[1], (String) obj[2],
+				(String) obj[3], (Short) obj[4], (Timestamp) obj[5], (Short) obj[6], (String) obj[7], (Short) obj[8],
+				(Short) obj[9], (Short) obj[10], (Integer) obj[11], (String) obj[12], (Integer) obj[13],
+				(String) obj[14], (Integer) obj[15], (Short) obj[16], (String) obj[17], (String) obj[18],
+				(Integer) obj[19], (String) obj[20], (Integer) obj[21], (String) obj[22], (String) obj[23],
+				(Short) obj[24], (String) obj[25], (Boolean) obj[26], (Timestamp) obj[27], (String) obj[28],
+				(String) obj[29], (String) obj[30], (String) obj[31], (String) obj[32], (String) obj[33],
+				(String) obj[34], govIDArray, s, otherGovIDArray);
+
+		return cOBJ;
 	}
 
 	public Long getId() {
@@ -414,12 +432,12 @@ public class FetchBeneficiaryDetails {
 		this.phoneNo = phoneNo;
 	}
 
-	public Short getGovID() {
-		return govID;
+	public Short getGovtIdentityTypeID() {
+		return govtIdentityTypeID;
 	}
 
-	public void setGovID(Short govID) {
-		this.govID = govID;
+	public void setGovtIdentityTypeID(Short govtIdentityTypeID) {
+		this.govtIdentityTypeID = govtIdentityTypeID;
 	}
 
 	public String getGovtIdentityNo() {
@@ -501,9 +519,5 @@ public class FetchBeneficiaryDetails {
 	public void setAccountNumber(String accountNumber) {
 		this.accountNumber = accountNumber;
 	}
-	
-	
-	
-	
-		
+
 }

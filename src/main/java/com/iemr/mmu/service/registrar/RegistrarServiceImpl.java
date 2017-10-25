@@ -4,7 +4,9 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,11 +17,13 @@ import com.iemr.mmu.data.registrar.BenGovIdMapping;
 import com.iemr.mmu.data.registrar.BeneficiaryData;
 import com.iemr.mmu.data.registrar.BeneficiaryDemographicAdditional;
 import com.iemr.mmu.data.registrar.BeneficiaryDemographicData;
+import com.iemr.mmu.data.registrar.BeneficiaryImage;
 import com.iemr.mmu.data.registrar.BeneficiaryPhoneMapping;
 import com.iemr.mmu.data.registrar.FetchBeneficiaryDetails;
 import com.iemr.mmu.data.registrar.V_BenAdvanceSearch;
 import com.iemr.mmu.data.registrar.WrapperRegWorklist;
 import com.iemr.mmu.repo.registrar.BeneficiaryDemographicAdditionalRepo;
+import com.iemr.mmu.repo.registrar.BeneficiaryImageRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenDemoData;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenGovIdMapping;
@@ -36,6 +40,12 @@ public class RegistrarServiceImpl implements RegistrarService {
 	private ReistrarRepoBenSearch reistrarRepoBenSearch;
 	private BeneficiaryDemographicAdditionalRepo beneficiaryDemographicAdditionalRepo;
 	private RegistrarRepoBeneficiaryDetails registrarRepoBeneficiaryDetails;
+	private BeneficiaryImageRepo beneficiaryImageRepo;
+
+	@Autowired
+	public void setBeneficiaryImageRepo(BeneficiaryImageRepo beneficiaryImageRepo) {
+		this.beneficiaryImageRepo = beneficiaryImageRepo;
+	}
 
 	@Autowired
 	public void setBeneficiaryDemographicAdditionalRepo(
@@ -67,7 +77,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 	public void setReistrarRepoAdvanceBenSearch(ReistrarRepoBenSearch reistrarRepoBenSearch) {
 		this.reistrarRepoBenSearch = reistrarRepoBenSearch;
 	}
-	
+
 	@Autowired
 	public void setRegistrarRepoBeneficiaryDetails(RegistrarRepoBeneficiaryDetails registrarRepoBeneficiaryDetails) {
 		this.registrarRepoBeneficiaryDetails = registrarRepoBeneficiaryDetails;
@@ -105,6 +115,23 @@ public class RegistrarServiceImpl implements RegistrarService {
 			tmpBenDemoAddID = beneficiaryDemographicAdditional.getBenDemoAdditionalID();
 		}
 		return tmpBenDemoAddID;
+	}
+
+	@Override
+	public Long createBeneficiaryImage(JsonObject benD, Long benRegID) {
+		Long tmpBenImageID = null;
+		BeneficiaryImage beneficiaryImage = new BeneficiaryImage();
+		beneficiaryImage.setBeneficiaryRegID(benRegID);
+		if (!benD.get("image").isJsonNull())
+			beneficiaryImage.setBenImage(benD.get("image").getAsString());
+		if (!benD.get("createdBy").isJsonNull())
+			beneficiaryImage.setCreatedBy(benD.get("createdBy").getAsString());
+
+		BeneficiaryImage benImage = beneficiaryImageRepo.save(beneficiaryImage);
+		if (benImage != null) {
+			tmpBenImageID = benImage.getBeneficiaryRegID();
+		}
+		return tmpBenImageID;
 	}
 
 	private BeneficiaryDemographicAdditional getBeneficiaryDemographicAdditional(JsonObject benD, Long benRegID) {
@@ -317,16 +344,63 @@ public class RegistrarServiceImpl implements RegistrarService {
 			benPhoneMap.setCreatedBy(benD.get("createdBy").getAsString());
 		return benPhoneMap;
 	}
-	
+
 	@Override
 	public String getBeneficiaryDetails(Long beneficiaryRegID) {
-		
+
 		List<Object[]> resList = registrarRepoBeneficiaryDetails.getBeneficiaryDetails(beneficiaryRegID);
-		
-		ArrayList<FetchBeneficiaryDetails> beneficiaryDetails = FetchBeneficiaryDetails.getBeneficiaryDetails(resList);
-		
-		return new Gson().toJson(beneficiaryDetails);
-		
-		
+
+		System.out.println("hello");
+
+		if (resList != null && resList.size() > 0) {
+
+			ArrayList<Map<String, Object>> govIdList = new ArrayList<>();
+			ArrayList<Map<String, Object>> otherGovIdList = new ArrayList<>();
+			Map<String, Object> govIDMap;
+			Map<String, Object> otherGovIDMap;
+			Object[] objarr = resList.get(0);
+			System.out.println("helooo");
+			for (Object[] arrayObj : resList) {
+				if (arrayObj[26] != null && (Boolean) arrayObj[26] == true) {
+					govIDMap = new HashMap<>();
+					govIDMap.put("type", arrayObj[24]);
+					govIDMap.put("value", arrayObj[25]);
+					govIDMap.put("isGovType", arrayObj[26]);
+					govIdList.add(govIDMap);
+				} else {
+					otherGovIDMap = new HashMap<>();
+					otherGovIDMap.put("type", arrayObj[24]);
+					otherGovIDMap.put("value", arrayObj[25]);
+					otherGovIDMap.put("isGovType", arrayObj[26]);
+					otherGovIdList.add(otherGovIDMap);
+				}
+
+			}
+			String s = beneficiaryImageRepo.getBenImage(beneficiaryRegID);
+			FetchBeneficiaryDetails fetchBeneficiaryDetailsOBJ = FetchBeneficiaryDetails.getBeneficiaryDetails(objarr,
+					govIdList, s, otherGovIdList);
+			System.out.println("helooo");
+			return new Gson().toJson(fetchBeneficiaryDetailsOBJ);
+		} else {
+			System.out.println("helooo");
+			return null;
+		}
+
+		// System.out.println("helooo");
+
+		// ArrayList<FetchBeneficiaryDetails> beneficiaryDetails =
+		// FetchBeneficiaryDetails.getBeneficiaryDetails(resList);
+
 	}
+
+	@Override
+	public String getBenImage(Long benRegID) {
+		Map<String, String> benImageMap = new HashMap<String, String>();
+		String s = beneficiaryImageRepo.getBenImage(benRegID);
+		if (s != null)
+			benImageMap.put("benImage", s);
+
+		return new Gson().toJson(benImageMap);
+	}
+
 }

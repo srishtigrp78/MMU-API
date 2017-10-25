@@ -1,5 +1,8 @@
 package com.iemr.mmu.controller.registrar;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.registrar.BeneficiaryData;
 import com.iemr.mmu.data.registrar.V_BenAdvanceSearch;
@@ -97,7 +101,9 @@ public class RegistrarController {
 					Long benbenDemoOtherID = registrarServiceImpl.createBeneficiaryDemographicAdditional(benD,
 							benRegID);
 
-					if (benRegID > 0 && benDemoID > 0 && benPhonMapID > 0 && benbenDemoOtherID > 0) {
+					Long benImageID = registrarServiceImpl.createBeneficiaryImage(benD, benRegID);
+
+					if (benRegID > 0 && benDemoID > 0 && benPhonMapID > 0 && benbenDemoOtherID > 0 && benImageID > 0) {
 						if (benData.getBeneficiaryID() != null) {
 							response.setResponse(benData.getBeneficiaryID());
 						} else {
@@ -256,7 +262,7 @@ public class RegistrarController {
 
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@RequestMapping(value = { "/get/beneficiaryDetails" }, method = { RequestMethod.POST }, produces = {
 			"application/json" })
@@ -269,9 +275,15 @@ public class RegistrarController {
 			if (obj.has("beneficiaryRegID")) {
 				if (obj.getLong("beneficiaryRegID") > 0) {
 
-					String beneficiaryData = registrarServiceImpl.getBeneficiaryDetails(obj.getLong("beneficiaryRegID"));
+					String beneficiaryData = registrarServiceImpl
+							.getBeneficiaryDetails(obj.getLong("beneficiaryRegID"));
+					if (beneficiaryData != null) {
+						response.setResponse(beneficiaryData);
+					} else {
+						Map<String, String> noDataMap = new HashMap<>();
+						response.setResponse(new Gson().toJson(noDataMap));
+					}
 
-					response.setResponse(beneficiaryData.toString());
 				} else {
 					response.setError(500, "Please pass beneficiaryRegID");
 				}
@@ -282,6 +294,32 @@ public class RegistrarController {
 		} catch (Exception e) {
 			logger.error("Error in getBeneficiaryDetails :" + e);
 			response.setError(e);
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin()
+	@RequestMapping(value = { "/get/beneficiaryImage" }, method = { RequestMethod.POST }, produces = {
+			"application/json" })
+	public String getBeneficiaryImage(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		logger.info("getBeneficiaryImage request :" + requestObj);
+		try {
+			JSONObject obj = new JSONObject(requestObj);
+			if (obj.has("beneficiaryRegID")) {
+				if (obj.getLong("beneficiaryRegID") > 0) {
+					String beneficiaryData = registrarServiceImpl.getBenImage(obj.getLong("beneficiaryRegID"));
+
+					response.setResponse(beneficiaryData);
+				} else {
+					response.setError(500, "Please pass beneficiaryRegID");
+				}
+			} else {
+				response.setError(500, "Bad Request... beneficiaryRegID is not there in request");
+			}
+			logger.info("getBeneficiaryDetails response :" + response);
+		} catch (Exception e) {
+
 		}
 		return response.toString();
 	}

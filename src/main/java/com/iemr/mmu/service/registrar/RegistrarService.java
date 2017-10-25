@@ -14,8 +14,12 @@ public interface RegistrarService {
 
 	public Long createBeneficiaryDemographicAdditional(JsonObject benD, Long benRegID);
 
+	public Long createBeneficiaryImage(JsonObject benD, Long benRegID);
+
 	public String getQuickSearchBenData(String benID);
-	
+
+	public String getBenImage(Long benRegID);
+
 	public String getBeneficiaryDetails(Long benRegID);
 
 }
