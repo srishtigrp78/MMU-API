@@ -324,4 +324,60 @@ public class RegistrarController {
 		return response.toString();
 	}
 
+	// Registrar Beneficiary Registration API .....
+	@CrossOrigin()
+	@RequestMapping(value = { "/update/BeneficiaryDetails" }, method = { RequestMethod.POST }, produces = {
+			"application/json" })
+	public String updateBeneficiary(@RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+		try {
+
+			// JsonObject responseOBJ = new JsonObject();
+			WrapperBeneficiaryRegistration wrapperBeneficiaryRegistrationOBJ = InputMapper.gson()
+					.fromJson(comingRequest, WrapperBeneficiaryRegistration.class);
+			logger.info("createBeneficiary request:" + comingRequest);
+			JsonObject benD = wrapperBeneficiaryRegistrationOBJ.getBenD();
+
+			if (benD == null || benD.isJsonNull()) {
+				response.setError(0, "Data Not Sufficient...");
+			} else {
+				int benData = registrarServiceImpl.updateBeneficiary(benD);
+				if (benData != 0 && !benD.get("beneficiaryRegID").isJsonNull()) {
+					Long benRegID = benD.get("beneficiaryRegID").getAsLong();
+					int benDemoUpdateRes = registrarServiceImpl.updateBeneficiaryDemographic(benD, benRegID);
+					int benPhonMapID = registrarServiceImpl.updateBeneficiaryPhoneMapping(benD, benRegID);
+
+					int benGovIdMapID = registrarServiceImpl.updateBenGovIdMapping(benD, benRegID);
+
+					int benbenDemoOtherID = registrarServiceImpl.updateBeneficiaryDemographicAdditional(benD, benRegID);
+
+					Long benImageID = registrarServiceImpl.createBeneficiaryImage(benD, benRegID);
+//
+//					if (benRegID > 0 && benDemoID > 0 && benPhonMapID > 0 && benbenDemoOtherID > 0 && benImageID > 0) {
+//						if (benData.getBeneficiaryID() != null) {
+//							response.setResponse(benData.getBeneficiaryID());
+//						} else {
+//							// i_beneficiary, i_bendemographics and
+//							// m_benphonemap
+//							// roll-back
+//							response.setResponse("Registration Done But BeneficiaryID Not Generated!!!");
+//						}
+//					} else {
+//						// i_beneficiary, i_bendemographics and m_benphonemap
+//						// roll-back
+//						response.setError(500, "Something Went-Wrong");
+//					}
+				} else {
+					// i_beneficiary roll-back
+					response.setError(500, "Something Went-Wrong");
+				}
+			}
+			logger.info("createBeneficiary response:" + response);
+		} catch (Exception e) {
+			logger.error("Error in createBeneficiary :" + e);
+			response.setError(e);
+		}
+		return response.toString();
+	}
+
 }

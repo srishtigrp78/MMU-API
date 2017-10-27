@@ -16,8 +16,8 @@ public interface ReistrarRepoBenSearch extends CrudRepository<V_BenAdvanceSearch
 	
 	@Query("SELECT beneficiaryRegID, beneficiaryID, "
 			+ " UPPER( concat(IFNULL(firstName, ''), ' ',IFNULL(lastName,''))) as benName, "
-			+ " genderID, genderName, dob, UPPER(fatherName) as fatherName, aadharNo,"
-			+ " districtID, districtName, districtBranchID, villageName, phoneNo, govtIdentityNo " + " FROM  V_BenAdvanceSearch "
+			+ " Date(dob), genderID, genderName, UPPER(fatherName) as fatherName, "
+			+ " districtID, districtName, districtBranchID, villageName, phoneNo " + " FROM  V_BenAdvanceSearch "
 			+ " WHERE (beneficiaryID IS NULL OR beneficiaryID like :beneficiaryID ) AND"
 			+ " (firstName like %:firstName% ) AND"
 			+ " (Isnull(lastName) LIKE %:lastName%  OR lastName like %:lastName% ) AND"

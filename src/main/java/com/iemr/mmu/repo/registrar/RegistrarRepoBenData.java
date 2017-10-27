@@ -1,5 +1,6 @@
 package com.iemr.mmu.repo.registrar;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -49,5 +50,20 @@ public interface RegistrarRepoBenData extends CrudRepository<BeneficiaryData, Lo
 	@Query("UPDATE BeneficiaryData set flowStatusFlag = :flowStatusFlag where beneficiaryRegID = :benRegID ")
 	public Integer updateBenFlowStatus(@Param("flowStatusFlag") Character flowStatusFlag,
 			@Param("benRegID") Long benRegID);
-
+	
+	
+	@Transactional
+	@Modifying
+	@Query("UPDATE BeneficiaryData set firstName = :firstName,lastName = :lastName,genderID = :genderID,dob = :dob,maritalStatusID = :maritalStatusID,"
+			+ " fatherName = :fatherName,spouseName = :spouseName,aadharNo = :aadharNo,modifiedBy = :modifiedBy where beneficiaryRegID = :beneficiaryRegID ")
+	public Integer updateBeneficiaryData(@Param("firstName") String firstName,
+			@Param("lastName") String lastName,
+			@Param("genderID") Short genderID,
+			@Param("dob") Timestamp dob,
+			@Param("maritalStatusID") Short maritalStatusID,
+			@Param("fatherName") String fatherName,
+			@Param("spouseName") String spouseName,
+			@Param("aadharNo") String aadharNo,
+			@Param("modifiedBy") String modifiedBy,
+			@Param("beneficiaryRegID") Long beneficiaryRegID);
 }

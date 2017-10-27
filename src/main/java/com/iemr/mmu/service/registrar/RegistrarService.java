@@ -22,4 +22,16 @@ public interface RegistrarService {
 
 	public String getBeneficiaryDetails(Long benRegID);
 
+	int updateBeneficiary(JsonObject benD);
+
+	int updateBeneficiaryDemographic(JsonObject benD, Long benRegID);
+
+	int updateBeneficiaryPhoneMapping(JsonObject benD, Long benRegID);
+
+	int updateBenGovIdMapping(JsonObject benD, Long benRegID);
+
+	int updateBeneficiaryDemographicAdditional(JsonObject benD, Long benRegID);
+
+	int updateBeneficiaryImage(JsonObject benD, Long benRegID);
+
 }
