@@ -16,8 +16,8 @@ public interface BeneficiaryDemographicAdditionalRepo extends CrudRepository<Ben
 	@Transactional
 	@Modifying
 	@Query("UPDATE BeneficiaryDemographicAdditional set literacyStatus = :literacyStatus, motherName =:motherName, emailID = :emailID, bankName = :bankName,"
-			+ " branchName = :branchName, iFSCCode = :iFSCCode, accountNo = :accountNo, modifiedBy = :modifiedBy where benDemoAdditionalID = :benDemoAdditionalID and "
-			+ "beneficiaryRegID = :beneficiaryRegID ")
+			+ " branchName = :branchName, iFSCCode = :iFSCCode, accountNo = :accountNo, modifiedBy = :modifiedBy where "
+			+ " beneficiaryRegID = :beneficiaryRegID ")
 	public Integer updateBeneficiaryDemographicAdditional(@Param("literacyStatus") String literacyStatus,
 			@Param("motherName") String motherName,
 			@Param("emailID") String emailID,
@@ -26,7 +26,6 @@ public interface BeneficiaryDemographicAdditionalRepo extends CrudRepository<Ben
 			@Param("iFSCCode") String iFSCCode,
 			@Param("accountNo") String accountNo,
 			@Param("modifiedBy") String modifiedBy,
-			@Param("benDemoAdditionalID") Long benDemoAdditionalID,
 			@Param("beneficiaryRegID") Long beneficiaryRegID);
 	
 

@@ -136,6 +136,10 @@ public class FetchBeneficiaryDetails {
 	@Expose
 	@Column(name = "AccountNo")
 	private String accountNumber;
+	
+	@Expose
+	@Column(name = "BenGovMapID")
+	private String benGovMapID;
 
 	@Transient
 	@Expose

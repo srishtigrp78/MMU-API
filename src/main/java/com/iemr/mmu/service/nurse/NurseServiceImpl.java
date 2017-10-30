@@ -1,5 +1,7 @@
 package com.iemr.mmu.service.nurse;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -509,6 +511,81 @@ public class NurseServiceImpl implements NurseService {
 	public Integer updateBeneficiaryStatus(Character c, Long benRegID) {
 		Integer i = registrarRepoBenData.updateBenFlowStatus(c, benRegID);
 		return i;
+	}
+	
+	
+	public Map<String, Object> getBenNurseDataForCaseSheet(Long benRegID, Long benVisitID, Date visitDateTime) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("familyDiseaseHistory", getBenFamilyHisData(benRegID, benVisitID, visitDateTime));
+
+		resMap.put("patientObstetricHistory", getBenObstetricDetailsData(benRegID, benVisitID, visitDateTime));
+
+		resMap.put("patientPersonalHistory", getBenPersonalCancerHistoryData(benRegID, benVisitID, visitDateTime));
+
+		resMap.put("benPersonalDietHistory", getBenPersonalCancerDietHistoryData(benRegID, benVisitID, visitDateTime));
+		
+		resMap.put("currentVitals", getBenCancerVitalDetailData(benRegID, benVisitID, visitDateTime));
+		
+		return resMap;
+	}
+
+	private BenPersonalCancerHistory getBenPersonalCancerHistoryData(Long benRegID, Long benVisitID, Date visitDateTime) {
+		BenPersonalCancerHistory benPersonalCancerHistory = benPersonalCancerHistoryRepo.getBenPersonalHistory(benRegID,
+				benVisitID, visitDateTime);
+		return benPersonalCancerHistory;
+	}
+
+	private BenPersonalCancerDietHistory getBenPersonalCancerDietHistoryData(Long benRegID, Long benVisitID, Date visitDateTime) {
+		BenPersonalCancerDietHistory benPersonalCancerDietHistory = benPersonalCancerDietHistoryRepo
+				.getBenPersonaDietHistory(benRegID, benVisitID, visitDateTime);
+
+		if(null != benPersonalCancerDietHistory){
+			String s = benPersonalCancerDietHistory.getTypeOfOilConsumed();
+			List<String> oilConsumedList = new ArrayList<>();
+			if (s != null) {
+				String[] arr = s.split(",");
+				for (int i = 0; i < arr.length; i++) {
+					oilConsumedList.add(arr[i]);
+				}
+				benPersonalCancerDietHistory.setTypeOfOilConsumedList(oilConsumedList);
+	
+			}
+		}
+		return benPersonalCancerDietHistory;
+	}
+
+	private List<BenFamilyCancerHistory> getBenFamilyHisData(Long benRegID, Long benVisitID, Date visitDateTime) {
+		List<BenFamilyCancerHistory> benFamilyCancerHistoryList = benFamilyCancerHistoryRepo
+				.getBenFamilyHistory(benRegID, benVisitID, visitDateTime);
+		if (benFamilyCancerHistoryList.size() > 0) {
+			for (BenFamilyCancerHistory obj : benFamilyCancerHistoryList) {
+				String s = obj.getFamilyMember();
+				List<String> famMemlist = new ArrayList<>();
+				if (s != null) {
+					String[] arr = s.split(",");
+					for (int i = 0; i < arr.length; i++) {
+						famMemlist.add(arr[i]);
+					}
+				}
+				obj.setFamilyMemberList(famMemlist);
+				System.out.println("hello");
+			}
+		}
+
+		return benFamilyCancerHistoryList;
+	}
+
+	private BenObstetricCancerHistory getBenObstetricDetailsData(Long benRegID, Long benVisitID, Date visitDateTime) {
+		BenObstetricCancerHistory benObstetricCancerHistoryData = benObstetricCancerHistoryRepo
+				.getBenObstetricCancerHistory(benRegID, benVisitID, visitDateTime);
+		return benObstetricCancerHistoryData;
+	}
+
+	private BenCancerVitalDetail getBenCancerVitalDetailData(Long benRegID, Long benVisitID, Date visitDateTime) {
+		BenCancerVitalDetail benCancerVitalDetail = benCancerVitalDetailRepo.getBenCancerVitalDetail(benRegID,
+				benVisitID,visitDateTime);
+		return benCancerVitalDetail;
 	}
 
 }

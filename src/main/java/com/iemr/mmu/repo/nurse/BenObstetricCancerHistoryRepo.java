@@ -1,5 +1,8 @@
 package com.iemr.mmu.repo.nurse;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -39,5 +42,10 @@ public interface BenObstetricCancerHistoryRepo extends CrudRepository<BenObstetr
 	@Query("SELECT boh from BenObstetricCancerHistory boh WHERE boh.beneficiaryRegID = :benRegID AND boh.benVisitID = :benVisitID")
 	public BenObstetricCancerHistory getBenObstetricCancerHistory(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
+	
+	@Query("SELECT boh from BenObstetricCancerHistory boh WHERE boh.beneficiaryRegID = :benRegID AND boh.benVisitID = :benVisitID "
+			+ "AND DATE(boh.createdDate) = :createdDate")
+	public BenObstetricCancerHistory getBenObstetricCancerHistory(@Param("benRegID") Long benRegID,
+			@Param("benVisitID") Long benVisitID,  @Param("createdDate") Date createdDate);
 
 }

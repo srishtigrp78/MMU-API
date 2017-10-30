@@ -44,6 +44,9 @@ public class WrapperRegWorklist {
 	@Expose
 	private Short benVisitNo;
 
+	@Expose
+	private String statusMessage;
+
 	public static String getDocWorkListData(List<Object[]> resList) {
 		ArrayList<WrapperRegWorklist> resArray = new ArrayList<>();
 		if (resList.size() > 0) {
@@ -89,6 +92,13 @@ public class WrapperRegWorklist {
 				wrapperRegWorklist.benVisitID = (Long) obj[6];
 				wrapperRegWorklist.benVisitNo = (Short) obj[7];
 				wrapperRegWorklist.visitFlowStatusFlag = (String) obj[8];
+				if((String) obj[8] == "N"){
+					wrapperRegWorklist.statusMessage = "Pending For Consultation";
+				}else{
+					if((String) obj[8] == "D"){
+						wrapperRegWorklist.statusMessage = "Consultation Done";
+					}
+				}
 				resArray.add(wrapperRegWorklist);
 				System.out.println("helloooo");
 			}

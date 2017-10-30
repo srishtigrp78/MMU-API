@@ -335,46 +335,43 @@ public class RegistrarController {
 			// JsonObject responseOBJ = new JsonObject();
 			WrapperBeneficiaryRegistration wrapperBeneficiaryRegistrationOBJ = InputMapper.gson()
 					.fromJson(comingRequest, WrapperBeneficiaryRegistration.class);
-			logger.info("createBeneficiary request:" + comingRequest);
+			logger.info("updateBeneficiary request:" + comingRequest);
 			JsonObject benD = wrapperBeneficiaryRegistrationOBJ.getBenD();
 
-			if (benD == null || benD.isJsonNull()) {
+			if (benD == null || benD.isJsonNull() || !benD.has("beneficiaryRegID")) {
 				response.setError(0, "Data Not Sufficient...");
 			} else {
 				int benData = registrarServiceImpl.updateBeneficiary(benD);
 				if (benData != 0 && !benD.get("beneficiaryRegID").isJsonNull()) {
 					Long benRegID = benD.get("beneficiaryRegID").getAsLong();
 					int benDemoUpdateRes = registrarServiceImpl.updateBeneficiaryDemographic(benD, benRegID);
-					int benPhonMapID = registrarServiceImpl.updateBeneficiaryPhoneMapping(benD, benRegID);
+					int benPhonMapUpdateRes = registrarServiceImpl.updateBeneficiaryPhoneMapping(benD, benRegID);
 
-					int benGovIdMapID = registrarServiceImpl.updateBenGovIdMapping(benD, benRegID);
+					int benGovIdMapUpdateRes = registrarServiceImpl.updateBenGovIdMapping(benD, benRegID);
 
-					int benbenDemoOtherID = registrarServiceImpl.updateBeneficiaryDemographicAdditional(benD, benRegID);
+					int benbenDemoOtherUpdateRes = registrarServiceImpl.updateBeneficiaryDemographicAdditional(benD,
+							benRegID);
 
-					Long benImageID = registrarServiceImpl.createBeneficiaryImage(benD, benRegID);
-//
-//					if (benRegID > 0 && benDemoID > 0 && benPhonMapID > 0 && benbenDemoOtherID > 0 && benImageID > 0) {
-//						if (benData.getBeneficiaryID() != null) {
-//							response.setResponse(benData.getBeneficiaryID());
-//						} else {
-//							// i_beneficiary, i_bendemographics and
-//							// m_benphonemap
-//							// roll-back
-//							response.setResponse("Registration Done But BeneficiaryID Not Generated!!!");
-//						}
-//					} else {
-//						// i_beneficiary, i_bendemographics and m_benphonemap
-//						// roll-back
-//						response.setError(500, "Something Went-Wrong");
-//					}
+					int benImageUpdateRes = registrarServiceImpl.updateBeneficiaryImage(benD, benRegID);
+
+					if (benRegID > 0 && benDemoUpdateRes > 0 && benPhonMapUpdateRes > 0 && benbenDemoOtherUpdateRes > 0
+							&& benImageUpdateRes > 0) {
+						Integer i = nurseServiceImpl.updateBeneficiaryStatus('R', benRegID);
+						response.setResponse("Beneficiary Details updated successfully!!!");
+
+					} else {
+						// i_beneficiary, i_bendemographics and m_benphonemap
+						// roll-back
+						response.setError(500, "Something Went-Wrong");
+					}
 				} else {
 					// i_beneficiary roll-back
 					response.setError(500, "Something Went-Wrong");
 				}
 			}
-			logger.info("createBeneficiary response:" + response);
+			logger.info("updateBeneficiary response:" + response);
 		} catch (Exception e) {
-			logger.error("Error in createBeneficiary :" + e);
+			logger.error("Error in updateBeneficiary :" + e);
 			response.setError(e);
 		}
 		return response.toString();

@@ -1,9 +1,18 @@
 package com.iemr.mmu.repo.doctor;
 
-import org.springframework.data.repository.CrudRepository;
+import java.sql.Date;
 
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+
+import com.iemr.mmu.data.doctor.CancerLymphNodeDetails;
 import com.iemr.mmu.data.doctor.CancerOralExamination;
 
 public interface CancerOralExaminationRepo extends CrudRepository<CancerOralExamination, Long> {
-
+	
+	@Query(" SELECT c from CancerOralExamination c WHERE c.beneficiaryRegID = :benRegID AND c.benVisitID = :benVisitID "
+			+ " AND DATE(c.createdDate) = :createdDate")
+	public CancerOralExamination getBenCancerOralExaminationDetails(@Param("benRegID") Long benRegID,
+	@Param("benVisitID") Long benVisitID, @Param("createdDate") Date createdDate);
 }

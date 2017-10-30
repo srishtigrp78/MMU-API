@@ -13,11 +13,9 @@ public interface RegistrarRepoBenPhoneMapData extends CrudRepository<Beneficiary
 
 	@Transactional
 	@Modifying
-	@Query("UPDATE BeneficiaryPhoneMapping set phoneNo = :phoneNo, modifiedBy = :modifiedBy where benPhMapID = :benPhMapID and "
-			+ "beneficiaryRegID = :beneficiaryRegID ")
+	@Query("UPDATE BeneficiaryPhoneMapping set phoneNo = :phoneNo, modifiedBy = :modifiedBy where benificiaryRegID = :benificiaryRegID ")
 	public Integer updateBenPhoneMap(@Param("phoneNo") String phoneNo,
 			@Param("modifiedBy") String modifiedBy,
-			@Param("benPhMapID") Long benPhMapID,
-			@Param("beneficiaryRegID") Long beneficiaryRegID);
+			@Param("benificiaryRegID") Long benificiaryRegID);
 	
 }

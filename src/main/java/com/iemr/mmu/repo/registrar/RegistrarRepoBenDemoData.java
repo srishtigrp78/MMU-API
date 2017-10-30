@@ -17,7 +17,7 @@ public interface RegistrarRepoBenDemoData extends CrudRepository<BeneficiaryDemo
 	@Modifying
 	@Query("UPDATE BeneficiaryDemographicData set countryID = :countryID,stateID = :stateID,districtID = :districtID,areaID = :areaID,servicePointID = :servicePointID,"
 			+ " districtBranchID = :districtBranchID,communityID = :communityID,religionID = :religionID,occupationID = :occupationID, educationID = :educationID,"
-			+ " incomeStatusID = :incomeStatusID, modifiedBy = :modifiedBy where benDemographicsID = :benDemographicsID and beneficiaryRegID = :beneficiaryRegID ")
+			+ " incomeStatusID = :incomeStatusID, modifiedBy = :modifiedBy where beneficiaryRegID = :beneficiaryRegID ")
 	public Integer updateBendemographicData(@Param("countryID") Integer countryID,
 			@Param("stateID") Integer stateID,
 			@Param("districtID") Integer districtID,
@@ -30,7 +30,6 @@ public interface RegistrarRepoBenDemoData extends CrudRepository<BeneficiaryDemo
 			@Param("educationID") Short educationID,
 			@Param("incomeStatusID") Short incomeStatusID,
 			@Param("modifiedBy") String modifiedBy,
-			@Param("benDemographicsID") Long benDemographicsID,
 			@Param("beneficiaryRegID") Long beneficiaryRegID);
 	
 	

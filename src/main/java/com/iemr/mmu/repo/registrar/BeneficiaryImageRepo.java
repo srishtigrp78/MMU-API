@@ -2,6 +2,9 @@ package com.iemr.mmu.repo.registrar;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -13,5 +16,13 @@ import com.iemr.mmu.data.registrar.BeneficiaryImage;
 public interface BeneficiaryImageRepo extends CrudRepository<BeneficiaryImage, Long> {
 	@Query(" SELECT benImage from BeneficiaryImage where beneficiaryRegID =:benRegID ")
 	public String getBenImage(@Param("benRegID") Long benRegID);
+	
+	@Transactional
+	@Modifying
+	@Query("UPDATE BeneficiaryImage set benImage = :benImage, modifiedBy = :modifiedBy where beneficiaryRegID = :beneficiaryRegID ")
+	public Integer updateBeneficiaryImage(@Param("benImage") String benImage,
+			@Param("modifiedBy") String modifiedBy,
+			@Param("beneficiaryRegID") Long beneficiaryRegID);
+	
 
 }
