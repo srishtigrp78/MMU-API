@@ -50,7 +50,7 @@ public class CaseSheetController {
 			produces = "application/json")
 	@RequestMapping(value = { "/getBeneficiaryDataEnteredByNurseAndDoctor" }, method = { RequestMethod.POST })
 	public String getBenDataForCaseSheet(@ApiParam(
-			value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+			value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\", \"visitDateTime\":\"Date\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		logger.info("getBenDataForCaseSheet request:" + comingRequest);
 		try {
@@ -78,6 +78,37 @@ public class CaseSheetController {
 				
 				
 				response.setResponse(caseSheetData);
+			} else {
+
+			}
+			logger.info("getBenDataForCaseSheet response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenDataForCaseSheet:" + e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin()
+	@ApiOperation(
+			value = "Get casesheet History of Beneficiary",
+			consumes = "application/json",
+			produces = "application/json")
+	@RequestMapping(value = { "/getBeneficiaryCaseSheetHistory" }, method = { RequestMethod.POST })
+	public String getBeneficiaryCaseSheetHistory(@ApiParam(
+			value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+		logger.info("getBenDataForCaseSheet request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.length() >= 1) {
+				Long benRegID = obj.getLong("benRegID");
+	
+					
+				String caseSheetHistory = caseSheetServiceImpl.getBeneficiaryCaseSheetHistory(benRegID);
+				
+				
+				response.setResponse(caseSheetHistory);
 			} else {
 
 			}

@@ -31,4 +31,9 @@ public class CaseSheetServiceImpl {
 		
 		return new Gson().toJson(caseSheetData);
 	}
+	
+	public String getBeneficiaryCaseSheetHistory(Long benRegID) {
+		String caseSheetHistory = nurseServiceImpl.getBeneficiaryVisitHistory(benRegID);
+		return caseSheetHistory;
+	}
 }

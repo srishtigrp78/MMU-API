@@ -233,6 +233,7 @@ public class RegistrarController {
 			"application/json" })
 	public String saveBeneficiaryVisitDetail(@RequestBody String comingRequest) {
 
+		System.out.println(comingRequest);
 		OutputResponse response = new OutputResponse();
 		inputMapper = new InputMapper();
 		logger.info("benDetailsAndSubmitToNurse request:" + comingRequest);

@@ -1,0 +1,9 @@
+package com.iemr.mmu.service.login;
+
+public interface IemrMmuLoginService {
+
+	public String getUserServicePointVanDetails(Integer userID);
+	
+	public String getServicepointVillages(Integer servicePointID);
+
+}

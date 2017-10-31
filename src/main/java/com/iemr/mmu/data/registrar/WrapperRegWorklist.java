@@ -92,15 +92,20 @@ public class WrapperRegWorklist {
 				wrapperRegWorklist.benVisitID = (Long) obj[6];
 				wrapperRegWorklist.benVisitNo = (Short) obj[7];
 				wrapperRegWorklist.visitFlowStatusFlag = (String) obj[8];
-				if((String) obj[8] == "N"){
+				if(obj[8].toString().equals("N")){
+					System.out.println("ifff");
 					wrapperRegWorklist.statusMessage = "Pending For Consultation";
 				}else{
-					if((String) obj[8] == "D"){
+					System.out.println("else");
+					if(obj[8].toString().equals("D")){
+						System.out.println(" again ifff");
 						wrapperRegWorklist.statusMessage = "Consultation Done";
 					}
 				}
 				resArray.add(wrapperRegWorklist);
 				System.out.println("helloooo");
+				
+				System.out.println(new Gson().toJson(resArray));
 			}
 		}
 		return new Gson().toJson(resArray);

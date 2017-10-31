@@ -587,5 +587,31 @@ public class NurseServiceImpl implements NurseService {
 				benVisitID,visitDateTime);
 		return benCancerVitalDetail;
 	}
+	
+	public String getBeneficiaryVisitHistory(Long benRegID) {
+		Map<String, Object> resMap = new HashMap<>();
+		List<BeneficiaryVisitDetail> benVisitDetailsOBJs = benVisitDetailRepo.getBeneficiaryVisitHistory(benRegID);
+
+		List<BeneficiaryVisitDetail> benVisitDetailsList = new ArrayList<BeneficiaryVisitDetail>();
+		for(BeneficiaryVisitDetail benVisitDetailsOBJ:benVisitDetailsOBJs){
+			BeneficiaryVisitDetail benVisitDetailsOBJ1 = new BeneficiaryVisitDetail(benVisitDetailsOBJ.getBenVisitID(),
+					benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitDetailsOBJ.getProviderServiceMapID(),
+					benVisitDetailsOBJ.getVisitDateTime(), benVisitDetailsOBJ.getVisitNo(),
+					benVisitDetailsOBJ.getVisitReasonID(), benVisitDetailsOBJ.getVisitReason(),
+					benVisitDetailsOBJ.getVisitCategoryID(), benVisitDetailsOBJ.getVisitCategory(),
+					benVisitDetailsOBJ.getPregnancyStatus(), benVisitDetailsOBJ.getrCHID(),
+					benVisitDetailsOBJ.getHealthFacilityType(), benVisitDetailsOBJ.getHealthFacilityLocation(),
+					benVisitDetailsOBJ.getReportFilePath(), benVisitDetailsOBJ.getDeleted(),
+					benVisitDetailsOBJ.getProcessed(), benVisitDetailsOBJ.getCreatedBy(),
+					benVisitDetailsOBJ.getCreatedDate(), benVisitDetailsOBJ.getModifiedBy(),
+					benVisitDetailsOBJ.getLastModDate());
+			benVisitDetailsList.add(benVisitDetailsOBJ1);
+		}
+
+		resMap.put("benVisitDetails", benVisitDetailsList);
+
+		return new Gson().toJson(resMap);
+	}
+	
 
 }

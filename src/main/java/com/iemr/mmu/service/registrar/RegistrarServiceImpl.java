@@ -138,26 +138,26 @@ public class RegistrarServiceImpl implements RegistrarService {
 		BeneficiaryDemographicAdditional benDemoAd = new BeneficiaryDemographicAdditional();
 		benDemoAd.setBeneficiaryRegID(benRegID);
 
-		if (!benD.get("literacyStatus").isJsonNull()) {
+		if (benD.has("literacyStatus") && !benD.get("literacyStatus").isJsonNull()) {
 			benDemoAd.setLiteracyStatus(benD.get("literacyStatus").getAsString());
 		}
 
-		if (!benD.get("motherName").isJsonNull()) {
+		if (benD.has("motherName") && !benD.get("motherName").isJsonNull()) {
 			benDemoAd.setMotherName(benD.get("motherName").getAsString());
 		}
-		if (!benD.get("emailID").isJsonNull()) {
+		if (benD.has("emailID") && !benD.get("emailID").isJsonNull()) {
 			benDemoAd.setEmailID(benD.get("emailID").getAsString());
 		}
-		if (!benD.get("bankName").isJsonNull()) {
+		if (benD.has("bankName") && !benD.get("bankName").isJsonNull()) {
 			benDemoAd.setBankName(benD.get("bankName").getAsString());
 		}
-		if (!benD.get("branchName").isJsonNull()) {
+		if (benD.has("branchName") && !benD.get("branchName").isJsonNull()) {
 			benDemoAd.setBranchName(benD.get("branchName").getAsString());
 		}
-		if (!benD.get("IFSCCode").isJsonNull()) {
+		if (benD.has("IFSCCode") && !benD.get("IFSCCode").isJsonNull()) {
 			benDemoAd.setiFSCCode(benD.get("IFSCCode").getAsString());
 		}
-		if (!benD.get("accountNumber").isJsonNull()) {
+		if (benD.has("accountNumber") && !benD.get("accountNumber").isJsonNull()) {
 			benDemoAd.setAccountNo(benD.get("accountNumber").getAsString());
 		}
 		if (benD.has("createdBy") && !benD.get("createdBy").isJsonNull())
@@ -277,11 +277,11 @@ public class RegistrarServiceImpl implements RegistrarService {
 		// Initializing BeneficiaryData Class Object...
 
 		BeneficiaryData benData = new BeneficiaryData();
-		if (!benD.get("firstName").isJsonNull())
+		if (benD.has("firstName") && !benD.get("firstName").isJsonNull())
 			benData.setFirstName(benD.get("firstName").getAsString());
-		if (!benD.get("lastName").isJsonNull())
+		if (benD.has("lastName") && !benD.get("lastName").isJsonNull())
 			benData.setLastName(benD.get("lastName").getAsString());
-		if (!benD.get("gender").isJsonNull())
+		if (benD.has("gender") && !benD.get("gender").isJsonNull())
 			benData.setGenderID(benD.get("gender").getAsShort());
 		if (benD.has("dob") && !benD.get("dob").isJsonNull()) {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
@@ -297,18 +297,18 @@ public class RegistrarServiceImpl implements RegistrarService {
 			}
 
 		}
-		if (!benD.get("maritalStatus").isJsonNull())
+		if (benD.has("maritalStatus") && !benD.get("maritalStatus").isJsonNull())
 			benData.setMaritalStatusID(benD.get("maritalStatus").getAsShort());
 		if (benD.has("createdBy") && !benD.get("createdBy").isJsonNull())
 			benData.setCreatedBy(benD.get("createdBy").getAsString());
-		if (!benD.get("fatherName").isJsonNull())
+		if (benD.has("fatherName") && !benD.get("fatherName").isJsonNull())
 			benData.setFatherName(benD.get("fatherName").getAsString());
 		if (benD.has("husbandName")) {
 			if (!benD.get("husbandName").isJsonNull())
 				benData.setSpouseName(benD.get("husbandName").getAsString());
 		}
 
-		if (!benD.get("aadharNo").isJsonNull())
+		if (benD.has("aadharNo") && !benD.get("aadharNo").isJsonNull())
 			benData.setAadharNo(benD.get("aadharNo").getAsString());
 		System.out.println(benData);
 		// Following values will get only in update request
@@ -332,29 +332,29 @@ public class RegistrarServiceImpl implements RegistrarService {
 		benDemoData.setBeneficiaryRegID(benRegID);
 		if (benD.has("countryID") && !benD.get("countryID").isJsonNull())
 			benDemoData.setCountryID(benD.get("countryID").getAsInt());
-		if (!benD.get("stateID").isJsonNull())
+		if (benD.has("stateID") && !benD.get("stateID").isJsonNull())
 			benDemoData.setStateID(benD.get("stateID").getAsInt());
-		if (!benD.get("districtID").isJsonNull())
+		if (benD.has("districtID") && !benD.get("districtID").isJsonNull())
 			benDemoData.setDistrictID(benD.get("districtID").getAsInt());
-		if (!benD.get("blockID").isJsonNull())
+		if (benD.has("blockID") && !benD.get("blockID").isJsonNull())
 			benDemoData.setBlockID(benD.get("blockID").getAsInt());
 		if (benD.has("servicePointID") && !benD.get("servicePointID").isJsonNull())
 			benDemoData.setServicePointID(benD.get("servicePointID").getAsInt());
-		if (!benD.get("villageID").isJsonNull())
+		if (benD.has("villageID") && !benD.get("villageID").isJsonNull())
 			benDemoData.setDistrictBranchID(benD.get("villageID").getAsInt());
 
 		if (benD.has("createdBy") && !benD.get("createdBy").isJsonNull())
 			benDemoData.setCreatedBy(benD.get("createdBy").getAsString());
 
-		if (!benD.get("community").isJsonNull())
+		if (benD.has("community") && !benD.get("community").isJsonNull())
 			benDemoData.setCommunityID(benD.get("community").getAsShort());
-		if (!benD.get("religion").isJsonNull())
+		if (benD.has("religion") && !benD.get("religion").isJsonNull())
 			benDemoData.setReligionID(benD.get("religion").getAsShort());
-		if (!benD.get("occupation").isJsonNull())
+		if (benD.has("occupation") && !benD.get("occupation").isJsonNull())
 			benDemoData.setOccupationID(benD.get("occupation").getAsShort());
 		if (benD.has("educationQualification") && !benD.get("educationQualification").isJsonNull())
 			benDemoData.setEducationID(benD.get("educationQualification").getAsShort());
-		if (!benD.get("income").isJsonNull())
+		if (benD.has("income") && !benD.get("income").isJsonNull())
 			benDemoData.setIncomeStatusID(benD.get("income").getAsShort());
 		System.out.println(benDemoData);
 		// Following values will get only in update request
@@ -370,7 +370,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 		// Initializing BeneficiaryPhoneMapping Class Object...
 		BeneficiaryPhoneMapping benPhoneMap = new BeneficiaryPhoneMapping();
 		benPhoneMap.setBenificiaryRegID(benRegID);
-		if (!benD.get("phoneNo").isJsonNull())
+		if (benD.has("phoneNo") && !benD.get("phoneNo").isJsonNull())
 			benPhoneMap.setPhoneNo(benD.get("phoneNo").getAsString());
 		if (benD.has("createdBy") && !benD.get("createdBy").isJsonNull())
 			benPhoneMap.setCreatedBy(benD.get("createdBy").getAsString());
@@ -512,7 +512,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 		ArrayList<BenGovIdMapping> benGovIDMaps = (ArrayList<BenGovIdMapping>) registrarRepoBenGovIdMapping
 				.save(benGovIDMap);
 
-		return 2;
+		return benGovIDMaps.size();
 	}
 
 	@Override

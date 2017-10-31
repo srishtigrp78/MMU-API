@@ -1,5 +1,7 @@
 package com.iemr.mmu.repo.nurse;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -28,6 +30,15 @@ public interface BenVisitDetailRepo extends CrudRepository<BeneficiaryVisitDetai
 
 	@Query(" SELECT bvd from BeneficiaryVisitDetail bvd WHERE bvd.beneficiaryRegID = :benRegID AND bvd.benVisitID = :benVisitID ")
 	public BeneficiaryVisitDetail getVisitDetails(@Param("benRegID") Long benRegID,
+			@Param("benVisitID") Long benVisitID);
+
+	@Query(" SELECT bvd from BeneficiaryVisitDetail bvd WHERE bvd.beneficiaryRegID = :benRegID")
+	public List<BeneficiaryVisitDetail> getBeneficiaryVisitHistory(@Param("benRegID") Long benRegID);
+
+	@Transactional
+	@Modifying
+	@Query("UPDATE BeneficiaryVisitDetail set visitFlowStatusFlag = :visitFlowStatusFlag where benVisitID = :benVisitID ")
+	public Integer updateBenFlowStatus(@Param("visitFlowStatusFlag") String visitFlowStatusFlag,
 			@Param("benVisitID") Long benVisitID);
 
 }
