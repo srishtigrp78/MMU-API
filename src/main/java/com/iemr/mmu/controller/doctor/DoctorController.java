@@ -496,7 +496,7 @@ public class DoctorController {
 			String s = doctorServiceImpl.getDocWorkList();
 			response.setResponse(s);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Error in getNurseWorkList:" + e);
 			response.setError(e);
 		}
 		return response.toString();
@@ -505,21 +505,22 @@ public class DoctorController {
 	@CrossOrigin()
 	@ApiOperation(value = "ben VisitID", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/updateBeneficiaryStatus" }, method = { RequestMethod.POST })
-	public String updateBeneficiaryStatus(@RequestBody String comingRequest) {
+	public String updateBeneficiaryStatus(@ApiParam(value = "{\"benVisitID\": \"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 0 && obj.has("benVisitID")) {
-				System.out.println("updated status flag.......");
-				String s = doctorServiceImpl.updateBenStatus(obj.getLong("benVisitID"), "D");
-				System.out.println("updated status flag.......Done");
+				
+				String s = doctorServiceImpl.updateBenStatus(obj.getLong("benVisitID"), "D");				
+				logger.info("updated status flag for Beneficiary Done Successfully.");
 				response.setResponse(s);
 			} else {
 				response.setError(5000, "Beneficiary VisitID is Missing");
+				logger.info("updateBeneficiaryStatus -> Beneficiary VisitID is Missing");
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Error in updateBeneficiaryStatus:" + e);
 			response.setError(e);
 		}
 		return response.toString();
