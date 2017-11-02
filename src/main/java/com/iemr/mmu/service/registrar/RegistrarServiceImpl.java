@@ -521,12 +521,21 @@ public class RegistrarServiceImpl implements RegistrarService {
 
 		BeneficiaryDemographicAdditional beneficiaryDemographicAdditional = getBeneficiaryDemographicAdditional(benD,
 				benRegID);
-		int res = beneficiaryDemographicAdditionalRepo.updateBeneficiaryDemographicAdditional(
-				beneficiaryDemographicAdditional.getLiteracyStatus(), beneficiaryDemographicAdditional.getMotherName(),
-				beneficiaryDemographicAdditional.getEmailID(), beneficiaryDemographicAdditional.getBankName(),
-				beneficiaryDemographicAdditional.getBranchName(), beneficiaryDemographicAdditional.getiFSCCode(),
-				beneficiaryDemographicAdditional.getAccountNo(), beneficiaryDemographicAdditional.getModifiedBy(),
-				beneficiaryDemographicAdditional.getBeneficiaryRegID());
+		int res = 0;
+		BeneficiaryDemographicAdditional demographicAdditionalData = beneficiaryDemographicAdditionalRepo.getBeneficiaryDemographicAdditional(benRegID);
+		if(null!=demographicAdditionalData){
+			res = beneficiaryDemographicAdditionalRepo.updateBeneficiaryDemographicAdditional(
+					beneficiaryDemographicAdditional.getLiteracyStatus(), beneficiaryDemographicAdditional.getMotherName(),
+					beneficiaryDemographicAdditional.getEmailID(), beneficiaryDemographicAdditional.getBankName(),
+					beneficiaryDemographicAdditional.getBranchName(), beneficiaryDemographicAdditional.getiFSCCode(),
+					beneficiaryDemographicAdditional.getAccountNo(), beneficiaryDemographicAdditional.getModifiedBy(),
+					beneficiaryDemographicAdditional.getBeneficiaryRegID());
+		}else{
+			BeneficiaryDemographicAdditional data = beneficiaryDemographicAdditionalRepo.save(beneficiaryDemographicAdditional);
+			if(data.getBenDemoAdditionalID()>0){
+				res = 1;
+			}
+		}
 
 		return res;
 	}
@@ -549,8 +558,17 @@ public class RegistrarServiceImpl implements RegistrarService {
 			if (benD.has("modifiedBy") && !benD.get("modifiedBy").isJsonNull()) {
 				beneficiaryImage.setModifiedBy(benD.get("modifiedBy").getAsString());
 			}
-			response = beneficiaryImageRepo.updateBeneficiaryImage(beneficiaryImage.getBenImage(),
-					beneficiaryImage.getModifiedBy(), beneficiaryImage.getBeneficiaryRegID());
+			
+			String benImg = beneficiaryImageRepo.getBenImage(benRegID);
+			if(null!=benImg){
+				response = beneficiaryImageRepo.updateBeneficiaryImage(beneficiaryImage.getBenImage(),
+						beneficiaryImage.getModifiedBy(), beneficiaryImage.getBeneficiaryRegID());
+			}else{
+				BeneficiaryImage data = beneficiaryImageRepo.save(beneficiaryImage);
+				if(data.getBenImageID()>0){
+					response = 1;
+				}
+			}
 
 		} else {
 			// Nothing failed, No need to update if their is no image value sent

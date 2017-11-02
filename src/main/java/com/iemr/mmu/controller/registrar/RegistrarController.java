@@ -355,8 +355,8 @@ public class RegistrarController {
 
 					int benImageUpdateRes = registrarServiceImpl.updateBeneficiaryImage(benD, benRegID);
 
-					if (benRegID > 0 && benDemoUpdateRes > 0 && benPhonMapUpdateRes > 0 && benbenDemoOtherUpdateRes > 0
-							&& benImageUpdateRes > 0) {
+					if (benRegID >= 0 && benDemoUpdateRes >= 0 && benPhonMapUpdateRes >= 0 && benbenDemoOtherUpdateRes >= 0
+							&& benImageUpdateRes >= 0) {
 						Integer i = nurseServiceImpl.updateBeneficiaryStatus('R', benRegID);
 						response.setResponse("Beneficiary Details updated successfully!!!");
 
