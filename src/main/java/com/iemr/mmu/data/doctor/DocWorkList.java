@@ -58,6 +58,9 @@ public class DocWorkList {
 	@Column(name = "VisitFlowStatusFlag")
 	private String visitFlowStatusFlag;
 	@Expose
+	@Column(name = "VisitCategory")
+	private String visitCategory;
+	@Expose
 	@Column(name = "VisitCreatedDate")
 	private Timestamp visitCreatedDate;
 

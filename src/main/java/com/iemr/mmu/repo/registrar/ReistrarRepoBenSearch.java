@@ -14,7 +14,7 @@ import com.iemr.mmu.data.registrar.V_BenAdvanceSearch;
 @Repository
 public interface ReistrarRepoBenSearch extends CrudRepository<V_BenAdvanceSearch, Long> {
 	
-	@Query("SELECT beneficiaryRegID, beneficiaryID, "
+	@Query("SELECT DISTINCT(beneficiaryRegID), beneficiaryID, "
 			+ " UPPER( concat(IFNULL(firstName, ''), ' ',IFNULL(lastName,''))) as benName, "
 			+ " Date(dob), genderID, genderName, UPPER(fatherName) as fatherName, "
 			+ " districtID, districtName, districtBranchID, villageName, phoneNo " + " FROM  V_BenAdvanceSearch "

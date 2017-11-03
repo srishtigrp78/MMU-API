@@ -38,7 +38,8 @@ public class WrapperRegWorklist {
 	private String age;
 	@Expose
 	private String visitFlowStatusFlag;
-
+	@Expose
+	private String VisitCategory;
 	@Expose
 	private Long benVisitID;
 	@Expose
@@ -92,6 +93,7 @@ public class WrapperRegWorklist {
 				wrapperRegWorklist.benVisitID = (Long) obj[6];
 				wrapperRegWorklist.benVisitNo = (Short) obj[7];
 				wrapperRegWorklist.visitFlowStatusFlag = (String) obj[8];
+				wrapperRegWorklist.VisitCategory = (String) obj[9];
 				if(obj[8].toString().equals("N")){
 					System.out.println("ifff");
 					wrapperRegWorklist.statusMessage = "Pending For Consultation";
