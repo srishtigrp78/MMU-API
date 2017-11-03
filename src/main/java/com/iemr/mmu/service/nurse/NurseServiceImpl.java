@@ -18,11 +18,13 @@ import com.iemr.mmu.data.masterdata.nurse.CancerPersonalHabitType;
 import com.iemr.mmu.data.masterdata.nurse.FamilyMemberType;
 import com.iemr.mmu.data.masterdata.nurse.VisitCategory;
 import com.iemr.mmu.data.masterdata.nurse.VisitReason;
+import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
 import com.iemr.mmu.data.nurse.BenFamilyCancerHistory;
 import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
+import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.registrar.WrapperRegWorklist;
 import com.iemr.mmu.repo.masterrepo.nurse.CancerDiseaseMasterRepo;
@@ -30,11 +32,13 @@ import com.iemr.mmu.repo.masterrepo.nurse.CancerPersonalHabitMasterRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.FamilyMemberMasterRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.VisitCategoryMasterRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.VisitReasonMasterRepo;
+import com.iemr.mmu.repo.nurse.BenAnthropometryRepo;
 import com.iemr.mmu.repo.nurse.BenCancerVitalDetailRepo;
 import com.iemr.mmu.repo.nurse.BenFamilyCancerHistoryRepo;
 import com.iemr.mmu.repo.nurse.BenObstetricCancerHistoryRepo;
 import com.iemr.mmu.repo.nurse.BenPersonalCancerDietHistoryRepo;
 import com.iemr.mmu.repo.nurse.BenPersonalCancerHistoryRepo;
+import com.iemr.mmu.repo.nurse.BenPhysicalVitalRepo;
 import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
@@ -51,6 +55,8 @@ public class NurseServiceImpl implements NurseService {
 
 	private ReistrarRepoBenSearch reistrarRepoBenSearch;
 	private RegistrarRepoBenData registrarRepoBenData;
+	private BenAnthropometryRepo benAnthropometryRepo;
+	private BenPhysicalVitalRepo benPhysicalVitalRepo;
 
 	@Autowired
 	public void setRegistrarRepoBenData(RegistrarRepoBenData registrarRepoBenData) {
@@ -105,6 +111,16 @@ public class NurseServiceImpl implements NurseService {
 	@Autowired
 	public void BenCancerVitalDetailRepo(BenCancerVitalDetailRepo benCancerVitalDetailRepo) {
 		this.benCancerVitalDetailRepo = benCancerVitalDetailRepo;
+	}
+	
+	@Autowired
+	public void setBenAnthropometryRepo(BenAnthropometryRepo benAnthropometryRepo) {
+		this.benAnthropometryRepo = benAnthropometryRepo;
+	}
+	
+	@Autowired
+	public void setBenPhysicalVitalRepo(BenPhysicalVitalRepo benPhysicalVitalRepo) {
+		this.benPhysicalVitalRepo = benPhysicalVitalRepo;
 	}
 
 	@Override
@@ -611,6 +627,24 @@ public class NurseServiceImpl implements NurseService {
 		resMap.put("benVisitDetails", benVisitDetailsList);
 
 		return new Gson().toJson(resMap);
+	}
+
+	@Override
+	public Long saveBeneficiaryPhysicalAnthropometryDetails(BenAnthropometryDetail benAnthropometryDetail) {
+		BenAnthropometryDetail response=benAnthropometryRepo.save(benAnthropometryDetail);
+		if (response != null)
+			return response.getID();
+		else
+			return null;
+	}
+
+	@Override
+	public Long saveBeneficiaryPhysicalVitalDetails(BenPhysicalVitalDetail benPhysicalVitalDetail) {
+		BenPhysicalVitalDetail response=benPhysicalVitalRepo.save(benPhysicalVitalDetail);
+		if (response != null)
+			return response.getID();
+		else
+			return null;
 	}
 	
 
