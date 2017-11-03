@@ -18,53 +18,29 @@ import com.iemr.utils.response.OutputResponse;
 @RequestMapping("/user")
 @RestController
 public class IemrMmuLoginController {
-	
+
 	private Logger logger = LoggerFactory.getLogger(RegistrarController.class);
 	private InputMapper inputMapper = new InputMapper();
-	
+
 	private IemrMmuLoginServiceImpl iemrMmuLoginServiceImpl;
-	
+
 	@Autowired
 	public void setIemrMmuLoginServiceImpl(IemrMmuLoginServiceImpl iemrMmuLoginServiceImpl) {
 		this.iemrMmuLoginServiceImpl = iemrMmuLoginServiceImpl;
 	}
 
 	@CrossOrigin()
-	@RequestMapping(value = { "/userAuthentication" }, method = { RequestMethod.POST }, produces = {
+	@RequestMapping(value = "/getUserServicePointVanDetails", method = { RequestMethod.POST }, produces = {
 			"application/json" })
-	public String userAuthentication(@RequestBody String jsonRequest) {
-
+	public String getUserServicePointVanDetails(@RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		try {
-			System.out.println("BABA");
-			response.setResponse("BABA");
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			response.setError(e);
-		}
-		return response.toString();
-	}
-	
-	@CrossOrigin()
-	@RequestMapping(
-			value = "/getUserServicePointVanDetails",
-			method =
-	{ RequestMethod.POST },
-			produces =
-	{ "application/json" })
-	public String getUserServicePointVanDetails(@RequestBody String comingRequest)
-	{
-		OutputResponse response = new OutputResponse();
-		try
-		{
 
 			JSONObject obj = new JSONObject(comingRequest);
 			logger.info("getUserServicePointVanDetails request " + comingRequest);
 			String responseData = iemrMmuLoginServiceImpl.getUserServicePointVanDetails(obj.getInt("userID"));
 			response.setResponse(responseData);
-		} catch (Exception e)
-		{
+		} catch (Exception e) {
 			// e.printStackTrace();
 			response.setError(e);
 			logger.error("get User SP and van details failed with " + e.getMessage(), e);
@@ -73,27 +49,20 @@ public class IemrMmuLoginController {
 		logger.info("getUserServicePointVanDetails response " + response.toString());
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
-	@RequestMapping(
-			value = "/getServicepointVillages",
-			method =
-	{ RequestMethod.POST },
-			produces =
-	{ "application/json" })
-	public String getServicepointVillages(@RequestBody String comingRequest)
-	{
+	@RequestMapping(value = "/getServicepointVillages", method = { RequestMethod.POST }, produces = {
+			"application/json" })
+	public String getServicepointVillages(@RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
-		try
-		{
+		try {
 
 			JSONObject obj = new JSONObject(comingRequest);
 			logger.info("getServicepointVillages request " + comingRequest);
 			String responseData = iemrMmuLoginServiceImpl.getServicepointVillages(obj.getInt("servicePointID"));
 			response.setResponse(responseData);
-		} catch (Exception e)
-		{
-			// e.printStackTrace();	
+		} catch (Exception e) {
+			// e.printStackTrace();
 			response.setError(e);
 			logger.error("get villages with servicepoint failed with " + e.getMessage(), e);
 
@@ -102,5 +71,28 @@ public class IemrMmuLoginController {
 		return response.toString();
 	}
 
+	@CrossOrigin()
+	@RequestMapping(value = "/getUserVanSpDetails", method = { RequestMethod.POST }, produces = { "application/json" })
+	public String getUserVanSpDetails(@RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+		try {
 
+			JSONObject obj = new JSONObject(comingRequest);
+			logger.info("getServicepointVillages request " + comingRequest);
+			if (obj.has("userID") && obj.has("providerServiceMapID")) {
+				String responseData = iemrMmuLoginServiceImpl.getUserVanSpDetails(obj.getInt("userID"),
+						obj.getInt("providerServiceMapID"));
+				response.setResponse(responseData);
+			} else {
+				response.setError(5000, "Please provide userID and ProviderServiceMapID");
+			}
+		} catch (Exception e) {
+			// e.printStackTrace();
+			response.setError(e);
+			logger.error("getUserVanSpDetails failed with " + e.getMessage(), e);
+
+		}
+		logger.info("getUserVanSpDetails response " + response.toString());
+		return response.toString();
+	}
 }

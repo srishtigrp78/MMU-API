@@ -12,34 +12,42 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.iemr.mmu.data.login.ServicePointVillageMapping;
+import com.iemr.mmu.data.login.UserVanSpDetails_View;
 import com.iemr.mmu.repo.login.MasterVanRepo;
 import com.iemr.mmu.repo.login.ServicePointVillageMappingRepo;
 import com.iemr.mmu.repo.login.UserParkingplaceMappingRepo;
+import com.iemr.mmu.repo.login.UserVanSpDetails_View_Repo;
 import com.iemr.mmu.repo.login.VanServicepointMappingRepo;
 
 @Service
-public class IemrMmuLoginServiceImpl implements IemrMmuLoginService{
-	
+public class IemrMmuLoginServiceImpl implements IemrMmuLoginService {
+
 	private UserParkingplaceMappingRepo userParkingplaceMappingRepo;
 	private MasterVanRepo masterVanRepo;
 	private VanServicepointMappingRepo vanServicepointMappingRepo;
 	private ServicePointVillageMappingRepo servicePointVillageMappingRepo;
-	
+	private UserVanSpDetails_View_Repo userVanSpDetails_View_Repo;
+
+	@Autowired
+	public void setUserVanSpDetails_View_Repo(UserVanSpDetails_View_Repo userVanSpDetails_View_Repo) {
+		this.userVanSpDetails_View_Repo = userVanSpDetails_View_Repo;
+	}
+
 	@Autowired
 	public void setUserParkingplaceMappingRepo(UserParkingplaceMappingRepo userParkingplaceMappingRepo) {
 		this.userParkingplaceMappingRepo = userParkingplaceMappingRepo;
 	}
-	
+
 	@Autowired
 	public void setMasterVanRepo(MasterVanRepo masterVanRepo) {
 		this.masterVanRepo = masterVanRepo;
 	}
-	
+
 	@Autowired
 	public void setVanServicepointMappingRepo(VanServicepointMappingRepo vanServicepointMappingRepo) {
 		this.vanServicepointMappingRepo = vanServicepointMappingRepo;
 	}
-	
+
 	@Autowired
 	public void setServicePointVillageMappingRepo(ServicePointVillageMappingRepo servicePointVillageMappingRepo) {
 		this.servicePointVillageMappingRepo = servicePointVillageMappingRepo;
@@ -101,7 +109,6 @@ public class IemrMmuLoginServiceImpl implements IemrMmuLoginService{
 			responseMap.put("userVanDetails", vanListResponse);
 			responseMap.put("userSpDetails", servicePointListResponse);
 			responseMap.put("parkingPlaceLocationList", parkingPlaceLocationList);
-			
 
 			// System.out.println("hello");
 
@@ -112,16 +119,48 @@ public class IemrMmuLoginServiceImpl implements IemrMmuLoginService{
 	@Override
 	public String getServicepointVillages(Integer servicePointID) {
 		List<Object[]> servicePointVillageList = servicePointVillageMappingRepo.getServicePointVillages(servicePointID);
-		
-		ArrayList<ServicePointVillageMapping> villageList=new ArrayList<ServicePointVillageMapping>();
+
+		ArrayList<ServicePointVillageMapping> villageList = new ArrayList<ServicePointVillageMapping>();
 		if (servicePointVillageList.size() > 0) {
 			ServicePointVillageMapping VillageMap;
 			for (Object[] obj : servicePointVillageList) {
-				VillageMap = new ServicePointVillageMapping((Integer)obj[0], (String)obj[1]);
+				VillageMap = new ServicePointVillageMapping((Integer) obj[0], (String) obj[1]);
 				villageList.add(VillageMap);
 			}
 		}
-			
+
 		return new Gson().toJson(villageList);
+	}
+
+	@Override
+	public String getUserVanSpDetails(Integer userID, Integer providerServiceMapID) {
+		Map<String, Object> resMap = new HashMap<>();
+		ArrayList<Object[]> objList = userVanSpDetails_View_Repo.getUserVanSpDetails_View(userID, providerServiceMapID);
+		ArrayList<UserVanSpDetails_View> userVanSpDetails_ViewList = new ArrayList<>();
+		if (objList.size() > 0) {
+			for (Object[] objArray : objList) {
+				UserVanSpDetails_View userVanSpDetails_ViewOBJ = new UserVanSpDetails_View((Integer) objArray[0],
+						(Integer) objArray[1], (String) objArray[2], (Short) objArray[3], (Integer) objArray[4],
+						(String) objArray[5]);
+
+				userVanSpDetails_ViewList.add(userVanSpDetails_ViewOBJ);
+
+			}
+		}
+		resMap.put("UserVanSpDetails", userVanSpDetails_ViewList);
+		// System.out.println("helloo bhai---" + new Gson().toJson(resMap));
+		List<Object[]> parkingPlaceList = userParkingplaceMappingRepo.getUserParkingPlce(userID);
+		Map<String, Object> parkingPlaceLocationMap = new HashMap<>();
+		if (parkingPlaceList.size() > 0) {
+			Object[] obj1 = parkingPlaceList.get(0);
+			parkingPlaceLocationMap.put("stateID", obj1[1]);
+			parkingPlaceLocationMap.put("stateName", obj1[2]);
+			parkingPlaceLocationMap.put("districtID", obj1[3]);
+			parkingPlaceLocationMap.put("districtName", obj1[4]);
+			parkingPlaceLocationMap.put("blockID", obj1[5]);
+			parkingPlaceLocationMap.put("blockName", obj1[6]);
+		}
+		resMap.put("UserLocDetails", parkingPlaceLocationMap);
+		return new Gson().toJson(resMap);
 	}
 }

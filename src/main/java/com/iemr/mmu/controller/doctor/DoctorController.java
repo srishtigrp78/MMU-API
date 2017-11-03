@@ -505,13 +505,14 @@ public class DoctorController {
 	@CrossOrigin()
 	@ApiOperation(value = "ben VisitID", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/updateBeneficiaryStatus" }, method = { RequestMethod.POST })
-	public String updateBeneficiaryStatus(@ApiParam(value = "{\"benVisitID\": \"Long\"}") @RequestBody String comingRequest) {
+	public String updateBeneficiaryStatus(
+			@ApiParam(value = "{\"benVisitID\": \"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 0 && obj.has("benVisitID")) {
-				
-				String s = doctorServiceImpl.updateBenStatus(obj.getLong("benVisitID"), "D");				
+
+				String s = doctorServiceImpl.updateBenStatus(obj.getLong("benVisitID"), "D");
 				logger.info("updated status flag for Beneficiary Done Successfully.");
 				response.setResponse(s);
 			} else {
@@ -524,6 +525,18 @@ public class DoctorController {
 			response.setError(e);
 		}
 		return response.toString();
+	}
+
+	@CrossOrigin()
+	@ApiOperation(value = "Quick Consultation master data", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/quickConsultationMasterData" }, method = { RequestMethod.POST })
+	public String quickConsultationMasterData(@RequestBody String comingRequest) {
+		try {
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
