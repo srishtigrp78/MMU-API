@@ -32,7 +32,7 @@ public interface BenVisitDetailRepo extends CrudRepository<BeneficiaryVisitDetai
 	public BeneficiaryVisitDetail getVisitDetails(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 
-	@Query(" SELECT bvd from BeneficiaryVisitDetail bvd WHERE bvd.beneficiaryRegID = :benRegID")
+	@Query(" SELECT bvd from BeneficiaryVisitDetail bvd WHERE bvd.beneficiaryRegID = :benRegID and DATE(CreatedDate)<curdate()")
 	public List<BeneficiaryVisitDetail> getBeneficiaryVisitHistory(@Param("benRegID") Long benRegID);
 
 	@Transactional
