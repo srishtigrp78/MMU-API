@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.emergencyCasesheet;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 
 @Entity
@@ -193,6 +196,47 @@ public class LabTestOrderDetail {
 
 	public Long getLabTestOrderID() {
 		return labTestOrderID;
+	}
+	
+	public static ArrayList<LabTestOrderDetail> getLabTestOrderDetailList(JsonObject emrgCasesheet, Long prescriptionID) {
+		ArrayList<LabTestOrderDetail> resArray = new ArrayList<>();
+		LabTestOrderDetail labTestOrderDetail = null;
+		
+		for (JsonElement csobj : emrgCasesheet.getAsJsonArray("labTestOrders")) {
+			labTestOrderDetail = new LabTestOrderDetail();
+			
+			if (emrgCasesheet.has("benVisitID") && !emrgCasesheet.get("benVisitID").isJsonNull())
+				labTestOrderDetail.setBenVisitID(emrgCasesheet.get("benVisitID").getAsLong());
+			
+			if (emrgCasesheet.has("beneficiaryRegID") && !emrgCasesheet.get("beneficiaryRegID").isJsonNull())
+				labTestOrderDetail.setBeneficiaryRegID(emrgCasesheet.get("beneficiaryRegID").getAsLong());
+			
+			if (emrgCasesheet.has("providerServiceMapID") && !emrgCasesheet.get("providerServiceMapID").isJsonNull())
+				labTestOrderDetail.setProviderServiceMapID(emrgCasesheet.get("providerServiceMapID").getAsInt());
+			
+			labTestOrderDetail.setPrescriptionID(prescriptionID);
+			
+			JsonObject obj = csobj.getAsJsonObject();
+			
+			if (obj.has("testID") && !obj.get("testID").isJsonNull())
+				labTestOrderDetail.setTestID(obj.get("testID").getAsInt());
+			
+			if (obj.has("orderedTestName") && !obj.get("orderedTestName").isJsonNull())
+				labTestOrderDetail.setOrderedTestName(obj.get("orderedTestName").getAsString());
+			
+			if (obj.has("testingRequirements") && !obj.get("testingRequirements").isJsonNull())
+				labTestOrderDetail.setTestingRequirements(obj.get("testingRequirements").getAsString());
+			
+			if (obj.has("isRadiologyImaging") && !obj.get("isRadiologyImaging").isJsonNull())
+				labTestOrderDetail.setIsRadiologyImaging(obj.get("isRadiologyImaging").getAsBoolean());
+			
+			if (emrgCasesheet.has("createdBy") && !emrgCasesheet.get("createdBy").isJsonNull())
+				labTestOrderDetail.setCreatedBy(emrgCasesheet.get("createdBy").getAsString());
+			
+			resArray.add(labTestOrderDetail);
+		}
+
+		return resArray;
 	}
 	
 }

@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.emergencyCasesheet;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,7 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.registrar.BenGovIdMapping;
 
 @Entity
 @Table(name = "t_benchiefcomplaint")
@@ -191,5 +195,47 @@ public class BenChiefComplaint {
 		return benChiefComplaintID;
 	}
 	
+	
+	public static ArrayList<BenChiefComplaint> getBenChiefComplaintList(JsonObject emrgCasesheet) {
+		ArrayList<BenChiefComplaint> resArray = new ArrayList<>();
+		BenChiefComplaint benChiefComplaint = null;
+		System.out.println("ello");
+		for (JsonElement csobj : emrgCasesheet.getAsJsonArray("benChiefComplaint")) {
+			benChiefComplaint = new BenChiefComplaint();
+			
+			if (emrgCasesheet.has("benVisitID") && !emrgCasesheet.get("benVisitID").isJsonNull())
+				benChiefComplaint.setBenVisitID(emrgCasesheet.get("benVisitID").getAsLong());
+			
+			if (emrgCasesheet.has("beneficiaryRegID") && !emrgCasesheet.get("beneficiaryRegID").isJsonNull())
+				benChiefComplaint.setBeneficiaryRegID(emrgCasesheet.get("beneficiaryRegID").getAsLong());
+			
+			if (emrgCasesheet.has("providerServiceMapID") && !emrgCasesheet.get("providerServiceMapID").isJsonNull())
+				benChiefComplaint.setProviderServiceMapID(emrgCasesheet.get("providerServiceMapID").getAsInt());
+			
+			JsonObject obj = csobj.getAsJsonObject();
+			
+			if (obj.has("chiefComplaintID") && !obj.get("chiefComplaintID").isJsonNull())
+				benChiefComplaint.setChiefComplaintID(obj.get("chiefComplaintID").getAsInt());
+			
+			if (obj.has("chiefComplaint") && !obj.get("chiefComplaint").isJsonNull())
+				benChiefComplaint.setChiefComplaint(obj.get("chiefComplaint").getAsString());
+			
+			if (obj.has("duration") && !obj.get("duration").isJsonNull())
+				benChiefComplaint.setDuration(obj.get("duration").getAsInt());
+			
+			if (obj.has("unitOfDuration") && !obj.get("unitOfDuration").isJsonNull())
+				benChiefComplaint.setUnitOfDuration(obj.get("unitOfDuration").getAsString());
+			
+			if (obj.has("description") && !obj.get("description").isJsonNull())
+				benChiefComplaint.setDescription(obj.get("description").getAsString());
+			
+			if (emrgCasesheet.has("createdBy") && !emrgCasesheet.get("createdBy").isJsonNull())
+				benChiefComplaint.setCreatedBy(emrgCasesheet.get("createdBy").getAsString());
+			
+			resArray.add(benChiefComplaint);
+		}
+
+		return resArray;
+	}
 	
 }
