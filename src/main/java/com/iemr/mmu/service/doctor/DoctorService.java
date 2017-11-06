@@ -27,4 +27,6 @@ public interface DoctorService {
 	public Long saveCancerSignAndSymptomsData(CancerSignAndSymptoms cancerSignAndSymptoms);
 
 	public String updateBenStatus(Long benVisitID, String c);
+
+	public String getQuickConsultMasterData();
 }

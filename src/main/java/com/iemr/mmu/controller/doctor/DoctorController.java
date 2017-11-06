@@ -529,14 +529,21 @@ public class DoctorController {
 
 	@CrossOrigin()
 	@ApiOperation(value = "Quick Consultation master data", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/quickConsultationMasterData" }, method = { RequestMethod.POST })
-	public String quickConsultationMasterData(@RequestBody String comingRequest) {
+	@RequestMapping(value = { "/quickConsultationMasterData" }, method = { RequestMethod.GET })
+	public String quickConsultationMasterData() {
+		OutputResponse response = new OutputResponse();
 		try {
-
+			String s = doctorServiceImpl.getQuickConsultMasterData();
+			if (s != null)
+				response.setResponse(s);
+			else
+				response.setError(5000, "No Master Data Available");
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.error("Quick Consultation master data:" + e);
+			response.setError(e);
 		}
-		return null;
+		return response.toString();
 	}
 
 }

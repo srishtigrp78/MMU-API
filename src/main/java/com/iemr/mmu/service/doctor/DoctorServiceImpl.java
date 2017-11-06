@@ -1,6 +1,7 @@
 package com.iemr.mmu.service.doctor;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,12 @@ import com.iemr.mmu.data.doctor.CancerGynecologicalExamination;
 import com.iemr.mmu.data.doctor.CancerLymphNodeDetails;
 import com.iemr.mmu.data.doctor.CancerOralExamination;
 import com.iemr.mmu.data.doctor.CancerSignAndSymptoms;
+import com.iemr.mmu.data.doctor.ChiefComplaintMaster;
+import com.iemr.mmu.data.doctor.DrugDoseMaster;
+import com.iemr.mmu.data.doctor.DrugDurationUnitMaster;
+import com.iemr.mmu.data.doctor.DrugFormMaster;
+import com.iemr.mmu.data.doctor.DrugFrequencyMaster;
+import com.iemr.mmu.data.doctor.LabTestMaster;
 import com.iemr.mmu.data.registrar.WrapperRegWorklist;
 import com.iemr.mmu.repo.doctor.CancerAbdominalExaminationRepo;
 import com.iemr.mmu.repo.doctor.CancerBreastExaminationRepo;
@@ -24,7 +31,13 @@ import com.iemr.mmu.repo.doctor.CancerGynecologicalExaminationRepo;
 import com.iemr.mmu.repo.doctor.CancerLymphNodeExaminationRepo;
 import com.iemr.mmu.repo.doctor.CancerOralExaminationRepo;
 import com.iemr.mmu.repo.doctor.CancerSignAndSymptomsRepo;
+import com.iemr.mmu.repo.doctor.ChiefComplaintMasterRepo;
 import com.iemr.mmu.repo.doctor.DocWorkListRepo;
+import com.iemr.mmu.repo.doctor.DrugDoseMasterRepo;
+import com.iemr.mmu.repo.doctor.DrugDurationUnitMasterRepo;
+import com.iemr.mmu.repo.doctor.DrugFormMasterRepo;
+import com.iemr.mmu.repo.doctor.DrugFrequencyMasterRepo;
+import com.iemr.mmu.repo.doctor.LabTestMasterRepo;
 import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
 import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
 
@@ -38,11 +51,46 @@ public class DoctorServiceImpl implements DoctorService {
 	private CancerLymphNodeExaminationRepo cancerLymphNodeExaminationRepo;
 	private CancerOralExaminationRepo cancerOralExaminationRepo;
 	private CancerSignAndSymptomsRepo cancerSignAndSymptomsRepo;
-
 	private ReistrarRepoBenSearch reistrarRepoBenSearch;
 	private DocWorkListRepo docWorkListRepo;
-
 	private BenVisitDetailRepo benVisitDetailRepo;
+
+	private ChiefComplaintMasterRepo chiefComplaintMasterRepo;
+	private DrugDoseMasterRepo drugDoseMasterRepo;
+	private DrugDurationUnitMasterRepo drugDurationUnitMasterRepo;
+	private DrugFormMasterRepo drugFormMasterRepo;
+	private DrugFrequencyMasterRepo drugFrequencyMasterRepo;
+	private LabTestMasterRepo labTestMasterRepo;
+
+	@Autowired
+	public void setChiefComplaintMasterRepo(ChiefComplaintMasterRepo chiefComplaintMasterRepo) {
+		this.chiefComplaintMasterRepo = chiefComplaintMasterRepo;
+	}
+
+	@Autowired
+	public void setDrugDoseMasterRepo(DrugDoseMasterRepo drugDoseMasterRepo) {
+		this.drugDoseMasterRepo = drugDoseMasterRepo;
+	}
+
+	@Autowired
+	public void setDrugDurationUnitMasterRepo(DrugDurationUnitMasterRepo drugDurationUnitMasterRepo) {
+		this.drugDurationUnitMasterRepo = drugDurationUnitMasterRepo;
+	}
+
+	@Autowired
+	public void setDrugFormMasterRepo(DrugFormMasterRepo drugFormMasterRepo) {
+		this.drugFormMasterRepo = drugFormMasterRepo;
+	}
+
+	@Autowired
+	public void setDrugFrequencyMasterRepo(DrugFrequencyMasterRepo drugFrequencyMasterRepo) {
+		this.drugFrequencyMasterRepo = drugFrequencyMasterRepo;
+	}
+
+	@Autowired
+	public void setLabTestMasterRepo(LabTestMasterRepo labTestMasterRepo) {
+		this.labTestMasterRepo = labTestMasterRepo;
+	}
 
 	@Autowired
 	public void setBenVisitDetailRepo(BenVisitDetailRepo benVisitDetailRepo) {
@@ -273,4 +321,21 @@ public class DoctorServiceImpl implements DoctorService {
 		return new Gson().toJson(resMap);
 	}
 
+	@Override
+	public String getQuickConsultMasterData() {
+		Map<String, Object> resMap = new HashMap<>();
+		ArrayList<ChiefComplaintMaster> ccList = chiefComplaintMasterRepo.getChiefComplaintMaster();
+		ArrayList<DrugDoseMaster> ddmList = drugDoseMasterRepo.getDrugDoseMaster();
+		ArrayList<DrugDurationUnitMaster> ddumList = drugDurationUnitMasterRepo.getDrugDurationUnitMaster();
+		ArrayList<DrugFormMaster> dfmList = drugFormMasterRepo.getDrugFormMaster();
+		ArrayList<DrugFrequencyMaster> dfrmList = drugFrequencyMasterRepo.getDrugFrequencyMaster();
+		ArrayList<LabTestMaster> ltmList = labTestMasterRepo.getLabTestMaster();
+		resMap.put("chiefComplaintMaster", ccList);
+		resMap.put("drugDoseMaster", ddmList);
+		resMap.put("drugDurationUnitMaster", ddumList);
+		resMap.put("drugFormMaster", dfmList);
+		resMap.put("drugFrequencyMaster", dfrmList);
+		resMap.put("labTestMaster", ltmList);
+		return new Gson().toJson(resMap);
+	}
 }
