@@ -9,23 +9,24 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
+
 @Entity
-@Table(name = "m_labtests")
-public class LabTestMaster {
+@Table(name = "m_drugdose")
+public class DrugDoseMaster {
 	@Id
 	@GeneratedValue
 	@Expose
-	@Column(name = "TestID")
-	private Integer testID;
+	@Column(name = "DrugDoseID")
+	private Integer drugDoseID;
 	@Expose
-	@Column(name = "TestName")
-	private String testName;
+	@Column(name = "DrugDose")
+	private String drugDose;
 	@Expose
-	@Column(name = "TestDesc")
-	private String testDesc;
+	@Column(name = "DrugDoseDesc")
+	private String drugDoseDesc;
 	@Expose
-	@Column(name = "IsRadiologyImaging")
-	private Boolean isRadiologyImaging;
+	@Column(name = "DrugFormID")
+	private Integer drugFormID;
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = false)
 	private Boolean deleted;
@@ -45,16 +46,16 @@ public class LabTestMaster {
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
-	public LabTestMaster() {
+	public DrugDoseMaster() {
 	}
 
-	public LabTestMaster(Integer testID, String testName, String testDesc, Boolean isRadiologyImaging, Boolean deleted,
+	public DrugDoseMaster(Integer drugDoseID, String drugDose, String drugDoseDesc, Integer drugFormID, Boolean deleted,
 			Character processed, String createdBy, Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
 		super();
-		this.testID = testID;
-		this.testName = testName;
-		this.testDesc = testDesc;
-		this.isRadiologyImaging = isRadiologyImaging;
+		this.drugDoseID = drugDoseID;
+		this.drugDose = drugDose;
+		this.drugDoseDesc = drugDoseDesc;
+		this.drugFormID = drugFormID;
 		this.deleted = deleted;
 		this.processed = processed;
 		this.createdBy = createdBy;
@@ -63,36 +64,36 @@ public class LabTestMaster {
 		this.lastModDate = lastModDate;
 	}
 
-	public Integer getTestID() {
-		return testID;
+	public Integer getDrugDoseID() {
+		return drugDoseID;
 	}
 
-	public void setTestID(Integer testID) {
-		this.testID = testID;
+	public void setDrugDoseID(Integer drugDoseID) {
+		this.drugDoseID = drugDoseID;
 	}
 
-	public String getTestName() {
-		return testName;
+	public String getDrugDose() {
+		return drugDose;
 	}
 
-	public void setTestName(String testName) {
-		this.testName = testName;
+	public void setDrugDose(String drugDose) {
+		this.drugDose = drugDose;
 	}
 
-	public String getTestDesc() {
-		return testDesc;
+	public String getDrugDoseDesc() {
+		return drugDoseDesc;
 	}
 
-	public void setTestDesc(String testDesc) {
-		this.testDesc = testDesc;
+	public void setDrugDoseDesc(String drugDoseDesc) {
+		this.drugDoseDesc = drugDoseDesc;
 	}
 
-	public Boolean getIsRadiologyImaging() {
-		return isRadiologyImaging;
+	public Integer getDrugFormID() {
+		return drugFormID;
 	}
 
-	public void setIsRadiologyImaging(Boolean isRadiologyImaging) {
-		this.isRadiologyImaging = isRadiologyImaging;
+	public void setDrugFormID(Integer drugFormID) {
+		this.drugFormID = drugFormID;
 	}
 
 	public Boolean getDeleted() {

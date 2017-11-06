@@ -25,22 +25,22 @@ public class ChiefComplaintMaster {
 	@Column(name = "ChiefComplaintDesc")
 	private String chiefComplaintDesc;
 	@Expose
-	@Column(name = "Deleted")
+	@Column(name = "Deleted", insertable = false, updatable = false)
 	private Boolean deleted;
 	@Expose
-	@Column(name = "Processed")
+	@Column(name = "Processed", insertable = false, updatable = false)
 	private Character processed;
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
 	@Expose
-	@Column(name = "CreatedDate")
+	@Column(name = "CreatedDate", insertable = false, updatable = false)
 	private Timestamp createdDate;
 	@Expose
 	@Column(name = "ModifiedBy")
 	private String modifiedBy;
 	@Expose
-	@Column(name = "LastModDate")
+	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
 	public ChiefComplaintMaster() {

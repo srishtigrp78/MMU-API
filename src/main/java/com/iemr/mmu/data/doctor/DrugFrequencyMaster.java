@@ -9,23 +9,21 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
+
 @Entity
-@Table(name = "m_labtests")
-public class LabTestMaster {
+@Table(name = "m_drugfrequency")
+public class DrugFrequencyMaster {
 	@Id
 	@GeneratedValue
 	@Expose
-	@Column(name = "TestID")
-	private Integer testID;
+	@Column(name = "DrugFrequencyID")
+	private Integer drugFrequencyID;
 	@Expose
-	@Column(name = "TestName")
-	private String testName;
+	@Column(name = "Frequency")
+	private String frequency;
 	@Expose
-	@Column(name = "TestDesc")
-	private String testDesc;
-	@Expose
-	@Column(name = "IsRadiologyImaging")
-	private Boolean isRadiologyImaging;
+	@Column(name = "FrequencyDesc")
+	private String frequencyDesc;
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = false)
 	private Boolean deleted;
@@ -45,16 +43,15 @@ public class LabTestMaster {
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
-	public LabTestMaster() {
+	public DrugFrequencyMaster() {
 	}
 
-	public LabTestMaster(Integer testID, String testName, String testDesc, Boolean isRadiologyImaging, Boolean deleted,
+	public DrugFrequencyMaster(Integer drugFrequencyID, String frequency, String frequencyDesc, Boolean deleted,
 			Character processed, String createdBy, Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
 		super();
-		this.testID = testID;
-		this.testName = testName;
-		this.testDesc = testDesc;
-		this.isRadiologyImaging = isRadiologyImaging;
+		this.drugFrequencyID = drugFrequencyID;
+		this.frequency = frequency;
+		this.frequencyDesc = frequencyDesc;
 		this.deleted = deleted;
 		this.processed = processed;
 		this.createdBy = createdBy;
@@ -63,36 +60,28 @@ public class LabTestMaster {
 		this.lastModDate = lastModDate;
 	}
 
-	public Integer getTestID() {
-		return testID;
+	public Integer getDrugFrequencyID() {
+		return drugFrequencyID;
 	}
 
-	public void setTestID(Integer testID) {
-		this.testID = testID;
+	public void setDrugFrequencyID(Integer drugFrequencyID) {
+		this.drugFrequencyID = drugFrequencyID;
 	}
 
-	public String getTestName() {
-		return testName;
+	public String getFrequency() {
+		return frequency;
 	}
 
-	public void setTestName(String testName) {
-		this.testName = testName;
+	public void setFrequency(String frequency) {
+		this.frequency = frequency;
 	}
 
-	public String getTestDesc() {
-		return testDesc;
+	public String getFrequencyDesc() {
+		return frequencyDesc;
 	}
 
-	public void setTestDesc(String testDesc) {
-		this.testDesc = testDesc;
-	}
-
-	public Boolean getIsRadiologyImaging() {
-		return isRadiologyImaging;
-	}
-
-	public void setIsRadiologyImaging(Boolean isRadiologyImaging) {
-		this.isRadiologyImaging = isRadiologyImaging;
+	public void setFrequencyDesc(String frequencyDesc) {
+		this.frequencyDesc = frequencyDesc;
 	}
 
 	public Boolean getDeleted() {

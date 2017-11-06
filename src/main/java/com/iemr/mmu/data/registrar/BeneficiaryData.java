@@ -117,7 +117,7 @@ public class BeneficiaryData {
 	@Column(name = "ModifiedBy")
 	private String modifiedBy;
 	@Expose
-	@Column(name = "LastModDate", insertable = false, updatable = false)
+	@Column(name = "LastModDate", insertable = false)
 	private Timestamp lastModDate;
 
 	@Expose

@@ -47,7 +47,7 @@ public interface RegistrarRepoBenData extends CrudRepository<BeneficiaryData, Lo
 
 	@Transactional
 	@Modifying
-	@Query("UPDATE BeneficiaryData set flowStatusFlag = :flowStatusFlag where beneficiaryRegID = :benRegID ")
+	@Query("UPDATE BeneficiaryData set flowStatusFlag = :flowStatusFlag, lastModDate = curdate() where beneficiaryRegID = :benRegID ")
 	public Integer updateBenFlowStatus(@Param("flowStatusFlag") Character flowStatusFlag,
 			@Param("benRegID") Long benRegID);
 	

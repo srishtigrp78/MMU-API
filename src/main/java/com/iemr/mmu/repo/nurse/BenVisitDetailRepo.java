@@ -37,7 +37,7 @@ public interface BenVisitDetailRepo extends CrudRepository<BeneficiaryVisitDetai
 
 	@Transactional
 	@Modifying
-	@Query("UPDATE BeneficiaryVisitDetail set visitFlowStatusFlag = :visitFlowStatusFlag where benVisitID = :benVisitID ")
+	@Query("UPDATE BeneficiaryVisitDetail set visitFlowStatusFlag = :visitFlowStatusFlag, lastModDate = curdate() where benVisitID = :benVisitID ")
 	public Integer updateBenFlowStatus(@Param("visitFlowStatusFlag") String visitFlowStatusFlag,
 			@Param("benVisitID") Long benVisitID);
 
