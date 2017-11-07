@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -162,7 +164,26 @@ public class RegistrarServiceImpl implements RegistrarService {
 		}
 		if (benD.has("createdBy") && !benD.get("createdBy").isJsonNull())
 			benDemoAd.setCreatedBy(benD.get("createdBy").getAsString());
+		
+		if (benD.has("ageAtMarriage") && !benD.get("ageAtMarriage").isJsonNull()) {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+			
+			java.util.Date parsedDate;
+			int ageAtMarriage = benD.get("ageAtMarriage").getAsInt();
+			int currentAge = benD.get("age").getAsInt();
+			Calendar cal = Calendar.getInstance();
+		    cal.add(Calendar.YEAR, -(currentAge-ageAtMarriage));
+		    cal.set(Calendar.MONTH, 1);
+		    cal.set(Calendar.DAY_OF_YEAR, 1);
 
+		    System.out.println(cal.getTime());
+
+			Timestamp timestamp = new java.sql.Timestamp(cal.getTimeInMillis());
+			  System.out.println(timestamp);
+			benDemoAd.setMarrigeDate(timestamp);
+
+		}
+		
 		// Following values will get only in update request
 		if (benD.has("benDemoAdditionalID") && !benD.get("benDemoAdditionalID").isJsonNull()) {
 			benDemoAd.setBenDemoAdditionalID(benD.get("benDemoAdditionalID").getAsLong());

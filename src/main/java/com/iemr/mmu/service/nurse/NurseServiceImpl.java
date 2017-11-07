@@ -646,6 +646,27 @@ public class NurseServiceImpl implements NurseService {
 		else
 			return null;
 	}
+
+
+	public String getBeneficiaryPhysicalAnthropometryDetails(Long beneficiaryRegID, Long benVisitID) {
+		BenAnthropometryDetail benAnthropometryDetail = benAnthropometryRepo.getBenAnthropometryDetail(beneficiaryRegID, benVisitID);
+		return new Gson().toJson(benAnthropometryDetail);
+	}
+
+	public String getBeneficiaryPhysicalVitalDetails(Long beneficiaryRegID, Long benVisitID) {
+		BenPhysicalVitalDetail benPhysicalVitalDetail = benPhysicalVitalRepo.getBenPhysicalVitalDetail(beneficiaryRegID, benVisitID);
+		return new Gson().toJson(benPhysicalVitalDetail);
+	}
+	
+	@Override
+	public String getBeneficiaryVitalDetails(Long beneficiaryRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("benAnthropometryDetail", getBeneficiaryPhysicalAnthropometryDetails(beneficiaryRegID, benVisitID));
+		resMap.put("benPhysicalVitalDetail", getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, benVisitID));
+		
+		return resMap.toString();
+	}
 	
 
 }

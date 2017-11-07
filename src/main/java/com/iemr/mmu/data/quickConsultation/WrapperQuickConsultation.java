@@ -1,17 +1,25 @@
-package com.iemr.mmu.data.emergencyCasesheet;
+package com.iemr.mmu.data.quickConsultation;
 
 import java.util.List;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 
-public class WrapperEmergencyCaseSheet {
+public class WrapperQuickConsultation {
 	
 	@Expose
-	private JsonObject emCaseSheet;
+	private JsonObject quickConsultation;
 	
 	@Expose
 	private PrescribedDrugDetail prescribedDrugDetail;
+
+	public JsonObject getQuickConsultation() {
+		return quickConsultation;
+	}
+
+	public void setQuickConsultation(JsonObject quickConsultation) {
+		this.quickConsultation = quickConsultation;
+	}
 
 	public PrescribedDrugDetail getPrescribedDrugDetail() {
 		return prescribedDrugDetail;
@@ -21,12 +29,6 @@ public class WrapperEmergencyCaseSheet {
 		this.prescribedDrugDetail = prescribedDrugDetail;
 	}
 
-	public JsonObject getEmCaseSheet() {
-		return emCaseSheet;
-	}
 
-	public void setEmCaseSheet(JsonObject emCaseSheet) {
-		this.emCaseSheet = emCaseSheet;
-	}
 	
 }

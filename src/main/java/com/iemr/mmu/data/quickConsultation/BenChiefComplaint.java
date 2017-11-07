@@ -1,4 +1,4 @@
-package com.iemr.mmu.data.emergencyCasesheet;
+package com.iemr.mmu.data.quickConsultation;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -12,16 +12,17 @@ import javax.persistence.Table;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.registrar.BenGovIdMapping;
 
 @Entity
-@Table(name = "t_lab_testorder")
-public class LabTestOrderDetail {
+@Table(name = "t_benchiefcomplaint")
+public class BenChiefComplaint {
 	@Id
 	@GeneratedValue
 	@Expose
 	@Column(name = "ID")
-	private Long labTestOrderID;
-	
+	private Long benChiefComplaintID;
+
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
@@ -34,24 +35,20 @@ public class LabTestOrderDetail {
 	private Integer providerServiceMapID;
 	
 	@Expose
-	@Column(name = "PrescriptionID")
-	private Long prescriptionID;
-	
+	@Column(name = "ChiefComplaintID")
+	private Integer chiefComplaintID;
 	@Expose
-	@Column(name = "TestID")
-	private Integer testID;
-	
+	@Column(name = "ChiefComplaint")
+	private String chiefComplaint;
 	@Expose
-	@Column(name = "OrderedTestName")
-	private String orderedTestName;
-	
+	@Column(name = "Duration")
+	private Integer duration;
 	@Expose
-	@Column(name = "TestingRequirements")
-	private String testingRequirements;
-	
+	@Column(name = "UnitOfDuration")
+	private String unitOfDuration;
 	@Expose
-	@Column(name = "IsRadiologyImaging")
-	private Boolean isRadiologyImaging;
+	@Column(name = "Description")
+	private String description;
 	
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -77,7 +74,7 @@ public class LabTestOrderDetail {
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
-	public LabTestOrderDetail() {
+	public BenChiefComplaint() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -106,44 +103,44 @@ public class LabTestOrderDetail {
 		this.providerServiceMapID = providerServiceMapID;
 	}
 
-	public Long getPrescriptionID() {
-		return prescriptionID;
+	public Integer getChiefComplaintID() {
+		return chiefComplaintID;
 	}
 
-	public void setPrescriptionID(Long prescriptionID) {
-		this.prescriptionID = prescriptionID;
+	public void setChiefComplaintID(Integer chiefComplaintID) {
+		this.chiefComplaintID = chiefComplaintID;
 	}
 
-	public Integer getTestID() {
-		return testID;
+	public String getChiefComplaint() {
+		return chiefComplaint;
 	}
 
-	public void setTestID(Integer testID) {
-		this.testID = testID;
+	public void setChiefComplaint(String chiefComplaint) {
+		this.chiefComplaint = chiefComplaint;
 	}
 
-	public String getOrderedTestName() {
-		return orderedTestName;
+	public Integer getDuration() {
+		return duration;
 	}
 
-	public void setOrderedTestName(String orderedTestName) {
-		this.orderedTestName = orderedTestName;
+	public void setDuration(Integer duration) {
+		this.duration = duration;
 	}
 
-	public String getTestingRequirements() {
-		return testingRequirements;
+	public String getUnitOfDuration() {
+		return unitOfDuration;
 	}
 
-	public void setTestingRequirements(String testingRequirements) {
-		this.testingRequirements = testingRequirements;
+	public void setUnitOfDuration(String unitOfDuration) {
+		this.unitOfDuration = unitOfDuration;
 	}
 
-	public Boolean getIsRadiologyImaging() {
-		return isRadiologyImaging;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setIsRadiologyImaging(Boolean isRadiologyImaging) {
-		this.isRadiologyImaging = isRadiologyImaging;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Boolean getDeleted() {
@@ -194,46 +191,48 @@ public class LabTestOrderDetail {
 		this.lastModDate = lastModDate;
 	}
 
-	public Long getLabTestOrderID() {
-		return labTestOrderID;
+	public Long getBenChiefComplaintID() {
+		return benChiefComplaintID;
 	}
 	
-	public static ArrayList<LabTestOrderDetail> getLabTestOrderDetailList(JsonObject emrgCasesheet, Long prescriptionID) {
-		ArrayList<LabTestOrderDetail> resArray = new ArrayList<>();
-		LabTestOrderDetail labTestOrderDetail = null;
-		
-		for (JsonElement csobj : emrgCasesheet.getAsJsonArray("labTestOrders")) {
-			labTestOrderDetail = new LabTestOrderDetail();
+	
+	public static ArrayList<BenChiefComplaint> getBenChiefComplaintList(JsonObject emrgCasesheet) {
+		ArrayList<BenChiefComplaint> resArray = new ArrayList<>();
+		BenChiefComplaint benChiefComplaint = null;
+		System.out.println("ello");
+		for (JsonElement csobj : emrgCasesheet.getAsJsonArray("benChiefComplaint")) {
+			benChiefComplaint = new BenChiefComplaint();
 			
 			if (emrgCasesheet.has("benVisitID") && !emrgCasesheet.get("benVisitID").isJsonNull())
-				labTestOrderDetail.setBenVisitID(emrgCasesheet.get("benVisitID").getAsLong());
+				benChiefComplaint.setBenVisitID(emrgCasesheet.get("benVisitID").getAsLong());
 			
 			if (emrgCasesheet.has("beneficiaryRegID") && !emrgCasesheet.get("beneficiaryRegID").isJsonNull())
-				labTestOrderDetail.setBeneficiaryRegID(emrgCasesheet.get("beneficiaryRegID").getAsLong());
+				benChiefComplaint.setBeneficiaryRegID(emrgCasesheet.get("beneficiaryRegID").getAsLong());
 			
 			if (emrgCasesheet.has("providerServiceMapID") && !emrgCasesheet.get("providerServiceMapID").isJsonNull())
-				labTestOrderDetail.setProviderServiceMapID(emrgCasesheet.get("providerServiceMapID").getAsInt());
-			
-			labTestOrderDetail.setPrescriptionID(prescriptionID);
+				benChiefComplaint.setProviderServiceMapID(emrgCasesheet.get("providerServiceMapID").getAsInt());
 			
 			JsonObject obj = csobj.getAsJsonObject();
 			
-			if (obj.has("testID") && !obj.get("testID").isJsonNull())
-				labTestOrderDetail.setTestID(obj.get("testID").getAsInt());
+			if (obj.has("chiefComplaintID") && !obj.get("chiefComplaintID").isJsonNull())
+				benChiefComplaint.setChiefComplaintID(obj.get("chiefComplaintID").getAsInt());
 			
-			if (obj.has("orderedTestName") && !obj.get("orderedTestName").isJsonNull())
-				labTestOrderDetail.setOrderedTestName(obj.get("orderedTestName").getAsString());
+			if (obj.has("chiefComplaint") && !obj.get("chiefComplaint").isJsonNull())
+				benChiefComplaint.setChiefComplaint(obj.get("chiefComplaint").getAsString());
 			
-			if (obj.has("testingRequirements") && !obj.get("testingRequirements").isJsonNull())
-				labTestOrderDetail.setTestingRequirements(obj.get("testingRequirements").getAsString());
+			if (obj.has("duration") && !obj.get("duration").isJsonNull())
+				benChiefComplaint.setDuration(obj.get("duration").getAsInt());
 			
-			if (obj.has("isRadiologyImaging") && !obj.get("isRadiologyImaging").isJsonNull())
-				labTestOrderDetail.setIsRadiologyImaging(obj.get("isRadiologyImaging").getAsBoolean());
+			if (obj.has("unitOfDuration") && !obj.get("unitOfDuration").isJsonNull())
+				benChiefComplaint.setUnitOfDuration(obj.get("unitOfDuration").getAsString());
+			
+			if (emrgCasesheet.has("description") && !emrgCasesheet.get("description").isJsonNull())
+				benChiefComplaint.setDescription(emrgCasesheet.get("description").getAsString());
 			
 			if (emrgCasesheet.has("createdBy") && !emrgCasesheet.get("createdBy").isJsonNull())
-				labTestOrderDetail.setCreatedBy(emrgCasesheet.get("createdBy").getAsString());
+				benChiefComplaint.setCreatedBy(emrgCasesheet.get("createdBy").getAsString());
 			
-			resArray.add(labTestOrderDetail);
+			resArray.add(benChiefComplaint);
 		}
 
 		return resArray;

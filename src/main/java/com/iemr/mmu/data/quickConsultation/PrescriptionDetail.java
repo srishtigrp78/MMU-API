@@ -1,4 +1,4 @@
-package com.iemr.mmu.data.emergencyCasesheet;
+package com.iemr.mmu.data.quickConsultation;
 
 import java.sql.Timestamp;
 

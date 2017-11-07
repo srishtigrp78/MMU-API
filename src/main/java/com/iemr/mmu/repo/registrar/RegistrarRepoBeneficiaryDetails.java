@@ -15,7 +15,7 @@ public interface RegistrarRepoBeneficiaryDetails extends CrudRepository<FetchBen
 			+ " d.blockID, d.blockName, d.stateID, d.stateName,"
 			+ " d.community, d.religion, d.fatherName, d.aadharNo, d.districtID, d.districtName, d.villageID,  "
 			+ " d.villageName, d.phoneNo, "
-			+ " d.govtIdentityTypeID, d.govtIdentityNo, d.isGovtID, d.ageAtMarriage, d.literacyStatus, d.motherName, d.emailID, "
+			+ " d.govtIdentityTypeID, d.govtIdentityNo, d.isGovtID, d.marrigeDate, d.literacyStatus, d.motherName, d.emailID, "
 			+ " d.bankName, d.branchName, "
 			+ " d.IFSCCode, d.accountNumber, d.benGovMapID from FetchBeneficiaryDetails d where d.beneficiaryRegID=:beneficiaryRegID")
 	public List<Object[]> getBeneficiaryDetails(@Param("beneficiaryRegID") Long beneficiaryRegID);

@@ -1,4 +1,4 @@
-package com.iemr.mmu.service.emergencyCasesheet;
+package com.iemr.mmu.service.quickConsultation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,21 +7,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonObject;
-import com.iemr.mmu.data.emergencyCasesheet.BenChiefComplaint;
-import com.iemr.mmu.data.emergencyCasesheet.BenClinicalObservations;
-import com.iemr.mmu.data.emergencyCasesheet.LabTestOrderDetail;
-import com.iemr.mmu.data.emergencyCasesheet.PrescribedDrugDetail;
-import com.iemr.mmu.data.emergencyCasesheet.PrescriptionDetail;
-import com.iemr.mmu.data.emergencyCasesheet.WrapperEmergencyCaseSheet;
-import com.iemr.mmu.repo.emergencyCasesheet.BenChiefComplaintRepo;
-import com.iemr.mmu.repo.emergencyCasesheet.BenClinicalObservationsRepo;
-import com.iemr.mmu.repo.emergencyCasesheet.LabTestOrderDetailRepo;
-import com.iemr.mmu.repo.emergencyCasesheet.PrescribedDrugDetailRepo;
-import com.iemr.mmu.repo.emergencyCasesheet.PrescriptionDetailRepo;
+import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
+import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
+import com.iemr.mmu.data.quickConsultation.ExternalLabTestOrder;
+import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
+import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
+import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
+import com.iemr.mmu.data.quickConsultation.WrapperQuickConsultation;
+import com.iemr.mmu.repo.quickConsultation.BenChiefComplaintRepo;
+import com.iemr.mmu.repo.quickConsultation.BenClinicalObservationsRepo;
+import com.iemr.mmu.repo.quickConsultation.ExternalTestOrderRepo;
+import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
+import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
+import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.utils.mapper.InputMapper;
 
 @Service
-public class EmergencyCasesheetServiceImpl implements EmergencyCasesheetService{
+public class QuickConsultationServiceImpl implements QuickConsultationService{
 
 	private InputMapper inputMapper = new InputMapper();
 	
@@ -30,6 +32,7 @@ public class EmergencyCasesheetServiceImpl implements EmergencyCasesheetService{
 	private PrescriptionDetailRepo prescriptionDetailRepo;
 	private PrescribedDrugDetailRepo prescribedDrugDetailRepo;
 	private LabTestOrderDetailRepo labTestOrderDetailRepo;
+	private ExternalTestOrderRepo externalTestOrderRepo;
 	
 	@Autowired
 	public void setBenChiefComplaintRepo(BenChiefComplaintRepo benChiefComplaintRepo) {
@@ -50,6 +53,10 @@ public class EmergencyCasesheetServiceImpl implements EmergencyCasesheetService{
 	@Autowired
 	public void setLabTestOrderDetailRepo(LabTestOrderDetailRepo labTestOrderDetailRepo) {
 		this.labTestOrderDetailRepo = labTestOrderDetailRepo;
+	}
+	@Autowired
+	public void setExternalTestOrderRepo(ExternalTestOrderRepo externalTestOrderRepo) {
+		this.externalTestOrderRepo = externalTestOrderRepo;
 	}
 	
 	@Override
@@ -117,6 +124,17 @@ public class EmergencyCasesheetServiceImpl implements EmergencyCasesheetService{
 			}
 		}
 		
+		return null;
+	}
+	@Override
+	public Long saveBeneficiaryExternalLabTestOrderDetails(JsonObject caseSheet) {
+		
+		ExternalLabTestOrder externalLabTestOrder = ExternalLabTestOrder.getExternalLabTestOrderList(caseSheet);
+		ExternalLabTestOrder externalTestOrder =  externalTestOrderRepo.save(externalLabTestOrder);
+		
+		if(null != externalTestOrder && externalTestOrder.getExternalTestOrderID()>0){
+				return externalTestOrder.getExternalTestOrderID();
+		}
 		return null;
 	}
 
