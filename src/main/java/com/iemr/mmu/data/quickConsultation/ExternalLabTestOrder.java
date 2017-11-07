@@ -213,9 +213,9 @@ public class ExternalLabTestOrder {
 
 
 	public static ExternalLabTestOrder getExternalLabTestOrderList(JsonObject emrgCasesheet) {
-		ExternalLabTestOrder externalLabTestOrder =  new ExternalLabTestOrder();;
+		ExternalLabTestOrder externalLabTestOrder =  new ExternalLabTestOrder();
 		
-		for (JsonElement csobj : emrgCasesheet.getAsJsonArray("externalInvestigation")) {
+		
 			externalLabTestOrder = new ExternalLabTestOrder();
 			
 			if (emrgCasesheet.has("benVisitID") && !emrgCasesheet.get("benVisitID").isJsonNull())
@@ -224,10 +224,10 @@ public class ExternalLabTestOrder {
 			if (emrgCasesheet.has("beneficiaryRegID") && !emrgCasesheet.get("beneficiaryRegID").isJsonNull())
 				externalLabTestOrder.setBeneficiaryRegID(emrgCasesheet.get("beneficiaryRegID").getAsLong());
 			
-			JsonObject obj = csobj.getAsJsonObject();
+	
 			
-			if (obj.has("externalInvestigation") && !obj.get("externalInvestigation").isJsonNull())
-				externalLabTestOrder.setTestName(obj.get("externalInvestigation").getAsString());
+			if (emrgCasesheet.has("externalInvestigation") && !emrgCasesheet.get("externalInvestigation").isJsonNull())
+				externalLabTestOrder.setTestName(emrgCasesheet.get("externalInvestigation").getAsString());
 			
 /*			if (obj.has("testResult") && !obj.get("testResult").isJsonNull())
 				externalLabTestOrder.setTestResult(obj.get("testResult").getAsString());
@@ -238,7 +238,7 @@ public class ExternalLabTestOrder {
 			if (emrgCasesheet.has("createdBy") && !emrgCasesheet.get("createdBy").isJsonNull())
 				externalLabTestOrder.setCreatedBy(emrgCasesheet.get("createdBy").getAsString());
 			
-		}
+		
 
 		return externalLabTestOrder;
 	}

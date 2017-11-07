@@ -99,10 +99,11 @@ public class QuickConsultationController {
 			    labTestOrderID = quickConsultationServiceImpl.saveBeneficiaryLabTestOrderDetails(caseSheet, prescriptionID);
 			    
 			} 
-			Long externalLabTestOrderID = quickConsultationServiceImpl.saveBeneficiaryExternalLabTestOrderDetails(caseSheet);
+			//Long externalLabTestOrderID = quickConsultationServiceImpl.saveBeneficiaryExternalLabTestOrderDetails(caseSheet);
+			//&& (null != externalLabTestOrderID && externalLabTestOrderID > 0)
 			if((null != benChiefComplaintID && benChiefComplaintID > 0) && (null != clinicalObservationID && clinicalObservationID > 0) && 
 					(null != prescriptionID && prescriptionID > 0) && (null != prescribedDrugID && prescribedDrugID > 0) && 
-					(null != labTestOrderID && labTestOrderID > 0) && (null != externalLabTestOrderID && externalLabTestOrderID > 0)){
+					(null != labTestOrderID && labTestOrderID > 0) ){
 				response.setResponse("Quick Consultation Details stored successfully");
 			}else {
 				response.setError(500, "Something Went-Wrong");
