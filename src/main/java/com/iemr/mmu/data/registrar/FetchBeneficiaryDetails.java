@@ -2,6 +2,7 @@ package com.iemr.mmu.data.registrar;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Map;
 
 import javax.persistence.Column;
@@ -114,7 +115,7 @@ public class FetchBeneficiaryDetails {
 	private Boolean isGovtID;
 	@Expose
 	@Column(name = "MarrigeDate")
-	private Timestamp ageAtMarriage;
+	private Timestamp marrigeDate;
 	@Expose
 	@Column(name = "LiteracyStatus")
 	private String literacyStatus;
@@ -152,6 +153,14 @@ public class FetchBeneficiaryDetails {
 	@Transient
 	@Expose
 	private String image;
+	
+	@Transient
+	@Expose
+	private int age;
+	
+	@Transient
+	@Expose
+	private int ageAtMarriage;
 
 	public FetchBeneficiaryDetails() {
 		super();
@@ -165,7 +174,7 @@ public class FetchBeneficiaryDetails {
 			String districtName, Integer districtBranchID, String villageName, String phoneNo, Short govtIdentityTypeID,
 			String govtIdentityNo, Boolean isGovtID, Timestamp marrigeDate, String literacyStatus, String motherName,
 			String emailID, String bankName, String branchName, String iFSCCode, String accountNo,
-			ArrayList<Map<String, Object>> govIDArray, String s, ArrayList<Map<String, Object>> otherGovIDArray) {
+			ArrayList<Map<String, Object>> govIDArray, String s, ArrayList<Map<String, Object>> otherGovIDArray, int age, int ageAtMarriage) {
 		super();
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.beneficiaryID = beneficiaryID;
@@ -195,7 +204,7 @@ public class FetchBeneficiaryDetails {
 		this.govtIdentityTypeID = govtIdentityTypeID;
 		this.govtIdentityNo = govtIdentityNo;
 		this.isGovtID = isGovtID;
-		this.ageAtMarriage = marrigeDate;
+		this.marrigeDate = marrigeDate;
 		this.literacyStatus = literacyStatus;
 		this.motherName = motherName;
 		this.emailID = emailID;
@@ -206,6 +215,8 @@ public class FetchBeneficiaryDetails {
 		this.govID = govIDArray;
 		this.image = s;
 		this.otherGovID = otherGovIDArray;
+		this.ageAtMarriage = ageAtMarriage;
+		this.age = age;
 	}
 
 	public static FetchBeneficiaryDetails getFetchBeneficiaryDetailsObj(Object[] arrayOBJ,
@@ -216,6 +227,23 @@ public class FetchBeneficiaryDetails {
 
 	public static FetchBeneficiaryDetails getBeneficiaryDetails(Object[] obj, ArrayList<Map<String, Object>> govIDArray,
 			String s, ArrayList<Map<String, Object>> otherGovIDArray) {
+		Timestamp timestamp =  (Timestamp) obj[27];
+		Calendar cal = Calendar.getInstance();
+		int currentYear = cal.get(Calendar.YEAR);
+		cal.setTimeInMillis(timestamp.getTime());
+		int marriedYear =  cal.get(Calendar.YEAR);
+		
+		int marriageYears = currentYear - marriedYear;
+		
+		Timestamp ageTimeStamp =   (Timestamp) obj[5];
+		Calendar cal2 = Calendar.getInstance();
+		cal2.setTimeInMillis(ageTimeStamp.getTime());
+		int dobYear = cal2.get(Calendar.YEAR);
+		
+		int age = currentYear - dobYear;
+		
+		int ageWhenMarried = age - marriageYears;
+		
 		FetchBeneficiaryDetails cOBJ = new FetchBeneficiaryDetails((Long) obj[0], (String) obj[1], (String) obj[2],
 				(String) obj[3], (Short) obj[4], (Timestamp) obj[5], (Short) obj[6], (String) obj[7], (Short) obj[8],
 				(Short) obj[9], (Short) obj[10], (Integer) obj[11], (String) obj[12], (Integer) obj[13],
@@ -223,7 +251,7 @@ public class FetchBeneficiaryDetails {
 				(Integer) obj[19], (String) obj[20], (Integer) obj[21], (String) obj[22], (String) obj[23],
 				(Short) obj[24], (String) obj[25], (Boolean) obj[26], (Timestamp) obj[27], (String) obj[28],
 				(String) obj[29], (String) obj[30], (String) obj[31], (String) obj[32], (String) obj[33],
-				(String) obj[34], govIDArray, s, otherGovIDArray);
+				(String) obj[34], govIDArray, s, otherGovIDArray, age, ageWhenMarried);
 
 		return cOBJ;
 	}
@@ -460,14 +488,7 @@ public class FetchBeneficiaryDetails {
 		this.isGovtID = isGovtID;
 	}
 
-	public Timestamp getAgeAtMarriage() {
-		return ageAtMarriage;
-	}
-
-	public void setAgeAtMarriage(Timestamp ageAtMarriage) {
-		this.ageAtMarriage = ageAtMarriage;
-	}
-
+	
 	public String getLiteracyStatus() {
 		return literacyStatus;
 	}

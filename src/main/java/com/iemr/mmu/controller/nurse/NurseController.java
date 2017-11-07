@@ -433,5 +433,45 @@ public class NurseController {
 
 		return response.toString();
 	}
+	
+	@CrossOrigin
+	@ApiOperation(
+			value = "Fetch Beneficiary Physical Vital Detail",
+			consumes = "application/json",
+			produces = "application/json")
+	@RequestMapping(value = { "/get/vitalScreen/benPhysicalVitalDetail" }, method = { RequestMethod.POST })
+	public String getBenPhysicalVitalDetail(@ApiParam(
+			value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String requestObj) {
+
+		OutputResponse response = new OutputResponse();
+		logger.info("getBenPhysicalVitalDetail request:" + requestObj);
+		
+		try {
+				JSONObject obj = new JSONObject(requestObj);
+				if (obj.length() > 1) {
+					Long benRegID = obj.getLong("benRegID");
+					Long benVisitID = obj.getLong("benVisitID");
+					if(null !=benRegID && benRegID>0 && null !=benVisitID && benVisitID>0){
+				
+					
+					
+					String physicalVitalDetails = nurseServiceImpl.getBeneficiaryVitalDetails(benRegID, benVisitID);
+					if (physicalVitalDetails != null) {
+						response.setResponse(physicalVitalDetails);
+					} else {
+						response.setError(500, "Failed to Fetch Beneficiary Physical Vital Details");
+					}
+					logger.info("getBenPhysicalVitalDetail response:" + response);
+				
+					}else{
+						response.setError(0, "Data Not Sufficient...");
+					}
+				}
+			} catch (Exception e) {
+				response.setError(e);
+				logger.error("Error in getBenPhysicalVitalDetail:" + e);
+			}
+		return response.toString();
+	}
 
 }
