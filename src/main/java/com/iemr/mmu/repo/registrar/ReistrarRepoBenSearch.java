@@ -24,8 +24,8 @@ public interface ReistrarRepoBenSearch extends CrudRepository<V_BenAdvanceSearch
 			+ " (Isnull(phoneNo) LIKE :phoneNo OR phoneNo like :phoneNo ) AND"
 			+ " (Isnull(aadharNo) LIKE :aadharNo OR aadharNo like :aadharNo ) AND"
 			+ " (Isnull(govtIdentityNo) LIKE :govtIdentityNo OR govtIdentityNo like :govtIdentityNo ) AND"
-			+ " cast(stateID as string) like :stateID AND"
-			+ " cast(districtID as string) like :districtID")
+			+ " (Isnull(cast(stateID as string)) LIKE :stateID OR cast(stateID as string) like :stateID) AND"
+			+ " (Isnull(cast(districtID as string)) LIKE :districtID OR cast(districtID as string) like :districtID)")
 
 	public ArrayList<Object[]> getAdvanceBenSearchList(@Param("beneficiaryID") String beneficiaryID,
 			@Param("firstName") String firstName,
