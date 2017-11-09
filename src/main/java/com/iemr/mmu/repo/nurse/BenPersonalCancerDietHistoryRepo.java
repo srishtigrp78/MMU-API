@@ -24,7 +24,8 @@ public interface BenPersonalCancerDietHistoryRepo extends CrudRepository<BenPers
 			+ "fruitQuantityPerDay=:fruitQuantityPerDay, vegetableConsumptionDays=:vegetableConsumptionDays, vegetableQuantityPerDay=:vegetableQuantityPerDay, "
 			+ " intakeOfOutsidePreparedMeal=:intakeOfOutsidePreparedMeal, typeOfOilConsumed=:typeOfOilConsumed, physicalActivityType=:physicalActivityType,"
 			+ " ssRadiationExposure=:ssRadiationExposure, isThyroidDisorder=:isThyroidDisorder,"
-			+ " modifiedBy=:modifiedBy where iD=:iD")
+			+ " modifiedBy=:modifiedBy where iD=:iD "
+			+ " AND beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
 	public int updateBenPersonalCancerDietHistory(@Param("dietType") String dietType,
 			@Param("fruitConsumptionDays") Integer fruitConsumptionDays,
 			@Param("fruitQuantityPerDay") Integer fruitQuantityPerDay,
@@ -35,7 +36,9 @@ public interface BenPersonalCancerDietHistoryRepo extends CrudRepository<BenPers
 			@Param("physicalActivityType") String physicalActivityType,
 			@Param("ssRadiationExposure") Boolean ssRadiationExposure,
 			@Param("isThyroidDisorder") Boolean isThyroidDisorder, @Param("modifiedBy") String modifiedBy,
-			@Param("iD") Long iD);
+			@Param("iD") Long iD,
+			@Param("benRegID") Long benRegID,
+			@Param("benVisitID") Long benVisitID);
 
 	@Query("SELECT bpdh from BenPersonalCancerDietHistory bpdh  WHERE bpdh.beneficiaryRegID = :benRegID AND bpdh.benVisitID = :benVisitID"
 			+ " AND DATE(createdDate) = :createdDate")

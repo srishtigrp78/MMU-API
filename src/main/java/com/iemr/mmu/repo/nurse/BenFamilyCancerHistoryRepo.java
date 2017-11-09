@@ -18,9 +18,12 @@ public interface BenFamilyCancerHistoryRepo extends CrudRepository<BenFamilyCanc
 
 	@Transactional
 	@Modifying
-	@Query("update BenFamilyCancerHistory set cancerDiseaseType=:cancerDiseaseType, familyMember=:familyMember, modifiedBy=:modifiedBy where iD=:iD")
+	@Query("update BenFamilyCancerHistory set cancerDiseaseType=:cancerDiseaseType, familyMember=:familyMember, modifiedBy=:modifiedBy where iD=:iD "
+			+ "AND beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
 	public int updateBenFamilyCancerHistory(@Param("cancerDiseaseType") String cancerDiseaseType,
-			@Param("familyMember") String familyMember, @Param("modifiedBy") String modifiedBy, @Param("iD") Long iD);
+			@Param("familyMember") String familyMember, @Param("modifiedBy") String modifiedBy, @Param("iD") Long iD,
+			@Param("benRegID") Long benRegID,
+			@Param("benVisitID") Long benVisitID);
 
 	@Query(" SELECT bfh from BenFamilyCancerHistory bfh WHERE bfh.beneficiaryRegID = :benRegID AND bfh.benVisitID = :benVisitID ")
 	public List<BenFamilyCancerHistory> getBenFamilyHistory(@Param("benRegID") Long benRegID,

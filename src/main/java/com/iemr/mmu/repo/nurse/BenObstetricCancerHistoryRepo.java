@@ -22,7 +22,8 @@ public interface BenObstetricCancerHistoryRepo extends CrudRepository<BenObstetr
 			+ " menarche_Age=:menarche_Age, isMenstrualCycleRegular=:isMenstrualCycleRegular, menstrualCycleLength=:menstrualCycleLength, "
 			+ " menstrualFlowDuration=:menstrualFlowDuration, menstrualFlowType=:menstrualFlowType, isDysmenorrhea=:isDysmenorrhea,"
 			+ " isInterMenstrualBleeding=:isInterMenstrualBleeding, menopauseAge=:menopauseAge, isPostMenopauseBleeding=:isPostMenopauseBleeding,"
-			+ " isFoulSmellingDischarge=:isFoulSmellingDischarge, modifiedBy=:modifiedBy where iD=:iD")
+			+ " isFoulSmellingDischarge=:isFoulSmellingDischarge, modifiedBy=:modifiedBy where iD=:iD "
+			+ "AND beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
 	public int updateBenObstetricCancerHistory(@Param("pregnancyStatus") String pregnancyStatus,
 			@Param("isUrinePregTest") Boolean isUrinePregTest, @Param("pregnant_No") String pregnant_No,
 			@Param("noOfLivingChild") Integer noOfLivingChild, @Param("isAbortion") Boolean isAbortion,
@@ -37,7 +38,10 @@ public interface BenObstetricCancerHistoryRepo extends CrudRepository<BenObstetr
 			@Param("menopauseAge") Integer menopauseAge,
 			@Param("isPostMenopauseBleeding") Boolean isPostMenopauseBleeding,
 			@Param("isFoulSmellingDischarge") Boolean isFoulSmellingDischarge, @Param("modifiedBy") String modifiedBy,
-			@Param("iD") Long iD);
+			@Param("iD") Long iD,
+			@Param("benRegID") Long benRegID,
+			@Param("benVisitID") Long benVisitID);
+
 
 	@Query("SELECT boh from BenObstetricCancerHistory boh WHERE boh.beneficiaryRegID = :benRegID AND boh.benVisitID = :benVisitID")
 	public BenObstetricCancerHistory getBenObstetricCancerHistory(@Param("benRegID") Long benRegID,

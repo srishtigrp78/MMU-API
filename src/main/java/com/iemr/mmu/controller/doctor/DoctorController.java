@@ -359,8 +359,10 @@ public class DoctorController {
 	@ApiOperation(value = "update Ben Family Cancer History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/historyScreen/benFamilyCancerHistory" }, method = { RequestMethod.POST })
 	public String updateBenFamilyCancerHistory(
-			@ApiParam(value = "{\"ID\": \"Long\", \"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\",\"providerServiceMapID\": \"Integer\","
-					+ "\"cancerDiseaseType\":\"String\", \"familyMemberList\":\"List\", \"modifiedBy\":\"String\"}") @RequestBody String requestObj) {
+			@ApiParam(value = "[{\"ID\": \"Long\", \"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\","
+					+ "\"cancerDiseaseType\":\"String\", \"familyMemberList\":\"List\", \"modifiedBy\":\"String\"},"
+					+ "{ \"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\","
+					+ "\"cancerDiseaseType\":\"String\", \"familyMemberList\":\"List\", \"createdBy\":\"String\"}]") @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		inputMapper = new InputMapper();
@@ -391,7 +393,7 @@ public class DoctorController {
 	@ApiOperation(value = "update Ben Obstetric Cancer History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/historyScreen/benObstetricCancerHistory" }, method = { RequestMethod.POST })
 	public String updateBenObstetricCancerHistory(
-			@ApiParam(value = "{\"ID\": \"Long\", \"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\",\"providerServiceMapID\": \"Integer\","
+			@ApiParam(value = "{\"ID\": \"Long\", \"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\","
 					+ "\"pregnancyStatus\":\"String\", \"isUrinePregTest\":\"Boolean\", \"pregnant_No\":\"String\", \"noOfLivingChild\":\"Integer\","
 					+ "\"isAbortion\":\"Boolean\", \"isOralContraceptiveUsed\":\"Boolean\", \"isHormoneReplacementTherapy\":\"Boolean\", \"menarche_Age\":\"Integer\","
 					+ "\"isMenstrualCycleRegular\":\"Boolean\", \"menstrualCycleLength\":\"Integer\", \"menstrualFlowDuration\":\"Integer\", \"menstrualFlowType\":\"String\","
@@ -423,7 +425,7 @@ public class DoctorController {
 	@ApiOperation(value = "update Ben Personal Cancer History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/historyScreen/benPersonalCancerHistory" }, method = { RequestMethod.POST })
 	public String updateBenPersonalCancerHistory(
-			@ApiParam(value = "{\"ID\": \"Long\", \"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\",\"providerServiceMapID\": \"Integer\","
+			@ApiParam(value = "{\"ID\": \"Long\", \"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\","
 					+ "\"tobaccoUse\":\"String\", \"startAge_year\":\"Integer\", \"endAge_year\":\"Integer\", \"typeOfTobaccoProductList\":\"List\","
 					+ "\"quantityPerDay\":\"Integer\", \"isFilteredCigaerette\":\"Boolean\", \"isCigaretteExposure\":\"Boolean\", \"isBetelNutChewing\":\"Boolean\","
 					+ "\"durationOfBetelQuid\":\"Integer\", \"alcoholUse\":\"String\", \"ssAlcoholUsed\":\"Boolean\", \"frequencyOfAlcoholUsed\":\"String\","
@@ -461,7 +463,7 @@ public class DoctorController {
 	@ApiOperation(value = "update Ben Vital Detail", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/vitalScreen/benVitalDetail" }, method = { RequestMethod.POST })
 	public String upodateBenVitalDetail(
-			@ApiParam(value = "{\"ID\": \"Long\", \"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\",\"providerServiceMapID\": \"Integer\","
+			@ApiParam(value = "{\"ID\": \"Long\", \"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\","
 					+ "\"weight_Kg\":\"Double\", \"height_cm\":\"Double\", \"waistCircumference_cm\":\"Double\", \"bloodGlucose_Fasting\":\"Short\","
 					+ "\"bloodGlucose_Random\":\"Short\", \"bloodGlucose_2HrPostPrandial\":\"Short\", \"systolicBP_1stReading\":\"Short\", "
 					+ "\"diastolicBP_1stReading\":\"Short\", \"systolicBP_2ndReading\":\"Short\", \"diastolicBP_2ndReading\":\"Short\", "
