@@ -24,7 +24,6 @@ import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
-import com.iemr.mmu.data.nurse.WrapperVisitDetails;
 import com.iemr.mmu.service.masterservice.NurseMasterDataService;
 import com.iemr.mmu.service.masterservice.NurseMasterDataServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
@@ -67,13 +66,10 @@ public class NurseController {
 	}
 
 	@CrossOrigin
-	@ApiOperation(
-			value = "save Beneficiary Visit Detail",
-			consumes = "application/json",
-			produces = "application/json")
+	@ApiOperation(value = "save Beneficiary Visit Detail", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/visitDetailScreen/VisitDetail" }, method = { RequestMethod.POST })
-	public String saveBeneficiaryVisitDetail(@ApiParam(
-			value = "{\"beneficiaryRegID\":\"Long\",\"providerServiceMapID\": \"Integer\","
+	public String saveBeneficiaryVisitDetail(
+			@ApiParam(value = "{\"beneficiaryRegID\":\"Long\",\"providerServiceMapID\": \"Integer\","
 					+ "\"visitDateTime\":\"Timestamp\", \"visitNo\":\"Short\", \"visitReasonID\":\"Short\", \"visitReason\":\"String\","
 					+ "\"visitCategoryID\":\"Integer\", \"visitCategory\":\"String\", \"pregnancyStatus\":\"String\","
 					+ "\"rCHID\":\"String\", \"healthFacilityType\":\"String\", \"healthFacilityLocation\":\"String\","
@@ -89,7 +85,7 @@ public class NurseController {
 			if (benVisitID != null && benVisitID > 0) {
 
 				Integer i = nurseServiceImpl.updateBeneficiaryStatus('N', beneficiaryVisitDetail.getBeneficiaryRegID());
-				//Please handle all cases here......after customer demo
+				// Please handle all cases here......after customer demo
 				Map<String, Long> resMap = new HashMap<String, Long>();
 				resMap.put("benVisitID", benVisitID);
 				response.setResponse(new Gson().toJson(resMap));
@@ -106,13 +102,10 @@ public class NurseController {
 	}
 
 	@CrossOrigin
-	@ApiOperation(
-			value = "save Beneficiary Family Cancer Detail",
-			consumes = "application/json",
-			produces = "application/json")
+	@ApiOperation(value = "save Beneficiary Family Cancer Detail", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/historyScreen/benFamilyCancerHistory" }, method = { RequestMethod.POST })
-	public String saveBenFamilyCancerHistory(@ApiParam(
-			value = "{\"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\",\"providerServiceMapID\": \"Integer\","
+	public String saveBenFamilyCancerHistory(
+			@ApiParam(value = "{\"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\",\"providerServiceMapID\": \"Integer\","
 					+ "\"cancerDiseaseType\":\"String\", \"familyMemberList\":\"List\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -142,13 +135,10 @@ public class NurseController {
 	}
 
 	@CrossOrigin
-	@ApiOperation(
-			value = "save Beneficiary Obstetric Cancer Detail",
-			consumes = "application/json",
-			produces = "application/json")
+	@ApiOperation(value = "save Beneficiary Obstetric Cancer Detail", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/historyScreen/benObstetricCancerHistory" }, method = { RequestMethod.POST })
-	public String saveBenObstetricCancerHistory(@ApiParam(
-			value = "{\"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\",\"providerServiceMapID\": \"Integer\","
+	public String saveBenObstetricCancerHistory(
+			@ApiParam(value = "{\"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\",\"providerServiceMapID\": \"Integer\","
 					+ "\"pregnancyStatus\":\"String\", \"isUrinePregTest\":\"Boolean\", \"pregnant_No\":\"String\", \"noOfLivingChild\":\"Integer\","
 					+ "\"isAbortion\":\"Boolean\", \"isOralContraceptiveUsed\":\"Boolean\", \"isHormoneReplacementTherapy\":\"Boolean\", \"menarche_Age\":\"Integer\","
 					+ "\"isMenstrualCycleRegular\":\"Boolean\", \"menstrualCycleLength\":\"Integer\", \"menstrualFlowDuration\":\"Integer\", \"menstrualFlowType\":\"String\","
@@ -201,13 +191,10 @@ public class NurseController {
 	 * return response.toString(); }
 	 */
 	@CrossOrigin
-	@ApiOperation(
-			value = "save Beneficiary Personal Cancer Detail",
-			consumes = "application/json",
-			produces = "application/json")
+	@ApiOperation(value = "save Beneficiary Personal Cancer Detail", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/historyScreen/benPersonalCancerHistory" }, method = { RequestMethod.POST })
-	public String saveBenPersonalCancerHistory(@ApiParam(
-			value = "{\"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\",\"providerServiceMapID\": \"Integer\","
+	public String saveBenPersonalCancerHistory(
+			@ApiParam(value = "{\"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\",\"providerServiceMapID\": \"Integer\","
 					+ "\"tobaccoUse\":\"String\", \"startAge_year\":\"Integer\", \"endAge_year\":\"Integer\", \"typeOfTobaccoProductList\":\"List\","
 					+ "\"quantityPerDay\":\"Integer\", \"isFilteredCigaerette\":\"Boolean\", \"isCigaretteExposure\":\"Boolean\", \"isBetelNutChewing\":\"Boolean\","
 					+ "\"durationOfBetelQuid\":\"Integer\", \"alcoholUse\":\"String\", \"ssAlcoholUsed\":\"Boolean\", \"frequencyOfAlcoholUsed\":\"String\","
@@ -242,13 +229,10 @@ public class NurseController {
 	}
 
 	@CrossOrigin
-	@ApiOperation(
-			value = "save Beneficiary Vital Detail",
-			consumes = "application/json",
-			produces = "application/json")
+	@ApiOperation(value = "save Beneficiary Vital Detail", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/vitalScreen/benVitalDetail" }, method = { RequestMethod.POST })
-	public String saveBenVitalDetail(@ApiParam(
-			value = "{\"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\",\"providerServiceMapID\": \"Integer\","
+	public String saveBenVitalDetail(
+			@ApiParam(value = "{\"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\",\"providerServiceMapID\": \"Integer\","
 					+ "\"weight_Kg\":\"Double\", \"height_cm\":\"Double\", \"waistCircumference_cm\":\"Double\", \"bloodGlucose_Fasting\":\"Short\","
 					+ "\"bloodGlucose_Random\":\"Short\", \"bloodGlucose_2HrPostPrandial\":\"Short\", \"systolicBP_1stReading\":\"Short\", "
 					+ "\"diastolicBP_1stReading\":\"Short\", \"systolicBP_2ndReading\":\"Short\", \"diastolicBP_2ndReading\":\"Short\", "
@@ -275,10 +259,7 @@ public class NurseController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(
-			value = "provides Nurse master Data",
-			consumes = "application/json",
-			produces = "application/json")
+	@ApiOperation(value = "provides Nurse master Data", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/nurseMasterData" }, method = { RequestMethod.POST }, produces = { "application/json" })
 	public String masterDataForNurse() {
 
@@ -299,13 +280,10 @@ public class NurseController {
 	 */
 
 	@CrossOrigin()
-	@ApiOperation(
-			value = "Get Beneficiary Visit details from Nurse screen",
-			consumes = "application/json",
-			produces = "application/json")
+	@ApiOperation(value = "Get Beneficiary Visit details from Nurse screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenDataFrmNurseToDocVisitDetailsScreen" }, method = { RequestMethod.POST })
-	public String getBenDataFrmNurseScrnToDocScrnVisitDetails(@ApiParam(
-			value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenDataFrmNurseScrnToDocScrnVisitDetails(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		logger.info("getBenDataFrmNurseScrnToDocScrnVisitDetails request:" + comingRequest);
 		try {
@@ -328,13 +306,10 @@ public class NurseController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(
-			value = "Get Beneficiary Cancer History details from Nurse screen",
-			consumes = "application/json",
-			produces = "application/json")
+	@ApiOperation(value = "Get Beneficiary Cancer History details from Nurse screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenDataFrmNurseToDocHistoryScreen" }, method = { RequestMethod.POST })
-	public String getBenDataFrmNurseScrnToDocScrnHistory(@ApiParam(
-			value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenDataFrmNurseScrnToDocScrnHistory(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		logger.info("getBenDataFrmNurseScrnToDocScrnHistory request:" + comingRequest);
 		try {
@@ -353,17 +328,15 @@ public class NurseController {
 			response.setError(e);
 			logger.error("Error in getBenDataFrmNurseScrnToDocScrnHistory:" + e);
 		}
+		System.out.println(response.toString());
 		return response.toString();
 	}
 
 	@CrossOrigin()
-	@ApiOperation(
-			value = "Get Beneficiary Vital details from Nurse screen",
-			consumes = "application/json",
-			produces = "application/json")
+	@ApiOperation(value = "Get Beneficiary Vital details from Nurse screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenDataFrmNurseToDocVitalScreen" }, method = { RequestMethod.POST })
-	public String getBenDataFrmNurseScrnToDocScrnVital(@ApiParam(
-			value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenDataFrmNurseScrnToDocScrnVital(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		logger.info("getBenDataFrmNurseToDocVitalScreen request:" + comingRequest);
 		try {
@@ -386,10 +359,7 @@ public class NurseController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(
-			value = "Get Nurse worklist",
-			consumes = "application/json",
-			produces = "application/json")
+	@ApiOperation(value = "Get Nurse worklist", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getNurseWorklist" }, method = { RequestMethod.GET })
 	public String getNurseWorkList() {
 		OutputResponse response = new OutputResponse();
@@ -402,21 +372,20 @@ public class NurseController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin
-	@ApiOperation(
-			value = "save Beneficiary Physical Vital Detail",
-			consumes = "application/json",
-			produces = "application/json")
+	@ApiOperation(value = "save Beneficiary Physical Vital Detail", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/vitalScreen/benPhysicalVitalDetail" }, method = { RequestMethod.POST })
 	public String saveBenPhysicalVitalDetail(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("saveBenPhysicalVitalDetail request:" + requestObj);
-		
-		BenAnthropometryDetail benAnthropometryDetail = InputMapper.gson().fromJson(requestObj, BenAnthropometryDetail.class);
-		BenPhysicalVitalDetail benPhysicalVitalDetail = InputMapper.gson().fromJson(requestObj, BenPhysicalVitalDetail.class);
-		
+
+		BenAnthropometryDetail benAnthropometryDetail = InputMapper.gson().fromJson(requestObj,
+				BenAnthropometryDetail.class);
+		BenPhysicalVitalDetail benPhysicalVitalDetail = InputMapper.gson().fromJson(requestObj,
+				BenPhysicalVitalDetail.class);
+
 		try {
 			Long responseObj = nurseServiceImpl.saveBeneficiaryPhysicalAnthropometryDetails(benAnthropometryDetail);
 			Long responseObj2 = nurseServiceImpl.saveBeneficiaryPhysicalVitalDetails(benPhysicalVitalDetail);
@@ -433,28 +402,23 @@ public class NurseController {
 
 		return response.toString();
 	}
-	
+
 	@CrossOrigin
-	@ApiOperation(
-			value = "Fetch Beneficiary Physical Vital Detail",
-			consumes = "application/json",
-			produces = "application/json")
+	@ApiOperation(value = "Fetch Beneficiary Physical Vital Detail", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/get/vitalScreen/benPhysicalVitalDetail" }, method = { RequestMethod.POST })
-	public String getBenPhysicalVitalDetail(@ApiParam(
-			value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String requestObj) {
+	public String getBenPhysicalVitalDetail(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("getBenPhysicalVitalDetail request:" + requestObj);
-		
+
 		try {
-				JSONObject obj = new JSONObject(requestObj);
-				if (obj.length() > 1) {
-					Long benRegID = obj.getLong("benRegID");
-					Long benVisitID = obj.getLong("benVisitID");
-					if(null !=benRegID && benRegID>0 && null !=benVisitID && benVisitID>0){
-				
-					
-					
+			JSONObject obj = new JSONObject(requestObj);
+			if (obj.length() > 1) {
+				Long benRegID = obj.getLong("benRegID");
+				Long benVisitID = obj.getLong("benVisitID");
+				if (null != benRegID && benRegID > 0 && null != benVisitID && benVisitID > 0) {
+
 					String physicalVitalDetails = nurseServiceImpl.getBeneficiaryVitalDetails(benRegID, benVisitID);
 					if (physicalVitalDetails != null) {
 						response.setResponse(physicalVitalDetails);
@@ -462,15 +426,15 @@ public class NurseController {
 						response.setError(500, "Failed to Fetch Beneficiary Physical Vital Details");
 					}
 					logger.info("getBenPhysicalVitalDetail response:" + response);
-				
-					}else{
-						response.setError(0, "Data Not Sufficient...");
-					}
+
+				} else {
+					response.setError(0, "Data Not Sufficient...");
 				}
-			} catch (Exception e) {
-				response.setError(e);
-				logger.error("Error in getBenPhysicalVitalDetail:" + e);
 			}
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenPhysicalVitalDetail:" + e);
+		}
 		return response.toString();
 	}
 

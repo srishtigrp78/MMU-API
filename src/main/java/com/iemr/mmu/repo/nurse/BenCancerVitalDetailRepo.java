@@ -20,8 +20,8 @@ public interface BenCancerVitalDetailRepo extends CrudRepository<BenCancerVitalD
 			+ " bloodGlucose_Random=:bloodGlucose_Random, bloodGlucose_2HrPostPrandial=:bloodGlucose_2HrPostPrandial, systolicBP_1stReading=:systolicBP_1stReading, "
 			+ "diastolicBP_1stReading=:diastolicBP_1stReading, systolicBP_2ndReading=:systolicBP_2ndReading, diastolicBP_2ndReading=:diastolicBP_2ndReading,"
 			+ " systolicBP_3rdReading=:systolicBP_3rdReading, diastolicBP_3rdReading=:diastolicBP_3rdReading, hbA1C=:hbA1C, hemoglobin=:hemoglobin, "
-			+ " modifiedBy=:modifiedBy where iD=:iD "
-			+ " AND beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+			+ " modifiedBy=:modifiedBy where  "
+			+ "  beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
 	public int updateBenCancerVitalDetail(@Param("weight_Kg") Double weight_Kg,
 			@Param("height_cm") Double height_cm,
 			@Param("waistCircumference_cm") Double waistCircumference_cm,
@@ -37,7 +37,6 @@ public interface BenCancerVitalDetailRepo extends CrudRepository<BenCancerVitalD
 			@Param("hbA1C") Short hbA1C,
 			@Param("hemoglobin") Short hemoglobin,
 			@Param("modifiedBy") String modifiedBy,
-			@Param("iD") Long iD,
 			@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 

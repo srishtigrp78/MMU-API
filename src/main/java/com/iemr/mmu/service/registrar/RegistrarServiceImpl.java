@@ -5,7 +5,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.registrar.BenGovIdMapping;
 import com.iemr.mmu.data.registrar.BeneficiaryData;
@@ -164,26 +164,26 @@ public class RegistrarServiceImpl implements RegistrarService {
 		}
 		if (benD.has("createdBy") && !benD.get("createdBy").isJsonNull())
 			benDemoAd.setCreatedBy(benD.get("createdBy").getAsString());
-		
+
 		if (benD.has("ageAtMarriage") && !benD.get("ageAtMarriage").isJsonNull()) {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-			
+
 			java.util.Date parsedDate;
 			int ageAtMarriage = benD.get("ageAtMarriage").getAsInt();
 			int currentAge = benD.get("age").getAsInt();
 			Calendar cal = Calendar.getInstance();
-		    cal.add(Calendar.YEAR, -(currentAge-ageAtMarriage));
-		    cal.set(Calendar.MONTH, 1);
-		    cal.set(Calendar.DAY_OF_YEAR, 1);
+			cal.add(Calendar.YEAR, -(currentAge - ageAtMarriage));
+			cal.set(Calendar.MONTH, 1);
+			cal.set(Calendar.DAY_OF_YEAR, 1);
 
-		    System.out.println(cal.getTime());
+			System.out.println(cal.getTime());
 
 			Timestamp timestamp = new java.sql.Timestamp(cal.getTimeInMillis());
-			  System.out.println(timestamp);
+			System.out.println(timestamp);
 			benDemoAd.setMarrigeDate(timestamp);
 
 		}
-		
+
 		// Following values will get only in update request
 		if (benD.has("benDemoAdditionalID") && !benD.get("benDemoAdditionalID").isJsonNull()) {
 			benDemoAd.setBenDemoAdditionalID(benD.get("benDemoAdditionalID").getAsLong());
@@ -407,7 +407,9 @@ public class RegistrarServiceImpl implements RegistrarService {
 
 	@Override
 	public String getBeneficiaryDetails(Long beneficiaryRegID) {
-
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.serializeNulls();
+		Gson gson = gsonBuilder.create();
 		List<Object[]> resList = registrarRepoBeneficiaryDetails.getBeneficiaryDetails(beneficiaryRegID);
 
 		System.out.println("hello");
@@ -444,7 +446,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 			FetchBeneficiaryDetails fetchBeneficiaryDetailsOBJ = FetchBeneficiaryDetails.getBeneficiaryDetails(objarr,
 					govIdList, s, otherGovIdList);
 			System.out.println("helooo");
-			return new Gson().toJson(fetchBeneficiaryDetailsOBJ);
+			return gson.toJson(fetchBeneficiaryDetailsOBJ);
 		} else {
 			System.out.println("helooo");
 			return null;
@@ -543,17 +545,20 @@ public class RegistrarServiceImpl implements RegistrarService {
 		BeneficiaryDemographicAdditional beneficiaryDemographicAdditional = getBeneficiaryDemographicAdditional(benD,
 				benRegID);
 		int res = 0;
-		BeneficiaryDemographicAdditional demographicAdditionalData = beneficiaryDemographicAdditionalRepo.getBeneficiaryDemographicAdditional(benRegID);
-		if(null!=demographicAdditionalData){
+		BeneficiaryDemographicAdditional demographicAdditionalData = beneficiaryDemographicAdditionalRepo
+				.getBeneficiaryDemographicAdditional(benRegID);
+		if (null != demographicAdditionalData) {
 			res = beneficiaryDemographicAdditionalRepo.updateBeneficiaryDemographicAdditional(
-					beneficiaryDemographicAdditional.getLiteracyStatus(), beneficiaryDemographicAdditional.getMotherName(),
-					beneficiaryDemographicAdditional.getEmailID(), beneficiaryDemographicAdditional.getBankName(),
-					beneficiaryDemographicAdditional.getBranchName(), beneficiaryDemographicAdditional.getiFSCCode(),
-					beneficiaryDemographicAdditional.getAccountNo(), beneficiaryDemographicAdditional.getModifiedBy(),
+					beneficiaryDemographicAdditional.getLiteracyStatus(),
+					beneficiaryDemographicAdditional.getMotherName(), beneficiaryDemographicAdditional.getEmailID(),
+					beneficiaryDemographicAdditional.getBankName(), beneficiaryDemographicAdditional.getBranchName(),
+					beneficiaryDemographicAdditional.getiFSCCode(), beneficiaryDemographicAdditional.getAccountNo(),
+					beneficiaryDemographicAdditional.getModifiedBy(),
 					beneficiaryDemographicAdditional.getBeneficiaryRegID());
-		}else{
-			BeneficiaryDemographicAdditional data = beneficiaryDemographicAdditionalRepo.save(beneficiaryDemographicAdditional);
-			if(data.getBenDemoAdditionalID()>0){
+		} else {
+			BeneficiaryDemographicAdditional data = beneficiaryDemographicAdditionalRepo
+					.save(beneficiaryDemographicAdditional);
+			if (data.getBenDemoAdditionalID() > 0) {
 				res = 1;
 			}
 		}
@@ -579,14 +584,14 @@ public class RegistrarServiceImpl implements RegistrarService {
 			if (benD.has("modifiedBy") && !benD.get("modifiedBy").isJsonNull()) {
 				beneficiaryImage.setModifiedBy(benD.get("modifiedBy").getAsString());
 			}
-			
+
 			String benImg = beneficiaryImageRepo.getBenImage(benRegID);
-			if(null!=benImg){
+			if (null != benImg) {
 				response = beneficiaryImageRepo.updateBeneficiaryImage(beneficiaryImage.getBenImage(),
 						beneficiaryImage.getModifiedBy(), beneficiaryImage.getBeneficiaryRegID());
-			}else{
+			} else {
 				BeneficiaryImage data = beneficiaryImageRepo.save(beneficiaryImage);
-				if(data.getBenImageID()>0){
+				if (data.getBenImageID() > 0) {
 					response = 1;
 				}
 			}

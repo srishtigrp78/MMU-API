@@ -1,7 +1,6 @@
 package com.iemr.mmu.service.nurse;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.iemr.mmu.data.masterdata.nurse.CancerDiseaseType;
 import com.iemr.mmu.data.masterdata.nurse.CancerPersonalHabitType;
 import com.iemr.mmu.data.masterdata.nurse.FamilyMemberType;
@@ -112,12 +112,12 @@ public class NurseServiceImpl implements NurseService {
 	public void BenCancerVitalDetailRepo(BenCancerVitalDetailRepo benCancerVitalDetailRepo) {
 		this.benCancerVitalDetailRepo = benCancerVitalDetailRepo;
 	}
-	
+
 	@Autowired
 	public void setBenAnthropometryRepo(BenAnthropometryRepo benAnthropometryRepo) {
 		this.benAnthropometryRepo = benAnthropometryRepo;
 	}
-	
+
 	@Autowired
 	public void setBenPhysicalVitalRepo(BenPhysicalVitalRepo benPhysicalVitalRepo) {
 		this.benPhysicalVitalRepo = benPhysicalVitalRepo;
@@ -300,30 +300,34 @@ public class NurseServiceImpl implements NurseService {
 	public int updateBeneficiaryFamilyCancerHistory(List<BenFamilyCancerHistory> benFamilyCancerHistoryList) {
 		int response = 0;
 		try {
+			if (benFamilyCancerHistoryList.size() > 0) {
+				benFamilyCancerHistoryRepo.deleteExistingFamilyRecord(
+						benFamilyCancerHistoryList.get(0).getBeneficiaryRegID(),
+						benFamilyCancerHistoryList.get(0).getBenVisitID());
+			}
 			ArrayList<BenFamilyCancerHistory> newbenFamilyCancerHistoryList = new ArrayList<BenFamilyCancerHistory>();
 			for (BenFamilyCancerHistory benFamilyCancerHistory : benFamilyCancerHistoryList) {
 				List<String> familyMenberList = benFamilyCancerHistory.getFamilyMemberList();
-				if(null != familyMenberList && !familyMenberList.isEmpty()){
+				if (null != familyMenberList && !familyMenberList.isEmpty()) {
 					String familyMemberData = "";
 					for (String familyMember : familyMenberList) {
 						familyMemberData += familyMember + ",";
 					}
 					benFamilyCancerHistory.setFamilyMember(familyMemberData);
-				}
-				if(null != benFamilyCancerHistory.getID() && benFamilyCancerHistory.getID()>0){
-					response = benFamilyCancerHistoryRepo.updateBenFamilyCancerHistory(
-							benFamilyCancerHistory.getCancerDiseaseType(), benFamilyCancerHistory.getFamilyMember(),
-							benFamilyCancerHistory.getModifiedBy(), benFamilyCancerHistory.getID(), 
-							benFamilyCancerHistory.getBeneficiaryRegID(), benFamilyCancerHistory.getBenVisitID());
-				}else{
 					newbenFamilyCancerHistoryList.add(benFamilyCancerHistory);
 				}
+
 			}
-			
-			ArrayList<BenFamilyCancerHistory> benFamilyCancerHistories = (ArrayList<BenFamilyCancerHistory>) benFamilyCancerHistoryRepo.save(newbenFamilyCancerHistoryList);
-			if(benFamilyCancerHistories.size()>0){
-				response = benFamilyCancerHistories.size();
+			if (newbenFamilyCancerHistoryList.size() > 0) {
+				ArrayList<BenFamilyCancerHistory> benFamilyCancerHistories = (ArrayList<BenFamilyCancerHistory>) benFamilyCancerHistoryRepo
+						.save(newbenFamilyCancerHistoryList);
+				if (benFamilyCancerHistories.size() > 0) {
+					response = benFamilyCancerHistories.size();
+				}
+			}else{
+				response = 1;
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 
@@ -349,7 +353,7 @@ public class NurseServiceImpl implements NurseService {
 					benObstetricCancerHistory.getIsInterMenstrualBleeding(),
 					benObstetricCancerHistory.getMenopauseAge(), benObstetricCancerHistory.getIsPostMenopauseBleeding(),
 					benObstetricCancerHistory.getIsFoulSmellingDischarge(), benObstetricCancerHistory.getModifiedBy(),
-					benObstetricCancerHistory.getID(), benObstetricCancerHistory.getBeneficiaryRegID(), benObstetricCancerHistory.getBenVisitID());
+					benObstetricCancerHistory.getBeneficiaryRegID(), benObstetricCancerHistory.getBenVisitID());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -365,7 +369,7 @@ public class NurseServiceImpl implements NurseService {
 		try {
 
 			List<String> typeOfTobaccoProductList = benPersonalCancerHistory.getTypeOfTobaccoProductList();
-			if(null != typeOfTobaccoProductList && !typeOfTobaccoProductList.isEmpty()){
+			if (null != typeOfTobaccoProductList && !typeOfTobaccoProductList.isEmpty()) {
 				String typeOfTobaccoProductData = "";
 				for (String typeOfTobaccoProduct : typeOfTobaccoProductList) {
 					typeOfTobaccoProductData += typeOfTobaccoProduct + ",";
@@ -379,8 +383,8 @@ public class NurseServiceImpl implements NurseService {
 					benPersonalCancerHistory.getIsCigaretteExposure(), benPersonalCancerHistory.getIsBetelNutChewing(),
 					benPersonalCancerHistory.getDurationOfBetelQuid(), benPersonalCancerHistory.getAlcoholUse(),
 					benPersonalCancerHistory.getSsAlcoholUsed(), benPersonalCancerHistory.getFrequencyOfAlcoholUsed(),
-					benPersonalCancerHistory.getModifiedBy(), benPersonalCancerHistory.getID(),
-					benPersonalCancerHistory.getBeneficiaryRegID(), benPersonalCancerHistory.getBenVisitID());
+					benPersonalCancerHistory.getModifiedBy(), benPersonalCancerHistory.getBeneficiaryRegID(),
+					benPersonalCancerHistory.getBenVisitID());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -395,7 +399,7 @@ public class NurseServiceImpl implements NurseService {
 		int response = 0;
 		try {
 			List<String> typeOfOilConsumedList = benPersonalCancerDietHistory.getTypeOfOilConsumedList();
-			if(null != typeOfOilConsumedList && !typeOfOilConsumedList.isEmpty()){
+			if (null != typeOfOilConsumedList && !typeOfOilConsumedList.isEmpty()) {
 				String typeOfOilConsumedData = "";
 				for (String typeOfOilConsumed : typeOfOilConsumedList) {
 					typeOfOilConsumedData += typeOfOilConsumed + ",";
@@ -413,7 +417,6 @@ public class NurseServiceImpl implements NurseService {
 					benPersonalCancerDietHistory.getPhysicalActivityType(),
 					benPersonalCancerDietHistory.getSsRadiationExposure(),
 					benPersonalCancerDietHistory.getIsThyroidDisorder(), benPersonalCancerDietHistory.getModifiedBy(),
-					benPersonalCancerDietHistory.getID(),
 					benPersonalCancerDietHistory.getBeneficiaryRegID(), benPersonalCancerDietHistory.getBenVisitID());
 
 		} catch (Exception e) {
@@ -434,7 +437,7 @@ public class NurseServiceImpl implements NurseService {
 				benCancerVitalDetail.getDiastolicBP_2ndReading(), benCancerVitalDetail.getSystolicBP_3rdReading(),
 				benCancerVitalDetail.getDiastolicBP_3rdReading(), benCancerVitalDetail.getHbA1C(),
 				benCancerVitalDetail.getHemoglobin(), benCancerVitalDetail.getModifiedBy(),
-				benCancerVitalDetail.getID(), benCancerVitalDetail.getBeneficiaryRegID(), benCancerVitalDetail.getBenVisitID());
+				benCancerVitalDetail.getBeneficiaryRegID(), benCancerVitalDetail.getBenVisitID());
 		return response;
 	}
 
@@ -461,6 +464,9 @@ public class NurseServiceImpl implements NurseService {
 
 	public String getBenDataFrmNurseToDocHistoryScreen(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.serializeNulls();
+		Gson gson = gsonBuilder.create();
 
 		resMap.put("benFamilyHistory", getBenFamilyHisData(benRegID, benVisitID));
 
@@ -469,13 +475,23 @@ public class NurseServiceImpl implements NurseService {
 		resMap.put("benPersonalHistory", getBenPersonalCancerHistoryData(benRegID, benVisitID));
 
 		resMap.put("benPersonalDietHistory", getBenPersonalCancerDietHistoryData(benRegID, benVisitID));
-
-		return new Gson().toJson(resMap);
+		System.out.println(gson.toJson(resMap));
+		return gson.toJson(resMap);
 	}
 
 	private BenPersonalCancerHistory getBenPersonalCancerHistoryData(Long benRegID, Long benVisitID) {
 		BenPersonalCancerHistory benPersonalCancerHistory = benPersonalCancerHistoryRepo.getBenPersonalHistory(benRegID,
 				benVisitID);
+		List<String> typeOfTobaccoProductList = new ArrayList<>();
+		String s = benPersonalCancerHistory.getTypeOfTobaccoProduct();
+		if (s != null) {
+			String[] arr = s.split(",");
+			for (int i = 0; i < arr.length; i++) {
+				typeOfTobaccoProductList.add(arr[i]);
+			}
+			benPersonalCancerHistory.setTypeOfTobaccoProductList(typeOfTobaccoProductList);
+
+		}
 		return benPersonalCancerHistory;
 	}
 
@@ -492,6 +508,8 @@ public class NurseServiceImpl implements NurseService {
 			}
 			benPersonalCancerDietHistory.setTypeOfOilConsumedList(oilConsumedList);
 
+		} else {
+			benPersonalCancerDietHistory.setTypeOfOilConsumedList(oilConsumedList);
 		}
 		return benPersonalCancerDietHistory;
 	}
@@ -545,8 +563,7 @@ public class NurseServiceImpl implements NurseService {
 		Integer i = registrarRepoBenData.updateBenFlowStatus(c, benRegID);
 		return i;
 	}
-	
-	
+
 	public Map<String, Object> getBenNurseDataForCaseSheet(Long benRegID, Long benVisitID, Date visitDateTime) {
 		Map<String, Object> resMap = new HashMap<>();
 
@@ -557,23 +574,25 @@ public class NurseServiceImpl implements NurseService {
 		resMap.put("patientPersonalHistory", getBenPersonalCancerHistoryData(benRegID, benVisitID, visitDateTime));
 
 		resMap.put("benPersonalDietHistory", getBenPersonalCancerDietHistoryData(benRegID, benVisitID, visitDateTime));
-		
+
 		resMap.put("currentVitals", getBenCancerVitalDetailData(benRegID, benVisitID, visitDateTime));
-		
+
 		return resMap;
 	}
 
-	private BenPersonalCancerHistory getBenPersonalCancerHistoryData(Long benRegID, Long benVisitID, Date visitDateTime) {
+	private BenPersonalCancerHistory getBenPersonalCancerHistoryData(Long benRegID, Long benVisitID,
+			Date visitDateTime) {
 		BenPersonalCancerHistory benPersonalCancerHistory = benPersonalCancerHistoryRepo.getBenPersonalHistory(benRegID,
 				benVisitID, visitDateTime);
 		return benPersonalCancerHistory;
 	}
 
-	private BenPersonalCancerDietHistory getBenPersonalCancerDietHistoryData(Long benRegID, Long benVisitID, Date visitDateTime) {
+	private BenPersonalCancerDietHistory getBenPersonalCancerDietHistoryData(Long benRegID, Long benVisitID,
+			Date visitDateTime) {
 		BenPersonalCancerDietHistory benPersonalCancerDietHistory = benPersonalCancerDietHistoryRepo
 				.getBenPersonaDietHistory(benRegID, benVisitID, visitDateTime);
 
-		if(null != benPersonalCancerDietHistory){
+		if (null != benPersonalCancerDietHistory) {
 			String s = benPersonalCancerDietHistory.getTypeOfOilConsumed();
 			List<String> oilConsumedList = new ArrayList<>();
 			if (s != null) {
@@ -582,7 +601,7 @@ public class NurseServiceImpl implements NurseService {
 					oilConsumedList.add(arr[i]);
 				}
 				benPersonalCancerDietHistory.setTypeOfOilConsumedList(oilConsumedList);
-	
+
 			}
 		}
 		return benPersonalCancerDietHistory;
@@ -617,16 +636,16 @@ public class NurseServiceImpl implements NurseService {
 
 	private BenCancerVitalDetail getBenCancerVitalDetailData(Long benRegID, Long benVisitID, Date visitDateTime) {
 		BenCancerVitalDetail benCancerVitalDetail = benCancerVitalDetailRepo.getBenCancerVitalDetail(benRegID,
-				benVisitID,visitDateTime);
+				benVisitID, visitDateTime);
 		return benCancerVitalDetail;
 	}
-	
+
 	public String getBeneficiaryVisitHistory(Long benRegID) {
 		Map<String, Object> resMap = new HashMap<>();
 		List<BeneficiaryVisitDetail> benVisitDetailsOBJs = benVisitDetailRepo.getBeneficiaryVisitHistory(benRegID);
 
 		List<BeneficiaryVisitDetail> benVisitDetailsList = new ArrayList<BeneficiaryVisitDetail>();
-		for(BeneficiaryVisitDetail benVisitDetailsOBJ:benVisitDetailsOBJs){
+		for (BeneficiaryVisitDetail benVisitDetailsOBJ : benVisitDetailsOBJs) {
 			BeneficiaryVisitDetail benVisitDetailsOBJ1 = new BeneficiaryVisitDetail(benVisitDetailsOBJ.getBenVisitID(),
 					benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitDetailsOBJ.getProviderServiceMapID(),
 					benVisitDetailsOBJ.getVisitDateTime(), benVisitDetailsOBJ.getVisitNo(),
@@ -648,7 +667,7 @@ public class NurseServiceImpl implements NurseService {
 
 	@Override
 	public Long saveBeneficiaryPhysicalAnthropometryDetails(BenAnthropometryDetail benAnthropometryDetail) {
-		BenAnthropometryDetail response=benAnthropometryRepo.save(benAnthropometryDetail);
+		BenAnthropometryDetail response = benAnthropometryRepo.save(benAnthropometryDetail);
 		if (response != null)
 			return response.getID();
 		else
@@ -657,33 +676,33 @@ public class NurseServiceImpl implements NurseService {
 
 	@Override
 	public Long saveBeneficiaryPhysicalVitalDetails(BenPhysicalVitalDetail benPhysicalVitalDetail) {
-		BenPhysicalVitalDetail response=benPhysicalVitalRepo.save(benPhysicalVitalDetail);
+		BenPhysicalVitalDetail response = benPhysicalVitalRepo.save(benPhysicalVitalDetail);
 		if (response != null)
 			return response.getID();
 		else
 			return null;
 	}
 
-
 	public String getBeneficiaryPhysicalAnthropometryDetails(Long beneficiaryRegID, Long benVisitID) {
-		BenAnthropometryDetail benAnthropometryDetail = benAnthropometryRepo.getBenAnthropometryDetail(beneficiaryRegID, benVisitID);
+		BenAnthropometryDetail benAnthropometryDetail = benAnthropometryRepo.getBenAnthropometryDetail(beneficiaryRegID,
+				benVisitID);
 		return new Gson().toJson(benAnthropometryDetail);
 	}
 
 	public String getBeneficiaryPhysicalVitalDetails(Long beneficiaryRegID, Long benVisitID) {
-		BenPhysicalVitalDetail benPhysicalVitalDetail = benPhysicalVitalRepo.getBenPhysicalVitalDetail(beneficiaryRegID, benVisitID);
+		BenPhysicalVitalDetail benPhysicalVitalDetail = benPhysicalVitalRepo.getBenPhysicalVitalDetail(beneficiaryRegID,
+				benVisitID);
 		return new Gson().toJson(benPhysicalVitalDetail);
 	}
-	
+
 	@Override
 	public String getBeneficiaryVitalDetails(Long beneficiaryRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
 
 		resMap.put("benAnthropometryDetail", getBeneficiaryPhysicalAnthropometryDetails(beneficiaryRegID, benVisitID));
 		resMap.put("benPhysicalVitalDetail", getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, benVisitID));
-		
+
 		return resMap.toString();
 	}
-	
 
 }

@@ -24,8 +24,8 @@ public interface BenPersonalCancerHistoryRepo extends CrudRepository<BenPersonal
 	@Query("update BenPersonalCancerHistory set tobaccoUse=:tobaccoUse, startAge_year=:startAge_year, endAge_year=:endAge_year, typeOfTobaccoProduct=:typeOfTobaccoProduct,"
 			+ " quantityPerDay=:quantityPerDay, isFilteredCigaerette=:isFilteredCigaerette, isCigaretteExposure=:isCigaretteExposure, isBetelNutChewing=:isBetelNutChewing, "
 			+ " durationOfBetelQuid=:durationOfBetelQuid, alcoholUse=:alcoholUse, ssAlcoholUsed=:ssAlcoholUsed, frequencyOfAlcoholUsed=:frequencyOfAlcoholUsed,"
-			+ " modifiedBy=:modifiedBy where iD=:iD "
-			+ " AND beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+			+ " modifiedBy=:modifiedBy where "
+			+ " beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
 	public int updateBenPersonalCancerHistory(@Param("tobaccoUse") String tobaccoUse,
 			@Param("startAge_year") Integer startAge_year, @Param("endAge_year") Integer endAge_year,
 			@Param("typeOfTobaccoProduct") String typeOfTobaccoProduct, @Param("quantityPerDay") Integer quantityPerDay,
@@ -35,7 +35,6 @@ public interface BenPersonalCancerHistoryRepo extends CrudRepository<BenPersonal
 			@Param("durationOfBetelQuid") Integer durationOfBetelQuid, @Param("alcoholUse") String alcoholUse,
 			@Param("ssAlcoholUsed") Boolean ssAlcoholUsed,
 			@Param("frequencyOfAlcoholUsed") String frequencyOfAlcoholUsed, @Param("modifiedBy") String modifiedBy,
-			@Param("iD") Long iD,
 			@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 	
