@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.iemr.mmu.data.doctor.CancerAbdominalExamination;
 import com.iemr.mmu.data.doctor.CancerBreastExamination;
 import com.iemr.mmu.data.doctor.CancerDiagnosis;
+import com.iemr.mmu.data.doctor.CancerExaminationImageAnnotation;
 import com.iemr.mmu.data.doctor.CancerGynecologicalExamination;
 import com.iemr.mmu.data.doctor.CancerLymphNodeDetails;
 import com.iemr.mmu.data.doctor.CancerOralExamination;
@@ -23,10 +24,12 @@ import com.iemr.mmu.data.doctor.DrugDurationUnitMaster;
 import com.iemr.mmu.data.doctor.DrugFormMaster;
 import com.iemr.mmu.data.doctor.DrugFrequencyMaster;
 import com.iemr.mmu.data.doctor.LabTestMaster;
+import com.iemr.mmu.data.doctor.WrapperCancerExamImgAnotasn;
 import com.iemr.mmu.data.registrar.WrapperRegWorklist;
 import com.iemr.mmu.repo.doctor.CancerAbdominalExaminationRepo;
 import com.iemr.mmu.repo.doctor.CancerBreastExaminationRepo;
 import com.iemr.mmu.repo.doctor.CancerDiagnosisRepo;
+import com.iemr.mmu.repo.doctor.CancerExaminationImageAnnotationRepo;
 import com.iemr.mmu.repo.doctor.CancerGynecologicalExaminationRepo;
 import com.iemr.mmu.repo.doctor.CancerLymphNodeExaminationRepo;
 import com.iemr.mmu.repo.doctor.CancerOralExaminationRepo;
@@ -61,6 +64,13 @@ public class DoctorServiceImpl implements DoctorService {
 	private DrugFormMasterRepo drugFormMasterRepo;
 	private DrugFrequencyMasterRepo drugFrequencyMasterRepo;
 	private LabTestMasterRepo labTestMasterRepo;
+	private CancerExaminationImageAnnotationRepo cancerExaminationImageAnnotationRepo;
+
+	@Autowired
+	public void setCancerExaminationImageAnnotationRepo(
+			CancerExaminationImageAnnotationRepo cancerExaminationImageAnnotationRepo) {
+		this.cancerExaminationImageAnnotationRepo = cancerExaminationImageAnnotationRepo;
+	}
 
 	@Autowired
 	public void setChiefComplaintMasterRepo(ChiefComplaintMasterRepo chiefComplaintMasterRepo) {
@@ -337,5 +347,52 @@ public class DoctorServiceImpl implements DoctorService {
 		resMap.put("drugFrequencyMaster", dfrmList);
 		resMap.put("labTestMaster", ltmList);
 		return new Gson().toJson(resMap);
+	}
+
+	@Override
+	public Long saveDocExaminationImageAnnotation(List<WrapperCancerExamImgAnotasn> wrapperCancerExamImgAnotasnList) {
+		System.out.println("hello");
+		Long x = null;
+		List<CancerExaminationImageAnnotation> objList = (List<CancerExaminationImageAnnotation>) cancerExaminationImageAnnotationRepo
+				.save(getCancerExaminationImageAnnotationList(wrapperCancerExamImgAnotasnList));
+		if (objList != null && objList.size() > 0) {
+			x = (long) objList.size();
+		}
+		return x;
+	}
+
+	private List<CancerExaminationImageAnnotation> getCancerExaminationImageAnnotationList(
+			List<WrapperCancerExamImgAnotasn> wrapperCancerExamImgAnotasnList) {
+		List<CancerExaminationImageAnnotation> objList = new ArrayList<>();
+
+		if (wrapperCancerExamImgAnotasnList.size() > 0) {
+			for (WrapperCancerExamImgAnotasn obj : wrapperCancerExamImgAnotasnList) {
+				if (obj != null) {
+					ArrayList<Map<String, Object>> markersList = obj.getMarkers();
+					if (markersList != null && markersList.size() > 0) {
+						for (Map<String, Object> marker : markersList) {
+							CancerExaminationImageAnnotation cancerExaminationImageAnnotation = new CancerExaminationImageAnnotation();
+							cancerExaminationImageAnnotation.setBeneficiaryRegID(obj.getBeneficiaryRegID());
+							cancerExaminationImageAnnotation.setBenVisitID(obj.getVisitID());
+							cancerExaminationImageAnnotation.setProviderServiceMapID(obj.getProviderServiceMapID());
+							cancerExaminationImageAnnotation.setCreatedBy(obj.getCreatedBy());
+							cancerExaminationImageAnnotation.setCancerImageID(obj.getImageID());
+							Double a = (Double) marker.get("xCord");
+							cancerExaminationImageAnnotation.setxCoordinate(a.intValue());
+							Double b = (Double) marker.get("yCord");
+							cancerExaminationImageAnnotation.setyCoordinate(b.intValue());
+							Double c = (Double) marker.get("point");
+							cancerExaminationImageAnnotation.setPoint(c.intValue());
+							cancerExaminationImageAnnotation.setPointDesc((String) marker.get("description"));
+
+							objList.add(cancerExaminationImageAnnotation);
+						}
+					}
+				}
+			}
+		}
+
+		return objList;
+
 	}
 }

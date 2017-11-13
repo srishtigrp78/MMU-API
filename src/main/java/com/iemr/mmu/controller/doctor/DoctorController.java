@@ -22,6 +22,7 @@ import com.iemr.mmu.data.doctor.CancerDiagnosis;
 import com.iemr.mmu.data.doctor.CancerGynecologicalExamination;
 import com.iemr.mmu.data.doctor.CancerLymphNodeDetails;
 import com.iemr.mmu.data.doctor.CancerOralExamination;
+import com.iemr.mmu.data.doctor.WrapperCancerExamImgAnotasn;
 import com.iemr.mmu.data.doctor.WrapperCancerSymptoms;
 import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
 import com.iemr.mmu.data.nurse.BenFamilyCancerHistory;
@@ -301,6 +302,36 @@ public class DoctorController {
 			logger.error("Error in saveCancerSignAndSymptomsDetail:" + e);
 		}
 
+		return response.toString();
+	}
+
+	/**
+	 * @Param
+	 * @Objective: Save doc cancer examination image annotation data.
+	 * @return
+	 */
+	@CrossOrigin()
+	@ApiOperation(value = "Save doc examination image annotaion for cancer screening", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/saveCancerExaminationImageAnnotation" }, method = { RequestMethod.POST })
+	public String saveExaminationImageAnnotation(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		logger.info("saveCancerExaminationImageAnnotation..");
+		try {
+
+			WrapperCancerExamImgAnotasn[] wrapperCancerExamImgAnotasn = InputMapper.gson().fromJson(requestObj,
+					WrapperCancerExamImgAnotasn[].class);
+
+			List<WrapperCancerExamImgAnotasn> wrapperCancerExamImgAnotasnList = Arrays
+					.asList(wrapperCancerExamImgAnotasn);
+
+			Long r = doctorServiceImpl.saveDocExaminationImageAnnotation(wrapperCancerExamImgAnotasnList);
+			if (r != null) {
+				response.setResponse("Data Successfully saved");
+			} 
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setError(e);
+		}
 		return response.toString();
 	}
 

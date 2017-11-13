@@ -21,51 +21,51 @@ public class PrescribedDrugDetail {
 	@Expose
 	@Column(name = "PrescribedDrugID")
 	private Long prescribedDrugID;
-	
+
 	@Expose
 	@Column(name = "PrescriptionID")
 	private Long prescriptionID;
-	
+
 	@Expose
 	@Column(name = "DrugForm")
 	private String drugForm;
-	
+
 	@Expose
 	@Column(name = "DrugTradeOrBrandName")
 	private String drugTradeOrBrandName;
-	
+
 	@Expose
 	@Column(name = "GenericDrugName")
 	private String genericDrugName;
-	
+
 	@Expose
 	@Column(name = "DrugStrength")
 	private String drugStrength;
-	
+
 	@Expose
 	@Column(name = "Dose")
 	private String dose;
-	
+
 	@Expose
 	@Column(name = "Route")
 	private String route;
-	
+
 	@Expose
 	@Column(name = "Frequency")
 	private String frequency;
-	
+
 	@Expose
 	@Column(name = "Duration")
 	private String drugDuration;
-	
+
 	@Expose
 	@Column(name = "RelationToFood")
 	private String relationToFood;
-	
+
 	@Expose
 	@Column(name = "SpecialInstruction")
 	private String specialInstruction;
-	
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -89,7 +89,7 @@ public class PrescribedDrugDetail {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
-	
+
 	public PrescribedDrugDetail() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -234,52 +234,55 @@ public class PrescribedDrugDetail {
 	public Long getPrescribedDrugID() {
 		return prescribedDrugID;
 	}
-	
-	public static ArrayList<PrescribedDrugDetail> getBenPrescribedDrugDetailList(JsonObject emrgCasesheet, Long prescriptionID) {
+
+	public static ArrayList<PrescribedDrugDetail> getBenPrescribedDrugDetailList(JsonObject emrgCasesheet,
+			Long prescriptionID) {
 		ArrayList<PrescribedDrugDetail> resArray = new ArrayList<PrescribedDrugDetail>();
 		PrescribedDrugDetail prescribedDrugDetail = null;
-		
-		for (JsonElement csobj : emrgCasesheet.getAsJsonArray("prescribedDrugs")) {
-			prescribedDrugDetail = new PrescribedDrugDetail();
-		
-			prescribedDrugDetail.setPrescriptionID(prescriptionID);
-			
-			JsonObject obj = csobj.getAsJsonObject();
-			
-			if (obj.has("drugForm") && !obj.get("drugForm").isJsonNull())
-				prescribedDrugDetail.setDrugForm(obj.get("drugForm").getAsString());
-			
-			if (obj.has("drugTradeOrBrandName") && !obj.get("drugTradeOrBrandName").isJsonNull())
-				prescribedDrugDetail.setDrugTradeOrBrandName(obj.get("drugTradeOrBrandName").getAsString());
-			
-			if (obj.has("genericDrugName") && !obj.get("genericDrugName").isJsonNull())
-				prescribedDrugDetail.setGenericDrugName(obj.get("genericDrugName").getAsString());
-			
-			if (obj.has("drugStrength") && !obj.get("drugStrength").isJsonNull())
-				prescribedDrugDetail.setDrugStrength(obj.get("drugStrength").getAsString());
-			
-			if (obj.has("dose") && !obj.get("dose").isJsonNull())
-				prescribedDrugDetail.setDose(obj.get("dose").getAsString());
-			
-			if (obj.has("route") && !obj.get("route").isJsonNull())
-				prescribedDrugDetail.setRoute(obj.get("route").getAsString());
-			
-			if (obj.has("frequency") && !obj.get("frequency").isJsonNull())
-				prescribedDrugDetail.setFrequency(obj.get("frequency").getAsString());
-			
-			if (obj.has("drugDuration") && !obj.get("drugDuration").isJsonNull())
-				prescribedDrugDetail.setDuration(obj.get("drugDuration").getAsString());
-			
-			if (obj.has("relationToFood") && !obj.get("relationToFood").isJsonNull())
-				prescribedDrugDetail.setRelationToFood(obj.get("relationToFood").getAsString());
-			
-			if (obj.has("specialInstruction") && !obj.get("specialInstruction").isJsonNull())
-				prescribedDrugDetail.setSpecialInstruction(obj.get("specialInstruction").getAsString());
-			
-			if (emrgCasesheet.has("createdBy") && !emrgCasesheet.get("createdBy").isJsonNull())
-				prescribedDrugDetail.setCreatedBy(emrgCasesheet.get("createdBy").getAsString());
-			
-			resArray.add(prescribedDrugDetail);
+		if (emrgCasesheet.has("prescribedDrugs") && !emrgCasesheet.get("prescribedDrugs").isJsonNull()
+				&& emrgCasesheet.get("prescribedDrugs").isJsonArray()) {
+			for (JsonElement csobj : emrgCasesheet.getAsJsonArray("prescribedDrugs")) {
+				prescribedDrugDetail = new PrescribedDrugDetail();
+
+				prescribedDrugDetail.setPrescriptionID(prescriptionID);
+
+				JsonObject obj = csobj.getAsJsonObject();
+
+				if (obj.has("drugForm") && !obj.get("drugForm").isJsonNull())
+					prescribedDrugDetail.setDrugForm(obj.get("drugForm").getAsString());
+
+				if (obj.has("drugTradeOrBrandName") && !obj.get("drugTradeOrBrandName").isJsonNull())
+					prescribedDrugDetail.setDrugTradeOrBrandName(obj.get("drugTradeOrBrandName").getAsString());
+
+				if (obj.has("genericDrugName") && !obj.get("genericDrugName").isJsonNull())
+					prescribedDrugDetail.setGenericDrugName(obj.get("genericDrugName").getAsString());
+
+				if (obj.has("drugStrength") && !obj.get("drugStrength").isJsonNull())
+					prescribedDrugDetail.setDrugStrength(obj.get("drugStrength").getAsString());
+
+				if (obj.has("dose") && !obj.get("dose").isJsonNull())
+					prescribedDrugDetail.setDose(obj.get("dose").getAsString());
+
+				if (obj.has("route") && !obj.get("route").isJsonNull())
+					prescribedDrugDetail.setRoute(obj.get("route").getAsString());
+
+				if (obj.has("frequency") && !obj.get("frequency").isJsonNull())
+					prescribedDrugDetail.setFrequency(obj.get("frequency").getAsString());
+
+				if (obj.has("drugDuration") && !obj.get("drugDuration").isJsonNull())
+					prescribedDrugDetail.setDuration(obj.get("drugDuration").getAsString());
+
+				if (obj.has("relationToFood") && !obj.get("relationToFood").isJsonNull())
+					prescribedDrugDetail.setRelationToFood(obj.get("relationToFood").getAsString());
+
+				if (obj.has("specialInstruction") && !obj.get("specialInstruction").isJsonNull())
+					prescribedDrugDetail.setSpecialInstruction(obj.get("specialInstruction").getAsString());
+
+				if (emrgCasesheet.has("createdBy") && !emrgCasesheet.get("createdBy").isJsonNull())
+					prescribedDrugDetail.setCreatedBy(emrgCasesheet.get("createdBy").getAsString());
+
+				resArray.add(prescribedDrugDetail);
+			}
 		}
 
 		return resArray;

@@ -118,7 +118,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService{
 		
 		List<LabTestOrderDetail> labTestOrders = (List<LabTestOrderDetail>) labTestOrderDetailRepo.save(labTestOrderDetails);
 		
-		if(null != labTestOrders && labTestOrders.size()>0){
+		if(null != labTestOrders && labTestOrders.size()>=0){
 			for (LabTestOrderDetail labTestOrder: labTestOrders ){
 				return labTestOrder.getLabTestOrderID();
 			}

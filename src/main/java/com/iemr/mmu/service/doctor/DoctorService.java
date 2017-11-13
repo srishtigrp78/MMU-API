@@ -9,6 +9,7 @@ import com.iemr.mmu.data.doctor.CancerGynecologicalExamination;
 import com.iemr.mmu.data.doctor.CancerLymphNodeDetails;
 import com.iemr.mmu.data.doctor.CancerOralExamination;
 import com.iemr.mmu.data.doctor.CancerSignAndSymptoms;
+import com.iemr.mmu.data.doctor.WrapperCancerExamImgAnotasn;
 
 public interface DoctorService {
 
@@ -29,4 +30,6 @@ public interface DoctorService {
 	public String updateBenStatus(Long benVisitID, String c);
 
 	public String getQuickConsultMasterData();
+
+	public Long saveDocExaminationImageAnnotation(List<WrapperCancerExamImgAnotasn> wrapperCancerExamImgAnotasnList);
 }

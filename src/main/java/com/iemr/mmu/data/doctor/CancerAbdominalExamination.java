@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
 
 @Entity
@@ -80,9 +81,9 @@ public class CancerAbdominalExamination {
 	@Column(name = "Observation")
 	private String observation;
 
-	@Expose
+	/*@JsonIgnore
 	@Column(name = "Image")
-	private Blob image;
+	private Blob image;*/
 
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -117,7 +118,7 @@ public class CancerAbdominalExamination {
 			Boolean abdominalInspection_Normal, String liver, Boolean ascites_Present, Boolean anyOtherMass_Present,
 			Boolean lymphNodes_Enlarged, Boolean lymphNode_Inguinal_Left, Boolean lymphNode_Inguinal_Right,
 			Boolean lymphNode_ExternalIliac_Left, Boolean lymphNode_ExternalIliac_Right,
-			Boolean lymphNode_ParaAortic_Left, Boolean lymphNode_ParaAortic_Right, String observation, Blob image,
+			Boolean lymphNode_ParaAortic_Left, Boolean lymphNode_ParaAortic_Right, String observation,
 			Boolean deleted, String processed, String createdBy, Timestamp createdDate, String modifiedBy,
 			Timestamp lastModDate) {
 		super();
@@ -137,7 +138,7 @@ public class CancerAbdominalExamination {
 		this.lymphNode_ParaAortic_Left = lymphNode_ParaAortic_Left;
 		this.lymphNode_ParaAortic_Right = lymphNode_ParaAortic_Right;
 		this.observation = observation;
-		this.image = image;
+		//this.image = image;
 		this.deleted = deleted;
 		this.processed = processed;
 		this.createdBy = createdBy;
@@ -274,13 +275,13 @@ public class CancerAbdominalExamination {
 		this.observation = observation;
 	}
 
-	public Blob getImage() {
+	/*public Blob getImage() {
 		return image;
 	}
 
 	public void setImage(Blob image) {
 		this.image = image;
-	}
+	}*/
 
 	public Boolean getDeleted() {
 		return deleted;

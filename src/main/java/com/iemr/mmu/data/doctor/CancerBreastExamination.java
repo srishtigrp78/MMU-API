@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
 
 @Entity
@@ -84,9 +85,9 @@ public class CancerBreastExamination {
 	@Column(name = "MamogramReport")
 	private String mamogramReport;
 
-	@Expose
+	/*@JsonIgnore
 	@Column(name = "Image")
-	private Blob image;
+	private Blob image;*/
 
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -121,7 +122,7 @@ public class CancerBreastExamination {
 			Boolean everBreastFed, Boolean breastFeedingDurationGTE6months, Boolean breastsAppear_Normal,
 			Boolean rashOnBreast, Boolean dimplingSkinOnBreast, Boolean dischargeFromNipple, Boolean peaudOrange,
 			Boolean lumpInBreast, String lumpSize, String lumpShape, String lumpTexture, Boolean referredToMammogram,
-			String mamogramReport, Blob image, Boolean deleted, String processed, String createdBy,
+			String mamogramReport, Boolean deleted, String processed, String createdBy,
 			Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
 		super();
 		ID = iD;
@@ -141,7 +142,7 @@ public class CancerBreastExamination {
 		this.lumpTexture = lumpTexture;
 		this.referredToMammogram = referredToMammogram;
 		this.mamogramReport = mamogramReport;
-		this.image = image;
+		//this.image = image;
 		this.deleted = deleted;
 		this.processed = processed;
 		this.createdBy = createdBy;
@@ -286,13 +287,13 @@ public class CancerBreastExamination {
 		this.mamogramReport = mamogramReport;
 	}
 
-	public Blob getImage() {
+	/*public Blob getImage() {
 		return image;
 	}
 
 	public void setImage(Blob image) {
 		this.image = image;
-	}
+	}*/
 
 	public Boolean getDeleted() {
 		return deleted;

@@ -1,6 +1,5 @@
 package com.iemr.mmu.data.doctor;
 
-import java.sql.Blob;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -63,9 +62,11 @@ public class CancerOralExamination {
 	@Column(name = "Observation")
 	private String observation;
 
-	@Expose
-	@Column(name = "Image")
-	private Blob image;
+	/*
+	 * @JsonIgnore
+	 * 
+	 * @Column(name = "Image") private Blob image;
+	 */
 
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -99,7 +100,7 @@ public class CancerOralExamination {
 	public CancerOralExamination(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			String limitedMouthOpening, Boolean premalignantLesions, String preMalignantLesionType,
 			List<String> preMalignantLesionTypeList, Boolean prolongedIrritation, Boolean chronicBurningSensation,
-			String observation, Blob image, Boolean deleted, String processed, String createdBy, Timestamp createdDate,
+			String observation, Boolean deleted, String processed, String createdBy, Timestamp createdDate,
 			String modifiedBy, Timestamp lastModDate) {
 		super();
 		ID = iD;
@@ -113,7 +114,7 @@ public class CancerOralExamination {
 		this.prolongedIrritation = prolongedIrritation;
 		this.chronicBurningSensation = chronicBurningSensation;
 		this.observation = observation;
-		this.image = image;
+		// this.image = image;
 		this.deleted = deleted;
 		this.processed = processed;
 		this.createdBy = createdBy;
@@ -210,13 +211,11 @@ public class CancerOralExamination {
 		this.observation = observation;
 	}
 
-	public Blob getImage() {
-		return image;
-	}
-
-	public void setImage(Blob image) {
-		this.image = image;
-	}
+	/*
+	 * public Blob getImage() { return image; }
+	 * 
+	 * public void setImage(Blob image) { this.image = image; }
+	 */
 
 	public Boolean getDeleted() {
 		return deleted;
