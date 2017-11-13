@@ -1,8 +1,10 @@
 package com.iemr.mmu.data.doctor;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,8 +17,11 @@ import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.institution.Institute;
+import com.iemr.mmu.data.masterdata.nurse.CancerDiseaseType;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.registrar.BeneficiaryData;
+import com.iemr.mmu.data.registrar.BeneficiaryDemographicData;
 
 @Entity
 @Table(name = "t_cancerdiagnosis")
@@ -55,6 +60,14 @@ public class CancerDiagnosis {
 	@Expose
 	@Column(name = "ReferredToInstituteID")
 	private Integer referredToInstituteID;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "referredToInstituteID", referencedColumnName = "institutionID", insertable = false, updatable = false)
+	private Institute institute;
+	
+	@Transient
+	@Expose
+	private String referredToInstituteName;
 	
 	@Expose
 	@Column(name = "RefrredToAdditionalService")
@@ -95,8 +108,7 @@ public class CancerDiagnosis {
 
 	public CancerDiagnosis(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			String provisionalDiagnosisPrimaryDoctor, String provisionalDiagnosisOncologist, String remarks,
-			Integer referredToInstituteID, String refrredToAdditionalService, Boolean deleted, String processed,
-			String createdBy, Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
+			Integer referredToInstituteID, String referredToInstituteName, String refrredToAdditionalService) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -106,13 +118,8 @@ public class CancerDiagnosis {
 		this.provisionalDiagnosisOncologist = provisionalDiagnosisOncologist;
 		this.remarks = remarks;
 		this.referredToInstituteID = referredToInstituteID;
+		this.referredToInstituteName = referredToInstituteName;
 		this.refrredToAdditionalService = refrredToAdditionalService;
-		this.deleted = deleted;
-		this.processed = processed;
-		this.createdBy = createdBy;
-		this.createdDate = createdDate;
-		this.modifiedBy = modifiedBy;
-		this.lastModDate = lastModDate;
 	}
 
 	public Long getID() {
@@ -235,6 +242,14 @@ public class CancerDiagnosis {
 		this.lastModDate = lastModDate;
 	}
 	
+	public String getReferredToInstituteName() {
+		return referredToInstituteName;
+	}
+
+	public void setReferredToInstituteName(String referredToInstituteName) {
+		this.referredToInstituteName = referredToInstituteName;
+	}
+	
 	public List<String> getRefrredToAdditionalServiceList() {
 		return refrredToAdditionalServiceList;
 	}
@@ -243,5 +258,12 @@ public class CancerDiagnosis {
 		this.refrredToAdditionalServiceList = refrredToAdditionalServiceList;
 	}
 
+	public Institute getInstitute() {
+		return institute;
+	}
+
+	public void setInstitute(Institute institute) {
+		this.institute = institute;
+	}
 	
 }
