@@ -84,9 +84,17 @@ public class CancerSignAndSymptoms {
 	private Boolean foulSmellingVaginalDischarge;
 
 	@Expose
+	@Column(name = "BreastEnlargement")
+	private Boolean breastEnlargement;
+	
+	@Expose
 	@Column(name = "LymphNode_Enlarged")
 	private Boolean lymphNode_Enlarged;
-
+	
+	@Expose
+	@Column(name = "BriefHistory")
+	private String observation;
+	
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -120,9 +128,9 @@ public class CancerSignAndSymptoms {
 			Boolean shortnessOfBreath, Boolean coughGTE2Weeks, Boolean bloodInSputum, Boolean difficultyInOpeningMouth,
 			Boolean nonHealingUlcerOrPatchOrGrowth, Boolean changeInTheToneOfVoice, Boolean lumpInTheBreast,
 			Boolean bloodStainedDischargeFromNipple, Boolean changeInShapeAndSizeOfBreasts,
-			Boolean vaginalBleedingBetweenPeriods, Boolean vaginalBleedingAfterMenopause,
-			Boolean vaginalBleedingAfterIntercourse, Boolean foulSmellingVaginalDischarge, Boolean lymphNode_Enlarged,
-			Boolean deleted, String processed, String createdBy, Timestamp createdDate, String modifiedBy,
+			Boolean vaginalBleedingBetweenPeriods, Boolean vaginalBleedingAfterMenopause, Boolean vaginalBleedingAfterIntercourse, 
+			Boolean foulSmellingVaginalDischarge, Boolean breastEnlargement, Boolean lymphNode_Enlarged, String  observation,
+			Boolean deleted, String processed, String createdBy, Timestamp createdDate, String modifiedBy, 
 			Timestamp lastModDate) {
 		super();
 		ID = iD;
@@ -142,7 +150,9 @@ public class CancerSignAndSymptoms {
 		this.vaginalBleedingAfterMenopause = vaginalBleedingAfterMenopause;
 		this.vaginalBleedingAfterIntercourse = vaginalBleedingAfterIntercourse;
 		this.foulSmellingVaginalDischarge = foulSmellingVaginalDischarge;
+		this.breastEnlargement = breastEnlargement;
 		this.lymphNode_Enlarged = lymphNode_Enlarged;
+		this.observation = observation;
 		this.deleted = deleted;
 		this.processed = processed;
 		this.createdBy = createdBy;
@@ -287,6 +297,14 @@ public class CancerSignAndSymptoms {
 		this.foulSmellingVaginalDischarge = foulSmellingVaginalDischarge;
 	}
 
+	public Boolean getBreastEnlargement() {
+		return breastEnlargement;
+	}
+
+	public void setBreastEnlargement(Boolean breastEnlargement) {
+		this.breastEnlargement = breastEnlargement;
+	}
+	
 	public Boolean getLymphNode_Enlarged() {
 		return lymphNode_Enlarged;
 	}
@@ -295,6 +313,14 @@ public class CancerSignAndSymptoms {
 		this.lymphNode_Enlarged = lymphNode_Enlarged;
 	}
 
+	public String getBriefHistory() {
+		return observation;
+	}
+
+	public void setBriefHistory(String observation) {
+		this.observation = observation;
+	}
+	
 	public Boolean getDeleted() {
 		return deleted;
 	}
