@@ -5,14 +5,18 @@ import java.sql.Timestamp;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.login.MasterServicePoint;
+import com.iemr.mmu.data.provider.ProviderServiceMapping;
 
 @Entity
 @Table(name = "i_bendemographics")
@@ -126,13 +130,22 @@ public class BeneficiaryDemographicData {
 	 */
 	@Expose
 	@Column(name = "ZoneID")
-	private int zoneID;
+	private Integer zoneID;
 	@Expose
 	@Column(name = "AreaID")
-	private int areaID;
+	private Integer areaID;
 	@Expose
 	@Column(name = "ServicePointID")
-	private int servicePointID;
+	private Integer servicePointID;
+	@Expose
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(updatable = false, insertable = false, name = "servicePointID")
+	private MasterServicePoint servicePoint;
+	
+	@Expose
+	@Transient
+	private String servicePointName;
+	
 
 	@OneToOne(mappedBy = "benDemoData")
 	private BeneficiaryData benData;
@@ -140,6 +153,11 @@ public class BeneficiaryDemographicData {
 	public BeneficiaryDemographicData() {
 	}
 
+	public BeneficiaryDemographicData(Long beneficiaryRegID, int servicePointID, String servicePointName){
+		this.beneficiaryRegID = beneficiaryRegID;
+		this.servicePointID = servicePointID;
+		this.servicePointName = servicePointName;
+	}
 	public BeneficiaryDemographicData(Long benDemographicsID, Long beneficiaryRegID, Short educationID,
 			Short occupationID, Short healthCareWorkerID, Short incomeStatusID, Short communityID,
 			Integer preferredLangID, Short religionID, Boolean isPhoto, String photoFilePath, Boolean isBiometric,
@@ -147,7 +165,7 @@ public class BeneficiaryDemographicData {
 			String addressLine4, String addressLine5, Integer countryID, Integer stateID, Integer districtID,
 			Integer blockID, Integer districtBranchID, Integer cityID, String pinCode, Boolean isAddPresent,
 			Boolean isAddPermanent, Boolean deleted, String createdBy, Timestamp createdDate, String modifiedBy,
-			Timestamp lastModDate, int subDistrictID, int villageID, int zoneID, int areaID, int servicePointID,
+			Timestamp lastModDate, int subDistrictID, int villageID, Integer zoneID, Integer areaID, Integer servicePointID,
 			BeneficiaryData benData) {
 		super();
 		this.benDemographicsID = benDemographicsID;
@@ -457,27 +475,27 @@ public class BeneficiaryDemographicData {
 	 * 
 	 * public void setVillageID(int villageID) { this.villageID = villageID; }
 	 */
-	public int getZoneID() {
+	public Integer getZoneID() {
 		return zoneID;
 	}
 
-	public void setZoneID(int zoneID) {
+	public void setZoneID(Integer zoneID) {
 		this.zoneID = zoneID;
 	}
 
-	public int getAreaID() {
+	public Integer getAreaID() {
 		return areaID;
 	}
 
-	public void setAreaID(int areaID) {
+	public void setAreaID(Integer areaID) {
 		this.areaID = areaID;
 	}
 
-	public int getServicePointID() {
+	public Integer getServicePointID() {
 		return servicePointID;
 	}
 
-	public void setServicePointID(int servicePointID) {
+	public void setServicePointID(Integer servicePointID) {
 		this.servicePointID = servicePointID;
 	}
 

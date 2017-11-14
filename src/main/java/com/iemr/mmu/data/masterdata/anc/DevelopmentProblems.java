@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.masterdata.anc;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -57,6 +58,15 @@ public class DevelopmentProblems {
 		ID = iD;
 		this.developmentProblem = developmentProblem;
 		this.problemDesc = problemDesc;
+	}
+	
+	public static ArrayList<DevelopmentProblems> getDevelopmentProblems(ArrayList<Object[]> resList) {
+		ArrayList<DevelopmentProblems> resArray = new ArrayList<DevelopmentProblems>();
+		for (Object[] obj : resList) {
+			DevelopmentProblems cOBJ = new DevelopmentProblems((Short)obj[0], (String)obj[1], (String)obj[2]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
 	}
 	
 }

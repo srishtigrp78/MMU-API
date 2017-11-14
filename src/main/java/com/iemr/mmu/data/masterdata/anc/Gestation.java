@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.masterdata.anc;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -57,6 +58,15 @@ public class Gestation {
 		this.gestationID = gestationID;
 		this.name = name;
 		this.gestationDesc = gestationDesc;
+	}
+	
+	public static ArrayList<Gestation> getGestations(ArrayList<Object[]> resList) {
+		ArrayList<Gestation> resArray = new ArrayList<Gestation>();
+		for (Object[] obj : resList) {
+			Gestation cOBJ = new Gestation((Short)obj[0], (String)obj[1], (String)obj[2]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
 	}
 	
 }

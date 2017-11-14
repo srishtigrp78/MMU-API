@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.masterdata.anc;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -57,6 +58,15 @@ public class Musculoskeletal {
 		ID = iD;
 		this.type = type;
 		this.value = value;
+	}
+	
+	public static ArrayList<Musculoskeletal> getMusculoskeletals(ArrayList<Object[]> resList) {
+		ArrayList<Musculoskeletal> resArray = new ArrayList<Musculoskeletal>();
+		for (Object[] obj : resList) {
+			Musculoskeletal cOBJ = new Musculoskeletal((Short)obj[0], (String)obj[1], (String)obj[2]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
 	}
 	
 }

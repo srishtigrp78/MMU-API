@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.masterdata.anc;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -52,6 +53,15 @@ public class SurgeryTypes {
 		super();
 		this.surgeryID = surgeryID;
 		this.surgeryType = surgeryType;
+	}
+	
+	public static ArrayList<SurgeryTypes> getSurgeryTypes(ArrayList<Object[]> resList) {
+		ArrayList<SurgeryTypes> resArray = new ArrayList<SurgeryTypes>();
+		for (Object[] obj : resList) {
+			SurgeryTypes cOBJ = new SurgeryTypes((Integer)obj[0], (String)obj[1]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
 	}
 	
 }

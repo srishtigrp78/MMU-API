@@ -1,5 +1,6 @@
 package com.iemr.mmu.service.registrar;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,6 +9,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,8 @@ import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
+import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.registrar.BenGovIdMapping;
 import com.iemr.mmu.data.registrar.BeneficiaryData;
 import com.iemr.mmu.data.registrar.BeneficiaryDemographicAdditional;
@@ -603,5 +607,16 @@ public class RegistrarServiceImpl implements RegistrarService {
 
 		return response;
 	}
+	
+	public BeneficiaryDemographicData getBeneficiaryDemographicData(Long benRegID) {
+		List<Objects[]> beneficiaryDemographicData = registrarRepoBenDemoData.getBeneficiaryDemographicData(benRegID);
+		BeneficiaryDemographicData beneficiaryDemographics =null;
+		for(Object[] obj: beneficiaryDemographicData){
+			
+			beneficiaryDemographics = new BeneficiaryDemographicData((Long)obj[0], (Integer)obj[1], (String)obj[2]);
+		}
+		return beneficiaryDemographics;
+	}
+
 
 }

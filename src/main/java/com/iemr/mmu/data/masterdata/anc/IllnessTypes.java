@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.masterdata.anc;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -64,4 +65,12 @@ public class IllnessTypes {
 		this.isChronic = isChronic;
 	}
 	
+	public static ArrayList<IllnessTypes> getIllnessTypes(ArrayList<Object[]> resList) {
+		ArrayList<IllnessTypes> resArray = new ArrayList<IllnessTypes>();
+		for (Object[] obj : resList) {
+			IllnessTypes cOBJ = new IllnessTypes((Integer)obj[0], (String)obj[1], (Boolean)obj[2], (Boolean)obj[3]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
+	}
 }

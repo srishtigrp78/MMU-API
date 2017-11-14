@@ -1,10 +1,12 @@
 package com.iemr.mmu.service.nurse;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -567,6 +569,8 @@ public class NurseServiceImpl implements NurseService {
 	public Map<String, Object> getBenNurseDataForCaseSheet(Long benRegID, Long benVisitID, Date visitDateTime) {
 		Map<String, Object> resMap = new HashMap<>();
 
+		resMap.put("benVisitDetail", getBeneficiaryVisitDetails(benRegID, benVisitID, visitDateTime));
+		
 		resMap.put("familyDiseaseHistory", getBenFamilyHisData(benRegID, benVisitID, visitDateTime));
 
 		resMap.put("patientObstetricHistory", getBenObstetricDetailsData(benRegID, benVisitID, visitDateTime));
@@ -580,6 +584,20 @@ public class NurseServiceImpl implements NurseService {
 		return resMap;
 	}
 
+	private BeneficiaryVisitDetail getBeneficiaryVisitDetails(Long benRegID, Long benVisitID,
+			Date visitDateTime) {
+		List<Objects[]> beneficiaryVisitDetail = benVisitDetailRepo.getBeneficiaryVisitDetails(benRegID, benVisitID, visitDateTime);
+		BeneficiaryVisitDetail beneficiaryVisit = null;
+		for(Object[] obj: beneficiaryVisitDetail){
+			
+			
+			beneficiaryVisit = new BeneficiaryVisitDetail((Long)obj[0], (Long)obj[1], (Integer)obj[2], (Timestamp)obj[3], (Short)obj[4], (Short)obj[5],
+					(String)obj[6], (Integer)obj[7], (String)obj[8], (String)obj[9], (String)obj[10], (String)obj[11], (String)obj[12], (String)obj[13], (String)obj[14]);
+		}
+		System.out.println("beneficiaryVisitDetail "+beneficiaryVisitDetail);
+		return beneficiaryVisit;
+	}
+	
 	private BenPersonalCancerHistory getBenPersonalCancerHistoryData(Long benRegID, Long benVisitID,
 			Date visitDateTime) {
 		BenPersonalCancerHistory benPersonalCancerHistory = benPersonalCancerHistoryRepo.getBenPersonalHistory(benRegID,

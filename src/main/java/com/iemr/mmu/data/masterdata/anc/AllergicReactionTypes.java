@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.masterdata.anc;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.doctor.CancerDiagnosis;
 
 @Entity
 @Table(name = "m_allergicreactiontype")
@@ -62,6 +64,15 @@ public class AllergicReactionTypes {
 		this.allergicReactionTypeID = allergicReactionTypeID;
 		this.name = name;
 		this.allergicReactionTypeDesc = allergicReactionTypeDesc;
+	}
+	
+	public static ArrayList<AllergicReactionTypes> getAllergicReactionTypes(ArrayList<Object[]> resList) {
+		ArrayList<AllergicReactionTypes> resArray = new ArrayList<AllergicReactionTypes>();
+		for (Object[] obj : resList) {
+			AllergicReactionTypes cOBJ = new AllergicReactionTypes((Short)obj[0], (String)obj[1], (String)obj[2]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
 	}
 
 	public String getName() {

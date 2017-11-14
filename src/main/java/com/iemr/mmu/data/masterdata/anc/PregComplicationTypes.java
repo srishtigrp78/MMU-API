@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.masterdata.anc;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -52,6 +53,15 @@ public class PregComplicationTypes {
 		super();
 		this.pregComplicationID = pregComplicationID;
 		this.pregComplicationType = pregComplicationType;
+	}
+	
+	public static ArrayList<PregComplicationTypes> getPregComplicationTypes(ArrayList<Object[]> resList) {
+		ArrayList<PregComplicationTypes> resArray = new ArrayList<PregComplicationTypes>();
+		for (Object[] obj : resList) {
+			PregComplicationTypes cOBJ = new PregComplicationTypes((Integer)obj[0], (String)obj[1]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
 	}
 	
 }

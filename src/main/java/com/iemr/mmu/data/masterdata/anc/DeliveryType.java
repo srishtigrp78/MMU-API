@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.masterdata.anc;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -52,6 +53,15 @@ public class DeliveryType {
 		super();
 		this.deliveryTypeID = deliveryTypeID;
 		this.deliveryType = deliveryType;
+	}
+	
+	public static ArrayList<DeliveryType> getDeliveryType(ArrayList<Object[]> resList) {
+		ArrayList<DeliveryType> resArray = new ArrayList<DeliveryType>();
+		for (Object[] obj : resList) {
+			DeliveryType cOBJ = new DeliveryType((Short)obj[0], (String)obj[1]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
 	}
 	
 }

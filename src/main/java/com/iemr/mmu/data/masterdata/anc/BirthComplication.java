@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.masterdata.anc;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +13,7 @@ import javax.persistence.Table;
 import com.google.gson.annotations.Expose;
 
 @Entity
-@Table(name = "m_birthcomplicatio")
+@Table(name = "m_birthcomplication")
 public class BirthComplication {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -62,6 +63,15 @@ public class BirthComplication {
 		this.birthComplicationID = birthComplicationID;
 		this.name = name;
 		this.birthComplicationDesc = birthComplicationDesc;
+	}
+	
+	public static ArrayList<BirthComplication> getBirthComplicationTypes(ArrayList<Object[]> resList) {
+		ArrayList<BirthComplication> resArray = new ArrayList<BirthComplication>();
+		for (Object[] obj : resList) {
+			BirthComplication cOBJ = new BirthComplication((Short)obj[0], (String)obj[1], (String)obj[2]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
 	}
 
 	public String getName() {

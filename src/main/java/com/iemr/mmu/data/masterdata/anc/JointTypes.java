@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.masterdata.anc;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -57,6 +58,15 @@ public class JointTypes {
 		this.jointID = jointID;
 		this.jointType = jointType;
 		this.jointTypeDesc = jointTypeDesc;
+	}
+	
+	public static ArrayList<JointTypes> getJointTypes(ArrayList<Object[]> resList) {
+		ArrayList<JointTypes> resArray = new ArrayList<JointTypes>();
+		for (Object[] obj : resList) {
+			JointTypes cOBJ = new JointTypes((Short)obj[0], (String)obj[1], (String)obj[2]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
 	}
 	
 }

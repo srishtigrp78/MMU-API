@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.masterdata.anc;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -63,6 +64,16 @@ public class BloodGroups {
 		this.bloodGroup = bloodGroup;
 		this.bloodGroupDesc = bloodGroupDesc;
 	}
+	
+	public static ArrayList<BloodGroups> getBloodGroups(ArrayList<Object[]> resList) {
+		ArrayList<BloodGroups> resArray = new ArrayList<BloodGroups>();
+		for (Object[] obj : resList) {
+			BloodGroups cOBJ = new BloodGroups((Integer)obj[0], (String)obj[1], (String)obj[2]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
+	}
+
 	
 	
 }

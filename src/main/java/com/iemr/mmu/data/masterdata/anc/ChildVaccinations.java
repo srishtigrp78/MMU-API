@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.masterdata.anc;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -57,6 +58,15 @@ public class ChildVaccinations {
 		this.vaccinationID = vaccinationID;
 		this.vaccinationTime = vaccinationTime;
 		this.vaccineName = vaccineName;
+	}
+	
+	public static ArrayList<ChildVaccinations> getChildVaccinations(ArrayList<Object[]> resList) {
+		ArrayList<ChildVaccinations> resArray = new ArrayList<ChildVaccinations>();
+		for (Object[] obj : resList) {
+			ChildVaccinations cOBJ = new ChildVaccinations((Short)obj[0], (String)obj[1], (String)obj[2]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
 	}
 	
 }

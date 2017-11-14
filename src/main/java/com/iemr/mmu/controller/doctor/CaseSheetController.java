@@ -29,7 +29,7 @@ public class CaseSheetController {
 
 	private InputMapper inputMapper = new InputMapper();
 	private OutputResponse response;
-	private Logger logger = LoggerFactory.getLogger(DoctorController.class);
+	private Logger logger = LoggerFactory.getLogger(CaseSheetController.class);
 	private CaseSheetServiceImpl caseSheetServiceImpl;
 
 	@Autowired

@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.masterdata.anc;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -63,6 +64,15 @@ public class MenstrualCycleRange {
 		this.rangeType = rangeType;
 		this.menstrualCycleRange = menstrualCycleRange;
 		this.menstrualCycleRangeDesc = menstrualCycleRangeDesc;
+	}
+	
+	public static ArrayList<MenstrualCycleRange> getMenstrualCycleRanges(ArrayList<Object[]> resList) {
+		ArrayList<MenstrualCycleRange> resArray = new ArrayList<MenstrualCycleRange>();
+		for (Object[] obj : resList) {
+			MenstrualCycleRange cOBJ = new MenstrualCycleRange((Short)obj[0], (String)obj[1], (String)obj[2], (String)obj[3]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
 	}
 	
 }

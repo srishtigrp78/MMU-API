@@ -1,6 +1,8 @@
 package com.iemr.mmu.repo.registrar;
 
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.Objects;
 
 import javax.transaction.Transactional;
 
@@ -9,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.registrar.BeneficiaryDemographicData;
 
 public interface RegistrarRepoBenDemoData extends CrudRepository<BeneficiaryDemographicData, Long> {
@@ -33,6 +36,11 @@ public interface RegistrarRepoBenDemoData extends CrudRepository<BeneficiaryDemo
 			@Param("beneficiaryRegID") Long beneficiaryRegID);
 	
 	
+	
+	@Query(" SELECT bd.beneficiaryRegID,bd.servicePointID,s.servicePointName from BeneficiaryDemographicData bd "
+			+ "INNER JOIN bd.servicePoint s "
+			+ "WHERE bd.beneficiaryRegID = :beneficiaryRegID")
+	public List<Objects[]> getBeneficiaryDemographicData(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	
 //	countryID
 //	stateID

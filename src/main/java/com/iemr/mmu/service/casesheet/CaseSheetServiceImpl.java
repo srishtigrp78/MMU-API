@@ -15,12 +15,14 @@ import com.iemr.mmu.data.doctor.WrapperCancerExamImgAnotasn;
 import com.iemr.mmu.repo.doctor.CancerExaminationImageAnnotationRepo;
 import com.iemr.mmu.service.doctor.DoctorServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
+import com.iemr.mmu.service.registrar.RegistrarServiceImpl;
 
 @Service
 public class CaseSheetServiceImpl {
 
 	private NurseServiceImpl nurseServiceImpl;
 	private DoctorServiceImpl doctorServiceImpl;
+	private RegistrarServiceImpl registrarServiceImpl;
 	private CancerExaminationImageAnnotationRepo cancerExaminationImageAnnotationRepo;
 
 	@Autowired
@@ -38,13 +40,18 @@ public class CaseSheetServiceImpl {
 	public void setDoctorServiceImpl(DoctorServiceImpl doctorServiceImpl) {
 		this.doctorServiceImpl = doctorServiceImpl;
 	}
+	
+	@Autowired
+	public void setRegistrarServiceImpl(RegistrarServiceImpl registrarServiceImpl) {
+		this.registrarServiceImpl = registrarServiceImpl;
+	}
 
 	public String getBenDataForCaseSheet(Long benRegID, Long benVisitID, Date visitDateTime) {
 		Map<String, Object> caseSheetData = nurseServiceImpl.getBenNurseDataForCaseSheet(benRegID, benVisitID,
 				visitDateTime);
 		caseSheetData
 				.putAll(doctorServiceImpl.getBenDoctorEnteredDataForCaseSheet(benRegID, benVisitID, visitDateTime));
-
+		caseSheetData.put("BeneficiaryDemographicData", registrarServiceImpl.getBeneficiaryDemographicData(benRegID));
 		return new Gson().toJson(caseSheetData);
 	}
 

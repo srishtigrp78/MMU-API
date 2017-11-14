@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.masterdata.anc;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -52,6 +53,15 @@ public class DeliveryPlace {
 		super();
 		this.deliveryPlaceID = deliveryPlaceID;
 		this.deliveryPlace = deliveryPlace;
+	}
+	
+	public static ArrayList<DeliveryPlace> getDeliveryPlace(ArrayList<Object[]> resList) {
+		ArrayList<DeliveryPlace> resArray = new ArrayList<DeliveryPlace>();
+		for (Object[] obj : resList) {
+			DeliveryPlace cOBJ = new DeliveryPlace((Short)obj[0], (String)obj[1]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
 	}
 	
 }

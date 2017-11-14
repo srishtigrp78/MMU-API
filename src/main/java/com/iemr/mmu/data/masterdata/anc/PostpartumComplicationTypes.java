@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.masterdata.anc;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -52,6 +53,15 @@ public class PostpartumComplicationTypes {
 		super();
 		this.postpartumComplicationID = postpartumComplicationID;
 		this.postpartumComplicationType = postpartumComplicationType;
+	}
+	
+	public static ArrayList<PostpartumComplicationTypes> getPostpartumComplicationTypes(ArrayList<Object[]> resList) {
+		ArrayList<PostpartumComplicationTypes> resArray = new ArrayList<PostpartumComplicationTypes>();
+		for (Object[] obj : resList) {
+			PostpartumComplicationTypes cOBJ = new PostpartumComplicationTypes((Short)obj[0], (String)obj[1]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
 	}
 	
 }

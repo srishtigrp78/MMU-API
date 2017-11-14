@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.masterdata.anc;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -52,6 +53,15 @@ public class PregDuration {
 		super();
 		this.pregDurationID = pregDurationID;
 		this.durationType = durationType;
+	}
+	
+	public static ArrayList<PregDuration> getPregDurationValues(ArrayList<Object[]> resList) {
+		ArrayList<PregDuration> resArray = new ArrayList<PregDuration>();
+		for (Object[] obj : resList) {
+			PregDuration cOBJ = new PregDuration((Short)obj[0], (String)obj[1]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
 	}
 	
 }

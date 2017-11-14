@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.masterdata.anc;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -57,6 +58,15 @@ public class MenstrualCycleStatus {
 		this.menstrualCycleStatusID = menstrualCycleStatusID;
 		this.name = name;
 		this.menstrualCycleStatusDesc = menstrualCycleStatusDesc;
+	}
+	
+	public static ArrayList<MenstrualCycleStatus> getMenstrualCycleStatuses(ArrayList<Object[]> resList) {
+		ArrayList<MenstrualCycleStatus> resArray = new ArrayList<MenstrualCycleStatus>();
+		for (Object[] obj : resList) {
+			MenstrualCycleStatus cOBJ = new MenstrualCycleStatus((Short)obj[0], (String)obj[1], (String)obj[2]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
 	}
 	
 }

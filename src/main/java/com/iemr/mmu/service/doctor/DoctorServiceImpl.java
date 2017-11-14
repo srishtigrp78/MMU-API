@@ -293,7 +293,9 @@ public class DoctorServiceImpl implements DoctorService {
 	private CancerDiagnosis getBenCancerDiagnosisData(Long benRegID, Long benVisitID, Date visitDateTime) {
 		CancerDiagnosis cancerDiagnosis = cancerDiagnosisRepo.getBenCancerDiagnosisDetails(benRegID, benVisitID,
 				visitDateTime);
-		cancerDiagnosis.setReferredToInstituteName(cancerDiagnosis.getInstitute().getInstitutionName());
+		if(	null!= cancerDiagnosis && null!= cancerDiagnosis.getInstitute()){
+			cancerDiagnosis.setReferredToInstituteName(cancerDiagnosis.getInstitute().getInstitutionName());
+		}
 	
 		return cancerDiagnosis;
 	}

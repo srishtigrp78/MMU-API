@@ -10,8 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.provider.ProviderServiceMapping;
 import com.iemr.mmu.data.registrar.BeneficiaryData;
 
 @Entity
@@ -34,7 +36,16 @@ public class BeneficiaryVisitDetail {
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-
+	
+	@Expose
+	@Transient
+	private String serviceProviderName;
+	
+	@Expose
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(updatable = false, insertable = false, name = "providerServiceMapID")
+	private ProviderServiceMapping providerServiceMapping;
+	
 	@Expose
 	@Column(name = "VisitDateTime")
 	private Timestamp visitDateTime;
@@ -164,6 +175,28 @@ public class BeneficiaryVisitDetail {
 		this.createdDate = createdDate;
 		this.modifiedBy = modifiedBy;
 		this.lastModDate = lastModDate;
+	}
+	
+	public BeneficiaryVisitDetail(Long benVisitID, Long beneficiaryRegID, Integer providerServiceMapID,
+			Timestamp visitDateTime, Short visitNo, Short visitReasonID, String visitReason, Integer visitCategoryID,
+			String visitCategory, String pregnancyStatus, String rCHID, String healthFacilityType,
+			String healthFacilityLocation, String reportFilePath, String serviceProviderName) {
+		super();
+		this.benVisitID = benVisitID;
+		this.beneficiaryRegID = beneficiaryRegID;
+		this.providerServiceMapID = providerServiceMapID;
+		this.visitDateTime = visitDateTime;
+		this.visitNo = visitNo;
+		this.visitReasonID = visitReasonID;
+		this.visitReason = visitReason;
+		this.visitCategoryID = visitCategoryID;
+		this.visitCategory = visitCategory;
+		this.pregnancyStatus = pregnancyStatus;
+		this.rCHID = rCHID;
+		this.healthFacilityType = healthFacilityType;
+		this.healthFacilityLocation = healthFacilityLocation;
+		this.reportFilePath = reportFilePath;
+		this.serviceProviderName = serviceProviderName;
 	}
 
 	public Long getBenVisitID() {
