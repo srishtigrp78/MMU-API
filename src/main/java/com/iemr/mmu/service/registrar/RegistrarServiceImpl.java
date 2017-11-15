@@ -589,8 +589,8 @@ public class RegistrarServiceImpl implements RegistrarService {
 				beneficiaryImage.setModifiedBy(benD.get("modifiedBy").getAsString());
 			}
 
-			String benImg = beneficiaryImageRepo.getBenImage(benRegID);
-			if (null != benImg) {
+			Long tempBenRegID = beneficiaryImageRepo.findBenImage(benRegID);
+			if (null != tempBenRegID) {
 				response = beneficiaryImageRepo.updateBeneficiaryImage(beneficiaryImage.getBenImage(),
 						beneficiaryImage.getModifiedBy(), beneficiaryImage.getBeneficiaryRegID());
 			} else {
@@ -611,9 +611,10 @@ public class RegistrarServiceImpl implements RegistrarService {
 	public BeneficiaryDemographicData getBeneficiaryDemographicData(Long benRegID) {
 		List<Objects[]> beneficiaryDemographicData = registrarRepoBenDemoData.getBeneficiaryDemographicData(benRegID);
 		BeneficiaryDemographicData beneficiaryDemographics =null;
-		for(Object[] obj: beneficiaryDemographicData){
-			
-			beneficiaryDemographics = new BeneficiaryDemographicData((Long)obj[0], (Integer)obj[1], (String)obj[2]);
+		if(null != beneficiaryDemographicData){
+			for(Object[] obj: beneficiaryDemographicData){
+				beneficiaryDemographics = new BeneficiaryDemographicData((Long)obj[0], (Integer)obj[1], (String)obj[2]);
+			}
 		}
 		return beneficiaryDemographics;
 	}

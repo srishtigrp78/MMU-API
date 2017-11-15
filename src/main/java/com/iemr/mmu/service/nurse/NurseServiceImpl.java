@@ -588,11 +588,11 @@ public class NurseServiceImpl implements NurseService {
 			Date visitDateTime) {
 		List<Objects[]> beneficiaryVisitDetail = benVisitDetailRepo.getBeneficiaryVisitDetails(benRegID, benVisitID, visitDateTime);
 		BeneficiaryVisitDetail beneficiaryVisit = null;
-		for(Object[] obj: beneficiaryVisitDetail){
-			
-			
-			beneficiaryVisit = new BeneficiaryVisitDetail((Long)obj[0], (Long)obj[1], (Integer)obj[2], (Timestamp)obj[3], (Short)obj[4], (Short)obj[5],
-					(String)obj[6], (Integer)obj[7], (String)obj[8], (String)obj[9], (String)obj[10], (String)obj[11], (String)obj[12], (String)obj[13], (String)obj[14]);
+		if(null != beneficiaryVisitDetail){
+			for(Object[] obj: beneficiaryVisitDetail){
+				beneficiaryVisit = new BeneficiaryVisitDetail((Long)obj[0], (Long)obj[1], (Integer)obj[2], (Timestamp)obj[3], (Short)obj[4], (Short)obj[5],
+						(String)obj[6], (Integer)obj[7], (String)obj[8], (String)obj[9], (String)obj[10], (String)obj[11], (String)obj[12], (String)obj[13], (String)obj[14]);
+			}
 		}
 		System.out.println("beneficiaryVisitDetail "+beneficiaryVisitDetail);
 		return beneficiaryVisit;

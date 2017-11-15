@@ -17,6 +17,9 @@ public interface BeneficiaryImageRepo extends CrudRepository<BeneficiaryImage, L
 	@Query(" SELECT benImage from BeneficiaryImage where beneficiaryRegID =:benRegID ")
 	public String getBenImage(@Param("benRegID") Long benRegID);
 	
+	@Query(" SELECT beneficiaryRegID from BeneficiaryImage where beneficiaryRegID =:benRegID ")
+	public Long findBenImage(@Param("benRegID") Long benRegID);
+	
 	@Transactional
 	@Modifying
 	@Query("UPDATE BeneficiaryImage set benImage = :benImage, modifiedBy = :modifiedBy where beneficiaryRegID = :beneficiaryRegID ")

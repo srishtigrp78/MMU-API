@@ -1,4 +1,4 @@
-package com.iemr.mmu.controller.registrar;
+package com.iemr.mmu.controller.registrar.master;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,9 +31,10 @@ import io.swagger.annotations.ApiParam;
 @CrossOrigin
 @RestController
 @RequestMapping({ "/registrar" })
+/** Objective: Performs Beneficiary Registration, Update, QuickSearch, AdvancedSearch*/
 public class RegistrarController {
 
-	private Logger logger = LoggerFactory.getLogger(RegistrarController.class);
+/*	private Logger logger = LoggerFactory.getLogger(RegistrarController.class);
 	private InputMapper inputMapper = new InputMapper();
 	private RegistrarServiceImpl registrarServiceImpl;
 	private RegistrarServiceMasterDataImpl registrarServiceMasterDataImpl;
@@ -190,34 +191,6 @@ public class RegistrarController {
 			response.setError(e);
 		}
 
-		return response.toString();
-	}
-
-	@CrossOrigin()
-	@ApiOperation(value = "Get Master Data for Registrar", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/registrarMasterData" }, method = { RequestMethod.POST })
-	public String masterDataForRegistration(
-			@ApiParam(value = "{\"spID\": \"Integer\"}") @RequestBody String comingRequest) {
-		OutputResponse response = new OutputResponse();
-		logger.info("masterDataForRegistration request :" + comingRequest);
-		try {
-
-			JSONObject obj = new JSONObject(comingRequest);
-			if (obj.has("spID")) {
-				if (obj.getInt("spID") > 0) {
-					response.setResponse(registrarServiceMasterDataImpl.getRegMasterData());
-				} else {
-					response.setError(500, "Invalid Service-Point...");
-				}
-			} else {
-				response.setError(500, "Bad Request... Service-Point is not there in request");
-			}
-			logger.info("masterDataForRegistration response :" + response);
-
-		} catch (Exception e) {
-			logger.error("Error in masterDataForRegistration :" + e);
-			response.setError(e);
-		}
 		return response.toString();
 	}
 
@@ -413,6 +386,6 @@ public class RegistrarController {
 			response.setError(e);
 		}
 		return response.toString();
-	}
+	}*/
 
 }

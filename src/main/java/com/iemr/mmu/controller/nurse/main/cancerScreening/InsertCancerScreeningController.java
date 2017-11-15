@@ -36,10 +36,9 @@ import io.swagger.annotations.ApiParam;
 @CrossOrigin
 @RestController
 @RequestMapping({ "/nurse" })
-public class NurseController {
-
+public class InsertCancerScreeningController {
 	private InputMapper inputMapper;
-	private Logger logger = LoggerFactory.getLogger(NurseController.class);
+	private Logger logger = LoggerFactory.getLogger(InsertCancerScreeningController.class);
 
 	private NurseServiceImpl nurseServiceImpl;
 	private NurseMasterDataService nurseMasterDataService;
@@ -53,16 +52,6 @@ public class NurseController {
 	@Autowired
 	public void setNurseMasterDataServiceImpl(NurseMasterDataServiceImpl nurseMasterDataServiceImpl) {
 		this.nurseMasterDataServiceImpl = nurseMasterDataServiceImpl;
-	}
-
-	@CrossOrigin
-	@RequestMapping(value = { "/testrest" }, method = { RequestMethod.POST }, produces = { "application/json" })
-	public String testRestTemplate(@RequestBody String comingRequest) {
-		NurseServiceImpl n = new NurseServiceImpl();
-		String s = n.savePatientVisitDetails();
-		System.out.println();
-
-		return "hello...";
 	}
 
 	@CrossOrigin
@@ -258,121 +247,6 @@ public class NurseController {
 		return response.toString();
 	}
 
-	@CrossOrigin()
-	@ApiOperation(value = "provides Nurse master Data", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/nurseMasterData" }, method = { RequestMethod.POST }, produces = { "application/json" })
-	public String masterDataForNurse() {
-
-		OutputResponse response = new OutputResponse();
-		logger.info("getting Nurse Master Data ");
-		try {
-			response.setResponse(nurseMasterDataServiceImpl.getNurseMasterData());
-			logger.info("masterDataForNurse response:" + response);
-		} catch (Exception e) {
-			response.setError(e);
-			logger.error("Error in masterDataForNurse :" + e);
-		}
-		return response.toString();
-	}
-
-	/**
-	 * Fething beneficiary data filled by Nurse for Doctor screen...
-	 */
-
-	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary Visit details from Nurse screen", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenDataFrmNurseToDocVisitDetailsScreen" }, method = { RequestMethod.POST })
-	public String getBenDataFrmNurseScrnToDocScrnVisitDetails(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
-		OutputResponse response = new OutputResponse();
-		logger.info("getBenDataFrmNurseScrnToDocScrnVisitDetails request:" + comingRequest);
-		try {
-			JSONObject obj = new JSONObject(comingRequest);
-			if (obj.length() > 1) {
-				Long benRegID = obj.getLong("benRegID");
-				Long benVisitID = obj.getLong("benVisitID");
-
-				String s = nurseServiceImpl.getBenDataFrmNurseToDocVisitDetailsScreen(benRegID, benVisitID);
-				response.setResponse(s);
-			} else {
-
-			}
-			logger.info("getBenDataFrmNurseScrnToDocScrnVisitDetails response:" + response);
-		} catch (Exception e) {
-			response.setError(e);
-			logger.error("Error in getBenDataFrmNurseScrnToDocScrnVisitDetails:" + e);
-		}
-		return response.toString();
-	}
-
-	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary Cancer History details from Nurse screen", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenDataFrmNurseToDocHistoryScreen" }, method = { RequestMethod.POST })
-	public String getBenDataFrmNurseScrnToDocScrnHistory(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
-		OutputResponse response = new OutputResponse();
-		logger.info("getBenDataFrmNurseScrnToDocScrnHistory request:" + comingRequest);
-		try {
-			JSONObject obj = new JSONObject(comingRequest);
-			if (obj.length() > 1) {
-				Long benRegID = obj.getLong("benRegID");
-				Long benVisitID = obj.getLong("benVisitID");
-
-				String s = nurseServiceImpl.getBenDataFrmNurseToDocHistoryScreen(benRegID, benVisitID);
-				response.setResponse(s);
-			} else {
-
-			}
-			logger.info("getBenDataFrmNurseScrnToDocScrnHistory response:" + response);
-		} catch (Exception e) {
-			response.setError(e);
-			logger.error("Error in getBenDataFrmNurseScrnToDocScrnHistory:" + e);
-		}
-		System.out.println(response.toString());
-		return response.toString();
-	}
-
-	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary Vital details from Nurse screen", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenDataFrmNurseToDocVitalScreen" }, method = { RequestMethod.POST })
-	public String getBenDataFrmNurseScrnToDocScrnVital(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
-		OutputResponse response = new OutputResponse();
-		logger.info("getBenDataFrmNurseToDocVitalScreen request:" + comingRequest);
-		try {
-			JSONObject obj = new JSONObject(comingRequest);
-			if (obj.length() > 1) {
-				Long benRegID = obj.getLong("benRegID");
-				Long benVisitID = obj.getLong("benVisitID");
-
-				String s = nurseServiceImpl.getBenDataFrmNurseToDocVitalScreen(benRegID, benVisitID);
-				response.setResponse(s);
-			} else {
-
-			}
-			logger.info("getBenDataFrmNurseToDocVitalScreen response:" + response);
-		} catch (Exception e) {
-			response.setError(e);
-			logger.error("Error in getBenDataFrmNurseToDocVitalScreen:" + e);
-		}
-		return response.toString();
-	}
-
-	@CrossOrigin()
-	@ApiOperation(value = "Get Nurse worklist", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getNurseWorklist" }, method = { RequestMethod.GET })
-	public String getNurseWorkList() {
-		OutputResponse response = new OutputResponse();
-		try {
-			String s = nurseServiceImpl.getNurseWorkList();
-			response.setResponse(s);
-		} catch (Exception e) {
-			e.printStackTrace();
-			response.setError(e);
-		}
-		return response.toString();
-	}
-
 	@CrossOrigin
 	@ApiOperation(value = "save Beneficiary Physical Vital Detail", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/vitalScreen/benPhysicalVitalDetail" }, method = { RequestMethod.POST })
@@ -400,41 +274,6 @@ public class NurseController {
 			logger.error("Error in saveBenPhysicalVitalDetail:" + e);
 		}
 
-		return response.toString();
-	}
-
-	@CrossOrigin
-	@ApiOperation(value = "Fetch Beneficiary Physical Vital Detail", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/get/vitalScreen/benPhysicalVitalDetail" }, method = { RequestMethod.POST })
-	public String getBenPhysicalVitalDetail(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String requestObj) {
-
-		OutputResponse response = new OutputResponse();
-		logger.info("getBenPhysicalVitalDetail request:" + requestObj);
-
-		try {
-			JSONObject obj = new JSONObject(requestObj);
-			if (obj.length() > 1) {
-				Long benRegID = obj.getLong("benRegID");
-				Long benVisitID = obj.getLong("benVisitID");
-				if (null != benRegID && benRegID > 0 && null != benVisitID && benVisitID > 0) {
-
-					String physicalVitalDetails = nurseServiceImpl.getBeneficiaryVitalDetails(benRegID, benVisitID);
-					if (physicalVitalDetails != null) {
-						response.setResponse(physicalVitalDetails);
-					} else {
-						response.setError(500, "Failed to Fetch Beneficiary Physical Vital Details");
-					}
-					logger.info("getBenPhysicalVitalDetail response:" + response);
-
-				} else {
-					response.setError(0, "Data Not Sufficient...");
-				}
-			}
-		} catch (Exception e) {
-			response.setError(e);
-			logger.error("Error in getBenPhysicalVitalDetail:" + e);
-		}
 		return response.toString();
 	}
 
