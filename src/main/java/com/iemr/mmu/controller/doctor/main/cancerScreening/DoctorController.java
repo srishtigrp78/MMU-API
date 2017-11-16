@@ -1,4 +1,4 @@
-package com.iemr.mmu.controller.doctor;
+package com.iemr.mmu.controller.doctor.main.cancerScreening;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -45,7 +45,7 @@ import io.swagger.annotations.ApiParam;
 @RequestMapping({ "/doctor" })
 public class DoctorController {
 
-	private InputMapper inputMapper = new InputMapper();
+	/*private InputMapper inputMapper = new InputMapper();
 	private OutputResponse response;
 	private Logger logger = LoggerFactory.getLogger(DoctorController.class);
 	private DoctorMasterDataService doctorMasterDataService;
@@ -305,11 +305,11 @@ public class DoctorController {
 		return response.toString();
 	}
 
-	/**
+	*//**
 	 * @Param
 	 * @Objective: Save doc cancer examination image annotation data.
 	 * @return
-	 */
+	 *//*
 	@CrossOrigin()
 	@ApiOperation(value = "Save doc examination image annotaion for cancer screening", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/saveCancerExaminationImageAnnotation" }, method = { RequestMethod.POST })
@@ -577,6 +577,6 @@ public class DoctorController {
 			response.setError(e);
 		}
 		return response.toString();
-	}
+	}*/
 
 }

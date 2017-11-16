@@ -1,4 +1,4 @@
-package com.iemr.mmu.controller.doctor;
+package com.iemr.mmu.controller.doctor.main.casesheet;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -25,6 +25,7 @@ import io.swagger.annotations.ApiParam;
 @CrossOrigin
 @RestController
 @RequestMapping({ "/casesheet" })
+/** Objective: Provides Nurse and doctor entered details for casesheet*/
 public class CaseSheetController {
 
 	private InputMapper inputMapper = new InputMapper();

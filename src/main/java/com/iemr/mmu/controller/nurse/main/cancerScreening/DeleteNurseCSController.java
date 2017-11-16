@@ -10,8 +10,9 @@ import com.iemr.utils.mapper.InputMapper;
 @CrossOrigin
 @RestController
 @RequestMapping({ "/nurse" })
-public class DeleteCancerScreeningController {
+/** Objective: Performs Delete Beneficiary Cancer Screening Details entered by nurse*/
+public class DeleteNurseCSController {
 	private InputMapper inputMapper;
-	private Logger logger = LoggerFactory.getLogger(DeleteCancerScreeningController.class);
+	private Logger logger = LoggerFactory.getLogger(DeleteNurseCSController.class);
 
 }

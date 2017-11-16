@@ -9,6 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.iemr.mmu.data.doctor.ChiefComplaintMaster;
+import com.iemr.mmu.data.doctor.DrugDoseMaster;
+import com.iemr.mmu.data.doctor.DrugDurationUnitMaster;
+import com.iemr.mmu.data.doctor.DrugFormMaster;
+import com.iemr.mmu.data.doctor.DrugFrequencyMaster;
+import com.iemr.mmu.data.doctor.LabTestMaster;
 import com.iemr.mmu.data.masterdata.anc.AllergicReactionTypes;
 import com.iemr.mmu.data.masterdata.anc.BirthComplication;
 import com.iemr.mmu.data.masterdata.anc.BloodGroups;
@@ -32,6 +37,11 @@ import com.iemr.mmu.data.masterdata.nurse.CancerDiseaseType;
 import com.iemr.mmu.data.masterdata.nurse.CancerPersonalHabitType;
 import com.iemr.mmu.data.masterdata.nurse.FamilyMemberType;
 import com.iemr.mmu.repo.doctor.ChiefComplaintMasterRepo;
+import com.iemr.mmu.repo.doctor.DrugDoseMasterRepo;
+import com.iemr.mmu.repo.doctor.DrugDurationUnitMasterRepo;
+import com.iemr.mmu.repo.doctor.DrugFormMasterRepo;
+import com.iemr.mmu.repo.doctor.DrugFrequencyMasterRepo;
+import com.iemr.mmu.repo.doctor.LabTestMasterRepo;
 import com.iemr.mmu.repo.masterrepo.anc.AllergicReactionTypesRepo;
 import com.iemr.mmu.repo.masterrepo.anc.BirthComplicationRepo;
 import com.iemr.mmu.repo.masterrepo.anc.BloodGroupsRepo;
@@ -51,7 +61,6 @@ import com.iemr.mmu.repo.masterrepo.anc.PostpartumComplicationTypesRepo;
 import com.iemr.mmu.repo.masterrepo.anc.PregComplicationTypesRepo;
 import com.iemr.mmu.repo.masterrepo.anc.PregDurationRepo;
 import com.iemr.mmu.repo.masterrepo.anc.SurgeryTypesRepo;
-import com.iemr.mmu.repo.masterrepo.doctor.PreMalignantLesionMasterRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.CancerDiseaseMasterRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.CancerPersonalHabitMasterRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.FamilyMemberMasterRepo;
@@ -83,6 +92,13 @@ public class ANCMasterDataServiceImpl {
 	private CancerDiseaseMasterRepo cancerDiseaseMasterRepo;
 	private CancerPersonalHabitMasterRepo cancerPersonalHabitMasterRepo;
 	private FamilyMemberMasterRepo familyMemberMasterRepo;
+	private LabTestMasterRepo labTestMasterRepo;
+	
+	
+	private DrugDoseMasterRepo drugDoseMasterRepo;
+	private DrugDurationUnitMasterRepo drugDurationUnitMasterRepo;
+	private DrugFormMasterRepo drugFormMasterRepo;
+	private DrugFrequencyMasterRepo drugFrequencyMasterRepo;
 	
 	@Autowired
 	public void setAllergicReactionTypesRepo(AllergicReactionTypesRepo allergicReactionTypesRepo) {
@@ -199,7 +215,32 @@ public class ANCMasterDataServiceImpl {
 		this.familyMemberMasterRepo = familyMemberMasterRepo;
 	}
 	
-	public String getANCMasterData() {
+	@Autowired
+	public void setLabTestMasterRepo(LabTestMasterRepo labTestMasterRepo) {
+		this.labTestMasterRepo = labTestMasterRepo;
+	}
+	
+	@Autowired
+	public void setDrugDoseMasterRepo(DrugDoseMasterRepo drugDoseMasterRepo) {
+		this.drugDoseMasterRepo = drugDoseMasterRepo;
+	}
+	
+	@Autowired
+	public void setDrugDurationUnitMasterRepo(DrugDurationUnitMasterRepo drugDurationUnitMasterRepo) {
+		this.drugDurationUnitMasterRepo = drugDurationUnitMasterRepo;
+	}
+	
+	@Autowired
+	public void setDrugFormMasterRepo(DrugFormMasterRepo drugFormMasterRepo) {
+		this.drugFormMasterRepo = drugFormMasterRepo;
+	}
+	
+	@Autowired
+	public void setDrugFrequencyMasterRepo(DrugFrequencyMasterRepo drugFrequencyMasterRepo) {
+		this.drugFrequencyMasterRepo = drugFrequencyMasterRepo;
+	}
+	
+	public String getANCMasterDataForNurse() {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 			
 		ArrayList<Object[]> allergicReactionTypes = allergicReactionTypesRepo.getAllergicReactionTypes();
@@ -242,6 +283,8 @@ public class ANCMasterDataServiceImpl {
 				.getCancerPersonalHabitTypeMaster("Average Quantity of Alcohol consumption");
 		
 		ArrayList<Object[]> familyMemberTypes = familyMemberMasterRepo.getFamilyMemberTypeMaster();
+		
+		ArrayList<LabTestMaster> labTests = labTestMasterRepo.getLabTestMaster();
 	
 		
 		resMap.put("AllergicReactionTypes", AllergicReactionTypes.getAllergicReactionTypes(allergicReactionTypes));
@@ -283,6 +326,27 @@ public class ANCMasterDataServiceImpl {
 				CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(quantityOfAlcoholIntake));
 		resMap.put("familyMemberTypes", FamilyMemberType.getFamilyMemberTypeMasterData(familyMemberTypes));
 		
+		resMap.put("labTests", labTests);
+		
 		return new Gson().toJson(resMap);
 	}
+	
+	
+	public String getANCMasterDataForDoctor() {
+		Map<String, Object> resMap = new HashMap<>();
+		ArrayList<ChiefComplaintMaster> ccList = chiefComplaintMasterRepo.getChiefComplaintMaster();
+		ArrayList<DrugDoseMaster> ddmList = drugDoseMasterRepo.getDrugDoseMaster();
+		ArrayList<DrugDurationUnitMaster> ddumList = drugDurationUnitMasterRepo.getDrugDurationUnitMaster();
+		ArrayList<DrugFormMaster> dfmList = drugFormMasterRepo.getDrugFormMaster();
+		ArrayList<DrugFrequencyMaster> dfrmList = drugFrequencyMasterRepo.getDrugFrequencyMaster();
+		resMap.put("chiefComplaintMaster", ccList);
+		resMap.put("drugDoseMaster", ddmList);
+		resMap.put("drugDurationUnitMaster", ddumList);
+		resMap.put("drugFormMaster", dfmList);
+		resMap.put("drugFrequencyMaster", dfrmList);
+		return new Gson().toJson(resMap);
+	}
+
+	
+	
 }

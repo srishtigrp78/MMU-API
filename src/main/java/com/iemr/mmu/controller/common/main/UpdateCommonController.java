@@ -23,6 +23,7 @@ import io.swagger.annotations.ApiParam;
 @CrossOrigin
 @RestController
 @RequestMapping({ "/registrar" })
+/** Objective: Performs updating Beneficiary status flag*/
 public class UpdateCommonController {
 	private Logger logger = LoggerFactory.getLogger(UpdateCommonController.class);
 	private InputMapper inputMapper = new InputMapper();

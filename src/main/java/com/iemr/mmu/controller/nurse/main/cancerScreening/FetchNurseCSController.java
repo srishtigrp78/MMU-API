@@ -36,9 +36,10 @@ import io.swagger.annotations.ApiParam;
 @CrossOrigin
 @RestController
 @RequestMapping({ "/nurse" })
-public class FetchCancerScreeningController {
+/** Objective: Performs fetching Beneficiary Cancer Screening Details entered by nurse*/
+public class FetchNurseCSController {
 	private InputMapper inputMapper;
-	private Logger logger = LoggerFactory.getLogger(FetchCancerScreeningController.class);
+	private Logger logger = LoggerFactory.getLogger(FetchNurseCSController.class);
 
 	private NurseServiceImpl nurseServiceImpl;
 	private NurseMasterDataService nurseMasterDataService;

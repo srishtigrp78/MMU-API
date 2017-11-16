@@ -36,9 +36,10 @@ import io.swagger.annotations.ApiParam;
 @CrossOrigin
 @RestController
 @RequestMapping({ "/nurse" })
-public class InsertCancerScreeningController {
+/** Objective: Performs saving Beneficiary Cancer Screening Details entered by nurse*/
+public class InsertNurseCSController {
 	private InputMapper inputMapper;
-	private Logger logger = LoggerFactory.getLogger(InsertCancerScreeningController.class);
+	private Logger logger = LoggerFactory.getLogger(InsertNurseCSController.class);
 
 	private NurseServiceImpl nurseServiceImpl;
 	private NurseMasterDataService nurseMasterDataService;
@@ -242,36 +243,6 @@ public class InsertCancerScreeningController {
 		} catch (Exception e) {
 			response.setError(e);
 			logger.error("Error in saveBenVitalDetail:" + e);
-		}
-
-		return response.toString();
-	}
-
-	@CrossOrigin
-	@ApiOperation(value = "save Beneficiary Physical Vital Detail", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/save/vitalScreen/benPhysicalVitalDetail" }, method = { RequestMethod.POST })
-	public String saveBenPhysicalVitalDetail(@RequestBody String requestObj) {
-
-		OutputResponse response = new OutputResponse();
-		logger.info("saveBenPhysicalVitalDetail request:" + requestObj);
-
-		BenAnthropometryDetail benAnthropometryDetail = InputMapper.gson().fromJson(requestObj,
-				BenAnthropometryDetail.class);
-		BenPhysicalVitalDetail benPhysicalVitalDetail = InputMapper.gson().fromJson(requestObj,
-				BenPhysicalVitalDetail.class);
-
-		try {
-			Long responseObj = nurseServiceImpl.saveBeneficiaryPhysicalAnthropometryDetails(benAnthropometryDetail);
-			Long responseObj2 = nurseServiceImpl.saveBeneficiaryPhysicalVitalDetails(benPhysicalVitalDetail);
-			if (responseObj != null && responseObj > 0 && responseObj2 != null && responseObj2 > 0) {
-				response.setResponse("Beneficiary Physical Vital Details Stored Successfully");
-			} else {
-				response.setError(500, "Failed to Store Beneficiary Physical Vital Details");
-			}
-			logger.info("saveBenPhysicalVitalDetail response:" + response);
-		} catch (Exception e) {
-			response.setError(e);
-			logger.error("Error in saveBenPhysicalVitalDetail:" + e);
 		}
 
 		return response.toString();

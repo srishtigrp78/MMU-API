@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.iemr.mmu.controller.doctor.DoctorController;
+import com.iemr.mmu.controller.doctor.main.cancerScreening.DoctorController;
 import com.iemr.mmu.service.masterservice.ANCMasterDataServiceImpl;
 import com.iemr.mmu.service.masterservice.DoctorMasterDataService;
 import com.iemr.mmu.service.masterservice.DoctorMasterDataServiceImpl;
@@ -22,32 +22,6 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping({ "/anc" })
 public class ANCController {
 	
-	private InputMapper inputMapper = new InputMapper();
-	private OutputResponse response;
-	private Logger logger = LoggerFactory.getLogger(DoctorController.class);
 	
-	private ANCMasterDataServiceImpl ancMasterDataServiceImpl;
-	
-	@Autowired
-	public void setAncMasterDataServiceImpl(ANCMasterDataServiceImpl ancMasterDataServiceImpl) {
-		this.ancMasterDataServiceImpl = ancMasterDataServiceImpl;
-	}
-	
-	@CrossOrigin()
-	@ApiOperation(value = "provides master Data for ANC Screen", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/ancMasterData" }, method = { RequestMethod.POST })
-	public String getMasterDataForANC() {
-
-		OutputResponse response = new OutputResponse();
-		logger.info("getMasterDataForANC..");
-		try {
-			response.setResponse(ancMasterDataServiceImpl.getANCMasterData());
-			logger.info("getMasterDataForANC response:" + response);
-		} catch (Exception e) {
-			response.setError(e);
-			logger.error("Error in getMasterDataForANC:" + e);
-		}
-		return response.toString();
-	}
 
 }

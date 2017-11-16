@@ -1,4 +1,4 @@
-package com.iemr.mmu.controller.quickConsultation;
+package com.iemr.mmu.controller.doctor.main.quickConsultation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.JsonObject;
-import com.iemr.mmu.controller.doctor.DoctorController;
+import com.iemr.mmu.controller.doctor.main.cancerScreening.DoctorController;
 import com.iemr.mmu.data.quickConsultation.WrapperQuickConsultation;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
 import com.iemr.utils.mapper.InputMapper;
@@ -22,11 +22,12 @@ import io.swagger.annotations.ApiParam;
 @CrossOrigin
 @RestController
 @RequestMapping({ "/quickConsultation" })
-public class QuickConsultationController {
+/** Objective: Saves Beneficiary Quick consultation details entered by doctor*/
+public class InsertDoctorQCController {
 
 	private InputMapper inputMapper = new InputMapper();
 	private OutputResponse response;
-	private Logger logger = LoggerFactory.getLogger(DoctorController.class);
+	private Logger logger = LoggerFactory.getLogger(InsertDoctorQCController.class);
 	private QuickConsultationServiceImpl quickConsultationServiceImpl;
 
 	@Autowired

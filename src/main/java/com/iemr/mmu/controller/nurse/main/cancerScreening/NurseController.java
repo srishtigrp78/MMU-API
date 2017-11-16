@@ -38,7 +38,7 @@ import io.swagger.annotations.ApiParam;
 @RequestMapping({ "/nurse" })
 public class NurseController {
 
-	private InputMapper inputMapper;
+	/*private InputMapper inputMapper;
 	private Logger logger = LoggerFactory.getLogger(NurseController.class);
 
 	private NurseServiceImpl nurseServiceImpl;
@@ -166,7 +166,7 @@ public class NurseController {
 		return response.toString();
 	}
 
-	/*
+	
 	 * @CrossOrigin
 	 * 
 	 * @RequestMapping(value = {
@@ -189,7 +189,7 @@ public class NurseController {
 	 * response.setError(e); }
 	 * 
 	 * return response.toString(); }
-	 */
+	 
 	@CrossOrigin
 	@ApiOperation(value = "save Beneficiary Personal Cancer Detail", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/historyScreen/benPersonalCancerHistory" }, method = { RequestMethod.POST })
@@ -275,9 +275,9 @@ public class NurseController {
 		return response.toString();
 	}
 
-	/**
+	*//**
 	 * Fething beneficiary data filled by Nurse for Doctor screen...
-	 */
+	 *//*
 
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Visit details from Nurse screen", consumes = "application/json", produces = "application/json")
@@ -436,6 +436,6 @@ public class NurseController {
 			logger.error("Error in getBenPhysicalVitalDetail:" + e);
 		}
 		return response.toString();
-	}
+	}*/
 
 }
