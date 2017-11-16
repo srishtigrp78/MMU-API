@@ -7,9 +7,10 @@ import java.util.Objects;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import com.iemr.mmu.data.doctor.CancerDiagnosis;
-
+@Repository
 public interface CancerDiagnosisRepo extends CrudRepository<CancerDiagnosis, Long> {
 	
 	@Query(" SELECT c from CancerDiagnosis c  WHERE c.beneficiaryRegID = :benRegID AND c.benVisitID = :benVisitID "

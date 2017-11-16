@@ -5,9 +5,10 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import com.iemr.mmu.data.registrar.FetchBeneficiaryDetails;
-
+@Repository
 public interface RegistrarRepoBeneficiaryDetails extends CrudRepository<FetchBeneficiaryDetails, Long> {
 
 	@Query(" SELECT d.beneficiaryRegID, d.beneficiaryID, d.firstName, d.lastName, d.gender, "
