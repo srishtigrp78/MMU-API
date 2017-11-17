@@ -52,7 +52,7 @@ public class UserVanSpDetails_View {
 	}
 
 	public UserVanSpDetails_View(Integer userID, Integer vanID, String vanNoAndType, Short vanSession,
-			Integer servicePointID, String servicePointName) {
+			Integer servicePointID, String servicePointName, Integer parkingPlaceID) {
 		super();
 		this.userID = userID;
 		this.vanID = vanID;
@@ -60,6 +60,7 @@ public class UserVanSpDetails_View {
 		this.vanSession = vanSession;
 		this.servicePointID = servicePointID;
 		this.servicePointName = servicePointName;
+		this.parkingPlaceID = parkingPlaceID;
 	}
 
 	public UserVanSpDetails_View(Integer userID, Integer vanID, String vanNoAndType, Short vanSession,

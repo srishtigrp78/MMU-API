@@ -141,7 +141,7 @@ public class IemrMmuLoginServiceImpl implements IemrMmuLoginService {
 			for (Object[] objArray : objList) {
 				UserVanSpDetails_View userVanSpDetails_ViewOBJ = new UserVanSpDetails_View((Integer) objArray[0],
 						(Integer) objArray[1], (String) objArray[2], (Short) objArray[3], (Integer) objArray[4],
-						(String) objArray[5]);
+						(String) objArray[5], (Integer) objArray[6]);
 
 				userVanSpDetails_ViewList.add(userVanSpDetails_ViewOBJ);
 

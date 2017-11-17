@@ -10,10 +10,11 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.registrar.BeneficiaryDemographicData;
-
+@Repository
 public interface RegistrarRepoBenDemoData extends CrudRepository<BeneficiaryDemographicData, Long> {
 	
 	@Transactional
