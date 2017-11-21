@@ -1,4 +1,4 @@
-package com.iemr.mmu.service.masterservice;
+package com.iemr.mmu.service.common.master;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,6 +37,16 @@ public class NurseMasterDataServiceImpl implements NurseMasterDataService {
 	@Autowired
 	private VisitReasonMasterRepo visitReasonMasterRepo;
 
+	public String GetVisitReasonAndCategories(){
+		Map<String, Object> resMap = new HashMap<String, Object>();
+		ArrayList<Object[]> visitCategories = visitCategoryMasterRepo.getVisitCategoryMaster();
+		ArrayList<Object[]> visitReasons = visitReasonMasterRepo.getVisitReasonMaster();
+		
+		resMap.put("visitCategories", VisitCategory.getVisitCategoryMasterData(visitCategories));
+		resMap.put("visitReasons", VisitReason.getVisitReasonMasterData(visitReasons));
+		
+		return new Gson().toJson(resMap);
+	}
 	public String getNurseMasterData() {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 		ArrayList<Object[]> DiseaseTypes = cancerDiseaseMasterRepo.getCancerDiseaseMaster();
@@ -55,8 +65,7 @@ public class NurseMasterDataServiceImpl implements NurseMasterDataService {
 				.getCancerPersonalHabitTypeMaster("Physical Activity Type ");
 
 		ArrayList<Object[]> familyMemberTypes = familyMemberMasterRepo.getFamilyMemberTypeMaster();
-		ArrayList<Object[]> visitCategories = visitCategoryMasterRepo.getVisitCategoryMaster();
-		ArrayList<Object[]> visitReasons = visitReasonMasterRepo.getVisitReasonMaster();
+		
 
 		try {
 			resMap.put("CancerDiseaseType", CancerDiseaseType.getCancerDiseaseTypeMasterData(DiseaseTypes));
@@ -74,8 +83,7 @@ public class NurseMasterDataServiceImpl implements NurseMasterDataService {
 					CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(physicalActivityType));
 
 			resMap.put("familyMemberTypes", FamilyMemberType.getFamilyMemberTypeMasterData(familyMemberTypes));
-			resMap.put("visitCategories", VisitCategory.getVisitCategoryMasterData(visitCategories));
-			resMap.put("visitReasons", VisitReason.getVisitReasonMasterData(visitReasons));
+			
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

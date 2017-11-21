@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.iemr.mmu.controller.doctor.main.cancerScreening.DoctorController;
-import com.iemr.mmu.service.masterservice.ANCMasterDataServiceImpl;
-import com.iemr.mmu.service.masterservice.DoctorMasterDataService;
-import com.iemr.mmu.service.masterservice.DoctorMasterDataServiceImpl;
+import com.iemr.mmu.service.common.master.ANCMasterDataServiceImpl;
+import com.iemr.mmu.service.common.master.DoctorMasterDataService;
+import com.iemr.mmu.service.common.master.DoctorMasterDataServiceImpl;
 import com.iemr.utils.mapper.InputMapper;
 import com.iemr.utils.response.OutputResponse;
 

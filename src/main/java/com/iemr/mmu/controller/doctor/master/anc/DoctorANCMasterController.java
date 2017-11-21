@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.iemr.mmu.controller.nurse.master.anc.NurseANCMasterController;
-import com.iemr.mmu.service.masterservice.ANCMasterDataServiceImpl;
+import com.iemr.mmu.service.common.master.ANCMasterDataServiceImpl;
 import com.iemr.utils.mapper.InputMapper;
 import com.iemr.utils.response.OutputResponse;
 

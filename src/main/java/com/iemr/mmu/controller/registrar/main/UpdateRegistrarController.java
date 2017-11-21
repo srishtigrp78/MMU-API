@@ -20,7 +20,7 @@ import com.iemr.mmu.controller.registrar.master.RegistrarController;
 import com.iemr.mmu.data.registrar.BeneficiaryData;
 import com.iemr.mmu.data.registrar.V_BenAdvanceSearch;
 import com.iemr.mmu.data.registrar.WrapperBeneficiaryRegistration;
-import com.iemr.mmu.service.masterservice.RegistrarServiceMasterDataImpl;
+import com.iemr.mmu.service.common.master.RegistrarServiceMasterDataImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.service.registrar.RegistrarServiceImpl;
 import com.iemr.utils.mapper.InputMapper;

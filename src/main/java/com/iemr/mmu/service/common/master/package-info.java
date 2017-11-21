@@ -5,4 +5,4 @@
  * @author NE298657
  *
  */
-package com.iemr.mmu.service.masterservice;
+package com.iemr.mmu.service.common.master;
