@@ -17,7 +17,7 @@ public class DoctorMasterDataServiceImpl implements DoctorMasterDataService{
 	@Autowired
 	private PreMalignantLesionMasterRepo preMalignantLesionMasterRepo;
 	
-	public String getDoctorMasterData() {
+	public String getCancerScreeningMasterDataForDoctor() {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 		ArrayList<Object[]> preMalignantLesionTypes = preMalignantLesionMasterRepo.getPreMalignantLesionMaster();
 		

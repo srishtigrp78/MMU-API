@@ -18,7 +18,7 @@ public class BenMenstrualDetails {
 	@GeneratedValue
 	@Expose
 	@Column(name = "BenMenstrualID")
-	private Long benMenstrualID;
+	private Integer benMenstrualID;
 
 	@Expose
 	@Column(name = "BeneficiaryRegID")
@@ -26,39 +26,39 @@ public class BenMenstrualDetails {
 
 	@Expose
 	@Column(name = "MenstrualCycleStatusID")
-	private Long menstrualCycleStatusID;
+	private Short menstrualCycleStatusID;
 
 	@Expose
 	@Column(name = "Regularity")
-	private Long regularity;
+	private String regularity;
 
 	@Expose
 	@Column(name = "MenstrualCyclelengthID")
-	private Long menstrualCyclelengthID;
+	private Short menstrualCyclelengthID;
 
 	@Expose
 	@Column(name = "CycleLength")
-	private Long cycleLength;
+	private String cycleLength;
 
 	@Expose
 	@Column(name = "MenstrualFlowDurationID")
-	private Long menstrualFlowDurationID;
+	private Short menstrualFlowDurationID;
 
 	@Expose
 	@Column(name = "BloodFlowDuration")
-	private Long bloodFlowDuration;
+	private String bloodFlowDuration;
 
 	@Expose
 	@Column(name = "MenstrualProblemID")
-	private Long menstrualProblemID;
+	private Short menstrualProblemID;
 
 	@Expose
 	@Column(name = "ProblemName")
-	private Long problemName;
+	private String problemName;
 	
 	@Expose
 	@Column(name = "LMPDate")
-	private Long lMPDate;
+	private Timestamp lMPDate;
 	
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)

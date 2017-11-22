@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import com.google.gson.annotations.Expose;
 
 @Entity
-@Table(name = "i_benrelationshiptype")
+@Table(name = "m_benrelationshiptype")
 public class FamilyMemberType {
 	@Id
 	@GeneratedValue

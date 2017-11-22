@@ -34,7 +34,7 @@ public class BenMedHistory {
 	
 	@Expose
 	@Column(name = "YearofIllness")
-	private Integer yearofIllness;
+	private Timestamp yearofIllness;
 	
 	@Expose
 	@Column(name = "IllnessTypeID")
@@ -42,7 +42,7 @@ public class BenMedHistory {
 	
 	@Expose
 	@Column(name = "IllnessType")
-	private Integer illnessType;
+	private String illnessType;
 	
 	@Expose
 	@Column(name = "SurgeryID")
@@ -50,15 +50,15 @@ public class BenMedHistory {
 	
 	@Expose
 	@Column(name = "SurgeryType")
-	private Integer surgeryType;
+	private String surgeryType;
 	
 	@Expose
 	@Column(name = "YearofSurgery")
-	private Integer yearofSurgery;
+	private Timestamp yearofSurgery;
 	
 	@Expose
 	@Column(name = "DrugComplianceID")
-	private Integer drugComplianceID;
+	private Short drugComplianceID;
 	
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)

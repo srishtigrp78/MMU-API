@@ -54,7 +54,7 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 			switch(visitCategoryID){
 				case 1 :{
 					// 1 : Cancer Screening
-					nurseMasterData = nurseMasterDataServiceImpl.getNurseMasterData();
+					nurseMasterData = nurseMasterDataServiceImpl.getCancerScreeningMasterDataForNurse();
 				}
 				break;
 				case 2 :{
@@ -107,7 +107,7 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 			switch(visitCategoryID){
 				case 1 :{
 					// 1 : Cancer Screening
-					doctorMasterData = doctorMasterDataServiceImpl.getDoctorMasterData();
+					doctorMasterData = doctorMasterDataServiceImpl.getCancerScreeningMasterDataForDoctor();
 				}
 				break;
 				case 2 :{

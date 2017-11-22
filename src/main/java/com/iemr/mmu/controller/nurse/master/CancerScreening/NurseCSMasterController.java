@@ -58,7 +58,7 @@ public class NurseCSMasterController {
 		OutputResponse response = new OutputResponse();
 		logger.info("getting Nurse Master Data ");
 		try {
-			response.setResponse(nurseMasterDataServiceImpl.getNurseMasterData());
+			response.setResponse(nurseMasterDataServiceImpl.getCancerScreeningMasterDataForNurse());
 			logger.info("masterDataForNurse response:" + response);
 		} catch (Exception e) {
 			response.setError(e);

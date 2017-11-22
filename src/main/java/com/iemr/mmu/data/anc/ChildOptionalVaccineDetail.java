@@ -11,9 +11,9 @@ import javax.persistence.Table;
 import com.google.gson.annotations.Expose;
 
 @Entity
-@Table(name = "t_BenAllergyHistory")
-public class BenAllergyHistory {
-	
+@Table(name = "t_childoptionalvaccinedetail")
+public class ChildOptionalVaccineDetail {
+
 	@Id
 	@GeneratedValue
 	@Expose
@@ -25,28 +25,28 @@ public class BenAllergyHistory {
 	private Long beneficiaryRegID;
 
 	@Expose
-	@Column(name = "BenVisitID")
-	private Long benVisitID;
-	
-	@Expose
-	@Column(name = "ProviderServiceMapID")
-	private Integer providerServiceMapID;
+	@Column(name = "DefaultReceivingAge")
+	private String defaultReceivingAge;
 
 	@Expose
-	@Column(name = "allergyStatus")
-	private String allergyStatus;
-	
+	@Column(name = "VaccineName")
+	private String vaccineName;
+
 	@Expose
-	@Column(name = "allergyType")
-	private String allergyType;
-	
+	@Column(name = "Status")
+	private String status;
+
 	@Expose
-	@Column(name = "allergenName")
-	private String allergenName;
-	
+	@Column(name = "ReceivedDate")
+	private Timestamp receivedDate;
+
 	@Expose
-	@Column(name = "allergicReactionType")
-	private String allergicReactionType;
+	@Column(name = "ActualReceivingAge")
+	private String actualReceivingAge;
+
+	@Expose
+	@Column(name = "ReceivedFacilityName")
+	private String receivedFacilityName;
 	
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -71,5 +71,5 @@ public class BenAllergyHistory {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
-
+	
 }

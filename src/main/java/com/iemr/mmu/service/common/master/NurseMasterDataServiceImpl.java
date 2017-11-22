@@ -47,7 +47,8 @@ public class NurseMasterDataServiceImpl implements NurseMasterDataService {
 		
 		return new Gson().toJson(resMap);
 	}
-	public String getNurseMasterData() {
+	
+	public String getCancerScreeningMasterDataForNurse() {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 		ArrayList<Object[]> DiseaseTypes = cancerDiseaseMasterRepo.getCancerDiseaseMaster();
 		ArrayList<Object[]> tobaccoUseStatus = cancerPersonalHabitMasterRepo
