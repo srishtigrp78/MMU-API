@@ -14,7 +14,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 
 @Entity
-@Table(name = "m_bengovidmap")
+@Table(name = "i_bengovidmap")
 public class BenGovIdMapping {
 	@Id
 	@GeneratedValue

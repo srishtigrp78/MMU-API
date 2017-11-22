@@ -68,7 +68,7 @@ public class DoctorCSMasterController {
 		OutputResponse response = new OutputResponse();
 		logger.info("getMasterDataForDoctor..");
 		try {
-			response.setResponse(doctorMasterDataServiceImpl.getDoctorMasterData());
+			response.setResponse(doctorMasterDataServiceImpl.getCancerScreeningMasterDataForDoctor());
 			logger.info("getMasterDataForDoctor response:" + response);
 		} catch (Exception e) {
 			response.setError(e);

@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "m_benphonemap")
+@Table(name = "i_benphonemap")
 public class BeneficiaryPhoneMapping {
 	@Id
 	@GeneratedValue

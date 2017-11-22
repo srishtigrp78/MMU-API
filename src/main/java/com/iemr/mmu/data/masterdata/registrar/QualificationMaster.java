@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import com.google.gson.annotations.Expose;
 
 @Entity
-@Table(name = "i_beneficiaryeducation")
+@Table(name = "m_beneficiaryeducation")
 public class QualificationMaster {
 	@Id
 	@GeneratedValue

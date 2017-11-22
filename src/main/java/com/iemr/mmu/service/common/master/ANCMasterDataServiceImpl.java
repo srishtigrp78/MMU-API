@@ -18,11 +18,16 @@ import com.iemr.mmu.data.masterdata.anc.AllergicReactionTypes;
 import com.iemr.mmu.data.masterdata.anc.BirthComplication;
 import com.iemr.mmu.data.masterdata.anc.BloodGroups;
 import com.iemr.mmu.data.masterdata.anc.ChildVaccinations;
+import com.iemr.mmu.data.masterdata.anc.ComorbidCondition;
+import com.iemr.mmu.data.masterdata.anc.CompFeeds;
+import com.iemr.mmu.data.masterdata.anc.CounsellingType;
 import com.iemr.mmu.data.masterdata.anc.DeliveryComplicationTypes;
 import com.iemr.mmu.data.masterdata.anc.DeliveryPlace;
 import com.iemr.mmu.data.masterdata.anc.DeliveryType;
 import com.iemr.mmu.data.masterdata.anc.DevelopmentProblems;
+import com.iemr.mmu.data.masterdata.anc.FundalHeight;
 import com.iemr.mmu.data.masterdata.anc.Gestation;
+import com.iemr.mmu.data.masterdata.anc.GrossMotorMilestone;
 import com.iemr.mmu.data.masterdata.anc.IllnessTypes;
 import com.iemr.mmu.data.masterdata.anc.JointTypes;
 import com.iemr.mmu.data.masterdata.anc.MenstrualCycleRange;
@@ -32,6 +37,7 @@ import com.iemr.mmu.data.masterdata.anc.Musculoskeletal;
 import com.iemr.mmu.data.masterdata.anc.PostpartumComplicationTypes;
 import com.iemr.mmu.data.masterdata.anc.PregComplicationTypes;
 import com.iemr.mmu.data.masterdata.anc.PregDuration;
+import com.iemr.mmu.data.masterdata.anc.ServiceMaster;
 import com.iemr.mmu.data.masterdata.anc.SurgeryTypes;
 import com.iemr.mmu.data.masterdata.nurse.CancerDiseaseType;
 import com.iemr.mmu.data.masterdata.nurse.CancerPersonalHabitType;
@@ -46,11 +52,16 @@ import com.iemr.mmu.repo.masterrepo.anc.AllergicReactionTypesRepo;
 import com.iemr.mmu.repo.masterrepo.anc.BirthComplicationRepo;
 import com.iemr.mmu.repo.masterrepo.anc.BloodGroupsRepo;
 import com.iemr.mmu.repo.masterrepo.anc.ChildVaccinationsRepo;
+import com.iemr.mmu.repo.masterrepo.anc.ComorbidConditionRepo;
+import com.iemr.mmu.repo.masterrepo.anc.CompFeedsRepo;
+import com.iemr.mmu.repo.masterrepo.anc.CounsellingTypeRepo;
 import com.iemr.mmu.repo.masterrepo.anc.DeliveryComplicationTypesRepo;
 import com.iemr.mmu.repo.masterrepo.anc.DeliveryPlaceRepo;
 import com.iemr.mmu.repo.masterrepo.anc.DeliveryTypeRepo;
 import com.iemr.mmu.repo.masterrepo.anc.DevelopmentProblemsRepo;
+import com.iemr.mmu.repo.masterrepo.anc.FundalHeightRepo;
 import com.iemr.mmu.repo.masterrepo.anc.GestationRepo;
+import com.iemr.mmu.repo.masterrepo.anc.GrossMotorMilestoneRepo;
 import com.iemr.mmu.repo.masterrepo.anc.IllnessTypesRepo;
 import com.iemr.mmu.repo.masterrepo.anc.JointTypesRepo;
 import com.iemr.mmu.repo.masterrepo.anc.MenstrualCycleRangeRepo;
@@ -60,6 +71,7 @@ import com.iemr.mmu.repo.masterrepo.anc.MusculoskeletalRepo;
 import com.iemr.mmu.repo.masterrepo.anc.PostpartumComplicationTypesRepo;
 import com.iemr.mmu.repo.masterrepo.anc.PregComplicationTypesRepo;
 import com.iemr.mmu.repo.masterrepo.anc.PregDurationRepo;
+import com.iemr.mmu.repo.masterrepo.anc.ServiceMasterRepo;
 import com.iemr.mmu.repo.masterrepo.anc.SurgeryTypesRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.CancerDiseaseMasterRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.CancerPersonalHabitMasterRepo;
@@ -87,7 +99,13 @@ public class ANCMasterDataServiceImpl {
 	private PregComplicationTypesRepo pregComplicationTypesRepo;
 	private PregDurationRepo pregDurationRepo;
 	private SurgeryTypesRepo surgeryTypesRepo;
-
+	private ComorbidConditionRepo comorbidConditionRepo;
+	private CompFeedsRepo compFeedsRepo;
+	private FundalHeightRepo fundalHeightRepo;
+	private GrossMotorMilestoneRepo grossMotorMilestoneRepo;
+	private ServiceMasterRepo serviceMasterRepo;
+	private CounsellingTypeRepo counsellingTypeRepo;
+	
 	private ChiefComplaintMasterRepo chiefComplaintMasterRepo;
 	private CancerDiseaseMasterRepo cancerDiseaseMasterRepo;
 	private CancerPersonalHabitMasterRepo cancerPersonalHabitMasterRepo;
@@ -240,6 +258,36 @@ public class ANCMasterDataServiceImpl {
 		this.drugFrequencyMasterRepo = drugFrequencyMasterRepo;
 	}
 	
+	@Autowired
+	public void setComorbidConditionRepo(ComorbidConditionRepo comorbidConditionRepo) {
+		this.comorbidConditionRepo = comorbidConditionRepo;
+	}
+	
+	@Autowired
+	public void setCompFeedsRepo(CompFeedsRepo compFeedsRepo) {
+		this.compFeedsRepo = compFeedsRepo;
+	}
+	
+	@Autowired
+	public void setFundalHeightRepo(FundalHeightRepo fundalHeightRepo) {
+		this.fundalHeightRepo = fundalHeightRepo;
+	}
+	
+	@Autowired
+	public void setGrossMotorMilestoneRepo(GrossMotorMilestoneRepo grossMotorMilestoneRepo) {
+		this.grossMotorMilestoneRepo = grossMotorMilestoneRepo;
+	}
+	
+	@Autowired
+	public void setServiceMasterRepo(ServiceMasterRepo serviceMasterRepo) {
+		this.serviceMasterRepo = serviceMasterRepo;
+	}
+	
+	@Autowired
+	public void setCounsellingTypeRepo(CounsellingTypeRepo counsellingTypeRepo) {
+		this.counsellingTypeRepo = counsellingTypeRepo;
+	}
+	
 	public String getANCMasterDataForNurse() {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 			
@@ -264,6 +312,12 @@ public class ANCMasterDataServiceImpl {
 		ArrayList<Object[]> pregComplicationTypes = pregComplicationTypesRepo.getPregComplicationTypes();
 		ArrayList<Object[]> pregDuration = pregDurationRepo.getPregDurationTypes();
 		ArrayList<Object[]> surgeryTypes = surgeryTypesRepo.getSurgeryTypes();
+		ArrayList<Object[]> comorbidConditions = comorbidConditionRepo.getComorbidConditions();
+		ArrayList<Object[]> grossMotorMilestones = grossMotorMilestoneRepo.getGrossMotorMilestones();
+		ArrayList<Object[]> fundalHeights = fundalHeightRepo.getFundalHeights();
+		ArrayList<Object[]> feedTypes = compFeedsRepo.getCompFeeds("Feed Type");
+		ArrayList<Object[]> compFeedAges = compFeedsRepo.getCompFeeds("Comp Feed Age");
+		ArrayList<Object[]> compFeedServings  = compFeedsRepo.getCompFeeds("Comp Feed Serving ");
 		
 		//existing
 		ArrayList<ChiefComplaintMaster> ccList = chiefComplaintMasterRepo.getChiefComplaintMaster();
@@ -308,6 +362,12 @@ public class ANCMasterDataServiceImpl {
 		resMap.put("pregComplicationTypes", PregComplicationTypes.getPregComplicationTypes(pregComplicationTypes));
 		resMap.put("pregDuration", PregDuration.getPregDurationValues(pregDuration));
 		resMap.put("surgeryTypes", SurgeryTypes.getSurgeryTypes(surgeryTypes));
+		resMap.put("comorbidConditions", ComorbidCondition.getComorbidConditions(comorbidConditions));
+		resMap.put("grossMotorMilestones", GrossMotorMilestone.getGrossMotorMilestone(grossMotorMilestones));
+		resMap.put("fundalHeights", FundalHeight.getFundalHeights(fundalHeights));
+		resMap.put("feedTypes", CompFeeds.getCompFeeds(feedTypes));
+		resMap.put("compFeedAges", CompFeeds.getCompFeeds(compFeedAges));
+		resMap.put("compFeedServings", CompFeeds.getCompFeeds(compFeedServings));
 		
 		//existing
 		resMap.put("chiefComplaintMaster", ccList);
@@ -339,11 +399,16 @@ public class ANCMasterDataServiceImpl {
 		ArrayList<DrugDurationUnitMaster> ddumList = drugDurationUnitMasterRepo.getDrugDurationUnitMaster();
 		ArrayList<DrugFormMaster> dfmList = drugFormMasterRepo.getDrugFormMaster();
 		ArrayList<DrugFrequencyMaster> dfrmList = drugFrequencyMasterRepo.getDrugFrequencyMaster();
+		ArrayList<Object[]> counsellingTypes = counsellingTypeRepo.getCounsellingTypes();
+		ArrayList<Object[]> additionalServices = serviceMasterRepo.getAdditionalServices();
 		resMap.put("chiefComplaintMaster", ccList);
 		resMap.put("drugDoseMaster", ddmList);
 		resMap.put("drugDurationUnitMaster", ddumList);
 		resMap.put("drugFormMaster", dfmList);
 		resMap.put("drugFrequencyMaster", dfrmList);
+		resMap.put("counsellingTypes", CounsellingType.getCounsellingType(counsellingTypes));
+		resMap.put("additionalServices", ServiceMaster.getServiceMaster(additionalServices));
+
 		return new Gson().toJson(resMap);
 	}
 
