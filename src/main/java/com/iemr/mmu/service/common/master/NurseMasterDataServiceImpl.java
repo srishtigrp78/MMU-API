@@ -66,7 +66,9 @@ public class NurseMasterDataServiceImpl implements NurseMasterDataService {
 				.getCancerPersonalHabitTypeMaster("Physical Activity Type ");
 
 		ArrayList<Object[]> familyMemberTypes = familyMemberMasterRepo.getFamilyMemberTypeMaster();
-		
+		// Later remove these 2 from here, These moved to GetVisitReasonAndCategories function
+		ArrayList<Object[]> visitCategories = visitCategoryMasterRepo.getVisitCategoryMaster();
+		ArrayList<Object[]> visitReasons = visitReasonMasterRepo.getVisitReasonMaster();
 
 		try {
 			resMap.put("CancerDiseaseType", CancerDiseaseType.getCancerDiseaseTypeMasterData(DiseaseTypes));
@@ -85,6 +87,9 @@ public class NurseMasterDataServiceImpl implements NurseMasterDataService {
 
 			resMap.put("familyMemberTypes", FamilyMemberType.getFamilyMemberTypeMasterData(familyMemberTypes));
 			
+			// Later remove these 2 from here, These moved to GetVisitReasonAndCategories function
+			resMap.put("visitCategories", VisitCategory.getVisitCategoryMasterData(visitCategories));
+			resMap.put("visitReasons", VisitReason.getVisitReasonMasterData(visitReasons));
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
