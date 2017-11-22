@@ -26,7 +26,7 @@ public class BenAdherence {
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
 	@Expose
-	@Column(name = "BenVisitID")
+	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
 	@Expose
 	@Column(name = "ToDrugs")
@@ -47,10 +47,10 @@ public class BenAdherence {
 	@Column(name = "Deleted")
 	private Boolean deleted;
 	@Expose
-	@Column(name = "Processed")
+	@Column(name = "Processed", insertable = false)
 	private String processed;
 	@Expose
-	@Column(name = "Processed", insertable = false)
+	@Column(name = "CreatedBy")
 	private String createdBy;
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
