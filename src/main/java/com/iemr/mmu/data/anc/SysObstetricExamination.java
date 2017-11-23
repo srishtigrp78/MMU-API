@@ -87,4 +87,145 @@ public class SysObstetricExamination {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
+
+	public Long getBeneficiaryRegID() {
+		return beneficiaryRegID;
+	}
+
+	public void setBeneficiaryRegID(Long beneficiaryRegID) {
+		this.beneficiaryRegID = beneficiaryRegID;
+	}
+
+	public Long getBenVisitID() {
+		return benVisitID;
+	}
+
+	public void setBenVisitID(Long benVisitID) {
+		this.benVisitID = benVisitID;
+	}
+
+	public String getFundalHeight() {
+		return fundalHeight;
+	}
+
+	public void setFundalHeight(String fundalHeight) {
+		this.fundalHeight = fundalHeight;
+	}
+
+	public String getfHAndPOA_Status() {
+		return fHAndPOA_Status;
+	}
+
+	public void setfHAndPOA_Status(String fHAndPOA_Status) {
+		this.fHAndPOA_Status = fHAndPOA_Status;
+	}
+
+	public String getfHAndPOA_Interpretation() {
+		return fHAndPOA_Interpretation;
+	}
+
+	public void setfHAndPOA_Interpretation(String fHAndPOA_Interpretation) {
+		this.fHAndPOA_Interpretation = fHAndPOA_Interpretation;
+	}
+
+	public String getFetalMovements() {
+		return fetalMovements;
+	}
+
+	public void setFetalMovements(String fetalMovements) {
+		this.fetalMovements = fetalMovements;
+	}
+
+	public String getFetalHeartSounds() {
+		return fetalHeartSounds;
+	}
+
+	public void setFetalHeartSounds(String fetalHeartSounds) {
+		this.fetalHeartSounds = fetalHeartSounds;
+	}
+
+	public String getFetalHeartRate_BeatsPerMinute() {
+		return fetalHeartRate_BeatsPerMinute;
+	}
+
+	public void setFetalHeartRate_BeatsPerMinute(String fetalHeartRate_BeatsPerMinute) {
+		this.fetalHeartRate_BeatsPerMinute = fetalHeartRate_BeatsPerMinute;
+	}
+
+	public String getFetalPositionOrLie() {
+		return fetalPositionOrLie;
+	}
+
+	public void setFetalPositionOrLie(String fetalPositionOrLie) {
+		this.fetalPositionOrLie = fetalPositionOrLie;
+	}
+
+	public String getFetalPresentation() {
+		return fetalPresentation;
+	}
+
+	public void setFetalPresentation(String fetalPresentation) {
+		this.fetalPresentation = fetalPresentation;
+	}
+
+	public String getAbdominalScars() {
+		return abdominalScars;
+	}
+
+	public void setAbdominalScars(String abdominalScars) {
+		this.abdominalScars = abdominalScars;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public String getProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(String processed) {
+		this.processed = processed;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Timestamp getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Timestamp createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Timestamp getLastModDate() {
+		return lastModDate;
+	}
+
+	public void setLastModDate(Timestamp lastModDate) {
+		this.lastModDate = lastModDate;
+	}
+
+	public Long getID() {
+		return ID;
+	}
+	
 }

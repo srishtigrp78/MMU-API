@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.iemr.mmu.data.anc.BenAdherence;
+import com.iemr.mmu.data.anc.PhyGeneralExamination;
+import com.iemr.mmu.data.anc.PhyHeadToToeExamination;
+import com.iemr.mmu.data.anc.SysCardiovascularExamination;
+import com.iemr.mmu.data.anc.SysGastrointestinalExamination;
 import com.iemr.mmu.data.anc.WrapperANCCareDetail;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
 import com.iemr.utils.mapper.InputMapper;
@@ -120,5 +124,127 @@ public class InsertNurseANCController {
 		}
 		return response.toString();
 	}
+	
+	@CrossOrigin
+	@ApiOperation(value = "save Beneficiary Physical General Examination Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/examination/generalExamination" }, method = { RequestMethod.POST })
+	public String saveBenGeneralExamination(@ApiParam(value = "{\"beneficiaryRegID\":\"Long\",\"benVisitID\": \"Long\","
+			+ "\"consciousness\":\"String\", \"coherence\":\"String\", \"cooperation\":\"String\", \"comfortness\":\"String\","
+			+ "\"builtAndAppearance\":\"String\", \"gait\":\"String\", \"dangerSigns\":\"String\", \"typeOfDangerSigns\":\"String\", \"pallor\":\"String\", "
+			+ "\"jaundice\":\"String\", \"cyanosis\":\"String\", \"clubbing\":\"String\", \"lymphadenopathy\":\"String\", \"lymphnodesInvolved\":\"String\", "
+			+ "\"typeOfLymphadenopathy\":\"String\", \"edema\":\"String\",  \"extentOfEdema\":\"String\", \"edemaType\":\"String\", \"createdBy\":\"String\"}")
+			@RequestBody String requestObj) {
+		
+		OutputResponse response = new OutputResponse();
+		logger.info("saveBenGeneralExamination request:" + requestObj);
+		try {
+			inputMapper = new InputMapper();
+			if (requestObj != null) {
+				PhyGeneralExamination generalExamination = InputMapper.gson().fromJson(requestObj, PhyGeneralExamination.class);
+				int r = ancServiceImpl.savePhyGeneralExamination(generalExamination);
+				if(r > 0){
+					response.setResponse("Ben General Examination data saved successfully.");
+				}else{
+					response.setError(5000, "Something went wrong !!!");
+				}
+			} else {
+				response.setError(5000, "Invalid request Data");
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+		return response.toString();
+	}
 
+	@CrossOrigin
+	@ApiOperation(value = "save Beneficiary Physical Head To Toe Examination Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/examination/headToToeExamination" }, method = { RequestMethod.POST })
+	public String saveBenHeadToToeExamination(@ApiParam(value = "{\"beneficiaryRegID\":\"Long\",\"benVisitID\": \"Long\","
+			+ "\"headtoToeExam\":\"String\", \"head\":\"String\", \"eyes\":\"String\", \"ears\":\"String\", \"nose\":\"String\", "
+			+ "\"oralCavity\":\"String\", \"throat\":\"String\", \"breastAndNipples\":\"String\", \"trunk\":\"String\", \"upperLimbs\":\"String\", "
+			+ "\"lowerLimbs\":\"String\", \"skin\":\"String\", \"hair\":\"String\", \"nails\":\"String\", \"createdBy\":\"String\"}")
+			@RequestBody String requestObj) {
+		
+		OutputResponse response = new OutputResponse();
+		logger.info("saveBenHeadToToeExamination request:" + requestObj);
+		try {
+			inputMapper = new InputMapper();
+			if (requestObj != null) {
+				PhyHeadToToeExamination headToToeExamination = InputMapper.gson().fromJson(requestObj, PhyHeadToToeExamination.class);
+				int r = ancServiceImpl.savePhyHeadToToeExamination(headToToeExamination);
+				if(r > 0){
+					response.setResponse("Ben Head To Toe Examination data saved successfully.");
+				}else{
+					response.setError(5000, "Something went wrong !!!");
+				}
+			} else {
+				response.setError(5000, "Invalid request Data");
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin
+	@ApiOperation(value = "save Beneficiary Gastrointestinal System Examination Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/examination/gastrointestinalExamination" }, method = { RequestMethod.POST })
+	public String saveSysGastrointestinalExamination(@ApiParam(value = "{\"beneficiaryRegID\":\"Long\",\"benVisitID\": \"Long\","
+			+ "\"inspection\":\"String\", \"palpation_AbdomenTexture\":\"String\", \"palpation_Liver\":\"String\", \"palpation_Spleen\":\"String\", "
+			+ "\"palpation_Tenderness\":\"String\", \"palpation_LocationOfTenderness\":\"String\", \"percussion\":\"String\", \"auscultation\":\"String\","
+			+ " \"trunk\":\"String\", \"analRegion\":\"String\", \"createdBy\":\"String\"}")
+			@RequestBody String requestObj) {
+	
+		
+		OutputResponse response = new OutputResponse();
+		logger.info("saveSysGastrointestinalExamination request:" + requestObj);
+		try {
+			inputMapper = new InputMapper();
+			if (requestObj != null) {
+				SysGastrointestinalExamination gastrointestinalExamination = InputMapper.gson().fromJson(requestObj, SysGastrointestinalExamination.class);
+				int r = ancServiceImpl.saveSysGastrointestinalExamination(gastrointestinalExamination);
+				if(r > 0){
+					response.setResponse("Ben Gastrointestinal Examination data saved successfully.");
+				}else{
+					response.setError(5000, "Something went wrong !!!");
+				}
+			} else {
+				response.setError(5000, "Invalid request Data");
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin
+	@ApiOperation(value = "save Beneficiary Cardiovascular System Examination Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/examination/cardiovascularExamination" }, method = { RequestMethod.POST })
+	public String saveSysCardiovascularExamination(@ApiParam(value = "{\"beneficiaryRegID\":\"Long\",\"benVisitID\": \"Long\","
+			+ "\"jugularVenousPulse_JVP\":\"String\", \"apexbeatLocation\":\"String\", \"apexbeatType\":\"String\","
+			+ "\"firstHeartSound_S1\":\"String\", \"secondHeartSound_S2\":\"String\", \"additionalHeartSounds\":\"String\", "
+			+ "\"murmurs\":\"String\", \"pericardialRub\":\"String\", \"createdBy\":\"String\"}")
+			@RequestBody String requestObj) {
+
+		OutputResponse response = new OutputResponse();
+		logger.info("saveSysCardiovascularExamination request:" + requestObj);
+		try {
+			inputMapper = new InputMapper();
+			if (requestObj != null) {
+				SysCardiovascularExamination cardiovascularExamination = InputMapper.gson().fromJson(requestObj, SysCardiovascularExamination.class);
+				int r = ancServiceImpl.saveSysCardiovascularExamination(cardiovascularExamination);
+				if(r > 0){
+					response.setResponse("Ben Cardiovascular Examination data saved successfully.");
+				}else{
+					response.setError(5000, "Something went wrong !!!");
+				}
+			} else {
+				response.setError(5000, "Invalid request Data");
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+		return response.toString();
+	}
+	
 }

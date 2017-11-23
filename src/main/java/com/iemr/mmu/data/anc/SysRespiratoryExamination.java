@@ -99,4 +99,169 @@ public class SysRespiratoryExamination {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
+
+	public Long getBeneficiaryRegID() {
+		return beneficiaryRegID;
+	}
+
+	public void setBeneficiaryRegID(Long beneficiaryRegID) {
+		this.beneficiaryRegID = beneficiaryRegID;
+	}
+
+	public Long getBenVisitID() {
+		return benVisitID;
+	}
+
+	public void setBenVisitID(Long benVisitID) {
+		this.benVisitID = benVisitID;
+	}
+
+	public String getTrachea() {
+		return trachea;
+	}
+
+	public void setTrachea(String trachea) {
+		this.trachea = trachea;
+	}
+
+	public String getInspection() {
+		return inspection;
+	}
+
+	public void setInspection(String inspection) {
+		this.inspection = inspection;
+	}
+
+	public String getSignsOfRespiratoryDistress() {
+		return signsOfRespiratoryDistress;
+	}
+
+	public void setSignsOfRespiratoryDistress(String signsOfRespiratoryDistress) {
+		this.signsOfRespiratoryDistress = signsOfRespiratoryDistress;
+	}
+
+	public String getPalpation() {
+		return palpation;
+	}
+
+	public void setPalpation(String palpation) {
+		this.palpation = palpation;
+	}
+
+	public String getAuscultation() {
+		return auscultation;
+	}
+
+	public void setAuscultation(String auscultation) {
+		this.auscultation = auscultation;
+	}
+
+	public String getAuscultation_Stridor() {
+		return auscultation_Stridor;
+	}
+
+	public void setAuscultation_Stridor(String auscultation_Stridor) {
+		this.auscultation_Stridor = auscultation_Stridor;
+	}
+
+	public String getAuscultation_BreathSounds() {
+		return auscultation_BreathSounds;
+	}
+
+	public void setAuscultation_BreathSounds(String auscultation_BreathSounds) {
+		this.auscultation_BreathSounds = auscultation_BreathSounds;
+	}
+
+	public String getAuscultation_Crepitations() {
+		return auscultation_Crepitations;
+	}
+
+	public void setAuscultation_Crepitations(String auscultation_Crepitations) {
+		this.auscultation_Crepitations = auscultation_Crepitations;
+	}
+
+	public String getAuscultation_Wheezing() {
+		return auscultation_Wheezing;
+	}
+
+	public void setAuscultation_Wheezing(String auscultation_Wheezing) {
+		this.auscultation_Wheezing = auscultation_Wheezing;
+	}
+
+	public String getAuscultation_PleuralRub() {
+		return auscultation_PleuralRub;
+	}
+
+	public void setAuscultation_PleuralRub(String auscultation_PleuralRub) {
+		this.auscultation_PleuralRub = auscultation_PleuralRub;
+	}
+
+	public String getAuscultation_ConductedSounds() {
+		return auscultation_ConductedSounds;
+	}
+
+	public void setAuscultation_ConductedSounds(String auscultation_ConductedSounds) {
+		this.auscultation_ConductedSounds = auscultation_ConductedSounds;
+	}
+
+	public String getPercussion() {
+		return percussion;
+	}
+
+	public void setPercussion(String percussion) {
+		this.percussion = percussion;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public String getProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(String processed) {
+		this.processed = processed;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Timestamp getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Timestamp createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Timestamp getLastModDate() {
+		return lastModDate;
+	}
+
+	public void setLastModDate(Timestamp lastModDate) {
+		this.lastModDate = lastModDate;
+	}
+
+	public Long getID() {
+		return ID;
+	}
+	
 }

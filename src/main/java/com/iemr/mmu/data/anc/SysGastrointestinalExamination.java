@@ -91,4 +91,153 @@ public class SysGastrointestinalExamination {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
+
+	public Long getBeneficiaryRegID() {
+		return beneficiaryRegID;
+	}
+
+	public void setBeneficiaryRegID(Long beneficiaryRegID) {
+		this.beneficiaryRegID = beneficiaryRegID;
+	}
+
+	public Long getBenVisitID() {
+		return benVisitID;
+	}
+
+	public void setBenVisitID(Long benVisitID) {
+		this.benVisitID = benVisitID;
+	}
+
+	public String getInspection() {
+		return inspection;
+	}
+
+	public void setInspection(String inspection) {
+		this.inspection = inspection;
+	}
+
+	public String getPalpation() {
+		return palpation;
+	}
+
+	public void setPalpation(String palpation) {
+		this.palpation = palpation;
+	}
+
+	public String getPalpation_AbdomenTexture() {
+		return palpation_AbdomenTexture;
+	}
+
+	public void setPalpation_AbdomenTexture(String palpation_AbdomenTexture) {
+		this.palpation_AbdomenTexture = palpation_AbdomenTexture;
+	}
+
+	public String getPalpation_Liver() {
+		return palpation_Liver;
+	}
+
+	public void setPalpation_Liver(String palpation_Liver) {
+		this.palpation_Liver = palpation_Liver;
+	}
+
+	public String getPalpation_Spleen() {
+		return palpation_Spleen;
+	}
+
+	public void setPalpation_Spleen(String palpation_Spleen) {
+		this.palpation_Spleen = palpation_Spleen;
+	}
+
+	public String getPalpation_Tenderness() {
+		return palpation_Tenderness;
+	}
+
+	public void setPalpation_Tenderness(String palpation_Tenderness) {
+		this.palpation_Tenderness = palpation_Tenderness;
+	}
+
+	public String getPalpation_LocationOfTenderness() {
+		return palpation_LocationOfTenderness;
+	}
+
+	public void setPalpation_LocationOfTenderness(String palpation_LocationOfTenderness) {
+		this.palpation_LocationOfTenderness = palpation_LocationOfTenderness;
+	}
+
+	public String getPercussion() {
+		return percussion;
+	}
+
+	public void setPercussion(String percussion) {
+		this.percussion = percussion;
+	}
+
+	public String getAuscultation() {
+		return auscultation;
+	}
+
+	public void setAuscultation(String auscultation) {
+		this.auscultation = auscultation;
+	}
+
+	public String getAnalRegion() {
+		return analRegion;
+	}
+
+	public void setAnalRegion(String analRegion) {
+		this.analRegion = analRegion;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public String getProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(String processed) {
+		this.processed = processed;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Timestamp getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Timestamp createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Timestamp getLastModDate() {
+		return lastModDate;
+	}
+
+	public void setLastModDate(Timestamp lastModDate) {
+		this.lastModDate = lastModDate;
+	}
+
+	public Long getID() {
+		return ID;
+	}
+	
 }

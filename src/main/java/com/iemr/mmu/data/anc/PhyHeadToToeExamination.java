@@ -107,4 +107,185 @@ public class PhyHeadToToeExamination {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
+
+	public Long getBeneficiaryRegID() {
+		return beneficiaryRegID;
+	}
+
+	public void setBeneficiaryRegID(Long beneficiaryRegID) {
+		this.beneficiaryRegID = beneficiaryRegID;
+	}
+
+	public Long getBenVisitID() {
+		return benVisitID;
+	}
+
+	public void setBenVisitID(Long benVisitID) {
+		this.benVisitID = benVisitID;
+	}
+
+	public String getHeadtoToeExam() {
+		return headtoToeExam;
+	}
+
+	public void setHeadtoToeExam(String headtoToeExam) {
+		this.headtoToeExam = headtoToeExam;
+	}
+
+	public String getHead() {
+		return head;
+	}
+
+	public void setHead(String head) {
+		this.head = head;
+	}
+
+	public String getEyes() {
+		return eyes;
+	}
+
+	public void setEyes(String eyes) {
+		this.eyes = eyes;
+	}
+
+	public String getEars() {
+		return ears;
+	}
+
+	public void setEars(String ears) {
+		this.ears = ears;
+	}
+
+	public String getNose() {
+		return nose;
+	}
+
+	public void setNose(String nose) {
+		this.nose = nose;
+	}
+
+	public String getOralCavity() {
+		return oralCavity;
+	}
+
+	public void setOralCavity(String oralCavity) {
+		this.oralCavity = oralCavity;
+	}
+
+	public String getThroat() {
+		return throat;
+	}
+
+	public void setThroat(String throat) {
+		this.throat = throat;
+	}
+
+	public String getBreastAndNipples() {
+		return breastAndNipples;
+	}
+
+	public void setBreastAndNipples(String breastAndNipples) {
+		this.breastAndNipples = breastAndNipples;
+	}
+
+	public String getTrunk() {
+		return trunk;
+	}
+
+	public void setTrunk(String trunk) {
+		this.trunk = trunk;
+	}
+
+	public String getUpperLimbs() {
+		return upperLimbs;
+	}
+
+	public void setUpperLimbs(String upperLimbs) {
+		this.upperLimbs = upperLimbs;
+	}
+
+	public String getLowerLimbs() {
+		return lowerLimbs;
+	}
+
+	public void setLowerLimbs(String lowerLimbs) {
+		this.lowerLimbs = lowerLimbs;
+	}
+
+	public String getSkin() {
+		return skin;
+	}
+
+	public void setSkin(String skin) {
+		this.skin = skin;
+	}
+
+	public String getHair() {
+		return hair;
+	}
+
+	public void setHair(String hair) {
+		this.hair = hair;
+	}
+
+	public String getNails() {
+		return nails;
+	}
+
+	public void setNails(String nails) {
+		this.nails = nails;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public String getProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(String processed) {
+		this.processed = processed;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Timestamp getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Timestamp createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Timestamp getLastModDate() {
+		return lastModDate;
+	}
+
+	public void setLastModDate(Timestamp lastModDate) {
+		this.lastModDate = lastModDate;
+	}
+
+	public Long getID() {
+		return ID;
+	}
+	
 }
