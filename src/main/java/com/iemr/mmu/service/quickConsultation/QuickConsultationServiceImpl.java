@@ -137,5 +137,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService{
 		}
 		return null;
 	}
+	
+	
 
 }

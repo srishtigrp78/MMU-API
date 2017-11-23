@@ -1,5 +1,8 @@
 package com.iemr.mmu.controller.nurse.main.anc;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.iemr.mmu.data.anc.ANCCareDetails;
 import com.iemr.mmu.data.anc.BenAdherence;
 import com.iemr.mmu.data.anc.WrapperANCCareDetail;
+import com.iemr.mmu.data.anc.WrapperAncImmunization;
+import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
+import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
 import com.iemr.utils.mapper.InputMapper;
 import com.iemr.utils.response.OutputResponse;
 
@@ -30,6 +37,13 @@ public class InsertNurseANCController {
 	@Autowired
 	public void setAncServiceImpl(ANCServiceImpl ancServiceImpl) {
 		this.ancServiceImpl = ancServiceImpl;
+	}
+
+	private QuickConsultationServiceImpl quickConsultationServiceImpl;
+
+	@Autowired
+	public void setEmergencyCasesheetServiceImpl(QuickConsultationServiceImpl quickConsultationServiceImpl) {
+		this.quickConsultationServiceImpl = quickConsultationServiceImpl;
 	}
 
 	@CrossOrigin
@@ -80,9 +94,9 @@ public class InsertNurseANCController {
 			if (requestObj != null) {
 				BenAdherence benAdherence = InputMapper.gson().fromJson(requestObj, BenAdherence.class);
 				int r = ancServiceImpl.saveBenAdherenceDetails(benAdherence);
-				if(r > 0){
+				if (r > 0) {
 					response.setResponse("Ben Adherence data saved successfully.");
-				}else{
+				} else {
 					response.setError(5000, "Something went wrong !!!");
 				}
 			} else {
@@ -100,9 +114,24 @@ public class InsertNurseANCController {
 		OutputResponse response = new OutputResponse();
 		logger.info("saveBeneficiaryANCCareDetail request:" + requestObj);
 		try {
-			inputMapper = new InputMapper();
-			ancServiceImpl.saveBenChiefComplaints();
+			if (requestObj != null) {
+				BenChiefComplaint[] benChiefComplaintArray = InputMapper.gson().fromJson(requestObj,
+						BenChiefComplaint[].class);
+
+				List<BenChiefComplaint> benChiefComplaintList = Arrays.asList(benChiefComplaintArray);
+				int r = ancServiceImpl.saveBenChiefComplaints(benChiefComplaintList);
+
+				if (r > 0) {
+					response.setResponse("Chief-complaints data saved successfully.");
+				} else {
+					response.setError(5000, "Something went Wrong !!!");
+				}
+			} else {
+				response.setError(5000, "Invalid request Data");
+			}
+			// inputMapper = new InputMapper();
 		} catch (Exception e) {
+			response.setError(e);
 		}
 		return response.toString();
 	}
@@ -114,11 +143,60 @@ public class InsertNurseANCController {
 		OutputResponse response = new OutputResponse();
 		logger.info("saveBeneficiaryANCCareDetail request:" + requestObj);
 		try {
-			inputMapper = new InputMapper();
+			// inputMapper = new InputMapper();
 			ancServiceImpl.saveBenInvestigation();
 		} catch (Exception e) {
 		}
 		return response.toString();
 	}
 
+	@CrossOrigin
+	@ApiOperation(value = "Save Beneficiary ANC details and ANC Obstetric", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/ANC/ancDetails_obstetricFormula" }, method = { RequestMethod.POST })
+	public String saveBenAncDetails_obstetricFormula(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		logger.info("Save Beneficiary ANC details and ANC Obstetric" + requestObj);
+		try {
+			if (requestObj != null) {
+				ANCCareDetails ancCareDetailsOBJ = InputMapper.gson().fromJson(requestObj, ANCCareDetails.class);
+				int r = ancServiceImpl.saveBenAncCareDetails(ancCareDetailsOBJ);
+				if (r > 0) {
+					response.setResponse("ANC Care data saved successfully.");
+				} else {
+					response.setError(5000, "Something went wrong !!!");
+				}
+			} else {
+				response.setError(5000, "Invalid request Data");
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin
+	@ApiOperation(value = "Save Beneficiary ANC Immunization data", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/ANC/ancImmunization" }, method = {})
+	public String saveBenAncImmunization(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		logger.info("Save Beneficiary ANC Immunization details " + requestObj);
+		try {
+			if (requestObj != null) {
+				WrapperAncImmunization wrapperAncImmunizationOBJ = InputMapper.gson().fromJson(requestObj,
+						WrapperAncImmunization.class);
+				int r = ancServiceImpl.saveAncImmunizationDetails(wrapperAncImmunizationOBJ);
+				if (r > 0) {
+					response.setResponse("ANC Immunization data saved Successfully.");
+				} else {
+					response.setError(5000, "Something Went Wrong !!!");
+				}
+			} else {
+				response.setError(5000, "Invalid request Data");
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+		return response.toString();
+
+	}
 }

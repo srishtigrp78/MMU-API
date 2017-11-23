@@ -5,6 +5,8 @@ import java.util.List;
 import com.iemr.mmu.data.anc.ANCCareDetails;
 import com.iemr.mmu.data.anc.ANCWomenVaccineDetail;
 import com.iemr.mmu.data.anc.BenAdherence;
+import com.iemr.mmu.data.anc.WrapperAncImmunization;
+import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 
 public interface ANCService {
 
@@ -14,7 +16,11 @@ public interface ANCService {
 
 	public int saveBenAdherenceDetails(BenAdherence benAdherence);
 
-	public void saveBenChiefComplaints();
+	public int saveBenChiefComplaints(List<BenChiefComplaint> benChiefComplaintList);
 
 	public void saveBenInvestigation();
+
+	public int saveBenAncCareDetails(ANCCareDetails ancCareDetailsOBJ);
+
+	public int saveAncImmunizationDetails(WrapperAncImmunization wrapperAncImmunizationOBJ);
 }
