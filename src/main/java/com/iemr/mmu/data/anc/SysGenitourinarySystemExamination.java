@@ -63,4 +63,97 @@ public class SysGenitourinarySystemExamination {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
+
+	public Long getBeneficiaryRegID() {
+		return beneficiaryRegID;
+	}
+
+	public void setBeneficiaryRegID(Long beneficiaryRegID) {
+		this.beneficiaryRegID = beneficiaryRegID;
+	}
+
+	public Long getBenVisitID() {
+		return benVisitID;
+	}
+
+	public void setBenVisitID(Long benVisitID) {
+		this.benVisitID = benVisitID;
+	}
+
+	public String getRenalAngle() {
+		return renalAngle;
+	}
+
+	public void setRenalAngle(String renalAngle) {
+		this.renalAngle = renalAngle;
+	}
+
+	public String getSuprapubicRegion() {
+		return suprapubicRegion;
+	}
+
+	public void setSuprapubicRegion(String suprapubicRegion) {
+		this.suprapubicRegion = suprapubicRegion;
+	}
+
+	public String getExternalGenitalia() {
+		return externalGenitalia;
+	}
+
+	public void setExternalGenitalia(String externalGenitalia) {
+		this.externalGenitalia = externalGenitalia;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public String getProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(String processed) {
+		this.processed = processed;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Timestamp getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Timestamp createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Timestamp getLastModDate() {
+		return lastModDate;
+	}
+
+	public void setLastModDate(Timestamp lastModDate) {
+		this.lastModDate = lastModDate;
+	}
+
+	public Long getID() {
+		return ID;
+	}
+	
 }

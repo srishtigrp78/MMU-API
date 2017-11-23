@@ -338,7 +338,7 @@ public class ANCMasterDataServiceImpl {
 		
 		ArrayList<Object[]> familyMemberTypes = familyMemberMasterRepo.getFamilyMemberTypeMaster();
 		
-		ArrayList<LabTestMaster> labTests = labTestMasterRepo.getLabTestMaster();
+		ArrayList<LabTestMaster> labTests = labTestMasterRepo.getNonRadiologyLabTests();
 	
 		
 		resMap.put("AllergicReactionTypes", AllergicReactionTypes.getAllergicReactionTypes(allergicReactionTypes));

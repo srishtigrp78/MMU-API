@@ -1,12 +1,14 @@
 package com.iemr.mmu.data.anc;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
@@ -58,6 +60,9 @@ public class PhyGeneralExamination {
 	@Expose
 	@Column(name = "TypeOfDangerSign")
 	private String typeOfDangerSign;
+	
+	@Transient
+	List<String> typeOfDangerSigns;
 
 	@Expose
 	@Column(name = "Pallor")
@@ -122,4 +127,225 @@ public class PhyGeneralExamination {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
+
+	public Long getBeneficiaryRegID() {
+		return beneficiaryRegID;
+	}
+
+	public void setBeneficiaryRegID(Long beneficiaryRegID) {
+		this.beneficiaryRegID = beneficiaryRegID;
+	}
+
+	public Long getBenVisitID() {
+		return benVisitID;
+	}
+
+	public void setBenVisitID(Long benVisitID) {
+		this.benVisitID = benVisitID;
+	}
+
+	public String getConsciousness() {
+		return consciousness;
+	}
+
+	public void setConsciousness(String consciousness) {
+		this.consciousness = consciousness;
+	}
+
+	public String getCoherence() {
+		return coherence;
+	}
+
+	public void setCoherence(String coherence) {
+		this.coherence = coherence;
+	}
+
+	public String getCooperation() {
+		return cooperation;
+	}
+
+	public void setCooperation(String cooperation) {
+		this.cooperation = cooperation;
+	}
+
+	public String getComfortness() {
+		return comfortness;
+	}
+
+	public void setComfortness(String comfortness) {
+		this.comfortness = comfortness;
+	}
+
+	public String getBuiltAndAppearance() {
+		return builtAndAppearance;
+	}
+
+	public void setBuiltAndAppearance(String builtAndAppearance) {
+		this.builtAndAppearance = builtAndAppearance;
+	}
+
+	public String getGait() {
+		return gait;
+	}
+
+	public void setGait(String gait) {
+		this.gait = gait;
+	}
+
+	public String getDangerSigns() {
+		return dangerSigns;
+	}
+
+	public void setDangerSigns(String dangerSigns) {
+		this.dangerSigns = dangerSigns;
+	}
+
+	public String getTypeOfDangerSign() {
+		return typeOfDangerSign;
+	}
+
+	public void setTypeOfDangerSign(String typeOfDangerSign) {
+		this.typeOfDangerSign = typeOfDangerSign;
+	}
+
+	public List<String> getTypeOfDangerSigns() {
+		return typeOfDangerSigns;
+	}
+
+	public void setTypeOfDangerSigns(List<String> typeOfDangerSigns) {
+		this.typeOfDangerSigns = typeOfDangerSigns;
+	}
+
+	public String getPallor() {
+		return pallor;
+	}
+
+	public void setPallor(String pallor) {
+		this.pallor = pallor;
+	}
+
+	public String getJaundice() {
+		return jaundice;
+	}
+
+	public void setJaundice(String jaundice) {
+		this.jaundice = jaundice;
+	}
+
+	public String getCyanosis() {
+		return cyanosis;
+	}
+
+	public void setCyanosis(String cyanosis) {
+		this.cyanosis = cyanosis;
+	}
+
+	public String getClubbing() {
+		return clubbing;
+	}
+
+	public void setClubbing(String clubbing) {
+		this.clubbing = clubbing;
+	}
+
+	public String getLymphadenopathy() {
+		return lymphadenopathy;
+	}
+
+	public void setLymphadenopathy(String lymphadenopathy) {
+		this.lymphadenopathy = lymphadenopathy;
+	}
+
+	public String getLymphnodesInvolved() {
+		return lymphnodesInvolved;
+	}
+
+	public void setLymphnodesInvolved(String lymphnodesInvolved) {
+		this.lymphnodesInvolved = lymphnodesInvolved;
+	}
+
+	public String getTypeOfLymphadenopathy() {
+		return typeOfLymphadenopathy;
+	}
+
+	public void setTypeOfLymphadenopathy(String typeOfLymphadenopathy) {
+		this.typeOfLymphadenopathy = typeOfLymphadenopathy;
+	}
+
+	public String getEdema() {
+		return edema;
+	}
+
+	public void setEdema(String edema) {
+		this.edema = edema;
+	}
+
+	public String getExtentOfEdema() {
+		return extentOfEdema;
+	}
+
+	public void setExtentOfEdema(String extentOfEdema) {
+		this.extentOfEdema = extentOfEdema;
+	}
+
+	public String getEdemaType() {
+		return edemaType;
+	}
+
+	public void setEdemaType(String edemaType) {
+		this.edemaType = edemaType;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public String getProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(String processed) {
+		this.processed = processed;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Timestamp getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Timestamp createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Timestamp getLastModDate() {
+		return lastModDate;
+	}
+
+	public void setLastModDate(Timestamp lastModDate) {
+		this.lastModDate = lastModDate;
+	}
+
+	public Long getID() {
+		return ID;
+	}
+	
 }
