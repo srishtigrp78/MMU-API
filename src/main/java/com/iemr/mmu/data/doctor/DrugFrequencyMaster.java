@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.doctor;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -58,6 +59,21 @@ public class DrugFrequencyMaster {
 		this.createdDate = createdDate;
 		this.modifiedBy = modifiedBy;
 		this.lastModDate = lastModDate;
+	}
+	
+	public DrugFrequencyMaster(Integer drugFrequencyID, String frequency) {
+		super();
+		this.drugFrequencyID = drugFrequencyID;
+		this.frequency = frequency;
+	}
+	
+	public static ArrayList<DrugFrequencyMaster> getDrugFrequencyMaster(ArrayList<Object[]> resList) {
+		ArrayList<DrugFrequencyMaster> resArray = new ArrayList<DrugFrequencyMaster>();
+		for (Object[] obj : resList) {
+			DrugFrequencyMaster cOBJ = new DrugFrequencyMaster((Integer)obj[0], (String)obj[1]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
 	}
 
 	public Integer getDrugFrequencyID() {

@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.doctor;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.masterdata.anc.CounsellingType;
 
 @Entity
 @Table(name = "m_chiefcomplaint")
@@ -59,6 +61,22 @@ public class ChiefComplaintMaster {
 		this.createdDate = createdDate;
 		this.modifiedBy = modifiedBy;
 		this.lastModDate = lastModDate;
+	}
+	
+	public ChiefComplaintMaster(Integer chiefComplaintID, String chiefComplaint, String chiefComplaintDesc) {
+		super();
+		this.chiefComplaintID = chiefComplaintID;
+		this.chiefComplaint = chiefComplaint;
+		this.chiefComplaintDesc = chiefComplaintDesc;
+	}
+
+	public static ArrayList<ChiefComplaintMaster> getChiefComplaintMasters(ArrayList<Object[]> resList) {
+		ArrayList<ChiefComplaintMaster> resArray = new ArrayList<ChiefComplaintMaster>();
+		for (Object[] obj : resList) {
+			ChiefComplaintMaster cOBJ = new ChiefComplaintMaster((Integer)obj[0], (String)obj[1], (String)obj[2]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
 	}
 
 	public Integer getChiefComplaintID() {

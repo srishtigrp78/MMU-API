@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.doctor;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -63,7 +64,22 @@ public class DrugDoseMaster {
 		this.modifiedBy = modifiedBy;
 		this.lastModDate = lastModDate;
 	}
+	
+	public DrugDoseMaster(Integer drugDoseID, String drugDose) {
+		super();
+		this.drugDoseID = drugDoseID;
+		this.drugDose = drugDose;
+	}
 
+	public static ArrayList<DrugDoseMaster> getDrugDoseMasters(ArrayList<Object[]> resList) {
+		ArrayList<DrugDoseMaster> resArray = new ArrayList<DrugDoseMaster>();
+		for (Object[] obj : resList) {
+			DrugDoseMaster cOBJ = new DrugDoseMaster((Integer)obj[0], (String)obj[1]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
+	}
+	
 	public Integer getDrugDoseID() {
 		return drugDoseID;
 	}

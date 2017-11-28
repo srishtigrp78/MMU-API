@@ -340,18 +340,18 @@ public class DoctorServiceImpl implements DoctorService {
 	@Override
 	public String getQuickConsultMasterData() {
 		Map<String, Object> resMap = new HashMap<>();
-		ArrayList<ChiefComplaintMaster> ccList = chiefComplaintMasterRepo.getChiefComplaintMaster();
-		ArrayList<DrugDoseMaster> ddmList = drugDoseMasterRepo.getDrugDoseMaster();
-		ArrayList<DrugDurationUnitMaster> ddumList = drugDurationUnitMasterRepo.getDrugDurationUnitMaster();
-		ArrayList<DrugFormMaster> dfmList = drugFormMasterRepo.getDrugFormMaster();
-		ArrayList<DrugFrequencyMaster> dfrmList = drugFrequencyMasterRepo.getDrugFrequencyMaster();
-		ArrayList<LabTestMaster> ltmList = labTestMasterRepo.getLabTestMaster();
-		resMap.put("chiefComplaintMaster", ccList);
-		resMap.put("drugDoseMaster", ddmList);
-		resMap.put("drugDurationUnitMaster", ddumList);
-		resMap.put("drugFormMaster", dfmList);
-		resMap.put("drugFrequencyMaster", dfrmList);
-		resMap.put("labTestMaster", ltmList);
+		ArrayList<Object[]> ccList = chiefComplaintMasterRepo.getChiefComplaintMaster();
+		ArrayList<Object[]> ddmList = drugDoseMasterRepo.getDrugDoseMaster();
+		ArrayList<Object[]> ddumList = drugDurationUnitMasterRepo.getDrugDurationUnitMaster();
+		ArrayList<Object[]> dfmList = drugFormMasterRepo.getDrugFormMaster();
+		ArrayList<Object[]> dfrmList = drugFrequencyMasterRepo.getDrugFrequencyMaster();
+		ArrayList<Object[]> ltmList = labTestMasterRepo.getLabTestMaster();
+		resMap.put("chiefComplaintMaster", ChiefComplaintMaster.getChiefComplaintMasters(ccList));
+		resMap.put("drugDoseMaster", DrugDoseMaster.getDrugDoseMasters(ddmList));
+		resMap.put("drugDurationUnitMaster", DrugDurationUnitMaster.getDrugDurationUnitMaster(ddumList));
+		resMap.put("drugFormMaster", DrugFormMaster.getDrugFormMaster(dfmList));
+		resMap.put("drugFrequencyMaster", DrugFrequencyMaster.getDrugFrequencyMaster(dfrmList));
+		resMap.put("labTestMaster", LabTestMaster.getLabTestMasters(ltmList));
 		return new Gson().toJson(resMap);
 	}
 

@@ -25,6 +25,18 @@ public class ChildFeedingDetails {
 	private Long beneficiaryRegID;
 
 	@Expose
+	@Column(name = "BenVisitID")
+	private Long benVisitID;
+	
+	@Expose
+	@Column(name = "ProviderServiceMapID")
+	private Integer providerServiceMapID;
+	
+	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
+	
+	@Expose
 	@Column(name = "ChildID")
 	private Long childID;
 

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import com.iemr.mmu.data.doctor.DrugFormMaster;
 @Repository
 public interface DrugFormMasterRepo extends CrudRepository<DrugFormMaster, Integer> {
-	@Query("SELECT c FROM DrugFormMaster c where c.deleted != 1")
-	public ArrayList<DrugFormMaster> getDrugFormMaster();
+	
+	@Query("SELECT drugFormID, drugForm FROM DrugFormMaster c where c.deleted != 1")
+	public  ArrayList<Object[]> getDrugFormMaster();
+	
 }

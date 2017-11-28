@@ -10,6 +10,8 @@ import com.iemr.mmu.data.doctor.DrugDoseMaster;
 
 @Repository
 public interface DrugDoseMasterRepo extends CrudRepository<DrugDoseMaster, Integer> {
-	@Query("SELECT c FROM DrugDoseMaster c where c.deleted != 1")
-	public ArrayList<DrugDoseMaster> getDrugDoseMaster();
+	
+	@Query("SELECT drugDoseID, drugDose FROM DrugDoseMaster c where c.deleted != 1")
+	public  ArrayList<Object[]> getDrugDoseMaster();
+	
 }
