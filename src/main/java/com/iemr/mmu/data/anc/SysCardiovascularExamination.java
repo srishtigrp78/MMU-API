@@ -29,6 +29,10 @@ public class SysCardiovascularExamination {
 	private Long benVisitID;
 	
 	@Expose
+	@Column(name = "ProviderServiceMapID")
+	private Integer providerServiceMapID;
+	
+	@Expose
 	@Column(name = "JugularVenousPulse_JVP")
 	private String jugularVenousPulse_JVP;
 	

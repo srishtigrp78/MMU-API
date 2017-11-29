@@ -29,6 +29,10 @@ public class SysMusculoskeletalSystemExamination {
 	private Long benVisitID;
 	
 	@Expose
+	@Column(name = "ProviderServiceMapID")
+	private Integer providerServiceMapID;
+	
+	@Expose
 	@Column(name = "Joint_TypeOfJoint")
 	private Long joint_TypeOfJoint;
 
