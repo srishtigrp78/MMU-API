@@ -69,12 +69,12 @@ public class CommonMasterController {
 			value = "Master Data API for Doctor",
 			consumes = "application/json",
 			produces = "application/json")
-	@RequestMapping(value = "/doctor/masterData/{visitCategoryID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
-	public String DoctorMasterData(@PathVariable("visitCategoryID") Integer visitCategoryID)
+	@RequestMapping(value = "/doctor/masterData/{visitCategoryID}/{providerServiceMapID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
+	public String DoctorMasterData(@PathVariable("visitCategoryID") Integer visitCategoryID,@PathVariable("providerServiceMapID") Integer providerServiceMapID)
 	{
-		logger.info("Doctor master Data for categoryID:" + visitCategoryID);
+		logger.info("Doctor master Data for categoryID:" + visitCategoryID + " and providerServiceMapID:"+providerServiceMapID);
 		OutputResponse response = new OutputResponse();
-		response.setResponse(commonMasterServiceImpl.getMasterDataForDoctor(visitCategoryID));
+		response.setResponse(commonMasterServiceImpl.getMasterDataForDoctor(visitCategoryID,providerServiceMapID));
 		logger.info("Doctor master Data for categoryID:" + response.toString());
 		return response.toString();
 	}

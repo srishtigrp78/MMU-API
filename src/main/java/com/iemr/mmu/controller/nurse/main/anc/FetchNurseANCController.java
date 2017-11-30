@@ -24,7 +24,6 @@ import io.swagger.annotations.ApiParam;
 public class FetchNurseANCController {
 	private InputMapper inputMapper;
 	private Logger logger = LoggerFactory.getLogger(FetchNurseANCController.class);
-
 	private NurseServiceImpl nurseServiceImpl;
 
 	@Autowired
@@ -53,10 +52,11 @@ public class FetchNurseANCController {
 				Long benRegID = obj.getLong("benRegID");
 				Long benVisitID = obj.getLong("benVisitID");
 
-				String s = nurseServiceImpl.getBenDataFrmNurseToDocVisitDetailsScreen(benRegID, benVisitID);
-				response.setResponse(s);
+				String res = aNCServiceImpl.getBenVisitDetailsFrmNurseANC(benRegID, benVisitID);
+				response.setResponse(res);
 			} else {
-
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
 			}
 			logger.info("getBenDataFrmNurseScrnToDocScrnVisitDetails response:" + response);
 		} catch (Exception e) {
@@ -69,6 +69,7 @@ public class FetchNurseANCController {
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary ANC Examination details from Nurse to Doctor ", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenExaminationDetailsANC" }, method = { RequestMethod.POST })
+
 	public String getBenExaminationDetailsANC(
 			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -83,12 +84,40 @@ public class FetchNurseANCController {
 				String s = aNCServiceImpl.getANCExaminationDetailsData(benRegID, benVisitID);
 				response.setResponse(s);
 			} else {
-				response.setError(5000, "Wrong data !!!");
+				response.setError(5000, "Invalid Request Data !!!");
 			}
 			logger.info("getBenDataFrmNurseScrnToDocScrnVisitDetails response:" + response);
 		} catch (Exception e) {
 			response.setError(e);
 			logger.error("Error in getBenDataFrmNurseScrnToDocScrnVisitDetails:" + e);
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary ANC Care details from Nurse ANC", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenANCDetailsFrmNurseANC" }, method = { RequestMethod.POST })
+	public String getBenANCDetailsFrmNurseANC(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenANCDetailsFrmNurseANC request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID") && obj.has("benVisitID")) {
+				Long benRegID = obj.getLong("benRegID");
+				Long benVisitID = obj.getLong("benVisitID");
+
+				String res = aNCServiceImpl.getBenANCDetailsFrmNurseANC(benRegID, benVisitID);
+				response.setResponse(res);
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenANCDetailsFrmNurseANC response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenANCDetailsFrmNurseANC:" + e);
 		}
 		return response.toString();
 	}

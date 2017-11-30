@@ -2,6 +2,7 @@ package com.iemr.mmu.data.anc;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
 
 @Entity
 @Table(name = "t_anccare")
@@ -145,9 +147,7 @@ public class ANCCareDetails {
 			String comolaintType, String duration, String description, Date aNCRegistrationDate, Short aNCVisitNumber,
 			Date lastMenstrualPeriod_LMP, Short gestationalAgeOrPeriodofAmenorrhea_POA, Short trimesterNumber,
 			Date expectedDateofDelivery, Boolean primiGravida, String obstetricFormula, Short gravida_G,
-			Short termDeliveries_T, Short pretermDeliveries_P, Short abortions_A, Short livebirths_L, String bloodGroup,
-			Boolean deleted, String processed, String createdBy, Timestamp createdDate, String modifiedBy,
-			Timestamp lastModDate, String lmpDate, String expDelDt) {
+			Short termDeliveries_T, Short pretermDeliveries_P, Short abortions_A, Short livebirths_L, String bloodGroup) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -171,16 +171,20 @@ public class ANCCareDetails {
 		this.abortions_A = abortions_A;
 		this.livebirths_L = livebirths_L;
 		this.bloodGroup = bloodGroup;
-		this.deleted = deleted;
-		this.processed = processed;
-		this.createdBy = createdBy;
-		this.createdDate = createdDate;
-		this.modifiedBy = modifiedBy;
-		this.lastModDate = lastModDate;
-		this.lmpDate = lmpDate;
-		this.expDelDt = expDelDt;
 	}
 
+	public static ArrayList<ANCCareDetails> getANCCareDetails(ArrayList<Object[]> resList) {
+		ArrayList<ANCCareDetails> resArray = new ArrayList<ANCCareDetails>();
+		for (Object[] obj : resList) {
+			ANCCareDetails cOBJ = new ANCCareDetails((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (Short)obj[4], (String)obj[5], 
+					(String)obj[6], (String)obj[7], (Date)obj[8], (Short)obj[9], (Date)obj[10], (Short)obj[11], 
+					(Short)obj[12], (Date)obj[13], (Boolean)obj[14], (String)obj[15], (Short)obj[16], (Short)obj[17], (Short)obj[18],
+					(Short)obj[19], (Short)obj[20], (String)obj[21]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
+	}
+	
 	public Long getID() {
 		return ID;
 	}

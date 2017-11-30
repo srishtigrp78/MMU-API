@@ -43,6 +43,7 @@ import com.iemr.mmu.repo.nurse.anc.SysObstetricExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.SysRespiratoryExaminationRepo;
 import com.iemr.mmu.repo.quickConsultation.BenChiefComplaintRepo;
 import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
+import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
 
 @Service
@@ -81,6 +82,13 @@ public class ANCServiceImpl implements ANCService {
 	private SysMusculoskeletalSystemExaminationRepo sysMusculoskeletalSystemExaminationRepo;
 	private SysObstetricExaminationRepo sysObstetricExaminationRepo;
 	private SysRespiratoryExaminationRepo sysRespiratoryExaminationRepo;
+
+	private NurseServiceImpl nurseServiceImpl;
+
+	@Autowired
+	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
+		this.nurseServiceImpl = nurseServiceImpl;
+	}
 
 	@Autowired
 	public void setBenAdherenceRepo(BenAdherenceRepo benAdherenceRepo) {
@@ -452,6 +460,7 @@ public class ANCServiceImpl implements ANCService {
 		examinationDetailsMap.put("centralNervousExamination", getSysCentralNervousExamination(benRegID, benVisitID));
 		examinationDetailsMap.put("musculoskeletalExamination", getMusculoskeletalExamination(benRegID, benVisitID));
 		examinationDetailsMap.put("genitourinaryExamination", getGenitourinaryExamination(benRegID, benVisitID));
+		examinationDetailsMap.put("obstetricExamination", getSysObstetricExamination(benRegID, benVisitID));
 
 		return new Gson().toJson(examinationDetailsMap);
 	}
@@ -474,6 +483,7 @@ public class ANCServiceImpl implements ANCService {
 	private PhyHeadToToeExamination getHeadToToeExaminationData(Long benRegID, Long benVisitID) {
 		PhyHeadToToeExamination phyHeadToToeExaminationData = phyHeadToToeExaminationRepo
 				.getPhyHeadToToeExaminationData(benRegID, benVisitID);
+
 		return phyHeadToToeExaminationData;
 
 	}
@@ -481,30 +491,35 @@ public class ANCServiceImpl implements ANCService {
 	private SysGastrointestinalExamination getSysGastrointestinalExamination(Long benRegID, Long benVisitID) {
 		SysGastrointestinalExamination sysGastrointestinalExaminationData = sysGastrointestinalExaminationRepo
 				.getSSysGastrointestinalExamination(benRegID, benVisitID);
+
 		return sysGastrointestinalExaminationData;
 	}
 
 	private SysCardiovascularExamination getCardiovascularExamination(Long benRegID, Long benVisitID) {
 		SysCardiovascularExamination sysCardiovascularExaminationData = sysCardiovascularExaminationRepo
 				.getSysCardiovascularExaminationData(benRegID, benVisitID);
+
 		return sysCardiovascularExaminationData;
 	}
 
 	private SysRespiratoryExamination getRespiratoryExamination(Long benRegID, Long benVisitID) {
 		SysRespiratoryExamination sysRespiratoryExaminationData = sysRespiratoryExaminationRepo
 				.getSysRespiratoryExaminationData(benRegID, benVisitID);
+
 		return sysRespiratoryExaminationData;
 	}
 
 	private SysCentralNervousExamination getSysCentralNervousExamination(Long benRegID, Long benVisitID) {
 		SysCentralNervousExamination sysCentralNervousExaminationData = sysCentralNervousExaminationRepo
 				.getSysCentralNervousExaminationData(benRegID, benVisitID);
+
 		return sysCentralNervousExaminationData;
 	}
 
 	private SysMusculoskeletalSystemExamination getMusculoskeletalExamination(Long benRegID, Long benVisitID) {
 		SysMusculoskeletalSystemExamination sysMusculoskeletalSystemExaminationData = sysMusculoskeletalSystemExaminationRepo
 				.getSysMusculoskeletalSystemExamination(benRegID, benVisitID);
+
 		return sysMusculoskeletalSystemExaminationData;
 	}
 
@@ -515,4 +530,62 @@ public class ANCServiceImpl implements ANCService {
 		return sysGenitourinarySystemExaminationData;
 	}
 
+	private SysObstetricExamination getSysObstetricExamination(Long benRegID, Long benVisitID) {
+		SysObstetricExamination sysObstetricExaminationData = sysObstetricExaminationRepo
+				.getSysObstetricExaminationData(benRegID, benVisitID);
+
+		return sysObstetricExaminationData;
+	}
+
+	public String getBenVisitDetailsFrmNurseANC(Long benRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("ANCNurseVisitDetail",
+				nurseServiceImpl.getBenDataFrmNurseToDocVisitDetailsScreen(benRegID, benVisitID));
+
+		resMap.put("BenAdherence", getBenAdherence(benRegID, benVisitID));
+
+		resMap.put("LabTestOrders", getLabTestOrders(benRegID, benVisitID));
+
+		return resMap.toString();
+	}
+
+	@Override
+	public String getBenAdherence(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> resList = benAdherenceRepo.getBenAdherence(beneficiaryRegID, benVisitID);
+		ArrayList<BenAdherence> benAdherences = BenAdherence.getBenAdherences(resList);
+		return new Gson().toJson(benAdherences);
+	}
+
+	@Override
+	public String getLabTestOrders(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> resList = labTestOrderDetailRepo.getLabTestOrderDetails(beneficiaryRegID, benVisitID);
+		ArrayList<LabTestOrderDetail> labTestOrderDetails = LabTestOrderDetail.getLabTestOrderDetails(resList);
+		return new Gson().toJson(labTestOrderDetails);
+	}
+
+	public String getBenANCDetailsFrmNurseANC(Long benRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("ANCCareDetail", getANCCareDetails(benRegID, benVisitID));
+
+		resMap.put("ANCWomenVaccineDetails", getANCWomenVaccineDetails(benRegID, benVisitID));
+
+		return resMap.toString();
+	}
+
+	@Override
+	public String getANCCareDetails(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> resList = ancCareRepo.getANCCareDetails(beneficiaryRegID, benVisitID);
+		ArrayList<ANCCareDetails> ancCareDetails = ANCCareDetails.getANCCareDetails(resList);
+		return new Gson().toJson(ancCareDetails);
+	}
+
+	@Override
+	public String getANCWomenVaccineDetails(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> resList = ancWomenVaccineRepo.getANCWomenVaccineDetails(beneficiaryRegID, benVisitID);
+		ArrayList<ANCWomenVaccineDetail> ancWomenVaccineDetails = ANCWomenVaccineDetail
+				.getANCWomenVaccineDetails(resList);
+		return new Gson().toJson(ancWomenVaccineDetails);
+	}
 }

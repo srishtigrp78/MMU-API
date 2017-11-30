@@ -160,7 +160,7 @@ public class InsertNurseANCController {
 
 	@CrossOrigin
 	@ApiOperation(value = "Save Beneficiary ANC Immunization data", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/save/ANC/ancImmunization" }, method = {})
+	@RequestMapping(value = { "/save/ANC/ancImmunization" }, method = { RequestMethod.POST })
 
 	public String saveBenAncImmunization(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
