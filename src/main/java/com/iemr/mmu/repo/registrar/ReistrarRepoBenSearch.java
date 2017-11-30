@@ -1,6 +1,5 @@
 package com.iemr.mmu.repo.registrar;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +12,7 @@ import com.iemr.mmu.data.registrar.V_BenAdvanceSearch;
 
 @Repository
 public interface ReistrarRepoBenSearch extends CrudRepository<V_BenAdvanceSearch, Long> {
-	
+
 	@Query("SELECT DISTINCT(beneficiaryRegID), beneficiaryID, "
 			+ " UPPER( concat(IFNULL(firstName, ''), ' ',IFNULL(lastName,''))) as benName, "
 			+ " Date(dob), genderID, genderName, UPPER(fatherName) as fatherName, "
@@ -28,13 +27,14 @@ public interface ReistrarRepoBenSearch extends CrudRepository<V_BenAdvanceSearch
 			+ " (Isnull(cast(districtID as string)) LIKE :districtID OR cast(districtID as string) like :districtID)")
 
 	public ArrayList<Object[]> getAdvanceBenSearchList(@Param("beneficiaryID") String beneficiaryID,
-			@Param("firstName") String firstName,
-			@Param("lastName") String lastName,
-			@Param("phoneNo") String phoneNo,
-			@Param("aadharNo") String aadharNo,
-			@Param("govtIdentityNo") String govtIdentityNo,
-			@Param("stateID") String stateID,
-			@Param("districtID") String districtID);
+			@Param("firstName") String firstName, @Param("lastName") String lastName, @Param("phoneNo") String phoneNo,
+			@Param("aadharNo") String aadharNo, @Param("govtIdentityNo") String govtIdentityNo,
+			@Param("stateID") String stateID, @Param("districtID") String districtID);
+
+	@Query(" SELECT Distinct beneficiaryRegID, beneficiaryID, concat(IFNULL(firstName, ''), ' ',IFNULL(lastName,'')) as benName, "
+			+ " Date(dob), genderID, regCreatedDate, districtName, villageName "
+			+ "from V_BenAdvanceSearch  WHERE beneficiaryRegID =:benRegID ")
+	public List<Object[]> getBenDetails(@Param("benRegID") Long benRegID);
 
 	@Query("SELECT DISTINCT beneficiaryRegID, beneficiaryID, "
 			+ " UPPER( concat(IFNULL(firstName, ''), ' ',IFNULL(lastName,''))) as benName, "
@@ -52,5 +52,5 @@ public interface ReistrarRepoBenSearch extends CrudRepository<V_BenAdvanceSearch
 			+ " districtID, districtName, districtBranchID, villageName, phoneNo "
 			+ " from V_BenAdvanceSearch  Where flowStatusFlag = 'R' and Date(regLastModDate) = curdate() ")
 	public List<Object[]> getNurseWorkList();
-	
+
 }

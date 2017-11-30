@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
@@ -32,80 +33,79 @@ public class ANCCareDetails {
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitNo")
 	private Short visitNo;
-	
+
 	@Expose
 	@Column(name = "ComolaintType")
 	private String comolaintType;
-	
+
 	@Expose
 	@Column(name = "Duration")
 	private String duration;
-	
+
 	@Expose
 	@Column(name = "Description")
 	private String description;
-	
+
 	@Expose
 	@Column(name = "ANCRegistrationDate")
 	private Date aNCRegistrationDate;
-	
+
 	@Expose
 	@Column(name = "ANCVisitNumber")
 	private Short aNCVisitNumber;
-	
+
 	@Expose
 	@Column(name = "LastMenstrualPeriod_LMP")
 	private Date lastMenstrualPeriod_LMP;
-	
+
 	@Expose
 	@Column(name = "GestationalAgeOrPeriodofAmenorrhea_POA")
 	private Short gestationalAgeOrPeriodofAmenorrhea_POA;
-	
+
 	@Expose
 	@Column(name = "TrimesterNumber")
 	private Short trimesterNumber;
-	
+
 	@Expose
 	@Column(name = "ExpectedDateofDelivery")
 	private Date expectedDateofDelivery;
-	
-	
+
 	@Expose
 	@Column(name = "PrimiGravida")
 	private Boolean primiGravida;
-	
+
 	@Expose
 	@Column(name = "ObstetricFormula")
 	private String obstetricFormula;
-	
+
 	@Expose
 	@Column(name = "Gravida_G")
 	private Short gravida_G;
-	
+
 	@Expose
 	@Column(name = "TermDeliveries_T")
 	private Short termDeliveries_T;
-	
+
 	@Expose
 	@Column(name = "PretermDeliveries_P")
 	private Short pretermDeliveries_P;
-	
+
 	@Expose
 	@Column(name = "Abortions_A")
 	private Short abortions_A;
-	
+
 	@Expose
 	@Column(name = "Livebirths_L")
 	private Short livebirths_L;
-	
+
 	@Expose
 	@Column(name = "BloodGroup")
 	private String bloodGroup;
-	
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -130,6 +130,12 @@ public class ANCCareDetails {
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
+	@Transient
+	private String lmpDate;
+
+	@Transient
+	private String expDelDt;
+
 	public ANCCareDetails() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -139,8 +145,9 @@ public class ANCCareDetails {
 			String comolaintType, String duration, String description, Date aNCRegistrationDate, Short aNCVisitNumber,
 			Date lastMenstrualPeriod_LMP, Short gestationalAgeOrPeriodofAmenorrhea_POA, Short trimesterNumber,
 			Date expectedDateofDelivery, Boolean primiGravida, String obstetricFormula, Short gravida_G,
-			Short termDeliveries_T, Short pretermDeliveries_P, Short abortions_A, Short livebirths_L,
-			String bloodGroup) {
+			Short termDeliveries_T, Short pretermDeliveries_P, Short abortions_A, Short livebirths_L, String bloodGroup,
+			Boolean deleted, String processed, String createdBy, Timestamp createdDate, String modifiedBy,
+			Timestamp lastModDate, String lmpDate, String expDelDt) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -164,6 +171,22 @@ public class ANCCareDetails {
 		this.abortions_A = abortions_A;
 		this.livebirths_L = livebirths_L;
 		this.bloodGroup = bloodGroup;
+		this.deleted = deleted;
+		this.processed = processed;
+		this.createdBy = createdBy;
+		this.createdDate = createdDate;
+		this.modifiedBy = modifiedBy;
+		this.lastModDate = lastModDate;
+		this.lmpDate = lmpDate;
+		this.expDelDt = expDelDt;
+	}
+
+	public Long getID() {
+		return ID;
+	}
+
+	public void setID(Long iD) {
+		ID = iD;
 	}
 
 	public Long getBeneficiaryRegID() {
@@ -382,8 +405,20 @@ public class ANCCareDetails {
 		this.lastModDate = lastModDate;
 	}
 
-	public Long getID() {
-		return ID;
+	public String getLmpDate() {
+		return lmpDate;
 	}
-	
+
+	public void setLmpDate(String lmpDate) {
+		this.lmpDate = lmpDate;
+	}
+
+	public String getExpDelDt() {
+		return expDelDt;
+	}
+
+	public void setExpDelDt(String expDelDt) {
+		this.expDelDt = expDelDt;
+	}
+
 }

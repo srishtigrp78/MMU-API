@@ -1,7 +1,11 @@
 package com.iemr.mmu.service.anc;
 
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +23,10 @@ import com.iemr.mmu.data.anc.SysMusculoskeletalSystemExamination;
 import com.iemr.mmu.data.anc.SysObstetricExamination;
 import com.iemr.mmu.data.anc.SysRespiratoryExamination;
 import com.iemr.mmu.data.anc.WrapperAncImmunization;
+import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
+import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
+import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.repo.nurse.anc.ANCCareRepo;
 import com.iemr.mmu.repo.nurse.anc.ANCWomenVaccineRepo;
 import com.iemr.mmu.repo.nurse.anc.BenAdherenceRepo;
@@ -33,6 +40,8 @@ import com.iemr.mmu.repo.nurse.anc.SysMusculoskeletalSystemExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.SysObstetricExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.SysRespiratoryExaminationRepo;
 import com.iemr.mmu.repo.quickConsultation.BenChiefComplaintRepo;
+import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
+import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
 
 @Service
 public class ANCServiceImpl implements ANCService {
@@ -45,6 +54,20 @@ public class ANCServiceImpl implements ANCService {
 	@Autowired
 	public void setBenChiefComplaintRepo(BenChiefComplaintRepo benChiefComplaintRepo) {
 		this.benChiefComplaintRepo = benChiefComplaintRepo;
+	}
+
+	private QuickConsultationServiceImpl quickConsultationServiceImpl;
+
+	@Autowired
+	public void setEmergencyCasesheetServiceImpl(QuickConsultationServiceImpl quickConsultationServiceImpl) {
+		this.quickConsultationServiceImpl = quickConsultationServiceImpl;
+	}
+
+	private LabTestOrderDetailRepo labTestOrderDetailRepo;
+
+	@Autowired
+	public void setLabTestOrderDetailRepo(LabTestOrderDetailRepo labTestOrderDetailRepo) {
+		this.labTestOrderDetailRepo = labTestOrderDetailRepo;
 	}
 
 	private PhyGeneralExaminationRepo phyGeneralExaminationRepo;
@@ -167,12 +190,68 @@ public class ANCServiceImpl implements ANCService {
 	}
 
 	@Override
-	public void saveBenInvestigation() {
+	public Long saveBenInvestigation(WrapperBenInvestigationANC wrapperBenInvestigationANC) {
+		Long r = null;
+		PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
+		prescriptionDetail.setBeneficiaryRegID(wrapperBenInvestigationANC.getBeneficiaryRegID());
+		prescriptionDetail.setBenVisitID(wrapperBenInvestigationANC.getBenVisitID());
+		prescriptionDetail.setProviderServiceMapID(wrapperBenInvestigationANC.getProviderServiceMapID());
+		prescriptionDetail.setCreatedBy(wrapperBenInvestigationANC.getCreatedBy());
+
+		Long prescriptionID = quickConsultationServiceImpl.saveBenPrescriptionForANC(prescriptionDetail);
+
+		if (prescriptionID != null && prescriptionID > 0) {
+			ArrayList<LabTestOrderDetail> LabTestOrderDetailList = new ArrayList<>();
+			ArrayList<Map<String, Object>> investigationList = wrapperBenInvestigationANC.getLaboratoryList();
+			if (investigationList != null && investigationList.size() > 0) {
+
+				LabTestOrderDetail labTestOrderDetail;
+				for (Map<String, Object> testData : investigationList) {
+					labTestOrderDetail = new LabTestOrderDetail();
+
+					labTestOrderDetail.setPrescriptionID(prescriptionID);
+					labTestOrderDetail.setBeneficiaryRegID(wrapperBenInvestigationANC.getBeneficiaryRegID());
+					labTestOrderDetail.setBenVisitID(wrapperBenInvestigationANC.getBenVisitID());
+					labTestOrderDetail.setProviderServiceMapID(wrapperBenInvestigationANC.getProviderServiceMapID());
+					labTestOrderDetail.setCreatedBy(wrapperBenInvestigationANC.getCreatedBy());
+					Double d = (Double) testData.get("testID");
+					labTestOrderDetail.setTestID(d.intValue());
+					labTestOrderDetail.setOrderedTestName((String) testData.get("testName"));
+					labTestOrderDetail.setIsRadiologyImaging((Boolean) testData.get("isRadiologyImaging"));
+
+					LabTestOrderDetailList.add(labTestOrderDetail);
+				}
+				ArrayList<LabTestOrderDetail> LabTestOrderDetailListRS = (ArrayList<LabTestOrderDetail>) labTestOrderDetailRepo
+						.save(LabTestOrderDetailList);
+
+				if (prescriptionID > 0 && LabTestOrderDetailListRS.size() > 0) {
+					r = prescriptionID;
+				}
+
+			} else {
+				r = prescriptionID;
+			}
+		}
+
+		return r;
+
 	}
 
 	@Override
-	public int saveBenAncCareDetails(ANCCareDetails ancCareDetailsOBJ) {
+	public int saveBenAncCareDetails(ANCCareDetails ancCareDetailsOBJ) throws ParseException {
 		int r = 0;
+		if (ancCareDetailsOBJ.getLmpDate() != null && !ancCareDetailsOBJ.getLmpDate().isEmpty()
+				&& ancCareDetailsOBJ.getLmpDate().length() >= 10) {
+			String lmpDate = ancCareDetailsOBJ.getLmpDate().split("T")[0];
+			ancCareDetailsOBJ
+					.setLastMenstrualPeriod_LMP(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(lmpDate).getTime()));
+		}
+		if (ancCareDetailsOBJ.getExpDelDt() != null && !ancCareDetailsOBJ.getExpDelDt().isEmpty()
+				&& ancCareDetailsOBJ.getExpDelDt().length() >= 10) {
+			String edDate = ancCareDetailsOBJ.getExpDelDt().split("T")[0];
+			ancCareDetailsOBJ
+					.setExpectedDateofDelivery(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(edDate).getTime()));
+		}
 		ANCCareDetails ancCareDetailsRS = ancCareRepo.save(ancCareDetailsOBJ);
 		if (ancCareDetailsRS != null) {
 			r = 1;
@@ -181,7 +260,7 @@ public class ANCServiceImpl implements ANCService {
 	}
 
 	@Override
-	public int saveAncImmunizationDetails(WrapperAncImmunization wrapperAncImmunizationOBJ) {
+	public int saveAncImmunizationDetails(WrapperAncImmunization wrapperAncImmunizationOBJ) throws ParseException {
 		int r = 0;
 		List<ANCWomenVaccineDetail> ancWomenVaccineDetailList = getANCWomenVaccineDetail(wrapperAncImmunizationOBJ);
 		List<ANCWomenVaccineDetail> ancWomenVaccineDetailRSList = (List<ANCWomenVaccineDetail>) ancWomenVaccineRepo
@@ -191,40 +270,56 @@ public class ANCServiceImpl implements ANCService {
 		return r;
 	}
 
-	private List<ANCWomenVaccineDetail> getANCWomenVaccineDetail(WrapperAncImmunization wrapperAncImmunizationOBJ) {
+	private List<ANCWomenVaccineDetail> getANCWomenVaccineDetail(WrapperAncImmunization wrapperAncImmunizationOBJ)
+			throws ParseException {
 		List<ANCWomenVaccineDetail> ancWomenVaccineDetailList = new ArrayList<ANCWomenVaccineDetail>();
 		ANCWomenVaccineDetail ancWomenVaccineDetail;
 		if (wrapperAncImmunizationOBJ != null) {
-			if (wrapperAncImmunizationOBJ.gettT_1Status() != null) {
-				ancWomenVaccineDetail = new ANCWomenVaccineDetail();
-				ancWomenVaccineDetail.setBeneficiaryRegID(wrapperAncImmunizationOBJ.getBeneficiaryRegID());
-				ancWomenVaccineDetail.setCreatedBy(wrapperAncImmunizationOBJ.getCreatedBy());
-				ancWomenVaccineDetail.setVaccineName("TT-1");
-				ancWomenVaccineDetail.setStatus(wrapperAncImmunizationOBJ.gettT_1Status());
-				ancWomenVaccineDetail.setReceivedDate(wrapperAncImmunizationOBJ.getDateReceivedForTT_1());
-				ancWomenVaccineDetail.setReceivedFacilityName(wrapperAncImmunizationOBJ.getFacilityNameOfTT_1());
-				ancWomenVaccineDetailList.add(ancWomenVaccineDetail);
+
+			ancWomenVaccineDetail = new ANCWomenVaccineDetail();
+			ancWomenVaccineDetail.setBeneficiaryRegID(wrapperAncImmunizationOBJ.getBeneficiaryRegID());
+			ancWomenVaccineDetail.setCreatedBy(wrapperAncImmunizationOBJ.getCreatedBy());
+			ancWomenVaccineDetail.setVaccineName("TT-1");
+			ancWomenVaccineDetail.setStatus(wrapperAncImmunizationOBJ.gettT_1Status());
+			if (wrapperAncImmunizationOBJ.getDateReceivedForTT_1() != null
+					&& wrapperAncImmunizationOBJ.getDateReceivedForTT_1().length() >= 10) {
+				String TT_1 = wrapperAncImmunizationOBJ.getDateReceivedForTT_1().split("T")[0];
+				ancWomenVaccineDetail
+						.setReceivedDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(TT_1).getTime()));
 			}
-			if (wrapperAncImmunizationOBJ.gettT_2Status() != null) {
-				ancWomenVaccineDetail = new ANCWomenVaccineDetail();
-				ancWomenVaccineDetail.setBeneficiaryRegID(wrapperAncImmunizationOBJ.getBeneficiaryRegID());
-				ancWomenVaccineDetail.setCreatedBy(wrapperAncImmunizationOBJ.getCreatedBy());
-				ancWomenVaccineDetail.setVaccineName("TT-2");
-				ancWomenVaccineDetail.setStatus(wrapperAncImmunizationOBJ.gettT_2Status());
-				ancWomenVaccineDetail.setReceivedDate(wrapperAncImmunizationOBJ.getDateReceivedForTT_2());
-				ancWomenVaccineDetail.setReceivedFacilityName(wrapperAncImmunizationOBJ.getFacilityNameOfTT_2());
-				ancWomenVaccineDetailList.add(ancWomenVaccineDetail);
+			ancWomenVaccineDetail.setReceivedFacilityName(wrapperAncImmunizationOBJ.getFacilityNameOfTT_1());
+			ancWomenVaccineDetailList.add(ancWomenVaccineDetail);
+
+			ancWomenVaccineDetail = new ANCWomenVaccineDetail();
+			ancWomenVaccineDetail.setBeneficiaryRegID(wrapperAncImmunizationOBJ.getBeneficiaryRegID());
+			ancWomenVaccineDetail.setCreatedBy(wrapperAncImmunizationOBJ.getCreatedBy());
+			ancWomenVaccineDetail.setVaccineName("TT-2");
+			ancWomenVaccineDetail.setStatus(wrapperAncImmunizationOBJ.gettT_2Status());
+			if (wrapperAncImmunizationOBJ.getDateReceivedForTT_2() != null
+					&& wrapperAncImmunizationOBJ.getDateReceivedForTT_2().length() >= 10) {
+				String TT_2 = wrapperAncImmunizationOBJ.getDateReceivedForTT_2().split("T")[0];
+				ancWomenVaccineDetail
+						.setReceivedDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(TT_2).getTime()));
 			}
-			if (wrapperAncImmunizationOBJ.gettT_3Status() != null) {
-				ancWomenVaccineDetail = new ANCWomenVaccineDetail();
-				ancWomenVaccineDetail.setBeneficiaryRegID(wrapperAncImmunizationOBJ.getBeneficiaryRegID());
-				ancWomenVaccineDetail.setCreatedBy(wrapperAncImmunizationOBJ.getCreatedBy());
-				ancWomenVaccineDetail.setVaccineName("TT-Booster");
-				ancWomenVaccineDetail.setStatus(wrapperAncImmunizationOBJ.gettT_3Status());
-				ancWomenVaccineDetail.setReceivedDate(wrapperAncImmunizationOBJ.getDateReceivedForTT_3());
-				ancWomenVaccineDetail.setReceivedFacilityName(wrapperAncImmunizationOBJ.getFacilityNameOfTT_3());
-				ancWomenVaccineDetailList.add(ancWomenVaccineDetail);
+			// ancWomenVaccineDetail.setReceivedDate(wrapperAncImmunizationOBJ.getDateReceivedForTT_2());
+			ancWomenVaccineDetail.setReceivedFacilityName(wrapperAncImmunizationOBJ.getFacilityNameOfTT_2());
+			ancWomenVaccineDetailList.add(ancWomenVaccineDetail);
+
+			ancWomenVaccineDetail = new ANCWomenVaccineDetail();
+			ancWomenVaccineDetail.setBeneficiaryRegID(wrapperAncImmunizationOBJ.getBeneficiaryRegID());
+			ancWomenVaccineDetail.setCreatedBy(wrapperAncImmunizationOBJ.getCreatedBy());
+			ancWomenVaccineDetail.setVaccineName("TT-Booster");
+			ancWomenVaccineDetail.setStatus(wrapperAncImmunizationOBJ.gettT_3Status());
+			if (wrapperAncImmunizationOBJ.getDateReceivedForTT_3() != null
+					&& wrapperAncImmunizationOBJ.getDateReceivedForTT_3().length() >= 10) {
+				String TT_3 = wrapperAncImmunizationOBJ.getDateReceivedForTT_3().split("T")[0];
+				ancWomenVaccineDetail
+						.setReceivedDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(TT_3).getTime()));
 			}
+			// ancWomenVaccineDetail.setReceivedDate(wrapperAncImmunizationOBJ.getDateReceivedForTT_3());
+			ancWomenVaccineDetail.setReceivedFacilityName(wrapperAncImmunizationOBJ.getFacilityNameOfTT_3());
+			ancWomenVaccineDetailList.add(ancWomenVaccineDetail);
+
 		}
 		return ancWomenVaccineDetailList;
 	}
@@ -271,7 +366,13 @@ public class ANCServiceImpl implements ANCService {
 	@Override
 	public int saveSysCentralNervousExamination(SysCentralNervousExamination centralNervousExamination) {
 		// TODO Auto-generated method stub
-		return 0;
+		int r = 0;
+		SysCentralNervousExamination centralNervousExaminationRS = sysCentralNervousExaminationRepo
+				.save(centralNervousExamination);
+		if (centralNervousExaminationRS != null) {
+			r = 1;
+		}
+		return r;
 	}
 
 	@Override
@@ -287,26 +388,46 @@ public class ANCServiceImpl implements ANCService {
 	@Override
 	public int saveSysGenitourinarySystemExamination(SysGenitourinarySystemExamination genitourinarySystemExamination) {
 		// TODO Auto-generated method stub
-		return 0;
+		int r = 0;
+		SysGenitourinarySystemExamination sysGenitourinarySystemExaminationRS = sysGenitourinarySystemExaminationRepo
+				.save(genitourinarySystemExamination);
+		if (null != sysGenitourinarySystemExaminationRS) {
+			r = 1;
+		}
+		return r;
 	}
 
 	@Override
 	public int saveSysMusculoskeletalSystemExamination(
 			SysMusculoskeletalSystemExamination musculoskeletalSystemExamination) {
 		// TODO Auto-generated method stub
-		return 0;
+		int r = 0;
+		SysMusculoskeletalSystemExamination musculoskeletalSystemExaminationRS = sysMusculoskeletalSystemExaminationRepo
+				.save(musculoskeletalSystemExamination);
+		if (null != musculoskeletalSystemExaminationRS) {
+			r = 1;
+		}
+		return r;
 	}
 
 	@Override
 	public int saveSysObstetricExamination(SysObstetricExamination obstetricExamination) {
 		// TODO Auto-generated method stub
-		return 0;
+		int r = 0;
+		SysObstetricExamination obstetricExaminationRS = sysObstetricExaminationRepo.save(obstetricExamination);
+		if (obstetricExaminationRS != null)
+			r = 1;
+		return r;
 	}
 
 	@Override
 	public int saveSysRespiratoryExamination(SysRespiratoryExamination respiratoryExamination) {
 		// TODO Auto-generated method stub
-		return 0;
+		int r = 0;
+		SysRespiratoryExamination respiratoryExaminationRS = sysRespiratoryExaminationRepo.save(respiratoryExamination);
+		if (respiratoryExaminationRS != null)
+			r = 1;
+		return r;
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.iemr.mmu.service.anc;
 
+import java.text.ParseException;
 import java.util.List;
 
 import com.iemr.mmu.data.anc.ANCCareDetails;
@@ -15,6 +16,7 @@ import com.iemr.mmu.data.anc.SysMusculoskeletalSystemExamination;
 import com.iemr.mmu.data.anc.SysObstetricExamination;
 import com.iemr.mmu.data.anc.SysRespiratoryExamination;
 import com.iemr.mmu.data.anc.WrapperAncImmunization;
+import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 
 public interface ANCService {
@@ -27,11 +29,11 @@ public interface ANCService {
 
 	public int saveBenChiefComplaints(List<BenChiefComplaint> benChiefComplaintList);
 
-	public void saveBenInvestigation();
+	public Long saveBenInvestigation(WrapperBenInvestigationANC wrapperBenInvestigationANC);
 
-	public int saveBenAncCareDetails(ANCCareDetails ancCareDetailsOBJ);
+	public int saveBenAncCareDetails(ANCCareDetails ancCareDetailsOBJ) throws ParseException;
 
-	public int saveAncImmunizationDetails(WrapperAncImmunization wrapperAncImmunizationOBJ);
+	public int saveAncImmunizationDetails(WrapperAncImmunization wrapperAncImmunizationOBJ) throws ParseException;
 
 	public int savePhyGeneralExamination(PhyGeneralExamination generalExamination);
 

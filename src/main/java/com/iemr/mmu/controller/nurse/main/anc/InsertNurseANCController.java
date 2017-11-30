@@ -17,8 +17,14 @@ import com.iemr.mmu.data.anc.BenAdherence;
 import com.iemr.mmu.data.anc.PhyGeneralExamination;
 import com.iemr.mmu.data.anc.PhyHeadToToeExamination;
 import com.iemr.mmu.data.anc.SysCardiovascularExamination;
+import com.iemr.mmu.data.anc.SysCentralNervousExamination;
 import com.iemr.mmu.data.anc.SysGastrointestinalExamination;
+import com.iemr.mmu.data.anc.SysGenitourinarySystemExamination;
+import com.iemr.mmu.data.anc.SysMusculoskeletalSystemExamination;
+import com.iemr.mmu.data.anc.SysObstetricExamination;
+import com.iemr.mmu.data.anc.SysRespiratoryExamination;
 import com.iemr.mmu.data.anc.WrapperAncImmunization;
+import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
@@ -109,9 +115,21 @@ public class InsertNurseANCController {
 		OutputResponse response = new OutputResponse();
 		logger.info("saveBeneficiaryANCCareDetail request:" + requestObj);
 		try {
-			// inputMapper = new InputMapper();
-			ancServiceImpl.saveBenInvestigation();
+			WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson().fromJson(requestObj,
+					WrapperBenInvestigationANC.class);
+
+			if (wrapperBenInvestigationANC != null) {
+				Long prescriptionID = ancServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
+				if (prescriptionID != null && prescriptionID > 0) {
+					response.setResponse("Investigation data saved successfully.");
+				} else {
+					response.setError(5000, "Something went wrong !!!");
+				}
+			} else {
+				response.setError(5000, "Invalid Data !!!");
+			}
 		} catch (Exception e) {
+			response.setError(e);
 		}
 		return response.toString();
 	}
@@ -282,6 +300,126 @@ public class InsertNurseANCController {
 				}
 			} else {
 				response.setError(5000, "Invalid request Data");
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin
+	@ApiOperation(value = "Save Beneficairy Respiratory System Examination Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/examination/respiratorySystemExamination" }, method = { RequestMethod.POST })
+	public String saverespiratorySystemExamination(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		logger.info("saveSysCardiovascularExamination request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				SysRespiratoryExamination sysRespiratoryExamination = InputMapper.gson().fromJson(requestObj,
+						SysRespiratoryExamination.class);
+
+				int r = ancServiceImpl.saveSysRespiratoryExamination(sysRespiratoryExamination);
+				if (r > 0) {
+					response.setResponse("Beneficairy Respiratory System Examination Details saved successfully");
+				} else {
+					response.setError(5000, "Something went wrong");
+				}
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin
+	@ApiOperation(value = "Save Beneficairy Central Nervous System Examination Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/examination/centralNervousSystemExamination" }, method = { RequestMethod.POST })
+	public String centralNervousSystemExamination(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		logger.info("centralNervousSystemExamination request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				SysCentralNervousExamination sysCentralNervousExamination = InputMapper.gson().fromJson(requestObj,
+						SysCentralNervousExamination.class);
+
+				int r = ancServiceImpl.saveSysCentralNervousExamination(sysCentralNervousExamination);
+				if (r > 0) {
+					response.setResponse("Beneficairy Central Nervous System Examination Details saved successfully");
+				} else {
+					response.setError(5000, "Something went wrong");
+				}
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin
+	@ApiOperation(value = "Save Beneficairy Musculoskeletal System Examination Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/examination/musculoskeletalSystemExamination" }, method = { RequestMethod.POST })
+	public String musculoskeletalSystemExamination(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		logger.info("musculoskeletalSystemExamination request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				SysMusculoskeletalSystemExamination sysMusculoskeletalSystemExamination = InputMapper.gson()
+						.fromJson(requestObj, SysMusculoskeletalSystemExamination.class);
+
+				int r = ancServiceImpl.saveSysMusculoskeletalSystemExamination(sysMusculoskeletalSystemExamination);
+				if (r > 0) {
+					response.setResponse("Beneficairy Musculoskeletal System Examination Details saved successfully");
+				} else {
+					response.setError(5000, "Something went wrong");
+				}
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin
+	@ApiOperation(value = "Save Beneficairy Genito Urinary System Examination Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/examination/genitoUrinarySystemExamination" }, method = { RequestMethod.POST })
+	public String genitoUrinarySystemExamination(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		logger.info("genitoUrinarySystemExamination request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				SysGenitourinarySystemExamination sysGenitourinarySystemExamination = InputMapper.gson()
+						.fromJson(requestObj, SysGenitourinarySystemExamination.class);
+
+				int r = ancServiceImpl.saveSysGenitourinarySystemExamination(sysGenitourinarySystemExamination);
+				if (r > 0) {
+					response.setResponse("Beneficairy Genito Urinary System Examination Details saved successfully");
+				} else {
+					response.setError(5000, "Something went wrong");
+				}
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin
+	@ApiOperation(value = "Save Beneficairy Obstetric  Examination Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/examination/obstetricExamination" }, method = { RequestMethod.POST })
+	public String obstetricExamination(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		logger.info("obstetricExamination request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				SysObstetricExamination sysObstetricExamination = InputMapper.gson().fromJson(requestObj,
+						SysObstetricExamination.class);
+
+				int r = ancServiceImpl.saveSysObstetricExamination(sysObstetricExamination);
+				if (r > 0) {
+					response.setResponse("Save Beneficairy Obstetric  Examination Details saved successfully");
+				} else {
+					response.setError(5000, "Something went wrong");
+				}
 			}
 		} catch (Exception e) {
 			response.setError(e);

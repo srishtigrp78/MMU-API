@@ -1,29 +1,27 @@
 package com.iemr.mmu.data.anc;
 
-import java.sql.Timestamp;
-
 public class WrapperAncImmunization {
 	private Long beneficiaryRegID;
 	private Long benVisitID;
 	private Integer providerServiceMapID;
 	private String createdBy;
 	private String tT_1Status;
-	private Timestamp dateReceivedForTT_1;
+	private String dateReceivedForTT_1;
 	private String facilityNameOfTT_1;
 	private String tT_2Status;
-	private Timestamp dateReceivedForTT_2;
+	private String dateReceivedForTT_2;
 	private String facilityNameOfTT_2;
 	private String tT_3Status;
-	private Timestamp dateReceivedForTT_3;
+	private String dateReceivedForTT_3;
 	private String facilityNameOfTT_3;
 
 	public WrapperAncImmunization() {
 	}
 
 	public WrapperAncImmunization(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
-			String createdBy, String tT_1Status, Timestamp dateReceivedForTT_1, String facilityNameOfTT_1,
-			String tT_2Status, Timestamp dateReceivedForTT_2, String facilityNameOfTT_2, String tT_3Status,
-			Timestamp dateReceivedForTT_3, String facilityNameOfTT_3) {
+			String createdBy, String tT_1Status, String dateReceivedForTT_1, String facilityNameOfTT_1,
+			String tT_2Status, String dateReceivedForTT_2, String facilityNameOfTT_2, String tT_3Status,
+			String dateReceivedForTT_3, String facilityNameOfTT_3) {
 		super();
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
@@ -80,11 +78,11 @@ public class WrapperAncImmunization {
 		this.tT_1Status = tT_1Status;
 	}
 
-	public Timestamp getDateReceivedForTT_1() {
+	public String getDateReceivedForTT_1() {
 		return dateReceivedForTT_1;
 	}
 
-	public void setDateReceivedForTT_1(Timestamp dateReceivedForTT_1) {
+	public void setDateReceivedForTT_1(String dateReceivedForTT_1) {
 		this.dateReceivedForTT_1 = dateReceivedForTT_1;
 	}
 
@@ -104,11 +102,11 @@ public class WrapperAncImmunization {
 		this.tT_2Status = tT_2Status;
 	}
 
-	public Timestamp getDateReceivedForTT_2() {
+	public String getDateReceivedForTT_2() {
 		return dateReceivedForTT_2;
 	}
 
-	public void setDateReceivedForTT_2(Timestamp dateReceivedForTT_2) {
+	public void setDateReceivedForTT_2(String dateReceivedForTT_2) {
 		this.dateReceivedForTT_2 = dateReceivedForTT_2;
 	}
 
@@ -128,11 +126,11 @@ public class WrapperAncImmunization {
 		this.tT_3Status = tT_3Status;
 	}
 
-	public Timestamp getDateReceivedForTT_3() {
+	public String getDateReceivedForTT_3() {
 		return dateReceivedForTT_3;
 	}
 
-	public void setDateReceivedForTT_3(Timestamp dateReceivedForTT_3) {
+	public void setDateReceivedForTT_3(String dateReceivedForTT_3) {
 		this.dateReceivedForTT_3 = dateReceivedForTT_3;
 	}
 

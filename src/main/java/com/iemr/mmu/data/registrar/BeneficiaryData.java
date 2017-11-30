@@ -137,6 +137,14 @@ public class BeneficiaryData {
 	@Expose
 	private String  benImage; 
 	
+	@Transient
+	@Expose
+	private String villageName;
+	
+	@Transient
+	@Expose
+	private String districtName;
+	
 
 	public String getImage() {
 		return benImage;
@@ -193,7 +201,7 @@ public class BeneficiaryData {
 	}
 
 	public BeneficiaryData(Long beneficiaryRegID, String beneficiaryID, String beneficiaryName, Date dob,
-			Short genderID, Timestamp createdDate) {
+			Short genderID, Timestamp createdDate, String districtName, String villageName) {
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.beneficiaryID = beneficiaryID;
 		this.beneficiaryName = beneficiaryName;
@@ -233,13 +241,15 @@ public class BeneficiaryData {
 
 		}
 		this.createdDate = createdDate;
+		this.villageName = villageName;
+		this.districtName = districtName;
 	}
 
 	public static ArrayList<BeneficiaryData> getBeneficiaryData(List<Object[]> resList) {
 		ArrayList<BeneficiaryData> resArray = new ArrayList<BeneficiaryData>();
 		for (Object[] obj : resList) {
 			BeneficiaryData cOBJ = new BeneficiaryData((Long) obj[0], (String) obj[1], (String) obj[2], (Date) obj[3],
-					(Short) obj[4], (Timestamp) obj[5]);
+					(Short) obj[4], (Timestamp) obj[5], (String)obj[6], (String)obj[7]);
 			resArray.add(cOBJ);
 		}
 		return resArray;

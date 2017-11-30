@@ -28,6 +28,7 @@ import com.iemr.mmu.repo.masterrepo.QualificationMasterRepo;
 import com.iemr.mmu.repo.masterrepo.ReligionMasterRepo;
 import com.iemr.mmu.repo.registrar.BeneficiaryImageRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
+import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
 
 @Service
 public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterData {
@@ -127,11 +128,20 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 
 	}
 
+	private ReistrarRepoBenSearch reistrarRepoBenSearch;
+
+	@Autowired
+	public void setReistrarRepoAdvanceBenSearch(ReistrarRepoBenSearch reistrarRepoBenSearch) {
+		this.reistrarRepoBenSearch = reistrarRepoBenSearch;
+	}
+
 	@Override
 	public String getBenDetailsByRegID(Long beneficiaryRegID) {
-		List<Object[]> benDetailsList = registrarRepoBenData.getBenDetailsByRegID(beneficiaryRegID);
+		// List<Object[]> benDetailsList =
+		// registrarRepoBenData.getBenDetailsByRegID(beneficiaryRegID);
+		List<Object[]> benDetailsList = reistrarRepoBenSearch.getBenDetails(beneficiaryRegID);
 		BeneficiaryData benDetails = BeneficiaryData.getBeneficiaryData(benDetailsList).get(0);
-		//String benImage = beneficiaryImageRepo.getBenImage(beneficiaryRegID);
+		// String benImage = beneficiaryImageRepo.getBenImage(beneficiaryRegID);
 		benDetails.setImage(beneficiaryImageRepo.getBenImage(beneficiaryRegID));
 		if (benDetails != null) {
 			if (benDetails.getGenderID() != null) {

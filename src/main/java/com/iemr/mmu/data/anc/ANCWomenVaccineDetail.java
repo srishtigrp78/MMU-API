@@ -1,5 +1,6 @@
 package com.iemr.mmu.data.anc;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -33,7 +34,7 @@ public class ANCWomenVaccineDetail {
 
 	@Expose
 	@Column(name = "ReceivedDate")
-	private Timestamp receivedDate;
+	private Date receivedDate;
 
 	@Expose
 	@Column(name = "ReceivedFacilityName")
@@ -68,8 +69,8 @@ public class ANCWomenVaccineDetail {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ANCWomenVaccineDetail(Long iD, Long beneficiaryRegID, String vaccineName, String status,
-			Timestamp receivedDate, String receivedFacilityName) {
+	public ANCWomenVaccineDetail(Long iD, Long beneficiaryRegID, String vaccineName, String status, Date receivedDate,
+			String receivedFacilityName) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -103,11 +104,11 @@ public class ANCWomenVaccineDetail {
 		this.status = status;
 	}
 
-	public Timestamp getReceivedDate() {
+	public Date getReceivedDate() {
 		return receivedDate;
 	}
 
-	public void setReceivedDate(Timestamp receivedDate) {
+	public void setReceivedDate(Date receivedDate) {
 		this.receivedDate = receivedDate;
 	}
 

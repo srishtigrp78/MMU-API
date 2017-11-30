@@ -1,29 +1,20 @@
 package com.iemr.mmu.data.institution;
 
 import java.sql.Timestamp;
-import java.util.List;
-import java.util.Set;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
-import com.iemr.utils.mapper.OutputMapper;
 
 @Entity
 @Table(name = "m_institution")
-public class Institute
-{
+public class Institute {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,15 +28,15 @@ public class Institute
 	@Column(name = "StateID")
 	@Expose
 	private Integer stateID;
-	
+
 	@Column(name = "DistrictID")
 	@Expose
 	private Integer districtID;
-	
+
 	@Column(name = "BlockID")
 	@Expose
 	private Integer blockID;
-	
+
 	@Column(name = "DistrictBranchMappingID")
 	@Expose
 	private Integer districtBranchMappingID;
@@ -74,15 +65,46 @@ public class Institute
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
-	public Institute(Integer institutionID, String institutionName)
-	{
+	@Expose
+	@Column(name = "ProviderServiceMapID")
+	private Integer providerServiceMapID;
+
+	public Institute() {
+	}
+
+	public Institute(Integer institutionID, String institutionName) {
 		this.institutionID = institutionID;
 		this.institutionName = institutionName;
 	}
 
-	public Institute() {
+	public ArrayList<Institute> getinstituteDetails(ArrayList<Object[]> objList) {
+		ArrayList<Institute> instituteList = new ArrayList<>();
+		if (objList != null && objList.size() > 0) {
+			for (Object[] obj : objList) {
+				Institute institute = new Institute((Integer) obj[0], (String) obj[1]);
+				instituteList.add(institute);
+			}
+		}
+		return instituteList;
+	}
+
+	public Institute(Integer institutionID, String institutionName, Integer stateID, Integer districtID,
+			Integer blockID, Integer districtBranchMappingID, Boolean deleted, String processed, String createdBy,
+			Timestamp createdDate, String modifiedBy, Timestamp lastModDate, Integer providerServiceMapID) {
 		super();
-		// TODO Auto-generated constructor stub
+		this.institutionID = institutionID;
+		this.institutionName = institutionName;
+		this.stateID = stateID;
+		this.districtID = districtID;
+		this.blockID = blockID;
+		this.districtBranchMappingID = districtBranchMappingID;
+		this.deleted = deleted;
+		this.processed = processed;
+		this.createdBy = createdBy;
+		this.createdDate = createdDate;
+		this.modifiedBy = modifiedBy;
+		this.lastModDate = lastModDate;
+		this.providerServiceMapID = providerServiceMapID;
 	}
 
 	public Integer getInstitutionID() {
@@ -180,6 +202,13 @@ public class Institute
 	public void setLastModDate(Timestamp lastModDate) {
 		this.lastModDate = lastModDate;
 	}
-	
+
+	public Integer getProviderServiceMapID() {
+		return providerServiceMapID;
+	}
+
+	public void setProviderServiceMapID(Integer providerServiceMapID) {
+		this.providerServiceMapID = providerServiceMapID;
+	}
 
 }

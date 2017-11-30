@@ -107,7 +107,8 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 			switch(visitCategoryID){
 				case 1 :{
 					// 1 : Cancer Screening
-					doctorMasterData = doctorMasterDataServiceImpl.getCancerScreeningMasterDataForDoctor();
+					// neeraj passed one parameter  for tem reason
+					doctorMasterData = doctorMasterDataServiceImpl.getCancerScreeningMasterDataForDoctor(1);
 				}
 				break;
 				case 2 :{
