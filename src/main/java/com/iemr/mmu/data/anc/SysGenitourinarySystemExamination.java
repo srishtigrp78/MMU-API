@@ -29,6 +29,10 @@ public class SysGenitourinarySystemExamination {
 	private Long benVisitID;
 	
 	@Expose
+	@Column(name = "ProviderServiceMapID")
+	private Integer providerServiceMapID;
+	
+	@Expose
 	@Column(name = "RenalAngle")
 	private String renalAngle;
 	

@@ -320,7 +320,7 @@ public class ANCMasterDataServiceImpl {
 		ArrayList<Object[]> compFeedServings  = compFeedsRepo.getCompFeeds("Comp Feed Serving ");
 		
 		//existing
-		ArrayList<ChiefComplaintMaster> ccList = chiefComplaintMasterRepo.getChiefComplaintMaster();
+		ArrayList<Object[]> ccList = chiefComplaintMasterRepo.getChiefComplaintMaster();
 		ArrayList<Object[]> DiseaseTypes = cancerDiseaseMasterRepo.getCancerDiseaseMaster();
 		ArrayList<Object[]> tobaccoUseStatus = cancerPersonalHabitMasterRepo
 				.getCancerPersonalHabitTypeMaster("Tobacco Use Status");
@@ -338,7 +338,7 @@ public class ANCMasterDataServiceImpl {
 		
 		ArrayList<Object[]> familyMemberTypes = familyMemberMasterRepo.getFamilyMemberTypeMaster();
 		
-		ArrayList<LabTestMaster> labTests = labTestMasterRepo.getNonRadiologyLabTests();
+		ArrayList<Object[]> labTests = labTestMasterRepo.getNonRadiologyLabTests();
 	
 		
 		resMap.put("AllergicReactionTypes", AllergicReactionTypes.getAllergicReactionTypes(allergicReactionTypes));
@@ -370,7 +370,7 @@ public class ANCMasterDataServiceImpl {
 		resMap.put("compFeedServings", CompFeeds.getCompFeeds(compFeedServings));
 		
 		//existing
-		resMap.put("chiefComplaintMaster", ccList);
+		resMap.put("chiefComplaintMaster", ChiefComplaintMaster.getChiefComplaintMasters(ccList));
 		resMap.put("CancerDiseaseType", CancerDiseaseType.getCancerDiseaseTypeMasterData(DiseaseTypes));
 		resMap.put("tobaccoUseStatus",
 				CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(tobaccoUseStatus));
@@ -386,7 +386,7 @@ public class ANCMasterDataServiceImpl {
 				CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(quantityOfAlcoholIntake));
 		resMap.put("familyMemberTypes", FamilyMemberType.getFamilyMemberTypeMasterData(familyMemberTypes));
 		
-		resMap.put("labTests", labTests);
+		resMap.put("labTests", LabTestMaster.getLabTestMasters(labTests));
 		
 		return new Gson().toJson(resMap);
 	}
@@ -394,18 +394,18 @@ public class ANCMasterDataServiceImpl {
 	
 	public String getANCMasterDataForDoctor() {
 		Map<String, Object> resMap = new HashMap<>();
-		ArrayList<ChiefComplaintMaster> ccList = chiefComplaintMasterRepo.getChiefComplaintMaster();
-		ArrayList<DrugDoseMaster> ddmList = drugDoseMasterRepo.getDrugDoseMaster();
-		ArrayList<DrugDurationUnitMaster> ddumList = drugDurationUnitMasterRepo.getDrugDurationUnitMaster();
-		ArrayList<DrugFormMaster> dfmList = drugFormMasterRepo.getDrugFormMaster();
-		ArrayList<DrugFrequencyMaster> dfrmList = drugFrequencyMasterRepo.getDrugFrequencyMaster();
+		ArrayList<Object[]> ccList = chiefComplaintMasterRepo.getChiefComplaintMaster();
+		ArrayList<Object[]> ddmList = drugDoseMasterRepo.getDrugDoseMaster();
+		ArrayList<Object[]> ddumList = drugDurationUnitMasterRepo.getDrugDurationUnitMaster();
+		ArrayList<Object[]> dfmList = drugFormMasterRepo.getDrugFormMaster();
+		ArrayList<Object[]> dfrmList = drugFrequencyMasterRepo.getDrugFrequencyMaster();
 		ArrayList<Object[]> counsellingTypes = counsellingTypeRepo.getCounsellingTypes();
 		ArrayList<Object[]> additionalServices = serviceMasterRepo.getAdditionalServices();
-		resMap.put("chiefComplaintMaster", ccList);
-		resMap.put("drugDoseMaster", ddmList);
-		resMap.put("drugDurationUnitMaster", ddumList);
-		resMap.put("drugFormMaster", dfmList);
-		resMap.put("drugFrequencyMaster", dfrmList);
+		resMap.put("chiefComplaintMaster", ChiefComplaintMaster.getChiefComplaintMasters(ccList));
+		resMap.put("drugDoseMaster", DrugDoseMaster.getDrugDoseMasters(ddmList));
+		resMap.put("drugDurationUnitMaster", DrugDurationUnitMaster.getDrugDurationUnitMaster(ddumList));
+		resMap.put("drugFormMaster", DrugFormMaster.getDrugFormMaster(dfmList));
+		resMap.put("drugFrequencyMaster", DrugFrequencyMaster.getDrugFrequencyMaster(dfrmList));
 		resMap.put("counsellingTypes", CounsellingType.getCounsellingType(counsellingTypes));
 		resMap.put("additionalServices", ServiceMaster.getServiceMaster(additionalServices));
 

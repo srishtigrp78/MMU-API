@@ -27,6 +27,10 @@ public class SysRespiratoryExamination {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
+	
+	@Expose
+	@Column(name = "ProviderServiceMapID")
+	private Integer providerServiceMapID;
 
 	@Expose
 	@Column(name = "Trachea")

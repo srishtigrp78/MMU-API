@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import com.iemr.mmu.data.doctor.DrugDurationUnitMaster;
 @Repository
 public interface DrugDurationUnitMasterRepo extends CrudRepository<DrugDurationUnitMaster, Integer> {
-	@Query("SELECT c FROM DrugDurationUnitMaster c where c.deleted != 1")
-	public ArrayList<DrugDurationUnitMaster> getDrugDurationUnitMaster();
+	
+	@Query("SELECT drugDurationID, drugDuration FROM DrugDurationUnitMaster c where c.deleted != 1")
+	public  ArrayList<Object[]> getDrugDurationUnitMaster();
+	
 }
