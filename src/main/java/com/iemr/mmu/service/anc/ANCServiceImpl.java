@@ -437,4 +437,8 @@ public class ANCServiceImpl implements ANCService {
 		return r;
 	}
 
+	public String getANCExaminationDetailsData(Long benRegID, Long benVisitID, Integer providerSerMapID) {
+		return null;
+	}
+
 }

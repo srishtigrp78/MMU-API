@@ -53,4 +53,6 @@ public interface ANCService {
 	public int saveSysObstetricExamination(SysObstetricExamination obstetricExamination);
 
 	public int saveSysRespiratoryExamination(SysRespiratoryExamination respiratoryExamination);
+
+	public String getANCExaminationDetailsData(Long benRegID, Long benVisitID, Integer providerSerMapID);
 }
