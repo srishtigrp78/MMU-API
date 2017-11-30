@@ -23,15 +23,15 @@ public class ANCWomenVaccineDetail {
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
-	
+
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
@@ -81,15 +81,34 @@ public class ANCWomenVaccineDetail {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ANCWomenVaccineDetail(Long iD, Long beneficiaryRegID, String vaccineName, String status, Date receivedDate,
-			String receivedFacilityName) {
+	public ANCWomenVaccineDetail(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
+			Long visitCode, String vaccineName, String status, Date receivedDate, String receivedFacilityName,
+			Boolean deleted, String processed, String createdBy, Timestamp createdDate, String modifiedBy,
+			Timestamp lastModDate) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
+		this.benVisitID = benVisitID;
+		this.providerServiceMapID = providerServiceMapID;
+		this.visitCode = visitCode;
 		this.vaccineName = vaccineName;
 		this.status = status;
 		this.receivedDate = receivedDate;
 		this.receivedFacilityName = receivedFacilityName;
+		this.deleted = deleted;
+		this.processed = processed;
+		this.createdBy = createdBy;
+		this.createdDate = createdDate;
+		this.modifiedBy = modifiedBy;
+		this.lastModDate = lastModDate;
+	}
+
+	public Long getID() {
+		return ID;
+	}
+
+	public void setID(Long iD) {
+		ID = iD;
 	}
 
 	public Long getBeneficiaryRegID() {
@@ -98,6 +117,30 @@ public class ANCWomenVaccineDetail {
 
 	public void setBeneficiaryRegID(Long beneficiaryRegID) {
 		this.beneficiaryRegID = beneficiaryRegID;
+	}
+
+	public Long getBenVisitID() {
+		return benVisitID;
+	}
+
+	public void setBenVisitID(Long benVisitID) {
+		this.benVisitID = benVisitID;
+	}
+
+	public Integer getProviderServiceMapID() {
+		return providerServiceMapID;
+	}
+
+	public void setProviderServiceMapID(Integer providerServiceMapID) {
+		this.providerServiceMapID = providerServiceMapID;
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 
 	public String getVaccineName() {
@@ -178,10 +221,6 @@ public class ANCWomenVaccineDetail {
 
 	public void setLastModDate(Timestamp lastModDate) {
 		this.lastModDate = lastModDate;
-	}
-
-	public Long getID() {
-		return ID;
 	}
 
 }

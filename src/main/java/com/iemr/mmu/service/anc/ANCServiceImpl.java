@@ -276,8 +276,11 @@ public class ANCServiceImpl implements ANCService {
 		ANCWomenVaccineDetail ancWomenVaccineDetail;
 		if (wrapperAncImmunizationOBJ != null) {
 
+			// TT-1 details
 			ancWomenVaccineDetail = new ANCWomenVaccineDetail();
 			ancWomenVaccineDetail.setBeneficiaryRegID(wrapperAncImmunizationOBJ.getBeneficiaryRegID());
+			ancWomenVaccineDetail.setBenVisitID(wrapperAncImmunizationOBJ.getBenVisitID());
+			ancWomenVaccineDetail.setProviderServiceMapID(wrapperAncImmunizationOBJ.getProviderServiceMapID());
 			ancWomenVaccineDetail.setCreatedBy(wrapperAncImmunizationOBJ.getCreatedBy());
 			ancWomenVaccineDetail.setVaccineName("TT-1");
 			ancWomenVaccineDetail.setStatus(wrapperAncImmunizationOBJ.gettT_1Status());
@@ -290,8 +293,11 @@ public class ANCServiceImpl implements ANCService {
 			ancWomenVaccineDetail.setReceivedFacilityName(wrapperAncImmunizationOBJ.getFacilityNameOfTT_1());
 			ancWomenVaccineDetailList.add(ancWomenVaccineDetail);
 
+			// TT-2 details
 			ancWomenVaccineDetail = new ANCWomenVaccineDetail();
 			ancWomenVaccineDetail.setBeneficiaryRegID(wrapperAncImmunizationOBJ.getBeneficiaryRegID());
+			ancWomenVaccineDetail.setBenVisitID(wrapperAncImmunizationOBJ.getBenVisitID());
+			ancWomenVaccineDetail.setProviderServiceMapID(wrapperAncImmunizationOBJ.getProviderServiceMapID());
 			ancWomenVaccineDetail.setCreatedBy(wrapperAncImmunizationOBJ.getCreatedBy());
 			ancWomenVaccineDetail.setVaccineName("TT-2");
 			ancWomenVaccineDetail.setStatus(wrapperAncImmunizationOBJ.gettT_2Status());
@@ -301,12 +307,14 @@ public class ANCServiceImpl implements ANCService {
 				ancWomenVaccineDetail
 						.setReceivedDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(TT_2).getTime()));
 			}
-			// ancWomenVaccineDetail.setReceivedDate(wrapperAncImmunizationOBJ.getDateReceivedForTT_2());
 			ancWomenVaccineDetail.setReceivedFacilityName(wrapperAncImmunizationOBJ.getFacilityNameOfTT_2());
 			ancWomenVaccineDetailList.add(ancWomenVaccineDetail);
 
+			// TT-3 (Booster) details
 			ancWomenVaccineDetail = new ANCWomenVaccineDetail();
 			ancWomenVaccineDetail.setBeneficiaryRegID(wrapperAncImmunizationOBJ.getBeneficiaryRegID());
+			ancWomenVaccineDetail.setBenVisitID(wrapperAncImmunizationOBJ.getBenVisitID());
+			ancWomenVaccineDetail.setProviderServiceMapID(wrapperAncImmunizationOBJ.getProviderServiceMapID());
 			ancWomenVaccineDetail.setCreatedBy(wrapperAncImmunizationOBJ.getCreatedBy());
 			ancWomenVaccineDetail.setVaccineName("TT-Booster");
 			ancWomenVaccineDetail.setStatus(wrapperAncImmunizationOBJ.gettT_3Status());
@@ -316,7 +324,6 @@ public class ANCServiceImpl implements ANCService {
 				ancWomenVaccineDetail
 						.setReceivedDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(TT_3).getTime()));
 			}
-			// ancWomenVaccineDetail.setReceivedDate(wrapperAncImmunizationOBJ.getDateReceivedForTT_3());
 			ancWomenVaccineDetail.setReceivedFacilityName(wrapperAncImmunizationOBJ.getFacilityNameOfTT_3());
 			ancWomenVaccineDetailList.add(ancWomenVaccineDetail);
 
