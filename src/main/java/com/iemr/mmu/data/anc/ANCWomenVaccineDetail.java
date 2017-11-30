@@ -2,6 +2,7 @@ package com.iemr.mmu.data.anc;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,10 +32,6 @@ public class ANCWomenVaccineDetail {
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-
-	@Expose
-	@Column(name = "VisitCode")
-	private Long visitCode;
 
 	@Expose
 	@Column(name = "VaccineName")
@@ -82,25 +79,26 @@ public class ANCWomenVaccineDetail {
 	}
 
 	public ANCWomenVaccineDetail(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
-			Long visitCode, String vaccineName, String status, Date receivedDate, String receivedFacilityName,
-			Boolean deleted, String processed, String createdBy, Timestamp createdDate, String modifiedBy,
-			Timestamp lastModDate) {
+			String vaccineName, String status, Date receivedDate, String receivedFacilityName) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
 		this.providerServiceMapID = providerServiceMapID;
-		this.visitCode = visitCode;
 		this.vaccineName = vaccineName;
 		this.status = status;
 		this.receivedDate = receivedDate;
 		this.receivedFacilityName = receivedFacilityName;
-		this.deleted = deleted;
-		this.processed = processed;
-		this.createdBy = createdBy;
-		this.createdDate = createdDate;
-		this.modifiedBy = modifiedBy;
-		this.lastModDate = lastModDate;
+	}
+
+	public static ArrayList<ANCWomenVaccineDetail> getANCWomenVaccineDetails(ArrayList<Object[]> resList) {
+		ArrayList<ANCWomenVaccineDetail> resArray = new ArrayList<ANCWomenVaccineDetail>();
+		for (Object[] obj : resList) {
+			ANCWomenVaccineDetail cOBJ = new ANCWomenVaccineDetail((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3] , (String)obj[4], 
+					(String)obj[5], (Date)obj[6], (String)obj[7]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
 	}
 
 	public Long getID() {
@@ -133,14 +131,6 @@ public class ANCWomenVaccineDetail {
 
 	public void setProviderServiceMapID(Integer providerServiceMapID) {
 		this.providerServiceMapID = providerServiceMapID;
-	}
-
-	public Long getVisitCode() {
-		return visitCode;
-	}
-
-	public void setVisitCode(Long visitCode) {
-		this.visitCode = visitCode;
 	}
 
 	public String getVaccineName() {

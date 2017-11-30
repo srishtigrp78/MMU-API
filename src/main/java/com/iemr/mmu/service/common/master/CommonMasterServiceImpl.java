@@ -101,14 +101,14 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 		return nurseMasterData;
 	}
 	@Override
-	public String getMasterDataForDoctor(Integer visitCategoryID) {
+	public String getMasterDataForDoctor(Integer visitCategoryID, Integer providerServiceMapID) {
 		String doctorMasterData = null;
 		if(null!=visitCategoryID){
 			switch(visitCategoryID){
 				case 1 :{
 					// 1 : Cancer Screening
 					// neeraj passed one parameter  for tem reason
-					doctorMasterData = doctorMasterDataServiceImpl.getCancerScreeningMasterDataForDoctor(1);
+					doctorMasterData = doctorMasterDataServiceImpl.getCancerScreeningMasterDataForDoctor(providerServiceMapID);
 				}
 				break;
 				case 2 :{

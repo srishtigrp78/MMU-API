@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.anc.BenAdherence;
 
 @Entity
 @Table(name = "t_lab_testorder")
@@ -242,5 +243,31 @@ public class LabTestOrderDetail {
 
 		return resArray;
 	}
+
+	public LabTestOrderDetail(Long labTestOrderID, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
+			Long prescriptionID, Integer testID, String orderedTestName, String testingRequirements,
+			Boolean isRadiologyImaging) {
+		super();
+		this.labTestOrderID = labTestOrderID;
+		this.beneficiaryRegID = beneficiaryRegID;
+		this.benVisitID = benVisitID;
+		this.providerServiceMapID = providerServiceMapID;
+		this.prescriptionID = prescriptionID;
+		this.testID = testID;
+		this.orderedTestName = orderedTestName;
+		this.testingRequirements = testingRequirements;
+		this.isRadiologyImaging = isRadiologyImaging;
+	}
+	
+	public static ArrayList<LabTestOrderDetail> getLabTestOrderDetails(ArrayList<Object[]> resList) {
+		ArrayList<LabTestOrderDetail> resArray = new ArrayList<LabTestOrderDetail>();
+		for (Object[] obj : resList) {
+			LabTestOrderDetail cOBJ = new LabTestOrderDetail((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (Long)obj[4], (Integer)obj[5], 
+					(String)obj[6], (String)obj[7], (Boolean)obj[8]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
+	}
+	
 
 }

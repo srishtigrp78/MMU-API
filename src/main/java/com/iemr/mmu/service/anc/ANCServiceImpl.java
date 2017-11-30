@@ -4,12 +4,14 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
 import com.iemr.mmu.data.anc.ANCCareDetails;
 import com.iemr.mmu.data.anc.ANCWomenVaccineDetail;
 import com.iemr.mmu.data.anc.BenAdherence;
@@ -41,6 +43,7 @@ import com.iemr.mmu.repo.nurse.anc.SysObstetricExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.SysRespiratoryExaminationRepo;
 import com.iemr.mmu.repo.quickConsultation.BenChiefComplaintRepo;
 import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
+import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
 
 @Service
@@ -80,6 +83,13 @@ public class ANCServiceImpl implements ANCService {
 	private SysObstetricExaminationRepo sysObstetricExaminationRepo;
 	private SysRespiratoryExaminationRepo sysRespiratoryExaminationRepo;
 
+	private NurseServiceImpl nurseServiceImpl;
+	
+	@Autowired
+	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
+		this.nurseServiceImpl = nurseServiceImpl;
+	}
+	
 	@Autowired
 	public void setBenAdherenceRepo(BenAdherenceRepo benAdherenceRepo) {
 		this.benAdherenceRepo = benAdherenceRepo;
@@ -441,4 +451,53 @@ public class ANCServiceImpl implements ANCService {
 		return null;
 	}
 
+	public String getBenVisitDetailsFrmNurseANC(Long benRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("ANCNurseVisitDetail", nurseServiceImpl.getBenDataFrmNurseToDocVisitDetailsScreen(benRegID, benVisitID));
+		
+		resMap.put("BenAdherence", getBenAdherence(benRegID, benVisitID));
+		
+		resMap.put("LabTestOrders", getLabTestOrders(benRegID, benVisitID));
+
+		return resMap.toString();
+	}
+	
+	@Override
+	public String getBenAdherence(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> resList = benAdherenceRepo.getBenAdherence(beneficiaryRegID, benVisitID);
+		ArrayList<BenAdherence> benAdherences =  BenAdherence.getBenAdherences(resList);
+		return new Gson().toJson(benAdherences);
+	}
+	
+	@Override
+	public String getLabTestOrders(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> resList = labTestOrderDetailRepo.getLabTestOrderDetails(beneficiaryRegID, benVisitID);
+		ArrayList<LabTestOrderDetail> labTestOrderDetails =  LabTestOrderDetail.getLabTestOrderDetails(resList);
+		return new Gson().toJson(labTestOrderDetails);
+	}
+	
+	public String getBenANCDetailsFrmNurseANC(Long benRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("ANCCareDetail", getANCCareDetails(benRegID, benVisitID));
+		
+		resMap.put("ANCWomenVaccineDetails", getANCWomenVaccineDetails(benRegID, benVisitID));
+		
+		return resMap.toString();
+	}
+	
+	@Override
+	public String getANCCareDetails(Long beneficiaryRegID, Long benVisitID){
+		ArrayList<Object[]> resList = ancCareRepo.getANCCareDetails(beneficiaryRegID, benVisitID);
+		ArrayList<ANCCareDetails> ancCareDetails =  ANCCareDetails.getANCCareDetails(resList);
+		return new Gson().toJson(ancCareDetails);
+	}
+
+	@Override
+	public String getANCWomenVaccineDetails(Long beneficiaryRegID, Long benVisitID){
+		ArrayList<Object[]> resList = ancWomenVaccineRepo.getANCWomenVaccineDetails(beneficiaryRegID, benVisitID);
+		ArrayList<ANCWomenVaccineDetail> ancWomenVaccineDetails =  ANCWomenVaccineDetail.getANCWomenVaccineDetails(resList);
+		return new Gson().toJson(ancWomenVaccineDetails);
+	}
 }

@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.anc;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.doctor.ChiefComplaintMaster;
 
 @Entity
 @Table(name = "t_BenAdherence")
@@ -66,8 +68,7 @@ public class BenAdherence {
 	}
 
 	public BenAdherence(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, Boolean toDrugs,
-			String drugReason, Boolean toReferral, String referralReason, String progress, Boolean deleted,
-			String processed, String createdBy, Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
+			String drugReason, Boolean toReferral, String referralReason, String progress) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -78,12 +79,16 @@ public class BenAdherence {
 		this.toReferral = toReferral;
 		this.referralReason = referralReason;
 		this.progress = progress;
-		this.deleted = deleted;
-		this.processed = processed;
-		this.createdBy = createdBy;
-		this.createdDate = createdDate;
-		this.modifiedBy = modifiedBy;
-		this.lastModDate = lastModDate;
+	}
+	
+	public static ArrayList<BenAdherence> getBenAdherences(ArrayList<Object[]> resList) {
+		ArrayList<BenAdherence> resArray = new ArrayList<BenAdherence>();
+		for (Object[] obj : resList) {
+			BenAdherence cOBJ = new BenAdherence((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (Boolean)obj[4], (String)obj[5], (Boolean)obj[6], 
+					(String)obj[7], (String)obj[8]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
 	}
 
 	public Long getID() {

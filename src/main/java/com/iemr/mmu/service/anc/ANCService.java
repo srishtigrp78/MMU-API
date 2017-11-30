@@ -55,4 +55,12 @@ public interface ANCService {
 	public int saveSysRespiratoryExamination(SysRespiratoryExamination respiratoryExamination);
 
 	public String getANCExaminationDetailsData(Long benRegID, Long benVisitID, Integer providerSerMapID);
+	
+	public String getBenAdherence(Long beneficiaryRegID, Long benVisitID);
+
+	public String getLabTestOrders(Long beneficiaryRegID, Long benVisitID);
+
+	public String getANCCareDetails(Long beneficiaryRegID, Long benVisitID);
+
+	public String getANCWomenVaccineDetails(Long beneficiaryRegID, Long benVisitID);
 }
