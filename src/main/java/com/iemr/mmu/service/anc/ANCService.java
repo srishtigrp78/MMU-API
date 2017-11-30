@@ -54,5 +54,5 @@ public interface ANCService {
 
 	public int saveSysRespiratoryExamination(SysRespiratoryExamination respiratoryExamination);
 
-	public String getANCExaminationDetailsData(Long benRegID, Long benVisitID, Integer providerSerMapID);
+	public String getANCExaminationDetailsData(Long benRegID, Long benVisitID);
 }

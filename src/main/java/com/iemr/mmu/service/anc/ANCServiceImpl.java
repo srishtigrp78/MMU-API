@@ -4,12 +4,14 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
 import com.iemr.mmu.data.anc.ANCCareDetails;
 import com.iemr.mmu.data.anc.ANCWomenVaccineDetail;
 import com.iemr.mmu.data.anc.BenAdherence;
@@ -437,8 +439,80 @@ public class ANCServiceImpl implements ANCService {
 		return r;
 	}
 
-	public String getANCExaminationDetailsData(Long benRegID, Long benVisitID, Integer providerSerMapID) {
-		return null;
+	@Override
+	public String getANCExaminationDetailsData(Long benRegID, Long benVisitID) {
+		Map<String, Object> examinationDetailsMap = new HashMap<String, Object>();
+
+		examinationDetailsMap.put("generalExamination", getGeneralExaminationData(benRegID, benVisitID));
+		examinationDetailsMap.put("headToToeExamination", getHeadToToeExaminationData(benRegID, benVisitID));
+		examinationDetailsMap.put("gastrointestinalExamination",
+				getSysGastrointestinalExamination(benRegID, benVisitID));
+		examinationDetailsMap.put("cardiovascularExamination", getCardiovascularExamination(benRegID, benVisitID));
+		examinationDetailsMap.put("respiratoryExamination", getRespiratoryExamination(benRegID, benVisitID));
+		examinationDetailsMap.put("centralNervousExamination", getSysCentralNervousExamination(benRegID, benVisitID));
+		examinationDetailsMap.put("musculoskeletalExamination", getMusculoskeletalExamination(benRegID, benVisitID));
+		examinationDetailsMap.put("genitourinaryExamination", getGenitourinaryExamination(benRegID, benVisitID));
+
+		return new Gson().toJson(examinationDetailsMap);
+	}
+
+	private PhyGeneralExamination getGeneralExaminationData(Long benRegID, Long benVisitID) {
+		PhyGeneralExamination phyGeneralExaminationData = phyGeneralExaminationRepo
+				.getPhyGeneralExaminationData(benRegID, benVisitID);
+		String[] typeDangerSignArr = phyGeneralExaminationData.getTypeOfDangerSign().split(",");
+		if (typeDangerSignArr != null && typeDangerSignArr.length > 0) {
+			ArrayList<String> typeOfDangerSigns = new ArrayList<>();
+			for (String typeDangerSign : typeDangerSignArr) {
+				typeOfDangerSigns.add(typeDangerSign);
+			}
+			phyGeneralExaminationData.setTypeOfDangerSigns(typeOfDangerSigns);
+		}
+		return phyGeneralExaminationData;
+
+	}
+
+	private PhyHeadToToeExamination getHeadToToeExaminationData(Long benRegID, Long benVisitID) {
+		PhyHeadToToeExamination phyHeadToToeExaminationData = phyHeadToToeExaminationRepo
+				.getPhyHeadToToeExaminationData(benRegID, benVisitID);
+		return phyHeadToToeExaminationData;
+
+	}
+
+	private SysGastrointestinalExamination getSysGastrointestinalExamination(Long benRegID, Long benVisitID) {
+		SysGastrointestinalExamination sysGastrointestinalExaminationData = sysGastrointestinalExaminationRepo
+				.getSSysGastrointestinalExamination(benRegID, benVisitID);
+		return sysGastrointestinalExaminationData;
+	}
+
+	private SysCardiovascularExamination getCardiovascularExamination(Long benRegID, Long benVisitID) {
+		SysCardiovascularExamination sysCardiovascularExaminationData = sysCardiovascularExaminationRepo
+				.getSysCardiovascularExaminationData(benRegID, benVisitID);
+		return sysCardiovascularExaminationData;
+	}
+
+	private SysRespiratoryExamination getRespiratoryExamination(Long benRegID, Long benVisitID) {
+		SysRespiratoryExamination sysRespiratoryExaminationData = sysRespiratoryExaminationRepo
+				.getSysRespiratoryExaminationData(benRegID, benVisitID);
+		return sysRespiratoryExaminationData;
+	}
+
+	private SysCentralNervousExamination getSysCentralNervousExamination(Long benRegID, Long benVisitID) {
+		SysCentralNervousExamination sysCentralNervousExaminationData = sysCentralNervousExaminationRepo
+				.getSysCentralNervousExaminationData(benRegID, benVisitID);
+		return sysCentralNervousExaminationData;
+	}
+
+	private SysMusculoskeletalSystemExamination getMusculoskeletalExamination(Long benRegID, Long benVisitID) {
+		SysMusculoskeletalSystemExamination sysMusculoskeletalSystemExaminationData = sysMusculoskeletalSystemExaminationRepo
+				.getSysMusculoskeletalSystemExamination(benRegID, benVisitID);
+		return sysMusculoskeletalSystemExaminationData;
+	}
+
+	private SysGenitourinarySystemExamination getGenitourinaryExamination(Long benRegID, Long benVisitID) {
+		SysGenitourinarySystemExamination sysGenitourinarySystemExaminationData = sysGenitourinarySystemExaminationRepo
+				.getSysGenitourinarySystemExaminationData(benRegID, benVisitID);
+
+		return sysGenitourinarySystemExaminationData;
 	}
 
 }
