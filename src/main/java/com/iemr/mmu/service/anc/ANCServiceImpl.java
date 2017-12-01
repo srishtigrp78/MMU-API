@@ -226,7 +226,7 @@ public class ANCServiceImpl implements ANCService {
 					labTestOrderDetail.setCreatedBy(wrapperBenInvestigationANC.getCreatedBy());
 					Double d = (Double) testData.get("testID");
 					labTestOrderDetail.setTestID(d.intValue());
-					labTestOrderDetail.setOrderedTestName((String) testData.get("testName"));
+					labTestOrderDetail.setTestName((String) testData.get("testName"));
 					labTestOrderDetail.setIsRadiologyImaging((Boolean) testData.get("isRadiologyImaging"));
 
 					LabTestOrderDetailList.add(labTestOrderDetail);
@@ -553,7 +553,7 @@ public class ANCServiceImpl implements ANCService {
 	@Override
 	public String getBenAdherence(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> resList = benAdherenceRepo.getBenAdherence(beneficiaryRegID, benVisitID);
-		ArrayList<BenAdherence> benAdherences = BenAdherence.getBenAdherences(resList);
+		BenAdherence benAdherences = BenAdherence.getBenAdherences(resList);
 		return new Gson().toJson(benAdherences);
 	}
 

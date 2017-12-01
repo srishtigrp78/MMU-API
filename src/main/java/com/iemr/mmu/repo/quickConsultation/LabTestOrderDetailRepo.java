@@ -12,7 +12,7 @@ import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
 @Repository
 public interface LabTestOrderDetailRepo extends CrudRepository<LabTestOrderDetail, Long>{
 
-	@Query(" SELECT labTestOrderID, beneficiaryRegID, benVisitID, providerServiceMapID,	prescriptionID, testID, orderedTestName, testingRequirements, "
+	@Query(" SELECT labTestOrderID, beneficiaryRegID, benVisitID, providerServiceMapID,	prescriptionID, testID, testName, testingRequirements, "
 			+ "isRadiologyImaging  from LabTestOrderDetail ba WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID ")
 	public ArrayList<Object[]> getLabTestOrderDetails(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);

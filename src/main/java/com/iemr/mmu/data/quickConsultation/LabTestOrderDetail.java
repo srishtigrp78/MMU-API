@@ -44,7 +44,7 @@ public class LabTestOrderDetail {
 
 	@Expose
 	@Column(name = "OrderedTestName")
-	private String orderedTestName;
+	private String testName;
 
 	@Expose
 	@Column(name = "TestingRequirements")
@@ -122,13 +122,13 @@ public class LabTestOrderDetail {
 	public void setTestID(Integer testID) {
 		this.testID = testID;
 	}
-
-	public String getOrderedTestName() {
-		return orderedTestName;
+	
+	public String getTestName() {
+		return testName;
 	}
 
-	public void setOrderedTestName(String orderedTestName) {
-		this.orderedTestName = orderedTestName;
+	public void setTestName(String testName) {
+		this.testName = testName;
 	}
 
 	public String getTestingRequirements() {
@@ -226,7 +226,7 @@ public class LabTestOrderDetail {
 					labTestOrderDetail.setTestID(obj.get("testID").getAsInt());
 
 				if (obj.has("testName") && !obj.get("testName").isJsonNull())
-					labTestOrderDetail.setOrderedTestName(obj.get("testName").getAsString());
+					labTestOrderDetail.setTestName(obj.get("testName").getAsString());;
 
 				if (obj.has("testingRequirements") && !obj.get("testingRequirements").isJsonNull())
 					labTestOrderDetail.setTestingRequirements(obj.get("testingRequirements").getAsString());
@@ -254,7 +254,7 @@ public class LabTestOrderDetail {
 		this.providerServiceMapID = providerServiceMapID;
 		this.prescriptionID = prescriptionID;
 		this.testID = testID;
-		this.orderedTestName = orderedTestName;
+		this.testName = orderedTestName;
 		this.testingRequirements = testingRequirements;
 		this.isRadiologyImaging = isRadiologyImaging;
 	}
