@@ -64,13 +64,29 @@ public class DocWorkList {
 	@Column(name = "VisitCreatedDate")
 	private Timestamp visitCreatedDate;
 
+	@Expose
+	@Column(name = "FatherName")
+	private String fatherName;
+
+	@Expose
+	@Column(name = "districtName")
+	private String districtName;
+
+	@Expose
+	@Column(name = "villageName")
+	private String villageName;
+
+	@Expose
+	@Column(name = "PhoneNo")
+	private String phoneNo;
+
 	public DocWorkList() {
 	}
 
 	public DocWorkList(Long id, Long beneficiaryRegID, String beneficiaryID, String firstName, String lastName,
 			Short genderID, String genderName, Timestamp dob, Timestamp regCreatedDate, Timestamp regLastModDate,
-			Character flowStatusFlag, Long benVisitID, Short visitNo, String visitFlowStatusFlag,
-			Timestamp visitCreatedDate) {
+			Character flowStatusFlag, Long benVisitID, Short visitNo, String visitFlowStatusFlag, String visitCategory,
+			Timestamp visitCreatedDate, String fatherName, String districtName, String villageName, String phoneNo) {
 		super();
 		this.id = id;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -84,9 +100,14 @@ public class DocWorkList {
 		this.regLastModDate = regLastModDate;
 		this.flowStatusFlag = flowStatusFlag;
 		this.benVisitID = benVisitID;
-		visitNo = visitNo;
+		this.visitNo = visitNo;
 		this.visitFlowStatusFlag = visitFlowStatusFlag;
+		this.visitCategory = visitCategory;
 		this.visitCreatedDate = visitCreatedDate;
+		this.fatherName = fatherName;
+		this.districtName = districtName;
+		this.villageName = villageName;
+		this.phoneNo = phoneNo;
 	}
 
 	public Long getId() {
@@ -190,7 +211,7 @@ public class DocWorkList {
 	}
 
 	public void setVisitNo(Short visitNo) {
-		visitNo = visitNo;
+		this.visitNo = visitNo;
 	}
 
 	public String getVisitFlowStatusFlag() {
@@ -201,12 +222,52 @@ public class DocWorkList {
 		this.visitFlowStatusFlag = visitFlowStatusFlag;
 	}
 
+	public String getVisitCategory() {
+		return visitCategory;
+	}
+
+	public void setVisitCategory(String visitCategory) {
+		this.visitCategory = visitCategory;
+	}
+
 	public Timestamp getVisitCreatedDate() {
 		return visitCreatedDate;
 	}
 
 	public void setVisitCreatedDate(Timestamp visitCreatedDate) {
 		this.visitCreatedDate = visitCreatedDate;
+	}
+
+	public String getFatherName() {
+		return fatherName;
+	}
+
+	public void setFatherName(String fatherName) {
+		this.fatherName = fatherName;
+	}
+
+	public String getDistrictName() {
+		return districtName;
+	}
+
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+
+	public String getVillageName() {
+		return villageName;
+	}
+
+	public void setVillageName(String villageName) {
+		this.villageName = villageName;
+	}
+
+	public String getPhoneNo() {
+		return phoneNo;
+	}
+
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
 	}
 
 }

@@ -12,7 +12,8 @@ import com.iemr.mmu.data.doctor.DocWorkList;
 public interface DocWorkListRepo extends CrudRepository<DocWorkList, Long> {
 	@Query("SELECT DISTINCT beneficiaryRegID, beneficiaryID, "
 			+ " UPPER( concat(IFNULL(firstName, ''), ' ',IFNULL(lastName,''))) as benName, "
-			+ " Date(dob), genderID, genderName, benVisitID, visitNo, visitFlowStatusFlag, visitCategory from DocWorkList  "
+			+ " Date(dob), genderID, genderName, benVisitID, visitNo, visitFlowStatusFlag, "
+			+ " visitCategory, fatherName, districtName, villageName, phoneNo from DocWorkList  "
 			+ " where visitFlowStatusFlag in( 'N', 'D') and Date(visitCreatedDate) = curdate() ")
 	public List<Object[]> getDocWorkList();
 }

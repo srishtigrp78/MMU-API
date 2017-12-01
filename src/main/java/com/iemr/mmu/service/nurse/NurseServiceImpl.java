@@ -149,6 +149,11 @@ public class NurseServiceImpl implements NurseService {
 	public Long saveBeneficiaryVisitDetails(BeneficiaryVisitDetail beneficiaryVisitDetail) {
 		BeneficiaryVisitDetail response = null;
 		try {
+			Short benVisitCount = benVisitDetailRepo
+					.getVisitCountForBeneficiary(beneficiaryVisitDetail.getBeneficiaryRegID());
+			if (benVisitCount != null){
+				beneficiaryVisitDetail.setVisitNo(benVisitCount);
+			}
 			response = benVisitDetailRepo.save(beneficiaryVisitDetail);
 
 		} catch (Exception e) {
@@ -326,7 +331,7 @@ public class NurseServiceImpl implements NurseService {
 				if (benFamilyCancerHistories.size() > 0) {
 					response = benFamilyCancerHistories.size();
 				}
-			}else{
+			} else {
 				response = 1;
 			}
 
@@ -570,7 +575,7 @@ public class NurseServiceImpl implements NurseService {
 		Map<String, Object> resMap = new HashMap<>();
 
 		resMap.put("benVisitDetail", getBeneficiaryVisitDetails(benRegID, benVisitID, visitDateTime));
-		
+
 		resMap.put("familyDiseaseHistory", getBenFamilyHisData(benRegID, benVisitID, visitDateTime));
 
 		resMap.put("patientObstetricHistory", getBenObstetricDetailsData(benRegID, benVisitID, visitDateTime));
@@ -584,20 +589,22 @@ public class NurseServiceImpl implements NurseService {
 		return resMap;
 	}
 
-	private BeneficiaryVisitDetail getBeneficiaryVisitDetails(Long benRegID, Long benVisitID,
-			Date visitDateTime) {
-		List<Objects[]> beneficiaryVisitDetail = benVisitDetailRepo.getBeneficiaryVisitDetails(benRegID, benVisitID, visitDateTime);
+	private BeneficiaryVisitDetail getBeneficiaryVisitDetails(Long benRegID, Long benVisitID, Date visitDateTime) {
+		List<Objects[]> beneficiaryVisitDetail = benVisitDetailRepo.getBeneficiaryVisitDetails(benRegID, benVisitID,
+				visitDateTime);
 		BeneficiaryVisitDetail beneficiaryVisit = null;
-		if(null != beneficiaryVisitDetail){
-			for(Object[] obj: beneficiaryVisitDetail){
-				beneficiaryVisit = new BeneficiaryVisitDetail((Long)obj[0], (Long)obj[1], (Integer)obj[2], (Timestamp)obj[3], (Short)obj[4], (Short)obj[5],
-						(String)obj[6], (Integer)obj[7], (String)obj[8], (String)obj[9], (String)obj[10], (String)obj[11], (String)obj[12], (String)obj[13], (String)obj[14]);
+		if (null != beneficiaryVisitDetail) {
+			for (Object[] obj : beneficiaryVisitDetail) {
+				beneficiaryVisit = new BeneficiaryVisitDetail((Long) obj[0], (Long) obj[1], (Integer) obj[2],
+						(Timestamp) obj[3], (Short) obj[4], (Short) obj[5], (String) obj[6], (Integer) obj[7],
+						(String) obj[8], (String) obj[9], (String) obj[10], (String) obj[11], (String) obj[12],
+						(String) obj[13], (String) obj[14]);
 			}
 		}
-		System.out.println("beneficiaryVisitDetail "+beneficiaryVisitDetail);
+		System.out.println("beneficiaryVisitDetail " + beneficiaryVisitDetail);
 		return beneficiaryVisit;
 	}
-	
+
 	private BenPersonalCancerHistory getBenPersonalCancerHistoryData(Long benRegID, Long benVisitID,
 			Date visitDateTime) {
 		BenPersonalCancerHistory benPersonalCancerHistory = benPersonalCancerHistoryRepo.getBenPersonalHistory(benRegID,

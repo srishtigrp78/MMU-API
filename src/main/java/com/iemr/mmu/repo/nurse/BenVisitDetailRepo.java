@@ -56,6 +56,9 @@ public interface BenVisitDetailRepo extends CrudRepository<BeneficiaryVisitDetai
 	public List<Objects[]> getBeneficiaryVisitDetails(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID, @Param("createdDate") Date createdDate);
 	
+	@Query(" SELECT COUNT(benVisitID) FROM BeneficiaryVisitDetail WHERE beneficiaryRegID = :benRegID GROUP BY beneficiaryRegID ")
+	public Short getVisitCountForBeneficiary(@Param("benRegID") Long benRegID);
+	
 	
 
 }

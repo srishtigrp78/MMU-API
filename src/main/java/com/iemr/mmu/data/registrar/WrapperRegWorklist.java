@@ -56,7 +56,7 @@ public class WrapperRegWorklist {
 				wrapperRegWorklist.beneficiaryRegID = (Long) obj[0];
 				wrapperRegWorklist.beneficiaryID = (String) obj[1];
 				wrapperRegWorklist.benName = (String) obj[2];
-				wrapperRegWorklist.dob = (Date) obj[3];
+				// wrapperRegWorklist.dob = (Date) obj[3];
 				if (obj[3] != null) {
 					Date date = (Date) obj[3];
 					Calendar cal = Calendar.getInstance();
@@ -94,19 +94,25 @@ public class WrapperRegWorklist {
 				wrapperRegWorklist.benVisitNo = (Short) obj[7];
 				wrapperRegWorklist.visitFlowStatusFlag = (String) obj[8];
 				wrapperRegWorklist.VisitCategory = (String) obj[9];
-				if(obj[8].toString().equals("N")){
+
+				wrapperRegWorklist.fatherName = (String) obj[10];
+				wrapperRegWorklist.districtName = (String) obj[11];
+				wrapperRegWorklist.villageName = (String) obj[12];
+				wrapperRegWorklist.phoneNo = (String) obj[13];
+
+				if (obj[8].toString().equals("N")) {
 					System.out.println("ifff");
 					wrapperRegWorklist.statusMessage = "Pending For Consultation";
-				}else{
+				} else {
 					System.out.println("else");
-					if(obj[8].toString().equals("D")){
+					if (obj[8].toString().equals("D")) {
 						System.out.println(" again ifff");
 						wrapperRegWorklist.statusMessage = "Consultation Done";
 					}
 				}
 				resArray.add(wrapperRegWorklist);
 				System.out.println("helloooo");
-				
+
 				System.out.println(new Gson().toJson(resArray));
 			}
 		}
@@ -125,7 +131,7 @@ public class WrapperRegWorklist {
 				wrapperRegWorklist.beneficiaryRegID = (Long) obj[0];
 				wrapperRegWorklist.beneficiaryID = (String) obj[1];
 				wrapperRegWorklist.benName = (String) obj[2];
-				wrapperRegWorklist.dob = (Date) obj[3];
+				// wrapperRegWorklist.dob = (Date) obj[3];
 				if (obj[3] != null) {
 					Date date = (Date) obj[3];
 					Calendar cal = Calendar.getInstance();
@@ -160,9 +166,7 @@ public class WrapperRegWorklist {
 				wrapperRegWorklist.genderID = (Short) obj[4];
 				wrapperRegWorklist.genderName = (String) obj[5];
 				wrapperRegWorklist.fatherName = (String) obj[6];
-				wrapperRegWorklist.districtID = (Integer) obj[7];
 				wrapperRegWorklist.districtName = (String) obj[8];
-				wrapperRegWorklist.villageID = (Integer) obj[9];
 				wrapperRegWorklist.villageName = (String) obj[10];
 				wrapperRegWorklist.phoneNo = (String) obj[11];
 				resArray.add(wrapperRegWorklist);

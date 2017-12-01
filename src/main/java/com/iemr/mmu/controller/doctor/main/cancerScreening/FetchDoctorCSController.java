@@ -69,7 +69,7 @@ public class FetchDoctorCSController {
 			String s = doctorServiceImpl.getDocWorkList();
 			response.setResponse(s);
 		} catch (Exception e) {
-			logger.error("Error in getNurseWorkList:" + e);
+			logger.error("Error in getDocWorkList:" + e);
 			response.setError(e);
 		}
 		return response.toString();
