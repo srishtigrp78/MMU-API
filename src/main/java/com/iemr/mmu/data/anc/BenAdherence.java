@@ -81,14 +81,14 @@ public class BenAdherence {
 		this.progress = progress;
 	}
 	
-	public static ArrayList<BenAdherence> getBenAdherences(ArrayList<Object[]> resList) {
+	public static BenAdherence getBenAdherences(ArrayList<Object[]> resList) {
 		ArrayList<BenAdherence> resArray = new ArrayList<BenAdherence>();
-		for (Object[] obj : resList) {
-			BenAdherence cOBJ = new BenAdherence((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (Boolean)obj[4], (String)obj[5], (Boolean)obj[6], 
-					(String)obj[7], (String)obj[8]);
-			resArray.add(cOBJ);
+		BenAdherence cOBJ = null;
+		for(Object[] obj:resList){		
+			cOBJ = new BenAdherence((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (Boolean)obj[4], (String)obj[5],
+					(Boolean)obj[6], (String)obj[7], (String)obj[8]);
 		}
-		return resArray;
+		return cOBJ;
 	}
 
 	public Long getID() {
