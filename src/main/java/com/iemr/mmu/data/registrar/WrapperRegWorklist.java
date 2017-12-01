@@ -44,6 +44,8 @@ public class WrapperRegWorklist {
 	private Long benVisitID;
 	@Expose
 	private Short benVisitNo;
+	@Expose
+	private String visitDate;
 
 	@Expose
 	private String statusMessage;
@@ -99,6 +101,7 @@ public class WrapperRegWorklist {
 				wrapperRegWorklist.districtName = (String) obj[11];
 				wrapperRegWorklist.villageName = (String) obj[12];
 				wrapperRegWorklist.phoneNo = (String) obj[13];
+				wrapperRegWorklist.visitDate = (String) obj[14];
 
 				if (obj[8].toString().equals("N")) {
 					System.out.println("ifff");

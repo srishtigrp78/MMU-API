@@ -151,7 +151,8 @@ public class NurseServiceImpl implements NurseService {
 		try {
 			Short benVisitCount = benVisitDetailRepo
 					.getVisitCountForBeneficiary(beneficiaryVisitDetail.getBeneficiaryRegID());
-			if (benVisitCount != null){
+			if (benVisitCount != null) {
+				benVisitCount = (short) (benVisitCount + 1);
 				beneficiaryVisitDetail.setVisitNo(benVisitCount);
 			}
 			response = benVisitDetailRepo.save(beneficiaryVisitDetail);

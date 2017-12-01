@@ -13,7 +13,7 @@ public interface DocWorkListRepo extends CrudRepository<DocWorkList, Long> {
 	@Query("SELECT DISTINCT beneficiaryRegID, beneficiaryID, "
 			+ " UPPER( concat(IFNULL(firstName, ''), ' ',IFNULL(lastName,''))) as benName, "
 			+ " Date(dob), genderID, genderName, benVisitID, visitNo, visitFlowStatusFlag, "
-			+ " visitCategory, fatherName, districtName, villageName, phoneNo from DocWorkList  "
+			+ " visitCategory, fatherName, districtName, villageName, phoneNo, DATE_FORMAT(visitCreatedDate, '%d-%m-%Y')  from DocWorkList  "
 			+ " where visitFlowStatusFlag in( 'N', 'D') and Date(visitCreatedDate) = curdate() ")
 	public List<Object[]> getDocWorkList();
 }
