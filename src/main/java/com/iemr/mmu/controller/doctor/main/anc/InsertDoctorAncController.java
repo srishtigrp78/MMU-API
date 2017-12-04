@@ -41,6 +41,8 @@ public class InsertDoctorAncController {
 			if (requestObj != null) {
 				WrapperAncFindings wrapperAncFindings = InputMapper.gson().fromJson(requestObj,
 						WrapperAncFindings.class);
+
+				Integer rd = ancServiceImpl.saveAncDocFindings(wrapperAncFindings);
 			} else {
 				response.setError(5000, "Data is not sufficient !!!");
 			}

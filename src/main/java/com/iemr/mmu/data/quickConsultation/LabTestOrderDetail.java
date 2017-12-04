@@ -2,7 +2,6 @@ package com.iemr.mmu.data.quickConsultation;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +12,6 @@ import javax.persistence.Table;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
-import com.iemr.mmu.data.anc.BenAdherence;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 
 @Entity
@@ -124,7 +122,7 @@ public class LabTestOrderDetail {
 	public void setTestID(Integer testID) {
 		this.testID = testID;
 	}
-	
+
 	public String getTestName() {
 		return testName;
 	}
@@ -228,7 +226,8 @@ public class LabTestOrderDetail {
 					labTestOrderDetail.setTestID(obj.get("testID").getAsInt());
 
 				if (obj.has("testName") && !obj.get("testName").isJsonNull())
-					labTestOrderDetail.setTestName(obj.get("testName").getAsString());;
+					labTestOrderDetail.setTestName(obj.get("testName").getAsString());
+				;
 
 				if (obj.has("testingRequirements") && !obj.get("testingRequirements").isJsonNull())
 					labTestOrderDetail.setTestingRequirements(obj.get("testingRequirements").getAsString());
@@ -252,25 +251,26 @@ public class LabTestOrderDetail {
 		this.testName = orderedTestName;
 		this.isRadiologyImaging = isRadiologyImaging;
 	}
-	
+
 	public static WrapperBenInvestigationANC getLabTestOrderDetails(ArrayList<Object[]> resList) {
 		ArrayList<LabTestOrderDetail> resArray = new ArrayList<LabTestOrderDetail>();
-		
-		WrapperBenInvestigationANC testOrders= new WrapperBenInvestigationANC();
-		Object[] obj1 = resList.get(0);
-		testOrders.setBeneficiaryRegID((Long)obj1[0]);
-		testOrders.setBenVisitID((Long)obj1[1]);
-		testOrders.setProviderServiceMapID((Integer)obj1[2]);
-		ArrayList<LabTestOrderDetail> laboratoryList=new ArrayList<LabTestOrderDetail>();
-		for (Object[] obj : resList) {
-			
-			LabTestOrderDetail cOBJ = new LabTestOrderDetail((Integer)obj[3],(String)obj[4], (Boolean)obj[5]);
-			laboratoryList.add(cOBJ);
-			//resArray.add(cOBJ);
+
+		WrapperBenInvestigationANC testOrders = new WrapperBenInvestigationANC();
+		if (resList != null && resList.size() > 0) {
+			Object[] obj1 = resList.get(0);
+			testOrders.setBeneficiaryRegID((Long) obj1[0]);
+			testOrders.setBenVisitID((Long) obj1[1]);
+			testOrders.setProviderServiceMapID((Integer) obj1[2]);
+			ArrayList<LabTestOrderDetail> laboratoryList = new ArrayList<LabTestOrderDetail>();
+			for (Object[] obj : resList) {
+
+				LabTestOrderDetail cOBJ = new LabTestOrderDetail((Integer) obj[3], (String) obj[4], (Boolean) obj[5]);
+				laboratoryList.add(cOBJ);
+				// resArray.add(cOBJ);
+			}
+			testOrders.setLaboratoryList(laboratoryList);
 		}
-		testOrders.setLaboratoryList(laboratoryList);
 		return testOrders;
 	}
-	
 
 }

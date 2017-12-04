@@ -24,7 +24,6 @@ import com.iemr.mmu.data.anc.SysGenitourinarySystemExamination;
 import com.iemr.mmu.data.anc.SysMusculoskeletalSystemExamination;
 import com.iemr.mmu.data.anc.SysObstetricExamination;
 import com.iemr.mmu.data.anc.SysRespiratoryExamination;
-import com.iemr.mmu.data.anc.WrapperAncFindings;
 import com.iemr.mmu.data.anc.WrapperAncImmunization;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
@@ -80,7 +79,7 @@ public class ANCServiceImpl implements ANCService {
 	public void setPrescriptionDetailRepo(PrescriptionDetailRepo prescriptionDetailRepo) {
 		this.prescriptionDetailRepo = prescriptionDetailRepo;
 	}
-	
+
 	private PhyGeneralExaminationRepo phyGeneralExaminationRepo;
 	private PhyHeadToToeExaminationRepo phyHeadToToeExaminationRepo;
 	private SysCardiovascularExaminationRepo sysCardiovascularExaminationRepo;
@@ -593,15 +592,10 @@ public class ANCServiceImpl implements ANCService {
 	}
 
 	@Override
-	public Integer saveAncDocFindings(WrapperAncFindings wrapperAncFindings) {
-		return null;
-	}
-	
-	
 	public Long saveBenANCDiagnosis(PrescriptionDetail prescriptionDetail) {
-		Long prescriptionID =null;
+		Long prescriptionID = null;
 		PrescriptionDetail res = prescriptionDetailRepo.save(prescriptionDetail);
-		if(null != res && res.getPrescriptionID()>0){
+		if (null != res && res.getPrescriptionID() > 0) {
 			prescriptionID = res.getPrescriptionID();
 		}
 		return prescriptionID;
