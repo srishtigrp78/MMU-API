@@ -2,6 +2,7 @@ package com.iemr.mmu.data.quickConsultation;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 import com.iemr.mmu.data.anc.BenAdherence;
+import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 
 @Entity
 @Table(name = "t_lab_testorder")
@@ -244,29 +246,30 @@ public class LabTestOrderDetail {
 		return resArray;
 	}
 
-	public LabTestOrderDetail(Long labTestOrderID, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
-			Long prescriptionID, Integer testID, String orderedTestName, String testingRequirements,
-			Boolean isRadiologyImaging) {
+	public LabTestOrderDetail(Integer testID, String orderedTestName, Boolean isRadiologyImaging) {
 		super();
-		this.labTestOrderID = labTestOrderID;
-		this.beneficiaryRegID = beneficiaryRegID;
-		this.benVisitID = benVisitID;
-		this.providerServiceMapID = providerServiceMapID;
-		this.prescriptionID = prescriptionID;
 		this.testID = testID;
 		this.testName = orderedTestName;
-		this.testingRequirements = testingRequirements;
 		this.isRadiologyImaging = isRadiologyImaging;
 	}
 	
-	public static ArrayList<LabTestOrderDetail> getLabTestOrderDetails(ArrayList<Object[]> resList) {
+	public static WrapperBenInvestigationANC getLabTestOrderDetails(ArrayList<Object[]> resList) {
 		ArrayList<LabTestOrderDetail> resArray = new ArrayList<LabTestOrderDetail>();
+		
+		WrapperBenInvestigationANC testOrders= new WrapperBenInvestigationANC();
+		Object[] obj1 = resList.get(0);
+		testOrders.setBeneficiaryRegID((Long)obj1[0]);
+		testOrders.setBenVisitID((Long)obj1[1]);
+		testOrders.setProviderServiceMapID((Integer)obj1[2]);
+		ArrayList<LabTestOrderDetail> laboratoryList=new ArrayList<LabTestOrderDetail>();
 		for (Object[] obj : resList) {
-			LabTestOrderDetail cOBJ = new LabTestOrderDetail((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (Long)obj[4], (Integer)obj[5], 
-					(String)obj[6], (String)obj[7], (Boolean)obj[8]);
-			resArray.add(cOBJ);
+			
+			LabTestOrderDetail cOBJ = new LabTestOrderDetail((Integer)obj[3],(String)obj[4], (Boolean)obj[5]);
+			laboratoryList.add(cOBJ);
+			//resArray.add(cOBJ);
 		}
-		return resArray;
+		testOrders.setLaboratoryList(laboratoryList);
+		return testOrders;
 	}
 	
 

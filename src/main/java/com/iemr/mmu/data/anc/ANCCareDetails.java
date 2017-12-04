@@ -173,16 +173,26 @@ public class ANCCareDetails {
 		this.bloodGroup = bloodGroup;
 	}
 
-	public static ArrayList<ANCCareDetails> getANCCareDetails(ArrayList<Object[]> resList) {
+	public static ANCCareDetails getANCCareDetails(ArrayList<Object[]> resList) {
 		ArrayList<ANCCareDetails> resArray = new ArrayList<ANCCareDetails>();
+		ANCCareDetails cOBJ = null;
 		for (Object[] obj : resList) {
-			ANCCareDetails cOBJ = new ANCCareDetails((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (Short)obj[4], (String)obj[5], 
+			cOBJ = new ANCCareDetails((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (Short)obj[4], (String)obj[5], 
 					(String)obj[6], (String)obj[7], (Date)obj[8], (Short)obj[9], (Date)obj[10], (Short)obj[11], 
 					(Short)obj[12], (Date)obj[13], (Boolean)obj[14], (String)obj[15], (Short)obj[16], (Short)obj[17], (Short)obj[18],
 					(Short)obj[19], (Short)obj[20], (String)obj[21]);
-			resArray.add(cOBJ);
+			
+			Date Ldate=(Date)obj[10];
+			if(null != Ldate){
+				cOBJ.setLmpDate(Ldate.toString());
+			}
+			
+			Date EDate=(Date)obj[13];
+			if(null != EDate){
+				cOBJ.setExpDelDt(EDate.toString());
+			}
 		}
-		return resArray;
+		return cOBJ;
 	}
 	
 	public Long getID() {

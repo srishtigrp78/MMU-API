@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.ANCCareDetails;
 import com.iemr.mmu.data.anc.ANCWomenVaccineDetail;
 import com.iemr.mmu.data.anc.BenAdherence;
@@ -212,24 +213,18 @@ public class ANCServiceImpl implements ANCService {
 
 		if (prescriptionID != null && prescriptionID > 0) {
 			ArrayList<LabTestOrderDetail> LabTestOrderDetailList = new ArrayList<>();
-			ArrayList<Map<String, Object>> investigationList = wrapperBenInvestigationANC.getLaboratoryList();
+			ArrayList<LabTestOrderDetail> investigationList = wrapperBenInvestigationANC.getLaboratoryList();
 			if (investigationList != null && investigationList.size() > 0) {
 
-				LabTestOrderDetail labTestOrderDetail;
-				for (Map<String, Object> testData : investigationList) {
-					labTestOrderDetail = new LabTestOrderDetail();
+				for (LabTestOrderDetail testData : investigationList) {
+										
+					testData.setPrescriptionID(prescriptionID);
+					testData.setBeneficiaryRegID(wrapperBenInvestigationANC.getBeneficiaryRegID());
+					testData.setBenVisitID(wrapperBenInvestigationANC.getBenVisitID());
+					testData.setProviderServiceMapID(wrapperBenInvestigationANC.getProviderServiceMapID());
+					testData.setCreatedBy(wrapperBenInvestigationANC.getCreatedBy());
 
-					labTestOrderDetail.setPrescriptionID(prescriptionID);
-					labTestOrderDetail.setBeneficiaryRegID(wrapperBenInvestigationANC.getBeneficiaryRegID());
-					labTestOrderDetail.setBenVisitID(wrapperBenInvestigationANC.getBenVisitID());
-					labTestOrderDetail.setProviderServiceMapID(wrapperBenInvestigationANC.getProviderServiceMapID());
-					labTestOrderDetail.setCreatedBy(wrapperBenInvestigationANC.getCreatedBy());
-					Double d = (Double) testData.get("testID");
-					labTestOrderDetail.setTestID(d.intValue());
-					labTestOrderDetail.setTestName((String) testData.get("testName"));
-					labTestOrderDetail.setIsRadiologyImaging((Boolean) testData.get("isRadiologyImaging"));
-
-					LabTestOrderDetailList.add(labTestOrderDetail);
+					LabTestOrderDetailList.add(testData);
 				}
 				ArrayList<LabTestOrderDetail> LabTestOrderDetailListRS = (ArrayList<LabTestOrderDetail>) labTestOrderDetailRepo
 						.save(LabTestOrderDetailList);
@@ -468,13 +463,15 @@ public class ANCServiceImpl implements ANCService {
 	private PhyGeneralExamination getGeneralExaminationData(Long benRegID, Long benVisitID) {
 		PhyGeneralExamination phyGeneralExaminationData = phyGeneralExaminationRepo
 				.getPhyGeneralExaminationData(benRegID, benVisitID);
-		String[] typeDangerSignArr = phyGeneralExaminationData.getTypeOfDangerSign().split(",");
-		if (typeDangerSignArr != null && typeDangerSignArr.length > 0) {
-			ArrayList<String> typeOfDangerSigns = new ArrayList<>();
-			for (String typeDangerSign : typeDangerSignArr) {
-				typeOfDangerSigns.add(typeDangerSign);
+		if(null!=phyGeneralExaminationData){
+			String[] typeDangerSignArr = phyGeneralExaminationData.getTypeOfDangerSign().split(",");
+			if (typeDangerSignArr != null && typeDangerSignArr.length > 0) {
+				ArrayList<String> typeOfDangerSigns = new ArrayList<>();
+				for (String typeDangerSign : typeDangerSignArr) {
+					typeOfDangerSigns.add(typeDangerSign);
+				}
+				phyGeneralExaminationData.setTypeOfDangerSigns(typeOfDangerSigns);
 			}
-			phyGeneralExaminationData.setTypeOfDangerSigns(typeOfDangerSigns);
 		}
 		return phyGeneralExaminationData;
 
@@ -560,7 +557,7 @@ public class ANCServiceImpl implements ANCService {
 	@Override
 	public String getLabTestOrders(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> resList = labTestOrderDetailRepo.getLabTestOrderDetails(beneficiaryRegID, benVisitID);
-		ArrayList<LabTestOrderDetail> labTestOrderDetails = LabTestOrderDetail.getLabTestOrderDetails(resList);
+		WrapperBenInvestigationANC labTestOrderDetails = LabTestOrderDetail.getLabTestOrderDetails(resList);
 		return new Gson().toJson(labTestOrderDetails);
 	}
 
@@ -577,14 +574,14 @@ public class ANCServiceImpl implements ANCService {
 	@Override
 	public String getANCCareDetails(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> resList = ancCareRepo.getANCCareDetails(beneficiaryRegID, benVisitID);
-		ArrayList<ANCCareDetails> ancCareDetails = ANCCareDetails.getANCCareDetails(resList);
+		ANCCareDetails ancCareDetails = ANCCareDetails.getANCCareDetails(resList);
 		return new Gson().toJson(ancCareDetails);
 	}
 
 	@Override
 	public String getANCWomenVaccineDetails(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> resList = ancWomenVaccineRepo.getANCWomenVaccineDetails(beneficiaryRegID, benVisitID);
-		ArrayList<ANCWomenVaccineDetail> ancWomenVaccineDetails = ANCWomenVaccineDetail
+		WrapperAncImmunization ancWomenVaccineDetails = ANCWomenVaccineDetail
 				.getANCWomenVaccineDetails(resList);
 		return new Gson().toJson(ancWomenVaccineDetails);
 	}

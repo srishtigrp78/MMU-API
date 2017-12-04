@@ -74,7 +74,7 @@ public class FetchNurseANCController {
 			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenVisitDetailsFrmNurseANC request:" + comingRequest);
+		logger.info("getBenExaminationDetailsANC request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID") && obj.has("benVisitID")) {
@@ -86,10 +86,10 @@ public class FetchNurseANCController {
 			} else {
 				response.setError(5000, "Invalid Request Data !!!");
 			}
-			logger.info("getBenDataFrmNurseScrnToDocScrnVisitDetails response:" + response);
+			logger.info("getBenExaminationDetailsANC response:" + response);
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error in getBenDataFrmNurseScrnToDocScrnVisitDetails:" + e);
+			logger.error("Error in getBenExaminationDetailsANC:" + e);
 		}
 		return response.toString();
 	}

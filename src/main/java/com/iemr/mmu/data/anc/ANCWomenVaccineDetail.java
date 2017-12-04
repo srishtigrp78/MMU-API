@@ -91,14 +91,35 @@ public class ANCWomenVaccineDetail {
 		this.receivedFacilityName = receivedFacilityName;
 	}
 
-	public static ArrayList<ANCWomenVaccineDetail> getANCWomenVaccineDetails(ArrayList<Object[]> resList) {
+	public static WrapperAncImmunization getANCWomenVaccineDetails(ArrayList<Object[]> resList) {
 		ArrayList<ANCWomenVaccineDetail> resArray = new ArrayList<ANCWomenVaccineDetail>();
+		WrapperAncImmunization wrapperAncImmunization = new WrapperAncImmunization();
+		
 		for (Object[] obj : resList) {
-			ANCWomenVaccineDetail cOBJ = new ANCWomenVaccineDetail((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3] , (String)obj[4], 
-					(String)obj[5], (Date)obj[6], (String)obj[7]);
-			resArray.add(cOBJ);
+			Date dt= (Date)obj[6];
+			if(resList.indexOf(obj) == 0){
+				wrapperAncImmunization.setBeneficiaryRegID((Long)obj[1]);
+				wrapperAncImmunization.setBenVisitID((Long)obj[2]);
+				wrapperAncImmunization.setProviderServiceMapID((Integer)obj[3]);
+				
+				wrapperAncImmunization.settT_1Status((String)obj[5]);
+				if(null != dt)
+				wrapperAncImmunization.setDateReceivedForTT_1(dt.toString());
+				wrapperAncImmunization.setFacilityNameOfTT_1((String)obj[7]);
+			}else if(resList.indexOf(obj) == 1){
+				wrapperAncImmunization.settT_2Status((String)obj[5]);
+				if(null != dt)
+				wrapperAncImmunization.setDateReceivedForTT_2(dt.toString());
+				wrapperAncImmunization.setFacilityNameOfTT_2((String)obj[7]);
+			}else if(resList.indexOf(obj) == 2){
+				wrapperAncImmunization.settT_3Status((String)obj[5]);
+				if(null != dt)
+				wrapperAncImmunization.setDateReceivedForTT_3(dt.toString());
+				wrapperAncImmunization.setFacilityNameOfTT_3((String)obj[7]);
+			}
+			
 		}
-		return resArray;
+		return wrapperAncImmunization;
 	}
 
 	public Long getID() {

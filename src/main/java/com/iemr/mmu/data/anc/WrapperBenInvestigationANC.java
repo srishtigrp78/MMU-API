@@ -3,19 +3,21 @@ package com.iemr.mmu.data.anc;
 import java.util.ArrayList;
 import java.util.Map;
 
+import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
+
 public class WrapperBenInvestigationANC {
 	private Long beneficiaryRegID;
 	private Long benVisitID;
 	private Integer providerServiceMapID;
 	private String createdBy;
 
-	private ArrayList<Map<String, Object>> laboratoryList;
+	private ArrayList<LabTestOrderDetail> laboratoryList;
 
 	public WrapperBenInvestigationANC() {
 	}
 
 	public WrapperBenInvestigationANC(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
-			String createdBy, ArrayList<Map<String, Object>> laboratoryList) {
+			String createdBy, ArrayList<LabTestOrderDetail> laboratoryList) {
 		super();
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
@@ -56,11 +58,11 @@ public class WrapperBenInvestigationANC {
 		this.createdBy = createdBy;
 	}
 
-	public ArrayList<Map<String, Object>> getLaboratoryList() {
+	public ArrayList<LabTestOrderDetail> getLaboratoryList() {
 		return laboratoryList;
 	}
 
-	public void setLaboratoryList(ArrayList<Map<String, Object>> laboratoryList) {
+	public void setLaboratoryList(ArrayList<LabTestOrderDetail> laboratoryList) {
 		this.laboratoryList = laboratoryList;
 	}
 

@@ -64,18 +64,17 @@ public class LabTestMaster {
 		this.lastModDate = lastModDate;
 	}
 	
-	public LabTestMaster(Integer testID, String testName, String testDesc, Boolean isRadiologyImaging) {
+	public LabTestMaster(Integer testID, String testName, Boolean isRadiologyImaging) {
 		super();
 		this.testID = testID;
 		this.testName = testName;
-		this.testDesc = testDesc;
 		this.isRadiologyImaging = isRadiologyImaging;
 	}
 
 	public static ArrayList<LabTestMaster> getLabTestMasters(ArrayList<Object[]> resList) {
 		ArrayList<LabTestMaster> resArray = new ArrayList<LabTestMaster>();
 		for (Object[] obj : resList) {
-			LabTestMaster cOBJ = new LabTestMaster((Integer)obj[0], (String)obj[1], (String)obj[1], (Boolean)obj[3]);
+			LabTestMaster cOBJ = new LabTestMaster((Integer)obj[0], (String)obj[1], (Boolean)obj[2]);
 			resArray.add(cOBJ);
 		}
 		return resArray;
