@@ -65,11 +65,8 @@ public interface ANCService {
 	public String getANCCareDetails(Long beneficiaryRegID, Long benVisitID);
 
 	public String getANCWomenVaccineDetails(Long beneficiaryRegID, Long benVisitID);
-<<<<<<< HEAD
 
 	public Integer saveAncDocFindings(WrapperAncFindings wrapperAncFindings);
-=======
-	
+
 	public Long saveBenANCDiagnosis(PrescriptionDetail prescriptionDetail);
->>>>>>> a3c1a9e985588d8535521b954edf4bbd2b499f90
 }
