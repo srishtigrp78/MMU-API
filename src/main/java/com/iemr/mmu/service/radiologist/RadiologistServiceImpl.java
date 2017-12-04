@@ -3,10 +3,12 @@ package com.iemr.mmu.service.radiologist;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.iemr.mmu.data.registrar.WrapperRegWorklist;
 import com.iemr.mmu.repo.doctor.DocWorkListRepo;
 
+@Service
 public class RadiologistServiceImpl implements RadiologistService {
 	private DocWorkListRepo docWorkListRepo;
 
