@@ -39,6 +39,10 @@ public class PrescriptionDetail {
 	private String instruction;
 	
 	@Expose
+	@Column(name = "ConfirmatoryDiagnosis")
+	private String confirmatoryDiagnosis;
+	
+	@Expose
 	@Column(name = "Remarks")
 	private String remarks;
 	
@@ -169,6 +173,14 @@ public class PrescriptionDetail {
 
 	public Long getPrescriptionID() {
 		return prescriptionID;
+	}
+	
+	public String getConfirmatoryDiagnosis() {
+		return confirmatoryDiagnosis;
+	}
+
+	public void setConfirmatoryDiagnosis(String confirmatoryDiagnosis) {
+		this.confirmatoryDiagnosis = confirmatoryDiagnosis;
 	}
 	
 	

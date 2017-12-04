@@ -44,6 +44,7 @@ import com.iemr.mmu.repo.nurse.anc.SysObstetricExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.SysRespiratoryExaminationRepo;
 import com.iemr.mmu.repo.quickConsultation.BenChiefComplaintRepo;
 import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
+import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
 
@@ -54,6 +55,7 @@ public class ANCServiceImpl implements ANCService {
 	private ANCWomenVaccineRepo ancWomenVaccineRepo;
 	private BenAdherenceRepo benAdherenceRepo;
 	private BenChiefComplaintRepo benChiefComplaintRepo;
+	private PrescriptionDetailRepo prescriptionDetailRepo;
 
 	@Autowired
 	public void setBenChiefComplaintRepo(BenChiefComplaintRepo benChiefComplaintRepo) {
@@ -74,6 +76,11 @@ public class ANCServiceImpl implements ANCService {
 		this.labTestOrderDetailRepo = labTestOrderDetailRepo;
 	}
 
+	@Autowired
+	public void setPrescriptionDetailRepo(PrescriptionDetailRepo prescriptionDetailRepo) {
+		this.prescriptionDetailRepo = prescriptionDetailRepo;
+	}
+	
 	private PhyGeneralExaminationRepo phyGeneralExaminationRepo;
 	private PhyHeadToToeExaminationRepo phyHeadToToeExaminationRepo;
 	private SysCardiovascularExaminationRepo sysCardiovascularExaminationRepo;
@@ -584,5 +591,15 @@ public class ANCServiceImpl implements ANCService {
 		WrapperAncImmunization ancWomenVaccineDetails = ANCWomenVaccineDetail
 				.getANCWomenVaccineDetails(resList);
 		return new Gson().toJson(ancWomenVaccineDetails);
+	}
+
+	@Override
+	public Long saveBenANCDiagnosis(PrescriptionDetail prescriptionDetail) {
+		Long prescriptionID =null;
+		PrescriptionDetail res = prescriptionDetailRepo.save(prescriptionDetail);
+		if(null != res && res.getPrescriptionID()>0){
+			prescriptionID = res.getPrescriptionID();
+		}
+		return prescriptionID;
 	}
 }

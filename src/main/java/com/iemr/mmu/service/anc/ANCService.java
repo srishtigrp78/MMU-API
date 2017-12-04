@@ -18,6 +18,7 @@ import com.iemr.mmu.data.anc.SysRespiratoryExamination;
 import com.iemr.mmu.data.anc.WrapperAncImmunization;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
+import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 
 public interface ANCService {
 
@@ -63,4 +64,6 @@ public interface ANCService {
 	public String getANCCareDetails(Long beneficiaryRegID, Long benVisitID);
 
 	public String getANCWomenVaccineDetails(Long beneficiaryRegID, Long benVisitID);
+	
+	public Long saveBenANCDiagnosis(PrescriptionDetail prescriptionDetail);
 }
