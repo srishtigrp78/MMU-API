@@ -28,6 +28,7 @@ import com.iemr.mmu.data.anc.WrapperAncFindings;
 import com.iemr.mmu.data.anc.WrapperAncImmunization;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
+import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.repo.nurse.anc.ANCCareRepo;
@@ -43,6 +44,7 @@ import com.iemr.mmu.repo.nurse.anc.SysMusculoskeletalSystemExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.SysObstetricExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.SysRespiratoryExaminationRepo;
 import com.iemr.mmu.repo.quickConsultation.BenChiefComplaintRepo;
+import com.iemr.mmu.repo.quickConsultation.BenClinicalObservationsRepo;
 import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
@@ -80,7 +82,7 @@ public class ANCServiceImpl implements ANCService {
 	public void setPrescriptionDetailRepo(PrescriptionDetailRepo prescriptionDetailRepo) {
 		this.prescriptionDetailRepo = prescriptionDetailRepo;
 	}
-	
+
 	private PhyGeneralExaminationRepo phyGeneralExaminationRepo;
 	private PhyHeadToToeExaminationRepo phyHeadToToeExaminationRepo;
 	private SysCardiovascularExaminationRepo sysCardiovascularExaminationRepo;
@@ -205,6 +207,10 @@ public class ANCServiceImpl implements ANCService {
 			r = benChiefComplaintResultList.size();
 		}
 		return r;
+	}
+
+	public Long saveBenInvestigation() {
+		return null;
 	}
 
 	@Override
@@ -594,14 +600,67 @@ public class ANCServiceImpl implements ANCService {
 
 	@Override
 	public Integer saveAncDocFindings(WrapperAncFindings wrapperAncFindings) {
+
+		BenClinicalObservations benClinicalObservationsRS = benClinicalObservationsRepo
+				.save(getBenClinicalObservations(wrapperAncFindings));
+		ArrayList<BenChiefComplaint> benChiefComplaintListRS = (ArrayList<BenChiefComplaint>) benChiefComplaintRepo
+				.save(getBenChiefComplaint(wrapperAncFindings));
+
 		return null;
 	}
-	
-	
+
+	private ArrayList<BenChiefComplaint> getBenChiefComplaint(WrapperAncFindings wrapperAncFindings) {
+		ArrayList<BenChiefComplaint> benChiefComplaintList = new ArrayList<>();
+		BenChiefComplaint benChiefComplaint;
+		if (wrapperAncFindings != null && wrapperAncFindings.getComplaints() != null
+				&& wrapperAncFindings.getComplaints().size() > 0) {
+			for (Map<String, Object> complaintsDetails : wrapperAncFindings.getComplaints()) {
+				benChiefComplaint = new BenChiefComplaint();
+				benChiefComplaint.setBeneficiaryRegID(wrapperAncFindings.getBeneficiaryRegID());
+				benChiefComplaint.setBenVisitID(wrapperAncFindings.getBenVisitID());
+				benChiefComplaint.setProviderServiceMapID(wrapperAncFindings.getProviderServiceMapID());
+				benChiefComplaint.setCreatedBy(wrapperAncFindings.getCreatedBy());
+
+				if (complaintsDetails.containsKey("chiefComplaintID"))
+					benChiefComplaint.setChiefComplaintID((Integer) complaintsDetails.get("chiefComplaintID"));
+				if (complaintsDetails.containsKey("chiefComplaint"))
+					benChiefComplaint.setChiefComplaint((String) complaintsDetails.get("chiefComplaint"));
+				if (complaintsDetails.containsKey("duration"))
+					benChiefComplaint.setDuration((Integer) complaintsDetails.get("duration"));
+				if (complaintsDetails.containsKey("unitOfDuration"))
+					benChiefComplaint.setUnitOfDuration((String) complaintsDetails.get("unitOfDuration"));
+				if (complaintsDetails.containsKey("description"))
+					benChiefComplaint.setDescription((String) complaintsDetails.get("description"));
+
+				benChiefComplaintList.add(benChiefComplaint);
+			}
+		}
+		return benChiefComplaintList;
+	}
+
+	private BenClinicalObservationsRepo benClinicalObservationsRepo;
+
+	@Autowired
+	private void setBenClinicalObservationsRepo(BenClinicalObservationsRepo benClinicalObservationsRepo) {
+		this.benClinicalObservationsRepo = benClinicalObservationsRepo;
+	}
+
+	private BenClinicalObservations getBenClinicalObservations(WrapperAncFindings wrapperAncFindings) {
+		BenClinicalObservations benClinicalObservations = new BenClinicalObservations();
+		benClinicalObservations.setBeneficiaryRegID(wrapperAncFindings.getBeneficiaryRegID());
+		benClinicalObservations.setBenVisitID(wrapperAncFindings.getBenVisitID());
+		benClinicalObservations.setProviderServiceMapID(wrapperAncFindings.getProviderServiceMapID());
+		benClinicalObservations.setCreatedBy(wrapperAncFindings.getCreatedBy());
+		benClinicalObservations.setClinicalObservation(wrapperAncFindings.getClinicalObservation());
+		benClinicalObservations.setOtherSymptoms(wrapperAncFindings.getOtherSymptoms());
+
+		return benClinicalObservations;
+	}
+
 	public Long saveBenANCDiagnosis(PrescriptionDetail prescriptionDetail) {
-		Long prescriptionID =null;
+		Long prescriptionID = null;
 		PrescriptionDetail res = prescriptionDetailRepo.save(prescriptionDetail);
-		if(null != res && res.getPrescriptionID()>0){
+		if (null != res && res.getPrescriptionID() > 0) {
 			prescriptionID = res.getPrescriptionID();
 		}
 		return prescriptionID;
