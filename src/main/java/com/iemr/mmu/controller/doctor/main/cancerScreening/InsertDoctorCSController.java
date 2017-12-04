@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +23,6 @@ import com.iemr.mmu.data.doctor.CancerLymphNodeDetails;
 import com.iemr.mmu.data.doctor.CancerOralExamination;
 import com.iemr.mmu.data.doctor.WrapperCancerExamImgAnotasn;
 import com.iemr.mmu.data.doctor.WrapperCancerSymptoms;
-import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
-import com.iemr.mmu.data.nurse.BenFamilyCancerHistory;
-import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
-import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
-import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
-import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.service.common.master.DoctorMasterDataService;
 import com.iemr.mmu.service.common.master.DoctorMasterDataServiceImpl;
 import com.iemr.mmu.service.doctor.DoctorServiceImpl;
@@ -43,7 +36,10 @@ import io.swagger.annotations.ApiParam;
 @CrossOrigin
 @RestController
 @RequestMapping({ "/doctor" })
-/** Objective: Performs Saving Beneficiary Cancer Screening Details entered by doctor*/
+/**
+ * Objective: Performs Saving Beneficiary Cancer Screening Details entered by
+ * doctor
+ */
 public class InsertDoctorCSController {
 	private InputMapper inputMapper = new InputMapper();
 	private OutputResponse response;
@@ -74,9 +70,10 @@ public class InsertDoctorCSController {
 
 		response = new OutputResponse();
 		logger.info("saveAbdominalExaminationDetail request:" + requestObj);
-		CancerAbdominalExamination cancerAbdominalExamination = InputMapper.gson().fromJson(requestObj,
-				CancerAbdominalExamination.class);
+
 		try {
+			CancerAbdominalExamination cancerAbdominalExamination = InputMapper.gson().fromJson(requestObj,
+					CancerAbdominalExamination.class);
 			Long ID = doctorServiceImpl.saveCancerAbdominalExaminationData(cancerAbdominalExamination);
 			if (ID != null && ID > 0) {
 				Map<String, Long> resMap = new HashMap<String, Long>();
@@ -107,9 +104,10 @@ public class InsertDoctorCSController {
 
 		response = new OutputResponse();
 		logger.info("saveBreastExaminationDetail request:" + requestObj);
-		CancerBreastExamination cancerBreastExamination = InputMapper.gson().fromJson(requestObj,
-				CancerBreastExamination.class);
+
 		try {
+			CancerBreastExamination cancerBreastExamination = InputMapper.gson().fromJson(requestObj,
+					CancerBreastExamination.class);
 			Long ID = doctorServiceImpl.saveCancerBreastExaminationData(cancerBreastExamination);
 			if (ID != null && ID > 0) {
 				Map<String, Long> resMap = new HashMap<String, Long>();
@@ -139,8 +137,9 @@ public class InsertDoctorCSController {
 
 		response = new OutputResponse();
 		logger.info("saveDiagnosisExaminationDetail request:" + requestObj);
-		CancerDiagnosis cancerDiagnosis = InputMapper.gson().fromJson(requestObj, CancerDiagnosis.class);
+
 		try {
+			CancerDiagnosis cancerDiagnosis = InputMapper.gson().fromJson(requestObj, CancerDiagnosis.class);
 			Long ID = doctorServiceImpl.saveCancerDiagnosisData(cancerDiagnosis);
 			if (ID != null && ID > 0) {
 				Map<String, Long> resMap = new HashMap<String, Long>();
@@ -171,9 +170,10 @@ public class InsertDoctorCSController {
 
 		response = new OutputResponse();
 		logger.info("saveGynecologicalExaminationDetail request:" + requestObj);
-		CancerGynecologicalExamination cancerGynecologicalExamination = InputMapper.gson().fromJson(requestObj,
-				CancerGynecologicalExamination.class);
+
 		try {
+			CancerGynecologicalExamination cancerGynecologicalExamination = InputMapper.gson().fromJson(requestObj,
+					CancerGynecologicalExamination.class);
 			Long ID = doctorServiceImpl.saveCancerGynecologicalExaminationData(cancerGynecologicalExamination);
 			if (ID != null && ID > 0) {
 				Map<String, Long> resMap = new HashMap<String, Long>();
@@ -201,11 +201,12 @@ public class InsertDoctorCSController {
 
 		response = new OutputResponse();
 		logger.info("saveLymphNodeExaminationDetail request:" + requestObj);
-		CancerLymphNodeDetails[] cancerLymphNodeDetails = InputMapper.gson().fromJson(requestObj,
-				CancerLymphNodeDetails[].class);
 
-		List<CancerLymphNodeDetails> cancerLymphNodeDetailsList = Arrays.asList(cancerLymphNodeDetails);
 		try {
+			CancerLymphNodeDetails[] cancerLymphNodeDetails = InputMapper.gson().fromJson(requestObj,
+					CancerLymphNodeDetails[].class);
+
+			List<CancerLymphNodeDetails> cancerLymphNodeDetailsList = Arrays.asList(cancerLymphNodeDetails);
 			int result = doctorServiceImpl.saveLymphNodeDetails(cancerLymphNodeDetailsList);
 			if (result > 0) {
 				response.setResponse("LymphNode Examination Detail Stored Successfully");
@@ -232,9 +233,10 @@ public class InsertDoctorCSController {
 
 		response = new OutputResponse();
 		logger.info("saveOralExaminationDetail request:" + requestObj);
-		CancerOralExamination cancerOralExamination = InputMapper.gson().fromJson(requestObj,
-				CancerOralExamination.class);
+
 		try {
+			CancerOralExamination cancerOralExamination = InputMapper.gson().fromJson(requestObj,
+					CancerOralExamination.class);
 			Long ID = doctorServiceImpl.saveCancerOralExaminationData(cancerOralExamination);
 			if (ID != null && ID > 0) {
 				Map<String, Long> resMap = new HashMap<String, Long>();
@@ -268,17 +270,10 @@ public class InsertDoctorCSController {
 
 		response = new OutputResponse();
 		logger.info("saveCancerSignAndSymptomsDetail request:" + requestObj);
-		WrapperCancerSymptoms wrapperCancerSymptoms = InputMapper.gson().fromJson(requestObj,
-				WrapperCancerSymptoms.class);
-
-		// CancerLymphNodeDetails[] cancerLymphNodeDetails =
-		// InputMapper.gson().fromJson(requestObj,
-		// CancerLymphNodeDetails[].class);
-		//
-		// List<CancerLymphNodeDetails> cancerLymphNodeDetailsList =
-		// Arrays.asList(cancerLymphNodeDetails);
 
 		try {
+			WrapperCancerSymptoms wrapperCancerSymptoms = InputMapper.gson().fromJson(requestObj,
+					WrapperCancerSymptoms.class);
 			Long ID = doctorServiceImpl.saveCancerSignAndSymptomsData(wrapperCancerSymptoms.getCancerSignAndSymptoms());
 
 			if (ID != null && ID > 0) {
@@ -327,7 +322,7 @@ public class InsertDoctorCSController {
 			Long r = doctorServiceImpl.saveDocExaminationImageAnnotation(wrapperCancerExamImgAnotasnList);
 			if (r != null) {
 				response.setResponse("Data Successfully saved");
-			} 
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.setError(e);

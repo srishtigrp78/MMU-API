@@ -1,7 +1,6 @@
 package com.iemr.mmu.data.quickConsultation;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,8 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 
 @Entity
@@ -25,18 +22,22 @@ public class BenClinicalObservations {
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
-	
+
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "ClinicalObservation")
 	private String clinicalObservation;
-	
+
+	@Expose
+	@Column(name = "OtherSymptoms")
+	private String otherSymptoms;
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -149,47 +150,69 @@ public class BenClinicalObservations {
 	public Long getClinicalObservationID() {
 		return clinicalObservationID;
 	}
-	
-//	public static BenClinicalObservations getBenClinicalObservationsList(JsonObject emrgCasesheet) {
-//		ArrayList<BenClinicalObservations> resArray = new ArrayList<>();
-//		BenClinicalObservations benClinicalObservations = null;
-//
-//			benClinicalObservations = new BenClinicalObservations();
-//			
-//			if (emrgCasesheet.has("benVisitID") && !emrgCasesheet.get("benVisitID").isJsonNull())
-//				benChiefComplaint.setBenVisitID(new Long(emrgCasesheet.get("benVisitID").toString()));
-//			
-//			if (emrgCasesheet.has("beneficiaryRegID") && !emrgCasesheet.get("beneficiaryRegID").isJsonNull())
-//				benChiefComplaint.setBeneficiaryRegID(new Long(emrgCasesheet.get("beneficiaryRegID").toString()));
-//			
-//			if (emrgCasesheet.has("providerServiceMapID") && !emrgCasesheet.get("providerServiceMapID").isJsonNull())
-//				benChiefComplaint.setProviderServiceMapID(new Integer(emrgCasesheet.get("providerServiceMapID").toString()));
-//			
-//			JsonObject obj = csobj.getAsJsonObject();
-//			
-//			if (obj.has("chiefComplaintID") && !obj.get("chiefComplaintID").isJsonNull())
-//				benChiefComplaint.setChiefComplaintID(new Integer(obj.get("chiefComplaintID").toString()));
-//			
-//			if (obj.has("chiefComplaint") && !obj.get("chiefComplaint").isJsonNull())
-//				benChiefComplaint.setChiefComplaint(obj.get("chiefComplaint").toString());
-//			
-//			if (obj.has("duration") && !obj.get("duration").isJsonNull())
-//				benChiefComplaint.setDuration(new Integer(obj.get("providerServiceMapID").toString()));
-//			
-//			if (obj.has("unitOfDuration") && !obj.get("unitOfDuration").isJsonNull())
-//				benChiefComplaint.setUnitOfDuration(obj.get("unitOfDuration").toString());
-//			
-//			if (obj.has("description") && !obj.get("description").isJsonNull())
-//				benChiefComplaint.setDescription(obj.get("description").toString());
-//			
-//			if (emrgCasesheet.has("createdBy") && !emrgCasesheet.get("createdBy").isJsonNull())
-//				benChiefComplaint.setCreatedBy(emrgCasesheet.get("createdBy").toString());
-//			
-//			resArray.add(benChiefComplaint);
-//		}
-//
-//		return resArray;
-//	}
-	
-}
 
+	public String getOtherSymptoms() {
+		return otherSymptoms;
+	}
+
+	public void setOtherSymptoms(String otherSymptoms) {
+		this.otherSymptoms = otherSymptoms;
+	}
+
+	public void setClinicalObservationID(Long clinicalObservationID) {
+		this.clinicalObservationID = clinicalObservationID;
+	}
+
+	// public static BenClinicalObservations
+	// getBenClinicalObservationsList(JsonObject emrgCasesheet) {
+	// ArrayList<BenClinicalObservations> resArray = new ArrayList<>();
+	// BenClinicalObservations benClinicalObservations = null;
+	//
+	// benClinicalObservations = new BenClinicalObservations();
+	//
+	// if (emrgCasesheet.has("benVisitID") &&
+	// !emrgCasesheet.get("benVisitID").isJsonNull())
+	// benChiefComplaint.setBenVisitID(new
+	// Long(emrgCasesheet.get("benVisitID").toString()));
+	//
+	// if (emrgCasesheet.has("beneficiaryRegID") &&
+	// !emrgCasesheet.get("beneficiaryRegID").isJsonNull())
+	// benChiefComplaint.setBeneficiaryRegID(new
+	// Long(emrgCasesheet.get("beneficiaryRegID").toString()));
+	//
+	// if (emrgCasesheet.has("providerServiceMapID") &&
+	// !emrgCasesheet.get("providerServiceMapID").isJsonNull())
+	// benChiefComplaint.setProviderServiceMapID(new
+	// Integer(emrgCasesheet.get("providerServiceMapID").toString()));
+	//
+	// JsonObject obj = csobj.getAsJsonObject();
+	//
+	// if (obj.has("chiefComplaintID") &&
+	// !obj.get("chiefComplaintID").isJsonNull())
+	// benChiefComplaint.setChiefComplaintID(new
+	// Integer(obj.get("chiefComplaintID").toString()));
+	//
+	// if (obj.has("chiefComplaint") && !obj.get("chiefComplaint").isJsonNull())
+	// benChiefComplaint.setChiefComplaint(obj.get("chiefComplaint").toString());
+	//
+	// if (obj.has("duration") && !obj.get("duration").isJsonNull())
+	// benChiefComplaint.setDuration(new
+	// Integer(obj.get("providerServiceMapID").toString()));
+	//
+	// if (obj.has("unitOfDuration") && !obj.get("unitOfDuration").isJsonNull())
+	// benChiefComplaint.setUnitOfDuration(obj.get("unitOfDuration").toString());
+	//
+	// if (obj.has("description") && !obj.get("description").isJsonNull())
+	// benChiefComplaint.setDescription(obj.get("description").toString());
+	//
+	// if (emrgCasesheet.has("createdBy") &&
+	// !emrgCasesheet.get("createdBy").isJsonNull())
+	// benChiefComplaint.setCreatedBy(emrgCasesheet.get("createdBy").toString());
+	//
+	// resArray.add(benChiefComplaint);
+	// }
+	//
+	// return resArray;
+	// }
+
+}

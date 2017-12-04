@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.ANCCareDetails;
 import com.iemr.mmu.data.anc.ANCWomenVaccineDetail;
 import com.iemr.mmu.data.anc.BenAdherence;
@@ -25,6 +24,7 @@ import com.iemr.mmu.data.anc.SysGenitourinarySystemExamination;
 import com.iemr.mmu.data.anc.SysMusculoskeletalSystemExamination;
 import com.iemr.mmu.data.anc.SysObstetricExamination;
 import com.iemr.mmu.data.anc.SysRespiratoryExamination;
+import com.iemr.mmu.data.anc.WrapperAncFindings;
 import com.iemr.mmu.data.anc.WrapperAncImmunization;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
@@ -217,7 +217,7 @@ public class ANCServiceImpl implements ANCService {
 			if (investigationList != null && investigationList.size() > 0) {
 
 				for (LabTestOrderDetail testData : investigationList) {
-										
+
 					testData.setPrescriptionID(prescriptionID);
 					testData.setBeneficiaryRegID(wrapperBenInvestigationANC.getBeneficiaryRegID());
 					testData.setBenVisitID(wrapperBenInvestigationANC.getBenVisitID());
@@ -463,7 +463,7 @@ public class ANCServiceImpl implements ANCService {
 	private PhyGeneralExamination getGeneralExaminationData(Long benRegID, Long benVisitID) {
 		PhyGeneralExamination phyGeneralExaminationData = phyGeneralExaminationRepo
 				.getPhyGeneralExaminationData(benRegID, benVisitID);
-		if(null!=phyGeneralExaminationData){
+		if (null != phyGeneralExaminationData) {
 			String[] typeDangerSignArr = phyGeneralExaminationData.getTypeOfDangerSign().split(",");
 			if (typeDangerSignArr != null && typeDangerSignArr.length > 0) {
 				ArrayList<String> typeOfDangerSigns = new ArrayList<>();
@@ -581,8 +581,14 @@ public class ANCServiceImpl implements ANCService {
 	@Override
 	public String getANCWomenVaccineDetails(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> resList = ancWomenVaccineRepo.getANCWomenVaccineDetails(beneficiaryRegID, benVisitID);
-		WrapperAncImmunization ancWomenVaccineDetails = ANCWomenVaccineDetail
-				.getANCWomenVaccineDetails(resList);
+		WrapperAncImmunization ancWomenVaccineDetails = ANCWomenVaccineDetail.getANCWomenVaccineDetails(resList);
 		return new Gson().toJson(ancWomenVaccineDetails);
 	}
+
+	@Override
+	public Integer saveAncDocFindings(WrapperAncFindings wrapperAncFindings) {
+		return null;
+	}
+	
+	
 }
