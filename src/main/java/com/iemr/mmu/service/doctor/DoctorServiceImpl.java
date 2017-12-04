@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -254,6 +253,8 @@ public class DoctorServiceImpl implements DoctorService {
 		return WrapperRegWorklist.getDocWorkListData(docWorkListData);
 	}
 
+	
+
 	public Map<String, Object> getBenDoctorEnteredDataForCaseSheet(Long benRegID, Long benVisitID, Date visitDateTime) {
 		Map<String, Object> resMap = new HashMap<>();
 
@@ -294,10 +295,10 @@ public class DoctorServiceImpl implements DoctorService {
 		CancerDiagnosis cancerDiagnosis = cancerDiagnosisRepo.getBenCancerDiagnosisDetails(benRegID, benVisitID,
 				visitDateTime);
 		System.out.println("cancerDiagnosis .....");
-		if(	null!= cancerDiagnosis && null!= cancerDiagnosis.getInstitute()){
+		if (null != cancerDiagnosis && null != cancerDiagnosis.getInstitute()) {
 			cancerDiagnosis.setReferredToInstituteName(cancerDiagnosis.getInstitute().getInstitutionName());
 		}
-	
+
 		return cancerDiagnosis;
 	}
 

@@ -37,6 +37,7 @@ public class PrescriptionDetail {
 	@Expose
 	@Column(name = "Instruction")
 	private String instruction;
+	
 	@Expose
 	@Column(name = "Remarks")
 	private String remarks;
