@@ -125,7 +125,7 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 				break;
 				case 4 :{
 					// 4 : ANC
-					doctorMasterData = ancMasterDataServiceImpl.getANCMasterDataForDoctor();
+					doctorMasterData = ancMasterDataServiceImpl.getANCMasterDataForDoctor(providerServiceMapID);
 				}
 				break;
 				case 5 :{

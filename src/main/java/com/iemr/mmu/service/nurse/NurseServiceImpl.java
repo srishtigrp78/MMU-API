@@ -458,19 +458,21 @@ public class NurseServiceImpl implements NurseService {
 		Map<String, Object> resMap = new HashMap<>();
 		BeneficiaryVisitDetail benVisitDetailsOBJ = benVisitDetailRepo.getVisitDetails(benRegID, benVisitID);
 
-		BeneficiaryVisitDetail benVisitDetailsOBJ1 = new BeneficiaryVisitDetail(benVisitDetailsOBJ.getBenVisitID(),
-				benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitDetailsOBJ.getProviderServiceMapID(),
-				benVisitDetailsOBJ.getVisitDateTime(), benVisitDetailsOBJ.getVisitNo(),
-				benVisitDetailsOBJ.getVisitReasonID(), benVisitDetailsOBJ.getVisitReason(),
-				benVisitDetailsOBJ.getVisitCategoryID(), benVisitDetailsOBJ.getVisitCategory(),
-				benVisitDetailsOBJ.getPregnancyStatus(), benVisitDetailsOBJ.getrCHID(),
-				benVisitDetailsOBJ.getHealthFacilityType(), benVisitDetailsOBJ.getHealthFacilityLocation(),
-				benVisitDetailsOBJ.getReportFilePath(), benVisitDetailsOBJ.getDeleted(),
-				benVisitDetailsOBJ.getProcessed(), benVisitDetailsOBJ.getCreatedBy(),
-				benVisitDetailsOBJ.getCreatedDate(), benVisitDetailsOBJ.getModifiedBy(),
-				benVisitDetailsOBJ.getLastModDate());
-
-		resMap.put("benVisitDetails", benVisitDetailsOBJ1);
+		if(null != benVisitDetailsOBJ){
+			BeneficiaryVisitDetail benVisitDetailsOBJ1 = new BeneficiaryVisitDetail(benVisitDetailsOBJ.getBenVisitID(),
+					benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitDetailsOBJ.getProviderServiceMapID(),
+					benVisitDetailsOBJ.getVisitDateTime(), benVisitDetailsOBJ.getVisitNo(),
+					benVisitDetailsOBJ.getVisitReasonID(), benVisitDetailsOBJ.getVisitReason(),
+					benVisitDetailsOBJ.getVisitCategoryID(), benVisitDetailsOBJ.getVisitCategory(),
+					benVisitDetailsOBJ.getPregnancyStatus(), benVisitDetailsOBJ.getrCHID(),
+					benVisitDetailsOBJ.getHealthFacilityType(), benVisitDetailsOBJ.getHealthFacilityLocation(),
+					benVisitDetailsOBJ.getReportFilePath(), benVisitDetailsOBJ.getDeleted(),
+					benVisitDetailsOBJ.getProcessed(), benVisitDetailsOBJ.getCreatedBy(),
+					benVisitDetailsOBJ.getCreatedDate(), benVisitDetailsOBJ.getModifiedBy(),
+					benVisitDetailsOBJ.getLastModDate());
+	
+			resMap.put("benVisitDetails", benVisitDetailsOBJ1);
+		}
 
 		return new Gson().toJson(resMap);
 	}

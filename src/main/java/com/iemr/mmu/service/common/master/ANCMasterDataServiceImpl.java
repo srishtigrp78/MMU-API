@@ -14,6 +14,7 @@ import com.iemr.mmu.data.doctor.DrugDurationUnitMaster;
 import com.iemr.mmu.data.doctor.DrugFormMaster;
 import com.iemr.mmu.data.doctor.DrugFrequencyMaster;
 import com.iemr.mmu.data.doctor.LabTestMaster;
+import com.iemr.mmu.data.institution.Institute;
 import com.iemr.mmu.data.masterdata.anc.AllergicReactionTypes;
 import com.iemr.mmu.data.masterdata.anc.BirthComplication;
 import com.iemr.mmu.data.masterdata.anc.BloodGroups;
@@ -73,6 +74,7 @@ import com.iemr.mmu.repo.masterrepo.anc.PregComplicationTypesRepo;
 import com.iemr.mmu.repo.masterrepo.anc.PregDurationRepo;
 import com.iemr.mmu.repo.masterrepo.anc.ServiceMasterRepo;
 import com.iemr.mmu.repo.masterrepo.anc.SurgeryTypesRepo;
+import com.iemr.mmu.repo.masterrepo.doctor.InstituteRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.CancerDiseaseMasterRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.CancerPersonalHabitMasterRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.FamilyMemberMasterRepo;
@@ -105,6 +107,7 @@ public class ANCMasterDataServiceImpl {
 	private GrossMotorMilestoneRepo grossMotorMilestoneRepo;
 	private ServiceMasterRepo serviceMasterRepo;
 	private CounsellingTypeRepo counsellingTypeRepo;
+	private InstituteRepo instituteRepo;
 	
 	private ChiefComplaintMasterRepo chiefComplaintMasterRepo;
 	private CancerDiseaseMasterRepo cancerDiseaseMasterRepo;
@@ -288,6 +291,11 @@ public class ANCMasterDataServiceImpl {
 		this.counsellingTypeRepo = counsellingTypeRepo;
 	}
 	
+	@Autowired
+	public void setInstituteRepo(InstituteRepo instituteRepo) {
+		this.instituteRepo = instituteRepo;
+	}
+	
 	public String getANCMasterDataForNurse() {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 			
@@ -392,7 +400,7 @@ public class ANCMasterDataServiceImpl {
 	}
 	
 	
-	public String getANCMasterDataForDoctor() {
+	public String getANCMasterDataForDoctor(int psmID) {
 		Map<String, Object> resMap = new HashMap<>();
 		ArrayList<Object[]> ccList = chiefComplaintMasterRepo.getChiefComplaintMaster();
 		ArrayList<Object[]> ddmList = drugDoseMasterRepo.getDrugDoseMaster();
@@ -401,12 +409,18 @@ public class ANCMasterDataServiceImpl {
 		ArrayList<Object[]> dfrmList = drugFrequencyMasterRepo.getDrugFrequencyMaster();
 		ArrayList<Object[]> counsellingTypes = counsellingTypeRepo.getCounsellingTypes();
 		ArrayList<Object[]> additionalServices = serviceMasterRepo.getAdditionalServices();
+		
+		Institute institute = new Institute();
+		ArrayList<Object[]> instituteDetails = instituteRepo.getInstituteDetails(psmID);
+		
+		
 		resMap.put("chiefComplaintMaster", ChiefComplaintMaster.getChiefComplaintMasters(ccList));
 		resMap.put("drugDoseMaster", DrugDoseMaster.getDrugDoseMasters(ddmList));
 		resMap.put("drugDurationUnitMaster", DrugDurationUnitMaster.getDrugDurationUnitMaster(ddumList));
 		resMap.put("drugFormMaster", DrugFormMaster.getDrugFormMaster(dfmList));
 		resMap.put("drugFrequencyMaster", DrugFrequencyMaster.getDrugFrequencyMaster(dfrmList));
 		resMap.put("counsellingTypes", CounsellingType.getCounsellingType(counsellingTypes));
+		resMap.put("higherHealthCare", institute.getinstituteDetails(instituteDetails));
 		resMap.put("additionalServices", ServiceMaster.getServiceMaster(additionalServices));
 
 		return new Gson().toJson(resMap);

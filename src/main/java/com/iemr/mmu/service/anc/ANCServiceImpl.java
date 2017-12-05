@@ -585,6 +585,8 @@ public class ANCServiceImpl implements ANCService {
 				nurseServiceImpl.getBenDataFrmNurseToDocVisitDetailsScreen(benRegID, benVisitID));
 
 		resMap.put("BenAdherence", getBenAdherence(benRegID, benVisitID));
+		
+		resMap.put("BenChiefComplaints", getBenChiefComplaints(benRegID, benVisitID));
 
 		resMap.put("LabTestOrders", getLabTestOrders(benRegID, benVisitID));
 
@@ -598,6 +600,13 @@ public class ANCServiceImpl implements ANCService {
 		return new Gson().toJson(benAdherences);
 	}
 
+	@Override
+	public String getBenChiefComplaints(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> resList = benChiefComplaintRepo.getBenChiefComplaints(beneficiaryRegID, benVisitID);
+		ArrayList<BenChiefComplaint> benChiefComplaints = BenChiefComplaint.getBenChiefComplaints(resList);
+		return new Gson().toJson(benChiefComplaints);
+	}
+	
 	@Override
 	public String getLabTestOrders(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> resList = labTestOrderDetailRepo.getLabTestOrderDetails(beneficiaryRegID, benVisitID);

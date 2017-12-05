@@ -69,4 +69,6 @@ public interface ANCService {
 	public Integer saveAncDocFindings(WrapperAncFindings wrapperAncFindings);
 
 	public Long saveBenANCDiagnosis(PrescriptionDetail prescriptionDetail);
+
+	public String getBenChiefComplaints(Long beneficiaryRegID, Long benVisitID);
 }

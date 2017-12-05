@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.anc.BenAdherence;
 
 @Entity
 @Table(name = "t_benchiefcomplaint")
@@ -78,6 +79,34 @@ public class BenChiefComplaint {
 		// TODO Auto-generated constructor stub
 	}
 
+	
+	public BenChiefComplaint(Long benChiefComplaintID, Long beneficiaryRegID, Long benVisitID,
+			Integer providerServiceMapID, Integer chiefComplaintID, String chiefComplaint, Integer duration,
+			String unitOfDuration, String description) {
+		super();
+		this.benChiefComplaintID = benChiefComplaintID;
+		this.beneficiaryRegID = beneficiaryRegID;
+		this.benVisitID = benVisitID;
+		this.providerServiceMapID = providerServiceMapID;
+		this.chiefComplaintID = chiefComplaintID;
+		this.chiefComplaint = chiefComplaint;
+		this.duration = duration;
+		this.unitOfDuration = unitOfDuration;
+		this.description = description;
+	}
+
+
+	public static ArrayList<BenChiefComplaint> getBenChiefComplaints(ArrayList<Object[]> resList) {
+		ArrayList<BenChiefComplaint> resArray = new ArrayList<BenChiefComplaint>();
+		BenChiefComplaint cOBJ = null;
+		for(Object[] obj:resList){		
+			cOBJ = new BenChiefComplaint((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (Integer)obj[4],
+					(String)obj[5], (Integer)obj[6], (String)obj[7], (String)obj[8]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
+	}
+	
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
