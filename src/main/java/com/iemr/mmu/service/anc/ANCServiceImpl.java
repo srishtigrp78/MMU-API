@@ -30,6 +30,7 @@ import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
+import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.repo.nurse.anc.ANCCareRepo;
 import com.iemr.mmu.repo.nurse.anc.ANCWomenVaccineRepo;
@@ -46,6 +47,7 @@ import com.iemr.mmu.repo.nurse.anc.SysRespiratoryExaminationRepo;
 import com.iemr.mmu.repo.quickConsultation.BenChiefComplaintRepo;
 import com.iemr.mmu.repo.quickConsultation.BenClinicalObservationsRepo;
 import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
+import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
@@ -585,7 +587,7 @@ public class ANCServiceImpl implements ANCService {
 				nurseServiceImpl.getBenDataFrmNurseToDocVisitDetailsScreen(benRegID, benVisitID));
 
 		resMap.put("BenAdherence", getBenAdherence(benRegID, benVisitID));
-		
+
 		resMap.put("BenChiefComplaints", getBenChiefComplaints(benRegID, benVisitID));
 
 		resMap.put("LabTestOrders", getLabTestOrders(benRegID, benVisitID));
@@ -606,7 +608,7 @@ public class ANCServiceImpl implements ANCService {
 		ArrayList<BenChiefComplaint> benChiefComplaints = BenChiefComplaint.getBenChiefComplaints(resList);
 		return new Gson().toJson(benChiefComplaints);
 	}
-	
+
 	@Override
 	public String getLabTestOrders(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> resList = labTestOrderDetailRepo.getLabTestOrderDetails(beneficiaryRegID, benVisitID);
@@ -665,12 +667,14 @@ public class ANCServiceImpl implements ANCService {
 				benChiefComplaint.setProviderServiceMapID(wrapperAncFindings.getProviderServiceMapID());
 				benChiefComplaint.setCreatedBy(wrapperAncFindings.getCreatedBy());
 
-				if (complaintsDetails.containsKey("chiefComplaintID"))
-					benChiefComplaint.setChiefComplaintID((Integer) complaintsDetails.get("chiefComplaintID"));
+				if (complaintsDetails.containsKey("chiefComplaintID")) {
+					Double d = (Double) complaintsDetails.get("chiefComplaintID");
+					benChiefComplaint.setChiefComplaintID(d.intValue());
+				}
 				if (complaintsDetails.containsKey("chiefComplaint"))
 					benChiefComplaint.setChiefComplaint((String) complaintsDetails.get("chiefComplaint"));
 				if (complaintsDetails.containsKey("duration"))
-					benChiefComplaint.setDuration((Integer) complaintsDetails.get("duration"));
+					benChiefComplaint.setDuration(Integer.parseInt(complaintsDetails.get("duration").toString()));
 				if (complaintsDetails.containsKey("unitOfDuration"))
 					benChiefComplaint.setUnitOfDuration((String) complaintsDetails.get("unitOfDuration"));
 				if (complaintsDetails.containsKey("description"))
@@ -708,5 +712,23 @@ public class ANCServiceImpl implements ANCService {
 			prescriptionID = res.getPrescriptionID();
 		}
 		return prescriptionID;
+	}
+
+	private PrescribedDrugDetailRepo prescribedDrugDetailRepo;
+
+	@Autowired
+	public void setPrescribedDrugDetailRepo(PrescribedDrugDetailRepo prescribedDrugDetailRepo) {
+		this.prescribedDrugDetailRepo = prescribedDrugDetailRepo;
+	}
+
+	public Integer saveBenANCPrescription(List<PrescribedDrugDetail> prescribedDrugDetailList) {
+		Integer r = null;
+		List<PrescribedDrugDetail> prescribedDrugDetailListRS = (List<PrescribedDrugDetail>) prescribedDrugDetailRepo
+				.save(prescribedDrugDetailList);
+		if (prescribedDrugDetailList.size() > 0 && prescribedDrugDetailListRS != null
+				&& prescribedDrugDetailListRS.size() > 0) {
+			r = prescribedDrugDetailListRS.size();
+		}
+		return r;
 	}
 }

@@ -1,8 +1,11 @@
 package com.iemr.mmu.controller.doctor.main.anc;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,7 @@ import com.google.gson.Gson;
 import com.iemr.mmu.controller.doctor.main.cancerScreening.InsertDoctorCSController;
 import com.iemr.mmu.data.anc.WrapperAncFindings;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
+import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
 import com.iemr.utils.mapper.InputMapper;
@@ -62,7 +66,7 @@ public class InsertDoctorAncController {
 			logger.error("error in Save doc anc Findings details" + e);
 			response.setError(e);
 		}
-		return null;
+		return response.toString();
 	}
 
 	@CrossOrigin
@@ -91,13 +95,14 @@ public class InsertDoctorAncController {
 				response.setError(5000, "Invalid request Data");
 			}
 		} catch (Exception e) {
+			logger.error("error in Save doc anc diagonosis details" + e);
 		}
 		return response.toString();
 	}
 
 	@CrossOrigin
 	@ApiOperation(value = "save Beneficiary ANC Investigation", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/save/doctorCasesheet/diagnosis" }, method = { RequestMethod.POST })
+	@RequestMapping(value = { "/save/anc/caseRecord/investigations" }, method = { RequestMethod.POST })
 	public String saveBenAncInvestigation(@ApiParam(value = "") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 
@@ -119,6 +124,37 @@ public class InsertDoctorAncController {
 				response.setError(5000, "Invalid request Data");
 			}
 		} catch (Exception e) {
+			logger.error("error in Save doc anc investigation details" + e);
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin
+	@ApiOperation(value = "save Beneficiary ANC Prescription", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/anc/caseRecord/prescription" }, method = { RequestMethod.POST })
+	public String saveBenAncPrescription(@ApiParam(value = "") @RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("save Beneficiary ANC Prescription request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				JSONObject obj = new JSONObject(requestObj);
+				if (obj.has("prescribedDrugs")) {
+
+					PrescribedDrugDetail[] prescribedDrugDetail = InputMapper.gson()
+							.fromJson(obj.getString("prescribedDrugs"), PrescribedDrugDetail[].class);
+
+					List<PrescribedDrugDetail> prescribedDrugDetailList = Arrays.asList(prescribedDrugDetail);
+					if (prescribedDrugDetailList.size() > 0) {
+						Integer r = ancServiceImpl.saveBenANCPrescription(prescribedDrugDetailList);
+					}
+
+				}
+			} else {
+				response.setError(5000, "Invalid request Data");
+			}
+		} catch (Exception e) {
+			logger.error("error in Save doc anc prescription details" + e);
 		}
 		return response.toString();
 	}
