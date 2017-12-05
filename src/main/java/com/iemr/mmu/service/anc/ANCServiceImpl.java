@@ -209,8 +209,32 @@ public class ANCServiceImpl implements ANCService {
 		return r;
 	}
 
-	public Long saveBenInvestigation() {
-		return null;
+	public Integer saveBenInvestigationFromDoc(WrapperBenInvestigationANC wrapperBenInvestigationANC) {
+		int r = 0;
+		ArrayList<LabTestOrderDetail> LabTestOrderDetailList = new ArrayList<>();
+		ArrayList<LabTestOrderDetail> investigationList = wrapperBenInvestigationANC.getLaboratoryList();
+		if (investigationList != null && investigationList.size() > 0) {
+
+			for (LabTestOrderDetail testData : investigationList) {
+
+				testData.setBeneficiaryRegID(wrapperBenInvestigationANC.getBeneficiaryRegID());
+				testData.setBenVisitID(wrapperBenInvestigationANC.getBenVisitID());
+				testData.setProviderServiceMapID(wrapperBenInvestigationANC.getProviderServiceMapID());
+				testData.setCreatedBy(wrapperBenInvestigationANC.getCreatedBy());
+				testData.setPrescriptionID(wrapperBenInvestigationANC.getPrescriptionID());
+
+				LabTestOrderDetailList.add(testData);
+			}
+			ArrayList<LabTestOrderDetail> LabTestOrderDetailListRS = (ArrayList<LabTestOrderDetail>) labTestOrderDetailRepo
+					.save(LabTestOrderDetailList);
+
+			if (LabTestOrderDetailListRS != null && LabTestOrderDetailListRS.size() > 0) {
+				r = 1;
+			}
+		} else {
+			r = 1;
+		}
+		return r;
 	}
 
 	@Override
@@ -477,14 +501,21 @@ public class ANCServiceImpl implements ANCService {
 		PhyGeneralExamination phyGeneralExaminationData = phyGeneralExaminationRepo
 				.getPhyGeneralExaminationData(benRegID, benVisitID);
 		if (null != phyGeneralExaminationData) {
-			String[] typeDangerSignArr = phyGeneralExaminationData.getTypeOfDangerSign().split(",");
-			if (typeDangerSignArr != null && typeDangerSignArr.length > 0) {
-				ArrayList<String> typeOfDangerSigns = new ArrayList<>();
-				for (String typeDangerSign : typeDangerSignArr) {
-					typeOfDangerSigns.add(typeDangerSign);
+			String dSign = phyGeneralExaminationData.getTypeOfDangerSign();
+			if (dSign != null && dSign.length() > 0) {
+				String[] typeDangerSignArr = dSign.split(",");
+				if (typeDangerSignArr != null && typeDangerSignArr.length > 0) {
+					ArrayList<String> typeOfDangerSigns = new ArrayList<>();
+					for (String typeDangerSign : typeDangerSignArr) {
+						typeOfDangerSigns.add(typeDangerSign);
+					}
+					phyGeneralExaminationData.setTypeOfDangerSigns(typeOfDangerSigns);
 				}
-				phyGeneralExaminationData.setTypeOfDangerSigns(typeOfDangerSigns);
+			} else {
+				ArrayList<String> typeOfDangerSignsTmp = new ArrayList<>();
+				phyGeneralExaminationData.setTypeOfDangerSigns(typeOfDangerSignsTmp);
 			}
+
 		}
 		return phyGeneralExaminationData;
 
@@ -600,13 +631,17 @@ public class ANCServiceImpl implements ANCService {
 
 	@Override
 	public Integer saveAncDocFindings(WrapperAncFindings wrapperAncFindings) {
-
+		int i = 0;
 		BenClinicalObservations benClinicalObservationsRS = benClinicalObservationsRepo
 				.save(getBenClinicalObservations(wrapperAncFindings));
+		System.out.println("hii");
 		ArrayList<BenChiefComplaint> benChiefComplaintListRS = (ArrayList<BenChiefComplaint>) benChiefComplaintRepo
 				.save(getBenChiefComplaint(wrapperAncFindings));
-
-		return null;
+		System.out.println("hii");
+		if (benClinicalObservationsRS != null && benChiefComplaintListRS != null) {
+			i = 1;
+		}
+		return i;
 	}
 
 	private ArrayList<BenChiefComplaint> getBenChiefComplaint(WrapperAncFindings wrapperAncFindings) {
