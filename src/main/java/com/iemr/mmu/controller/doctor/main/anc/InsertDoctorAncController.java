@@ -34,9 +34,7 @@ import io.swagger.annotations.ApiParam;
 public class InsertDoctorAncController {
 	private OutputResponse response;
 	private Logger logger = LoggerFactory.getLogger(InsertDoctorCSController.class);
-	private ANCServiceImpl ancServiceImpl;
-
-	@Autowired
+	private ANCServiceImpl ancServiceImpl;	@Autowired
 	public void setAncServiceImpl(ANCServiceImpl ancServiceImpl) {
 		this.ancServiceImpl = ancServiceImpl;
 	}
@@ -140,13 +138,14 @@ public class InsertDoctorAncController {
 			if (requestObj != null) {
 				JSONObject obj = new JSONObject(requestObj);
 				if (obj.has("prescribedDrugs")) {
-
+					
 					PrescribedDrugDetail[] prescribedDrugDetail = InputMapper.gson()
-							.fromJson(obj.getString("prescribedDrugs"), PrescribedDrugDetail[].class);
+							.fromJson(obj.get("prescribedDrugs").toString(), PrescribedDrugDetail[].class);
 
 					List<PrescribedDrugDetail> prescribedDrugDetailList = Arrays.asList(prescribedDrugDetail);
 					if (prescribedDrugDetailList.size() > 0) {
 						Integer r = ancServiceImpl.saveBenANCPrescription(prescribedDrugDetailList);
+						response.setResponse("Prescription Detail stored successfully");
 					}
 
 				}
@@ -158,5 +157,5 @@ public class InsertDoctorAncController {
 		}
 		return response.toString();
 	}
-
+	
 }

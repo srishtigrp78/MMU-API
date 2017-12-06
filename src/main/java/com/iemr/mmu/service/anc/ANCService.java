@@ -19,6 +19,7 @@ import com.iemr.mmu.data.anc.WrapperAncFindings;
 import com.iemr.mmu.data.anc.WrapperAncImmunization;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
+import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 
 public interface ANCService {
@@ -71,4 +72,6 @@ public interface ANCService {
 	public Long saveBenANCDiagnosis(PrescriptionDetail prescriptionDetail);
 
 	public String getBenChiefComplaints(Long beneficiaryRegID, Long benVisitID);
+
+	public Integer saveBenANCPrescription(List<PrescribedDrugDetail> prescribedDrugDetailList);
 }
