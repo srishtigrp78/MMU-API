@@ -6,6 +6,8 @@ import java.util.List;
 import com.iemr.mmu.data.anc.ANCCareDetails;
 import com.iemr.mmu.data.anc.ANCWomenVaccineDetail;
 import com.iemr.mmu.data.anc.BenAdherence;
+import com.iemr.mmu.data.anc.BenMedHistory;
+import com.iemr.mmu.data.anc.BencomrbidityCondDetails;
 import com.iemr.mmu.data.anc.PhyGeneralExamination;
 import com.iemr.mmu.data.anc.PhyHeadToToeExamination;
 import com.iemr.mmu.data.anc.SysCardiovascularExamination;
@@ -18,6 +20,7 @@ import com.iemr.mmu.data.anc.SysRespiratoryExamination;
 import com.iemr.mmu.data.anc.WrapperAncFindings;
 import com.iemr.mmu.data.anc.WrapperAncImmunization;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
+import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
@@ -74,4 +77,8 @@ public interface ANCService {
 	public String getBenChiefComplaints(Long beneficiaryRegID, Long benVisitID);
 
 	public Integer saveBenANCPrescription(List<PrescribedDrugDetail> prescribedDrugDetailList);
+
+	public Integer saveBenANCPastHistory(BenMedHistory benMedHistory);
+
+	public Integer saveBenANCComorbidConditions(WrapperComorbidCondDetails wrapperComorbidCondDetails);
 }

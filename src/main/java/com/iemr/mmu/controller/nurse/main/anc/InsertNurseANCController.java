@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.iemr.mmu.data.anc.ANCCareDetails;
 import com.iemr.mmu.data.anc.BenAdherence;
+import com.iemr.mmu.data.anc.BenMedHistory;
+import com.iemr.mmu.data.anc.BencomrbidityCondDetails;
 import com.iemr.mmu.data.anc.PhyGeneralExamination;
 import com.iemr.mmu.data.anc.PhyHeadToToeExamination;
 import com.iemr.mmu.data.anc.SysCardiovascularExamination;
@@ -25,6 +27,7 @@ import com.iemr.mmu.data.anc.SysObstetricExamination;
 import com.iemr.mmu.data.anc.SysRespiratoryExamination;
 import com.iemr.mmu.data.anc.WrapperAncImmunization;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
+import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
@@ -417,6 +420,64 @@ public class InsertNurseANCController {
 				int r = ancServiceImpl.saveSysObstetricExamination(sysObstetricExamination);
 				if (r > 0) {
 					response.setResponse("Save Beneficairy Obstetric  Examination Details saved successfully");
+				} else {
+					response.setError(5000, "Something went wrong");
+				}
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+		return response.toString();
+	}
+	
+//	{ "beneficiaryRegID":"7506",
+//		"benVisitID":"222",
+//		"providerServiceMapID":"1251",
+//		"createdBy":"Test",
+//		 "pastIllness": [ { "illnessType": { "illnessID": "12", "illnessType": "Malaria" }, "otherIllnessType": "sfdgfd", "timePeriodAgo": "2", "timePeriodUnit": "Years" } ], "pastSurgery": [ { "surgeryType": { "surgeryID": "3", "surgeryType": "Appendicectomy" }, "otherSurgeryType": null, "timePeriodAgo": "4", "timePeriodUnit": "Weeks" } ] }
+	@CrossOrigin
+	@ApiOperation(value = "Save Beneficairy ANC past history Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/history/pastHistory" }, method = { RequestMethod.POST })
+	public String saveANCBenPastHistory(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		logger.info("saveANCBenPastHistory request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				BenMedHistory benMedHistory = InputMapper.gson().fromJson(requestObj,
+						BenMedHistory.class);
+
+				int r = ancServiceImpl.saveBenANCPastHistory(benMedHistory);
+				if (r > 0) {
+					response.setResponse("Save Beneficairy Past History Details saved successfully");
+				} else {
+					response.setError(5000, "Something went wrong");
+				}
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+		return response.toString();
+	}
+	
+//	
+//	 {"comrbidityCondDetails":[ { "beneficiaryRegID":"7506",
+//		 "benVisitID":"222",
+//		 "providerServiceMapID":"1251",
+//		 "createdBy":"Test","comorbidConditionID":5,"comorbidCondition": "Hypertension", "otherComorbidConditions": null, "timePeriodAgo": "2", "timePeriodUnit": "Months", "showNextTime": null } ] }
+	@CrossOrigin
+	@ApiOperation(value = "Save Beneficairy ANC ComorbidCondition Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/history/comorbidConditions" }, method = { RequestMethod.POST })
+	public String saveANCBenComorbidConditions(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		logger.info("saveANCBenComorbidConditions request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				WrapperComorbidCondDetails wrapperComorbidCondDetails = InputMapper.gson().fromJson(requestObj,
+						WrapperComorbidCondDetails.class);
+
+				int r = ancServiceImpl.saveBenANCComorbidConditions(wrapperComorbidCondDetails);
+				if (r > 0) {
+					response.setResponse("Save Beneficairy ComorbidCondition Details saved successfully");
 				} else {
 					response.setError(5000, "Something went wrong");
 				}

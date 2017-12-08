@@ -1,21 +1,18 @@
 package com.iemr.mmu.data.anc;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
 @Entity
-@Table(name = "t_bencomorbiditycondition")
-public class BencomrbidityCondDetails {
+@Table(name = "t_DevelopmentHistory")
+public class BenChildDevelopmentHistory {
 	
 	@Id
 	@GeneratedValue
@@ -36,24 +33,40 @@ public class BencomrbidityCondDetails {
 	private Integer providerServiceMapID;
 	
 	@Expose
-	@Column(name = "ComorbidConditionID")
-	private Short comorbidConditionID;
+	@Column(name = "GrossMotorMilestone")
+	private String grossMotorMilestone;
 	
 	@Expose
-	@Column(name = "ComorbidCondition")
-	private String comorbidCondition;
+	@Column(name = "IsGMMAttained")
+	private Boolean isGMMAttained;
 	
 	@Expose
-	@Column(name = "Year")
-	private Timestamp year;
+	@Column(name = "FineMotorMilestone")
+	private String fineMotorMilestone;
 	
-	@Transient
-	@Expose 
-	private Integer timePeriodAgo;
-	
-	@Transient
 	@Expose
-	private String timePeriodUnit;
+	@Column(name = "IsFMMAttained")
+	private Boolean isFMMAttained;
+	
+	@Expose
+	@Column(name = "SocialMilestone")
+	private String socialMilestone;
+	
+	@Expose
+	@Column(name = "IsSMAttained")
+	private Boolean isSMAttained;
+	
+	@Expose
+	@Column(name = "LanguageMilestone")
+	private String languageMilestone;
+	
+	@Expose
+	@Column(name = "IsLMAttained")
+	private Boolean isLMAttained;
+	
+	@Expose
+	@Column(name = "DevelopmentProblem")
+	private String developmentProblem;
 	
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -79,121 +92,145 @@ public class BencomrbidityCondDetails {
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
-		
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
-
 
 	public void setBeneficiaryRegID(Long beneficiaryRegID) {
 		this.beneficiaryRegID = beneficiaryRegID;
 	}
 
-
 	public Long getBenVisitID() {
 		return benVisitID;
 	}
-
 
 	public void setBenVisitID(Long benVisitID) {
 		this.benVisitID = benVisitID;
 	}
 
-
 	public Integer getProviderServiceMapID() {
 		return providerServiceMapID;
 	}
-
 
 	public void setProviderServiceMapID(Integer providerServiceMapID) {
 		this.providerServiceMapID = providerServiceMapID;
 	}
 
-
-	public Short getComorbidConditionID() {
-		return comorbidConditionID;
+	public String getGrossMotorMilestone() {
+		return grossMotorMilestone;
 	}
 
-
-	public void setComorbidConditionID(Short comorbidConditionID) {
-		this.comorbidConditionID = comorbidConditionID;
+	public void setGrossMotorMilestone(String grossMotorMilestone) {
+		this.grossMotorMilestone = grossMotorMilestone;
 	}
 
-
-	public String getComorbidCondition() {
-		return comorbidCondition;
+	public Boolean getIsGMMAttained() {
+		return isGMMAttained;
 	}
 
-
-	public void setComorbidCondition(String comorbidCondition) {
-		this.comorbidCondition = comorbidCondition;
+	public void setIsGMMAttained(Boolean isGMMAttained) {
+		this.isGMMAttained = isGMMAttained;
 	}
 
-
-	public Timestamp getYear() {
-		return year;
+	public String getFineMotorMilestone() {
+		return fineMotorMilestone;
 	}
 
-
-	public void setYear(Timestamp year) {
-		this.year = year;
+	public void setFineMotorMilestone(String fineMotorMilestone) {
+		this.fineMotorMilestone = fineMotorMilestone;
 	}
 
+	public Boolean getIsFMMAttained() {
+		return isFMMAttained;
+	}
+
+	public void setIsFMMAttained(Boolean isFMMAttained) {
+		this.isFMMAttained = isFMMAttained;
+	}
+
+	public String getSocialMilestone() {
+		return socialMilestone;
+	}
+
+	public void setSocialMilestone(String socialMilestone) {
+		this.socialMilestone = socialMilestone;
+	}
+
+	public Boolean getIsSMAttained() {
+		return isSMAttained;
+	}
+
+	public void setIsSMAttained(Boolean isSMAttained) {
+		this.isSMAttained = isSMAttained;
+	}
+
+	public String getLanguageMilestone() {
+		return languageMilestone;
+	}
+
+	public void setLanguageMilestone(String languageMilestone) {
+		this.languageMilestone = languageMilestone;
+	}
+
+	public Boolean getIsLMAttained() {
+		return isLMAttained;
+	}
+
+	public void setIsLMAttained(Boolean isLMAttained) {
+		this.isLMAttained = isLMAttained;
+	}
+
+	public String getDevelopmentProblem() {
+		return developmentProblem;
+	}
+
+	public void setDevelopmentProblem(String developmentProblem) {
+		this.developmentProblem = developmentProblem;
+	}
 
 	public Boolean getDeleted() {
 		return deleted;
 	}
 
-
 	public void setDeleted(Boolean deleted) {
 		this.deleted = deleted;
 	}
-
 
 	public String getProcessed() {
 		return processed;
 	}
 
-
 	public void setProcessed(String processed) {
 		this.processed = processed;
 	}
-
 
 	public String getCreatedBy() {
 		return createdBy;
 	}
 
-
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
-
 
 	public Timestamp getCreatedDate() {
 		return createdDate;
 	}
 
-
 	public void setCreatedDate(Timestamp createdDate) {
 		this.createdDate = createdDate;
 	}
-
 
 	public String getModifiedBy() {
 		return modifiedBy;
 	}
 
-
 	public void setModifiedBy(String modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
 
-
 	public Timestamp getLastModDate() {
 		return lastModDate;
 	}
-
 
 	public void setLastModDate(Timestamp lastModDate) {
 		this.lastModDate = lastModDate;
@@ -203,43 +240,4 @@ public class BencomrbidityCondDetails {
 		return ID;
 	}
 	
-	public Integer getTimePeriodAgo() {
-		return timePeriodAgo;
-	}
-
-
-	public void setTimePeriodAgo(Integer timePeriodAgo) {
-		this.timePeriodAgo = timePeriodAgo;
-	}
-
-
-	public String getTimePeriodUnit() {
-		return timePeriodUnit;
-	}
-
-
-	public void setTimePeriodUnit(String timePeriodUnit) {
-		this.timePeriodUnit = timePeriodUnit;
-	}
-
-	
-
-
-//	public ArrayList<BencomrbidityCondDetails> getBenComorbidConditions() {
-//		
-//		ArrayList<BencomrbidityCondDetails> BencomrbidityCondDetailsList=new ArrayList<BencomrbidityCondDetails>();
-//		for(Map<String,Object> comorbidityConcurrentCondition: comorbidityConcurrentConditionsList){
-//			BencomrbidityCondDetails condn= new BencomrbidityCondDetails();
-//			condn.setBeneficiaryRegID(beneficiaryRegID);
-//			condn.setBenVisitID(benVisitID);
-//			condn.setProviderServiceMapID(providerServiceMapID);
-//			condn.setComorbidConditionID((Short)comorbidityConcurrentCondition.get("comorbidConditionID"));
-//			condn.setComorbidCondition(comorbidityConcurrentCondition.get("comorbidCondition").toString());
-//			condn.setCreatedBy(createdBy);
-//			condn.setYear(year);
-//			
-//			BencomrbidityCondDetailsList.add(condn);
-//		}
-//		return BencomrbidityCondDetailsList;
-//	}
 }

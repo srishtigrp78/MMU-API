@@ -15,6 +15,8 @@ import com.google.gson.Gson;
 import com.iemr.mmu.data.anc.ANCCareDetails;
 import com.iemr.mmu.data.anc.ANCWomenVaccineDetail;
 import com.iemr.mmu.data.anc.BenAdherence;
+import com.iemr.mmu.data.anc.BenMedHistory;
+import com.iemr.mmu.data.anc.BencomrbidityCondDetails;
 import com.iemr.mmu.data.anc.PhyGeneralExamination;
 import com.iemr.mmu.data.anc.PhyHeadToToeExamination;
 import com.iemr.mmu.data.anc.SysCardiovascularExamination;
@@ -27,6 +29,7 @@ import com.iemr.mmu.data.anc.SysRespiratoryExamination;
 import com.iemr.mmu.data.anc.WrapperAncFindings;
 import com.iemr.mmu.data.anc.WrapperAncImmunization;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
+import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
@@ -35,6 +38,8 @@ import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.repo.nurse.anc.ANCCareRepo;
 import com.iemr.mmu.repo.nurse.anc.ANCWomenVaccineRepo;
 import com.iemr.mmu.repo.nurse.anc.BenAdherenceRepo;
+import com.iemr.mmu.repo.nurse.anc.BenMedHistoryRepo;
+import com.iemr.mmu.repo.nurse.anc.BencomrbidityCondRepo;
 import com.iemr.mmu.repo.nurse.anc.PhyGeneralExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.PhyHeadToToeExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.SysCardiovascularExaminationRepo;
@@ -96,7 +101,9 @@ public class ANCServiceImpl implements ANCService {
 	private SysRespiratoryExaminationRepo sysRespiratoryExaminationRepo;
 
 	private NurseServiceImpl nurseServiceImpl;
-
+	private BenMedHistoryRepo benMedHistoryRepo;
+	private BencomrbidityCondRepo bencomrbidityCondRepo;
+	
 	@Autowired
 	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
 		this.nurseServiceImpl = nurseServiceImpl;
@@ -163,6 +170,16 @@ public class ANCServiceImpl implements ANCService {
 	@Autowired
 	public void setSysRespiratoryExaminationRepo(SysRespiratoryExaminationRepo sysRespiratoryExaminationRepo) {
 		this.sysRespiratoryExaminationRepo = sysRespiratoryExaminationRepo;
+	}
+	
+	@Autowired
+	public void setBenMedHistoryRepo(BenMedHistoryRepo benMedHistoryRepo) {
+		this.benMedHistoryRepo = benMedHistoryRepo;
+	}
+	
+	@Autowired
+	public void setBencomrbidityCondRepo(BencomrbidityCondRepo bencomrbidityCondRepo) {
+		this.bencomrbidityCondRepo = bencomrbidityCondRepo;
 	}
 
 	@Override
@@ -729,6 +746,28 @@ public class ANCServiceImpl implements ANCService {
 		if (prescribedDrugDetailList.size() > 0 && prescribedDrugDetailListRS != null
 				&& prescribedDrugDetailListRS.size() > 0) {
 			r = prescribedDrugDetailListRS.size();
+		}
+		return r;
+	}
+	
+	@Override
+	public Integer saveBenANCPastHistory(BenMedHistory benMedHistory) {
+		Integer r = null;
+		ArrayList<BenMedHistory> benMedHistoryList = benMedHistory.getBenPastHistory();
+		ArrayList<BenMedHistory> res = (ArrayList<BenMedHistory>) benMedHistoryRepo.save(benMedHistoryList);
+		if(null != res && res.size()>0){
+			r = res.size();
+		}
+		return r;
+	}
+	
+	@Override
+	public Integer saveBenANCComorbidConditions(WrapperComorbidCondDetails wrapperComorbidCondDetails) {
+		Integer r = null;
+		ArrayList<BencomrbidityCondDetails> bencomrbidityCondDetailsList = wrapperComorbidCondDetails.getComrbidityConds();
+		ArrayList<BencomrbidityCondDetails> res = (ArrayList<BencomrbidityCondDetails>) bencomrbidityCondRepo.save(bencomrbidityCondDetailsList);
+		if(null != res && res.size()>0){
+			r = res.size();
 		}
 		return r;
 	}
