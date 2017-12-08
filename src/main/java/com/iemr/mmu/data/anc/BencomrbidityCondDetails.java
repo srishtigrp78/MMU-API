@@ -11,8 +11,8 @@ import javax.persistence.Table;
 import com.google.gson.annotations.Expose;
 
 @Entity
-@Table(name = "t_BenAllergyHistory")
-public class BenAllergyHistory {
+@Table(name = "t_bencomrbidityCond")
+public class BencomrbidityCondDetails {
 	
 	@Id
 	@GeneratedValue
@@ -31,26 +31,18 @@ public class BenAllergyHistory {
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-
-	@Expose
-	@Column(name = "allergyStatus")
-	private String allergyStatus;
 	
 	@Expose
-	@Column(name = "allergyType")
-	private String allergyType;
+	@Column(name = "ComorbidConditionID")
+	private Short comorbidConditionID;
 	
 	@Expose
-	@Column(name = "allergenName")
-	private String allergenName;
+	@Column(name = "ComorbidCondition")
+	private String comorbidCondition;
 	
 	@Expose
-	@Column(name = "allergicReactionType")
-	private String allergicReactionType;
-	
-	@Expose
-	@Column(name = "Remarks")
-	private String remarks;
+	@Column(name = "Year")
+	private Timestamp year;
 	
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)

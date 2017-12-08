@@ -33,10 +33,6 @@ public class BenMenstrualDetails {
 	private Integer providerServiceMapID;
 	
 	@Expose
-	@Column(name = "VisitCode")
-	private Long visitCode;
-	
-	@Expose
 	@Column(name = "MenstrualCycleStatusID")
 	private Short menstrualCycleStatusID;
 

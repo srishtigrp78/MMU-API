@@ -33,10 +33,6 @@ public class BenPersonalHabit {
 	private Integer providerServiceMapID;
 	
 	@Expose
-	@Column(name = "VisitCode")
-	private Long visitCode;
-	
-	@Expose
 	@Column(name = "DietaryType")
 	private String dietaryType;
 	

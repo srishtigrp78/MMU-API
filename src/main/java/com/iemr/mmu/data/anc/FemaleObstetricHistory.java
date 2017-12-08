@@ -33,10 +33,6 @@ public class FemaleObstetricHistory {
 	private Integer providerServiceMapID;
 	
 	@Expose
-	@Column(name = "VisitCode")
-	private Long visitCode;
-	
-	@Expose
 	@Column(name = "PregOrder")
 	private String pregOrder;
 
