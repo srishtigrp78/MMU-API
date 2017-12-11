@@ -48,6 +48,10 @@ public class BencomrbidityCondDetails {
 	private Timestamp year;
 	
 	@Transient
+	@Expose
+	private String otherComorbidConditions;
+	
+	@Transient
 	@Expose 
 	private Integer timePeriodAgo;
 	
@@ -222,7 +226,14 @@ public class BencomrbidityCondDetails {
 		this.timePeriodUnit = timePeriodUnit;
 	}
 
-	
+	public String getOtherComorbidConditions() {
+		return otherComorbidConditions;
+	}
+
+
+	public void setOtherComorbidConditions(String otherComorbidConditions) {
+		this.otherComorbidConditions = otherComorbidConditions;
+	}
 
 
 //	public ArrayList<BencomrbidityCondDetails> getBenComorbidConditions() {

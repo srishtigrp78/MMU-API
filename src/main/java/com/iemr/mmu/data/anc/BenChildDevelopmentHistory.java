@@ -1,12 +1,14 @@
 package com.iemr.mmu.data.anc;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
@@ -91,6 +93,21 @@ public class BenChildDevelopmentHistory {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
+
+	@Transient
+	private List<String> grossMotorMilestones;
+	
+	@Transient
+	private List<String> fineMotorMilestones;
+	
+	@Transient
+	private List<String> socialMilestones;
+	
+	@Transient
+	private List<String> languageMilestones;
+	
+	@Transient
+	private List<String> developmentProblems;
 
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
@@ -236,8 +253,97 @@ public class BenChildDevelopmentHistory {
 		this.lastModDate = lastModDate;
 	}
 
+	public List<String> getGrossMotorMilestones() {
+		return grossMotorMilestones;
+	}
+
+	public void setGrossMotorMilestones(List<String> grossMotorMilestones) {
+		this.grossMotorMilestones = grossMotorMilestones;
+	}
+
+	public List<String> getFineMotorMilestones() {
+		return fineMotorMilestones;
+	}
+
+	public void setFineMotorMilestones(List<String> fineMotorMilestones) {
+		this.fineMotorMilestones = fineMotorMilestones;
+	}
+
+	public List<String> getSocialMilestones() {
+		return socialMilestones;
+	}
+
+	public void setSocialMilestones(List<String> socialMilestones) {
+		this.socialMilestones = socialMilestones;
+	}
+
+	public List<String> getLanguageMilestones() {
+		return languageMilestones;
+	}
+
+	public void setLanguageMilestones(List<String> languageMilestones) {
+		this.languageMilestones = languageMilestones;
+	}
+
+	public List<String> getDevelopmentProblems() {
+		return developmentProblems;
+	}
+
+	public void setDevelopmentProblems(List<String> developmentProblems) {
+		this.developmentProblems = developmentProblems;
+	}
+
 	public Long getID() {
 		return ID;
+	}
+	
+	public static BenChildDevelopmentHistory getDevelopmentHistory(BenChildDevelopmentHistory benChildDevelopmentHistory){
+		
+		List<String> grossMotorMilestones = benChildDevelopmentHistory.getGrossMotorMilestones();
+		String grossMotorMilestone = "";
+		if(null != grossMotorMilestones && grossMotorMilestones.size()>0){
+			for(String gmm :grossMotorMilestones){
+				grossMotorMilestone = gmm +",";
+			}
+		}
+		benChildDevelopmentHistory.setGrossMotorMilestone(grossMotorMilestone);
+		
+		List<String> fineMotorMilestones = benChildDevelopmentHistory.getFineMotorMilestones();
+		String fineMotorMilestone = "";
+		if(null != fineMotorMilestones && fineMotorMilestones.size()>0){
+			for(String fmm :fineMotorMilestones){
+				fineMotorMilestone = fmm +",";
+			}
+		}
+		benChildDevelopmentHistory.setFineMotorMilestone(fineMotorMilestone);
+		
+		List<String> socialMilestones = benChildDevelopmentHistory.getSocialMilestones();
+		String socialMilestone = "";
+		if(null != socialMilestones && socialMilestones.size()>0){
+			for(String sm :socialMilestones){
+				socialMilestone = sm +",";
+			}
+		}
+		benChildDevelopmentHistory.setSocialMilestone(socialMilestone);
+		
+		List<String> languageMilestones = benChildDevelopmentHistory.getLanguageMilestones();
+		String languageMilestone = "";
+		if(null != languageMilestones && languageMilestones.size()>0){
+			for(String lm :languageMilestones){
+				languageMilestone = lm +",";
+			}
+		}
+		benChildDevelopmentHistory.setLanguageMilestone(languageMilestone);
+		
+		List<String> developmentProblems = benChildDevelopmentHistory.getDevelopmentProblems();
+		String developmentProblem = "";
+		if(null != developmentProblems && developmentProblems.size()>0){
+			for(String dp :developmentProblems){
+				developmentProblem = dp +",";
+			}
+		}
+		benChildDevelopmentHistory.setDevelopmentProblem(developmentProblem);
+		return benChildDevelopmentHistory;
 	}
 	
 }

@@ -91,5 +91,153 @@ public class BenMenstrualDetails {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
+
+	public Long getBeneficiaryRegID() {
+		return beneficiaryRegID;
+	}
+
+	public void setBeneficiaryRegID(Long beneficiaryRegID) {
+		this.beneficiaryRegID = beneficiaryRegID;
+	}
+
+	public Long getBenVisitID() {
+		return benVisitID;
+	}
+
+	public void setBenVisitID(Long benVisitID) {
+		this.benVisitID = benVisitID;
+	}
+
+	public Integer getProviderServiceMapID() {
+		return providerServiceMapID;
+	}
+
+	public void setProviderServiceMapID(Integer providerServiceMapID) {
+		this.providerServiceMapID = providerServiceMapID;
+	}
+
+	public Short getMenstrualCycleStatusID() {
+		return menstrualCycleStatusID;
+	}
+
+	public void setMenstrualCycleStatusID(Short menstrualCycleStatusID) {
+		this.menstrualCycleStatusID = menstrualCycleStatusID;
+	}
+
+	public String getRegularity() {
+		return regularity;
+	}
+
+	public void setRegularity(String regularity) {
+		this.regularity = regularity;
+	}
+
+	public Short getMenstrualCyclelengthID() {
+		return menstrualCyclelengthID;
+	}
+
+	public void setMenstrualCyclelengthID(Short menstrualCyclelengthID) {
+		this.menstrualCyclelengthID = menstrualCyclelengthID;
+	}
+
+	public String getCycleLength() {
+		return cycleLength;
+	}
+
+	public void setCycleLength(String cycleLength) {
+		this.cycleLength = cycleLength;
+	}
+
+	public Short getMenstrualFlowDurationID() {
+		return menstrualFlowDurationID;
+	}
+
+	public void setMenstrualFlowDurationID(Short menstrualFlowDurationID) {
+		this.menstrualFlowDurationID = menstrualFlowDurationID;
+	}
+
+	public String getBloodFlowDuration() {
+		return bloodFlowDuration;
+	}
+
+	public void setBloodFlowDuration(String bloodFlowDuration) {
+		this.bloodFlowDuration = bloodFlowDuration;
+	}
+
+	public Short getMenstrualProblemID() {
+		return menstrualProblemID;
+	}
+
+	public void setMenstrualProblemID(Short menstrualProblemID) {
+		this.menstrualProblemID = menstrualProblemID;
+	}
+
+	public String getProblemName() {
+		return problemName;
+	}
+
+	public void setProblemName(String problemName) {
+		this.problemName = problemName;
+	}
+
+	public Timestamp getlMPDate() {
+		return lMPDate;
+	}
+
+	public void setlMPDate(Timestamp lMPDate) {
+		this.lMPDate = lMPDate;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public String getProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(String processed) {
+		this.processed = processed;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Timestamp getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Timestamp createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Timestamp getLastModDate() {
+		return lastModDate;
+	}
+
+	public void setLastModDate(Timestamp lastModDate) {
+		this.lastModDate = lastModDate;
+	}
+
+	public Integer getBenMenstrualID() {
+		return benMenstrualID;
+	}
 	
 }

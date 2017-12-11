@@ -15,8 +15,14 @@ import com.google.gson.Gson;
 import com.iemr.mmu.data.anc.ANCCareDetails;
 import com.iemr.mmu.data.anc.ANCWomenVaccineDetail;
 import com.iemr.mmu.data.anc.BenAdherence;
+import com.iemr.mmu.data.anc.BenChildDevelopmentHistory;
 import com.iemr.mmu.data.anc.BenMedHistory;
+import com.iemr.mmu.data.anc.BenMedicationHistory;
+import com.iemr.mmu.data.anc.BenMenstrualDetails;
 import com.iemr.mmu.data.anc.BencomrbidityCondDetails;
+import com.iemr.mmu.data.anc.ChildOptionalVaccineDetail;
+import com.iemr.mmu.data.anc.FemaleObstetricHistory;
+import com.iemr.mmu.data.anc.PerinatalHistory;
 import com.iemr.mmu.data.anc.PhyGeneralExamination;
 import com.iemr.mmu.data.anc.PhyHeadToToeExamination;
 import com.iemr.mmu.data.anc.SysCardiovascularExamination;
@@ -29,7 +35,9 @@ import com.iemr.mmu.data.anc.SysRespiratoryExamination;
 import com.iemr.mmu.data.anc.WrapperAncFindings;
 import com.iemr.mmu.data.anc.WrapperAncImmunization;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
+import com.iemr.mmu.data.anc.WrapperChildVaccineDetail;
 import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
+import com.iemr.mmu.data.anc.WrapperMedicationHistory;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
@@ -38,8 +46,14 @@ import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.repo.nurse.anc.ANCCareRepo;
 import com.iemr.mmu.repo.nurse.anc.ANCWomenVaccineRepo;
 import com.iemr.mmu.repo.nurse.anc.BenAdherenceRepo;
+import com.iemr.mmu.repo.nurse.anc.BenChildDevelopmentHistoryRepo;
 import com.iemr.mmu.repo.nurse.anc.BenMedHistoryRepo;
+import com.iemr.mmu.repo.nurse.anc.BenMedicationHistoryRepo;
+import com.iemr.mmu.repo.nurse.anc.BenMenstrualDetailsRepo;
 import com.iemr.mmu.repo.nurse.anc.BencomrbidityCondRepo;
+import com.iemr.mmu.repo.nurse.anc.ChildOptionalVaccineDetailRepo;
+import com.iemr.mmu.repo.nurse.anc.FemaleObstetricHistoryRepo;
+import com.iemr.mmu.repo.nurse.anc.PerinatalHistoryRepo;
 import com.iemr.mmu.repo.nurse.anc.PhyGeneralExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.PhyHeadToToeExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.SysCardiovascularExaminationRepo;
@@ -103,6 +117,12 @@ public class ANCServiceImpl implements ANCService {
 	private NurseServiceImpl nurseServiceImpl;
 	private BenMedHistoryRepo benMedHistoryRepo;
 	private BencomrbidityCondRepo bencomrbidityCondRepo;
+	private BenMedicationHistoryRepo benMedicationHistoryRepo;
+	private BenMenstrualDetailsRepo benMenstrualDetailsRepo;
+	private FemaleObstetricHistoryRepo femaleObstetricHistoryRepo;
+	private PerinatalHistoryRepo perinatalHistoryRepo;
+	private ChildOptionalVaccineDetailRepo childOptionalVaccineDetailRepo;
+	private BenChildDevelopmentHistoryRepo benChildDevelopmentHistoryRepo;
 	
 	@Autowired
 	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
@@ -182,6 +202,26 @@ public class ANCServiceImpl implements ANCService {
 		this.bencomrbidityCondRepo = bencomrbidityCondRepo;
 	}
 
+	@Autowired
+	public void setBenMedicationHistoryRepo(BenMedicationHistoryRepo benMedicationHistoryRepo) {
+		this.benMedicationHistoryRepo = benMedicationHistoryRepo;
+	}
+	
+	@Autowired
+	public void setBenMenstrualDetailsRepo(BenMenstrualDetailsRepo benMenstrualDetailsRepo) {
+		this.benMenstrualDetailsRepo = benMenstrualDetailsRepo;
+	}
+	
+	@Autowired
+	public void setPerinatalHistoryRepo(PerinatalHistoryRepo perinatalHistoryRepo) {
+		this.perinatalHistoryRepo = perinatalHistoryRepo;
+	}
+	
+	@Autowired
+	public void setBenChildDevelopmentHistoryRepo(BenChildDevelopmentHistoryRepo benChildDevelopmentHistoryRepo) {
+		this.benChildDevelopmentHistoryRepo = benChildDevelopmentHistoryRepo;
+	}
+	
 	@Override
 	public Long saveBeneficiaryANCDetails(ANCCareDetails ancCareDetails) {
 		ANCCareDetails ancCareDetail = ancCareRepo.save(ancCareDetails);
@@ -771,4 +811,72 @@ public class ANCServiceImpl implements ANCService {
 		}
 		return r;
 	}
+	
+	@Override
+	public Integer saveBenANCMedicationHistory(WrapperMedicationHistory wrapperMedicationHistory) {
+		Integer r = null;
+		ArrayList<BenMedicationHistory> benMedicationHistoryList = wrapperMedicationHistory.getBenMedicationHistoryDetails();
+		ArrayList<BenMedicationHistory> res = (ArrayList<BenMedicationHistory>) benMedicationHistoryRepo.save(benMedicationHistoryList);
+		if(null != res && res.size()>0){
+			r = res.size();
+		}
+		return r;
+	}
+	
+	@Override
+	public Integer saveBenANCMenstrualHistory(BenMenstrualDetails benMenstrualDetails) {
+		Integer r = null;
+		
+		BenMenstrualDetails res = benMenstrualDetailsRepo.save(benMenstrualDetails);
+		if(null != res && res.getBenMenstrualID()>0){
+			r = res.getBenMenstrualID();
+		}
+		return r;
+	}
+	
+	@Override
+	public Integer saveFemaleObstetricHistory(FemaleObstetricHistory femaleObstetricHistory) {
+		Integer r = null;
+		
+		FemaleObstetricHistory res = femaleObstetricHistoryRepo.save(femaleObstetricHistory);
+		if(null != res && res.getObstetricHistoryID()>0){
+			r = 1;
+		}
+		return r;
+	}
+	
+	@Override
+	public Integer savePerinatalHistory(PerinatalHistory perinatalHistory) {
+		Integer r = null;
+		
+		PerinatalHistory res = perinatalHistoryRepo.save(perinatalHistory);
+		if(null != res && res.getID()>0){
+			r = 1;
+		}
+		return r;
+	}
+	
+	@Override
+	public Integer saveChildVaccineDetail(WrapperChildVaccineDetail wrapperChildVaccineDetail) {
+		Integer r = null;
+		
+		ArrayList<ChildOptionalVaccineDetail> res = (ArrayList<ChildOptionalVaccineDetail>) childOptionalVaccineDetailRepo.save(wrapperChildVaccineDetail.getChildOptionalVaccineList());
+		if(null != res && res.size()>0){
+			r = 1;
+		}
+		return r;
+	}
+	
+	@Override
+	public Integer saveChildDevelopmentHistory(BenChildDevelopmentHistory benChildDevelopmentHistory) {
+		Integer r = null;
+		
+		BenChildDevelopmentHistory childDevelopmentHistory = BenChildDevelopmentHistory.getDevelopmentHistory(benChildDevelopmentHistory);
+		BenChildDevelopmentHistory res = benChildDevelopmentHistoryRepo.save(childDevelopmentHistory);
+		if(null != res && res.getID()>0){
+			r = 1;
+		}
+		return r;
+	}
+	
 }

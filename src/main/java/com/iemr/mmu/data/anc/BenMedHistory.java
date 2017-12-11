@@ -242,12 +242,14 @@ public class BenMedHistory {
 				benMedHistory.setBenVisitID(benVisitID);
 				benMedHistory.setProviderServiceMapID(providerServiceMapID);
 				benMedHistory.setCreatedBy(createdBy);
-				Map<String,Object> illness=(Map<String, Object>) pastIllness.get(i).get("illnessType");
+				Map<String,Object> illness=(Map<String, Object>) pastIllness.get(i);
+				
+				
 			if(null != illness){
 				if(null != illness.get("illnessID")){
 					benMedHistory.setIllnessTypeID(Integer.parseInt(illness.get("illnessID").toString()));
 				}
-				String otherIllnessType = (String) pastIllness.get(i).get("otherIllnessType");
+				String otherIllnessType = (String) illness.get("otherIllnessType");
 				if(null != illness.get("illnessType")){
 					if(null != otherIllnessType){
 						benMedHistory.setIllnessType(illness.get("illnessType")+" - "+otherIllnessType);
@@ -257,19 +259,19 @@ public class BenMedHistory {
 				}
 			}
 			
-			String timePeriodUnit = (String) pastIllness.get(i).get("timePeriodUnit");
+			String timePeriodUnit = (String) illness.get("timePeriodUnit");
 			Integer timePeriodAgo = 0;
 			if(null != pastIllness.get(i).get("timePeriodAgo")){
-				timePeriodAgo =  Integer.parseInt(pastIllness.get(i).get("timePeriodAgo").toString());
+				timePeriodAgo =  Integer.parseInt(illness.get("timePeriodAgo").toString());
 			}
 			benMedHistory.setYearofIllness(convertToDateFormat(timePeriodUnit, timePeriodAgo));
 			
-			Map<String,Object> surgery=(Map<String, Object>) pastSurgery.get(i).get("surgeryType");
+			Map<String,Object> surgery=(Map<String, Object>) pastSurgery.get(i);
 			if(null != surgery){
 				if(null != surgery.get("surgeryID")){
 					benMedHistory.setSurgeryID(Integer.parseInt(surgery.get("surgeryID").toString()));
 				}
-				String otherSurgeryType = (String) pastSurgery.get(i).get("otherSurgeryType");
+				String otherSurgeryType = (String) surgery.get("otherSurgeryType");
 				if(null != surgery.get("surgeryType")){
 					if(null != otherSurgeryType){
 						benMedHistory.setSurgeryType(surgery.get("surgeryType").toString()+" - "+otherSurgeryType);
@@ -279,10 +281,10 @@ public class BenMedHistory {
 				}
 			}
 			
-			String surgeryTimePeriodUnit = (String) pastSurgery.get(i).get("timePeriodUnit");
+			String surgeryTimePeriodUnit = (String) surgery.get("timePeriodUnit");
 			Integer surgeryTimePeriodAgo = 0;
 			if(null != pastSurgery.get(i).get("timePeriodAgo")){
-				surgeryTimePeriodAgo =  Integer.parseInt(pastSurgery.get(i).get("timePeriodAgo").toString());
+				surgeryTimePeriodAgo =  Integer.parseInt(surgery.get("timePeriodAgo").toString());
 			}
 			benMedHistory.setYearofSurgery(convertToDateFormat(surgeryTimePeriodUnit, surgeryTimePeriodAgo));
 			

@@ -14,8 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.iemr.mmu.data.anc.ANCCareDetails;
 import com.iemr.mmu.data.anc.BenAdherence;
+import com.iemr.mmu.data.anc.BenChildDevelopmentHistory;
 import com.iemr.mmu.data.anc.BenMedHistory;
+import com.iemr.mmu.data.anc.BenMenstrualDetails;
 import com.iemr.mmu.data.anc.BencomrbidityCondDetails;
+import com.iemr.mmu.data.anc.ChildOptionalVaccineDetail;
+import com.iemr.mmu.data.anc.FemaleObstetricHistory;
+import com.iemr.mmu.data.anc.PerinatalHistory;
 import com.iemr.mmu.data.anc.PhyGeneralExamination;
 import com.iemr.mmu.data.anc.PhyHeadToToeExamination;
 import com.iemr.mmu.data.anc.SysCardiovascularExamination;
@@ -27,7 +32,9 @@ import com.iemr.mmu.data.anc.SysObstetricExamination;
 import com.iemr.mmu.data.anc.SysRespiratoryExamination;
 import com.iemr.mmu.data.anc.WrapperAncImmunization;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
+import com.iemr.mmu.data.anc.WrapperChildVaccineDetail;
 import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
+import com.iemr.mmu.data.anc.WrapperMedicationHistory;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
@@ -436,7 +443,7 @@ public class InsertNurseANCController {
 //		"createdBy":"Test",
 //		 "pastIllness": [ { "illnessType": { "illnessID": "12", "illnessType": "Malaria" }, "otherIllnessType": "sfdgfd", "timePeriodAgo": "2", "timePeriodUnit": "Years" } ], "pastSurgery": [ { "surgeryType": { "surgeryID": "3", "surgeryType": "Appendicectomy" }, "otherSurgeryType": null, "timePeriodAgo": "4", "timePeriodUnit": "Weeks" } ] }
 	@CrossOrigin
-	@ApiOperation(value = "Save Beneficairy ANC past history Details", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Save Beneficiary ANC past history Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/history/pastHistory" }, method = { RequestMethod.POST })
 	public String saveANCBenPastHistory(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
@@ -452,9 +459,11 @@ public class InsertNurseANCController {
 				} else {
 					response.setError(5000, "Something went wrong");
 				}
+				logger.info("saveANCBenPastHistory response:" + response);
 			}
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error while storing Beneficiary ANC Past History.");
 		}
 		return response.toString();
 	}
@@ -465,7 +474,7 @@ public class InsertNurseANCController {
 //		 "providerServiceMapID":"1251",
 //		 "createdBy":"Test","comorbidConditionID":5,"comorbidCondition": "Hypertension", "otherComorbidConditions": null, "timePeriodAgo": "2", "timePeriodUnit": "Months", "showNextTime": null } ] }
 	@CrossOrigin
-	@ApiOperation(value = "Save Beneficairy ANC ComorbidCondition Details", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Save Beneficiary ANC ComorbidCondition Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/history/comorbidConditions" }, method = { RequestMethod.POST })
 	public String saveANCBenComorbidConditions(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
@@ -481,11 +490,170 @@ public class InsertNurseANCController {
 				} else {
 					response.setError(5000, "Something went wrong");
 				}
+				logger.info("saveANCBenComorbidConditions response:" + response);
 			}
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error while storing Beneficiary ANC Comorbid Conditions.");
 		}
 		return response.toString();
 	}
 
+	
+//	{ "medicationHistoryList": [ { "beneficiaryRegID":"7506", "benVisitID":"222", "providerServiceMapID":"1251", "createdBy":"Test","currentMedication": "saff", "timePeriodAgo": 2, "timePeriodUnit": "Years"} ] }
+	@CrossOrigin
+	@ApiOperation(value = "Save Beneficiary ANC Medication History Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/history/medicationHistory" }, method = { RequestMethod.POST })
+	public String saveANCBenMedicationHistory(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		logger.info("saveANCBenMedicationHistory request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				WrapperMedicationHistory wrapperMedicationHistory = InputMapper.gson().fromJson(requestObj,
+						WrapperMedicationHistory.class);
+
+				int r = ancServiceImpl.saveBenANCMedicationHistory(wrapperMedicationHistory);
+				if (r > 0) {
+					response.setResponse("Save Beneficairy ANC Medication History Details saved successfully");
+				} else {
+					response.setError(5000, "Something went wrong");
+				}
+				logger.info("saveANCBenMedicationHistory response:" + response);
+			}
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error while storing Beneficiary ANC Medication History.");
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin
+	@ApiOperation(value = "Save Beneficiary ANC Menstrual History Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/history/menstrualHistory" }, method = { RequestMethod.POST })
+	public String saveANCMenstrualHistory(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		logger.info("saveANCMenstrualHistory request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				BenMenstrualDetails menstrualDetails = InputMapper.gson().fromJson(requestObj,
+						BenMenstrualDetails.class);
+
+				int r = ancServiceImpl.saveBenANCMenstrualHistory(menstrualDetails);
+				if (r > 0) {
+					response.setResponse("Save Beneficairy ANC Menstrual Details saved successfully");
+				} else {
+					response.setError(5000, "Something went wrong");
+				}
+				logger.info("saveANCMenstrualHistory response:" + response);
+			}
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error while storing Beneficiary ANC Menstrual Details.");
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin
+	@ApiOperation(value = "Save Beneficiary Female Obstetric History Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/history/femaleObstetricHistory" }, method = { RequestMethod.POST })
+	public String saveFemaleObstetricHistory(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		logger.info("saveFemaleObstetricHistory request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				FemaleObstetricHistory femaleObstetricHistory = InputMapper.gson().fromJson(requestObj,
+						FemaleObstetricHistory.class);
+
+				int r = ancServiceImpl.saveFemaleObstetricHistory(femaleObstetricHistory);
+				if (r > 0) {
+					response.setResponse("Save Beneficairy ANC Female Obstetric History saved successfully");
+				} else {
+					response.setError(5000, "Something went wrong");
+				}
+				logger.info("saveFemaleObstetricHistory response:" + response);
+			}
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error while storing Beneficiary ANC Female Obstetric History Details.");
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin
+	@ApiOperation(value = "Save Beneficiary Perinatal History", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/history/perinatalHistory" }, method = { RequestMethod.POST })
+	public String saveANCPerinatalHistory(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		logger.info("saveANCPerinatalHistory request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				PerinatalHistory perinatalHistory = InputMapper.gson().fromJson(requestObj,
+						PerinatalHistory.class);
+
+				int r = ancServiceImpl.savePerinatalHistory(perinatalHistory);
+				if (r > 0) {
+					response.setResponse("Save Beneficairy ANC  Perinatal History saved successfully");
+				} else {
+					response.setError(5000, "Something went wrong");
+				}
+				logger.info("saveANCPerinatalHistory response:" + response);
+			}
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error while storing Beneficiary ANC Perinatal History Details.");
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin
+	@ApiOperation(value = "Save child Vaccine Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/history/childVaccineDetails" }, method = { RequestMethod.POST })
+	public String saveANCChildVaccineDetails(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		logger.info("saveANCChildVaccineDetails request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				WrapperChildVaccineDetail wrapperChildVaccineDetail = InputMapper.gson().fromJson(requestObj,
+						WrapperChildVaccineDetail.class);
+
+				int r = ancServiceImpl.saveChildVaccineDetail(wrapperChildVaccineDetail);
+				if (r > 0) {
+					response.setResponse("Save Beneficairy ANC Child Vaccine Details saved successfully");
+				} else {
+					response.setError(5000, "Something went wrong");
+				}
+				logger.info("saveANCChildVaccineDetails response:" + response);
+			}
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error while storing Beneficiary ANC Child Vaccine Details.");
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin
+	@ApiOperation(value = "Save child Development Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/history/childDevelopmentHistory" }, method = { RequestMethod.POST })
+	public String saveANCChildDevelopmentHistory(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		logger.info("saveANCChildDevelopmentHistory request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				BenChildDevelopmentHistory benChildDevelopmentHistory = InputMapper.gson().fromJson(requestObj,
+						BenChildDevelopmentHistory.class);
+
+				int r = ancServiceImpl.saveChildDevelopmentHistory(benChildDevelopmentHistory);
+				if (r > 0) {
+					response.setResponse("Save Beneficairy ANC Child Development History Details saved successfully");
+				} else {
+					response.setError(5000, "Something went wrong");
+				}
+				logger.info("saveANCChildDevelopmentHistory response:" + response);
+			}
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error while storing Beneficiary ANC Child Development History Details.");
+		}
+		return response.toString();
+	}
 }

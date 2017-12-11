@@ -93,6 +93,18 @@ public class FemaleObstetricHistory {
 	private String postpartumComplicationType;
 	
 	@Expose
+	@Column(name = "PostNatalComplicationID")
+	private Short postNatalComplicationID;
+
+	@Expose
+	@Column(name = "PostNatalComplication")
+	private String postNatalComplication;
+
+	@Expose
+	@Column(name = "CongenitalAnomalies")
+	private String congenitalAnomalies;
+	
+	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
 
@@ -115,5 +127,225 @@ public class FemaleObstetricHistory {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
+
+	public Long getBeneficiaryRegID() {
+		return beneficiaryRegID;
+	}
+
+	public void setBeneficiaryRegID(Long beneficiaryRegID) {
+		this.beneficiaryRegID = beneficiaryRegID;
+	}
+
+	public Long getBenVisitID() {
+		return benVisitID;
+	}
+
+	public void setBenVisitID(Long benVisitID) {
+		this.benVisitID = benVisitID;
+	}
+
+	public Integer getProviderServiceMapID() {
+		return providerServiceMapID;
+	}
+
+	public void setProviderServiceMapID(Integer providerServiceMapID) {
+		this.providerServiceMapID = providerServiceMapID;
+	}
+
+	public String getPregOrder() {
+		return pregOrder;
+	}
+
+	public void setPregOrder(String pregOrder) {
+		this.pregOrder = pregOrder;
+	}
+
+	public Integer getPregComplicationID() {
+		return pregComplicationID;
+	}
+
+	public void setPregComplicationID(Integer pregComplicationID) {
+		this.pregComplicationID = pregComplicationID;
+	}
+
+	public String getPregComplicationType() {
+		return pregComplicationType;
+	}
+
+	public void setPregComplicationType(String pregComplicationType) {
+		this.pregComplicationType = pregComplicationType;
+	}
+
+	public Short getPregDurationID() {
+		return pregDurationID;
+	}
+
+	public void setPregDurationID(Short pregDurationID) {
+		this.pregDurationID = pregDurationID;
+	}
+
+	public String getDurationType() {
+		return durationType;
+	}
+
+	public void setDurationType(String durationType) {
+		this.durationType = durationType;
+	}
+
+	public Short getDeliveryTypeID() {
+		return deliveryTypeID;
+	}
+
+	public void setDeliveryTypeID(Short deliveryTypeID) {
+		this.deliveryTypeID = deliveryTypeID;
+	}
+
+	public String getDeliveryType() {
+		return deliveryType;
+	}
+
+	public void setDeliveryType(String deliveryType) {
+		this.deliveryType = deliveryType;
+	}
+
+	public Short getDeliveryPlaceID() {
+		return deliveryPlaceID;
+	}
+
+	public void setDeliveryPlaceID(Short deliveryPlaceID) {
+		this.deliveryPlaceID = deliveryPlaceID;
+	}
+
+	public String getDeliveryPlace() {
+		return deliveryPlace;
+	}
+
+	public void setDeliveryPlace(String deliveryPlace) {
+		this.deliveryPlace = deliveryPlace;
+	}
+
+	public Short getDeliveryComplicationID() {
+		return deliveryComplicationID;
+	}
+
+	public void setDeliveryComplicationID(Short deliveryComplicationID) {
+		this.deliveryComplicationID = deliveryComplicationID;
+	}
+
+	public String getDeliveryComplicationType() {
+		return deliveryComplicationType;
+	}
+
+	public void setDeliveryComplicationType(String deliveryComplicationType) {
+		this.deliveryComplicationType = deliveryComplicationType;
+	}
+
+	public Short getPregOutcomeID() {
+		return pregOutcomeID;
+	}
+
+	public void setPregOutcomeID(Short pregOutcomeID) {
+		this.pregOutcomeID = pregOutcomeID;
+	}
+
+	public String getPregOutcome() {
+		return pregOutcome;
+	}
+
+	public void setPregOutcome(String pregOutcome) {
+		this.pregOutcome = pregOutcome;
+	}
+
+	public Short getPostpartumComplicationID() {
+		return postpartumComplicationID;
+	}
+
+	public void setPostpartumComplicationID(Short postpartumComplicationID) {
+		this.postpartumComplicationID = postpartumComplicationID;
+	}
+
+	public String getPostpartumComplicationType() {
+		return postpartumComplicationType;
+	}
+
+	public void setPostpartumComplicationType(String postpartumComplicationType) {
+		this.postpartumComplicationType = postpartumComplicationType;
+	}
+
+	public Short getPostNatalComplicationID() {
+		return postNatalComplicationID;
+	}
+
+	public void setPostNatalComplicationID(Short postNatalComplicationID) {
+		this.postNatalComplicationID = postNatalComplicationID;
+	}
+
+	public String getPostNatalComplication() {
+		return postNatalComplication;
+	}
+
+	public void setPostNatalComplication(String postNatalComplication) {
+		this.postNatalComplication = postNatalComplication;
+	}
+
+	public String getCongenitalAnomalies() {
+		return congenitalAnomalies;
+	}
+
+	public void setCongenitalAnomalies(String congenitalAnomalies) {
+		this.congenitalAnomalies = congenitalAnomalies;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public String getProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(String processed) {
+		this.processed = processed;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Timestamp getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Timestamp createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Timestamp getLastModDate() {
+		return lastModDate;
+	}
+
+	public void setLastModDate(Timestamp lastModDate) {
+		this.lastModDate = lastModDate;
+	}
+
+	public Long getObstetricHistoryID() {
+		return obstetricHistoryID;
+	}
 	
 }

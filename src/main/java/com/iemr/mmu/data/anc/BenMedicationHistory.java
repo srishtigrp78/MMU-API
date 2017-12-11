@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
@@ -63,4 +64,121 @@ public class BenMedicationHistory {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
+	
+	@Transient
+	@Expose 
+	private Integer timePeriodAgo;
+	
+	@Transient
+	@Expose
+	private String timePeriodUnit;
+
+	public Long getBeneficiaryRegID() {
+		return beneficiaryRegID;
+	}
+
+	public void setBeneficiaryRegID(Long beneficiaryRegID) {
+		this.beneficiaryRegID = beneficiaryRegID;
+	}
+
+	public Long getBenVisitID() {
+		return benVisitID;
+	}
+
+	public void setBenVisitID(Long benVisitID) {
+		this.benVisitID = benVisitID;
+	}
+
+	public Integer getProviderServiceMapID() {
+		return providerServiceMapID;
+	}
+
+	public void setProviderServiceMapID(Integer providerServiceMapID) {
+		this.providerServiceMapID = providerServiceMapID;
+	}
+
+	public String getCurrentMedication() {
+		return currentMedication;
+	}
+
+	public void setCurrentMedication(String currentMedication) {
+		this.currentMedication = currentMedication;
+	}
+
+	public Timestamp getYear() {
+		return year;
+	}
+
+	public void setYear(Timestamp year) {
+		this.year = year;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public String getProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(String processed) {
+		this.processed = processed;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Timestamp getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Timestamp createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Timestamp getLastModDate() {
+		return lastModDate;
+	}
+
+	public void setLastModDate(Timestamp lastModDate) {
+		this.lastModDate = lastModDate;
+	}
+
+	public Integer getTimePeriodAgo() {
+		return timePeriodAgo;
+	}
+
+	public void setTimePeriodAgo(Integer timePeriodAgo) {
+		this.timePeriodAgo = timePeriodAgo;
+	}
+
+	public String getTimePeriodUnit() {
+		return timePeriodUnit;
+	}
+
+	public void setTimePeriodUnit(String timePeriodUnit) {
+		this.timePeriodUnit = timePeriodUnit;
+	}
+
+	public Long getID() {
+		return ID;
+	}
+	
 }
