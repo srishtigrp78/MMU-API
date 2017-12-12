@@ -1,12 +1,16 @@
 package com.iemr.mmu.data.anc;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
@@ -76,5 +80,157 @@ public class BenAllergyHistory {
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 	
+	@Transient
+	@Expose
+	private List<Map<String, String>> allergicList;
 
+	public Long getBeneficiaryRegID() {
+		return beneficiaryRegID;
+	}
+
+	public void setBeneficiaryRegID(Long beneficiaryRegID) {
+		this.beneficiaryRegID = beneficiaryRegID;
+	}
+
+	public Long getBenVisitID() {
+		return benVisitID;
+	}
+
+	public void setBenVisitID(Long benVisitID) {
+		this.benVisitID = benVisitID;
+	}
+
+	public Integer getProviderServiceMapID() {
+		return providerServiceMapID;
+	}
+
+	public void setProviderServiceMapID(Integer providerServiceMapID) {
+		this.providerServiceMapID = providerServiceMapID;
+	}
+
+	public String getAllergyStatus() {
+		return allergyStatus;
+	}
+
+	public void setAllergyStatus(String allergyStatus) {
+		this.allergyStatus = allergyStatus;
+	}
+
+	public String getAllergyType() {
+		return allergyType;
+	}
+
+	public void setAllergyType(String allergyType) {
+		this.allergyType = allergyType;
+	}
+
+	public String getAllergenName() {
+		return allergenName;
+	}
+
+	public void setAllergenName(String allergenName) {
+		this.allergenName = allergenName;
+	}
+
+	public String getAllergicReactionType() {
+		return allergicReactionType;
+	}
+
+	public void setAllergicReactionType(String allergicReactionType) {
+		this.allergicReactionType = allergicReactionType;
+	}
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public String getProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(String processed) {
+		this.processed = processed;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Timestamp getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Timestamp createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Timestamp getLastModDate() {
+		return lastModDate;
+	}
+
+	public void setLastModDate(Timestamp lastModDate) {
+		this.lastModDate = lastModDate;
+	}
+
+	public List<Map<String, String>> getAllergicList() {
+		return allergicList;
+	}
+
+	public void setAllergicList(List<Map<String, String>> allergicList) {
+		this.allergicList = allergicList;
+	}
+
+	public Long getID() {
+		return ID;
+	}
+//	{ "allergyType": null, "allergyName": null, "typeOfAllergicReaction": null, "otherTypeOfAllergicReaction": null }
+	public ArrayList<BenAllergyHistory> getBenAllergicHistory(){
+		ArrayList<BenAllergyHistory> benAllergyHistoryList=new ArrayList<BenAllergyHistory>();
+		for(Map<String,String> allergic:allergicList){
+			BenAllergyHistory benAllergyHistory = new BenAllergyHistory();
+
+			benAllergyHistory.setAllergenName(allergic.get("allergyType"));
+			benAllergyHistory.setAllergyType(allergic.get("allergyType"));
+			benAllergyHistory.setBeneficiaryRegID(beneficiaryRegID);
+			benAllergyHistory.setBenVisitID(benVisitID);
+			benAllergyHistory.setProviderServiceMapID(providerServiceMapID);
+			benAllergyHistory.setAllergyStatus(allergyStatus);
+			benAllergyHistory.setCreatedBy(createdBy);
+			
+			String otherTypeOfAllergicReaction = allergic.get("otherTypeOfAllergicReaction");
+			
+			if(null != otherTypeOfAllergicReaction){
+				benAllergyHistory.setAllergicReactionType(allergic.get("typeOfAllergicReaction")+"-"+otherTypeOfAllergicReaction);
+			}else{
+				benAllergyHistory.setAllergicReactionType(allergic.get("typeOfAllergicReaction"));
+			}
+			
+			benAllergyHistoryList.add(benAllergyHistory);
+		}
+		return benAllergyHistoryList;
+	}
 }

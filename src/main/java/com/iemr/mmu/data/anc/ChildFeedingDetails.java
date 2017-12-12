@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import com.google.gson.annotations.Expose;
 
 @Entity
-@Table(name = "t_ChildFeedingDetails")
+@Table(name = "t_childfeedinghistory")
 public class ChildFeedingDetails {
 	
 	@Id
@@ -33,10 +33,6 @@ public class ChildFeedingDetails {
 	private Integer providerServiceMapID;
 	
 	@Expose
-	@Column(name = "VisitCode")
-	private Long visitCode;
-	
-	@Expose
 	@Column(name = "ChildID")
 	private Long childID;
 
@@ -45,16 +41,8 @@ public class ChildFeedingDetails {
 	private Long benMotherID;
 
 	@Expose
-	@Column(name = "BreastFeeds")
-	private Character breastFeeds;
-
-	@Expose
-	@Column(name = "TopFeeds")
-	private Character topFeeds;
-
-	@Expose
-	@Column(name = "BreastFeedsandTopFeeds")
-	private Character breastFeedsandTopFeeds;
+	@Column(name = "TypeOfFeed")
+	private String typeOfFeed;
 
 	@Expose
 	@Column(name = "CompFeedStartAge")
@@ -95,4 +83,137 @@ public class ChildFeedingDetails {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
+
+	public Long getBeneficiaryRegID() {
+		return beneficiaryRegID;
+	}
+
+	public void setBeneficiaryRegID(Long beneficiaryRegID) {
+		this.beneficiaryRegID = beneficiaryRegID;
+	}
+
+	public Long getBenVisitID() {
+		return benVisitID;
+	}
+
+	public void setBenVisitID(Long benVisitID) {
+		this.benVisitID = benVisitID;
+	}
+
+	public Integer getProviderServiceMapID() {
+		return providerServiceMapID;
+	}
+
+	public void setProviderServiceMapID(Integer providerServiceMapID) {
+		this.providerServiceMapID = providerServiceMapID;
+	}
+
+	public Long getChildID() {
+		return childID;
+	}
+
+	public void setChildID(Long childID) {
+		this.childID = childID;
+	}
+
+	public Long getBenMotherID() {
+		return benMotherID;
+	}
+
+	public void setBenMotherID(Long benMotherID) {
+		this.benMotherID = benMotherID;
+	}
+
+	public String getTypeOfFeed() {
+		return typeOfFeed;
+	}
+
+	public void setTypeOfFeed(String typeOfFeed) {
+		this.typeOfFeed = typeOfFeed;
+	}
+
+	public String getCompFeedStartAge() {
+		return compFeedStartAge;
+	}
+
+	public void setCompFeedStartAge(String compFeedStartAge) {
+		this.compFeedStartAge = compFeedStartAge;
+	}
+
+	public Character getNoOfCompFeedPerDay() {
+		return noOfCompFeedPerDay;
+	}
+
+	public void setNoOfCompFeedPerDay(Character noOfCompFeedPerDay) {
+		this.noOfCompFeedPerDay = noOfCompFeedPerDay;
+	}
+
+	public Character getFoodIntoleranceStatus() {
+		return foodIntoleranceStatus;
+	}
+
+	public void setFoodIntoleranceStatus(Character foodIntoleranceStatus) {
+		this.foodIntoleranceStatus = foodIntoleranceStatus;
+	}
+
+	public String getTypeofFoodIntolerance() {
+		return typeofFoodIntolerance;
+	}
+
+	public void setTypeofFoodIntolerance(String typeofFoodIntolerance) {
+		this.typeofFoodIntolerance = typeofFoodIntolerance;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public String getProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(String processed) {
+		this.processed = processed;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Timestamp getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Timestamp createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Timestamp getLastModDate() {
+		return lastModDate;
+	}
+
+	public void setLastModDate(Timestamp lastModDate) {
+		this.lastModDate = lastModDate;
+	}
+
+	public Long getID() {
+		return ID;
+	}
+	
 }
