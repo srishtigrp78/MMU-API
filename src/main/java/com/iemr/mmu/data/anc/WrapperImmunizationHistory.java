@@ -19,7 +19,7 @@ public class WrapperImmunizationHistory {
 		this.immunizationList = immunizationList;
 	}
 	
-	public ArrayList<ChildVaccineDetail1> getBenChildVaccineDetailDetails(){
+	public ArrayList<ChildVaccineDetail1> getBenChildVaccineDetails(){
 		for(ChildVaccineDetail1 childVaccineDetail:immunizationList){
 				
 			childVaccineDetail.setBeneficiaryRegID(beneficiaryRegID);

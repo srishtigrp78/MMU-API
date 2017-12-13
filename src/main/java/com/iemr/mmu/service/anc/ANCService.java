@@ -29,8 +29,9 @@ import com.iemr.mmu.data.anc.SysRespiratoryExamination;
 import com.iemr.mmu.data.anc.WrapperAncFindings;
 import com.iemr.mmu.data.anc.WrapperAncImmunization;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
-import com.iemr.mmu.data.anc.WrapperChildVaccineDetail;
+import com.iemr.mmu.data.anc.WrapperChildOptionalVaccineDetail;
 import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
+import com.iemr.mmu.data.anc.WrapperFemaleObstetricHistory;
 import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
@@ -98,11 +99,11 @@ public interface ANCService {
 
 	public Integer saveBenANCMenstrualHistory(BenMenstrualDetails benMenstrualDetails);
 
-	public Integer saveFemaleObstetricHistory(FemaleObstetricHistory femaleObstetricHistory);
+	public Integer saveFemaleObstetricHistory(WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory);
 
 	public Integer savePerinatalHistory(PerinatalHistory perinatalHistory);
 
-	public Integer saveChildVaccineDetail(WrapperChildVaccineDetail wrapperChildVaccineDetail);
+	public Integer saveChildOptionalVaccineDetail(WrapperChildOptionalVaccineDetail wrapperChildVaccineDetail);
 
 	public Integer saveChildDevelopmentHistory(BenChildDevelopmentHistory benChildDevelopmentHistory);
 
@@ -115,4 +116,5 @@ public interface ANCService {
 	public Integer saveChildFeedingHistory(ChildFeedingDetails childFeedingDetails);
 
 	public Integer saveANCImmunizationHistory(WrapperImmunizationHistory wrapperImmunizationHistory);
+
 }

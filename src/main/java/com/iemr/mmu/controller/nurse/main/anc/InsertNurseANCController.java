@@ -37,8 +37,9 @@ import com.iemr.mmu.data.anc.SysObstetricExamination;
 import com.iemr.mmu.data.anc.SysRespiratoryExamination;
 import com.iemr.mmu.data.anc.WrapperAncImmunization;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
-import com.iemr.mmu.data.anc.WrapperChildVaccineDetail;
+import com.iemr.mmu.data.anc.WrapperChildOptionalVaccineDetail;
 import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
+import com.iemr.mmu.data.anc.WrapperFemaleObstetricHistory;
 import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
@@ -567,10 +568,10 @@ public class InsertNurseANCController {
 		logger.info("saveFemaleObstetricHistory request:" + requestObj);
 		try {
 			if (requestObj != null) {
-				FemaleObstetricHistory femaleObstetricHistory = InputMapper.gson().fromJson(requestObj,
-						FemaleObstetricHistory.class);
+				WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory = InputMapper.gson().fromJson(requestObj,
+						WrapperFemaleObstetricHistory.class);
 
-				int r = ancServiceImpl.saveFemaleObstetricHistory(femaleObstetricHistory);
+				int r = ancServiceImpl.saveFemaleObstetricHistory(wrapperFemaleObstetricHistory);
 				if (r > 0) {
 					response.setResponse("Beneficairy ANC Female Obstetric History saved successfully");
 				} else {
@@ -619,10 +620,10 @@ public class InsertNurseANCController {
 		logger.info("saveANCChildVaccineDetails request:" + requestObj);
 		try {
 			if (requestObj != null) {
-				WrapperChildVaccineDetail wrapperChildVaccineDetail = InputMapper.gson().fromJson(requestObj,
-						WrapperChildVaccineDetail.class);
+				WrapperChildOptionalVaccineDetail wrapperChildVaccineDetail = InputMapper.gson().fromJson(requestObj,
+						WrapperChildOptionalVaccineDetail.class);
 
-				int r = ancServiceImpl.saveChildVaccineDetail(wrapperChildVaccineDetail);
+				int r = ancServiceImpl.saveChildOptionalVaccineDetail(wrapperChildVaccineDetail);
 				if (r > 0) {
 					response.setResponse("Beneficairy ANC Child Vaccine Details saved successfully");
 				} else {
@@ -679,7 +680,7 @@ public class InsertNurseANCController {
 
 				int r = ancServiceImpl.saveANCPersonalHistory(personalHabit);
 				int s= ancServiceImpl.saveANCAllergyHistory(benAllergyHistory);
-				if (r > 0 && s > 0) {
+				if ( s > 0) {
 					response.setResponse("Beneficairy ANC Personal History Details saved successfully");
 				} else {
 					response.setError(5000, "Something went wrong");

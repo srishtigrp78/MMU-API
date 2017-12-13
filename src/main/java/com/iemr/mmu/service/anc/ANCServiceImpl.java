@@ -40,8 +40,9 @@ import com.iemr.mmu.data.anc.SysRespiratoryExamination;
 import com.iemr.mmu.data.anc.WrapperAncFindings;
 import com.iemr.mmu.data.anc.WrapperAncImmunization;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
-import com.iemr.mmu.data.anc.WrapperChildVaccineDetail;
+import com.iemr.mmu.data.anc.WrapperChildOptionalVaccineDetail;
 import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
+import com.iemr.mmu.data.anc.WrapperFemaleObstetricHistory;
 import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
@@ -885,11 +886,12 @@ public class ANCServiceImpl implements ANCService {
 	}
 	
 	@Override
-	public Integer saveFemaleObstetricHistory(FemaleObstetricHistory femaleObstetricHistory) {
+	public Integer saveFemaleObstetricHistory(WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory) {
 		Integer r = null;
 		
-		FemaleObstetricHistory res = femaleObstetricHistoryRepo.save(femaleObstetricHistory);
-		if(null != res && res.getObstetricHistoryID()>0){
+		ArrayList<FemaleObstetricHistory> FemaleObstetricHistorylist= wrapperFemaleObstetricHistory.getFemaleObstetricHistoryDetails();
+		ArrayList<FemaleObstetricHistory> res = (ArrayList<FemaleObstetricHistory>) femaleObstetricHistoryRepo.save(FemaleObstetricHistorylist);
+		if(null != res && res.size()>0){
 			r = 1;
 		}
 		return r;
@@ -907,7 +909,7 @@ public class ANCServiceImpl implements ANCService {
 	}
 	
 	@Override
-	public Integer saveChildVaccineDetail(WrapperChildVaccineDetail wrapperChildVaccineDetail) {
+	public Integer saveChildOptionalVaccineDetail(WrapperChildOptionalVaccineDetail wrapperChildVaccineDetail) {
 		Integer r = null;
 		
 		ArrayList<ChildOptionalVaccineDetail> res = (ArrayList<ChildOptionalVaccineDetail>) childOptionalVaccineDetailRepo.save(wrapperChildVaccineDetail.getChildOptionalVaccineList());
@@ -979,7 +981,7 @@ public class ANCServiceImpl implements ANCService {
 	public Integer saveANCImmunizationHistory(WrapperImmunizationHistory wrapperImmunizationHistory) {
 		Integer r = null;
 		
-		ArrayList<ChildVaccineDetail1> childVaccineDetails = wrapperImmunizationHistory.getBenChildVaccineDetailDetails();
+		ArrayList<ChildVaccineDetail1> childVaccineDetails = wrapperImmunizationHistory.getBenChildVaccineDetails();
 		ArrayList<ChildVaccineDetail1> res =  (ArrayList<ChildVaccineDetail1>) childVaccineDetail1Repo.save(childVaccineDetails);
 		if(null != res && res.size()>0){
 			r = res.size();

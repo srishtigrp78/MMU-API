@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
@@ -103,6 +104,10 @@ public class FemaleObstetricHistory {
 	@Expose
 	@Column(name = "CongenitalAnomalies")
 	private String congenitalAnomalies;
+
+	@Expose
+	@Column(name = "NewBornComplication")
+	private String newBornComplication;
 	
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -127,6 +132,79 @@ public class FemaleObstetricHistory {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
+
+	@Expose
+	@Transient
+	private String otherPregComplicationType;
+	
+	@Expose
+	@Transient
+	private String otherDeliveryPlace;
+	
+	@Expose
+	@Transient
+	private String otherDeliveryComplicationType;
+	
+	@Expose
+	@Transient
+	private String otherPostpartumComplicationType;
+	
+	@Expose
+	@Transient
+	private String otherPostNatalComplication;
+	
+	@Expose
+	@Transient
+	private String otherNewBornComplication;
+	
+	
+	public String getOtherPregComplicationType() {
+		return otherPregComplicationType;
+	}
+
+	public void setOtherPregComplicationType(String otherPregComplicationType) {
+		this.otherPregComplicationType = otherPregComplicationType;
+	}
+
+	public String getOtherDeliveryPlace() {
+		return otherDeliveryPlace;
+	}
+
+	public void setOtherDeliveryPlace(String otherDeliveryPlace) {
+		this.otherDeliveryPlace = otherDeliveryPlace;
+	}
+
+	public String getOtherDeliveryComplicationType() {
+		return otherDeliveryComplicationType;
+	}
+
+	public void setOtherDeliveryComplicationType(String otherDeliveryComplicationType) {
+		this.otherDeliveryComplicationType = otherDeliveryComplicationType;
+	}
+
+	public String getOtherPostpartumComplicationType() {
+		return otherPostpartumComplicationType;
+	}
+
+	public void setOtherPostpartumComplicationType(String otherPostpartumComplicationType) {
+		this.otherPostpartumComplicationType = otherPostpartumComplicationType;
+	}
+
+	public String getOtherPostNatalComplication() {
+		return otherPostNatalComplication;
+	}
+
+	public void setOtherPostNatalComplication(String otherPostNatalComplication) {
+		this.otherPostNatalComplication = otherPostNatalComplication;
+	}
+
+	public String getOtherNewBornComplication() {
+		return otherNewBornComplication;
+	}
+
+	public void setOtherNewBornComplication(String otherNewBornComplication) {
+		this.otherNewBornComplication = otherNewBornComplication;
+	}
 
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
@@ -346,6 +424,14 @@ public class FemaleObstetricHistory {
 
 	public Long getObstetricHistoryID() {
 		return obstetricHistoryID;
+	}
+	
+	public String getNewBornComplication() {
+		return newBornComplication;
+	}
+
+	public void setNewBornComplication(String newBornComplication) {
+		this.newBornComplication = newBornComplication;
 	}
 	
 }

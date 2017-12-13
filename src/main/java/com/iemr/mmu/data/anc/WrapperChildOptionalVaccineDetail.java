@@ -2,7 +2,7 @@ package com.iemr.mmu.data.anc;
 
 import java.util.ArrayList;
 
-public class WrapperChildVaccineDetail {
+public class WrapperChildOptionalVaccineDetail {
 
 	private ArrayList<ChildOptionalVaccineDetail> childOptionalVaccineList;
 

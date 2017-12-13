@@ -80,7 +80,7 @@ public class BenPersonalHabit {
 	@Expose
 	@Column(name = "AlcoholDuration")
 	private Timestamp alcoholDuration;
-	
+
 	@Expose
 	@Column(name = "RiskySexualPracticesStatus")
 	private Character riskySexualPracticesStatus;
@@ -335,9 +335,9 @@ public class BenPersonalHabit {
 			Map<String, String> tobaccoInfo=(Map<String, String>) tobaccoList.get(i);
 			String otherTypeOfTobacco=tobaccoInfo.get("otherTypeOfTobacco");
 			if(null != otherTypeOfTobacco){
-				benPersonalHabit.setTobaccoUseType(tobaccoInfo.get("typeOfTobacco") +"-"+otherTypeOfTobacco);
+				benPersonalHabit.setTobaccoUseType(tobaccoInfo.get("tobaccoUseType") +"-"+otherTypeOfTobacco);
 			}else{
-				benPersonalHabit.setTobaccoUseType(tobaccoInfo.get("typeOfTobacco"));
+				benPersonalHabit.setTobaccoUseType(tobaccoInfo.get("tobaccoUseType"));
 			}
 			benPersonalHabit.setNumberperDay(new Short(tobaccoInfo.get("quantityPerDay")));
 			
