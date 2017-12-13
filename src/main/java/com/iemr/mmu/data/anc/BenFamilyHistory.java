@@ -1,12 +1,16 @@
 package com.iemr.mmu.data.anc;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
@@ -75,7 +79,10 @@ public class BenFamilyHistory {
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
-	
+	@Transient
+	@Expose
+	private List<Map<String,Object>> familyDiseaseList;
+
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
@@ -188,8 +195,51 @@ public class BenFamilyHistory {
 		this.lastModDate = lastModDate;
 	}
 
+	public List<Map<String,Object>> getFamilyDiseaseList() {
+		return familyDiseaseList;
+	}
+
+	public void setFamilyDiseaseList(List<Map<String,Object>> familyDiseaseList) {
+		this.familyDiseaseList = familyDiseaseList;
+	}
+
 	public Long getID() {
 		return ID;
 	}
 	
+	public ArrayList<BenFamilyHistory> getBenFamilyHistory(){
+		
+			ArrayList<BenFamilyHistory> benFamilyHistoryList=new ArrayList<BenFamilyHistory>();
+			if(null != familyDiseaseList){
+				for(Map<String,Object> disease: familyDiseaseList){
+					BenFamilyHistory benFamilyHistory = new BenFamilyHistory();
+					benFamilyHistory.setBeneficiaryRegID(beneficiaryRegID);
+					benFamilyHistory.setBenVisitID(benVisitID);
+					benFamilyHistory.setProviderServiceMapID(providerServiceMapID);
+					benFamilyHistory.setCreatedBy(createdBy);
+								
+					benFamilyHistory.setGeneticDisorder(geneticDisorder);
+					benFamilyHistory.setIsGeneticDisorder(isGeneticDisorder);
+					benFamilyHistory.setIsConsanguineousMarrige(isConsanguineousMarrige);
+					
+					if(null != disease.get("diseaseType")){
+						if(null !=  disease.get("otherDiseaseType")){
+							benFamilyHistory.setDiseaseType(disease.get("diseaseType") +"-"+disease.get("otherDiseaseType"));
+						}else{
+							benFamilyHistory.setDiseaseType(disease.get("diseaseType").toString());
+						}
+					}
+					
+					List<String> familyMemberList = (List<String>) disease.get("familyMembers");
+					
+					String familyMembers = "";
+					for(String familyMember: familyMemberList){
+						familyMembers += familyMember +",";
+					}	
+					benFamilyHistory.setFamilyMember(familyMembers);
+					benFamilyHistoryList.add(benFamilyHistory);
+				}
+			}
+			return benFamilyHistoryList;
+	}
 }

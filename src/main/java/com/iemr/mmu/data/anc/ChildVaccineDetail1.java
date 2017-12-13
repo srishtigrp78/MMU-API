@@ -1,12 +1,14 @@
 package com.iemr.mmu.data.anc;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
@@ -83,5 +85,149 @@ public class ChildVaccineDetail1 {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
+
+	@Transient
+	@Expose
+	private List<String> vaccineNameList;
+	
+	public List<String> getVaccineNameList() {
+		return vaccineNameList;
+	}
+
+	public void setVaccineNameList(List<String> vaccineNameList) {
+		this.vaccineNameList = vaccineNameList;
+	}
+
+	public Long getBeneficiaryRegID() {
+		return beneficiaryRegID;
+	}
+
+	public void setBeneficiaryRegID(Long beneficiaryRegID) {
+		this.beneficiaryRegID = beneficiaryRegID;
+	}
+
+	public Long getBenVisitID() {
+		return benVisitID;
+	}
+
+	public void setBenVisitID(Long benVisitID) {
+		this.benVisitID = benVisitID;
+	}
+
+	public Integer getProviderServiceMapID() {
+		return providerServiceMapID;
+	}
+
+	public void setProviderServiceMapID(Integer providerServiceMapID) {
+		this.providerServiceMapID = providerServiceMapID;
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
+	}
+
+	public String getDefaultReceivingAge() {
+		return defaultReceivingAge;
+	}
+
+	public void setDefaultReceivingAge(String defaultReceivingAge) {
+		this.defaultReceivingAge = defaultReceivingAge;
+	}
+
+	public String getVaccineName() {
+		return vaccineName;
+	}
+
+	public void setVaccineName(String vaccineName) {
+		this.vaccineName = vaccineName;
+	}
+
+	public String getActualReceivingAge() {
+		return actualReceivingAge;
+	}
+
+	public void setActualReceivingAge(String actualReceivingAge) {
+		this.actualReceivingAge = actualReceivingAge;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Timestamp getReceivedDate() {
+		return receivedDate;
+	}
+
+	public void setReceivedDate(Timestamp receivedDate) {
+		this.receivedDate = receivedDate;
+	}
+
+	public String getReceivedFacilityName() {
+		return receivedFacilityName;
+	}
+
+	public void setReceivedFacilityName(String receivedFacilityName) {
+		this.receivedFacilityName = receivedFacilityName;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public String getProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(String processed) {
+		this.processed = processed;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Timestamp getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Timestamp createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Timestamp getLastModDate() {
+		return lastModDate;
+	}
+
+	public void setLastModDate(Timestamp lastModDate) {
+		this.lastModDate = lastModDate;
+	}
+
+	public Long getID() {
+		return ID;
+	}
 	
 }

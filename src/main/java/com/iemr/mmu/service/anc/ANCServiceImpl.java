@@ -15,12 +15,17 @@ import com.google.gson.Gson;
 import com.iemr.mmu.data.anc.ANCCareDetails;
 import com.iemr.mmu.data.anc.ANCWomenVaccineDetail;
 import com.iemr.mmu.data.anc.BenAdherence;
+import com.iemr.mmu.data.anc.BenAllergyHistory;
 import com.iemr.mmu.data.anc.BenChildDevelopmentHistory;
+import com.iemr.mmu.data.anc.BenFamilyHistory;
 import com.iemr.mmu.data.anc.BenMedHistory;
 import com.iemr.mmu.data.anc.BenMedicationHistory;
 import com.iemr.mmu.data.anc.BenMenstrualDetails;
+import com.iemr.mmu.data.anc.BenPersonalHabit;
 import com.iemr.mmu.data.anc.BencomrbidityCondDetails;
+import com.iemr.mmu.data.anc.ChildFeedingDetails;
 import com.iemr.mmu.data.anc.ChildOptionalVaccineDetail;
+import com.iemr.mmu.data.anc.ChildVaccineDetail1;
 import com.iemr.mmu.data.anc.FemaleObstetricHistory;
 import com.iemr.mmu.data.anc.PerinatalHistory;
 import com.iemr.mmu.data.anc.PhyGeneralExamination;
@@ -37,6 +42,7 @@ import com.iemr.mmu.data.anc.WrapperAncImmunization;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.anc.WrapperChildVaccineDetail;
 import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
+import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
@@ -46,12 +52,17 @@ import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.repo.nurse.anc.ANCCareRepo;
 import com.iemr.mmu.repo.nurse.anc.ANCWomenVaccineRepo;
 import com.iemr.mmu.repo.nurse.anc.BenAdherenceRepo;
+import com.iemr.mmu.repo.nurse.anc.BenAllergyHistoryRepo;
 import com.iemr.mmu.repo.nurse.anc.BenChildDevelopmentHistoryRepo;
+import com.iemr.mmu.repo.nurse.anc.BenFamilyHistoryRepo;
 import com.iemr.mmu.repo.nurse.anc.BenMedHistoryRepo;
 import com.iemr.mmu.repo.nurse.anc.BenMedicationHistoryRepo;
 import com.iemr.mmu.repo.nurse.anc.BenMenstrualDetailsRepo;
+import com.iemr.mmu.repo.nurse.anc.BenPersonalHabitRepo;
 import com.iemr.mmu.repo.nurse.anc.BencomrbidityCondRepo;
+import com.iemr.mmu.repo.nurse.anc.ChildFeedingDetailsRepo;
 import com.iemr.mmu.repo.nurse.anc.ChildOptionalVaccineDetailRepo;
+import com.iemr.mmu.repo.nurse.anc.ChildVaccineDetail1Repo;
 import com.iemr.mmu.repo.nurse.anc.FemaleObstetricHistoryRepo;
 import com.iemr.mmu.repo.nurse.anc.PerinatalHistoryRepo;
 import com.iemr.mmu.repo.nurse.anc.PhyGeneralExaminationRepo;
@@ -123,7 +134,11 @@ public class ANCServiceImpl implements ANCService {
 	private PerinatalHistoryRepo perinatalHistoryRepo;
 	private ChildOptionalVaccineDetailRepo childOptionalVaccineDetailRepo;
 	private BenChildDevelopmentHistoryRepo benChildDevelopmentHistoryRepo;
-	
+	private BenPersonalHabitRepo benPersonalHabitRepo;
+	private BenAllergyHistoryRepo benAllergyHistoryRepo;
+	private BenFamilyHistoryRepo benFamilyHistoryRepo;
+	private ChildFeedingDetailsRepo childFeedingDetailsRepo;
+	private ChildVaccineDetail1Repo childVaccineDetail1Repo;
 	@Autowired
 	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
 		this.nurseServiceImpl = nurseServiceImpl;
@@ -220,6 +235,41 @@ public class ANCServiceImpl implements ANCService {
 	@Autowired
 	public void setBenChildDevelopmentHistoryRepo(BenChildDevelopmentHistoryRepo benChildDevelopmentHistoryRepo) {
 		this.benChildDevelopmentHistoryRepo = benChildDevelopmentHistoryRepo;
+	}
+	
+	@Autowired
+	public void setBenPersonalHabitRepo(BenPersonalHabitRepo benPersonalHabitRepo) {
+		this.benPersonalHabitRepo = benPersonalHabitRepo;
+	}
+	
+	@Autowired
+	public void setFemaleObstetricHistoryRepo(FemaleObstetricHistoryRepo femaleObstetricHistoryRepo) {
+		this.femaleObstetricHistoryRepo = femaleObstetricHistoryRepo;
+	}
+	
+	@Autowired
+	public void setBenAllergyHistoryRepo(BenAllergyHistoryRepo benAllergyHistoryRepo) {
+		this.benAllergyHistoryRepo = benAllergyHistoryRepo;
+	}
+	
+	@Autowired
+	public void setChildOptionalVaccineDetailRepo(ChildOptionalVaccineDetailRepo childOptionalVaccineDetailRepo) {
+		this.childOptionalVaccineDetailRepo = childOptionalVaccineDetailRepo;
+	}
+	
+	@Autowired
+	public void setChildFeedingDetailsRepo(ChildFeedingDetailsRepo childFeedingDetailsRepo) {
+		this.childFeedingDetailsRepo = childFeedingDetailsRepo;
+	}
+	
+	@Autowired
+	public void setBenFamilyHistoryRepo(BenFamilyHistoryRepo benFamilyHistoryRepo) {
+		this.benFamilyHistoryRepo = benFamilyHistoryRepo;
+	}
+	
+	@Autowired
+	public void setChildVaccineDetail1Repo(ChildVaccineDetail1Repo childVaccineDetail1Repo) {
+		this.childVaccineDetail1Repo = childVaccineDetail1Repo;
 	}
 	
 	@Override
@@ -875,6 +925,64 @@ public class ANCServiceImpl implements ANCService {
 		BenChildDevelopmentHistory res = benChildDevelopmentHistoryRepo.save(childDevelopmentHistory);
 		if(null != res && res.getID()>0){
 			r = 1;
+		}
+		return r;
+	}
+	
+	@Override
+	public Integer saveANCPersonalHistory(BenPersonalHabit benPersonalHabit) {
+		Integer r = null;
+		
+		ArrayList<BenPersonalHabit> personalHabits = benPersonalHabit.getPersonalHistory();
+		ArrayList<BenPersonalHabit> res = (ArrayList<BenPersonalHabit>) benPersonalHabitRepo.save(personalHabits);
+		if(null != res && res.size()>0){
+			r = res.size();
+		}
+		return r;
+	}
+	
+	@Override
+	public Integer saveANCAllergyHistory(BenAllergyHistory benAllergyHistory) {
+		Integer r = null;
+		
+		ArrayList<BenAllergyHistory> allergyList = benAllergyHistory.getBenAllergicHistory();
+		ArrayList<BenAllergyHistory> res = (ArrayList<BenAllergyHistory>) benAllergyHistoryRepo.save(allergyList);
+		if(null != res && res.size()>0){
+			r = res.size();
+		}
+		return r;
+	}
+	
+	@Override
+	public Integer saveANCBenFamilyHistory(BenFamilyHistory benFamilyHistory) {
+		Integer r = null;
+		
+		ArrayList<BenFamilyHistory> familyHistoryList = benFamilyHistory.getBenFamilyHistory();
+		ArrayList<BenFamilyHistory> res = (ArrayList<BenFamilyHistory>) benFamilyHistoryRepo.save(familyHistoryList);
+		if(null != res && res.size()>0){
+			r = res.size();
+		}
+		return r;
+	}
+	
+	@Override
+	public Integer saveChildFeedingHistory(ChildFeedingDetails childFeedingDetails) {
+		Integer r = null;
+		ChildFeedingDetails res = childFeedingDetailsRepo.save(childFeedingDetails);
+		if(null != res && res.getID()>0){
+			r = 1;
+		}
+		return r;
+	}
+	
+	@Override
+	public Integer saveANCImmunizationHistory(WrapperImmunizationHistory wrapperImmunizationHistory) {
+		Integer r = null;
+		
+		ArrayList<ChildVaccineDetail1> childVaccineDetails = wrapperImmunizationHistory.getBenChildVaccineDetailDetails();
+		ArrayList<ChildVaccineDetail1> res =  (ArrayList<ChildVaccineDetail1>) childVaccineDetail1Repo.save(childVaccineDetails);
+		if(null != res && res.size()>0){
+			r = res.size();
 		}
 		return r;
 	}

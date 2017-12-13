@@ -6,10 +6,14 @@ import java.util.List;
 import com.iemr.mmu.data.anc.ANCCareDetails;
 import com.iemr.mmu.data.anc.ANCWomenVaccineDetail;
 import com.iemr.mmu.data.anc.BenAdherence;
+import com.iemr.mmu.data.anc.BenAllergyHistory;
 import com.iemr.mmu.data.anc.BenChildDevelopmentHistory;
+import com.iemr.mmu.data.anc.BenFamilyHistory;
 import com.iemr.mmu.data.anc.BenMedHistory;
 import com.iemr.mmu.data.anc.BenMenstrualDetails;
+import com.iemr.mmu.data.anc.BenPersonalHabit;
 import com.iemr.mmu.data.anc.BencomrbidityCondDetails;
+import com.iemr.mmu.data.anc.ChildFeedingDetails;
 import com.iemr.mmu.data.anc.ChildOptionalVaccineDetail;
 import com.iemr.mmu.data.anc.FemaleObstetricHistory;
 import com.iemr.mmu.data.anc.PerinatalHistory;
@@ -27,6 +31,7 @@ import com.iemr.mmu.data.anc.WrapperAncImmunization;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.anc.WrapperChildVaccineDetail;
 import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
+import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
@@ -100,4 +105,14 @@ public interface ANCService {
 	public Integer saveChildVaccineDetail(WrapperChildVaccineDetail wrapperChildVaccineDetail);
 
 	public Integer saveChildDevelopmentHistory(BenChildDevelopmentHistory benChildDevelopmentHistory);
+
+	public Integer saveANCPersonalHistory(BenPersonalHabit benPersonalHabit);
+
+	public Integer saveANCAllergyHistory(BenAllergyHistory benAllergyHistory);
+
+	public Integer saveANCBenFamilyHistory(BenFamilyHistory benFamilyHistory);
+
+	public Integer saveChildFeedingHistory(ChildFeedingDetails childFeedingDetails);
+
+	public Integer saveANCImmunizationHistory(WrapperImmunizationHistory wrapperImmunizationHistory);
 }

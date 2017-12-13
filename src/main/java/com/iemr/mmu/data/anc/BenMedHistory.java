@@ -261,7 +261,7 @@ public class BenMedHistory {
 			
 			String timePeriodUnit = (String) illness.get("timePeriodUnit");
 			Integer timePeriodAgo = 0;
-			if(null != pastIllness.get(i).get("timePeriodAgo")){
+			if(null != illness.get("timePeriodAgo")){
 				timePeriodAgo =  Integer.parseInt(illness.get("timePeriodAgo").toString());
 			}
 			benMedHistory.setYearofIllness(convertToDateFormat(timePeriodUnit, timePeriodAgo));
@@ -283,7 +283,7 @@ public class BenMedHistory {
 			
 			String surgeryTimePeriodUnit = (String) surgery.get("timePeriodUnit");
 			Integer surgeryTimePeriodAgo = 0;
-			if(null != pastSurgery.get(i).get("timePeriodAgo")){
+			if(null != surgery.get("timePeriodAgo")){
 				surgeryTimePeriodAgo =  Integer.parseInt(surgery.get("timePeriodAgo").toString());
 			}
 			benMedHistory.setYearofSurgery(convertToDateFormat(surgeryTimePeriodUnit, surgeryTimePeriodAgo));
