@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.service.anc.Utility;
 
 @Entity
 @Table(name = "t_BenMedHistory")
@@ -50,6 +51,10 @@ public class BenMedHistory {
 	private String illnessType;
 	
 	@Expose
+	@Column(name = "OtherIllnessType")
+	private String otherIllnessType;
+	
+	@Expose
 	@Column(name = "SurgeryID")
 	private Integer surgeryID;
 	
@@ -60,6 +65,10 @@ public class BenMedHistory {
 	@Expose
 	@Column(name = "YearofSurgery")
 	private Timestamp yearofSurgery;
+	
+	@Expose
+	@Column(name = "OtrherSurgeryType")
+	private String otrherSurgeryType;
 	
 	@Expose
 	@Column(name = "DrugComplianceID")
@@ -221,6 +230,22 @@ public class BenMedHistory {
 		return benMedHistoryID;
 	}
 	
+	public String getOtherIllnessType() {
+		return otherIllnessType;
+	}
+
+	public void setOtherIllnessType(String otherIllnessType) {
+		this.otherIllnessType = otherIllnessType;
+	}
+
+	public String getOtrherSurgeryType() {
+		return otrherSurgeryType;
+	}
+
+	public void setOtrherSurgeryType(String otrherSurgeryType) {
+		this.otrherSurgeryType = otrherSurgeryType;
+	}
+	
 	@Transient
 	@Expose
 	private ArrayList<Map<String,Object>> pastIllness;
@@ -249,13 +274,11 @@ public class BenMedHistory {
 				if(null != illness.get("illnessID")){
 					benMedHistory.setIllnessTypeID(Integer.parseInt(illness.get("illnessID").toString()));
 				}
-				String otherIllnessType = (String) illness.get("otherIllnessType");
 				if(null != illness.get("illnessType")){
-					if(null != otherIllnessType){
-						benMedHistory.setIllnessType(illness.get("illnessType")+" - "+otherIllnessType);
-					}else{
-						benMedHistory.setIllnessType(illness.get("illnessType").toString());
-					}
+					benMedHistory.setIllnessType(illness.get("illnessType").toString());
+				}
+				if(null != illness.get("otherIllnessType")){
+					benMedHistory.setOtherIllnessType(illness.get("otherIllnessType").toString());
 				}
 			}
 			
@@ -264,20 +287,18 @@ public class BenMedHistory {
 			if(null != illness.get("timePeriodAgo")){
 				timePeriodAgo =  Integer.parseInt(illness.get("timePeriodAgo").toString());
 			}
-			benMedHistory.setYearofIllness(convertToDateFormat(timePeriodUnit, timePeriodAgo));
+			benMedHistory.setYearofIllness(Utility.convertToDateFormat(timePeriodUnit, timePeriodAgo));
 			
 			Map<String,Object> surgery=(Map<String, Object>) pastSurgery.get(i);
 			if(null != surgery){
 				if(null != surgery.get("surgeryID")){
 					benMedHistory.setSurgeryID(Integer.parseInt(surgery.get("surgeryID").toString()));
 				}
-				String otherSurgeryType = (String) surgery.get("otherSurgeryType");
 				if(null != surgery.get("surgeryType")){
-					if(null != otherSurgeryType){
-						benMedHistory.setSurgeryType(surgery.get("surgeryType").toString()+" - "+otherSurgeryType);
-					}else{
-						benMedHistory.setSurgeryType(surgery.get("surgeryType").toString());
-					}
+					benMedHistory.setSurgeryType(surgery.get("surgeryType").toString());
+				}
+				if(null != surgery.get("otherSurgeryType")){
+					benMedHistory.setOtrherSurgeryType(surgery.get("otherSurgeryType").toString());
 				}
 			}
 			
@@ -286,28 +307,12 @@ public class BenMedHistory {
 			if(null != surgery.get("timePeriodAgo")){
 				surgeryTimePeriodAgo =  Integer.parseInt(surgery.get("timePeriodAgo").toString());
 			}
-			benMedHistory.setYearofSurgery(convertToDateFormat(surgeryTimePeriodUnit, surgeryTimePeriodAgo));
+			benMedHistory.setYearofSurgery(Utility.convertToDateFormat(surgeryTimePeriodUnit, surgeryTimePeriodAgo));
 			
 			medHistoryList.add(benMedHistory);
 		}
 
 		return medHistoryList;
-	}
-	
-	public Timestamp convertToDateFormat(String timePeriodUnit, Integer timePeriodAgo){
-		
-		Calendar cal = Calendar.getInstance();
-		if(timePeriodUnit.equals("Years")){
-			cal.add(Calendar.YEAR, -timePeriodAgo);
-		}else if(timePeriodUnit.equals("Months")){
-			cal.add(Calendar.MONTH, -timePeriodAgo);
-		}else if(timePeriodUnit.equals("Weeks")){
-			cal.add(Calendar.DATE, -(7*timePeriodAgo));
-		}else if(timePeriodUnit.equals("Days")){
-			cal.add(Calendar.DATE, -timePeriodAgo);
-		}
-		
-		return new Timestamp(cal.getTimeInMillis());
 	}
 	
 }

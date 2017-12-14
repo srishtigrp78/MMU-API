@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.service.anc.Utility;
 
 @Entity
 @Table(name = "t_BenPersonalHabit")
@@ -331,60 +332,51 @@ public class BenPersonalHabit {
 			benPersonalHabit.setAlcoholIntakeStatus(alcoholIntakeStatus);
 			
 			
-//			 [ { "typeOfTobacco": null, "otherTypeOfTobacco": null, "quantityPerDay": null, "duration": null, "durationUnit": null } 
-			Map<String, String> tobaccoInfo=(Map<String, String>) tobaccoList.get(i);
-			String otherTypeOfTobacco=tobaccoInfo.get("otherTypeOfTobacco");
-			if(null != otherTypeOfTobacco){
-				benPersonalHabit.setTobaccoUseType(tobaccoInfo.get("tobaccoUseType") +"-"+otherTypeOfTobacco);
-			}else{
-				benPersonalHabit.setTobaccoUseType(tobaccoInfo.get("tobaccoUseType"));
-			}
-			benPersonalHabit.setNumberperDay(new Short(tobaccoInfo.get("quantityPerDay")));
-			
-			String timePeriodUnit = (String) tobaccoInfo.get("durationUnit");
+			String timePeriodUnit = "";
 			Integer timePeriodAgo = 0;
-			if(null != tobaccoInfo.get("duration")){
-				timePeriodAgo =  Integer.parseInt(tobaccoInfo.get("duration").toString());
-			}
-			benPersonalHabit.setTobaccoUseDuration(convertToDateFormat(timePeriodUnit, timePeriodAgo));
 			
+//			 [ { "typeOfTobacco": null, "otherTypeOfTobacco": null, "quantityPerDay": null, "duration": null, "durationUnit": null } 
+			if(tobaccoList.size()>i){
+				Map<String, String> tobaccoInfo=(Map<String, String>) tobaccoList.get(i);
+				String otherTypeOfTobacco=tobaccoInfo.get("otherTypeOfTobacco");
+				if(null != otherTypeOfTobacco){
+					benPersonalHabit.setTobaccoUseType(tobaccoInfo.get("tobaccoUseType") +"-"+otherTypeOfTobacco);
+				}else{
+					benPersonalHabit.setTobaccoUseType(tobaccoInfo.get("tobaccoUseType"));
+				}
+				if(null != tobaccoInfo.get("numberperDay")){
+					benPersonalHabit.setNumberperDay(new Short(tobaccoInfo.get("numberperDay")));
+				}
+				timePeriodUnit = (String) tobaccoInfo.get("durationUnit");
+
+				if(null != tobaccoInfo.get("duration")){
+					timePeriodAgo =  Integer.parseInt(tobaccoInfo.get("duration").toString());
+				}
+				benPersonalHabit.setTobaccoUseDuration(Utility.convertToDateFormat(timePeriodUnit, timePeriodAgo));
+			}
 //			[ { "typeOfAlcohol": null, "otherTypeOfAlcohol": null, "frequencyOfAlcoholIntake": null, "averageQuantityOfAlcoholConsumption": null, "duration": null, "durationUnit": null } ],
 			
-			Map<String, String> alcoholInfo=(Map<String, String>) alcoholList.get(i);
-			String otherTypeOfAlcohol=alcoholInfo.get("otherTypeOfAlcohol");
-			if(null != otherTypeOfAlcohol){
-				benPersonalHabit.setAlcoholType(alcoholInfo.get("typeOfAlcohol")+"-"+otherTypeOfAlcohol);
-			}else{
-				benPersonalHabit.setAlcoholType(alcoholInfo.get("typeOfAlcohol"));
+			if(alcoholList.size()>i){
+				Map<String, String> alcoholInfo=(Map<String, String>) alcoholList.get(i);
+				String otherTypeOfAlcohol=alcoholInfo.get("otherTypeOfAlcohol");
+				if(null != otherTypeOfAlcohol){
+					benPersonalHabit.setAlcoholType(alcoholInfo.get("typeOfAlcohol")+"-"+otherTypeOfAlcohol);
+				}else{
+					benPersonalHabit.setAlcoholType(alcoholInfo.get("typeOfAlcohol"));
+				}
+				benPersonalHabit.setAlcoholIntakeFrequency(alcoholInfo.get("alcoholIntakeFrequency"));
+				benPersonalHabit.setAvgAlcoholConsumption(alcoholInfo.get("avgAlcoholConsumption"));
+				
+				String durationUnit = (String) alcoholInfo.get("durationUnit");
+				Integer duration = 0;
+				if(null != alcoholInfo.get("duration")){
+					duration =  Integer.parseInt(alcoholInfo.get("duration").toString());
+				}
+				benPersonalHabit.setAlcoholDuration(Utility.convertToDateFormat(timePeriodUnit, timePeriodAgo));
 			}
-			benPersonalHabit.setAlcoholIntakeFrequency(alcoholInfo.get("frequencyOfAlcoholIntake"));
-			benPersonalHabit.setAvgAlcoholConsumption(alcoholInfo.get("averageQuantityOfAlcoholConsumption"));
-			
-			String durationUnit = (String) alcoholInfo.get("durationUnit");
-			Integer duration = 0;
-			if(null != alcoholInfo.get("duration")){
-				duration =  Integer.parseInt(alcoholInfo.get("duration").toString());
-			}
-			benPersonalHabit.setAlcoholDuration(convertToDateFormat(timePeriodUnit, timePeriodAgo));
-			
 			personalHabitList.add(benPersonalHabit);
 		}
 		return personalHabitList;
 	}
 	
-	public Timestamp convertToDateFormat(String timePeriodUnit, Integer timePeriodAgo){
-		
-		Calendar cal = Calendar.getInstance();
-		if(timePeriodUnit.equals("Years")){
-			cal.add(Calendar.YEAR, -timePeriodAgo);
-		}else if(timePeriodUnit.equals("Months")){
-			cal.add(Calendar.MONTH, -timePeriodAgo);
-		}else if(timePeriodUnit.equals("Weeks")){
-			cal.add(Calendar.DATE, -(7*timePeriodAgo));
-		}else if(timePeriodUnit.equals("Days")){
-			cal.add(Calendar.DATE, -timePeriodAgo);
-		}
-		
-		return new Timestamp(cal.getTimeInMillis());
-	}
 }

@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import com.iemr.mmu.service.anc.Utility;
+
 public class WrapperMedicationHistory {
 	
 	private Long beneficiaryRegID;
@@ -31,27 +33,9 @@ public class WrapperMedicationHistory {
 			medicationHistory.setProviderServiceMapID(providerServiceMapID);
 			medicationHistory.setCreatedBy(createdBy);
 			
-			medicationHistory.setYear(convertToDateFormat(timePeriodUnit, timePeriodAgo));
+			medicationHistory.setYear(Utility.convertToDateFormat(timePeriodUnit, timePeriodAgo));
 		}
 		return medicationHistoryList;
-	}
-	
-	public Timestamp convertToDateFormat(String timePeriodUnit, Integer timePeriodAgo){
-		
-		Calendar cal = Calendar.getInstance();
-		if(null != timePeriodUnit && null != timePeriodAgo){
-			if(timePeriodUnit.equals("Years")){
-				cal.add(Calendar.YEAR, -timePeriodAgo);
-			}else if(timePeriodUnit.equals("Months")){
-				cal.add(Calendar.MONTH, -timePeriodAgo);
-			}else if(timePeriodUnit.equals("Weeks")){
-				cal.add(Calendar.DATE, -(7*timePeriodAgo));
-			}else if(timePeriodUnit.equals("Days")){
-				cal.add(Calendar.DATE, -timePeriodAgo);
-			}
-		}
-		
-		return new Timestamp(cal.getTimeInMillis());
 	}
 	
 }

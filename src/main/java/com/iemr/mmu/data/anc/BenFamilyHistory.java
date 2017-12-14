@@ -233,9 +233,11 @@ public class BenFamilyHistory {
 					List<String> familyMemberList = (List<String>) disease.get("familyMembers");
 					
 					String familyMembers = "";
-					for(String familyMember: familyMemberList){
-						familyMembers += familyMember +",";
-					}	
+					if(null != familyMemberList){
+						for(String familyMember: familyMemberList){
+							familyMembers += familyMember +",";
+						}	
+					}
 					benFamilyHistory.setFamilyMember(familyMembers);
 					benFamilyHistoryList.add(benFamilyHistory);
 				}

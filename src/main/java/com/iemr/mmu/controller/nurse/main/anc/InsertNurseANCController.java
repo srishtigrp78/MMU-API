@@ -470,7 +470,7 @@ public class InsertNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Past History.");
+			logger.error("Error while storing Beneficiary ANC Past History."+e);
 		}
 		return response.toString();
 	}
@@ -501,7 +501,7 @@ public class InsertNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Comorbid Conditions.");
+			logger.error("Error while storing Beneficiary ANC Comorbid Conditions."+e);
 		}
 		return response.toString();
 	}
@@ -529,7 +529,7 @@ public class InsertNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Medication History.");
+			logger.error("Error while storing Beneficiary ANC Medication History."+e);
 		}
 		return response.toString();
 	}
@@ -555,7 +555,7 @@ public class InsertNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Menstrual Details.");
+			logger.error("Error while storing Beneficiary ANC Menstrual Details."+e);
 		}
 		return response.toString();
 	}
@@ -571,17 +571,21 @@ public class InsertNurseANCController {
 				WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory = InputMapper.gson().fromJson(requestObj,
 						WrapperFemaleObstetricHistory.class);
 
-				int r = ancServiceImpl.saveFemaleObstetricHistory(wrapperFemaleObstetricHistory);
-				if (r > 0) {
-					response.setResponse("Beneficairy ANC Female Obstetric History saved successfully");
-				} else {
-					response.setError(5000, "Something went wrong");
+				if(wrapperFemaleObstetricHistory.getFemaleObstetricHistoryList().size()>0){
+					int r = ancServiceImpl.saveFemaleObstetricHistory(wrapperFemaleObstetricHistory);
+					if (r > 0) {
+						response.setResponse("Beneficairy ANC Female Obstetric History saved successfully");
+					} else {
+						response.setError(5000, "Something went wrong");
+					}
+					logger.info("saveFemaleObstetricHistory response:" + response);
+				}else{
+					response.setResponse("Female Obstetric Details not provided.");
 				}
-				logger.info("saveFemaleObstetricHistory response:" + response);
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Female Obstetric History Details.");
+			logger.error("Error while storing Beneficiary ANC Female Obstetric History Details."+e);
 		}
 		return response.toString();
 	}
@@ -607,7 +611,7 @@ public class InsertNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Perinatal History Details.");
+			logger.error("Error while storing Beneficiary ANC Perinatal History Details."+e);
 		}
 		return response.toString();
 	}
@@ -622,18 +626,21 @@ public class InsertNurseANCController {
 			if (requestObj != null) {
 				WrapperChildOptionalVaccineDetail wrapperChildVaccineDetail = InputMapper.gson().fromJson(requestObj,
 						WrapperChildOptionalVaccineDetail.class);
-
-				int r = ancServiceImpl.saveChildOptionalVaccineDetail(wrapperChildVaccineDetail);
-				if (r > 0) {
-					response.setResponse("Beneficairy ANC Child Vaccine Details saved successfully");
-				} else {
-					response.setError(5000, "Something went wrong");
+				if(null != wrapperChildVaccineDetail.getChildOptionalVaccineList()){
+					int r = ancServiceImpl.saveChildOptionalVaccineDetail(wrapperChildVaccineDetail);
+					if (r > 0) {
+						response.setResponse("Beneficairy ANC Child Vaccine Details saved successfully");
+					} else {
+						response.setError(5000, "Something went wrong");
+					}
+					logger.info("saveANCChildVaccineDetails response:" + response);
+				}else{
+					response.setResponse("Child Optional Vaccine Detail not provided.");
 				}
-				logger.info("saveANCChildVaccineDetails response:" + response);
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Child Vaccine Details.");
+			logger.error("Error while storing Beneficiary ANC Child Vaccine Details."+e);
 		}
 		return response.toString();
 	}
@@ -659,7 +666,7 @@ public class InsertNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Child Development History Details.");
+			logger.error("Error while storing Beneficiary ANC Child Development History Details."+e);
 		}
 		return response.toString();
 	}
@@ -680,7 +687,7 @@ public class InsertNurseANCController {
 
 				int r = ancServiceImpl.saveANCPersonalHistory(personalHabit);
 				int s= ancServiceImpl.saveANCAllergyHistory(benAllergyHistory);
-				if ( s > 0) {
+				if ( r > 0 && s > 0) {
 					response.setResponse("Beneficairy ANC Personal History Details saved successfully");
 				} else {
 					response.setError(5000, "Something went wrong");
@@ -689,7 +696,7 @@ public class InsertNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Personal History Details.");
+			logger.error("Error while storing Beneficiary ANC Personal History Details."+e);
 		}
 		return response.toString();
 	}
@@ -715,7 +722,7 @@ public class InsertNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Family History Details.");
+			logger.error("Error while storing Beneficiary ANC Family History Details."+e);
 		}
 		return response.toString();
 	}
@@ -741,7 +748,7 @@ public class InsertNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Child Feeding History Details.");
+			logger.error("Error while storing Beneficiary ANC Child Feeding History Details."+e);
 		}
 		return response.toString();
 	}
@@ -767,7 +774,7 @@ public class InsertNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Immunization History Details.");
+			logger.error("Error while storing Beneficiary ANC Immunization History Details."+e);
 		}
 		return response.toString();
 	}

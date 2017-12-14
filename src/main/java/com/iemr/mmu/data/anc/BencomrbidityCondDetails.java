@@ -47,9 +47,13 @@ public class BencomrbidityCondDetails {
 	@Column(name = "Year")
 	private Timestamp year;
 	
-	@Transient
 	@Expose
-	private String otherComorbidConditions;
+	@Column(name = "OtherComorbidCondition")
+	private String otherComorbidCondition;
+	
+	@Expose
+	@Column(name = "IsForHistory")
+	private Boolean isForHistory;
 	
 	@Transient
 	@Expose 
@@ -226,31 +230,22 @@ public class BencomrbidityCondDetails {
 		this.timePeriodUnit = timePeriodUnit;
 	}
 
-	public String getOtherComorbidConditions() {
-		return otherComorbidConditions;
+
+	public String getOtherComorbidCondition() {
+		return otherComorbidCondition;
 	}
 
 
-	public void setOtherComorbidConditions(String otherComorbidConditions) {
-		this.otherComorbidConditions = otherComorbidConditions;
+	public void setOtherComorbidCondition(String otherComorbidCondition) {
+		this.otherComorbidCondition = otherComorbidCondition;
 	}
 
+	public Boolean getIsForHistory() {
+		return isForHistory;
+	}
 
-//	public ArrayList<BencomrbidityCondDetails> getBenComorbidConditions() {
-//		
-//		ArrayList<BencomrbidityCondDetails> BencomrbidityCondDetailsList=new ArrayList<BencomrbidityCondDetails>();
-//		for(Map<String,Object> comorbidityConcurrentCondition: comorbidityConcurrentConditionsList){
-//			BencomrbidityCondDetails condn= new BencomrbidityCondDetails();
-//			condn.setBeneficiaryRegID(beneficiaryRegID);
-//			condn.setBenVisitID(benVisitID);
-//			condn.setProviderServiceMapID(providerServiceMapID);
-//			condn.setComorbidConditionID((Short)comorbidityConcurrentCondition.get("comorbidConditionID"));
-//			condn.setComorbidCondition(comorbidityConcurrentCondition.get("comorbidCondition").toString());
-//			condn.setCreatedBy(createdBy);
-//			condn.setYear(year);
-//			
-//			BencomrbidityCondDetailsList.add(condn);
-//		}
-//		return BencomrbidityCondDetailsList;
-//	}
+	public void setIsForHistory(Boolean isForHistory) {
+		this.isForHistory = isForHistory;
+	}
+	
 }

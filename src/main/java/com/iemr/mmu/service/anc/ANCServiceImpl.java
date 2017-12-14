@@ -831,7 +831,7 @@ public class ANCServiceImpl implements ANCService {
 
 	@Override
 	public Integer saveBenANCPrescription(List<PrescribedDrugDetail> prescribedDrugDetailList) {
-		Integer r = null;
+		Integer r = 0;
 		List<PrescribedDrugDetail> prescribedDrugDetailListRS = (List<PrescribedDrugDetail>) prescribedDrugDetailRepo
 				.save(prescribedDrugDetailList);
 		if (prescribedDrugDetailList.size() > 0 && prescribedDrugDetailListRS != null
@@ -843,7 +843,7 @@ public class ANCServiceImpl implements ANCService {
 	
 	@Override
 	public Integer saveBenANCPastHistory(BenMedHistory benMedHistory) {
-		Integer r = null;
+		Integer r = 0;
 		ArrayList<BenMedHistory> benMedHistoryList = benMedHistory.getBenPastHistory();
 		ArrayList<BenMedHistory> res = (ArrayList<BenMedHistory>) benMedHistoryRepo.save(benMedHistoryList);
 		if(null != res && res.size()>0){
@@ -854,7 +854,7 @@ public class ANCServiceImpl implements ANCService {
 	
 	@Override
 	public Integer saveBenANCComorbidConditions(WrapperComorbidCondDetails wrapperComorbidCondDetails) {
-		Integer r = null;
+		Integer r = 0;
 		ArrayList<BencomrbidityCondDetails> bencomrbidityCondDetailsList = wrapperComorbidCondDetails.getComrbidityConds();
 		ArrayList<BencomrbidityCondDetails> res = (ArrayList<BencomrbidityCondDetails>) bencomrbidityCondRepo.save(bencomrbidityCondDetailsList);
 		if(null != res && res.size()>0){
@@ -865,7 +865,7 @@ public class ANCServiceImpl implements ANCService {
 	
 	@Override
 	public Integer saveBenANCMedicationHistory(WrapperMedicationHistory wrapperMedicationHistory) {
-		Integer r = null;
+		Integer r = 0;
 		ArrayList<BenMedicationHistory> benMedicationHistoryList = wrapperMedicationHistory.getBenMedicationHistoryDetails();
 		ArrayList<BenMedicationHistory> res = (ArrayList<BenMedicationHistory>) benMedicationHistoryRepo.save(benMedicationHistoryList);
 		if(null != res && res.size()>0){
@@ -876,7 +876,7 @@ public class ANCServiceImpl implements ANCService {
 	
 	@Override
 	public Integer saveBenANCMenstrualHistory(BenMenstrualDetails benMenstrualDetails) {
-		Integer r = null;
+		Integer r = 0;
 		
 		BenMenstrualDetails res = benMenstrualDetailsRepo.save(benMenstrualDetails);
 		if(null != res && res.getBenMenstrualID()>0){
@@ -887,7 +887,7 @@ public class ANCServiceImpl implements ANCService {
 	
 	@Override
 	public Integer saveFemaleObstetricHistory(WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory) {
-		Integer r = null;
+		Integer r = 0;
 		
 		ArrayList<FemaleObstetricHistory> FemaleObstetricHistorylist= wrapperFemaleObstetricHistory.getFemaleObstetricHistoryDetails();
 		ArrayList<FemaleObstetricHistory> res = (ArrayList<FemaleObstetricHistory>) femaleObstetricHistoryRepo.save(FemaleObstetricHistorylist);
@@ -899,7 +899,7 @@ public class ANCServiceImpl implements ANCService {
 	
 	@Override
 	public Integer savePerinatalHistory(PerinatalHistory perinatalHistory) {
-		Integer r = null;
+		Integer r = 0;
 		
 		PerinatalHistory res = perinatalHistoryRepo.save(perinatalHistory);
 		if(null != res && res.getID()>0){
@@ -910,9 +910,9 @@ public class ANCServiceImpl implements ANCService {
 	
 	@Override
 	public Integer saveChildOptionalVaccineDetail(WrapperChildOptionalVaccineDetail wrapperChildVaccineDetail) {
-		Integer r = null;
-		
-		ArrayList<ChildOptionalVaccineDetail> res = (ArrayList<ChildOptionalVaccineDetail>) childOptionalVaccineDetailRepo.save(wrapperChildVaccineDetail.getChildOptionalVaccineList());
+		Integer r = 0;
+		ArrayList<ChildOptionalVaccineDetail> childOptionalVaccineDetails  = wrapperChildVaccineDetail.getChildOptionalVaccineDetails();
+		ArrayList<ChildOptionalVaccineDetail> res = (ArrayList<ChildOptionalVaccineDetail>) childOptionalVaccineDetailRepo.save(childOptionalVaccineDetails);
 		if(null != res && res.size()>0){
 			r = 1;
 		}
@@ -921,7 +921,7 @@ public class ANCServiceImpl implements ANCService {
 	
 	@Override
 	public Integer saveChildDevelopmentHistory(BenChildDevelopmentHistory benChildDevelopmentHistory) {
-		Integer r = null;
+		Integer r = 0;
 		
 		BenChildDevelopmentHistory childDevelopmentHistory = BenChildDevelopmentHistory.getDevelopmentHistory(benChildDevelopmentHistory);
 		BenChildDevelopmentHistory res = benChildDevelopmentHistoryRepo.save(childDevelopmentHistory);
@@ -933,7 +933,7 @@ public class ANCServiceImpl implements ANCService {
 	
 	@Override
 	public Integer saveANCPersonalHistory(BenPersonalHabit benPersonalHabit) {
-		Integer r = null;
+		Integer r = 0;
 		
 		ArrayList<BenPersonalHabit> personalHabits = benPersonalHabit.getPersonalHistory();
 		ArrayList<BenPersonalHabit> res = (ArrayList<BenPersonalHabit>) benPersonalHabitRepo.save(personalHabits);
@@ -945,7 +945,7 @@ public class ANCServiceImpl implements ANCService {
 	
 	@Override
 	public Integer saveANCAllergyHistory(BenAllergyHistory benAllergyHistory) {
-		Integer r = null;
+		Integer r = 0;
 		
 		ArrayList<BenAllergyHistory> allergyList = benAllergyHistory.getBenAllergicHistory();
 		ArrayList<BenAllergyHistory> res = (ArrayList<BenAllergyHistory>) benAllergyHistoryRepo.save(allergyList);
@@ -957,7 +957,7 @@ public class ANCServiceImpl implements ANCService {
 	
 	@Override
 	public Integer saveANCBenFamilyHistory(BenFamilyHistory benFamilyHistory) {
-		Integer r = null;
+		Integer r = 0;
 		
 		ArrayList<BenFamilyHistory> familyHistoryList = benFamilyHistory.getBenFamilyHistory();
 		ArrayList<BenFamilyHistory> res = (ArrayList<BenFamilyHistory>) benFamilyHistoryRepo.save(familyHistoryList);
@@ -969,7 +969,7 @@ public class ANCServiceImpl implements ANCService {
 	
 	@Override
 	public Integer saveChildFeedingHistory(ChildFeedingDetails childFeedingDetails) {
-		Integer r = null;
+		Integer r = 0;
 		ChildFeedingDetails res = childFeedingDetailsRepo.save(childFeedingDetails);
 		if(null != res && res.getID()>0){
 			r = 1;
@@ -979,7 +979,7 @@ public class ANCServiceImpl implements ANCService {
 	
 	@Override
 	public Integer saveANCImmunizationHistory(WrapperImmunizationHistory wrapperImmunizationHistory) {
-		Integer r = null;
+		Integer r = 0;
 		
 		ArrayList<ChildVaccineDetail1> childVaccineDetails = wrapperImmunizationHistory.getBenChildVaccineDetails();
 		ArrayList<ChildVaccineDetail1> res =  (ArrayList<ChildVaccineDetail1>) childVaccineDetail1Repo.save(childVaccineDetails);

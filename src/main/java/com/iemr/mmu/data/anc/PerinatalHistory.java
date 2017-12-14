@@ -32,16 +32,36 @@ public class PerinatalHistory {
 	private Integer providerServiceMapID;
 	
 	@Expose
+	@Column(name = "DeliveryPlaceID")
+	private Short deliveryPlaceID;
+	
+	@Expose
 	@Column(name = "PlaceOfDelivery")
 	private String placeOfDelivery;
+	
+	@Expose
+	@Column(name = "OtherPlaceOfDelivery")
+	private String otherPlaceOfDelivery;
+	
+	@Expose
+	@Column(name = "DeliveryTypeID")
+	private Short deliveryTypeID;
 	
 	@Expose
 	@Column(name = "TypeOfDelivery")
 	private String typeOfDelivery;
 	
 	@Expose
+	@Column(name = "ComplicationAtBirthID")
+	private Short complicationAtBirthID;
+	
+	@Expose
 	@Column(name = "ComplicationAtBirth")
 	private String complicationAtBirth;
+	
+	@Expose
+	@Column(name = "OtherComplicationAtBirth")
+	private String otherComplicationAtBirth;
 	
 	@Expose
 	@Column(name = "Gestation")
@@ -191,4 +211,44 @@ public class PerinatalHistory {
 		return ID;
 	}
 
+	public Short getDeliveryPlaceID() {
+		return deliveryPlaceID;
+	}
+
+	public void setDeliveryPlaceID(Short deliveryPlaceID) {
+		this.deliveryPlaceID = deliveryPlaceID;
+	}
+
+	public String getOtherPlaceOfDelivery() {
+		return otherPlaceOfDelivery;
+	}
+
+	public void setOtherPlaceOfDelivery(String otherPlaceOfDelivery) {
+		this.otherPlaceOfDelivery = otherPlaceOfDelivery;
+	}
+
+	public Short getDeliveryTypeID() {
+		return deliveryTypeID;
+	}
+
+	public void setDeliveryTypeID(Short deliveryTypeID) {
+		this.deliveryTypeID = deliveryTypeID;
+	}
+
+	public Short getComplicationAtBirthID() {
+		return complicationAtBirthID;
+	}
+
+	public void setComplicationAtBirthID(Short complicationAtBirthID) {
+		this.complicationAtBirthID = complicationAtBirthID;
+	}
+
+	public String getOtherComplicationAtBirth() {
+		return otherComplicationAtBirth;
+	}
+
+	public void setOtherComplicationAtBirth(String otherComplicationAtBirth) {
+		this.otherComplicationAtBirth = otherComplicationAtBirth;
+	}
+	
 }
