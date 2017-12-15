@@ -67,8 +67,8 @@ public class BenMedHistory {
 	private Timestamp yearofSurgery;
 	
 	@Expose
-	@Column(name = "OtrherSurgeryType")
-	private String otrherSurgeryType;
+	@Column(name = "OtherSurgeryType")
+	private String otherSurgeryType;
 	
 	@Expose
 	@Column(name = "DrugComplianceID")
@@ -238,14 +238,16 @@ public class BenMedHistory {
 		this.otherIllnessType = otherIllnessType;
 	}
 
-	public String getOtrherSurgeryType() {
-		return otrherSurgeryType;
+	
+	public String getOtherSurgeryType() {
+		return otherSurgeryType;
 	}
 
-	public void setOtrherSurgeryType(String otrherSurgeryType) {
-		this.otrherSurgeryType = otrherSurgeryType;
+	public void setOtherSurgeryType(String otherSurgeryType) {
+		this.otherSurgeryType = otherSurgeryType;
 	}
-	
+
+
 	@Transient
 	@Expose
 	private ArrayList<Map<String,Object>> pastIllness;
@@ -271,8 +273,8 @@ public class BenMedHistory {
 				
 				
 			if(null != illness){
-				if(null != illness.get("illnessID")){
-					benMedHistory.setIllnessTypeID(Integer.parseInt(illness.get("illnessID").toString()));
+				if(null != illness.get("illnessTypeID")){
+					benMedHistory.setIllnessTypeID(Integer.parseInt(illness.get("illnessTypeID").toString()));
 				}
 				if(null != illness.get("illnessType")){
 					benMedHistory.setIllnessType(illness.get("illnessType").toString());
@@ -298,7 +300,7 @@ public class BenMedHistory {
 					benMedHistory.setSurgeryType(surgery.get("surgeryType").toString());
 				}
 				if(null != surgery.get("otherSurgeryType")){
-					benMedHistory.setOtrherSurgeryType(surgery.get("otherSurgeryType").toString());
+					benMedHistory.setOtherSurgeryType(surgery.get("otherSurgeryType").toString());
 				}
 			}
 			

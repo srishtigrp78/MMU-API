@@ -21,6 +21,7 @@ import com.iemr.mmu.data.masterdata.anc.BloodGroups;
 import com.iemr.mmu.data.masterdata.anc.ChildVaccinations;
 import com.iemr.mmu.data.masterdata.anc.ComorbidCondition;
 import com.iemr.mmu.data.masterdata.anc.CompFeeds;
+import com.iemr.mmu.data.masterdata.anc.ComplicationTypes;
 import com.iemr.mmu.data.masterdata.anc.CounsellingType;
 import com.iemr.mmu.data.masterdata.anc.DeliveryComplicationTypes;
 import com.iemr.mmu.data.masterdata.anc.DeliveryPlace;
@@ -59,6 +60,7 @@ import com.iemr.mmu.repo.masterrepo.anc.BloodGroupsRepo;
 import com.iemr.mmu.repo.masterrepo.anc.ChildVaccinationsRepo;
 import com.iemr.mmu.repo.masterrepo.anc.ComorbidConditionRepo;
 import com.iemr.mmu.repo.masterrepo.anc.CompFeedsRepo;
+import com.iemr.mmu.repo.masterrepo.anc.ComplicationTypesRepo;
 import com.iemr.mmu.repo.masterrepo.anc.CounsellingTypeRepo;
 import com.iemr.mmu.repo.masterrepo.anc.DeliveryComplicationTypesRepo;
 import com.iemr.mmu.repo.masterrepo.anc.DeliveryPlaceRepo;
@@ -121,6 +123,7 @@ public class ANCMasterDataServiceImpl {
 	private PregOutcomeRepo pregOutcomeRepo;
 	private DiseaseTypeRepo diseaseTypeRepo;
 	private NewBornComplicationRepo newBornComplicationRepo;
+	private ComplicationTypesRepo complicationTypesRepo;
 	
 	private ChiefComplaintMasterRepo chiefComplaintMasterRepo;
 	private FamilyMemberMasterRepo familyMemberMasterRepo;
@@ -322,14 +325,19 @@ public class ANCMasterDataServiceImpl {
 		this.newBornComplicationRepo = newBornComplicationRepo;
 	}
 	
+	@Autowired
+	public void setComplicationTypesRepo(ComplicationTypesRepo complicationTypesRepo) {
+		this.complicationTypesRepo = complicationTypesRepo;
+	}
+	
 	public String getANCMasterDataForNurse() {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 			
 		ArrayList<Object[]> allergicReactionTypes = allergicReactionTypesRepo.getAllergicReactionTypes();
-		ArrayList<Object[]> birthComplications = birthComplicationRepo.getBirthComplicationTypes();
+ //ArrayList<Object[]> birthComplications = birthComplicationRepo.getBirthComplicationTypes();
 		ArrayList<Object[]> bloodGroups = bloodGroupsRepo.getBloodGroups();
 		ArrayList<Object[]> childVaccinations = childVaccinationsRepo.getChildVaccinations();
-		ArrayList<Object[]> deliveryComplicationTypes = deliveryComplicationTypesRepo.getDeliveryComplicationTypes();
+ //ArrayList<Object[]> deliveryComplicationTypes = deliveryComplicationTypesRepo.getDeliveryComplicationTypes();
 		ArrayList<Object[]> deliveryPlace = deliveryPlaceRepo.getDeliveryPlaces();
 		ArrayList<Object[]> deliveryType = deliveryTypeRepo.getDeliveryTypes();
 		ArrayList<Object[]> developmentProblems = developmentProblemsRepo.getDevelopmentProblems();
@@ -342,8 +350,8 @@ public class ANCMasterDataServiceImpl {
 		ArrayList<Object[]> menstrualProblem = menstrualProblemRepo.getMenstrualProblems();
 		ArrayList<Object[]> musculoskeletalLateralityTypes = musculoskeletalRepo.getMusculoskeletalvalues("Laterality");
 		ArrayList<Object[]> musculoskeletalAbnormalityTypes = musculoskeletalRepo.getMusculoskeletalvalues("Abnormality");
-		ArrayList<Object[]> postpartumComplicationTypes = postpartumComplicationTypesRepo.getPostpartumComplicationTypes();
-		ArrayList<Object[]> pregComplicationTypes = pregComplicationTypesRepo.getPregComplicationTypes();
+  //ArrayList<Object[]> postpartumComplicationTypes = postpartumComplicationTypesRepo.getPostpartumComplicationTypes();
+  //ArrayList<Object[]> pregComplicationTypes = pregComplicationTypesRepo.getPregComplicationTypes();
 		ArrayList<Object[]> pregDuration = pregDurationRepo.getPregDurationTypes();
 		ArrayList<Object[]> surgeryTypes = surgeryTypesRepo.getSurgeryTypes();
 		ArrayList<Object[]> comorbidConditions = comorbidConditionRepo.getComorbidConditions();
@@ -352,9 +360,19 @@ public class ANCMasterDataServiceImpl {
 		ArrayList<Object[]> feedTypes = compFeedsRepo.getCompFeeds("Feed Type");
 		ArrayList<Object[]> compFeedAges = compFeedsRepo.getCompFeeds("Comp Feed Age");
 		ArrayList<Object[]> compFeedServings  = compFeedsRepo.getCompFeeds("Comp Feed Serving ");
-		ArrayList<Object[]> postNatalComplications = postNatalComplicationRepo.getPostNatalComplications();
+   //ArrayList<Object[]> postNatalComplications = postNatalComplicationRepo.getPostNatalComplications();
 		ArrayList<Object[]> pregOutcomes = pregOutcomeRepo.getPregOutcomes();
-		ArrayList<Object[]> newBornComplications = newBornComplicationRepo.getNewBornComplications();
+   //ArrayList<Object[]> newBornComplications = newBornComplicationRepo.getNewBornComplications();
+		
+		//complications  - moved to m_complication table
+		ArrayList<Object[]> birthComplications = complicationTypesRepo.getComplicationTypes("Birth Complication");
+		ArrayList<Object[]> deliveryComplicationTypes = complicationTypesRepo.getComplicationTypes("Delivery Complication");
+		ArrayList<Object[]> postpartumComplicationTypes = complicationTypesRepo.getComplicationTypes("Postpartum Complication");
+		ArrayList<Object[]> pregComplicationTypes = complicationTypesRepo.getComplicationTypes("Pregnancy Complication");
+		ArrayList<Object[]> postNatalComplications = complicationTypesRepo.getComplicationTypes("Postnatal Complication");
+		//newborn and birth complications are same
+		//ArrayList<Object[]> newBornComplications = complicationTypesRepo.getComplicationTypes("Birth Complication");
+		
 		//existing
 		ArrayList<Object[]> ccList = chiefComplaintMasterRepo.getChiefComplaintMaster();
 		
@@ -383,10 +401,8 @@ public class ANCMasterDataServiceImpl {
 		ArrayList<Object[]> labTests = labTestMasterRepo.getLabTestMaster();
 	
 		resMap.put("AllergicReactionTypes", AllergicReactionTypes.getAllergicReactionTypes(allergicReactionTypes));
-		resMap.put("birthComplications", BirthComplication.getBirthComplicationTypes(birthComplications));
 		resMap.put("bloodGroups", BloodGroups.getBloodGroups(bloodGroups));
 		resMap.put("childVaccinations", ChildVaccinations.getChildVaccinations(childVaccinations));
-		resMap.put("deliveryComplicationTypes", DeliveryComplicationTypes.getDeliveryComplicationTypes(deliveryComplicationTypes));
 		resMap.put("deliveryPlaces", DeliveryPlace.getDeliveryPlace(deliveryPlace));
 		resMap.put("deliveryTypes", DeliveryType.getDeliveryType(deliveryType));
 		resMap.put("developmentProblems", DevelopmentProblems.getDevelopmentProblems(developmentProblems));
@@ -399,8 +415,6 @@ public class ANCMasterDataServiceImpl {
 		resMap.put("menstrualProblem", MenstrualProblem.getMenstrualProblems(menstrualProblem));
 		resMap.put("musculoskeletalLateralityTypes", Musculoskeletal.getMusculoskeletals(musculoskeletalLateralityTypes));
 		resMap.put("musculoskeletalAbnormalityTypes", Musculoskeletal.getMusculoskeletals(musculoskeletalAbnormalityTypes));
-		resMap.put("postpartumComplicationTypes", PostpartumComplicationTypes.getPostpartumComplicationTypes(postpartumComplicationTypes));
-		resMap.put("pregComplicationTypes", PregComplicationTypes.getPregComplicationTypes(pregComplicationTypes));
 		resMap.put("pregDuration", PregDuration.getPregDurationValues(pregDuration));
 		resMap.put("surgeryTypes", SurgeryTypes.getSurgeryTypes(surgeryTypes));
 		resMap.put("comorbidConditions", ComorbidCondition.getComorbidConditions(comorbidConditions));
@@ -409,11 +423,15 @@ public class ANCMasterDataServiceImpl {
 		resMap.put("feedTypes", CompFeeds.getCompFeeds(feedTypes));
 		resMap.put("compFeedAges", CompFeeds.getCompFeeds(compFeedAges));
 		resMap.put("compFeedServings", CompFeeds.getCompFeeds(compFeedServings));
-		resMap.put("postNatalComplications", PostNatalComplication.getPostNatalComplications(postNatalComplications));
 		resMap.put("pregOutcomes", PregOutcome.getPregOutcomes(pregOutcomes));
-		resMap.put("newBornComplications", NewBornComplication.getNewBornComplications(newBornComplications));
 		
-		
+		resMap.put("birthComplications", ComplicationTypes.getComplicationTypes(birthComplications));
+		resMap.put("deliveryComplicationTypes", ComplicationTypes.getComplicationTypes(deliveryComplicationTypes));
+		resMap.put("postpartumComplicationTypes", ComplicationTypes.getComplicationTypes(postpartumComplicationTypes));
+		resMap.put("pregComplicationTypes", ComplicationTypes.getComplicationTypes(pregComplicationTypes));
+		resMap.put("postNatalComplications", ComplicationTypes.getComplicationTypes(postNatalComplications));
+		resMap.put("newBornComplications", ComplicationTypes.getComplicationTypes(birthComplications));
+				
 		//existing
 		resMap.put("chiefComplaintMaster", ChiefComplaintMaster.getChiefComplaintMasters(ccList));
 		resMap.put("DiseaseTypes", DiseaseType.getDiseaseTypes(DiseaseTypes));

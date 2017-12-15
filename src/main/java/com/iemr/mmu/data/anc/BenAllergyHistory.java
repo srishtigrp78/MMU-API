@@ -49,8 +49,16 @@ public class BenAllergyHistory {
 	private String allergenName;
 	
 	@Expose
+	@Column(name = "allergicReactionTypeID")
+	private String allergicReactionTypeID;
+	
+	@Expose
 	@Column(name = "allergicReactionType")
 	private String allergicReactionType;
+	
+	@Expose
+	@Column(name = "OtherAllergicReaction")
+	private String otherAllergicReaction;
 	
 	@Transient
 	@Expose
@@ -220,6 +228,22 @@ public class BenAllergyHistory {
 		this.typeOfAllergicReactions = typeOfAllergicReactions;
 	}
 	
+	public String getOtherAllergicReaction() {
+		return otherAllergicReaction;
+	}
+
+	public void setOtherAllergicReaction(String otherAllergicReaction) {
+		this.otherAllergicReaction = otherAllergicReaction;
+	}
+	
+	public String getAllergicReactionTypeID() {
+		return allergicReactionTypeID;
+	}
+
+	public void setAllergicReactionTypeID(String allergicReactionTypeID) {
+		this.allergicReactionTypeID = allergicReactionTypeID;
+	}
+	
 //	{ "allergyType": null, "allergyName": null, "typeOfAllergicReaction": null, "otherTypeOfAllergicReaction": null }
 	public ArrayList<BenAllergyHistory> getBenAllergicHistory(){
 		ArrayList<BenAllergyHistory> benAllergyHistoryList=new ArrayList<BenAllergyHistory>();
@@ -239,19 +263,21 @@ public class BenAllergyHistory {
 			benAllergyHistory.setAllergyStatus(allergyStatus);
 			benAllergyHistory.setCreatedBy(createdBy);
 			
-			List<String> reactionTypesList= (List<String>) allergic.get("typeOfAllergicReactions");
+			
+			List<Map<String,String>> reactionTypesList= (List<Map<String,String>>) allergic.get("typeOfAllergicReactions");
 			String reactionTypes = "";
+			String reactionTypeIDs = "";
 			if(null != reactionTypesList){
-				for(String reactionType:reactionTypesList){
-					reactionTypes += reactionType + ",";
+				for(Map<String,String> reactionType:reactionTypesList){
+					reactionTypes += reactionType.get("name") + ",";
+					reactionTypeIDs += reactionType.get("allergicReactionTypeID") + ",";
 				}
 			}
+			benAllergyHistory.setAllergicReactionTypeID(reactionTypeIDs);
+			benAllergyHistory.setAllergicReactionType(reactionTypes);
 			
-			if(null !=  allergic.get("otherTypeOfAllergicReaction")){
-				String otherTypeOfAllergicReaction = allergic.get("otherTypeOfAllergicReaction").toString();
-				benAllergyHistory.setAllergicReactionType(reactionTypes+"-"+otherTypeOfAllergicReaction);
-			}else{
-				benAllergyHistory.setAllergicReactionType(reactionTypes);
+			if(null != allergic.get("otherAllergicReaction")){
+				benAllergyHistory.setOtherAllergicReaction(allergic.get("otherAllergicReaction").toString());
 			}
 			
 			benAllergyHistoryList.add(benAllergyHistory);
