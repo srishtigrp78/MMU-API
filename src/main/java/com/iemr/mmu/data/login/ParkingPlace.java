@@ -22,32 +22,33 @@ import com.iemr.mmu.data.location.States;
 import com.iemr.utils.mapper.OutputMapper;
 
 @Entity
-@Table(name="m_parkingplace")
+@Table(name = "m_parkingplace")
 public class ParkingPlace {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Expose
-	@Column(name="ParkingPlaceID")
+	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
-	@Column(name="ParkingPlaceName")
+	@Column(name = "ParkingPlaceName")
 	private String parkingPlaceName;
-	
+
 	@Expose
-	@Column(name="ParkingPlaceDesc")
+	@Column(name = "ParkingPlaceDesc")
 	private String parkingPlaceDesc;
-	
+
 	@Expose
-	@Column(name="ProviderServiceMapID")
+	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-//	@Expose
-//	@OneToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(updatable = false, insertable = false, name = "ProviderServiceMapID")
-//	private M_ProviderServiceMapping m_providerServiceMapping;
-	
+	// @Expose
+	// @OneToOne(fetch = FetchType.LAZY)
+	// @JoinColumn(updatable = false, insertable = false, name =
+	// "ProviderServiceMapID")
+	// private M_ProviderServiceMapping m_providerServiceMapping;
+
 	@Expose
-	@Column(name="CountryID")
+	@Column(name = "CountryID")
 	private Integer countryID;
 	@Expose
 	@OneToOne(fetch = FetchType.LAZY)
@@ -56,9 +57,9 @@ public class ParkingPlace {
 	@Expose
 	@Transient
 	String countryName;
-	
+
 	@Expose
-	@Column(name="StateID")
+	@Column(name = "StateID")
 	private Integer stateID;
 	@Expose
 	@OneToOne(fetch = FetchType.LAZY)
@@ -67,9 +68,9 @@ public class ParkingPlace {
 	@Expose
 	@Transient
 	String stateName;
-	
+
 	@Expose
-	@Column(name="DistrictID")
+	@Column(name = "DistrictID")
 	private Integer districtID;
 	@Expose
 	@OneToOne(fetch = FetchType.LAZY)
@@ -78,9 +79,9 @@ public class ParkingPlace {
 	@Expose
 	@Transient
 	String districtName;
-	
+
 	@Expose
-	@Column(name="DistrictBlockID")
+	@Column(name = "DistrictBlockID")
 	private Integer districtBlockID;
 	@Expose
 	@OneToOne(fetch = FetchType.LAZY)
@@ -89,9 +90,9 @@ public class ParkingPlace {
 	@Expose
 	@Transient
 	String blockName;
-	
+
 	@Expose
-	@Column(name="DistrictBranchID")
+	@Column(name = "DistrictBranchID")
 	private Integer districtBranchID;
 	@Expose
 	@OneToOne(fetch = FetchType.LAZY)
@@ -100,35 +101,39 @@ public class ParkingPlace {
 	@Expose
 	@Transient
 	String villageName;
-	
+
 	@Expose
-	@Column(name="AreaHQAddress")
+	@Column(name = "AreaHQAddress")
 	private String areaHQAddress;
-	
+
 	@Expose
-	@Column(name = "Deleted",insertable = false, updatable = true)
-	private Boolean deleted; 
+	@Column(name = "Deleted", insertable = false, updatable = true)
+	private Boolean deleted;
 	@Expose
-	@Column(name = "Processed",insertable = false, updatable = true)
+	@Column(name = "Processed", insertable = false, updatable = true)
 	private String processed;
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
 	@Expose
-	@Column(name = "CreatedDate" ,insertable = false, updatable = false)
+	@Column(name = "CreatedDate", insertable = false, updatable = false)
 	private Date createdDate;
 	@Expose
 	@Column(name = "ModifiedBy")
-	private String modifiedBy; 
+	private String modifiedBy;
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Date lastModDate;
-	
+
 	public ParkingPlace() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
+	public ParkingPlace(Integer parkingPlaceID, String parkingPlaceName) {
+		this.parkingPlaceID = parkingPlaceID;
+		this.parkingPlaceName = parkingPlaceName;
+	}
 
 	public String getParkingPlaceName() {
 		return parkingPlaceName;
@@ -333,7 +338,7 @@ public class ParkingPlace {
 	public Integer getParkingPlaceID() {
 		return parkingPlaceID;
 	}
-	
+
 	@Transient
 	private OutputMapper outputMapper = new OutputMapper();
 
@@ -341,6 +346,5 @@ public class ParkingPlace {
 	public String toString() {
 		return outputMapper.gson().toJson(this);
 	}
-	
-	
+
 }

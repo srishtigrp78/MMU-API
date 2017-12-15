@@ -70,6 +70,11 @@ public class ZoneMaster {
 	public ZoneMaster() {
 	}
 
+	public ZoneMaster(Integer zoneID, String zoneName) {
+		this.zoneID = zoneID;
+		this.zoneName = zoneName;
+	}
+
 	public ZoneMaster(Integer zoneID, String zoneName, String zoneDesc, Integer providerServiceMapID, Integer countryID,
 			Integer stateID, Integer districtID, Integer districtBlockID, Integer districtBranchID,
 			String zoneHQAddress, Boolean deleted, String processed, String createdBy, Timestamp createdDate,

@@ -11,15 +11,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
-import com.iemr.utils.mapper.OutputMapper;
 
 @Entity
 @Table(name = "m_state")
-public class States
-{
+public class States {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "StateID")
@@ -50,122 +47,92 @@ public class States
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "states")
 	private Set<Districts> districts;
 
-	@Transient
-	private OutputMapper outputMapper = new OutputMapper();
-
-	public States()
-	{
+	public States() {
 	}
 
-	public States(int StateID, String StateName)
-	{
+	public States(int StateID, String StateName) {
 		this.stateID = StateID;
 		this.stateName = StateName;
 	}
 
-	public int getStateID()
-	{
+	public int getStateID() {
 		return this.stateID.intValue();
 	}
 
-	public void setStateID(int stateID)
-	{
+	public void setStateID(int stateID) {
 		this.stateID = Integer.valueOf(stateID);
 	}
 
-	public String getStateIName()
-	{
+	public String getStateIName() {
 		return this.stateName;
 	}
 
-	public void setStateIName(String stateName)
-	{
+	public void setStateIName(String stateName) {
 		this.stateName = stateName;
 	}
 
-	public String getStateCode()
-	{
+	public String getStateCode() {
 		return this.stateCode;
 	}
 
-	public void setStateCode(String stateCode)
-	{
+	public void setStateCode(String stateCode) {
 		this.stateCode = stateCode;
 	}
 
-	public int getCountryID()
-	{
+	public int getCountryID() {
 		return this.countryID.intValue();
 	}
 
-	public void setCountryID(int countryID)
-	{
+	public void setCountryID(int countryID) {
 		this.countryID = Integer.valueOf(countryID);
 	}
 
-	public boolean isDeleted()
-	{
+	public boolean isDeleted() {
 		return this.deleted.booleanValue();
 	}
 
-	public void setDeleted(boolean deleted)
-	{
+	public void setDeleted(boolean deleted) {
 		this.deleted = Boolean.valueOf(deleted);
 	}
 
-	public String getCreatedBy()
-	{
+	public String getCreatedBy() {
 		return this.createdBy;
 	}
 
-	public void setCreatedBy(String createdBy)
-	{
+	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
 
-	public String getModifiedBy()
-	{
+	public String getModifiedBy() {
 		return this.modifiedBy;
 	}
 
-	public void setModifiedBy(String modifiedBy)
-	{
+	public void setModifiedBy(String modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
 
-	public Timestamp getCreatedDate()
-	{
+	public Timestamp getCreatedDate() {
 		return this.createdDate;
 	}
 
-	public void setCreatedDate(Timestamp createdDate)
-	{
+	public void setCreatedDate(Timestamp createdDate) {
 		this.createdDate = createdDate;
 	}
 
-	public Timestamp getLastModDate()
-	{
+	public Timestamp getLastModDate() {
 		return this.lastModDate;
 	}
 
-	public void setLastModDate(Timestamp lastModDate)
-	{
+	public void setLastModDate(Timestamp lastModDate) {
 		this.lastModDate = lastModDate;
 	}
 
-	public String getStateName()
-	{
+	public String getStateName() {
 		return this.stateName;
 	}
 
-	public void setStateName(String stateName)
-	{
+	public void setStateName(String stateName) {
 		this.stateName = stateName;
 	}
 
-	@Override
-	public String toString()
-	{
-		return outputMapper.gson().toJson(this);
-	}
 }

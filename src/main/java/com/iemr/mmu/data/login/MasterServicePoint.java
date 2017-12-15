@@ -39,6 +39,11 @@ public class MasterServicePoint {
 	public MasterServicePoint() {
 	}
 
+	public MasterServicePoint(Integer servicePointID, String servicePointName) {
+		this.servicePointID = servicePointID;
+		this.servicePointName = servicePointName;
+	}
+
 	public MasterServicePoint(Integer servicePointID, String servicePointName, Integer providerServiceMapID,
 			Integer parkingPlaceID, Boolean deleted, Set<VanServicepointMapping> vanServicepointMapping) {
 		super();
