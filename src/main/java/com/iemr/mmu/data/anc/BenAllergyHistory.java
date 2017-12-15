@@ -52,6 +52,10 @@ public class BenAllergyHistory {
 	@Column(name = "allergicReactionType")
 	private String allergicReactionType;
 	
+	@Transient
+	@Expose
+	private List<String> typeOfAllergicReactions;
+	
 	@Expose
 	@Column(name = "Remarks")
 	private String remarks;
@@ -82,7 +86,7 @@ public class BenAllergyHistory {
 	
 	@Transient
 	@Expose
-	private List<Map<String, String>> allergicList;
+	private List<Map<String, Object>> allergicList;
 
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
@@ -196,37 +200,58 @@ public class BenAllergyHistory {
 		this.lastModDate = lastModDate;
 	}
 
-	public List<Map<String, String>> getAllergicList() {
+	public List<Map<String, Object>> getAllergicList() {
 		return allergicList;
 	}
 
-	public void setAllergicList(List<Map<String, String>> allergicList) {
+	public void setAllergicList(List<Map<String, Object>> allergicList) {
 		this.allergicList = allergicList;
 	}
 
 	public Long getID() {
 		return ID;
 	}
+	
+	public List<String> getTypeOfAllergicReactions() {
+		return typeOfAllergicReactions;
+	}
+
+	public void setTypeOfAllergicReactions(List<String> typeOfAllergicReactions) {
+		this.typeOfAllergicReactions = typeOfAllergicReactions;
+	}
+	
 //	{ "allergyType": null, "allergyName": null, "typeOfAllergicReaction": null, "otherTypeOfAllergicReaction": null }
 	public ArrayList<BenAllergyHistory> getBenAllergicHistory(){
 		ArrayList<BenAllergyHistory> benAllergyHistoryList=new ArrayList<BenAllergyHistory>();
-		for(Map<String,String> allergic:allergicList){
+		for(Map<String,Object> allergic:allergicList){
 			BenAllergyHistory benAllergyHistory = new BenAllergyHistory();
 
-			benAllergyHistory.setAllergenName(allergic.get("allergyType"));
-			benAllergyHistory.setAllergyType(allergic.get("allergyType"));
+			if(null != allergic.get("allergyName")){
+				benAllergyHistory.setAllergenName(allergic.get("allergyName").toString());
+			}
+			if(null != allergic.get("allergyType")){
+				benAllergyHistory.setAllergyType(allergic.get("allergyType").toString());
+			}
+			
 			benAllergyHistory.setBeneficiaryRegID(beneficiaryRegID);
 			benAllergyHistory.setBenVisitID(benVisitID);
 			benAllergyHistory.setProviderServiceMapID(providerServiceMapID);
 			benAllergyHistory.setAllergyStatus(allergyStatus);
 			benAllergyHistory.setCreatedBy(createdBy);
 			
-			String otherTypeOfAllergicReaction = allergic.get("otherTypeOfAllergicReaction");
+			List<String> reactionTypesList= (List<String>) allergic.get("typeOfAllergicReactions");
+			String reactionTypes = "";
+			if(null != reactionTypesList){
+				for(String reactionType:reactionTypesList){
+					reactionTypes += reactionType + ",";
+				}
+			}
 			
-			if(null != otherTypeOfAllergicReaction){
-				benAllergyHistory.setAllergicReactionType(allergic.get("typeOfAllergicReaction")+"-"+otherTypeOfAllergicReaction);
+			if(null !=  allergic.get("otherTypeOfAllergicReaction")){
+				String otherTypeOfAllergicReaction = allergic.get("otherTypeOfAllergicReaction").toString();
+				benAllergyHistory.setAllergicReactionType(reactionTypes+"-"+otherTypeOfAllergicReaction);
 			}else{
-				benAllergyHistory.setAllergicReactionType(allergic.get("typeOfAllergicReaction"));
+				benAllergyHistory.setAllergicReactionType(reactionTypes);
 			}
 			
 			benAllergyHistoryList.add(benAllergyHistory);

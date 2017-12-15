@@ -26,6 +26,7 @@ import com.iemr.mmu.data.masterdata.anc.DeliveryComplicationTypes;
 import com.iemr.mmu.data.masterdata.anc.DeliveryPlace;
 import com.iemr.mmu.data.masterdata.anc.DeliveryType;
 import com.iemr.mmu.data.masterdata.anc.DevelopmentProblems;
+import com.iemr.mmu.data.masterdata.anc.DiseaseType;
 import com.iemr.mmu.data.masterdata.anc.FundalHeight;
 import com.iemr.mmu.data.masterdata.anc.Gestation;
 import com.iemr.mmu.data.masterdata.anc.GrossMotorMilestone;
@@ -35,13 +36,16 @@ import com.iemr.mmu.data.masterdata.anc.MenstrualCycleRange;
 import com.iemr.mmu.data.masterdata.anc.MenstrualCycleStatus;
 import com.iemr.mmu.data.masterdata.anc.MenstrualProblem;
 import com.iemr.mmu.data.masterdata.anc.Musculoskeletal;
+import com.iemr.mmu.data.masterdata.anc.NewBornComplication;
+import com.iemr.mmu.data.masterdata.anc.PersonalHabitType;
+import com.iemr.mmu.data.masterdata.anc.PostNatalComplication;
 import com.iemr.mmu.data.masterdata.anc.PostpartumComplicationTypes;
 import com.iemr.mmu.data.masterdata.anc.PregComplicationTypes;
 import com.iemr.mmu.data.masterdata.anc.PregDuration;
+import com.iemr.mmu.data.masterdata.anc.PregOutcome;
 import com.iemr.mmu.data.masterdata.anc.ServiceMaster;
 import com.iemr.mmu.data.masterdata.anc.SurgeryTypes;
 import com.iemr.mmu.data.masterdata.nurse.CancerDiseaseType;
-import com.iemr.mmu.data.masterdata.nurse.CancerPersonalHabitType;
 import com.iemr.mmu.data.masterdata.nurse.FamilyMemberType;
 import com.iemr.mmu.repo.doctor.ChiefComplaintMasterRepo;
 import com.iemr.mmu.repo.doctor.DrugDoseMasterRepo;
@@ -60,6 +64,7 @@ import com.iemr.mmu.repo.masterrepo.anc.DeliveryComplicationTypesRepo;
 import com.iemr.mmu.repo.masterrepo.anc.DeliveryPlaceRepo;
 import com.iemr.mmu.repo.masterrepo.anc.DeliveryTypeRepo;
 import com.iemr.mmu.repo.masterrepo.anc.DevelopmentProblemsRepo;
+import com.iemr.mmu.repo.masterrepo.anc.DiseaseTypeRepo;
 import com.iemr.mmu.repo.masterrepo.anc.FundalHeightRepo;
 import com.iemr.mmu.repo.masterrepo.anc.GestationRepo;
 import com.iemr.mmu.repo.masterrepo.anc.GrossMotorMilestoneRepo;
@@ -69,14 +74,17 @@ import com.iemr.mmu.repo.masterrepo.anc.MenstrualCycleRangeRepo;
 import com.iemr.mmu.repo.masterrepo.anc.MenstrualCycleStatusRepo;
 import com.iemr.mmu.repo.masterrepo.anc.MenstrualProblemRepo;
 import com.iemr.mmu.repo.masterrepo.anc.MusculoskeletalRepo;
+import com.iemr.mmu.repo.masterrepo.anc.NewBornComplicationRepo;
+import com.iemr.mmu.repo.masterrepo.anc.PersonalHabitTypeRepo;
+import com.iemr.mmu.repo.masterrepo.anc.PostNatalComplicationRepo;
 import com.iemr.mmu.repo.masterrepo.anc.PostpartumComplicationTypesRepo;
 import com.iemr.mmu.repo.masterrepo.anc.PregComplicationTypesRepo;
 import com.iemr.mmu.repo.masterrepo.anc.PregDurationRepo;
+import com.iemr.mmu.repo.masterrepo.anc.PregOutcomeRepo;
 import com.iemr.mmu.repo.masterrepo.anc.ServiceMasterRepo;
 import com.iemr.mmu.repo.masterrepo.anc.SurgeryTypesRepo;
 import com.iemr.mmu.repo.masterrepo.doctor.InstituteRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.CancerDiseaseMasterRepo;
-import com.iemr.mmu.repo.masterrepo.nurse.CancerPersonalHabitMasterRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.FamilyMemberMasterRepo;
 
 @Service
@@ -108,10 +116,13 @@ public class ANCMasterDataServiceImpl {
 	private ServiceMasterRepo serviceMasterRepo;
 	private CounsellingTypeRepo counsellingTypeRepo;
 	private InstituteRepo instituteRepo;
+	private PersonalHabitTypeRepo personalHabitTypeRepo;
+	private PostNatalComplicationRepo postNatalComplicationRepo;
+	private PregOutcomeRepo pregOutcomeRepo;
+	private DiseaseTypeRepo diseaseTypeRepo;
+	private NewBornComplicationRepo newBornComplicationRepo;
 	
 	private ChiefComplaintMasterRepo chiefComplaintMasterRepo;
-	private CancerDiseaseMasterRepo cancerDiseaseMasterRepo;
-	private CancerPersonalHabitMasterRepo cancerPersonalHabitMasterRepo;
 	private FamilyMemberMasterRepo familyMemberMasterRepo;
 	private LabTestMasterRepo labTestMasterRepo;
 	
@@ -222,16 +233,6 @@ public class ANCMasterDataServiceImpl {
 	}
 	
 	@Autowired
-	public void setCancerDiseaseMasterRepo(CancerDiseaseMasterRepo cancerDiseaseMasterRepo) {
-		this.cancerDiseaseMasterRepo = cancerDiseaseMasterRepo;
-	}
-	
-	@Autowired
-	public void setCancerPersonalHabitMasterRepo(CancerPersonalHabitMasterRepo cancerPersonalHabitMasterRepo) {
-		this.cancerPersonalHabitMasterRepo = cancerPersonalHabitMasterRepo;
-	}
-	
-	@Autowired
 	public void setFamilyMemberMasterRepo(FamilyMemberMasterRepo familyMemberMasterRepo) {
 		this.familyMemberMasterRepo = familyMemberMasterRepo;
 	}
@@ -296,6 +297,31 @@ public class ANCMasterDataServiceImpl {
 		this.instituteRepo = instituteRepo;
 	}
 	
+	@Autowired
+	public void setPersonalHabitTypeRepo(PersonalHabitTypeRepo personalHabitTypeRepo) {
+		this.personalHabitTypeRepo = personalHabitTypeRepo;
+	}
+	
+	@Autowired
+	public void setPostNatalComplicationRepo(PostNatalComplicationRepo postNatalComplicationRepo) {
+		this.postNatalComplicationRepo = postNatalComplicationRepo;
+	}
+	
+	@Autowired
+	public void setPregOutcomeRepo(PregOutcomeRepo pregOutcomeRepo) {
+		this.pregOutcomeRepo = pregOutcomeRepo;
+	}
+	
+	@Autowired
+	public void setDiseaseTypeRepo(DiseaseTypeRepo diseaseTypeRepo) {
+		this.diseaseTypeRepo = diseaseTypeRepo;
+	}
+	
+	@Autowired
+	public void setNewBornComplicationRepo(NewBornComplicationRepo newBornComplicationRepo) {
+		this.newBornComplicationRepo = newBornComplicationRepo;
+	}
+	
 	public String getANCMasterDataForNurse() {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 			
@@ -326,29 +352,36 @@ public class ANCMasterDataServiceImpl {
 		ArrayList<Object[]> feedTypes = compFeedsRepo.getCompFeeds("Feed Type");
 		ArrayList<Object[]> compFeedAges = compFeedsRepo.getCompFeeds("Comp Feed Age");
 		ArrayList<Object[]> compFeedServings  = compFeedsRepo.getCompFeeds("Comp Feed Serving ");
-		
+		ArrayList<Object[]> postNatalComplications = postNatalComplicationRepo.getPostNatalComplications();
+		ArrayList<Object[]> pregOutcomes = pregOutcomeRepo.getPregOutcomes();
+		ArrayList<Object[]> newBornComplications = newBornComplicationRepo.getNewBornComplications();
 		//existing
 		ArrayList<Object[]> ccList = chiefComplaintMasterRepo.getChiefComplaintMaster();
-		ArrayList<Object[]> DiseaseTypes = cancerDiseaseMasterRepo.getCancerDiseaseMaster();
-		ArrayList<Object[]> tobaccoUseStatus = cancerPersonalHabitMasterRepo
-				.getCancerPersonalHabitTypeMaster("Tobacco Use Status");
-		ArrayList<Object[]> typeOfTobaccoProducts = cancerPersonalHabitMasterRepo
-				.getCancerPersonalHabitTypeMaster("Type of Tobacco Product");
-		ArrayList<Object[]> alcoholUseStatus = cancerPersonalHabitMasterRepo
-				.getCancerPersonalHabitTypeMaster("Alcohol Usage");
-		ArrayList<Object[]> typeOfAlcoholProducts = cancerPersonalHabitMasterRepo
-				.getCancerPersonalHabitTypeMaster("Type of Alcohol");
 		
-		ArrayList<Object[]> frequencyOfAlcoholIntake = cancerPersonalHabitMasterRepo
-				.getCancerPersonalHabitTypeMaster("Frequency of Alcohol Intake");
-		ArrayList<Object[]> quantityOfAlcoholIntake = cancerPersonalHabitMasterRepo
-				.getCancerPersonalHabitTypeMaster("Average Quantity of Alcohol consumption");
+		ArrayList<Object[]> DiseaseTypes = diseaseTypeRepo.getDiseaseTypes();
+//		ArrayList<Object[]> tobaccoUseStatus = cancerPersonalHabitMasterRepo
+//				.getCancerPersonalHabitTypeMaster("Tobacco Use Status");
+//		ArrayList<Object[]> typeOfTobaccoProducts = cancerPersonalHabitMasterRepo
+//				.getCancerPersonalHabitTypeMaster("Type of Tobacco Product");
+//		ArrayList<Object[]> alcoholUseStatus = cancerPersonalHabitMasterRepo
+//				.getCancerPersonalHabitTypeMaster("Alcohol Usage");
+//		ArrayList<Object[]> typeOfAlcoholProducts = cancerPersonalHabitMasterRepo
+//				.getCancerPersonalHabitTypeMaster("Type of Alcohol");
+//		
+//		ArrayList<Object[]> frequencyOfAlcoholIntake = cancerPersonalHabitMasterRepo
+//				.getCancerPersonalHabitTypeMaster("Frequency of Alcohol Intake");
+//		ArrayList<Object[]> quantityOfAlcoholIntake = cancerPersonalHabitMasterRepo
+//				.getCancerPersonalHabitTypeMaster("Average Quantity of Alcohol consumption");
 		
+		ArrayList<Object[]> tobaccoUseStatus = personalHabitTypeRepo.getPersonalHabitTypeMaster("Tobacco Use Status");
+		ArrayList<Object[]> typeOfTobaccoProducts = personalHabitTypeRepo.getPersonalHabitTypeMaster("Type of Tobacco Use");
+		ArrayList<Object[]> alcoholUseStatus = personalHabitTypeRepo.getPersonalHabitTypeMaster("Alcohol Intake Status");
+		ArrayList<Object[]> typeOfAlcoholProducts = personalHabitTypeRepo.getPersonalHabitTypeMaster("Type of Alcohol");
+		ArrayList<Object[]> frequencyOfAlcoholIntake = personalHabitTypeRepo.getPersonalHabitTypeMaster("Frequency of Alcohol Intake");
+		ArrayList<Object[]> quantityOfAlcoholIntake = personalHabitTypeRepo.getPersonalHabitTypeMaster("Average Quantity of Alcohol consumption");
 		ArrayList<Object[]> familyMemberTypes = familyMemberMasterRepo.getFamilyMemberTypeMaster();
-		
 		ArrayList<Object[]> labTests = labTestMasterRepo.getLabTestMaster();
 	
-		
 		resMap.put("AllergicReactionTypes", AllergicReactionTypes.getAllergicReactionTypes(allergicReactionTypes));
 		resMap.put("birthComplications", BirthComplication.getBirthComplicationTypes(birthComplications));
 		resMap.put("bloodGroups", BloodGroups.getBloodGroups(bloodGroups));
@@ -376,22 +409,26 @@ public class ANCMasterDataServiceImpl {
 		resMap.put("feedTypes", CompFeeds.getCompFeeds(feedTypes));
 		resMap.put("compFeedAges", CompFeeds.getCompFeeds(compFeedAges));
 		resMap.put("compFeedServings", CompFeeds.getCompFeeds(compFeedServings));
+		resMap.put("postNatalComplications", PostNatalComplication.getPostNatalComplications(postNatalComplications));
+		resMap.put("pregOutcomes", PregOutcome.getPregOutcomes(pregOutcomes));
+		resMap.put("newBornComplications", NewBornComplication.getNewBornComplications(newBornComplications));
+		
 		
 		//existing
 		resMap.put("chiefComplaintMaster", ChiefComplaintMaster.getChiefComplaintMasters(ccList));
-		resMap.put("CancerDiseaseType", CancerDiseaseType.getCancerDiseaseTypeMasterData(DiseaseTypes));
+		resMap.put("DiseaseTypes", DiseaseType.getDiseaseTypes(DiseaseTypes));
 		resMap.put("tobaccoUseStatus",
-				CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(tobaccoUseStatus));
+				PersonalHabitType.getPersonalHabitTypeMasterData(tobaccoUseStatus));
 		resMap.put("typeOfTobaccoProducts",
-				CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(typeOfTobaccoProducts));
+				PersonalHabitType.getPersonalHabitTypeMasterData(typeOfTobaccoProducts));
 		resMap.put("alcoholUseStatus",
-				CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(alcoholUseStatus));
+				PersonalHabitType.getPersonalHabitTypeMasterData(alcoholUseStatus));
 		resMap.put("typeOfAlcoholProducts",
-				CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(typeOfAlcoholProducts));
+				PersonalHabitType.getPersonalHabitTypeMasterData(typeOfAlcoholProducts));
 		resMap.put("frequencyOfAlcoholIntake",
-				CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(frequencyOfAlcoholIntake));
+				PersonalHabitType.getPersonalHabitTypeMasterData(frequencyOfAlcoholIntake));
 		resMap.put("quantityOfAlcoholIntake",
-				CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(quantityOfAlcoholIntake));
+				PersonalHabitType.getPersonalHabitTypeMasterData(quantityOfAlcoholIntake));
 		resMap.put("familyMemberTypes", FamilyMemberType.getFamilyMemberTypeMasterData(familyMemberTypes));
 		
 		resMap.put("labTests", LabTestMaster.getLabTestMasters(labTests));
