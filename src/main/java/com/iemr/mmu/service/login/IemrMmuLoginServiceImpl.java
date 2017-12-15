@@ -153,6 +153,7 @@ public class IemrMmuLoginServiceImpl implements IemrMmuLoginService {
 		Map<String, Object> parkingPlaceLocationMap = new HashMap<>();
 		if (parkingPlaceList.size() > 0) {
 			Object[] obj1 = parkingPlaceList.get(0);
+			parkingPlaceLocationMap.put("parkingPlaceID", obj1[0]);
 			parkingPlaceLocationMap.put("stateID", obj1[1]);
 			parkingPlaceLocationMap.put("stateName", obj1[2]);
 			parkingPlaceLocationMap.put("districtID", obj1[3]);
