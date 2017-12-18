@@ -3,6 +3,7 @@ package com.iemr.mmu.data.anc;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -358,6 +359,11 @@ public class BenPersonalHabit {
 		this.otherAlcoholType = otherAlcoholType;
 	}
 	
+	public BenPersonalHabit() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public ArrayList<BenPersonalHabit> getPersonalHistory(){
 		int maxPersonalHistorySize =0;
 		if(tobaccoList.size()>alcoholList.size()){
@@ -419,6 +425,37 @@ public class BenPersonalHabit {
 			personalHabitList.add(benPersonalHabit);
 		}
 		return personalHabitList;
+	}
+
+	public BenPersonalHabit(String dietaryType, String physicalActivityType, String tobaccoUseStatus,
+			String tobaccoUseTypeID, String tobaccoUseType, String otherTobaccoUseType, Short numberperDay,
+			Timestamp tobaccoUseDuration, Character riskySexualPracticesStatus) {
+		super();
+		this.dietaryType = dietaryType;
+		this.physicalActivityType = physicalActivityType;
+		this.tobaccoUseStatus = tobaccoUseStatus;
+		this.tobaccoUseTypeID = tobaccoUseTypeID;
+		this.tobaccoUseType = tobaccoUseType;
+		this.otherTobaccoUseType = otherTobaccoUseType;
+		this.numberperDay = numberperDay;
+		this.tobaccoUseDuration = tobaccoUseDuration;
+		this.riskySexualPracticesStatus = riskySexualPracticesStatus;
+	}
+
+	public BenPersonalHabit(String dietaryType, String physicalActivityType, String alcoholIntakeStatus,
+			String alcoholTypeID, String alcoholType, String otherAlcoholType, String alcoholIntakeFrequency,
+			String avgAlcoholConsumption, Timestamp alcoholDuration, Character riskySexualPracticesStatus) {
+		super();
+		this.dietaryType = dietaryType;
+		this.physicalActivityType = physicalActivityType;
+		this.alcoholIntakeStatus = alcoholIntakeStatus;
+		this.alcoholTypeID = alcoholTypeID;
+		this.alcoholType = alcoholType;
+		this.otherAlcoholType = otherAlcoholType;
+		this.alcoholIntakeFrequency = alcoholIntakeFrequency;
+		this.avgAlcoholConsumption = avgAlcoholConsumption;
+		this.alcoholDuration = alcoholDuration;
+		this.riskySexualPracticesStatus = riskySexualPracticesStatus;
 	}
 	
 }

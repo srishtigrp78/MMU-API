@@ -116,4 +116,12 @@ public interface ANCService {
 
 	public String fetchBenPastMedicalHistory(Long benRegID);
 
+	public String fetchBenPersonalTobaccoHistory(Long beneficiaryRegID);
+
+	public String fetchBenPersonalAlcoholHistory(Long beneficiaryRegID);
+
+	public String fetchBenPersonalAllergyHistory(Long beneficiaryRegID);
+
+	public String fetchBenPersonalMedicationHistory(Long beneficiaryRegID);
+
 }

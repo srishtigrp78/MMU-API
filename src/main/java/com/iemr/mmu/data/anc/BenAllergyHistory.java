@@ -96,6 +96,23 @@ public class BenAllergyHistory {
 	@Expose
 	private List<Map<String, Object>> allergicList;
 
+	public BenAllergyHistory() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	public BenAllergyHistory(String allergyStatus, String allergyType, String allergenName,
+			String allergicReactionTypeID, String allergicReactionType, String otherAllergicReaction, String remarks) {
+		super();
+		this.allergyStatus = allergyStatus;
+		this.allergyType = allergyType;
+		this.allergenName = allergenName;
+		this.allergicReactionTypeID = allergicReactionTypeID;
+		this.allergicReactionType = allergicReactionType;
+		this.otherAllergicReaction = otherAllergicReaction;
+		this.remarks = remarks;
+	}
+
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
@@ -243,8 +260,7 @@ public class BenAllergyHistory {
 	public void setAllergicReactionTypeID(String allergicReactionTypeID) {
 		this.allergicReactionTypeID = allergicReactionTypeID;
 	}
-	
-//	{ "allergyType": null, "allergyName": null, "typeOfAllergicReaction": null, "otherTypeOfAllergicReaction": null }
+
 	public ArrayList<BenAllergyHistory> getBenAllergicHistory(){
 		ArrayList<BenAllergyHistory> benAllergyHistoryList=new ArrayList<BenAllergyHistory>();
 		for(Map<String,Object> allergic:allergicList){

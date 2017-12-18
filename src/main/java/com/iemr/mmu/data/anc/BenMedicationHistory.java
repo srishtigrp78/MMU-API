@@ -180,5 +180,12 @@ public class BenMedicationHistory {
 	public Long getID() {
 		return ID;
 	}
+
+	public BenMedicationHistory(String currentMedication, Timestamp year) {
+		super();
+		this.currentMedication = currentMedication;
+		this.year = year;
+	}
+	
 	
 }
