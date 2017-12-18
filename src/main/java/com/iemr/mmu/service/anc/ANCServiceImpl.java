@@ -1016,23 +1016,30 @@ public class ANCServiceImpl implements ANCService {
 		}
 
 		Map<String, String> columnMap = new HashMap<>();
+		List<Map<String, String>> columns = new ArrayList<Map<String, String>>();
 		columnMap.put("columnName", "Year Of Illness");
 		columnMap.put("keyName", "Year_Of_Illness");
+		columns.add(columnMap);
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Year Of Surgery");
 		columnMap.put("keyName", "Year_Of_Surgery");
+		columns.add(columnMap);
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Illness Type");
 		columnMap.put("keyName", "Illness_Type");
+		columns.add(columnMap);
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Surgery Type");
 		columnMap.put("keyName", "Surgery_Type");
+		columns.add(columnMap);
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Other Illness Type");
 		columnMap.put("keyName", "Other_Surgery_Type");
+		columns.add(columnMap);
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Other Surgery Type");
 		columnMap.put("keyName", "Illness_Type");
+		columns.add(columnMap);
 
 		resMap.put("columns", columnMap);
 		resMap.put("data", benMedHistoryArrayList);
