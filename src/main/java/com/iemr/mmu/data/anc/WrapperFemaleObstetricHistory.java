@@ -27,30 +27,6 @@ public class WrapperFemaleObstetricHistory {
 			femaleObstetricHistory.setProviderServiceMapID(providerServiceMapID);
 			femaleObstetricHistory.setCreatedBy(createdBy);
 			
-			String OtherDeliveryPlace = femaleObstetricHistory.getOtherDeliveryPlace();
-			
-			String OtherPregComplicationType = femaleObstetricHistory.getOtherPregComplicationType();
-			
-			String OtherDeliveryComplicationType = femaleObstetricHistory.getOtherDeliveryComplicationType();
-			
-			String OtherNewBornComplication = femaleObstetricHistory.getOtherNewBornComplication();
-			
-			String OtherPostNatalComplication = femaleObstetricHistory.getOtherPostNatalComplication();
-			
-			String OtherPostpartumComplicationType = femaleObstetricHistory.getOtherPostpartumComplicationType();
-			
-			femaleObstetricHistory.setDeliveryPlace(femaleObstetricHistory.getDeliveryPlace() +"-"+OtherDeliveryPlace);
-			
-			femaleObstetricHistory.setPregComplicationType(femaleObstetricHistory.getPregComplicationType()+"-"+OtherPregComplicationType);
-			
-			femaleObstetricHistory.setDeliveryComplicationType(femaleObstetricHistory.getDeliveryComplicationType()+"-"+OtherDeliveryComplicationType);
-			
-			femaleObstetricHistory.setNewBornComplication(femaleObstetricHistory.getNewBornComplication()+"-"+OtherNewBornComplication);
-			
-			femaleObstetricHistory.setPostNatalComplication(femaleObstetricHistory.getPostNatalComplication()+"-"+OtherPostNatalComplication);
-			
-			femaleObstetricHistory.setPostpartumComplicationType(femaleObstetricHistory.getPostpartumComplicationType()+"-"+OtherPostpartumComplicationType);
-
 		}
 		return femaleObstetricHistoryList;
 	}

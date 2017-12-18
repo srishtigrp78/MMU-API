@@ -40,8 +40,16 @@ public class BenFamilyHistory {
 	private String familyMember;
 	
 	@Expose
+	@Column(name = "DiseaseTypeID")
+	private Short diseaseTypeID;
+
+	@Expose
 	@Column(name = "DiseaseType")
 	private String diseaseType;
+	
+	@Expose
+	@Column(name = "OtherDiseaseType")
+	private String otherDiseaseType;
 	
 	@Expose
 	@Column(name = "IsGeneticDisorder")
@@ -207,6 +215,22 @@ public class BenFamilyHistory {
 		return ID;
 	}
 	
+	public Short getDiseaseTypeID() {
+		return diseaseTypeID;
+	}
+
+	public void setDiseaseTypeID(Short diseaseTypeID) {
+		this.diseaseTypeID = diseaseTypeID;
+	}
+
+	public String getOtherDiseaseType() {
+		return otherDiseaseType;
+	}
+
+	public void setOtherDiseaseType(String otherDiseaseType) {
+		this.otherDiseaseType = otherDiseaseType;
+	}
+	
 	public ArrayList<BenFamilyHistory> getBenFamilyHistory(){
 		
 			ArrayList<BenFamilyHistory> benFamilyHistoryList=new ArrayList<BenFamilyHistory>();
@@ -222,12 +246,15 @@ public class BenFamilyHistory {
 					benFamilyHistory.setIsGeneticDisorder(isGeneticDisorder);
 					benFamilyHistory.setIsConsanguineousMarrige(isConsanguineousMarrige);
 					
+					if(null != disease.get("diseaseTypeID")){
+						benFamilyHistory.setDiseaseTypeID(new Short(disease.get("diseaseTypeID").toString()));
+					}
 					if(null != disease.get("diseaseType")){
-						if(null !=  disease.get("otherDiseaseType")){
-							benFamilyHistory.setDiseaseType(disease.get("diseaseType") +"-"+disease.get("otherDiseaseType"));
-						}else{
-							benFamilyHistory.setDiseaseType(disease.get("diseaseType").toString());
-						}
+						benFamilyHistory.setDiseaseType(disease.get("diseaseType").toString());
+					}
+					
+					if(null != disease.get("otherDiseaseType")){
+						benFamilyHistory.setOtherDiseaseType(disease.get("otherDiseaseType").toString());
 					}
 					
 					List<String> familyMemberList = (List<String>) disease.get("familyMembers");

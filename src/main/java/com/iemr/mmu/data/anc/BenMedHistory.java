@@ -101,18 +101,26 @@ public class BenMedHistory {
 	}
 
 	@Transient
-	private Date yearOfIllnessTmp;
+	private Date Year_Of_Illness;
 	@Transient
-	private Date yearOfSurgeryTmp;
+	private Date Year_Of_Surgery;
+	@Transient
+	private String Illness_Type;
+	@Transient
+	private String Surgery_Type;
+	@Transient
+	private String Other_Illness_Type;
+	@Transient
+	private String Other_Surgery_Type;
 
 	public BenMedHistory(String illnessType, String otherIllnessType, Date yearOfIllnessTmp, String surgeryType,
 			String otherSurgeryType, Date yearOfSurgeryTmp) {
-		this.illnessType = illnessType;
-		this.otherIllnessType = otherIllnessType;
-		this.yearOfIllnessTmp = yearOfIllnessTmp;
-		this.surgeryType = surgeryType;
-		this.otherSurgeryType = otherSurgeryType;
-		this.yearOfSurgeryTmp = yearOfSurgeryTmp;
+		this.Illness_Type = illnessType;
+		this.Other_Illness_Type = otherIllnessType;
+		this.Year_Of_Illness = yearOfIllnessTmp;
+		this.Surgery_Type = surgeryType;
+		this.Other_Surgery_Type = otherSurgeryType;
+		this.Year_Of_Surgery = yearOfSurgeryTmp;
 
 	}
 
@@ -286,12 +294,12 @@ public class BenMedHistory {
 		this.otherIllnessType = otherIllnessType;
 	}
 
-	public String getOtrherSurgeryType() {
+	public String getOtherSurgeryType() {
 		return otherSurgeryType;
 	}
 
-	public void setOtrherSurgeryType(String otrherSurgeryType) {
-		this.otherSurgeryType = otrherSurgeryType;
+	public void setOtherSurgeryType(String otherSurgeryType) {
+		this.otherSurgeryType = otherSurgeryType;
 	}
 
 	@Transient
@@ -311,6 +319,7 @@ public class BenMedHistory {
 		ArrayList<BenMedHistory> medHistoryList = new ArrayList<BenMedHistory>();
 		for (int i = 0; i < maxMedHistorySize; i++) {
 			BenMedHistory benMedHistory = new BenMedHistory();
+
 			benMedHistory.setBeneficiaryRegID(beneficiaryRegID);
 			benMedHistory.setBenVisitID(benVisitID);
 			benMedHistory.setProviderServiceMapID(providerServiceMapID);
@@ -318,8 +327,8 @@ public class BenMedHistory {
 			Map<String, Object> illness = (Map<String, Object>) pastIllness.get(i);
 
 			if (null != illness) {
-				if (null != illness.get("illnessID")) {
-					benMedHistory.setIllnessTypeID(Integer.parseInt(illness.get("illnessID").toString()));
+				if (null != illness.get("illnessTypeID")) {
+					benMedHistory.setIllnessTypeID(Integer.parseInt(illness.get("illnessTypeID").toString()));
 				}
 				if (null != illness.get("illnessType")) {
 					benMedHistory.setIllnessType(illness.get("illnessType").toString());
@@ -344,8 +353,9 @@ public class BenMedHistory {
 				if (null != surgery.get("surgeryType")) {
 					benMedHistory.setSurgeryType(surgery.get("surgeryType").toString());
 				}
+
 				if (null != surgery.get("otherSurgeryType")) {
-					benMedHistory.setOtrherSurgeryType(surgery.get("otherSurgeryType").toString());
+					benMedHistory.setOtherSurgeryType(surgery.get("otherSurgeryType").toString());
 				}
 			}
 

@@ -35,15 +35,23 @@ public class FemaleObstetricHistory {
 	
 	@Expose
 	@Column(name = "PregOrder")
-	private String pregOrder;
+	private Short pregOrder;
+	
+	@Expose
+	@Column(name = "totalNoOfPreg")
+	private Short totalNoOfPreg;
 
 	@Expose
 	@Column(name = "PregComplicationID")
-	private Integer pregComplicationID;
+	private Short pregComplicationID;
 
 	@Expose
 	@Column(name = "PregComplicationType")
 	private String pregComplicationType;
+
+	@Expose
+	@Column(name = "OtherPregComplication")
+	private String otherPregComplication;
 
 	@Expose
 	@Column(name = "PregDurationID")
@@ -68,7 +76,11 @@ public class FemaleObstetricHistory {
 	@Expose
 	@Column(name = "DeliveryPlace")
 	private String deliveryPlace;
-
+	
+	@Expose
+	@Column(name = "OtherDeliveryPlace")
+	private String otherDeliveryPlace;
+	
 	@Expose
 	@Column(name = "DeliveryComplicationID")
 	private Short deliveryComplicationID;
@@ -76,6 +88,10 @@ public class FemaleObstetricHistory {
 	@Expose
 	@Column(name = "DeliveryComplicationType")
 	private String deliveryComplicationType;
+	
+	@Expose
+	@Column(name = "OtherDeliveryComplication")
+	private String otherDeliveryComplication;
 
 	@Expose
 	@Column(name = "PregOutcomeID")
@@ -94,20 +110,37 @@ public class FemaleObstetricHistory {
 	private String postpartumComplicationType;
 	
 	@Expose
+	@Column(name = "OtherPostpartumCompType")
+	private String otherPostpartumCompType;
+	
+	@Expose
 	@Column(name = "PostNatalComplicationID")
 	private Short postNatalComplicationID;
 
 	@Expose
 	@Column(name = "PostNatalComplication")
 	private String postNatalComplication;
+	
+	@Expose
+	@Column(name = "OtherPostNatalComplication")
+	private String otherPostNatalComplication;
 
 	@Expose
 	@Column(name = "CongenitalAnomalies")
 	private String congenitalAnomalies;
 
+	
+	@Expose
+	@Column(name = "NewBornComplicationID")
+	private Short newBornComplicationID;
+	
 	@Expose
 	@Column(name = "NewBornComplication")
 	private String newBornComplication;
+	
+	@Expose
+	@Column(name = "OtherNewBornComplication")
+	private String otherNewBornComplication;
 	
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -133,79 +166,6 @@ public class FemaleObstetricHistory {
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
-	@Expose
-	@Transient
-	private String otherPregComplicationType;
-	
-	@Expose
-	@Transient
-	private String otherDeliveryPlace;
-	
-	@Expose
-	@Transient
-	private String otherDeliveryComplicationType;
-	
-	@Expose
-	@Transient
-	private String otherPostpartumComplicationType;
-	
-	@Expose
-	@Transient
-	private String otherPostNatalComplication;
-	
-	@Expose
-	@Transient
-	private String otherNewBornComplication;
-	
-	
-	public String getOtherPregComplicationType() {
-		return otherPregComplicationType;
-	}
-
-	public void setOtherPregComplicationType(String otherPregComplicationType) {
-		this.otherPregComplicationType = otherPregComplicationType;
-	}
-
-	public String getOtherDeliveryPlace() {
-		return otherDeliveryPlace;
-	}
-
-	public void setOtherDeliveryPlace(String otherDeliveryPlace) {
-		this.otherDeliveryPlace = otherDeliveryPlace;
-	}
-
-	public String getOtherDeliveryComplicationType() {
-		return otherDeliveryComplicationType;
-	}
-
-	public void setOtherDeliveryComplicationType(String otherDeliveryComplicationType) {
-		this.otherDeliveryComplicationType = otherDeliveryComplicationType;
-	}
-
-	public String getOtherPostpartumComplicationType() {
-		return otherPostpartumComplicationType;
-	}
-
-	public void setOtherPostpartumComplicationType(String otherPostpartumComplicationType) {
-		this.otherPostpartumComplicationType = otherPostpartumComplicationType;
-	}
-
-	public String getOtherPostNatalComplication() {
-		return otherPostNatalComplication;
-	}
-
-	public void setOtherPostNatalComplication(String otherPostNatalComplication) {
-		this.otherPostNatalComplication = otherPostNatalComplication;
-	}
-
-	public String getOtherNewBornComplication() {
-		return otherNewBornComplication;
-	}
-
-	public void setOtherNewBornComplication(String otherNewBornComplication) {
-		this.otherNewBornComplication = otherNewBornComplication;
-	}
-
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
@@ -230,19 +190,19 @@ public class FemaleObstetricHistory {
 		this.providerServiceMapID = providerServiceMapID;
 	}
 
-	public String getPregOrder() {
+	public Short getPregOrder() {
 		return pregOrder;
 	}
 
-	public void setPregOrder(String pregOrder) {
+	public void setPregOrder(Short pregOrder) {
 		this.pregOrder = pregOrder;
 	}
 
-	public Integer getPregComplicationID() {
+	public Short getPregComplicationID() {
 		return pregComplicationID;
 	}
 
-	public void setPregComplicationID(Integer pregComplicationID) {
+	public void setPregComplicationID(Short pregComplicationID) {
 		this.pregComplicationID = pregComplicationID;
 	}
 
@@ -252,6 +212,14 @@ public class FemaleObstetricHistory {
 
 	public void setPregComplicationType(String pregComplicationType) {
 		this.pregComplicationType = pregComplicationType;
+	}
+
+	public String getOtherPregComplication() {
+		return otherPregComplication;
+	}
+
+	public void setOtherPregComplication(String otherPregComplication) {
+		this.otherPregComplication = otherPregComplication;
 	}
 
 	public Short getPregDurationID() {
@@ -302,6 +270,14 @@ public class FemaleObstetricHistory {
 		this.deliveryPlace = deliveryPlace;
 	}
 
+	public String getOtherDeliveryPlace() {
+		return otherDeliveryPlace;
+	}
+
+	public void setOtherDeliveryPlace(String otherDeliveryPlace) {
+		this.otherDeliveryPlace = otherDeliveryPlace;
+	}
+
 	public Short getDeliveryComplicationID() {
 		return deliveryComplicationID;
 	}
@@ -316,6 +292,14 @@ public class FemaleObstetricHistory {
 
 	public void setDeliveryComplicationType(String deliveryComplicationType) {
 		this.deliveryComplicationType = deliveryComplicationType;
+	}
+
+	public String getOtherDeliveryComplication() {
+		return otherDeliveryComplication;
+	}
+
+	public void setOtherDeliveryComplication(String otherDeliveryComplication) {
+		this.otherDeliveryComplication = otherDeliveryComplication;
 	}
 
 	public Short getPregOutcomeID() {
@@ -350,6 +334,14 @@ public class FemaleObstetricHistory {
 		this.postpartumComplicationType = postpartumComplicationType;
 	}
 
+	public String getOtherPostpartumCompType() {
+		return otherPostpartumCompType;
+	}
+
+	public void setOtherPostpartumCompType(String otherPostpartumCompType) {
+		this.otherPostpartumCompType = otherPostpartumCompType;
+	}
+
 	public Short getPostNatalComplicationID() {
 		return postNatalComplicationID;
 	}
@@ -366,12 +358,44 @@ public class FemaleObstetricHistory {
 		this.postNatalComplication = postNatalComplication;
 	}
 
+	public String getOtherPostNatalComplication() {
+		return otherPostNatalComplication;
+	}
+
+	public void setOtherPostNatalComplication(String otherPostNatalComplication) {
+		this.otherPostNatalComplication = otherPostNatalComplication;
+	}
+
 	public String getCongenitalAnomalies() {
 		return congenitalAnomalies;
 	}
 
 	public void setCongenitalAnomalies(String congenitalAnomalies) {
 		this.congenitalAnomalies = congenitalAnomalies;
+	}
+
+	public Short getNewBornComplicationID() {
+		return newBornComplicationID;
+	}
+
+	public void setNewBornComplicationID(Short newBornComplicationID) {
+		this.newBornComplicationID = newBornComplicationID;
+	}
+
+	public String getNewBornComplication() {
+		return newBornComplication;
+	}
+
+	public void setNewBornComplication(String newBornComplication) {
+		this.newBornComplication = newBornComplication;
+	}
+
+	public String getOtherNewBornComplication() {
+		return otherNewBornComplication;
+	}
+
+	public void setOtherNewBornComplication(String otherNewBornComplication) {
+		this.otherNewBornComplication = otherNewBornComplication;
 	}
 
 	public Boolean getDeleted() {
@@ -425,13 +449,5 @@ public class FemaleObstetricHistory {
 	public Long getObstetricHistoryID() {
 		return obstetricHistoryID;
 	}
-	
-	public String getNewBornComplication() {
-		return newBornComplication;
-	}
 
-	public void setNewBornComplication(String newBornComplication) {
-		this.newBornComplication = newBornComplication;
-	}
-	
 }

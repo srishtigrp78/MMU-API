@@ -51,8 +51,16 @@ public class BenPersonalHabit {
 	private String tobaccoUseStatus;
 	
 	@Expose
+	@Column(name = "TobaccoUseTypeID")
+	private String tobaccoUseTypeID;
+	
+	@Expose
 	@Column(name = "TobaccoUseType")
 	private String tobaccoUseType;
+	
+	@Expose
+	@Column(name = "OtherTobaccoUseType")
+	private String otherTobaccoUseType;
 	
 	@Expose
 	@Column(name = "NumberperDay")
@@ -65,10 +73,18 @@ public class BenPersonalHabit {
 	@Expose
 	@Column(name = "AlcoholIntakeStatus")
 	private String alcoholIntakeStatus;
+
+	@Expose
+	@Column(name = "AlcoholTypeID")
+	private String alcoholTypeID;
 	
 	@Expose
 	@Column(name = "AlcoholType")
 	private String alcoholType;
+	
+	@Expose
+	@Column(name = "OtherAlcoholType")
+	private String otherAlcoholType;
 	
 	@Expose
 	@Column(name = "AlcoholIntakeFrequency")
@@ -310,6 +326,38 @@ public class BenPersonalHabit {
 		this.alcoholList = alcoholList;
 	}
 	
+	public String getTobaccoUseTypeID() {
+		return tobaccoUseTypeID;
+	}
+
+	public void setTobaccoUseTypeID(String tobaccoUseTypeID) {
+		this.tobaccoUseTypeID = tobaccoUseTypeID;
+	}
+
+	public String getOtherTobaccoUseType() {
+		return otherTobaccoUseType;
+	}
+
+	public void setOtherTobaccoUseType(String otherTobaccoUseType) {
+		this.otherTobaccoUseType = otherTobaccoUseType;
+	}
+
+	public String getAlcoholTypeID() {
+		return alcoholTypeID;
+	}
+
+	public void setAlcoholTypeID(String alcoholTypeID) {
+		this.alcoholTypeID = alcoholTypeID;
+	}
+
+	public String getOtherAlcoholType() {
+		return otherAlcoholType;
+	}
+
+	public void setOtherAlcoholType(String otherAlcoholType) {
+		this.otherAlcoholType = otherAlcoholType;
+	}
+	
 	public ArrayList<BenPersonalHabit> getPersonalHistory(){
 		int maxPersonalHistorySize =0;
 		if(tobaccoList.size()>alcoholList.size()){
@@ -335,15 +383,12 @@ public class BenPersonalHabit {
 			String timePeriodUnit = "";
 			Integer timePeriodAgo = 0;
 			
-//			 [ { "typeOfTobacco": null, "otherTypeOfTobacco": null, "quantityPerDay": null, "duration": null, "durationUnit": null } 
 			if(tobaccoList.size()>i){
 				Map<String, String> tobaccoInfo=(Map<String, String>) tobaccoList.get(i);
-				String otherTypeOfTobacco=tobaccoInfo.get("otherTypeOfTobacco");
-				if(null != otherTypeOfTobacco){
-					benPersonalHabit.setTobaccoUseType(tobaccoInfo.get("tobaccoUseType") +"-"+otherTypeOfTobacco);
-				}else{
-					benPersonalHabit.setTobaccoUseType(tobaccoInfo.get("tobaccoUseType"));
-				}
+				benPersonalHabit.setTobaccoUseTypeID(tobaccoInfo.get("tobaccoUseTypeID"));
+				benPersonalHabit.setTobaccoUseType(tobaccoInfo.get("tobaccoUseType"));
+				benPersonalHabit.setOtherTobaccoUseType(tobaccoInfo.get("OtherTobaccoUseType"));
+				
 				if(null != tobaccoInfo.get("numberperDay")){
 					benPersonalHabit.setNumberperDay(new Short(tobaccoInfo.get("numberperDay")));
 				}
@@ -354,16 +399,13 @@ public class BenPersonalHabit {
 				}
 				benPersonalHabit.setTobaccoUseDuration(Utility.convertToDateFormat(timePeriodUnit, timePeriodAgo));
 			}
-//			[ { "typeOfAlcohol": null, "otherTypeOfAlcohol": null, "frequencyOfAlcoholIntake": null, "averageQuantityOfAlcoholConsumption": null, "duration": null, "durationUnit": null } ],
 			
 			if(alcoholList.size()>i){
 				Map<String, String> alcoholInfo=(Map<String, String>) alcoholList.get(i);
-				String otherTypeOfAlcohol=alcoholInfo.get("otherTypeOfAlcohol");
-				if(null != otherTypeOfAlcohol){
-					benPersonalHabit.setAlcoholType(alcoholInfo.get("typeOfAlcohol")+"-"+otherTypeOfAlcohol);
-				}else{
-					benPersonalHabit.setAlcoholType(alcoholInfo.get("typeOfAlcohol"));
-				}
+				
+				benPersonalHabit.setAlcoholTypeID(alcoholInfo.get("alcoholTypeID"));
+				benPersonalHabit.setAlcoholType(alcoholInfo.get("typeOfAlcohol"));
+				benPersonalHabit.setOtherAlcoholType(alcoholInfo.get("otherAlcoholType"));
 				benPersonalHabit.setAlcoholIntakeFrequency(alcoholInfo.get("alcoholIntakeFrequency"));
 				benPersonalHabit.setAvgAlcoholConsumption(alcoholInfo.get("avgAlcoholConsumption"));
 				
