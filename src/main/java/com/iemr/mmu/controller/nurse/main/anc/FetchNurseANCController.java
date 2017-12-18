@@ -148,4 +148,107 @@ public class FetchNurseANCController {
 		return response.toString();
 	}
 
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary ANC Tobacco History", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenANCTobaccoHistory" }, method = { RequestMethod.POST })
+	public String getBenANCTobaccoHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenANCTobaccoHistory request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID")) {
+				Long benRegID = obj.getLong("benRegID");
+				String s = aNCServiceImpl.fetchBenPersonalTobaccoHistory(benRegID);
+				response.setResponse(s);
+
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenANCTobaccoHistory response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenANCTobaccoHistory:" + e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary ANC Alcohol History", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenANCAlcoholHistory" }, method = { RequestMethod.POST })
+	public String getBenANCAlcoholHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenANCAlcoholHistory request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID")) {
+				Long benRegID = obj.getLong("benRegID");
+				String s = aNCServiceImpl.fetchBenPersonalAlcoholHistory(benRegID);
+				response.setResponse(s);
+
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenANCAlcoholHistory response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenANCAlcoholHistory:" + e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary ANC Allergy History", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenANCAllergyHistory" }, method = { RequestMethod.POST })
+	public String getBenANCAllergyHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenANCAllergyHistory request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID")) {
+				Long benRegID = obj.getLong("benRegID");
+				String s = aNCServiceImpl.fetchBenPersonalAllergyHistory(benRegID);
+				response.setResponse(s);
+
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenANCAllergyHistory response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenANCAllergyHistory:" + e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary ANC Medication History", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenANCMedicationHistory" }, method = { RequestMethod.POST })
+	public String getBenANCMedicationHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenANCMedicationHistory request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID")) {
+				Long benRegID = obj.getLong("benRegID");
+				String s = aNCServiceImpl.fetchBenPersonalMedicationHistory(benRegID);
+				response.setResponse(s);
+
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenANCMedicationHistory response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenANCMedicationHistory:" + e);
+		}
+		return response.toString();
+	}
 }
