@@ -122,4 +122,30 @@ public class FetchNurseANCController {
 		return response.toString();
 	}
 
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary ANC Past History", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenANCPastHistory" }, method = { RequestMethod.POST })
+	public String getBenANCPastHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenANCPastHistory request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID")) {
+				Long benRegID = obj.getLong("benRegID");
+				String s = aNCServiceImpl.fetchBenPastMedicalHistory(benRegID);
+				response.setResponse(s);
+
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenANCPastHistory response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenANCPastHistory:" + e);
+		}
+		return response.toString();
+	}
+
 }

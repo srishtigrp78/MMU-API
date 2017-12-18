@@ -140,6 +140,7 @@ public class ANCServiceImpl implements ANCService {
 	private BenFamilyHistoryRepo benFamilyHistoryRepo;
 	private ChildFeedingDetailsRepo childFeedingDetailsRepo;
 	private ChildVaccineDetail1Repo childVaccineDetail1Repo;
+
 	@Autowired
 	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
 		this.nurseServiceImpl = nurseServiceImpl;
@@ -207,12 +208,12 @@ public class ANCServiceImpl implements ANCService {
 	public void setSysRespiratoryExaminationRepo(SysRespiratoryExaminationRepo sysRespiratoryExaminationRepo) {
 		this.sysRespiratoryExaminationRepo = sysRespiratoryExaminationRepo;
 	}
-	
+
 	@Autowired
 	public void setBenMedHistoryRepo(BenMedHistoryRepo benMedHistoryRepo) {
 		this.benMedHistoryRepo = benMedHistoryRepo;
 	}
-	
+
 	@Autowired
 	public void setBencomrbidityCondRepo(BencomrbidityCondRepo bencomrbidityCondRepo) {
 		this.bencomrbidityCondRepo = bencomrbidityCondRepo;
@@ -222,57 +223,57 @@ public class ANCServiceImpl implements ANCService {
 	public void setBenMedicationHistoryRepo(BenMedicationHistoryRepo benMedicationHistoryRepo) {
 		this.benMedicationHistoryRepo = benMedicationHistoryRepo;
 	}
-	
+
 	@Autowired
 	public void setBenMenstrualDetailsRepo(BenMenstrualDetailsRepo benMenstrualDetailsRepo) {
 		this.benMenstrualDetailsRepo = benMenstrualDetailsRepo;
 	}
-	
+
 	@Autowired
 	public void setPerinatalHistoryRepo(PerinatalHistoryRepo perinatalHistoryRepo) {
 		this.perinatalHistoryRepo = perinatalHistoryRepo;
 	}
-	
+
 	@Autowired
 	public void setBenChildDevelopmentHistoryRepo(BenChildDevelopmentHistoryRepo benChildDevelopmentHistoryRepo) {
 		this.benChildDevelopmentHistoryRepo = benChildDevelopmentHistoryRepo;
 	}
-	
+
 	@Autowired
 	public void setBenPersonalHabitRepo(BenPersonalHabitRepo benPersonalHabitRepo) {
 		this.benPersonalHabitRepo = benPersonalHabitRepo;
 	}
-	
+
 	@Autowired
 	public void setFemaleObstetricHistoryRepo(FemaleObstetricHistoryRepo femaleObstetricHistoryRepo) {
 		this.femaleObstetricHistoryRepo = femaleObstetricHistoryRepo;
 	}
-	
+
 	@Autowired
 	public void setBenAllergyHistoryRepo(BenAllergyHistoryRepo benAllergyHistoryRepo) {
 		this.benAllergyHistoryRepo = benAllergyHistoryRepo;
 	}
-	
+
 	@Autowired
 	public void setChildOptionalVaccineDetailRepo(ChildOptionalVaccineDetailRepo childOptionalVaccineDetailRepo) {
 		this.childOptionalVaccineDetailRepo = childOptionalVaccineDetailRepo;
 	}
-	
+
 	@Autowired
 	public void setChildFeedingDetailsRepo(ChildFeedingDetailsRepo childFeedingDetailsRepo) {
 		this.childFeedingDetailsRepo = childFeedingDetailsRepo;
 	}
-	
+
 	@Autowired
 	public void setBenFamilyHistoryRepo(BenFamilyHistoryRepo benFamilyHistoryRepo) {
 		this.benFamilyHistoryRepo = benFamilyHistoryRepo;
 	}
-	
+
 	@Autowired
 	public void setChildVaccineDetail1Repo(ChildVaccineDetail1Repo childVaccineDetail1Repo) {
 		this.childVaccineDetail1Repo = childVaccineDetail1Repo;
 	}
-	
+
 	@Override
 	public Long saveBeneficiaryANCDetails(ANCCareDetails ancCareDetails) {
 		ANCCareDetails ancCareDetail = ancCareRepo.save(ancCareDetails);
@@ -840,153 +841,180 @@ public class ANCServiceImpl implements ANCService {
 		}
 		return r;
 	}
-	
+
 	@Override
 	public Integer saveBenANCPastHistory(BenMedHistory benMedHistory) {
 		Integer r = 0;
 		ArrayList<BenMedHistory> benMedHistoryList = benMedHistory.getBenPastHistory();
 		ArrayList<BenMedHistory> res = (ArrayList<BenMedHistory>) benMedHistoryRepo.save(benMedHistoryList);
-		if(null != res && res.size()>0){
+		if (null != res && res.size() > 0) {
 			r = res.size();
 		}
 		return r;
 	}
-	
+
 	@Override
 	public Integer saveBenANCComorbidConditions(WrapperComorbidCondDetails wrapperComorbidCondDetails) {
 		Integer r = 0;
-		ArrayList<BencomrbidityCondDetails> bencomrbidityCondDetailsList = wrapperComorbidCondDetails.getComrbidityConds();
-		ArrayList<BencomrbidityCondDetails> res = (ArrayList<BencomrbidityCondDetails>) bencomrbidityCondRepo.save(bencomrbidityCondDetailsList);
-		if(null != res && res.size()>0){
+		ArrayList<BencomrbidityCondDetails> bencomrbidityCondDetailsList = wrapperComorbidCondDetails
+				.getComrbidityConds();
+		ArrayList<BencomrbidityCondDetails> res = (ArrayList<BencomrbidityCondDetails>) bencomrbidityCondRepo
+				.save(bencomrbidityCondDetailsList);
+		if (null != res && res.size() > 0) {
 			r = res.size();
 		}
 		return r;
 	}
-	
+
 	@Override
 	public Integer saveBenANCMedicationHistory(WrapperMedicationHistory wrapperMedicationHistory) {
 		Integer r = 0;
-		ArrayList<BenMedicationHistory> benMedicationHistoryList = wrapperMedicationHistory.getBenMedicationHistoryDetails();
-		ArrayList<BenMedicationHistory> res = (ArrayList<BenMedicationHistory>) benMedicationHistoryRepo.save(benMedicationHistoryList);
-		if(null != res && res.size()>0){
+		ArrayList<BenMedicationHistory> benMedicationHistoryList = wrapperMedicationHistory
+				.getBenMedicationHistoryDetails();
+		ArrayList<BenMedicationHistory> res = (ArrayList<BenMedicationHistory>) benMedicationHistoryRepo
+				.save(benMedicationHistoryList);
+		if (null != res && res.size() > 0) {
 			r = res.size();
 		}
 		return r;
 	}
-	
+
 	@Override
 	public Integer saveBenANCMenstrualHistory(BenMenstrualDetails benMenstrualDetails) {
 		Integer r = 0;
-		
+
 		BenMenstrualDetails res = benMenstrualDetailsRepo.save(benMenstrualDetails);
-		if(null != res && res.getBenMenstrualID()>0){
+		if (null != res && res.getBenMenstrualID() > 0) {
 			r = res.getBenMenstrualID();
 		}
 		return r;
 	}
-	
+
 	@Override
 	public Integer saveFemaleObstetricHistory(WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory) {
 		Integer r = 0;
-		
-		ArrayList<FemaleObstetricHistory> FemaleObstetricHistorylist= wrapperFemaleObstetricHistory.getFemaleObstetricHistoryDetails();
-		ArrayList<FemaleObstetricHistory> res = (ArrayList<FemaleObstetricHistory>) femaleObstetricHistoryRepo.save(FemaleObstetricHistorylist);
-		if(null != res && res.size()>0){
+
+		ArrayList<FemaleObstetricHistory> FemaleObstetricHistorylist = wrapperFemaleObstetricHistory
+				.getFemaleObstetricHistoryDetails();
+		ArrayList<FemaleObstetricHistory> res = (ArrayList<FemaleObstetricHistory>) femaleObstetricHistoryRepo
+				.save(FemaleObstetricHistorylist);
+		if (null != res && res.size() > 0) {
 			r = 1;
 		}
 		return r;
 	}
-	
+
 	@Override
 	public Integer savePerinatalHistory(PerinatalHistory perinatalHistory) {
 		Integer r = 0;
-		
+
 		PerinatalHistory res = perinatalHistoryRepo.save(perinatalHistory);
-		if(null != res && res.getID()>0){
+		if (null != res && res.getID() > 0) {
 			r = 1;
 		}
 		return r;
 	}
-	
+
 	@Override
 	public Integer saveChildOptionalVaccineDetail(WrapperChildOptionalVaccineDetail wrapperChildVaccineDetail) {
 		Integer r = 0;
-		ArrayList<ChildOptionalVaccineDetail> childOptionalVaccineDetails  = wrapperChildVaccineDetail.getChildOptionalVaccineDetails();
-		ArrayList<ChildOptionalVaccineDetail> res = (ArrayList<ChildOptionalVaccineDetail>) childOptionalVaccineDetailRepo.save(childOptionalVaccineDetails);
-		if(null != res && res.size()>0){
+		ArrayList<ChildOptionalVaccineDetail> childOptionalVaccineDetails = wrapperChildVaccineDetail
+				.getChildOptionalVaccineDetails();
+		ArrayList<ChildOptionalVaccineDetail> res = (ArrayList<ChildOptionalVaccineDetail>) childOptionalVaccineDetailRepo
+				.save(childOptionalVaccineDetails);
+		if (null != res && res.size() > 0) {
 			r = 1;
 		}
 		return r;
 	}
-	
+
 	@Override
 	public Integer saveChildDevelopmentHistory(BenChildDevelopmentHistory benChildDevelopmentHistory) {
 		Integer r = 0;
-		
-		BenChildDevelopmentHistory childDevelopmentHistory = BenChildDevelopmentHistory.getDevelopmentHistory(benChildDevelopmentHistory);
+
+		BenChildDevelopmentHistory childDevelopmentHistory = BenChildDevelopmentHistory
+				.getDevelopmentHistory(benChildDevelopmentHistory);
 		BenChildDevelopmentHistory res = benChildDevelopmentHistoryRepo.save(childDevelopmentHistory);
-		if(null != res && res.getID()>0){
+		if (null != res && res.getID() > 0) {
 			r = 1;
 		}
 		return r;
 	}
-	
+
 	@Override
 	public Integer saveANCPersonalHistory(BenPersonalHabit benPersonalHabit) {
 		Integer r = 0;
-		
+
 		ArrayList<BenPersonalHabit> personalHabits = benPersonalHabit.getPersonalHistory();
 		ArrayList<BenPersonalHabit> res = (ArrayList<BenPersonalHabit>) benPersonalHabitRepo.save(personalHabits);
-		if(null != res && res.size()>0){
+		if (null != res && res.size() > 0) {
 			r = res.size();
 		}
 		return r;
 	}
-	
+
 	@Override
 	public Integer saveANCAllergyHistory(BenAllergyHistory benAllergyHistory) {
 		Integer r = 0;
-		
+
 		ArrayList<BenAllergyHistory> allergyList = benAllergyHistory.getBenAllergicHistory();
 		ArrayList<BenAllergyHistory> res = (ArrayList<BenAllergyHistory>) benAllergyHistoryRepo.save(allergyList);
-		if(null != res && res.size()>0){
+		if (null != res && res.size() > 0) {
 			r = res.size();
 		}
 		return r;
 	}
-	
+
 	@Override
 	public Integer saveANCBenFamilyHistory(BenFamilyHistory benFamilyHistory) {
 		Integer r = 0;
-		
+
 		ArrayList<BenFamilyHistory> familyHistoryList = benFamilyHistory.getBenFamilyHistory();
 		ArrayList<BenFamilyHistory> res = (ArrayList<BenFamilyHistory>) benFamilyHistoryRepo.save(familyHistoryList);
-		if(null != res && res.size()>0){
+		if (null != res && res.size() > 0) {
 			r = res.size();
 		}
 		return r;
 	}
-	
+
 	@Override
 	public Integer saveChildFeedingHistory(ChildFeedingDetails childFeedingDetails) {
 		Integer r = 0;
 		ChildFeedingDetails res = childFeedingDetailsRepo.save(childFeedingDetails);
-		if(null != res && res.getID()>0){
+		if (null != res && res.getID() > 0) {
 			r = 1;
 		}
 		return r;
 	}
-	
+
 	@Override
 	public Integer saveANCImmunizationHistory(WrapperImmunizationHistory wrapperImmunizationHistory) {
 		Integer r = 0;
-		
+
 		ArrayList<ChildVaccineDetail1> childVaccineDetails = wrapperImmunizationHistory.getBenChildVaccineDetails();
-		ArrayList<ChildVaccineDetail1> res =  (ArrayList<ChildVaccineDetail1>) childVaccineDetail1Repo.save(childVaccineDetails);
-		if(null != res && res.size()>0){
+		ArrayList<ChildVaccineDetail1> res = (ArrayList<ChildVaccineDetail1>) childVaccineDetail1Repo
+				.save(childVaccineDetails);
+		if (null != res && res.size() > 0) {
 			r = res.size();
 		}
 		return r;
 	}
-	
+
+	@Override
+	public String fetchBenPastMedicalHistory(Long benRegID) {
+		ArrayList<Object[]> benPastHistoryDataArray = benMedHistoryRepo.getBenPastHistory(benRegID);
+		ArrayList<BenMedHistory> benMedHistoryArrayList = new ArrayList<>();
+		if (benPastHistoryDataArray != null && benPastHistoryDataArray.size() > 0) {
+			BenMedHistory benMedHistory;
+			for (Object[] obj : benPastHistoryDataArray) {
+				benMedHistory = new BenMedHistory((String) obj[0], (String) obj[1], (Date) obj[2], (String) obj[3],
+						(String) obj[4], (Date) obj[5]);
+				benMedHistoryArrayList.add(benMedHistory);
+			}
+		}
+
+		return new Gson().toJson(benMedHistoryArrayList);
+
+	}
+
 }

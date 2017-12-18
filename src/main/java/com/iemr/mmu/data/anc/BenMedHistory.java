@@ -3,7 +3,6 @@ package com.iemr.mmu.data.anc;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Map;
 
 import javax.persistence.Column;
@@ -19,7 +18,7 @@ import com.iemr.mmu.service.anc.Utility;
 @Entity
 @Table(name = "t_BenMedHistory")
 public class BenMedHistory {
-	
+
 	@Id
 	@GeneratedValue
 	@Expose
@@ -33,47 +32,47 @@ public class BenMedHistory {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "YearofIllness")
 	private Timestamp yearofIllness;
-	
+
 	@Expose
 	@Column(name = "IllnessTypeID")
 	private Integer illnessTypeID;
-	
+
 	@Expose
 	@Column(name = "IllnessType")
 	private String illnessType;
-	
+
 	@Expose
 	@Column(name = "OtherIllnessType")
 	private String otherIllnessType;
-	
+
 	@Expose
 	@Column(name = "SurgeryID")
 	private Integer surgeryID;
-	
+
 	@Expose
 	@Column(name = "SurgeryType")
 	private String surgeryType;
-	
+
 	@Expose
 	@Column(name = "YearofSurgery")
 	private Timestamp yearofSurgery;
-	
+
 	@Expose
-	@Column(name = "OtrherSurgeryType")
-	private String otrherSurgeryType;
-	
+	@Column(name = "OtherSurgeryType")
+	private String otherSurgeryType;
+
 	@Expose
 	@Column(name = "DrugComplianceID")
 	private Short drugComplianceID;
-	
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -97,6 +96,55 @@ public class BenMedHistory {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
+
+	public BenMedHistory() {
+	}
+
+	@Transient
+	private Date yearOfIllnessTmp;
+	@Transient
+	private Date yearOfSurgeryTmp;
+
+	public BenMedHistory(String illnessType, String otherIllnessType, Date yearOfIllnessTmp, String surgeryType,
+			String otherSurgeryType, Date yearOfSurgeryTmp) {
+		this.illnessType = illnessType;
+		this.otherIllnessType = otherIllnessType;
+		this.yearOfIllnessTmp = yearOfIllnessTmp;
+		this.surgeryType = surgeryType;
+		this.otherSurgeryType = otherSurgeryType;
+		this.yearOfSurgeryTmp = yearOfSurgeryTmp;
+
+	}
+
+	public BenMedHistory(Long benMedHistoryID, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
+			Timestamp yearofIllness, Integer illnessTypeID, String illnessType, String otherIllnessType,
+			Integer surgeryID, String surgeryType, Timestamp yearofSurgery, String otrherSurgeryType,
+			Short drugComplianceID, Boolean deleted, String processed, String createdBy, Timestamp createdDate,
+			String modifiedBy, Timestamp lastModDate, ArrayList<Map<String, Object>> pastIllness,
+			ArrayList<Map<String, Object>> pastSurgery) {
+		super();
+		this.benMedHistoryID = benMedHistoryID;
+		this.beneficiaryRegID = beneficiaryRegID;
+		this.benVisitID = benVisitID;
+		this.providerServiceMapID = providerServiceMapID;
+		this.yearofIllness = yearofIllness;
+		this.illnessTypeID = illnessTypeID;
+		this.illnessType = illnessType;
+		this.otherIllnessType = otherIllnessType;
+		this.surgeryID = surgeryID;
+		this.surgeryType = surgeryType;
+		this.yearofSurgery = yearofSurgery;
+		this.otherSurgeryType = otrherSurgeryType;
+		this.drugComplianceID = drugComplianceID;
+		this.deleted = deleted;
+		this.processed = processed;
+		this.createdBy = createdBy;
+		this.createdDate = createdDate;
+		this.modifiedBy = modifiedBy;
+		this.lastModDate = lastModDate;
+		this.pastIllness = pastIllness;
+		this.pastSurgery = pastSurgery;
+	}
 
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
@@ -229,7 +277,7 @@ public class BenMedHistory {
 	public Long getBenMedHistoryID() {
 		return benMedHistoryID;
 	}
-	
+
 	public String getOtherIllnessType() {
 		return otherIllnessType;
 	}
@@ -239,80 +287,79 @@ public class BenMedHistory {
 	}
 
 	public String getOtrherSurgeryType() {
-		return otrherSurgeryType;
+		return otherSurgeryType;
 	}
 
 	public void setOtrherSurgeryType(String otrherSurgeryType) {
-		this.otrherSurgeryType = otrherSurgeryType;
+		this.otherSurgeryType = otrherSurgeryType;
 	}
-	
+
 	@Transient
 	@Expose
-	private ArrayList<Map<String,Object>> pastIllness;
+	private ArrayList<Map<String, Object>> pastIllness;
 	@Transient
 	@Expose
-	private ArrayList<Map<String,Object>> pastSurgery;
+	private ArrayList<Map<String, Object>> pastSurgery;
 
 	public ArrayList<BenMedHistory> getBenPastHistory() {
-		int maxMedHistorySize =0;
-		if(pastIllness.size()>pastSurgery.size()){
+		int maxMedHistorySize = 0;
+		if (pastIllness.size() > pastSurgery.size()) {
 			maxMedHistorySize = pastIllness.size();
-		}else{
+		} else {
 			maxMedHistorySize = pastSurgery.size();
 		}
-		ArrayList<BenMedHistory> medHistoryList=new ArrayList<BenMedHistory>();
-		for(int i=0;i<maxMedHistorySize ; i++){
+		ArrayList<BenMedHistory> medHistoryList = new ArrayList<BenMedHistory>();
+		for (int i = 0; i < maxMedHistorySize; i++) {
 			BenMedHistory benMedHistory = new BenMedHistory();
-				benMedHistory.setBeneficiaryRegID(beneficiaryRegID);
-				benMedHistory.setBenVisitID(benVisitID);
-				benMedHistory.setProviderServiceMapID(providerServiceMapID);
-				benMedHistory.setCreatedBy(createdBy);
-				Map<String,Object> illness=(Map<String, Object>) pastIllness.get(i);
-				
-				
-			if(null != illness){
-				if(null != illness.get("illnessID")){
+			benMedHistory.setBeneficiaryRegID(beneficiaryRegID);
+			benMedHistory.setBenVisitID(benVisitID);
+			benMedHistory.setProviderServiceMapID(providerServiceMapID);
+			benMedHistory.setCreatedBy(createdBy);
+			Map<String, Object> illness = (Map<String, Object>) pastIllness.get(i);
+
+			if (null != illness) {
+				if (null != illness.get("illnessID")) {
 					benMedHistory.setIllnessTypeID(Integer.parseInt(illness.get("illnessID").toString()));
 				}
-				if(null != illness.get("illnessType")){
+				if (null != illness.get("illnessType")) {
 					benMedHistory.setIllnessType(illness.get("illnessType").toString());
 				}
-				if(null != illness.get("otherIllnessType")){
+				if (null != illness.get("otherIllnessType")) {
 					benMedHistory.setOtherIllnessType(illness.get("otherIllnessType").toString());
 				}
 			}
-			
+
 			String timePeriodUnit = (String) illness.get("timePeriodUnit");
 			Integer timePeriodAgo = 0;
-			if(null != illness.get("timePeriodAgo")){
-				timePeriodAgo =  Integer.parseInt(illness.get("timePeriodAgo").toString());
+			if (null != illness.get("timePeriodAgo")) {
+				timePeriodAgo = Integer.parseInt(illness.get("timePeriodAgo").toString());
 			}
 			benMedHistory.setYearofIllness(Utility.convertToDateFormat(timePeriodUnit, timePeriodAgo));
-			
-			Map<String,Object> surgery=(Map<String, Object>) pastSurgery.get(i);
-			if(null != surgery){
-				if(null != surgery.get("surgeryID")){
+
+			Map<String, Object> surgery = (Map<String, Object>) pastSurgery.get(i);
+			if (null != surgery) {
+				if (null != surgery.get("surgeryID")) {
 					benMedHistory.setSurgeryID(Integer.parseInt(surgery.get("surgeryID").toString()));
 				}
-				if(null != surgery.get("surgeryType")){
+				if (null != surgery.get("surgeryType")) {
 					benMedHistory.setSurgeryType(surgery.get("surgeryType").toString());
 				}
-				if(null != surgery.get("otherSurgeryType")){
+				if (null != surgery.get("otherSurgeryType")) {
 					benMedHistory.setOtrherSurgeryType(surgery.get("otherSurgeryType").toString());
 				}
 			}
-			
+
 			String surgeryTimePeriodUnit = (String) surgery.get("timePeriodUnit");
 			Integer surgeryTimePeriodAgo = 0;
-			if(null != surgery.get("timePeriodAgo")){
-				surgeryTimePeriodAgo =  Integer.parseInt(surgery.get("timePeriodAgo").toString());
+			if (null != surgery.get("timePeriodAgo")) {
+				surgeryTimePeriodAgo = Integer.parseInt(surgery.get("timePeriodAgo").toString());
 			}
 			benMedHistory.setYearofSurgery(Utility.convertToDateFormat(surgeryTimePeriodUnit, surgeryTimePeriodAgo));
-			
+
 			medHistoryList.add(benMedHistory);
 		}
 
 		return medHistoryList;
 	}
-	
+
 }

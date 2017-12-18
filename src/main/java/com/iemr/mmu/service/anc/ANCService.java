@@ -12,10 +12,7 @@ import com.iemr.mmu.data.anc.BenFamilyHistory;
 import com.iemr.mmu.data.anc.BenMedHistory;
 import com.iemr.mmu.data.anc.BenMenstrualDetails;
 import com.iemr.mmu.data.anc.BenPersonalHabit;
-import com.iemr.mmu.data.anc.BencomrbidityCondDetails;
 import com.iemr.mmu.data.anc.ChildFeedingDetails;
-import com.iemr.mmu.data.anc.ChildOptionalVaccineDetail;
-import com.iemr.mmu.data.anc.FemaleObstetricHistory;
 import com.iemr.mmu.data.anc.PerinatalHistory;
 import com.iemr.mmu.data.anc.PhyGeneralExamination;
 import com.iemr.mmu.data.anc.PhyHeadToToeExamination;
@@ -116,5 +113,7 @@ public interface ANCService {
 	public Integer saveChildFeedingHistory(ChildFeedingDetails childFeedingDetails);
 
 	public Integer saveANCImmunizationHistory(WrapperImmunizationHistory wrapperImmunizationHistory);
+
+	public String fetchBenPastMedicalHistory(Long benRegID);
 
 }
