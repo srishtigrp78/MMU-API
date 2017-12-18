@@ -114,6 +114,6 @@ public interface ANCService {
 
 	public Integer saveANCImmunizationHistory(WrapperImmunizationHistory wrapperImmunizationHistory);
 
-	public String fetchBenPastMedicalHistory(Long benRegID);
+	public String fetchBenPastMedicalHistory(Long benRegID) throws Exception;
 
 }

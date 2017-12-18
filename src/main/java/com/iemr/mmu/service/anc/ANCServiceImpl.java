@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -82,6 +83,8 @@ import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
+
+import net.minidev.json.parser.JSONParser;
 
 @Service
 public class ANCServiceImpl implements ANCService {
@@ -1001,7 +1004,8 @@ public class ANCServiceImpl implements ANCService {
 	}
 
 	@Override
-	public String fetchBenPastMedicalHistory(Long benRegID) {
+	public String fetchBenPastMedicalHistory(Long benRegID) throws Exception {
+		Map<String, Object> resMap = new HashMap<>();
 		ArrayList<Object[]> benPastHistoryDataArray = benMedHistoryRepo.getBenPastHistory(benRegID);
 		ArrayList<BenMedHistory> benMedHistoryArrayList = new ArrayList<>();
 		if (benPastHistoryDataArray != null && benPastHistoryDataArray.size() > 0) {
@@ -1013,7 +1017,14 @@ public class ANCServiceImpl implements ANCService {
 			}
 		}
 
-		return new Gson().toJson(benMedHistoryArrayList);
+		
+		
+		
+
+		//resMap.put("columns", columnNameJsn);
+		resMap.put("data", benMedHistoryArrayList);
+
+		return new Gson().toJson(resMap);
 
 	}
 
