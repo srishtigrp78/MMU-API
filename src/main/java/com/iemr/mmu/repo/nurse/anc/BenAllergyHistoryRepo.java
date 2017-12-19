@@ -13,7 +13,7 @@ import com.iemr.mmu.data.anc.BenAllergyHistory;
 public interface BenAllergyHistoryRepo extends CrudRepository<BenAllergyHistory, Long>{
 
 	@Query("select allergyStatus, allergyType, allergenName, allergicReactionTypeID, allergicReactionType, otherAllergicReaction, remarks "
-			+ " from BenAllergyHistory a where a.beneficiaryRegID = :beneficiaryRegID AND benVisitID = :benVisitID")
-		public ArrayList<Object[]> getBenPersonalAllergyDetail(@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("benVisitID") Long benVisitID);
+			+ " from BenAllergyHistory a where a.beneficiaryRegID = :beneficiaryRegID")
+		public ArrayList<Object[]> getBenPersonalAllergyDetail(@Param("beneficiaryRegID") Long beneficiaryRegID);
 		
 }

@@ -247,5 +247,14 @@ public class BencomrbidityCondDetails {
 	public void setIsForHistory(Boolean isForHistory) {
 		this.isForHistory = isForHistory;
 	}
+
+	public BencomrbidityCondDetails(Short comorbidConditionID, String comorbidCondition, Timestamp year,
+			String otherComorbidCondition) {
+		super();
+		this.comorbidConditionID = comorbidConditionID;
+		this.comorbidCondition = comorbidCondition;
+		this.year = year;
+		this.otherComorbidCondition = otherComorbidCondition;
+	}
 	
 }

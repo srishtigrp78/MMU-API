@@ -251,4 +251,135 @@ public class FetchNurseANCController {
 		}
 		return response.toString();
 	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary ANC Family History", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenANCFamilyHistory" }, method = { RequestMethod.POST })
+	public String getBenANCFamilyHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenANCFamilyHistory request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID")) {
+				Long benRegID = obj.getLong("benRegID");
+				String s = aNCServiceImpl.fetchBenPersonalFamilyHistory(benRegID);
+				response.setResponse(s);
+
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenANCFamilyHistory response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenANCFamilyHistory:" + e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary ANC Menstrual History", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenANCMenstrualHistory" }, method = { RequestMethod.POST })
+	public String getBenANCMenstrualHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenANCMenstrualHistory request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID")) {
+				Long benRegID = obj.getLong("benRegID");
+				String s = aNCServiceImpl.fetchBenMenstrualHistory(benRegID);
+				response.setResponse(s);
+
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenANCMenstrualHistory response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenANCMenstrualHistory:" + e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary ANC past Obstetric History", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenANCPastObstetricHistory" }, method = { RequestMethod.POST })
+	public String getBenANCPastObstetricHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenANCPastObstetricHistory request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID")) {
+				Long benRegID = obj.getLong("benRegID");
+				String s = aNCServiceImpl.fetchBenPastObstetricHistory(benRegID);
+				response.setResponse(s);
+
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenANCPastObstetricHistory response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenANCPastObstetricHistory:" + e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary ANC Comorbidity Condition Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenANCComorbidityConditionHistory" }, method = { RequestMethod.POST })
+	public String getBenANCComorbidityConditionHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenANCComorbidityConditionHistory request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID")) {
+				Long benRegID = obj.getLong("benRegID");
+				String s = aNCServiceImpl.fetchBenComorbidityHistory(benRegID);
+				response.setResponse(s);
+
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenANCComorbidityConditionHistory response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenANCComorbidityConditionHistory:" + e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary ANC Optional Vaccine Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenANCOptionalVaccineHistory" }, method = { RequestMethod.POST })
+	public String getBenANCOptionalVaccineHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenANCOptionalVaccineHistory request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID")) {
+				Long benRegID = obj.getLong("benRegID");
+				String s = aNCServiceImpl.fetchBenOptionalVaccineHistory(benRegID);
+				response.setResponse(s);
+
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenANCOptionalVaccineHistory response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenANCOptionalVaccineHistory:" + e);
+		}
+		return response.toString();
+	}
+	
 }

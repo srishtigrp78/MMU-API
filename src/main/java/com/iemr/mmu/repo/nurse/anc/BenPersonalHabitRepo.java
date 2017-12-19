@@ -21,13 +21,12 @@ public interface BenPersonalHabitRepo extends CrudRepository<BenPersonalHabit, I
 	public ArrayList<Long> getBenLastVisitID(@Param("beneficiaryRegID") Long beneficiaryRegID);
 
 	@Query("select dietaryType, physicalActivityType, tobaccoUseStatus, tobaccoUseTypeID, tobaccoUseType, otherTobaccoUseType, numberperDay, tobaccoUseDuration, "
-		//	+ "alcoholIntakeStatus, alcoholTypeID, alcoholType, otherAlcoholType, alcoholIntakeFrequency, avgAlcoholConsumption, alcoholDuration, "
-			+ "riskySexualPracticesStatus from BenPersonalHabit a where a.beneficiaryRegID = :beneficiaryRegID AND benVisitID = :benVisitID")
-	public ArrayList<Object[]> getBenPersonalTobaccoHabitDetail(@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("benVisitID") Long benVisitID);
+			+ "riskySexualPracticesStatus from BenPersonalHabit a where a.beneficiaryRegID = :beneficiaryRegID ")
+	public ArrayList<Object[]> getBenPersonalTobaccoHabitDetail(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	
 	@Query("select dietaryType, physicalActivityType, alcoholIntakeStatus, alcoholTypeID, alcoholType, otherAlcoholType, alcoholIntakeFrequency, "
 			+ " avgAlcoholConsumption, alcoholDuration, riskySexualPracticesStatus "
-			+ " from BenPersonalHabit a where a.beneficiaryRegID = :beneficiaryRegID AND benVisitID = :benVisitID")
-		public ArrayList<Object[]> getBenPersonalAlcoholHabitDetail(@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("benVisitID") Long benVisitID);
+			+ " from BenPersonalHabit a where a.beneficiaryRegID = :beneficiaryRegID")
+		public ArrayList<Object[]> getBenPersonalAlcoholHabitDetail(@Param("beneficiaryRegID") Long beneficiaryRegID);
 		
 }

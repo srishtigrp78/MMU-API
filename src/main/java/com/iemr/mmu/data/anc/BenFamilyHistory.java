@@ -231,6 +231,23 @@ public class BenFamilyHistory {
 		this.otherDiseaseType = otherDiseaseType;
 	}
 	
+	public BenFamilyHistory() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public BenFamilyHistory(String familyMember, Short diseaseTypeID, String diseaseType, String otherDiseaseType,
+			Boolean isGeneticDisorder, String geneticDisorder, Boolean isConsanguineousMarrige) {
+		super();
+		this.familyMember = familyMember;
+		this.diseaseTypeID = diseaseTypeID;
+		this.diseaseType = diseaseType;
+		this.otherDiseaseType = otherDiseaseType;
+		this.isGeneticDisorder = isGeneticDisorder;
+		this.geneticDisorder = geneticDisorder;
+		this.isConsanguineousMarrige = isConsanguineousMarrige;
+	}
+
 	public ArrayList<BenFamilyHistory> getBenFamilyHistory(){
 		
 			ArrayList<BenFamilyHistory> benFamilyHistoryList=new ArrayList<BenFamilyHistory>();

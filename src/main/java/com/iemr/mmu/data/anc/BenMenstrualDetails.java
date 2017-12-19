@@ -239,5 +239,21 @@ public class BenMenstrualDetails {
 	public Integer getBenMenstrualID() {
 		return benMenstrualID;
 	}
+
+	public BenMenstrualDetails(Short menstrualCycleStatusID, String regularity, Short menstrualCyclelengthID,
+			String cycleLength, Short menstrualFlowDurationID, String bloodFlowDuration, Short menstrualProblemID,
+			String problemName, Timestamp lMPDate) {
+		super();
+		this.menstrualCycleStatusID = menstrualCycleStatusID;
+		this.regularity = regularity;
+		this.menstrualCyclelengthID = menstrualCyclelengthID;
+		this.cycleLength = cycleLength;
+		this.menstrualFlowDurationID = menstrualFlowDurationID;
+		this.bloodFlowDuration = bloodFlowDuration;
+		this.menstrualProblemID = menstrualProblemID;
+		this.problemName = problemName;
+		this.lMPDate = lMPDate;
+	}
+
 	
 }

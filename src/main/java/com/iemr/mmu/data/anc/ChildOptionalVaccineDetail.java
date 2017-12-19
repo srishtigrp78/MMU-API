@@ -215,5 +215,16 @@ public class ChildOptionalVaccineDetail {
 	public Long getID() {
 		return ID;
 	}
+
+	public ChildOptionalVaccineDetail(String defaultReceivingAge, String vaccineName, String status,
+			Timestamp receivedDate, String actualReceivingAge, String receivedFacilityName) {
+		super();
+		this.defaultReceivingAge = defaultReceivingAge;
+		this.vaccineName = vaccineName;
+		this.status = status;
+		this.receivedDate = receivedDate;
+		this.actualReceivingAge = actualReceivingAge;
+		this.receivedFacilityName = receivedFacilityName;
+	}
 	
 }
