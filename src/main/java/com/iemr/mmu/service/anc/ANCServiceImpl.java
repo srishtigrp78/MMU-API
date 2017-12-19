@@ -1041,7 +1041,7 @@ public class ANCServiceImpl implements ANCService {
 		columnMap.put("keyName", "Illness_Type");
 		columns.add(columnMap);
 
-		resMap.put("columns", columnMap);
+		resMap.put("columns", columns);
 		resMap.put("data", benMedHistoryArrayList);
 
 		return new Gson().toJson(resMap);
