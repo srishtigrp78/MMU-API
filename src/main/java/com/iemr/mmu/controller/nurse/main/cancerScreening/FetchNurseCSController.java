@@ -1,10 +1,5 @@
 package com.iemr.mmu.controller.nurse.main.cancerScreening;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,15 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.gson.Gson;
-import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
-import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
-import com.iemr.mmu.data.nurse.BenFamilyCancerHistory;
-import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
-import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
-import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
-import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
-import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.service.common.master.NurseMasterDataService;
 import com.iemr.mmu.service.common.master.NurseMasterDataServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
@@ -36,7 +22,10 @@ import io.swagger.annotations.ApiParam;
 @CrossOrigin
 @RestController
 @RequestMapping({ "/nurse" })
-/** Objective: Performs fetching Beneficiary Cancer Screening Details entered by nurse*/
+/**
+ * Objective: Performs fetching Beneficiary Cancer Screening Details entered by
+ * nurse
+ */
 public class FetchNurseCSController {
 	private InputMapper inputMapper;
 	private Logger logger = LoggerFactory.getLogger(FetchNurseCSController.class);
@@ -54,7 +43,6 @@ public class FetchNurseCSController {
 	public void setNurseMasterDataServiceImpl(NurseMasterDataServiceImpl nurseMasterDataServiceImpl) {
 		this.nurseMasterDataServiceImpl = nurseMasterDataServiceImpl;
 	}
-
 
 	/**
 	 * Fething beneficiary data filled by Nurse for Doctor screen...
@@ -185,6 +173,33 @@ public class FetchNurseCSController {
 		} catch (Exception e) {
 			response.setError(e);
 			logger.error("Error in getBenPhysicalVitalDetail:" + e);
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary Cancer Family History", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenCancerFamilyHistory" }, method = { RequestMethod.POST })
+	public String getBenCancerFamilyHistory(
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenCancerFamilyHistory request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID")) {
+				Long benRegID = obj.getLong("benRegID");
+				String s = nurseServiceImpl.getBenCancerFamilyHistory(benRegID);
+				response.setResponse(s);
+
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenCancerFamilyHistory response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenCancerFamilyHistory:" + e);
 		}
 		return response.toString();
 	}

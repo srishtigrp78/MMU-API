@@ -458,7 +458,7 @@ public class NurseServiceImpl implements NurseService {
 		Map<String, Object> resMap = new HashMap<>();
 		BeneficiaryVisitDetail benVisitDetailsOBJ = benVisitDetailRepo.getVisitDetails(benRegID, benVisitID);
 
-		if(null != benVisitDetailsOBJ){
+		if (null != benVisitDetailsOBJ) {
 			BeneficiaryVisitDetail benVisitDetailsOBJ1 = new BeneficiaryVisitDetail(benVisitDetailsOBJ.getBenVisitID(),
 					benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitDetailsOBJ.getProviderServiceMapID(),
 					benVisitDetailsOBJ.getVisitDateTime(), benVisitDetailsOBJ.getVisitNo(),
@@ -470,7 +470,7 @@ public class NurseServiceImpl implements NurseService {
 					benVisitDetailsOBJ.getProcessed(), benVisitDetailsOBJ.getCreatedBy(),
 					benVisitDetailsOBJ.getCreatedDate(), benVisitDetailsOBJ.getModifiedBy(),
 					benVisitDetailsOBJ.getLastModDate());
-	
+
 			resMap.put("benVisitDetails", benVisitDetailsOBJ1);
 		}
 
@@ -736,6 +736,46 @@ public class NurseServiceImpl implements NurseService {
 		resMap.put("benPhysicalVitalDetail", getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, benVisitID));
 
 		return resMap.toString();
+	}
+
+	public String getBenCancerFamilyHistory(Long beneficiaryRegID) {
+		Map<String, Object> resMap = new HashMap<>();
+		Map<String, String> columnMap = new HashMap<>();
+		List<Map<String, String>> columns = new ArrayList<Map<String, String>>();
+		ArrayList<BenFamilyCancerHistory> benMedHistoryArrayList = new ArrayList<>();
+
+		ArrayList<Object[]> benCancerFamilyHistoryDataArray = benFamilyCancerHistoryRepo
+				.getBenCancerFamilyHistory(beneficiaryRegID);
+
+		if (benCancerFamilyHistoryDataArray != null && benCancerFamilyHistoryDataArray.size() > 0) {
+			BenFamilyCancerHistory benFamilyCancerHistory;
+			for (Object[] obj : benCancerFamilyHistoryDataArray) {
+				benFamilyCancerHistory = new BenFamilyCancerHistory((String) obj[0], (String) obj[1],
+						(Date) obj[2]);
+				benMedHistoryArrayList.add(benFamilyCancerHistory);
+			}
+		}
+
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Cancer Disease Type");
+		columnMap.put("keyName", "cancerDiseaseType");
+		columns.add(columnMap);
+	
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Family Members");
+		columnMap.put("keyName", "familyMember");
+		columns.add(columnMap);
+		
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Date of Capture");
+		columnMap.put("keyName", "captureDate");
+		columns.add(columnMap);
+		
+	
+		resMap.put("columns", columns);
+		resMap.put("data", benMedHistoryArrayList);
+
+		return new Gson().toJson(resMap);
 	}
 
 }

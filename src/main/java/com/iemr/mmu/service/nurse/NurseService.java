@@ -44,5 +44,7 @@ public interface NurseService {
 	public Long saveBeneficiaryPhysicalVitalDetails(BenPhysicalVitalDetail benPhysicalVitalDetail);
 	
 	public String getBeneficiaryVitalDetails(Long beneficiaryRegID, Long benVisitID);
+	
+	public String getBenCancerFamilyHistory(Long beneficiaryRegID);
 
 }

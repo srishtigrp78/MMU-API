@@ -1064,13 +1064,14 @@ public class ANCServiceImpl implements ANCService {
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
 		Map<String, Object> column = new HashMap<String, Object>();
 
-		column.put("columnName", "Comorbid Condition ID");
-		column.put("keyName", "comorbidConditionID");
-		columns.add(column);
-
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Comorbid Condition");
 		column.put("keyName", "comorbidCondition");
+		columns.add(column);
+		
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Other Comorbid Condition");
+		column.put("keyName", "otherComorbidCondition");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
@@ -1078,16 +1079,13 @@ public class ANCServiceImpl implements ANCService {
 		column.put("keyName", "year");
 		columns.add(column);
 
-		column = new HashMap<String, Object>();
-		column.put("columnName", "Other Comorbid Condition");
-		column.put("keyName", "otherComorbidCondition");
-		columns.add(column);
+		
 
 		ArrayList<BencomrbidityCondDetails> bencomrbidityConds = new ArrayList<BencomrbidityCondDetails>();
 		if (null != bencomrbidityCondDetails) {
 			for (Object[] obj : bencomrbidityCondDetails) {
 						
-				BencomrbidityCondDetails history = new BencomrbidityCondDetails((Short)obj[0], (String)obj[1], (Timestamp)obj[2], (String)obj[3]);
+				BencomrbidityCondDetails history = new BencomrbidityCondDetails((String)obj[0], (String)obj[1], (Timestamp)obj[2]);
 				bencomrbidityConds.add(history);
 			}
 

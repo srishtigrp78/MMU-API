@@ -248,13 +248,13 @@ public class BencomrbidityCondDetails {
 		this.isForHistory = isForHistory;
 	}
 
-	public BencomrbidityCondDetails(Short comorbidConditionID, String comorbidCondition, Timestamp year,
-			String otherComorbidCondition) {
+	public BencomrbidityCondDetails(String comorbidCondition,String otherComorbidCondition, Timestamp year) {
 		super();
-		this.comorbidConditionID = comorbidConditionID;
+		
 		this.comorbidCondition = comorbidCondition;
-		this.year = year;
 		this.otherComorbidCondition = otherComorbidCondition;
+		this.year = year;
+		
 	}
 	
 }

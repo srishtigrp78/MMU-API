@@ -1,6 +1,7 @@
 package com.iemr.mmu.repo.nurse;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -36,4 +37,9 @@ public interface BenFamilyCancerHistoryRepo extends CrudRepository<BenFamilyCanc
 	@Transactional
 	@Query(" Delete from BenFamilyCancerHistory WHERE beneficiaryRegID = :benRegID AND benVisitID = :benVisitID ")
 	public int deleteExistingFamilyRecord(@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
+
+	@Query(" SELECT cancerDiseaseType, familyMember, Date(createdDate) FROM BenFamilyCancerHistory "
+			+ " WHERE beneficiaryRegID = :benRegID AND cancerDiseaseType IS NOT NULL "
+			+ " AND familyMember IS NOT NULL ORDER BY createdDate DESC  ")
+	public ArrayList<Object[]> getBenCancerFamilyHistory(@Param("benRegID") Long benRegID);
 }

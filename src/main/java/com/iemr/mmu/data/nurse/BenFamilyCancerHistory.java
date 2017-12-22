@@ -1,5 +1,6 @@
 package com.iemr.mmu.data.nurse;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -60,7 +61,16 @@ public class BenFamilyCancerHistory {
 	@Transient
 	private List<String> familyMemberList;
 
+	@Transient
+	private Date captureDate;
+
 	public BenFamilyCancerHistory() {
+	}
+
+	public BenFamilyCancerHistory(String cancerDiseaseType, String familyMember, Date createdDate) {
+		this.cancerDiseaseType = cancerDiseaseType;
+		this.familyMember = familyMember;
+		this.captureDate = createdDate;
 	}
 
 	public BenFamilyCancerHistory(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
