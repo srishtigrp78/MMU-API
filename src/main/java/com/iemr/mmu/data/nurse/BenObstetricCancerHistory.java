@@ -1,5 +1,6 @@
 package com.iemr.mmu.data.nurse;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -7,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
@@ -96,6 +98,9 @@ public class BenObstetricCancerHistory {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
+	
+	@Transient
+	private Date captureDate;
 
 	public BenObstetricCancerHistory() {
 	}
@@ -105,7 +110,7 @@ public class BenObstetricCancerHistory {
 			Boolean isHormoneReplacementTherapy, Integer menarche_Age, Boolean isMenstrualCycleRegular,
 			Integer menstrualCycleLength, Integer menstrualFlowDuration, String menstrualFlowType,
 			Boolean isDysmenorrhea, Boolean isInterMenstrualBleeding, Integer menopauseAge,
-			Boolean isPostMenopauseBleeding, Boolean isFoulSmellingDischarge) {
+			Boolean isPostMenopauseBleeding, Boolean isFoulSmellingDischarge, Date captureDate) {
 
 		this.pregnancyStatus = pregnancyStatus;
 		this.isUrinePregTest = isUrinePregTest;
@@ -124,6 +129,7 @@ public class BenObstetricCancerHistory {
 		this.menopauseAge = menopauseAge;
 		this.isPostMenopauseBleeding = isPostMenopauseBleeding;
 		this.isFoulSmellingDischarge = isFoulSmellingDischarge;
+		this.captureDate = captureDate;
 
 	}
 

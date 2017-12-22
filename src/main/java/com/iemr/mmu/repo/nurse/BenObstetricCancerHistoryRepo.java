@@ -49,10 +49,10 @@ public interface BenObstetricCancerHistoryRepo extends CrudRepository<BenObstetr
 	public BenObstetricCancerHistory getBenObstetricCancerHistory(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID, @Param("createdDate") Date createdDate);
 
-	@Query(" SELECT pregnancyStatus, isUrinePregTest, pregnant_No, noOfLivingChild, isAbortion, isOralContraceptiveUsed, "
+	@Query(" SELECT  pregnancyStatus, isUrinePregTest, pregnant_No, noOfLivingChild, isAbortion, isOralContraceptiveUsed, "
 			+ " isHormoneReplacementTherapy, menarche_Age, isMenstrualCycleRegular, menstrualCycleLength, "
 			+ " menstrualFlowDuration, menstrualFlowType, isDysmenorrhea, isInterMenstrualBleeding, menopauseAge, "
-			+ " isPostMenopauseBleeding, isFoulSmellingDischarge  " + " from BenObstetricCancerHistory "
+			+ " isPostMenopauseBleeding, isFoulSmellingDischarge, Date(createdDate)  " + " from BenObstetricCancerHistory "
 			+ " WHERE beneficiaryRegID = :benRegID "
 			+ " and (pregnancyStatus is not null or isUrinePregTest is not null or pregnant_No is not null or "
 			+ " noOfLivingChild is not null or isAbortion is not null or isOralContraceptiveUsed is not null or "

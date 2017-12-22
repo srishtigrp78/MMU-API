@@ -793,7 +793,8 @@ public class NurseServiceImpl implements NurseService {
 				benObstetricCancerHistory = new BenObstetricCancerHistory((String) obj[0], (Boolean) obj[1],
 						(String) obj[2], (Integer) obj[3], (Boolean) obj[4], (Boolean) obj[5], (Boolean) obj[6],
 						(Integer) obj[7], (Boolean) obj[8], (Integer) obj[9], (Integer) obj[10], (String) obj[11],
-						(Boolean) obj[12], (Boolean) obj[13], (Integer) obj[14], (Boolean) obj[15], (Boolean) obj[16]);
+						(Boolean) obj[12], (Boolean) obj[13], (Integer) obj[14], (Boolean) obj[15], (Boolean) obj[16],
+						(Date) obj[17]);
 				benObstetricCancerHistoryArrayList.add(benObstetricCancerHistory);
 			}
 		}
@@ -881,6 +882,11 @@ public class NurseServiceImpl implements NurseService {
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Foul Smelling Discharge");
 		columnMap.put("keyName", "isFoulSmellingDischarge");
+		columns.add(columnMap);
+		
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Date of Capture");
+		columnMap.put("keyName", "captureDate");
 		columns.add(columnMap);
 
 		resMap.put("columns", columns);
