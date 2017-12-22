@@ -186,6 +186,12 @@ public class BenMedicationHistory {
 		this.currentMedication = currentMedication;
 		this.year = year;
 	}
-	
+
+	public BenMedicationHistory(String currentMedication, Integer timePeriodAgo, String timePeriodUnit) {
+		super();
+		this.currentMedication = currentMedication;
+		this.timePeriodAgo = timePeriodAgo;
+		this.timePeriodUnit = timePeriodUnit;
+	}
 	
 }

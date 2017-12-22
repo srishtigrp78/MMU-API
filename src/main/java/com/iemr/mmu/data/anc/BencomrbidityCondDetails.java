@@ -257,4 +257,24 @@ public class BencomrbidityCondDetails {
 		
 	}
 	
+	public BencomrbidityCondDetails(Short comorbidConditionID, String comorbidCondition, Timestamp year,
+			String otherComorbidCondition) {
+		super();
+		this.comorbidConditionID = comorbidConditionID;
+		this.comorbidCondition = comorbidCondition;
+		this.year = year;
+		this.otherComorbidCondition = otherComorbidCondition;
+	}
+	
+	public BencomrbidityCondDetails(Short comorbidConditionID, String comorbidCondition, String otherComorbidCondition,
+			Boolean isForHistory, Integer timePeriodAgo, String timePeriodUnit) {
+		super();
+		this.comorbidConditionID = comorbidConditionID;
+		this.comorbidCondition = comorbidCondition;
+		this.otherComorbidCondition = otherComorbidCondition;
+		this.isForHistory = isForHistory;
+		this.timePeriodAgo = timePeriodAgo;
+		this.timePeriodUnit = timePeriodUnit;
+	}
+	
 }

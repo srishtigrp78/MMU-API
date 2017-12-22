@@ -123,6 +123,25 @@ public class BenPersonalCancerHistory {
 		this.lastModDate = lastModDate;
 		this.typeOfTobaccoProductList = typeOfTobaccoProductList;
 	}
+	
+	public BenPersonalCancerHistory(String tobaccoUse, Integer startAge_year, Integer endAge_year,
+			String typeOfTobaccoProduct, Integer quantityPerDay, Boolean isFilteredCigaerette,
+			Boolean isCigaretteExposure, Boolean isBetelNutChewing, Integer durationOfBetelQuid, String alcoholUse,
+			Boolean ssAlcoholUsed, String frequencyOfAlcoholUsed) {
+		super();
+		this.tobaccoUse = tobaccoUse;
+		this.startAge_year = startAge_year;
+		this.endAge_year = endAge_year;
+		this.typeOfTobaccoProduct = typeOfTobaccoProduct;
+		this.quantityPerDay = quantityPerDay;
+		this.isFilteredCigaerette = isFilteredCigaerette;
+		this.isCigaretteExposure = isCigaretteExposure;
+		this.isBetelNutChewing = isBetelNutChewing;
+		this.durationOfBetelQuid = durationOfBetelQuid;
+		this.alcoholUse = alcoholUse;
+		this.ssAlcoholUsed = ssAlcoholUsed;
+		this.frequencyOfAlcoholUsed = frequencyOfAlcoholUsed;
+	}
 
 	public Long getID() {
 		return ID;

@@ -458,4 +458,90 @@ public class BenPersonalHabit {
 		this.riskySexualPracticesStatus = riskySexualPracticesStatus;
 	}
 	
+	public BenPersonalHabit(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, String dietaryType,
+			String physicalActivityType, String tobaccoUseStatus, String alcoholIntakeStatus,
+			Character riskySexualPracticesStatus) {
+		super();
+		this.beneficiaryRegID = beneficiaryRegID;
+		this.benVisitID = benVisitID;
+		this.providerServiceMapID = providerServiceMapID;
+		this.dietaryType = dietaryType;
+		this.physicalActivityType = physicalActivityType;
+		this.tobaccoUseStatus = tobaccoUseStatus;
+		this.alcoholIntakeStatus = alcoholIntakeStatus;
+		this.riskySexualPracticesStatus = riskySexualPracticesStatus;
+	}
+
+	
+	public BenPersonalHabit(String tobaccoUseTypeID, String tobaccoUseType, String otherTobaccoUseType,
+			Short numberperDay, Timestamp tobaccoUseDuration, String alcoholTypeID, String alcoholType,
+			String otherAlcoholType, String alcoholIntakeFrequency, String avgAlcoholConsumption,
+			Timestamp alcoholDuration,Timestamp createdDate) {
+		super();
+		this.tobaccoUseTypeID = tobaccoUseTypeID;
+		this.tobaccoUseType = tobaccoUseType;
+		this.otherTobaccoUseType = otherTobaccoUseType;
+		this.numberperDay = numberperDay;
+		this.tobaccoUseDuration = tobaccoUseDuration;
+		this.alcoholTypeID = alcoholTypeID;
+		this.alcoholType = alcoholType;
+		this.otherAlcoholType = otherAlcoholType;
+		this.alcoholIntakeFrequency = alcoholIntakeFrequency;
+		this.avgAlcoholConsumption = avgAlcoholConsumption;
+		this.alcoholDuration = alcoholDuration;
+		this.createdDate = createdDate;
+	}
+
+	public static BenPersonalHabit getPersonalDetails(ArrayList<Object[]> personalHistoryDetails){
+		BenPersonalHabit personalDetails = null;
+		if(null != personalHistoryDetails && personalHistoryDetails.size()>0){
+			Object[] obj1 = personalHistoryDetails.get(0);
+			
+			personalDetails = new BenPersonalHabit((Long)obj1[0], (Long)obj1[1], (Integer)obj1[2], (String)obj1[3], (String)obj1[4], 
+					(String)obj1[5], (String)obj1[11], (Character)obj1[18]);
+			
+			ArrayList<Map<String, String>> tobaccoList = new ArrayList<Map<String, String>>();
+			ArrayList<Map<String, String>> alcoholList = new ArrayList<Map<String, String>>();
+			for(Object[] obj: personalHistoryDetails){
+				BenPersonalHabit personalHabits = new BenPersonalHabit((String)obj[6], (String)obj[7], (String)obj[8], (Short)obj[9], (Timestamp)obj[10],
+						(String)obj[12], (String)obj[13], (String)obj[14], (String)obj[15], (String)obj[16], (Timestamp)obj[17], (Timestamp)obj[19]);
+				
+				Map<String, String> tobaccoInfo = new HashMap<String, String>();
+				tobaccoInfo.put("tobaccoUseTypeID", personalHabits.getTobaccoUseTypeID());
+				tobaccoInfo.put("tobaccoUseType", personalHabits.getTobaccoUseType());
+				tobaccoInfo.put("otherTobaccoUseType", personalHabits.getOtherTobaccoUseType());
+				if(null != personalHabits.getNumberperDay()){
+					tobaccoInfo.put("numberperDay", personalHabits.getNumberperDay().toString());
+				}
+				
+				Map<String, Object> timePeriod = Utility.convertTimeToWords(personalHabits.getTobaccoUseDuration(), personalHabits.getCreatedDate());
+				Integer timePeriodAgo = Integer.parseInt(timePeriod.get("timePeriodAgo").toString());
+				
+				tobaccoInfo.put("duration", timePeriodAgo.toString());
+				tobaccoInfo.put("durationUnit", timePeriod.get("timePeriodUnit").toString());
+				
+				tobaccoList.add(tobaccoInfo);
+				
+				Map<String, String> alcoholInfo = new HashMap<String, String>();
+				alcoholInfo.put("alcoholTypeID", personalHabits.getAlcoholTypeID());
+				alcoholInfo.put("alcoholType", personalHabits.getAlcoholType());
+				alcoholInfo.put("otherAlcoholType", personalHabits.getOtherAlcoholType());
+				alcoholInfo.put("alcoholIntakeFrequency", personalHabits.getAlcoholIntakeFrequency());
+				alcoholInfo.put("avgAlcoholConsumption", personalHabits.getAvgAlcoholConsumption());
+				
+				timePeriod = Utility.convertTimeToWords(personalHabits.getAlcoholDuration(), personalHabits.getCreatedDate());
+				timePeriodAgo = Integer.parseInt(timePeriod.get("timePeriodAgo").toString());
+				
+				
+				alcoholInfo.put("duration", timePeriodAgo.toString());
+				alcoholInfo.put("durationUnit", timePeriod.get("timePeriodUnit").toString());
+				
+				alcoholList.add(alcoholInfo);
+			}
+			personalDetails.setTobaccoList(tobaccoList);
+			personalDetails.setAlcoholList(alcoholList);
+		}
+		return personalDetails;
+	}
+	
 }

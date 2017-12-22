@@ -3,6 +3,8 @@ package com.iemr.mmu.data.anc;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Column;
@@ -37,39 +39,39 @@ public class BenMedHistory {
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
 
-	@Expose
+	//@Expose
 	@Column(name = "YearofIllness")
 	private Timestamp yearofIllness;
 
-	@Expose
+	//@Expose
 	@Column(name = "IllnessTypeID")
 	private Integer illnessTypeID;
 
-	@Expose
+	//@Expose
 	@Column(name = "IllnessType")
 	private String illnessType;
 
-	@Expose
+	//@Expose
 	@Column(name = "OtherIllnessType")
 	private String otherIllnessType;
 
-	@Expose
+	//@Expose
 	@Column(name = "SurgeryID")
 	private Integer surgeryID;
 
-	@Expose
+	//@Expose
 	@Column(name = "SurgeryType")
 	private String surgeryType;
 
-	@Expose
+	//@Expose
 	@Column(name = "YearofSurgery")
 	private Timestamp yearofSurgery;
 
-	@Expose
+	//@Expose
 	@Column(name = "OtherSurgeryType")
 	private String otherSurgeryType;
 
-	@Expose
+	//@Expose
 	@Column(name = "DrugComplianceID")
 	private Short drugComplianceID;
 
@@ -124,17 +126,17 @@ public class BenMedHistory {
 
 	}
 
-	public BenMedHistory(Long benMedHistoryID, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
-			Timestamp yearofIllness, Integer illnessTypeID, String illnessType, String otherIllnessType,
-			Integer surgeryID, String surgeryType, Timestamp yearofSurgery, String otrherSurgeryType,
-			Short drugComplianceID, Boolean deleted, String processed, String createdBy, Timestamp createdDate,
-			String modifiedBy, Timestamp lastModDate, ArrayList<Map<String, Object>> pastIllness,
-			ArrayList<Map<String, Object>> pastSurgery) {
+	public BenMedHistory(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID) {
 		super();
-		this.benMedHistoryID = benMedHistoryID;
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
 		this.providerServiceMapID = providerServiceMapID;
+	}
+	
+	public BenMedHistory(Timestamp yearofIllness,
+			Integer illnessTypeID, String illnessType, String otherIllnessType, Integer surgeryID, String surgeryType,
+			Timestamp yearofSurgery, String otherSurgeryType, Timestamp createdDate) {
+		super();
 		this.yearofIllness = yearofIllness;
 		this.illnessTypeID = illnessTypeID;
 		this.illnessType = illnessType;
@@ -142,16 +144,8 @@ public class BenMedHistory {
 		this.surgeryID = surgeryID;
 		this.surgeryType = surgeryType;
 		this.yearofSurgery = yearofSurgery;
-		this.otherSurgeryType = otrherSurgeryType;
-		this.drugComplianceID = drugComplianceID;
-		this.deleted = deleted;
-		this.processed = processed;
-		this.createdBy = createdBy;
+		this.otherSurgeryType = otherSurgeryType;
 		this.createdDate = createdDate;
-		this.modifiedBy = modifiedBy;
-		this.lastModDate = lastModDate;
-		this.pastIllness = pastIllness;
-		this.pastSurgery = pastSurgery;
 	}
 
 	public Long getBeneficiaryRegID() {
@@ -305,9 +299,26 @@ public class BenMedHistory {
 	@Transient
 	@Expose
 	private ArrayList<Map<String, Object>> pastIllness;
+
 	@Transient
 	@Expose
 	private ArrayList<Map<String, Object>> pastSurgery;
+	
+	public ArrayList<Map<String, Object>> getPastIllness() {
+		return pastIllness;
+	}
+
+	public void setPastIllness(ArrayList<Map<String, Object>> pastIllness) {
+		this.pastIllness = pastIllness;
+	}
+
+	public ArrayList<Map<String, Object>> getPastSurgery() {
+		return pastSurgery;
+	}
+
+	public void setPastSurgery(ArrayList<Map<String, Object>> pastSurgery) {
+		this.pastSurgery = pastSurgery;
+	}
 
 	public ArrayList<BenMedHistory> getBenPastHistory() {
 		int maxMedHistorySize = 0;
@@ -372,4 +383,53 @@ public class BenMedHistory {
 		return medHistoryList;
 	}
 
+	public BenMedHistory getBenPastHistory(ArrayList<Object[]> pastHistory) {
+		
+		BenMedHistory benHistory = null;
+		if(null != pastHistory && pastHistory.size()>0){
+			Object[] obj1= pastHistory.get(0);
+			benHistory = new BenMedHistory((Long)obj1[0], (Long)obj1[1], (Integer)obj1[2]);
+			
+			ArrayList<Map<String, Object>> pastIllness = new ArrayList<Map<String, Object>>();
+			ArrayList<Map<String, Object>> pastSurgery = new ArrayList<Map<String, Object>>();
+			for(Object[] obj: pastHistory){
+				BenMedHistory benMedHistory = new BenMedHistory((Timestamp)obj[3], (Integer)obj[4], (String)obj[5], (String)obj[6],
+						(Integer)obj[7], (String)obj[8], (Timestamp)obj[9], (String)obj[10], (Timestamp)obj1[11]);
+				
+				Map<String, Object> illness = new HashMap<String, Object>();
+				
+				illness.put("illnessTypeID", benMedHistory.getIllnessTypeID());
+				illness.put("illnessType", benMedHistory.getIllnessType());
+				illness.put("otherIllnessType", benMedHistory.getOtherIllnessType());
+				
+				Map<String,Object> timePeriod = Utility.convertTimeToWords(benMedHistory.getYearofIllness(), benMedHistory.getCreatedDate());
+				
+				illness.put("timePeriodAgo", timePeriod.get("timePeriodAgo"));
+				illness.put("timePeriodUnit", timePeriod.get("timePeriodUnit"));
+				pastIllness.add(illness);
+				
+				benHistory.setPastIllness(pastIllness);
+				
+				Map<String, Object> surgery = new HashMap<String, Object>();
+				
+				surgery.put("surgeryID", benMedHistory.getSurgeryID());
+				surgery.put("surgeryType", benMedHistory.getSurgeryType());
+				surgery.put("otherSurgeryType", benMedHistory.getOtherSurgeryType());
+				
+				timePeriod = Utility.convertTimeToWords(benMedHistory.getYearofSurgery(), benMedHistory.getCreatedDate());
+				
+				surgery.put("timePeriodAgo", timePeriod.get("timePeriodAgo"));
+				surgery.put("timePeriodUnit", timePeriod.get("timePeriodUnit"));
+				
+				pastSurgery.add(surgery);
+				
+				benHistory.setPastSurgery(pastSurgery);
+				
+			}
+		}
+		return benHistory;
+		
+	}
+	
+	
 }

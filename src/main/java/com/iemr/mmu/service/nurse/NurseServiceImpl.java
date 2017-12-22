@@ -777,6 +777,161 @@ public class NurseServiceImpl implements NurseService {
 		return new Gson().toJson(resMap);
 	}
 
+	public String getBenCancerPersonalHistory(Long beneficiaryRegID) {
+		Map<String, Object> resMap = new HashMap<>();
+		Map<String, String> columnMap = new HashMap<>();
+		List<Map<String, String>> columns = new ArrayList<Map<String, String>>();
+		ArrayList<BenPersonalCancerHistory> benPersonalHistoryArrayList = new ArrayList<>();
+
+		ArrayList<Object[]> benPersonalHistory = benPersonalCancerHistoryRepo.getBenPersonalHistory(beneficiaryRegID);
+
+		if (benPersonalHistory != null && benPersonalHistory.size() > 0) {
+			for (Object[] obj : benPersonalHistory) {
+				BenPersonalCancerHistory personalCancerHistory= new BenPersonalCancerHistory((String)obj[0], (Integer)obj[1], (Integer)obj[2], (String)obj[3], 
+						(Integer)obj[4], (Boolean)obj[5], (Boolean)obj[6], (Boolean)obj[7], (Integer)obj[8], (String)obj[9], (Boolean)obj[10], (String)obj[11]);
+				benPersonalHistoryArrayList.add(personalCancerHistory);
+			}
+		}
+
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Tobacco Use");
+		columnMap.put("keyName", "tobaccoUse");
+		columns.add(columnMap);
+	
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "StartAge Year");
+		columnMap.put("keyName", "startAge_year");
+		columns.add(columnMap);
+		
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "EndAge Year");
+		columnMap.put("keyName", "endAge_year");
+		columns.add(columnMap);
+		
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Type Of Tobacco Product");
+		columnMap.put("keyName", "typeOfTobaccoProduct");
+		columns.add(columnMap);
+		
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Quantity Per Day");
+		columnMap.put("keyName", "quantityPerDay");
+		columns.add(columnMap);
+		
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Is Filtered Cigaerette");
+		columnMap.put("keyName", "isFilteredCigaerette");
+		columns.add(columnMap);
+		
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Is Cigarette Exposure");
+		columnMap.put("keyName", "isCigaretteExposure");
+		columns.add(columnMap);
+		
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Is Betel Nut Chewing");
+		columnMap.put("keyName", "isBetelNutChewing");
+		columns.add(columnMap);
+		
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Duration Of Betel Quid");
+		columnMap.put("keyName", "durationOfBetelQuid");
+		columns.add(columnMap);
+		
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Alcohol Use");
+		columnMap.put("keyName", "alcoholUse");
+		columns.add(columnMap);
+		
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Is Alcohol Used");
+		columnMap.put("keyName", "ssAlcoholUsed");
+		columns.add(columnMap);
+		
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Frequency Of Alcohol Used");
+		columnMap.put("keyName", "frequencyOfAlcoholUsed");
+		columns.add(columnMap);
+		
+		resMap.put("columns", columns);
+		resMap.put("data", benPersonalHistoryArrayList);
+
+		return new Gson().toJson(resMap);
+	}
+	
+	public String getBenCancerPersonalDietHistory(Long beneficiaryRegID) {
+	
+		Map<String, Object> resMap = new HashMap<>();
+		Map<String, String> columnMap = new HashMap<>();
+		List<Map<String, String>> columns = new ArrayList<Map<String, String>>();
+		ArrayList<BenPersonalCancerDietHistory> benPersonalDietArrayList = new ArrayList<>();
+		
+		ArrayList<Object[]> benPersonalCancerDietHistory = benPersonalCancerDietHistoryRepo.getBenPersonaDietHistory(beneficiaryRegID);
+		
+		if (benPersonalCancerDietHistory != null && benPersonalCancerDietHistory.size() > 0) {
+			for (Object[] obj : benPersonalCancerDietHistory) {
+				BenPersonalCancerDietHistory personalCancerDietHistory= new BenPersonalCancerDietHistory((String)obj[0], (Integer)obj[1], (Integer)obj[2], (Integer)obj[3], 
+						(Integer)obj[4], (Integer)obj[5], (String)obj[6], (String)obj[7], (Boolean)obj[8], (Boolean)obj[9]);
+				benPersonalDietArrayList.add(personalCancerDietHistory);
+			}
+		}
+		
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Diet Type");
+		columnMap.put("keyName", "dietType");
+		columns.add(columnMap);
+		
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Fruit Consumption Days");
+		columnMap.put("keyName", "fruitConsumptionDays");
+		columns.add(columnMap);
+		
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Fruit Quantity PerDay");
+		columnMap.put("keyName", "fruitQuantityPerDay");
+		columns.add(columnMap);
+		
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Vegetable Consumption Days");
+		columnMap.put("keyName", "vegetableConsumptionDays");
+		columns.add(columnMap);
+		
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Vegetable Quantity Per Day");
+		columnMap.put("keyName", "vegetableQuantityPerDay");
+		columns.add(columnMap);
+		
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Intake Of Outside Prepared Meal");
+		columnMap.put("keyName", "intakeOfOutsidePreparedMeal");
+		columns.add(columnMap);
+		
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Type Of Oil Consumed");
+		columnMap.put("keyName", "typeOfOilConsumed");
+		columns.add(columnMap);
+		
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Physical Activity Type");
+		columnMap.put("keyName", "physicalActivityType");
+		columns.add(columnMap);
+		
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Is Radiation Exposure");
+		columnMap.put("keyName", "ssRadiationExposure");
+		columns.add(columnMap);
+		
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Is Thyroid Disorder");
+		columnMap.put("keyName", "isThyroidDisorder");
+		columns.add(columnMap);
+		
+		resMap.put("columns", columns);
+		resMap.put("data", benPersonalDietArrayList);
+
+		return new Gson().toJson(resMap);
+	}
+	
 	@Override
 	public String getBenCancerObstetricHistory(Long beneficiaryRegID) {
 		Map<String, Object> resMap = new HashMap<>();
