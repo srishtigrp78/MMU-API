@@ -1630,4 +1630,46 @@ public class ANCServiceImpl implements ANCService {
 
 	}
 	
+	@Override
+	public String getBenANCHistoryDetails(Long benRegID, Long benVisitID) {
+		Map<String, Object> HistoryDetailsMap = new HashMap<String, Object>();
+
+		HistoryDetailsMap.put("pastHistory", getPastHistoryData(benRegID, benVisitID));
+		HistoryDetailsMap.put("ComorbidityConditions", getComorbidityConditionsHistory(benRegID, benVisitID));
+		HistoryDetailsMap.put("MedicationHistory", getMedicationHistory(benRegID, benVisitID));
+		HistoryDetailsMap.put("personalHistory", getPersonalHistory(benRegID, benVisitID));
+
+		return new Gson().toJson(HistoryDetailsMap);
+	}
+	
+	
+	public BenMedHistory getPastHistoryData(Long beneficiaryRegID, Long benVisitID){
+		ArrayList<Object[]>  pastHistory = benMedHistoryRepo.getBenPastHistory(beneficiaryRegID, benVisitID);
+		
+		BenMedHistory medHistory = new BenMedHistory();
+		BenMedHistory benMedHistory = medHistory.getBenPastHistory(pastHistory);
+		return benMedHistory;
+	}
+	
+	public WrapperComorbidCondDetails getComorbidityConditionsHistory(Long beneficiaryRegID, Long benVisitID){
+		ArrayList<Object[]>  comrbidityConds = bencomrbidityCondRepo.getBencomrbidityCondDetails(beneficiaryRegID, benVisitID);
+		
+		WrapperComorbidCondDetails comrbidityCondDetails = WrapperComorbidCondDetails.getComorbidityDetails(comrbidityConds);
+		return comrbidityCondDetails;
+	}
+
+	public WrapperMedicationHistory getMedicationHistory(Long beneficiaryRegID, Long benVisitID){
+		ArrayList<Object[]>  medicationHistory = benMedicationHistoryRepo.getBenMedicationHistoryDetail(beneficiaryRegID, benVisitID);
+		
+		WrapperMedicationHistory wrapperMedicationHistory = WrapperMedicationHistory.getMedicationHistoryDetails(medicationHistory);
+		return wrapperMedicationHistory;
+	}
+	
+	public BenPersonalHabit getPersonalHistory(Long beneficiaryRegID, Long benVisitID){
+		ArrayList<Object[]>  personalDetails = benPersonalHabitRepo.getBenPersonalHabitDetail(beneficiaryRegID, benVisitID);
+		BenPersonalHabit personalHabits = BenPersonalHabit.getPersonalDetails(personalDetails);
+		
+		return personalHabits;
+	}
+	
 }

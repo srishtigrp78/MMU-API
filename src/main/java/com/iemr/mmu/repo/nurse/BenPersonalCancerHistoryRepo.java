@@ -2,6 +2,7 @@ package com.iemr.mmu.repo.nurse;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -42,4 +43,10 @@ public interface BenPersonalCancerHistoryRepo extends CrudRepository<BenPersonal
 			+ " AND DATE(createdDate) = :createdDate")
 	public BenPersonalCancerHistory getBenPersonalHistory(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID, @Param("createdDate") Date createdDate);
+	
+	@Query(" SELECT tobaccoUse, startAge_year, endAge_year, typeOfTobaccoProduct, quantityPerDay, isFilteredCigaerette, isCigaretteExposure, "
+			+ "isBetelNutChewing, durationOfBetelQuid, alcoholUse, ssAlcoholUsed, frequencyOfAlcoholUsed from BenPersonalCancerHistory bph  "
+			+ "WHERE bph.beneficiaryRegID = :benRegID and (tobaccoUse is not null OR alcoholUse is not null OR isCigaretteExposure is not null"
+			+ " or isBetelNutChewing is not null)")
+	public ArrayList<Object[]> getBenPersonalHistory(@Param("benRegID") Long benRegID);
 }

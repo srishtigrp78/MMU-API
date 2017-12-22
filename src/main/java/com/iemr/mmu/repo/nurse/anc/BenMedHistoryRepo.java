@@ -1,5 +1,6 @@
 package com.iemr.mmu.repo.nurse.anc;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import org.springframework.data.jpa.repository.Query;
@@ -16,4 +17,10 @@ public interface BenMedHistoryRepo extends CrudRepository<BenMedHistory, Long> {
 			+ " Date(yearofSurgery)  FROM BenMedHistory "
 			+ " WHERE beneficiaryRegID = :benRegID AND (illnessType is not null OR surgeryType is not null ) ")
 	public ArrayList<Object[]> getBenPastHistory(@Param("benRegID") Long benRegID);
+	
+	
+	@Query(" SELECT beneficiaryRegID, benVisitID, providerServiceMapID, yearofIllness, illnessTypeID,  illnessType, otherIllnessType, "
+			+ " surgeryID , surgeryType, yearofSurgery, otherSurgeryType, createdDate  FROM BenMedHistory "
+			+ " WHERE beneficiaryRegID = :benRegID AND benVisitID = :benVisitID ")
+	public ArrayList<Object[]> getBenPastHistory(@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
 }

@@ -116,6 +116,23 @@ public class BenPersonalCancerDietHistory {
 		this.typeOfOilConsumedList = typeOfOilConsumedList;
 	}
 
+	public BenPersonalCancerDietHistory(String dietType, Integer fruitConsumptionDays, Integer fruitQuantityPerDay,
+			Integer vegetableConsumptionDays, Integer vegetableQuantityPerDay, Integer intakeOfOutsidePreparedMeal,
+			String typeOfOilConsumed, String physicalActivityType, Boolean ssRadiationExposure,
+			Boolean isThyroidDisorder) {
+		super();
+		this.dietType = dietType;
+		this.fruitConsumptionDays = fruitConsumptionDays;
+		this.fruitQuantityPerDay = fruitQuantityPerDay;
+		this.vegetableConsumptionDays = vegetableConsumptionDays;
+		this.vegetableQuantityPerDay = vegetableQuantityPerDay;
+		this.intakeOfOutsidePreparedMeal = intakeOfOutsidePreparedMeal;
+		this.typeOfOilConsumed = typeOfOilConsumed;
+		this.physicalActivityType = physicalActivityType;
+		this.ssRadiationExposure = ssRadiationExposure;
+		this.isThyroidDisorder = isThyroidDisorder;
+	}
+
 	public Long getID() {
 		return ID;
 	}
