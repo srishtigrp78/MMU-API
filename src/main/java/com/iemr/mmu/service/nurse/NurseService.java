@@ -46,5 +46,7 @@ public interface NurseService {
 	public String getBeneficiaryVitalDetails(Long beneficiaryRegID, Long benVisitID);
 	
 	public String getBenCancerFamilyHistory(Long beneficiaryRegID);
+	
+	public String getBenCancerObstetricHistory(Long beneficiaryRegID);
 
 }

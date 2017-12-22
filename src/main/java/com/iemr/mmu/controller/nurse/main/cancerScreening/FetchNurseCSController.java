@@ -203,4 +203,31 @@ public class FetchNurseCSController {
 		}
 		return response.toString();
 	}
+
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary Cancer Obstetric History", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenCancerObstetricHistory" }, method = { RequestMethod.POST })
+	public String getBenCancerObstetricHistory(
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenCancerObstetricHistory request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID")) {
+				Long benRegID = obj.getLong("benRegID");
+				String s = nurseServiceImpl.getBenCancerObstetricHistory(benRegID);
+				response.setResponse(s);
+
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenCancerObstetricHistory response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenCancerObstetricHistory:" + e);
+		}
+		return response.toString();
+	}
 }

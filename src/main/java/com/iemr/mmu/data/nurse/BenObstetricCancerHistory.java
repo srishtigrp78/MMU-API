@@ -100,6 +100,33 @@ public class BenObstetricCancerHistory {
 	public BenObstetricCancerHistory() {
 	}
 
+	public BenObstetricCancerHistory(String pregnancyStatus, Boolean isUrinePregTest, String pregnant_No,
+			Integer noOfLivingChild, Boolean isAbortion, Boolean isOralContraceptiveUsed,
+			Boolean isHormoneReplacementTherapy, Integer menarche_Age, Boolean isMenstrualCycleRegular,
+			Integer menstrualCycleLength, Integer menstrualFlowDuration, String menstrualFlowType,
+			Boolean isDysmenorrhea, Boolean isInterMenstrualBleeding, Integer menopauseAge,
+			Boolean isPostMenopauseBleeding, Boolean isFoulSmellingDischarge) {
+
+		this.pregnancyStatus = pregnancyStatus;
+		this.isUrinePregTest = isUrinePregTest;
+		this.pregnant_No = pregnant_No;
+		this.noOfLivingChild = noOfLivingChild;
+		this.isAbortion = isAbortion;
+		this.isOralContraceptiveUsed = isOralContraceptiveUsed;
+		this.isHormoneReplacementTherapy = isHormoneReplacementTherapy;
+		this.menarche_Age = menarche_Age;
+		this.isMenstrualCycleRegular = isMenstrualCycleRegular;
+		this.menstrualCycleLength = menstrualCycleLength;
+		this.menstrualFlowDuration = menstrualFlowDuration;
+		this.menstrualFlowType = menstrualFlowType;
+		this.isDysmenorrhea = isDysmenorrhea;
+		this.isInterMenstrualBleeding = isInterMenstrualBleeding;
+		this.menopauseAge = menopauseAge;
+		this.isPostMenopauseBleeding = isPostMenopauseBleeding;
+		this.isFoulSmellingDischarge = isFoulSmellingDischarge;
+
+	}
+
 	public BenObstetricCancerHistory(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			String pregnancyStatus, Boolean isUrinePregTest, String pregnant_No, Integer noOfLivingChild,
 			Boolean isAbortion, Boolean isOralContraceptiveUsed, Boolean isHormoneReplacementTherapy,

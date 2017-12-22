@@ -738,6 +738,7 @@ public class NurseServiceImpl implements NurseService {
 		return resMap.toString();
 	}
 
+	@Override
 	public String getBenCancerFamilyHistory(Long beneficiaryRegID) {
 		Map<String, Object> resMap = new HashMap<>();
 		Map<String, String> columnMap = new HashMap<>();
@@ -750,8 +751,7 @@ public class NurseServiceImpl implements NurseService {
 		if (benCancerFamilyHistoryDataArray != null && benCancerFamilyHistoryDataArray.size() > 0) {
 			BenFamilyCancerHistory benFamilyCancerHistory;
 			for (Object[] obj : benCancerFamilyHistoryDataArray) {
-				benFamilyCancerHistory = new BenFamilyCancerHistory((String) obj[0], (String) obj[1],
-						(Date) obj[2]);
+				benFamilyCancerHistory = new BenFamilyCancerHistory((String) obj[0], (String) obj[1], (Date) obj[2]);
 				benMedHistoryArrayList.add(benFamilyCancerHistory);
 			}
 		}
@@ -760,20 +760,131 @@ public class NurseServiceImpl implements NurseService {
 		columnMap.put("columnName", "Cancer Disease Type");
 		columnMap.put("keyName", "cancerDiseaseType");
 		columns.add(columnMap);
-	
+
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Family Members");
 		columnMap.put("keyName", "familyMember");
 		columns.add(columnMap);
-		
+
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Date of Capture");
 		columnMap.put("keyName", "captureDate");
 		columns.add(columnMap);
-		
-	
+
 		resMap.put("columns", columns);
 		resMap.put("data", benMedHistoryArrayList);
+
+		return new Gson().toJson(resMap);
+	}
+
+	@Override
+	public String getBenCancerObstetricHistory(Long beneficiaryRegID) {
+		Map<String, Object> resMap = new HashMap<>();
+		Map<String, String> columnMap = new HashMap<>();
+		List<Map<String, String>> columns = new ArrayList<Map<String, String>>();
+		ArrayList<BenObstetricCancerHistory> benObstetricCancerHistoryArrayList = new ArrayList<>();
+
+		ArrayList<Object[]> benObstetricCancerHistoryList = benObstetricCancerHistoryRepo
+				.getBenObstetricCancerHistoryData(beneficiaryRegID);
+
+		if (benObstetricCancerHistoryList != null && benObstetricCancerHistoryList.size() > 0) {
+			BenObstetricCancerHistory benObstetricCancerHistory;
+			for (Object[] obj : benObstetricCancerHistoryList) {
+				benObstetricCancerHistory = new BenObstetricCancerHistory((String) obj[0], (Boolean) obj[1],
+						(String) obj[2], (Integer) obj[3], (Boolean) obj[4], (Boolean) obj[5], (Boolean) obj[6],
+						(Integer) obj[7], (Boolean) obj[8], (Integer) obj[9], (Integer) obj[10], (String) obj[11],
+						(Boolean) obj[12], (Boolean) obj[13], (Integer) obj[14], (Boolean) obj[15], (Boolean) obj[16]);
+				benObstetricCancerHistoryArrayList.add(benObstetricCancerHistory);
+			}
+		}
+
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Pregnancy Status");
+		columnMap.put("keyName", "pregnancyStatus");
+		columns.add(columnMap);
+
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Urine pregnancy test");
+		columnMap.put("keyName", "isUrinePregTest");
+		columns.add(columnMap);
+
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "No of times Pregnant");
+		columnMap.put("keyName", "pregnant_No");
+		columns.add(columnMap);
+
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "No of Living Children");
+		columnMap.put("keyName", "noOfLivingChild");
+		columns.add(columnMap);
+
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Abortions");
+		columnMap.put("keyName", "isAbortion");
+		columns.add(columnMap);
+
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Oral Contraceptives used in 5 years");
+		columnMap.put("keyName", "isOralContraceptiveUsed");
+		columns.add(columnMap);
+
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Hormone replacement Therapy in 5yrs");
+		columnMap.put("keyName", "isHormoneReplacementTherapy");
+		columns.add(columnMap);
+
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Age at menarche(Years)");
+		columnMap.put("keyName", "menarche_Age");
+		columns.add(columnMap);
+
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Regularity of Menstrual Cycle");
+		columnMap.put("keyName", "isMenstrualCycleRegular");
+		columns.add(columnMap);
+
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Length of Menstrual Cycle(in days)");
+		columnMap.put("keyName", "menstrualCycleLength");
+		columns.add(columnMap);
+
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Menstrual Flow Duration(Days)");
+		columnMap.put("keyName", "menstrualFlowDuration");
+		columns.add(columnMap);
+
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Type of Flow");
+		columnMap.put("keyName", "menstrualFlowType");
+		columns.add(columnMap);
+
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Dysmenorrhea");
+		columnMap.put("keyName", "isDysmenorrhea");
+		columns.add(columnMap);
+
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Inter menstrual bleeding");
+		columnMap.put("keyName", "isInterMenstrualBleeding");
+		columns.add(columnMap);
+
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Age at Menopause(Years)");
+		columnMap.put("keyName", "menopauseAge");
+		columns.add(columnMap);
+
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Post-menopausal Bleeding");
+		columnMap.put("keyName", "isPostMenopauseBleeding");
+		columns.add(columnMap);
+
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Foul Smelling Discharge");
+		columnMap.put("keyName", "isFoulSmellingDischarge");
+		columns.add(columnMap);
+
+		resMap.put("columns", columns);
+		resMap.put("data", benObstetricCancerHistoryArrayList);
 
 		return new Gson().toJson(resMap);
 	}
