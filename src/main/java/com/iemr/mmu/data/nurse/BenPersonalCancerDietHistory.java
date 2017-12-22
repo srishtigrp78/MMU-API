@@ -1,5 +1,6 @@
 package com.iemr.mmu.data.nurse;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -116,10 +117,13 @@ public class BenPersonalCancerDietHistory {
 		this.typeOfOilConsumedList = typeOfOilConsumedList;
 	}
 
+	@Transient
+	private Date captureDate;
+	
 	public BenPersonalCancerDietHistory(String dietType, Integer fruitConsumptionDays, Integer fruitQuantityPerDay,
 			Integer vegetableConsumptionDays, Integer vegetableQuantityPerDay, Integer intakeOfOutsidePreparedMeal,
 			String typeOfOilConsumed, String physicalActivityType, Boolean ssRadiationExposure,
-			Boolean isThyroidDisorder) {
+			Boolean isThyroidDisorder, Date captureDate) {
 		super();
 		this.dietType = dietType;
 		this.fruitConsumptionDays = fruitConsumptionDays;
@@ -131,6 +135,7 @@ public class BenPersonalCancerDietHistory {
 		this.physicalActivityType = physicalActivityType;
 		this.ssRadiationExposure = ssRadiationExposure;
 		this.isThyroidDisorder = isThyroidDisorder;
+		this.captureDate = captureDate;
 	}
 
 	public Long getID() {

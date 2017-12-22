@@ -44,9 +44,12 @@ public interface BenPersonalCancerHistoryRepo extends CrudRepository<BenPersonal
 	public BenPersonalCancerHistory getBenPersonalHistory(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID, @Param("createdDate") Date createdDate);
 	
-	@Query(" SELECT tobaccoUse, startAge_year, endAge_year, typeOfTobaccoProduct, quantityPerDay, isFilteredCigaerette, isCigaretteExposure, "
-			+ "isBetelNutChewing, durationOfBetelQuid, alcoholUse, ssAlcoholUsed, frequencyOfAlcoholUsed from BenPersonalCancerHistory bph  "
-			+ "WHERE bph.beneficiaryRegID = :benRegID and (tobaccoUse is not null OR alcoholUse is not null OR isCigaretteExposure is not null"
-			+ " or isBetelNutChewing is not null)")
+	@Query(" SELECT tobaccoUse, startAge_year, endAge_year, typeOfTobaccoProduct, quantityPerDay, isFilteredCigaerette, "
+			+ " isCigaretteExposure, "
+			+ "isBetelNutChewing, durationOfBetelQuid, alcoholUse, ssAlcoholUsed, frequencyOfAlcoholUsed, Date(createdDate) "
+			+ " from BenPersonalCancerHistory bph  "
+			+ "WHERE bph.beneficiaryRegID = :benRegID and "
+			+ " (tobaccoUse is not null OR alcoholUse is not null OR isCigaretteExposure is not null"
+			+ " or isBetelNutChewing is not null) order by createdDate desc")
 	public ArrayList<Object[]> getBenPersonalHistory(@Param("benRegID") Long benRegID);
 }

@@ -47,10 +47,10 @@ public interface BenPersonalCancerDietHistoryRepo extends CrudRepository<BenPers
 			@Param("benVisitID") Long benVisitID, @Param("createdDate") Date createdDate);
 	
 	@Query(" SELECT dietType, fruitConsumptionDays, fruitQuantityPerDay, vegetableConsumptionDays, vegetableQuantityPerDay, "
-			+ "intakeOfOutsidePreparedMeal, typeOfOilConsumed, physicalActivityType, ssRadiationExposure, isThyroidDisorder "
+			+ "intakeOfOutsidePreparedMeal, typeOfOilConsumed, physicalActivityType, ssRadiationExposure, isThyroidDisorder, Date(createdDate) "
 			+ "from BenPersonalCancerDietHistory bph WHERE bph.beneficiaryRegID = :benRegID and (dietType is not null or fruitConsumptionDays is not null "
 			+ "or fruitQuantityPerDay is not null or vegetableConsumptionDays is not null or vegetableQuantityPerDay is not null or intakeOfOutsidePreparedMeal is not null "
-			+ "or typeOfOilConsumed <> '' or physicalActivityType is not null or ssRadiationExposure is not null or isThyroidDisorder is not null)")
+			+ "or typeOfOilConsumed <> '' or physicalActivityType is not null or ssRadiationExposure is not null or isThyroidDisorder is not null) order by createdDate desc")
 	public ArrayList<Object[]> getBenPersonaDietHistory(@Param("benRegID") Long benRegID);
 	
 	
