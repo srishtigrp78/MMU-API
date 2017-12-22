@@ -2,6 +2,7 @@ package com.iemr.mmu.data.anc;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -288,4 +289,61 @@ public class BenFamilyHistory {
 			}
 			return benFamilyHistoryList;
 	}
+
+	
+	public BenFamilyHistory(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
+			Boolean isGeneticDisorder, String geneticDisorder, Boolean isConsanguineousMarrige) {
+		super();
+		this.beneficiaryRegID = beneficiaryRegID;
+		this.benVisitID = benVisitID;
+		this.providerServiceMapID = providerServiceMapID;
+		this.isGeneticDisorder = isGeneticDisorder;
+		this.geneticDisorder = geneticDisorder;
+		this.isConsanguineousMarrige = isConsanguineousMarrige;
+	}
+
+	public BenFamilyHistory(String familyMember, Short diseaseTypeID, String diseaseType, String otherDiseaseType) {
+		super();
+		this.familyMember = familyMember;
+		this.diseaseTypeID = diseaseTypeID;
+		this.diseaseType = diseaseType;
+		this.otherDiseaseType = otherDiseaseType;
+	}
+	
+	public static BenFamilyHistory getBenFamilyHistory(ArrayList<Object[]> familyHistory){
+		BenFamilyHistory benfamilyHistory = null;
+		if(null != familyHistory && familyHistory.size()>0){
+			Object[] obj1 = familyHistory.get(0);
+	
+			benfamilyHistory = new BenFamilyHistory((Long)obj1[0], (Long)obj1[1], (Integer)obj1[2], (Boolean)obj1[7], (String)obj1[8], 
+					(Boolean)obj1[9]);
+			
+			List<Map<String,Object>> familyDiseaseList = new ArrayList<Map<String, Object>>();
+			
+			for(Object[] obj: familyHistory){
+				BenFamilyHistory familyDetails = new BenFamilyHistory((String)obj1[3], (Short)obj1[4], (String)obj1[5], (String)obj1[6]);
+				
+								
+				Map<String,Object> familyDisease = new HashMap<String,Object>();
+				familyDisease.put("diseaseTypeID", familyDetails.getDiseaseTypeID());
+				familyDisease.put("diseaseType", familyDetails.getDiseaseType());
+				familyDisease.put("otherDiseaseType", familyDetails.getOtherDiseaseType());
+				
+				if(null != familyDetails.getFamilyMember()){
+					String[] familyMembers= familyDetails.getFamilyMember().split(",");
+				
+				
+					List<String> familyMembersList = new ArrayList<String>();
+					for(String familyMember: familyMembers){
+						familyMembersList.add(familyMember);
+					}
+					familyDisease.put("familyMembers", familyMembersList);
+				}
+				familyDiseaseList.add(familyDisease);
+			}
+			benfamilyHistory.setFamilyDiseaseList(familyDiseaseList);
+		}
+		return benfamilyHistory;
+	}
+	
 }

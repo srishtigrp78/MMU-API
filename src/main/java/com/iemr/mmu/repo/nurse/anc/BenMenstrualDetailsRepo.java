@@ -17,4 +17,9 @@ public interface BenMenstrualDetailsRepo extends CrudRepository<BenMenstrualDeta
 			+ "menstrualProblemID, problemName, lMPDate "
 			+ "from BenMenstrualDetails a where a.beneficiaryRegID = :beneficiaryRegID")
 	public ArrayList<Object[]> getBenMenstrualDetail(@Param("beneficiaryRegID") Long beneficiaryRegID);
+	
+	@Query(" SELECT beneficiaryRegID, benVisitID, providerServiceMapID, menstrualCycleStatusID, regularity, menstrualCyclelengthID, "
+			+ "cycleLength, menstrualFlowDurationID, bloodFlowDuration, menstrualProblemID, problemName, lMPDate FROM BenMenstrualDetails "
+			+ " WHERE beneficiaryRegID = :benRegID AND benVisitID = :benVisitID ")
+	public ArrayList<Object[]> getBenMenstrualDetail(@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
 }

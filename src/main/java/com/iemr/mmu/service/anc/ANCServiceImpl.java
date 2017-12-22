@@ -1466,107 +1466,143 @@ public class ANCServiceImpl implements ANCService {
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
 		Map<String, Object> column = new HashMap<String, Object>();
 
-		column.put("columnName", "pregOrder");
+		column.put("columnName", "Preg Order");
 		column.put("keyName", "pregOrder");
-		columns.add(column);
-
-		column = new HashMap<String, Object>();
-		column.put("columnName", "totalNoOfPreg");
-		column.put("keyName", "totalNoOfPreg");
 		columns.add(column);
 		
 		column = new HashMap<String, Object>();
-		column.put("columnName", "pregComplicationID");
+		column.put("columnName", "Preg Complication ID");
 		column.put("keyName", "pregComplicationID");
 		columns.add(column);
 		
 		column = new HashMap<String, Object>();
-		column.put("columnName", "pregComplicationType");
+		column.put("columnName", "Preg Complication Type");
 		column.put("keyName", "pregComplicationType");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
-		column.put("columnName", "otherPregComplication");
+		column.put("columnName", "Other Preg Complication");
 		column.put("keyName", "otherPregComplication");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
-		column.put("columnName", "pregDurationID");
+		column.put("columnName", "Preg Duration ID");
 		column.put("keyName", "pregDurationID");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
-		column.put("columnName", "durationType");
+		column.put("columnName", "Duration Type");
 		column.put("keyName", "durationType");
 		columns.add(column);
 		
 		column = new HashMap<String, Object>();
-		column.put("columnName", "deliveryTypeID");
+		column.put("columnName", "Delivery Type ID");
 		column.put("keyName", "deliveryTypeID");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
-		column.put("columnName", "deliveryType");
+		column.put("columnName", "Delivery Type");
 		column.put("keyName", "deliveryType");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
-		column.put("columnName", "deliveryPlaceID");
+		column.put("columnName", "Delivery Place ID");
 		column.put("keyName", "deliveryPlaceID");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
-		column.put("columnName", "deliveryPlace");
+		column.put("columnName", "Delivery Place");
 		column.put("keyName", "deliveryPlace");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
-		column.put("columnName", "otherDeliveryPlace");
+		column.put("columnName", "Other Delivery Place");
 		column.put("keyName", "otherDeliveryPlace");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
-		column.put("columnName", "deliveryComplicationID");
+		column.put("columnName", "Delivery Complication ID");
 		column.put("keyName", "deliveryComplicationID");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
-		column.put("columnName", "deliveryComplicationType");
+		column.put("columnName", "Delivery Complication Type");
 		column.put("keyName", "deliveryComplicationType");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
-		column.put("columnName", "otherDeliveryComplication");
+		column.put("columnName", "Other Delivery Complication");
 		column.put("keyName", "otherDeliveryComplication");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
-		column.put("columnName", "pregOutcomeID");
+		column.put("columnName", "Preg Outcome ID");
 		column.put("keyName", "pregOutcomeID");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
-		column.put("columnName", "pregOutcome");
+		column.put("columnName", "Preg Outcome");
 		column.put("keyName", "pregOutcome");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
-		column.put("columnName", "postpartumComplicationID");
+		column.put("columnName", "Postpartum Complication ID");
 		column.put("keyName", "postpartumComplicationID");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
-		column.put("columnName", "postpartumComplicationType");
+		column.put("columnName", "Postpartum Complication Type");
 		column.put("keyName", "postpartumComplicationType");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Other Postpartum CompType");
+		column.put("keyName", "otherPostpartumCompType");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Post Natal Complication ID");
+		column.put("keyName", "postNatalComplicationID");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Post Natal Complication");
+		column.put("keyName", "postNatalComplication");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Other Post Natal Complication");
+		column.put("keyName", "otherPostNatalComplication");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Congenital Anomalies");
+		column.put("keyName", "congenitalAnomalies");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "New Born Complication ID");
+		column.put("keyName", "newBornComplicationID");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "New Born Complication");
+		column.put("keyName", "newBornComplication");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Other New Born Complication");
+		column.put("keyName", "otherNewBornComplication");
 		columns.add(column);
 		
 		ArrayList<FemaleObstetricHistory> femaleObstetricDetails = new ArrayList<FemaleObstetricHistory>();
 		if (null != femaleObstetricHistory) {
-			for (Object[] obj : femaleObstetricHistory) {
-				FemaleObstetricHistory history = new FemaleObstetricHistory((Short)obj[0], (Short)obj[1], (Short)obj[2], (String)obj[3], 
-						(String)obj[4], (Short)obj[5], (String)obj[6], (Short)obj[7], (String)obj[8], (Short)obj[9], (String)obj[10],
-						(String)obj[11], (Short)obj[12], (String)obj[13], (String)obj[14], (Short)obj[15], (String)obj[16], (Short)obj[17], 
-						(String)obj[18]);
+			for (Object[] obj : femaleObstetricHistory) {		
+				
+				FemaleObstetricHistory history = new FemaleObstetricHistory((Short)obj[0], (Short)obj[1], (String)obj[2], 
+						(String)obj[3], (Short)obj[4], (String)obj[5], (Short)obj[6], (String)obj[7], (Short)obj[8], (String)obj[9],
+						(String)obj[10], (Short)obj[11], (String)obj[12], (String)obj[13], (Short)obj[14], (String)obj[15], (Short)obj[16], 
+						(String)obj[17],(String)obj[18], (Short)obj[19], (String)obj[20], (String)obj[21], (String)obj[22], (Short)obj[23],(String)obj[24], (String)obj[25]);
 				femaleObstetricDetails.add(history);
 			}
 
@@ -1634,10 +1670,13 @@ public class ANCServiceImpl implements ANCService {
 	public String getBenANCHistoryDetails(Long benRegID, Long benVisitID) {
 		Map<String, Object> HistoryDetailsMap = new HashMap<String, Object>();
 
-		HistoryDetailsMap.put("pastHistory", getPastHistoryData(benRegID, benVisitID));
+		HistoryDetailsMap.put("PastHistory", getPastHistoryData(benRegID, benVisitID));
 		HistoryDetailsMap.put("ComorbidityConditions", getComorbidityConditionsHistory(benRegID, benVisitID));
 		HistoryDetailsMap.put("MedicationHistory", getMedicationHistory(benRegID, benVisitID));
-		HistoryDetailsMap.put("personalHistory", getPersonalHistory(benRegID, benVisitID));
+		HistoryDetailsMap.put("PersonalHistory", getPersonalHistory(benRegID, benVisitID));
+		HistoryDetailsMap.put("FamilyHistory", getFamilyHistory(benRegID, benVisitID));
+		HistoryDetailsMap.put("MenstrualHistory", getMenstrualHistory(benRegID, benVisitID));
+		HistoryDetailsMap.put("FemaleObstetricHistory", getFemaleObstetricHistory(benRegID, benVisitID));
 
 		return new Gson().toJson(HistoryDetailsMap);
 	}
@@ -1670,6 +1709,27 @@ public class ANCServiceImpl implements ANCService {
 		BenPersonalHabit personalHabits = BenPersonalHabit.getPersonalDetails(personalDetails);
 		
 		return personalHabits;
+	}
+	
+	public BenFamilyHistory getFamilyHistory(Long beneficiaryRegID, Long benVisitID){
+		ArrayList<Object[]>  familyHistory = benFamilyHistoryRepo.getBenFamilyHistoryDetail(beneficiaryRegID, benVisitID);
+		BenFamilyHistory familyHistoryDetails = BenFamilyHistory.getBenFamilyHistory(familyHistory);
+		
+		return familyHistoryDetails;
+	}
+	
+	public BenMenstrualDetails getMenstrualHistory(Long beneficiaryRegID, Long benVisitID){
+		ArrayList<Object[]>  menstrualHistory = benMenstrualDetailsRepo.getBenMenstrualDetail(beneficiaryRegID, benVisitID);
+		BenMenstrualDetails menstrualHistoryDetails = BenMenstrualDetails.getBenMenstrualDetails(menstrualHistory);
+		
+		return menstrualHistoryDetails;
+	}
+	
+	public WrapperFemaleObstetricHistory getFemaleObstetricHistory(Long beneficiaryRegID, Long benVisitID){
+		ArrayList<Object[]>  femaleObstetricHistory = femaleObstetricHistoryRepo.getBenFemaleObstetricHistoryDetail(beneficiaryRegID, benVisitID);
+		WrapperFemaleObstetricHistory femaleObstetricHistoryDetails = WrapperFemaleObstetricHistory.getFemaleObstetricHistory(femaleObstetricHistory);
+		
+		return femaleObstetricHistoryDetails;
 	}
 	
 }
