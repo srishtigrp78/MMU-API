@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.anc;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -255,5 +256,35 @@ public class BenMenstrualDetails {
 		this.lMPDate = lMPDate;
 	}
 
+	public BenMenstrualDetails(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
+			Short menstrualCycleStatusID, String regularity, Short menstrualCyclelengthID, String cycleLength,
+			Short menstrualFlowDurationID, String bloodFlowDuration, Short menstrualProblemID, String problemName,
+			Timestamp lMPDate) {
+		super();
+		this.beneficiaryRegID = beneficiaryRegID;
+		this.benVisitID = benVisitID;
+		this.providerServiceMapID = providerServiceMapID;
+		this.menstrualCycleStatusID = menstrualCycleStatusID;
+		this.regularity = regularity;
+		this.menstrualCyclelengthID = menstrualCyclelengthID;
+		this.cycleLength = cycleLength;
+		this.menstrualFlowDurationID = menstrualFlowDurationID;
+		this.bloodFlowDuration = bloodFlowDuration;
+		this.menstrualProblemID = menstrualProblemID;
+		this.problemName = problemName;
+		this.lMPDate = lMPDate;
+	}
+	
+	public static BenMenstrualDetails getBenMenstrualDetails(ArrayList<Object[]> menstrualHistoryDetails){
+		BenMenstrualDetails menstrualDetails = null;
+		if(null != menstrualHistoryDetails && menstrualHistoryDetails.size()>0){
+			for(Object[] obj:menstrualHistoryDetails){
+				menstrualDetails = new BenMenstrualDetails((Long)obj[0], (Long)obj[1], (Integer)obj[2], 
+						(Short)obj[3], (String)obj[4], (Short)obj[5], (String)obj[6], (Short)obj[7], (String)obj[8], (Short)obj[9], 
+						(String)obj[10], (Timestamp)obj[11]);
+			}
+		}
+		return menstrualDetails;
+	}
 	
 }

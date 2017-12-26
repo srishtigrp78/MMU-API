@@ -450,15 +450,16 @@ public class FemaleObstetricHistory {
 		return obstetricHistoryID;
 	}
 
-	public FemaleObstetricHistory(Short pregOrder, Short totalNoOfPreg, Short pregComplicationID,
-			String pregComplicationType, String otherPregComplication, Short pregDurationID, String durationType,
-			Short deliveryTypeID, String deliveryType, Short deliveryPlaceID, String deliveryPlace,
-			String otherDeliveryPlace, Short deliveryComplicationID, String deliveryComplicationType,
-			String otherDeliveryComplication, Short pregOutcomeID, String pregOutcome, Short postpartumComplicationID,
-			String postpartumComplicationType) {
+	public FemaleObstetricHistory(Short pregOrder, Short pregComplicationID, String pregComplicationType,
+			String otherPregComplication, Short pregDurationID, String durationType, Short deliveryTypeID,
+			String deliveryType, Short deliveryPlaceID, String deliveryPlace, String otherDeliveryPlace,
+			Short deliveryComplicationID, String deliveryComplicationType, String otherDeliveryComplication,
+			Short pregOutcomeID, String pregOutcome, Short postpartumComplicationID, String postpartumComplicationType,
+			String otherPostpartumCompType, Short postNatalComplicationID, String postNatalComplication,
+			String otherPostNatalComplication, String congenitalAnomalies, Short newBornComplicationID,
+			String newBornComplication, String otherNewBornComplication) {
 		super();
 		this.pregOrder = pregOrder;
-		this.totalNoOfPreg = totalNoOfPreg;
 		this.pregComplicationID = pregComplicationID;
 		this.pregComplicationType = pregComplicationType;
 		this.otherPregComplication = otherPregComplication;
@@ -476,6 +477,14 @@ public class FemaleObstetricHistory {
 		this.pregOutcome = pregOutcome;
 		this.postpartumComplicationID = postpartumComplicationID;
 		this.postpartumComplicationType = postpartumComplicationType;
+		this.otherPostpartumCompType = otherPostpartumCompType;
+		this.postNatalComplicationID = postNatalComplicationID;
+		this.postNatalComplication = postNatalComplication;
+		this.otherPostNatalComplication = otherPostNatalComplication;
+		this.congenitalAnomalies = congenitalAnomalies;
+		this.newBornComplicationID = newBornComplicationID;
+		this.newBornComplication = newBornComplication;
+		this.otherNewBornComplication = otherNewBornComplication;
 	}
 
 	

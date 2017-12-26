@@ -134,12 +134,10 @@ public interface ANCService {
 
 	public String fetchBenOptionalVaccineHistory(Long beneficiaryRegID);
 
-//	public String fetchBenNurseANCPastHistory(Long beneficiaryRegID, Long benVisitID);
-//
-//	public String fetchBenNurseANCComorbidityConditions(Long beneficiaryRegID, Long benVisitID);
-//
-//	public String fetchBenNurseANCMedicationHistory(Long beneficiaryRegID, Long benVisitID);
+	public String getBenANCHistoryDetails(Long benRegID, Long benVisitID);
 
-	String getBenANCHistoryDetails(Long benRegID, Long benVisitID);
+	public int updateBenAdherenceDetails(BenAdherence benAdherence);
+
+	public int updateBenChiefComplaints(List<BenChiefComplaint> benChiefComplaintList);
 
 }
