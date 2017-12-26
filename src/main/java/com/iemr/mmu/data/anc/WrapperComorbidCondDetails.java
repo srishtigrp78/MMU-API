@@ -41,7 +41,7 @@ public class WrapperComorbidCondDetails {
 		return comorbidityConcurrentConditionsList;
 	}
 	
-	public static WrapperComorbidCondDetails getComorbidityDetails(ArrayList<Object[]> comrbidityCondDetails){
+	public static WrapperComorbidCondDetails getComorbidityDetails(ArrayList<Object[]> comrbidityCondDetails){ 
 		WrapperComorbidCondDetails WCD = new WrapperComorbidCondDetails();
 		WCD.comorbidityConcurrentConditionsList = new ArrayList<BencomrbidityCondDetails>();
 		

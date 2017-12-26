@@ -1064,5 +1064,5 @@ public class NurseServiceImpl implements NurseService {
 
 		return new Gson().toJson(resMap);
 	}
-
+	
 }

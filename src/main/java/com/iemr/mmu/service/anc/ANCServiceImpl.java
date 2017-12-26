@@ -1732,4 +1732,25 @@ public class ANCServiceImpl implements ANCService {
 		return femaleObstetricHistoryDetails;
 	}
 	
+	@Override
+	public int updateBenAdherenceDetails(BenAdherence benAdherence) {
+		int r = 0;
+		r = benAdherenceRepo.updateBenAdherence(benAdherence.getToDrugs(), benAdherence.getDrugReason(), benAdherence.getToReferral(), 
+				benAdherence.getReferralReason(), benAdherence.getProgress(), benAdherence.getModifiedBy(), benAdherence.getProviderServiceMapID(), 
+				benAdherence.getBeneficiaryRegID(), benAdherence.getBenVisitID(), benAdherence.getID());
+		return r;
+	}
+
+	@Override
+	public int updateBenChiefComplaints(List<BenChiefComplaint> benChiefComplaintList) {
+		int r = 0;
+		List<BenChiefComplaint> benChiefComplaintResultList = (List<BenChiefComplaint>) benChiefComplaintRepo
+					.save(benChiefComplaintList);
+
+		if (benChiefComplaintResultList != null && benChiefComplaintResultList.size() > 0) {
+			r = benChiefComplaintResultList.size();
+		}
+		return r;
+	}
+	
 }
