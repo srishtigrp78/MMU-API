@@ -109,7 +109,7 @@ public class WrapperRegWorklist {
 				} else {
 					System.out.println("else");
 					if (obj[8].toString().equals("D")) {
-						System.out.println(" again ifff");
+						//System.out.println(" again ifff");
 						wrapperRegWorklist.statusMessage = "Consultation Done";
 					}
 				}

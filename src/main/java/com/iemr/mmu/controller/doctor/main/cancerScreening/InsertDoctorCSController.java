@@ -324,7 +324,7 @@ public class InsertDoctorCSController {
 				response.setResponse("Data Successfully saved");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			response.setError(e);
 		}
 		return response.toString();

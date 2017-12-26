@@ -64,10 +64,11 @@ public class CaseSheetController {
 						// new Date(timestamp.getYear(), timestamp.getMonth(),
 						// timestamp.getDate());
 						visitDateTime = new Date(timestamp.getTime());
-						System.out.println("hello");
+						//System.out.println("hello");
 					} catch (ParseException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						//e.printStackTrace();
+						logger.error("Error in getBenDataForCaseSheet:" + e);
 					}
 				}
 
@@ -125,7 +126,7 @@ public class CaseSheetController {
 				Long benRegID = obj.getLong("benRegID");
 				Long benVisitID = obj.getLong("benVisitID");
 				String s = caseSheetServiceImpl.getCancerExaminationImageAnnotation(benRegID, benVisitID);
-				System.out.println(s);
+				//System.out.println(s);
 				response.setResponse(s);
 
 			} else {

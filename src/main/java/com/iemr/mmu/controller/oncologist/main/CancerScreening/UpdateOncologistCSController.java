@@ -18,22 +18,21 @@ import com.iemr.utils.response.OutputResponse;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
-
 @CrossOrigin
 @RestController
 @RequestMapping({ "/oncologist" })
 public class UpdateOncologistCSController {
-	
+
 	private InputMapper inputMapper;
 	private OutputResponse response;
 	private Logger logger = LoggerFactory.getLogger(UpdateDoctorCSController.class);
 	private OncologistServiceImpl oncologistServiceImpl;
-	
+
 	@Autowired
 	public void setOncologistServiceImpl(OncologistServiceImpl oncologistServiceImpl) {
 		this.oncologistServiceImpl = oncologistServiceImpl;
 	}
-	
+
 	@CrossOrigin
 	@ApiOperation(value = "update Cancer Diagnosis Details By Oncologist", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/examinationScreen/diagnosis" }, method = { RequestMethod.POST })
@@ -44,13 +43,14 @@ public class UpdateOncologistCSController {
 		response = new OutputResponse();
 		inputMapper = new InputMapper();
 		logger.info("updateCancerDiagnosisDetailsByOncologist request:" + requestObj);
-		CancerDiagnosis cancerDiagnosis = InputMapper.gson().fromJson(requestObj, CancerDiagnosis.class);
+
 		try {
+			CancerDiagnosis cancerDiagnosis = InputMapper.gson().fromJson(requestObj, CancerDiagnosis.class);
 			int result = oncologistServiceImpl.updateCancerDiagnosisDetailsByOncologist(cancerDiagnosis);
 			if (result > 0) {
-				response.setResponse("Cancer Diagnosis Details updated By Oncologist");
+				response.setResponse("Cancer Diagnosis Details updated By Oncologist Successfully");
 			} else {
-				response.setError(500, "Failed to update Cancer Diagnosis Details By Oncologist");
+				response.setError(5000, "Failed to update Cancer Diagnosis Details By Oncologist");
 			}
 			logger.info("updateCancerDiagnosisDetailsByOncologist response:" + response);
 		} catch (Exception e) {
@@ -60,6 +60,5 @@ public class UpdateOncologistCSController {
 
 		return response.toString();
 	}
-
 
 }
