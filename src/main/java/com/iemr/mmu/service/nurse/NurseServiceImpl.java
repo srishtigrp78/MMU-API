@@ -796,7 +796,7 @@ public class NurseServiceImpl implements NurseService {
 		}
 
 		columnMap = new HashMap<>();
-		columnMap.put("columnName", "Date of Capture)");
+		columnMap.put("columnName", "Date of Capture");
 		columnMap.put("keyName", "captureDate");
 		columns.add(columnMap);
 
@@ -887,7 +887,7 @@ public class NurseServiceImpl implements NurseService {
 		}
 
 		columnMap = new HashMap<>();
-		columnMap.put("columnName", "Date of Capture)");
+		columnMap.put("columnName", "Date of Capture");
 		columnMap.put("keyName", "captureDate");
 		columns.add(columnMap);
 
