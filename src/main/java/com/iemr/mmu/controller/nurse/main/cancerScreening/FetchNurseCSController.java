@@ -97,7 +97,7 @@ public class FetchNurseCSController {
 			response.setError(e);
 			logger.error("Error in getBenDataFrmNurseScrnToDocScrnHistory:" + e);
 		}
-		System.out.println(response.toString());
+		//System.out.println(response.toString());
 		return response.toString();
 	}
 
@@ -136,7 +136,8 @@ public class FetchNurseCSController {
 			String s = nurseServiceImpl.getNurseWorkList();
 			response.setResponse(s);
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			logger.error("Error in getNurseWorklist:" + e);
 			response.setError(e);
 		}
 		return response.toString();

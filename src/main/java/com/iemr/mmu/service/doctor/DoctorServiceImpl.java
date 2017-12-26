@@ -249,7 +249,7 @@ public class DoctorServiceImpl implements DoctorService {
 
 	public String getDocWorkList() {
 		List<Object[]> docWorkListData = docWorkListRepo.getDocWorkList();
-		System.out.println("hello");
+		//System.out.println("hello");
 		return WrapperRegWorklist.getDocWorkListData(docWorkListData);
 	}
 
@@ -258,7 +258,7 @@ public class DoctorServiceImpl implements DoctorService {
 	public Map<String, Object> getBenDoctorEnteredDataForCaseSheet(Long benRegID, Long benVisitID, Date visitDateTime) {
 		Map<String, Object> resMap = new HashMap<>();
 
-		System.out.println("getBenDoctorEnteredDataForCaseSheet");
+		//System.out.println("getBenDoctorEnteredDataForCaseSheet");
 		resMap.put("abdominalExamination", getBenCancerAbdominalExaminationData(benRegID, benVisitID, visitDateTime));
 
 		resMap.put("breastExamination", getBenCancerBreastExaminationData(benRegID, benVisitID, visitDateTime));
@@ -294,7 +294,7 @@ public class DoctorServiceImpl implements DoctorService {
 	private CancerDiagnosis getBenCancerDiagnosisData(Long benRegID, Long benVisitID, Date visitDateTime) {
 		CancerDiagnosis cancerDiagnosis = cancerDiagnosisRepo.getBenCancerDiagnosisDetails(benRegID, benVisitID,
 				visitDateTime);
-		System.out.println("cancerDiagnosis .....");
+	//	System.out.println("cancerDiagnosis .....");
 		if (null != cancerDiagnosis && null != cancerDiagnosis.getInstitute()) {
 			cancerDiagnosis.setReferredToInstituteName(cancerDiagnosis.getInstitute().getInstitutionName());
 		}
@@ -358,7 +358,7 @@ public class DoctorServiceImpl implements DoctorService {
 
 	@Override
 	public Long saveDocExaminationImageAnnotation(List<WrapperCancerExamImgAnotasn> wrapperCancerExamImgAnotasnList) {
-		System.out.println("hello");
+		//System.out.println("hello");
 		Long x = null;
 		List<CancerExaminationImageAnnotation> objList = (List<CancerExaminationImageAnnotation>) cancerExaminationImageAnnotationRepo
 				.save(getCancerExaminationImageAnnotationList(wrapperCancerExamImgAnotasnList));
