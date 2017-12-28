@@ -62,7 +62,7 @@ public class CaseSheetServiceImpl {
 
 	public String getCancerExaminationImageAnnotation(Long benRegID, Long benVisitID) {
 		ArrayList<WrapperCancerExamImgAnotasn> resList = new ArrayList<>();
-		System.out.println("hello");
+		//System.out.println("hello");
 		List<CancerExaminationImageAnnotation> cancerExaminationImageAnnotationList = cancerExaminationImageAnnotationRepo
 				.getCancerExaminationImageAnnotationList(benRegID, benVisitID);
 
@@ -115,7 +115,7 @@ public class CaseSheetServiceImpl {
 		} else {
 
 		}
-		System.out.println("hello");
+	//	System.out.println("hello");
 		return new Gson().toJson(resList);
 	}
 }

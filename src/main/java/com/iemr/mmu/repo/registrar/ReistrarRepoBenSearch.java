@@ -31,7 +31,7 @@ public interface ReistrarRepoBenSearch extends CrudRepository<V_BenAdvanceSearch
 			+ " UPPER( concat(IFNULL(firstName, ''), ' ',IFNULL(lastName,''))) as benName, "
 			+ " Date(dob), genderID, genderName, UPPER(fatherName) as fatherName, "
 			+ " districtID, districtName, districtBranchID, villageName, phoneNo " + " FROM  V_BenAdvanceSearch "
-			+ " WHERE (beneficiaryRegID IS NULL OR beneficiaryRegID like :beneficiaryID ) AND"
+			+ " WHERE (Isnull(cast(beneficiaryRegID as string)) LIKE :beneficiaryRegID OR cast(beneficiaryRegID as string) like :beneficiaryRegID) AND"
 			+ " (firstName like %:firstName% ) AND"
 			+ " (Isnull(lastName) LIKE %:lastName%  OR lastName like %:lastName% ) AND"
 			+ " (Isnull(phoneNo) LIKE :phoneNo OR phoneNo like :phoneNo ) AND"
@@ -40,7 +40,7 @@ public interface ReistrarRepoBenSearch extends CrudRepository<V_BenAdvanceSearch
 			+ " (Isnull(cast(stateID as string)) LIKE :stateID OR cast(stateID as string) like :stateID) AND"
 			+ " (Isnull(cast(districtID as string)) LIKE :districtID OR cast(districtID as string) like :districtID)")
 
-	public ArrayList<Object[]> getAdvanceBenSearchList(@Param("beneficiaryID") String beneficiaryID,
+	public ArrayList<Object[]> getAdvanceBenSearchList(@Param("beneficiaryRegID") String beneficiaryRegID,
 			@Param("firstName") String firstName, @Param("lastName") String lastName, @Param("phoneNo") String phoneNo,
 			@Param("aadharNo") String aadharNo, @Param("govtIdentityNo") String govtIdentityNo,
 			@Param("stateID") String stateID, @Param("districtID") String districtID);
