@@ -50,11 +50,19 @@ public interface ReistrarRepoBenSearch extends CrudRepository<V_BenAdvanceSearch
 			+ "from V_BenAdvanceSearch  WHERE beneficiaryRegID =:benRegID ")
 	public List<Object[]> getBenDetails(@Param("benRegID") Long benRegID);
 
+//	@Query("SELECT DISTINCT beneficiaryRegID, beneficiaryID, "
+//			+ " UPPER( concat(IFNULL(firstName, ''), ' ',IFNULL(lastName,''))) as benName, "
+//			+ " Date(dob), genderID, genderName, UPPER(fatherName) as fatherName, "
+//			+ " districtID, districtName, districtBranchID, villageName, phoneNo " + " FROM  V_BenAdvanceSearch "
+//			+ " WHERE beneficiaryID=:searchKeyword OR  "
+//			+ " CONCAT(IFNULL(firstName, ''), ' ', IFNULL(lastName, '')) like '%' ||:searchKeyword || '%' "
+//			+ " OR phoneNO = :searchKeyword ")
+	
 	@Query("SELECT DISTINCT beneficiaryRegID, beneficiaryID, "
 			+ " UPPER( concat(IFNULL(firstName, ''), ' ',IFNULL(lastName,''))) as benName, "
 			+ " Date(dob), genderID, genderName, UPPER(fatherName) as fatherName, "
 			+ " districtID, districtName, districtBranchID, villageName, phoneNo " + " FROM  V_BenAdvanceSearch "
-			+ " WHERE beneficiaryID=:searchKeyword OR  "
+			+ " WHERE (Isnull(cast(beneficiaryRegID as string)) LIKE :searchKeyword OR cast(beneficiaryRegID as string) like :searchKeyword)  OR  "
 			+ " CONCAT(IFNULL(firstName, ''), ' ', IFNULL(lastName, '')) like '%' ||:searchKeyword || '%' "
 			+ " OR phoneNO = :searchKeyword ")
 
