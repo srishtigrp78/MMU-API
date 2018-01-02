@@ -139,5 +139,17 @@ public interface ANCService {
 	public int updateBenAdherenceDetails(BenAdherence benAdherence);
 
 	public int updateBenChiefComplaints(List<BenChiefComplaint> benChiefComplaintList);
+	
+	public Long updateBenInvestigation(WrapperBenInvestigationANC wrapperBenInvestigationANC);
+
+	public int updateBenAncCareDetails(ANCCareDetails ancCareDetailsOBJ) throws ParseException;
+
+	public int updateBenAncImmunizationDetails(WrapperAncImmunization wrapperAncImmunization) throws ParseException;
+
+	public int updateBenAncPastHistoryDetails(BenMedHistory benMedHistory) throws ParseException;
+
+	public Integer updateBenANCComorbidConditions(WrapperComorbidCondDetails wrapperComorbidCondDetails);
+
+	public Integer updateBenANCMedicationHistory(WrapperMedicationHistory wrapperMedicationHistory);
 
 }

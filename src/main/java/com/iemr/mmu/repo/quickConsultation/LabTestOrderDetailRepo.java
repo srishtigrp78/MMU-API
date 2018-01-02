@@ -2,6 +2,9 @@ package com.iemr.mmu.repo.quickConsultation;
 
 import java.util.ArrayList;
 
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -16,5 +19,10 @@ public interface LabTestOrderDetailRepo extends CrudRepository<LabTestOrderDetai
 			+ "isRadiologyImaging  from LabTestOrderDetail ba WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID ")
 	public ArrayList<Object[]> getLabTestOrderDetails(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
+	
+	@Modifying
+	@Transactional
+	@Query(" Delete from LabTestOrderDetail WHERE beneficiaryRegID = :benRegID AND benVisitID = :benVisitID ")
+	public int deleteExistingLabTestOrderDetail(@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
 	
 }

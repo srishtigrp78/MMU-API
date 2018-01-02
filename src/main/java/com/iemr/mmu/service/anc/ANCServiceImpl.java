@@ -436,6 +436,7 @@ public class ANCServiceImpl implements ANCService {
 			ancWomenVaccineDetail.setBenVisitID(wrapperAncImmunizationOBJ.getBenVisitID());
 			ancWomenVaccineDetail.setProviderServiceMapID(wrapperAncImmunizationOBJ.getProviderServiceMapID());
 			ancWomenVaccineDetail.setCreatedBy(wrapperAncImmunizationOBJ.getCreatedBy());
+			ancWomenVaccineDetail.setID(wrapperAncImmunizationOBJ.gettT1ID());
 			ancWomenVaccineDetail.setVaccineName("TT-1");
 			ancWomenVaccineDetail.setStatus(wrapperAncImmunizationOBJ.gettT_1Status());
 			if (wrapperAncImmunizationOBJ.getDateReceivedForTT_1() != null
@@ -453,6 +454,7 @@ public class ANCServiceImpl implements ANCService {
 			ancWomenVaccineDetail.setBenVisitID(wrapperAncImmunizationOBJ.getBenVisitID());
 			ancWomenVaccineDetail.setProviderServiceMapID(wrapperAncImmunizationOBJ.getProviderServiceMapID());
 			ancWomenVaccineDetail.setCreatedBy(wrapperAncImmunizationOBJ.getCreatedBy());
+			ancWomenVaccineDetail.setID(wrapperAncImmunizationOBJ.gettT2ID());
 			ancWomenVaccineDetail.setVaccineName("TT-2");
 			ancWomenVaccineDetail.setStatus(wrapperAncImmunizationOBJ.gettT_2Status());
 			if (wrapperAncImmunizationOBJ.getDateReceivedForTT_2() != null
@@ -470,6 +472,7 @@ public class ANCServiceImpl implements ANCService {
 			ancWomenVaccineDetail.setBenVisitID(wrapperAncImmunizationOBJ.getBenVisitID());
 			ancWomenVaccineDetail.setProviderServiceMapID(wrapperAncImmunizationOBJ.getProviderServiceMapID());
 			ancWomenVaccineDetail.setCreatedBy(wrapperAncImmunizationOBJ.getCreatedBy());
+			ancWomenVaccineDetail.setID(wrapperAncImmunizationOBJ.gettT3ID());
 			ancWomenVaccineDetail.setVaccineName("TT-Booster");
 			ancWomenVaccineDetail.setStatus(wrapperAncImmunizationOBJ.gettT_3Status());
 			if (wrapperAncImmunizationOBJ.getDateReceivedForTT_3() != null
@@ -1749,6 +1752,139 @@ public class ANCServiceImpl implements ANCService {
 
 		if (benChiefComplaintResultList != null && benChiefComplaintResultList.size() > 0) {
 			r = benChiefComplaintResultList.size();
+		}
+		return r;
+	}
+	
+	@Override
+	public Long updateBenInvestigation(WrapperBenInvestigationANC wrapperBenInvestigationANC) {
+		Long r = null;
+		PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
+		prescriptionDetail.setBeneficiaryRegID(wrapperBenInvestigationANC.getBeneficiaryRegID());
+		prescriptionDetail.setBenVisitID(wrapperBenInvestigationANC.getBenVisitID());
+		prescriptionDetail.setProviderServiceMapID(wrapperBenInvestigationANC.getProviderServiceMapID());
+		prescriptionDetail.setCreatedBy(wrapperBenInvestigationANC.getCreatedBy());
+
+		Long prescriptionID = quickConsultationServiceImpl.saveBenPrescriptionForANC(prescriptionDetail);
+
+		if (prescriptionID != null && prescriptionID > 0) {
+			ArrayList<LabTestOrderDetail> LabTestOrderDetailList = new ArrayList<>();
+			ArrayList<LabTestOrderDetail> investigationList = wrapperBenInvestigationANC.getLaboratoryList();
+			if (investigationList != null && investigationList.size() > 0) {
+
+				labTestOrderDetailRepo.deleteExistingLabTestOrderDetail(wrapperBenInvestigationANC.getBeneficiaryRegID(), wrapperBenInvestigationANC.getBenVisitID());
+				
+				for (LabTestOrderDetail testData : investigationList) {
+
+					testData.setPrescriptionID(prescriptionID);
+					testData.setBeneficiaryRegID(wrapperBenInvestigationANC.getBeneficiaryRegID());
+					testData.setBenVisitID(wrapperBenInvestigationANC.getBenVisitID());
+					testData.setProviderServiceMapID(wrapperBenInvestigationANC.getProviderServiceMapID());
+					testData.setCreatedBy(wrapperBenInvestigationANC.getCreatedBy());
+
+					LabTestOrderDetailList.add(testData);
+				}
+				ArrayList<LabTestOrderDetail> LabTestOrderDetailListRS = (ArrayList<LabTestOrderDetail>) labTestOrderDetailRepo
+						.save(LabTestOrderDetailList);
+
+				if (prescriptionID > 0 && LabTestOrderDetailListRS.size() > 0) {
+					r = prescriptionID;
+				}
+
+			} else {
+				r = prescriptionID;
+			}
+		}
+
+		return r;
+
+	}
+	
+	@Override
+	public int updateBenAncCareDetails(ANCCareDetails ancCareDetailsOBJ) throws ParseException {
+		int r = 0;
+		if (ancCareDetailsOBJ.getLmpDate() != null && !ancCareDetailsOBJ.getLmpDate().isEmpty()
+				&& ancCareDetailsOBJ.getLmpDate().length() >= 10) {
+			String lmpDate = ancCareDetailsOBJ.getLmpDate().split("T")[0];
+			ancCareDetailsOBJ
+					.setLastMenstrualPeriod_LMP(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(lmpDate).getTime()));
+		}
+		if (ancCareDetailsOBJ.getExpDelDt() != null && !ancCareDetailsOBJ.getExpDelDt().isEmpty()
+				&& ancCareDetailsOBJ.getExpDelDt().length() >= 10) {
+			String edDate = ancCareDetailsOBJ.getExpDelDt().split("T")[0];
+			ancCareDetailsOBJ
+					.setExpectedDateofDelivery(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(edDate).getTime()));
+		}
+		r = ancCareRepo.updateANCCareDetails(ancCareDetailsOBJ.getComolaintType(), ancCareDetailsOBJ.getDuration(), 
+				ancCareDetailsOBJ.getDescription(), ancCareDetailsOBJ.getaNCRegistrationDate(), ancCareDetailsOBJ.getaNCVisitNumber(), 
+				ancCareDetailsOBJ.getLastMenstrualPeriod_LMP(), ancCareDetailsOBJ.getGestationalAgeOrPeriodofAmenorrhea_POA(), 
+				ancCareDetailsOBJ.getTrimesterNumber(), ancCareDetailsOBJ.getExpectedDateofDelivery(), ancCareDetailsOBJ.getPrimiGravida(), 
+				ancCareDetailsOBJ.getObstetricFormula(), ancCareDetailsOBJ.getGravida_G(), ancCareDetailsOBJ.getTermDeliveries_T(), 
+				ancCareDetailsOBJ.getPretermDeliveries_P(), ancCareDetailsOBJ.getAbortions_A(), ancCareDetailsOBJ.getLivebirths_L(), 
+				ancCareDetailsOBJ.getBloodGroup(), ancCareDetailsOBJ.getModifiedBy(), ancCareDetailsOBJ.getBeneficiaryRegID(), ancCareDetailsOBJ.getID());
+		return r;
+	}	
+				
+	@Override
+	public int updateBenAncImmunizationDetails(WrapperAncImmunization wrapperAncImmunization) throws ParseException {
+		int r = 0;
+		List<ANCWomenVaccineDetail> ancWomenVaccineDetailList = getANCWomenVaccineDetail(wrapperAncImmunization);
+		if(null != ancWomenVaccineDetailList){
+			for(ANCWomenVaccineDetail ancWomenVaccineDetail : ancWomenVaccineDetailList){
+				r = ancWomenVaccineRepo.updateANCImmunizationDetails(ancWomenVaccineDetail.getStatus(), ancWomenVaccineDetail.getReceivedDate(), 
+						ancWomenVaccineDetail.getReceivedFacilityName(), ancWomenVaccineDetail.getModifiedBy(), ancWomenVaccineDetail.getID(), 
+						ancWomenVaccineDetail.getBeneficiaryRegID());
+			}
+		}
+		return r;
+	}
+	
+	@Override
+	public int updateBenAncPastHistoryDetails(BenMedHistory benMedHistory) throws ParseException {
+		Integer r = 0;
+		if(null !=benMedHistory){
+			//Delete Existing past History of beneficiary before inserting updated history
+			benMedHistoryRepo.deleteExistingBenMedHistory(benMedHistory.getBeneficiaryRegID());
+			
+			ArrayList<BenMedHistory> benMedHistoryList = benMedHistory.getBenPastHistory();
+			ArrayList<BenMedHistory> res = (ArrayList<BenMedHistory>) benMedHistoryRepo.save(benMedHistoryList);
+			if (null != res && res.size() > 0) {
+				r = res.size();
+			}
+		}
+		return r;
+	}
+	
+	@Override
+	public Integer updateBenANCComorbidConditions(WrapperComorbidCondDetails wrapperComorbidCondDetails) {
+		Integer r = 0;
+		if(null != wrapperComorbidCondDetails){
+			bencomrbidityCondRepo.deleteExistingBenComrbidityCondDetails(wrapperComorbidCondDetails.getBeneficiaryRegID());
+			
+			ArrayList<BencomrbidityCondDetails> bencomrbidityCondDetailsList = wrapperComorbidCondDetails
+					.getComrbidityConds();
+			ArrayList<BencomrbidityCondDetails> res = (ArrayList<BencomrbidityCondDetails>) bencomrbidityCondRepo
+					.save(bencomrbidityCondDetailsList);
+			if (null != res && res.size() > 0) {
+				r = res.size();
+			}
+		}
+		return r;
+	}
+	
+	@Override
+	public Integer updateBenANCMedicationHistory(WrapperMedicationHistory wrapperMedicationHistory) {
+		Integer r = 0;
+		if(null != wrapperMedicationHistory){
+			benMedicationHistoryRepo.deleteExistingBenMedicationHistory(wrapperMedicationHistory.getBeneficiaryRegID());
+
+			ArrayList<BenMedicationHistory> benMedicationHistoryList = wrapperMedicationHistory
+					.getBenMedicationHistoryDetails();
+			ArrayList<BenMedicationHistory> res = (ArrayList<BenMedicationHistory>) benMedicationHistoryRepo
+					.save(benMedicationHistoryList);
+			if (null != res && res.size() > 0) {
+				r = res.size();
+			}
 		}
 		return r;
 	}
