@@ -223,7 +223,7 @@ public class UpdateNurseANCController {
 	
 	@CrossOrigin
 	@ApiOperation(value = "Update Beneficiary ANC Medication History", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/update/history/comorbidConditions" }, method = { RequestMethod.POST })
+	@RequestMapping(value = { "/update/history/medicationHistory" }, method = { RequestMethod.POST })
 	public String updateANCBenMedicationHistory(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		logger.info("updateANCBenMedicationHistory request:" + requestObj);
