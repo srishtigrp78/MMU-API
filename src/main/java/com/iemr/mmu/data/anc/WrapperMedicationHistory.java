@@ -32,6 +32,14 @@ public class WrapperMedicationHistory {
 		this.beneficiaryRegID = beneficiaryRegID;
 	}
 
+	public Long getBenVisitID() {
+		return benVisitID;
+	}
+
+	public void setBenVisitID(Long benVisitID) {
+		this.benVisitID = benVisitID;
+	}
+
 	public ArrayList<BenMedicationHistory> getBenMedicationHistoryDetails(){
 		for(BenMedicationHistory medicationHistory:medicationHistoryList){
 			String timePeriodUnit = medicationHistory.getTimePeriodUnit();

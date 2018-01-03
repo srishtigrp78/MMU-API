@@ -20,7 +20,7 @@ public interface FemaleObstetricHistoryRepo extends CrudRepository<FemaleObstetr
 			+ "FemaleObstetricHistory a where a.beneficiaryRegID = :beneficiaryRegID")
 	public ArrayList<Object[]> getBenFemaleObstetricHistoryDetail(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	
-	@Query("select beneficiaryRegID, benVisitID, providerServiceMapID, pregOrder, pregComplicationID, pregComplicationType, otherPregComplication, pregDurationID, "
+	@Query("select beneficiaryRegID, benVisitID, providerServiceMapID, pregOrder, totalNoOfPreg, pregComplicationID, pregComplicationType, otherPregComplication, pregDurationID, "
 			+ "durationType, deliveryTypeID, deliveryType, deliveryPlaceID, deliveryPlace, otherDeliveryPlace, deliveryComplicationID, "
 			+ "deliveryComplicationType, otherDeliveryComplication, pregOutcomeID, pregOutcome, postpartumComplicationID, "
 			+ " postpartumComplicationType, otherPostpartumCompType, postNatalComplicationID, postNatalComplication, otherPostNatalComplication,"

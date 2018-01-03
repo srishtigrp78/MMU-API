@@ -1,5 +1,6 @@
 package com.iemr.mmu.controller.nurse.main.anc;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
@@ -511,7 +512,9 @@ public class InsertNurseANCController {
 	@CrossOrigin
 	@ApiOperation(value = "Save Beneficiary ANC Medication History Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/history/medicationHistory" }, method = { RequestMethod.POST })
-	public String saveANCBenMedicationHistory(@RequestBody String requestObj) {
+	public String saveANCBenMedicationHistory(@ApiParam(value = "{\"medicationHistoryList\":[{\"currentMedication\": \"String\","
+			+ "\"timePeriodAgo\":\"Integer\", \"timePeriodUnit\":\"String\"}], \"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", "
+			+ "\"providerServiceMapID\":\"Integer\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		logger.info("saveANCBenMedicationHistory request:" + requestObj);
 		try {
@@ -619,7 +622,9 @@ public class InsertNurseANCController {
 	@CrossOrigin
 	@ApiOperation(value = "Save child Vaccine Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/history/childVaccineDetails" }, method = { RequestMethod.POST })
-	public String saveANCChildVaccineDetails(@RequestBody String requestObj) {
+	public String saveANCChildVaccineDetails(@ApiParam(value = "{\"childOptionalVaccineList\": [{\"vaccineName\":\"String\", \"otherVaccineName\":\"String\","
+			+ "\"actualReceivingAge\":\"String\", \"receivedFacilityName\":\"String\", \"vaccineID\":\"String\"}], \"beneficiaryRegID\":\"Long\", "
+			+ "\"benVisitID\":\"Long\", \"providerServiceMapID\":\"Integer\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		logger.info("saveANCChildVaccineDetails request:" + requestObj);
 		try {
@@ -674,7 +679,20 @@ public class InsertNurseANCController {
 	@CrossOrigin
 	@ApiOperation(value = "Save ANC Personal History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/history/PersonalHistory" }, method = { RequestMethod.POST })
-	public String saveANCPersonalHistory(@RequestBody String requestObj) {
+	public String saveANCPersonalHistory(@ApiParam(value = "{\"dietaryType\": \"String\","
+			+ "\"physicalActivityType\":\"String\", \"riskySexualPracticesStatus\":\"Character\",\"tobaccoUseStatus\":\"String\", "
+			+ "\"alcoholIntakeStatus\":\"String\",\"allergyStatus\":\"String\", \"tobaccoList\":[{\"tobaccoUseTypeID\":\"String\", "
+			+ "\"tobaccoUseType\":\"String\", \"otherTobaccoUseType\":\"String\", \"numberperDay\":\"Short\", \"duration\":\"Integer\""
+			+ "\"durationUnit\":\"String\"}],\"alcoholList\":[{\"alcoholTypeID\":\"String\", \"alcoholType\":\"String\", "
+			+ "\"otherAlcoholType\":\"String\", \"alcoholIntakeFrequency\":\"String\", \"avgAlcoholConsumption\":\"String\""
+			+ "\"duration\":\"Integer\", \"durationUnit\":\"String\"}], \"allergicList\":[{\"allergyType\":\"String\", \"allergenName\":\"String\", "
+			+ "\"typeOfAllergicReactions\":[{\"name\":\"String\", \"allergicReactionTypeID\":\"String\"}],"
+			+ "\"otherAllergicReaction\":\"String\", \"remarks\":\"String\"}],"
+			+ "\"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", "
+			+ "\"providerServiceMapID\":\"Integer\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
+		
+		
+			
 		OutputResponse response = new OutputResponse();
 		logger.info("saveANCPersonalHistory request:" + requestObj);
 		try {
@@ -704,7 +722,10 @@ public class InsertNurseANCController {
 	@CrossOrigin
 	@ApiOperation(value = "Save ANC Family History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/history/familyHistory" }, method = { RequestMethod.POST })
-	public String saveANCFamilyHistory(@RequestBody String requestObj) {
+	public String saveANCFamilyHistory(@ApiParam(value = "{\"familyDiseaseList\": [{\"diseaseTypeID\":\"Short\", \"diseaseType\":\"String\","
+			+ "\"otherDiseaseType\":\"String\", \"familyMembers\":\"List\"]}, \"isGeneticDisorder\":\"Boolean\",\"geneticDisorder\":\"String\", "
+			+ "\"isConsanguineousMarrige\":\"Boolean\", \"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", "
+			+ "\"providerServiceMapID\":\"Integer\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		logger.info("saveANCFamilyHistory request:" + requestObj);
 		try {

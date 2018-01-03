@@ -29,7 +29,7 @@ public interface BenMedHistoryRepo extends CrudRepository<BenMedHistory, Long> {
 	
 	@Modifying
 	@Transactional
-	@Query(" Delete from BenMedHistory WHERE beneficiaryRegID = :benRegID")
-	public int deleteExistingBenMedHistory(@Param("benRegID") Long benRegID);
+	@Query(" Delete from BenMedHistory WHERE beneficiaryRegID = :benRegID AND benVisitID = :benVisitID")
+	public int deleteExistingBenMedHistory(@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
 
 }

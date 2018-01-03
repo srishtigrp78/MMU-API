@@ -135,6 +135,31 @@ public class BenPersonalHabit {
 	@Expose
 	private List<Map<String, String>> alcoholList;
 
+	@Transient
+	@Expose
+	private List<BenAllergyHistory> allergicList;
+	
+	@Transient
+	@Expose
+	private String allergyStatus;
+	
+	
+	public String getAllergyStatus() {
+		return allergyStatus;
+	}
+
+	public void setAllergyStatus(String allergyStatus) {
+		this.allergyStatus = allergyStatus;
+	}
+
+	public List<BenAllergyHistory> getAllergicList() {
+		return allergicList;
+	}
+
+	public void setAllergicList(List<BenAllergyHistory> allergicList) {
+		this.allergicList = allergicList;
+	}
+
 	public Integer getBenPersonalHabitID() {
 		return benPersonalHabitID;
 	}
@@ -540,6 +565,7 @@ public class BenPersonalHabit {
 			}
 			personalDetails.setTobaccoList(tobaccoList);
 			personalDetails.setAlcoholList(alcoholList);
+		
 		}
 		return personalDetails;
 	}

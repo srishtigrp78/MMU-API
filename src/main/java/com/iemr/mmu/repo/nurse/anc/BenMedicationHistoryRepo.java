@@ -25,6 +25,6 @@ public interface BenMedicationHistoryRepo extends CrudRepository<BenMedicationHi
 	
 		@Modifying
 		@Transactional
-		@Query(" Delete from BenMedicationHistory WHERE beneficiaryRegID = :benRegID")
-		public int deleteExistingBenMedicationHistory(@Param("benRegID") Long benRegID);
+		@Query(" Delete from BenMedicationHistory WHERE beneficiaryRegID = :benRegID and benVisitID = :benVisitID")
+		public int deleteExistingBenMedicationHistory(@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
 }

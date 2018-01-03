@@ -2,6 +2,7 @@ package com.iemr.mmu.data.anc;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +47,7 @@ public class BenAllergyHistory {
 	
 	@Expose
 	@Column(name = "allergenName")
-	private String allergenName;
+	private String allergyName;
 	
 	@Expose
 	@Column(name = "allergicReactionTypeID")
@@ -62,7 +63,7 @@ public class BenAllergyHistory {
 	
 	@Transient
 	@Expose
-	private List<String> typeOfAllergicReactions;
+	private List<Map<String,String>> typeOfAllergicReactions;
 	
 	@Expose
 	@Column(name = "Remarks")
@@ -106,7 +107,7 @@ public class BenAllergyHistory {
 		super();
 		this.allergyStatus = allergyStatus;
 		this.allergyType = allergyType;
-		this.allergenName = allergenName;
+		this.allergyName = allergenName;
 		this.allergicReactionTypeID = allergicReactionTypeID;
 		this.allergicReactionType = allergicReactionType;
 		this.otherAllergicReaction = otherAllergicReaction;
@@ -153,12 +154,12 @@ public class BenAllergyHistory {
 		this.allergyType = allergyType;
 	}
 
-	public String getAllergenName() {
-		return allergenName;
+	public String getAllergyName() {
+		return allergyName;
 	}
 
-	public void setAllergenName(String allergenName) {
-		this.allergenName = allergenName;
+	public void setAllergyName(String allergyName) {
+		this.allergyName = allergyName;
 	}
 
 	public String getAllergicReactionType() {
@@ -237,11 +238,11 @@ public class BenAllergyHistory {
 		return ID;
 	}
 	
-	public List<String> getTypeOfAllergicReactions() {
+	public List<Map<String,String>> getTypeOfAllergicReactions() {
 		return typeOfAllergicReactions;
 	}
 
-	public void setTypeOfAllergicReactions(List<String> typeOfAllergicReactions) {
+	public void setTypeOfAllergicReactions(List<Map<String,String>> typeOfAllergicReactions) {
 		this.typeOfAllergicReactions = typeOfAllergicReactions;
 	}
 	
@@ -267,7 +268,7 @@ public class BenAllergyHistory {
 			BenAllergyHistory benAllergyHistory = new BenAllergyHistory();
 
 			if(null != allergic.get("allergyName")){
-				benAllergyHistory.setAllergenName(allergic.get("allergyName").toString());
+				benAllergyHistory.setAllergyName(allergic.get("allergyName").toString());
 			}
 			if(null != allergic.get("allergyType")){
 				benAllergyHistory.setAllergyType(allergic.get("allergyType").toString());
@@ -297,6 +298,49 @@ public class BenAllergyHistory {
 			}
 			
 			benAllergyHistoryList.add(benAllergyHistory);
+		}
+		return benAllergyHistoryList;
+	}
+	
+	
+	public static ArrayList<BenAllergyHistory> getBenAllergicHistory(ArrayList<Object[]> allergyDetails){
+		ArrayList<BenAllergyHistory> benAllergyHistoryList=new ArrayList<BenAllergyHistory>();
+		
+		if(null != allergyDetails && allergyDetails.size()>0){
+			for(Object[] obj : allergyDetails){
+				
+				BenAllergyHistory allergyHistory = new BenAllergyHistory((String)obj[3], (String)obj[4], (String)obj[5], (String)obj[6], 
+						(String)obj[7], (String)obj[8], (String)obj[9]);
+				
+				String allergicReactionTypeID = allergyHistory.getAllergicReactionTypeID();
+				String[] allergicReactionTypeIDs = null;
+				if(null != allergicReactionTypeID){
+					allergicReactionTypeIDs =allergicReactionTypeID.toString().split(",");
+				}
+				
+				String allergicReactionType = allergyHistory.getAllergicReactionType();
+				String[] allergicReactionTypes = null;
+				if(null != allergicReactionType){
+					allergicReactionTypes = allergicReactionType.toString().split(",");
+				}
+				
+				List<Map<String,String>> reactionTypesList =new ArrayList<Map<String,String>>();
+				Map<String,String> reactionTypes = null;
+				
+				for(int i=0; i<allergicReactionTypes.length; i++){
+					reactionTypes = new HashMap<String,String>();
+					reactionTypes.put("name", allergicReactionTypes[i]);
+					reactionTypes.put("allergicReactionTypeID", allergicReactionTypeIDs[i]);
+					
+					reactionTypesList.add(reactionTypes);
+				}
+				
+				
+				allergyHistory.setTypeOfAllergicReactions(reactionTypesList);
+				
+				benAllergyHistoryList.add(allergyHistory);
+			}
+			
 		}
 		return benAllergyHistoryList;
 	}

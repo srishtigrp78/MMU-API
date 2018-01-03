@@ -152,4 +152,12 @@ public interface ANCService {
 
 	public Integer updateBenANCMedicationHistory(WrapperMedicationHistory wrapperMedicationHistory);
 
+	public Integer updateBenANCPersonalHistory(BenPersonalHabit benPersonalHabit);
+
+	public Integer updateBenANCAllergicHistory(BenAllergyHistory benAllergyHistory);
+
+	public Integer updateBenANCFamilyHistory(BenFamilyHistory benFamilyHistory);
+
+	public Integer updateChildOptionalVaccineDetail(WrapperChildOptionalVaccineDetail wrapperChildOptionalVaccineDetail);
+
 }

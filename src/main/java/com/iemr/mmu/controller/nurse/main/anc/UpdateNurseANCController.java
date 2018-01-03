@@ -14,9 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.iemr.mmu.data.anc.ANCCareDetails;
 import com.iemr.mmu.data.anc.BenAdherence;
+import com.iemr.mmu.data.anc.BenAllergyHistory;
+import com.iemr.mmu.data.anc.BenFamilyHistory;
 import com.iemr.mmu.data.anc.BenMedHistory;
+import com.iemr.mmu.data.anc.BenPersonalHabit;
 import com.iemr.mmu.data.anc.WrapperAncImmunization;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
+import com.iemr.mmu.data.anc.WrapperChildOptionalVaccineDetail;
 import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
 import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
@@ -26,6 +30,7 @@ import com.iemr.utils.mapper.InputMapper;
 import com.iemr.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
@@ -224,7 +229,10 @@ public class UpdateNurseANCController {
 	@CrossOrigin
 	@ApiOperation(value = "Update Beneficiary ANC Medication History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/history/medicationHistory" }, method = { RequestMethod.POST })
-	public String updateANCBenMedicationHistory(@RequestBody String requestObj) {
+	public String updateANCBenMedicationHistory(@ApiParam(value = "{\"medicationHistoryList\":[{\"currentMedication\": \"String\","
+			+ "\"timePeriodAgo\":\"Integer\", \"timePeriodUnit\":\"String\"}], \"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", "
+			+ "\"providerServiceMapID\":\"Integer\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
+		
 		OutputResponse response = new OutputResponse();
 		logger.info("updateANCBenMedicationHistory request:" + requestObj);
 		try {
@@ -234,7 +242,7 @@ public class UpdateNurseANCController {
 
 				int r = ancServiceImpl.updateBenANCMedicationHistory(wrapperMedicationHistory);
 				if (r > 0) {
-					response.setResponse("Beneficairy ANC Medication History Details updated successfully");
+					response.setResponse("Beneficiary ANC Medication History Details updated successfully");
 				} else {
 					response.setError(5000, "Something went wrong");
 				}
@@ -247,5 +255,110 @@ public class UpdateNurseANCController {
 		return response.toString();
 	}
 
+	@CrossOrigin
+	@ApiOperation(value = "Update Beneficiary ANC Personal History", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/history/personalHistory" }, method = { RequestMethod.POST })
+	public String updateANCBenPersonalHistory(@ApiParam(value = "{\"dietaryType\": \"String\","
+			+ "\"physicalActivityType\":\"String\", \"riskySexualPracticesStatus\":\"Character\",\"tobaccoUseStatus\":\"String\", "
+			+ "\"alcoholIntakeStatus\":\"String\",\"allergyStatus\":\"String\", \"tobaccoList\":[{\"tobaccoUseTypeID\":\"String\", "
+			+ "\"tobaccoUseType\":\"String\", \"otherTobaccoUseType\":\"String\", \"numberperDay\":\"Short\", \"duration\":\"Integer\""
+			+ "\"durationUnit\":\"String\"}],\"alcoholList\":[{\"alcoholTypeID\":\"String\", \"alcoholType\":\"String\", "
+			+ "\"otherAlcoholType\":\"String\", \"alcoholIntakeFrequency\":\"String\", \"avgAlcoholConsumption\":\"String\""
+			+ "\"duration\":\"Integer\", \"durationUnit\":\"String\"}], \"allergicList\":[{\"allergyType\":\"String\", \"allergenName\":\"String\", "
+			+ "\"typeOfAllergicReactions\":[{\"name\":\"String\", \"allergicReactionTypeID\":\"String\"}],"
+			+ "\"otherAllergicReaction\":\"String\", \"remarks\":\"String\"}],"
+			+ "\"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", "
+			+ "\"providerServiceMapID\":\"Integer\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
+				  
+		OutputResponse response = new OutputResponse();
+		logger.info("updateANCBenPersonalHistory request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				BenPersonalHabit personalHabit = InputMapper.gson().fromJson(requestObj,
+						BenPersonalHabit.class);
+				
+				BenAllergyHistory benAllergyHistory = InputMapper.gson().fromJson(requestObj,
+						BenAllergyHistory.class);
+
+				int r = ancServiceImpl.updateBenANCPersonalHistory(personalHabit);
+				
+				int s = ancServiceImpl.updateBenANCAllergicHistory(benAllergyHistory);
+				if ( r > 0 && s > 0) {
+					response.setResponse("Beneficiary ANC Personal History Details updated successfully");
+				} else {
+					response.setError(5000, "Something went wrong");
+				}
+				logger.info("updateANCBenPersonalHistory response:" + response);
+			}
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error while storing Beneficiary ANC Personal History."+e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin
+	@ApiOperation(value = "Update Beneficiary ANC Family History", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/history/familyHistory" }, method = { RequestMethod.POST })
+	public String updateANCBenFamilyHistory(@ApiParam(value = "{\"familyDiseaseList\": [{\"diseaseTypeID\":\"Short\", \"diseaseType\":\"String\","
+			+ "\"otherDiseaseType\":\"String\", \"familyMembers\":\"List\"]}, \"isGeneticDisorder\":\"Boolean\",\"geneticDisorder\":\"String\", "
+			+ "\"isConsanguineousMarrige\":\"Boolean\", \"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", "
+			+ "\"providerServiceMapID\":\"Integer\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
+				  
+		OutputResponse response = new OutputResponse();
+		logger.info("updateANCBenFamilyHistory request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				BenFamilyHistory benFamilyHistory = InputMapper.gson().fromJson(requestObj,
+						BenFamilyHistory.class);
+				
+
+				int r = ancServiceImpl.updateBenANCFamilyHistory(benFamilyHistory);
+				
+				if ( r > 0 ) {
+					response.setResponse("Beneficiary ANC Family History Details updated successfully");
+				} else {
+					response.setError(5000, "Something went wrong");
+				}
+				logger.info("updateANCBenFamilyHistory response:" + response);
+			}
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error while storing Beneficiary ANC Personal History."+e);
+		}
+		return response.toString();
+	}
+
+	
+	@CrossOrigin
+	@ApiOperation(value = "Update Beneficiary ANC Child Optional Vaccine History", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/history/childOptionalVaccineHistory" }, method = { RequestMethod.POST })
+	public String updateANCChildOptionalVaccineHistory(@ApiParam(value = "{\"childOptionalVaccineList\": [{\"vaccineName\":\"String\", \"otherVaccineName\":\"String\","
+			+ "\"actualReceivingAge\":\"String\", \"receivedFacilityName\":\"String\", \"vaccineID\":\"String\"}], \"beneficiaryRegID\":\"Long\", "
+			+ "\"benVisitID\":\"Long\", \"providerServiceMapID\":\"Integer\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
+	
+		OutputResponse response = new OutputResponse();
+		logger.info("updateANCChildOptionalVaccineHistory request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				WrapperChildOptionalVaccineDetail wrapperChildOptionalVaccineDetail = InputMapper.gson().fromJson(requestObj,
+						WrapperChildOptionalVaccineDetail.class);
+				
+
+				int r = ancServiceImpl.updateChildOptionalVaccineDetail(wrapperChildOptionalVaccineDetail);
+				
+				if ( r > 0 ) {
+					response.setResponse("Beneficiary ANC Child Optional Vaccine History Details updated successfully");
+				} else {
+					response.setError(5000, "Something went wrong");
+				}
+				logger.info("updateANCChildOptionalVaccineHistory response:" + response);
+			}
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error while storing Beneficiary ANC Child Optional Vaccine History."+e);
+		}
+		return response.toString();
+	}
 	
 }

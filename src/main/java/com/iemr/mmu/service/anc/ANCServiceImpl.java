@@ -1680,6 +1680,8 @@ public class ANCServiceImpl implements ANCService {
 		HistoryDetailsMap.put("FamilyHistory", getFamilyHistory(benRegID, benVisitID));
 		HistoryDetailsMap.put("MenstrualHistory", getMenstrualHistory(benRegID, benVisitID));
 		HistoryDetailsMap.put("FemaleObstetricHistory", getFemaleObstetricHistory(benRegID, benVisitID));
+		HistoryDetailsMap.put("ImmunizationHistory", "Pending");
+		HistoryDetailsMap.put("childOptionalVaccineHistory", getChildOptionalVaccineHistory(benRegID, benVisitID));
 
 		return new Gson().toJson(HistoryDetailsMap);
 	}
@@ -1709,7 +1711,16 @@ public class ANCServiceImpl implements ANCService {
 	
 	public BenPersonalHabit getPersonalHistory(Long beneficiaryRegID, Long benVisitID){
 		ArrayList<Object[]>  personalDetails = benPersonalHabitRepo.getBenPersonalHabitDetail(beneficiaryRegID, benVisitID);
+		
+		ArrayList<Object[]>  allergyDetails = benAllergyHistoryRepo.getBenPersonalAllergyDetail(beneficiaryRegID, benVisitID);
+		
 		BenPersonalHabit personalHabits = BenPersonalHabit.getPersonalDetails(personalDetails);
+		ArrayList<BenAllergyHistory>  allergyList= BenAllergyHistory.getBenAllergicHistory(allergyDetails);
+		if(null != allergyList && allergyList.size()>0){
+			personalHabits.setAllergyStatus(allergyList.get(0).getAllergyStatus());
+			personalHabits.setAllergicList(allergyList);
+		}
+		
 		
 		return personalHabits;
 	}
@@ -1733,6 +1744,13 @@ public class ANCServiceImpl implements ANCService {
 		WrapperFemaleObstetricHistory femaleObstetricHistoryDetails = WrapperFemaleObstetricHistory.getFemaleObstetricHistory(femaleObstetricHistory);
 		
 		return femaleObstetricHistoryDetails;
+	}
+		
+	public WrapperChildOptionalVaccineDetail getChildOptionalVaccineHistory(Long beneficiaryRegID, Long benVisitID){
+		ArrayList<Object[]>  childOptionalVaccineDetail = childOptionalVaccineDetailRepo.getBenOptionalVaccineDetail(beneficiaryRegID, benVisitID);
+		WrapperChildOptionalVaccineDetail childOptionalVaccineDetails = WrapperChildOptionalVaccineDetail.getChildOptionalVaccineDetail(childOptionalVaccineDetail);
+		
+		return childOptionalVaccineDetails;
 	}
 	
 	@Override
@@ -1844,7 +1862,7 @@ public class ANCServiceImpl implements ANCService {
 		Integer r = 0;
 		if(null !=benMedHistory){
 			//Delete Existing past History of beneficiary before inserting updated history
-			benMedHistoryRepo.deleteExistingBenMedHistory(benMedHistory.getBeneficiaryRegID());
+			benMedHistoryRepo.deleteExistingBenMedHistory(benMedHistory.getBeneficiaryRegID(), benMedHistory.getBenVisitID());
 			
 			ArrayList<BenMedHistory> benMedHistoryList = benMedHistory.getBenPastHistory();
 			ArrayList<BenMedHistory> res = (ArrayList<BenMedHistory>) benMedHistoryRepo.save(benMedHistoryList);
@@ -1859,7 +1877,8 @@ public class ANCServiceImpl implements ANCService {
 	public Integer updateBenANCComorbidConditions(WrapperComorbidCondDetails wrapperComorbidCondDetails) {
 		Integer r = 0;
 		if(null != wrapperComorbidCondDetails){
-			bencomrbidityCondRepo.deleteExistingBenComrbidityCondDetails(wrapperComorbidCondDetails.getBeneficiaryRegID());
+			bencomrbidityCondRepo.deleteExistingBenComrbidityCondDetails(wrapperComorbidCondDetails.getBeneficiaryRegID(), 
+					wrapperComorbidCondDetails.getBenVisitID());
 			
 			ArrayList<BencomrbidityCondDetails> bencomrbidityCondDetailsList = wrapperComorbidCondDetails
 					.getComrbidityConds();
@@ -1876,7 +1895,8 @@ public class ANCServiceImpl implements ANCService {
 	public Integer updateBenANCMedicationHistory(WrapperMedicationHistory wrapperMedicationHistory) {
 		Integer r = 0;
 		if(null != wrapperMedicationHistory){
-			benMedicationHistoryRepo.deleteExistingBenMedicationHistory(wrapperMedicationHistory.getBeneficiaryRegID());
+			benMedicationHistoryRepo.deleteExistingBenMedicationHistory(wrapperMedicationHistory.getBeneficiaryRegID(), 
+					wrapperMedicationHistory.getBenVisitID());
 
 			ArrayList<BenMedicationHistory> benMedicationHistoryList = wrapperMedicationHistory
 					.getBenMedicationHistoryDetails();
@@ -1888,5 +1908,72 @@ public class ANCServiceImpl implements ANCService {
 		}
 		return r;
 	}
+	
+	@Override
+	public Integer updateBenANCPersonalHistory(BenPersonalHabit benPersonalHabit) {
+		Integer r = 0;
+		if(null != benPersonalHabit){
+			benPersonalHabitRepo.deleteExistingBenPersonalHistory(benPersonalHabit.getBeneficiaryRegID(), 
+					benPersonalHabit.getBenVisitID());
+
+			ArrayList<BenPersonalHabit> personalHabits = benPersonalHabit.getPersonalHistory();
+			ArrayList<BenPersonalHabit> res = (ArrayList<BenPersonalHabit>) benPersonalHabitRepo.save(personalHabits);
+			if (null != res && res.size() > 0) {
+				r = res.size();
+			}
+		}
+		return r;
+	}
+	
+	@Override
+	public Integer updateBenANCAllergicHistory(BenAllergyHistory benAllergyHistory) {
+		Integer r = 0;
+		if(null != benAllergyHistory){
+			benAllergyHistoryRepo.deleteExistingBenAllergyHistory(benAllergyHistory.getBeneficiaryRegID(), 
+					benAllergyHistory.getBenVisitID());
+
+			ArrayList<BenAllergyHistory> allergyList = benAllergyHistory.getBenAllergicHistory();
+			ArrayList<BenAllergyHistory> res = (ArrayList<BenAllergyHistory>) benAllergyHistoryRepo.save(allergyList);
+			if (null != res && res.size() > 0) {
+				r = res.size();
+			}
+		}
+		return r;
+	}
+	
+	@Override
+	public Integer updateBenANCFamilyHistory(BenFamilyHistory benFamilyHistory) {
+		Integer r = 0;
+		if(null != benFamilyHistory){
+			benFamilyHistoryRepo.deleteExistingBenFamilyHistory(benFamilyHistory.getBeneficiaryRegID(), 
+					benFamilyHistory.getBenVisitID());
+
+			ArrayList<BenFamilyHistory> familyHistoryList = benFamilyHistory.getBenFamilyHistory();
+			ArrayList<BenFamilyHistory> res = (ArrayList<BenFamilyHistory>) benFamilyHistoryRepo.save(familyHistoryList);
+			if (null != res && res.size() > 0) {
+				r = res.size();
+			}
+		}
+		return r;
+	}
+	
+	@Override
+	public Integer updateChildOptionalVaccineDetail(WrapperChildOptionalVaccineDetail wrapperChildOptionalVaccineDetail) {
+		Integer r = 0;
+		if(null != wrapperChildOptionalVaccineDetail){
+			childOptionalVaccineDetailRepo.deleteExistingChildOptionalVaccineDetail(wrapperChildOptionalVaccineDetail.getBeneficiaryRegID(), 
+					wrapperChildOptionalVaccineDetail.getBenVisitID());
+			
+			ArrayList<ChildOptionalVaccineDetail> childOptionalVaccineDetails = wrapperChildOptionalVaccineDetail
+					.getChildOptionalVaccineDetails();
+			ArrayList<ChildOptionalVaccineDetail> res = (ArrayList<ChildOptionalVaccineDetail>) childOptionalVaccineDetailRepo
+					.save(childOptionalVaccineDetails);
+			if (null != res && res.size() > 0) {
+				r = 1;
+			}
+		}
+		return r;
+	}
+
 	
 }
