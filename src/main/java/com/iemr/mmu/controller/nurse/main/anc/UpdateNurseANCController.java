@@ -18,6 +18,9 @@ import com.iemr.mmu.data.anc.BenAllergyHistory;
 import com.iemr.mmu.data.anc.BenFamilyHistory;
 import com.iemr.mmu.data.anc.BenMedHistory;
 import com.iemr.mmu.data.anc.BenPersonalHabit;
+import com.iemr.mmu.data.anc.SysCardiovascularExamination;
+import com.iemr.mmu.data.anc.SysGastrointestinalExamination;
+import com.iemr.mmu.data.anc.SysRespiratoryExamination;
 import com.iemr.mmu.data.anc.WrapperAncImmunization;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.anc.WrapperChildOptionalVaccineDetail;
@@ -37,7 +40,7 @@ import io.swagger.annotations.ApiParam;
 @RequestMapping({ "/anc" })
 public class UpdateNurseANCController {
 	private InputMapper inputMapper;
-	private Logger logger = LoggerFactory.getLogger(InsertNurseANCController.class);
+	private Logger logger = LoggerFactory.getLogger(UpdateNurseANCController.class);
 
 	private ANCServiceImpl ancServiceImpl;
 
@@ -232,7 +235,7 @@ public class UpdateNurseANCController {
 	public String updateANCBenMedicationHistory(@ApiParam(value = "{\"medicationHistoryList\":[{\"currentMedication\": \"String\","
 			+ "\"timePeriodAgo\":\"Integer\", \"timePeriodUnit\":\"String\"}], \"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", "
 			+ "\"providerServiceMapID\":\"Integer\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
-		
+		System.out.println("updateANCBenMedicationHistory ................");
 		OutputResponse response = new OutputResponse();
 		logger.info("updateANCBenMedicationHistory request:" + requestObj);
 		try {
@@ -357,6 +360,92 @@ public class UpdateNurseANCController {
 		} catch (Exception e) {
 			response.setError(e);
 			logger.error("Error while storing Beneficiary ANC Child Optional Vaccine History."+e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin
+	@ApiOperation(value = "update Beneficiary Gastrointestinal System Examination Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/examination/gastrointestinalExamination" }, method = { RequestMethod.POST })
+	public String updateSysGastrointestinalExamination(
+			@ApiParam(value = "{\"ID\":\"Long\",\"beneficiaryRegID\":\"Long\",\"benVisitID\": \"Long\","
+					+ "\"inspection\":\"String\", \"palpation_AbdomenTexture\":\"String\", \"palpation_Liver\":\"String\", \"palpation_Spleen\":\"String\", "
+					+ "\"palpation_Tenderness\":\"String\", \"palpation_LocationOfTenderness\":\"String\", \"percussion\":\"String\", \"auscultation\":\"String\","
+					+ " \"trunk\":\"String\", \"analRegion\":\"String\", \"createdBy\":\"String\", \"processed\":\"String\", \"modifiedBy\":\"String\"}") @RequestBody String requestObj) {
+
+		OutputResponse response = new OutputResponse();
+		logger.info("updateSysGastrointestinalExamination request:" + requestObj);
+		try {
+			inputMapper = new InputMapper();
+			if (requestObj != null) {
+				SysGastrointestinalExamination gastrointestinalExamination = InputMapper.gson().fromJson(requestObj,
+						SysGastrointestinalExamination.class);
+				int r = ancServiceImpl.updateSysGastrointestinalExamination(gastrointestinalExamination);
+				if (r > 0) {
+					response.setResponse("Ben Gastrointestinal Examination data updated successfully.");
+				} else {
+					response.setError(5000, "Something went wrong !!!");
+				}
+			} else {
+				response.setError(5000, "Invalid request Data");
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin
+	@ApiOperation(value = "Update Beneficiary Cardiovascular System Examination Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/examination/cardiovascularExamination" }, method = { RequestMethod.POST })
+	public String updateSysCardiovascularExamination(
+			@ApiParam(value = "{\"beneficiaryRegID\":\"Long\",\"benVisitID\": \"Long\","
+					+ "\"jugularVenousPulse_JVP\":\"String\", \"apexbeatLocation\":\"String\", \"apexbeatType\":\"String\","
+					+ "\"firstHeartSound_S1\":\"String\", \"secondHeartSound_S2\":\"String\", \"additionalHeartSounds\":\"String\", "
+					+ "\"murmurs\":\"String\", \"pericardialRub\":\"String\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
+
+		OutputResponse response = new OutputResponse();
+		logger.info("updateSysCardiovascularExamination request:" + requestObj);
+		try {
+			inputMapper = new InputMapper();
+			if (requestObj != null) {
+				SysCardiovascularExamination cardiovascularExamination = InputMapper.gson().fromJson(requestObj,
+						SysCardiovascularExamination.class);
+				int r = ancServiceImpl.updateSysCardiovascularExamination(cardiovascularExamination);
+				if (r > 0) {
+					response.setResponse("Ben Cardiovascular Examination data updated successfully.");
+				} else {
+					response.setError(5000, "Something went wrong !!!");
+				}
+			} else {
+				response.setError(5000, "Invalid request Data");
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin
+	@ApiOperation(value = "Update Beneficairy Respiratory System Examination Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/examination/respiratorySystemExamination" }, method = { RequestMethod.POST })
+	public String UpdateRespiratorySystemExamination(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		logger.info("UpdateRespiratorySystemExamination request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				SysRespiratoryExamination sysRespiratoryExamination = InputMapper.gson().fromJson(requestObj,
+						SysRespiratoryExamination.class);
+
+				int r = ancServiceImpl.saveSysRespiratoryExamination(sysRespiratoryExamination);
+				if (r > 0) {
+					response.setResponse("Beneficairy Respiratory System Examination Details updated successfully");
+				} else {
+					response.setError(5000, "Something went wrong");
+				}
+			}
+		} catch (Exception e) {
+			response.setError(e);
 		}
 		return response.toString();
 	}

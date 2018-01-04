@@ -383,6 +383,32 @@ public class FetchNurseANCController {
 	}
 	
 	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary ANC Child Vaccine(Immunization) Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenANCChildVaccineHistory" }, method = { RequestMethod.POST })
+	public String getBenANCImmunizationHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenANCImmunizationHistory request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID")) {
+				Long benRegID = obj.getLong("benRegID");
+				String s = aNCServiceImpl.fetchBenImmunizationHistory(benRegID);
+				response.setResponse(s);
+
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenANCImmunizationHistory response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenANCImmunizationHistory:" + e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary ANC History details from Nurse to Doctor ", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenANCHistoryDetails" }, method = { RequestMethod.POST })
 

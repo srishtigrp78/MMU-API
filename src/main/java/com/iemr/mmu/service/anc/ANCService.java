@@ -160,4 +160,14 @@ public interface ANCService {
 
 	public Integer updateChildOptionalVaccineDetail(WrapperChildOptionalVaccineDetail wrapperChildOptionalVaccineDetail);
 
+	public Integer updateANCChildImmunizationDetail(WrapperImmunizationHistory wrapperImmunizationHistory);
+
+	public String fetchBenImmunizationHistory(Long beneficiaryRegID);
+
+	public int updateSysGastrointestinalExamination(SysGastrointestinalExamination gastrointestinalExamination);
+
+	public int updateSysCardiovascularExamination(SysCardiovascularExamination cardiovascularExamination);
+
+	public int updateSysRespiratoryExamination(SysRespiratoryExamination respiratoryExamination);
+
 }

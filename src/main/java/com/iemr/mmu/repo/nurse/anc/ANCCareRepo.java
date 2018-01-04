@@ -31,7 +31,7 @@ public interface ANCCareRepo extends CrudRepository<ANCCareDetails, Long>{
 			+ "gestationalAgeOrPeriodofAmenorrhea_POA=:gestationalAgeOrPeriodofAmenorrhea_POA,"
 			+ "trimesterNumber=:trimesterNumber,  expectedDateofDelivery=:expectedDateofDelivery, primiGravida=:primiGravida, "
 			+ "obstetricFormula=:obstetricFormula, gravida_G=:gravida_G, termDeliveries_T=:termDeliveries_T, pretermDeliveries_P=:pretermDeliveries_P,"
-			+ "abortions_A=:abortions_A,livebirths_L=:livebirths_L, bloodGroup=:bloodGroup, modifiedBy=:modifiedBy where ID=:ID AND beneficiaryRegID=:beneficiaryRegID")
+			+ "abortions_A=:abortions_A,livebirths_L=:livebirths_L, bloodGroup=:bloodGroup, modifiedBy=:modifiedBy where benVisitID=:benVisitID AND beneficiaryRegID=:beneficiaryRegID")
 	public int updateANCCareDetails(@Param("comolaintType") String comolaintType,
 			@Param("duration") String duration,
 			@Param("description") String description,
@@ -51,5 +51,5 @@ public interface ANCCareRepo extends CrudRepository<ANCCareDetails, Long>{
 			@Param("bloodGroup") String bloodGroup,
 			@Param("modifiedBy") String modifiedBy,
 			@Param("beneficiaryRegID") Long beneficiaryRegID,
-			@Param("ID") Long ID);
+			@Param("benVisitID") Long benVisitID);
 }
