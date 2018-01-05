@@ -31,6 +31,8 @@ import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
 import com.iemr.mmu.data.anc.WrapperFemaleObstetricHistory;
 import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
+import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
+import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
@@ -159,5 +161,10 @@ public interface ANCService {
 	public Integer updateBenANCFamilyHistory(BenFamilyHistory benFamilyHistory);
 
 	public Integer updateChildOptionalVaccineDetail(WrapperChildOptionalVaccineDetail wrapperChildOptionalVaccineDetail);
+
+	public Integer updateANCAnthropometryDetails(BenAnthropometryDetail anthropometryDetail );
+	
+	public Integer updateANCPhysicalVitalDetails(BenPhysicalVitalDetail physicalVitalDetail );
+	
 
 }

@@ -24,6 +24,8 @@ import com.iemr.mmu.data.anc.WrapperChildOptionalVaccineDetail;
 import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
 import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
+import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
+import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
 import com.iemr.utils.mapper.InputMapper;
@@ -357,6 +359,40 @@ public class UpdateNurseANCController {
 		} catch (Exception e) {
 			response.setError(e);
 			logger.error("Error while storing Beneficiary ANC Child Optional Vaccine History."+e);
+		}
+		return response.toString();
+	}
+	
+	
+	@CrossOrigin
+	@ApiOperation(value = "Update Beneficiary Vitals", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/vitals" }, method = { RequestMethod.POST })
+	public String updateANCAnthropometryVitals(@RequestBody String requestObj) {
+	
+		OutputResponse response = new OutputResponse();
+		logger.info("updateANCVitals request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				BenAnthropometryDetail benAnthropometryDetail = InputMapper.gson().fromJson(requestObj,
+						BenAnthropometryDetail.class);
+				
+				BenPhysicalVitalDetail benPhysicalVitalDetail = InputMapper.gson().fromJson(requestObj,
+						BenPhysicalVitalDetail.class);
+
+
+				int r = ancServiceImpl.updateANCAnthropometryDetails(benAnthropometryDetail);
+				int s = ancServiceImpl.updateANCPhysicalVitalDetails(benPhysicalVitalDetail);
+				
+				if ( r > 0 && s > 0) {
+					response.setResponse("Beneficiary ANC Vitals Details updated successfully");
+				} else {
+					response.setError(5000, "Something went wrong");
+				}
+				logger.info("updateANCVitals response:" + response);
+			}
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error while updating Anc Vitals"+e);
 		}
 		return response.toString();
 	}

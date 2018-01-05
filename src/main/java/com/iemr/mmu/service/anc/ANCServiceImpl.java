@@ -46,11 +46,15 @@ import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
 import com.iemr.mmu.data.anc.WrapperFemaleObstetricHistory;
 import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
+import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
+import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
+import com.iemr.mmu.repo.nurse.BenAnthropometryRepo;
+import com.iemr.mmu.repo.nurse.BenPhysicalVitalRepo;
 import com.iemr.mmu.repo.nurse.anc.ANCCareRepo;
 import com.iemr.mmu.repo.nurse.anc.ANCWomenVaccineRepo;
 import com.iemr.mmu.repo.nurse.anc.BenAdherenceRepo;
@@ -92,6 +96,9 @@ public class ANCServiceImpl implements ANCService {
 	private BenAdherenceRepo benAdherenceRepo;
 	private BenChiefComplaintRepo benChiefComplaintRepo;
 	private PrescriptionDetailRepo prescriptionDetailRepo;
+
+	private BenAnthropometryRepo benAnthropometryRepo;
+	private BenPhysicalVitalRepo benPhysicalVitalRepo;
 
 	@Autowired
 	public void setBenChiefComplaintRepo(BenChiefComplaintRepo benChiefComplaintRepo) {
@@ -275,6 +282,16 @@ public class ANCServiceImpl implements ANCService {
 		this.childVaccineDetail1Repo = childVaccineDetail1Repo;
 	}
 
+	@Autowired
+	public void setBenAnthropometryRepo(BenAnthropometryRepo benAnthropometryRepo) {
+		this.benAnthropometryRepo = benAnthropometryRepo;
+	}
+
+	@Autowired
+	public void setBenPhysicalVitalRepo(BenPhysicalVitalRepo benPhysicalVitalRepo) {
+		this.benPhysicalVitalRepo = benPhysicalVitalRepo;
+	}
+
 	@Override
 	public Long saveBeneficiaryANCDetails(ANCCareDetails ancCareDetails) {
 		ANCCareDetails ancCareDetail = ancCareRepo.save(ancCareDetails);
@@ -398,13 +415,13 @@ public class ANCServiceImpl implements ANCService {
 				&& ancCareDetailsOBJ.getLmpDate().length() >= 10) {
 			String lmpDate = ancCareDetailsOBJ.getLmpDate().split("T")[0];
 			ancCareDetailsOBJ
-					.setLastMenstrualPeriod_LMP(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(lmpDate).getTime()));
+			.setLastMenstrualPeriod_LMP(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(lmpDate).getTime()));
 		}
 		if (ancCareDetailsOBJ.getExpDelDt() != null && !ancCareDetailsOBJ.getExpDelDt().isEmpty()
 				&& ancCareDetailsOBJ.getExpDelDt().length() >= 10) {
 			String edDate = ancCareDetailsOBJ.getExpDelDt().split("T")[0];
 			ancCareDetailsOBJ
-					.setExpectedDateofDelivery(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(edDate).getTime()));
+			.setExpectedDateofDelivery(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(edDate).getTime()));
 		}
 		ANCCareDetails ancCareDetailsRS = ancCareRepo.save(ancCareDetailsOBJ);
 		if (ancCareDetailsRS != null) {
@@ -443,7 +460,7 @@ public class ANCServiceImpl implements ANCService {
 					&& wrapperAncImmunizationOBJ.getDateReceivedForTT_1().length() >= 10) {
 				String TT_1 = wrapperAncImmunizationOBJ.getDateReceivedForTT_1().split("T")[0];
 				ancWomenVaccineDetail
-						.setReceivedDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(TT_1).getTime()));
+				.setReceivedDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(TT_1).getTime()));
 			}
 			ancWomenVaccineDetail.setReceivedFacilityName(wrapperAncImmunizationOBJ.getFacilityNameOfTT_1());
 			ancWomenVaccineDetailList.add(ancWomenVaccineDetail);
@@ -461,7 +478,7 @@ public class ANCServiceImpl implements ANCService {
 					&& wrapperAncImmunizationOBJ.getDateReceivedForTT_2().length() >= 10) {
 				String TT_2 = wrapperAncImmunizationOBJ.getDateReceivedForTT_2().split("T")[0];
 				ancWomenVaccineDetail
-						.setReceivedDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(TT_2).getTime()));
+				.setReceivedDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(TT_2).getTime()));
 			}
 			ancWomenVaccineDetail.setReceivedFacilityName(wrapperAncImmunizationOBJ.getFacilityNameOfTT_2());
 			ancWomenVaccineDetailList.add(ancWomenVaccineDetail);
@@ -479,7 +496,7 @@ public class ANCServiceImpl implements ANCService {
 					&& wrapperAncImmunizationOBJ.getDateReceivedForTT_3().length() >= 10) {
 				String TT_3 = wrapperAncImmunizationOBJ.getDateReceivedForTT_3().split("T")[0];
 				ancWomenVaccineDetail
-						.setReceivedDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(TT_3).getTime()));
+				.setReceivedDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(TT_3).getTime()));
 			}
 			ancWomenVaccineDetail.setReceivedFacilityName(wrapperAncImmunizationOBJ.getFacilityNameOfTT_3());
 			ancWomenVaccineDetailList.add(ancWomenVaccineDetail);
@@ -1020,32 +1037,32 @@ public class ANCServiceImpl implements ANCService {
 
 		Map<String, String> columnMap = new HashMap<>();
 		List<Map<String, String>> columns = new ArrayList<Map<String, String>>();
-	
+
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Illness Type");
 		columnMap.put("keyName", "Illness_Type");
 		columns.add(columnMap);
-	
+
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Other Illness Type");
 		columnMap.put("keyName", "Other_Illness_Type");
 		columns.add(columnMap);
-		
+
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Year Of Illness");
 		columnMap.put("keyName", "Year_Of_Illness");
 		columns.add(columnMap);
-		
+
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Surgery Type");
 		columnMap.put("keyName", "Surgery_Type");
 		columns.add(columnMap);
-		
+
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Other Surgery Type");
 		columnMap.put("keyName", "Other_Surgery_Type");
 		columns.add(columnMap);
-		
+
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Year Of Surgery");
 		columnMap.put("keyName", "Year_Of_Surgery");
@@ -1062,7 +1079,7 @@ public class ANCServiceImpl implements ANCService {
 	public String fetchBenComorbidityHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> bencomrbidityCondDetails = bencomrbidityCondRepo.getBencomrbidityCondDetails(beneficiaryRegID);
 
-		
+
 		Map<String, Object> response = new HashMap<String, Object>();
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
 		Map<String, Object> column = new HashMap<String, Object>();
@@ -1071,7 +1088,7 @@ public class ANCServiceImpl implements ANCService {
 		column.put("columnName", "Comorbid Condition");
 		column.put("keyName", "comorbidCondition");
 		columns.add(column);
-		
+
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Other Comorbid Condition");
 		column.put("keyName", "otherComorbidCondition");
@@ -1082,24 +1099,24 @@ public class ANCServiceImpl implements ANCService {
 		column.put("keyName", "year");
 		columns.add(column);
 
-		
+
 
 		ArrayList<BencomrbidityCondDetails> bencomrbidityConds = new ArrayList<BencomrbidityCondDetails>();
 		if (null != bencomrbidityCondDetails) {
 			for (Object[] obj : bencomrbidityCondDetails) {
-						
+
 				BencomrbidityCondDetails history = new BencomrbidityCondDetails((String)obj[0], (String)obj[1], (Timestamp)obj[2]);
 				bencomrbidityConds.add(history);
 			}
 
 		}
-		
+
 		response.put("columns", columns);
 		response.put("data", bencomrbidityConds);
 		return new Gson().toJson(response);
 
 	}
-	
+
 	@Override
 	public String fetchBenPersonalTobaccoHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> benPersonalHabits = (ArrayList<Object[]>) benPersonalHabitRepo
@@ -1309,7 +1326,7 @@ public class ANCServiceImpl implements ANCService {
 		ArrayList<Object[]> beMedicationHistory = benMedicationHistoryRepo
 				.getBenMedicationHistoryDetail(beneficiaryRegID);
 
-		
+
 		Map<String, Object> response = new HashMap<String, Object>();
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
 		Map<String, Object> column = new HashMap<String, Object>();
@@ -1331,18 +1348,18 @@ public class ANCServiceImpl implements ANCService {
 			}
 
 		}
-		
+
 		response.put("columns", columns);
 		response.put("data", medicationHistory);
 		return new Gson().toJson(response);
 
 	}
-	
+
 	@Override
 	public String fetchBenPersonalFamilyHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> benFamilyHistory = benFamilyHistoryRepo
 				.getBenFamilyHistoryDetail(beneficiaryRegID);
-		
+
 		Map<String, Object> response = new HashMap<String, Object>();
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
 		Map<String, Object> column = new HashMap<String, Object>();
@@ -1355,32 +1372,32 @@ public class ANCServiceImpl implements ANCService {
 		column.put("columnName", "Disease Type ID");
 		column.put("keyName", "diseaseTypeID");
 		columns.add(column);
-		
+
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Disease Type");
 		column.put("keyName", "diseaseType");
 		columns.add(column);
-		
+
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Other Disease Type");
 		column.put("keyName", "otherDiseaseType");
 		columns.add(column);
-		
+
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Is Genetic Disorder");
 		column.put("keyName", "isGeneticDisorder");
 		columns.add(column);
-		
+
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Genetic Disorder");
 		column.put("keyName", "geneticDisorder");
 		columns.add(column);
-		
+
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Is Consanguineous Marrige");
 		column.put("keyName", "isConsanguineousMarrige");
 		columns.add(column);
-		
+
 		ArrayList<BenFamilyHistory> familyHistory = new ArrayList<BenFamilyHistory>();
 		if (null != benFamilyHistory) {
 			for (Object[] obj : benFamilyHistory) {
@@ -1390,18 +1407,18 @@ public class ANCServiceImpl implements ANCService {
 			}
 
 		}
-		
+
 		response.put("columns", columns);
 		response.put("data", familyHistory);
 		return new Gson().toJson(response);
 
 	}
-	
+
 	@Override
 	public String fetchBenMenstrualHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> benMenstrualDetails = benMenstrualDetailsRepo
 				.getBenMenstrualDetail(beneficiaryRegID);
-		
+
 		Map<String, Object> response = new HashMap<String, Object>();
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
 		Map<String, Object> column = new HashMap<String, Object>();
@@ -1414,37 +1431,37 @@ public class ANCServiceImpl implements ANCService {
 		column.put("columnName", "Regularity");
 		column.put("keyName", "regularity");
 		columns.add(column);
-		
+
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Menstrual Cycle Length ID");
 		column.put("keyName", "menstrualCyclelengthID");
 		columns.add(column);
-		
+
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Cycle Length");
 		column.put("keyName", "cycleLength");
 		columns.add(column);
-		
+
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Menstrual Flow Duration ID");
 		column.put("keyName", "menstrualFlowDurationID");
 		columns.add(column);
-		
+
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Blood Flow Duration");
 		column.put("keyName", "bloodFlowDuration");
 		columns.add(column);
-		
+
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Problem Name");
 		column.put("keyName", "problemName");
 		columns.add(column);
-		
+
 		column = new HashMap<String, Object>();
 		column.put("columnName", "LMPDate");
 		column.put("keyName", "lMPDate");
 		columns.add(column);
-		
+
 		ArrayList<BenMenstrualDetails> menstrualDetails = new ArrayList<BenMenstrualDetails>();
 		if (null != benMenstrualDetails) {
 			for (Object[] obj : benMenstrualDetails) {
@@ -1454,17 +1471,17 @@ public class ANCServiceImpl implements ANCService {
 			}
 
 		}
-		
+
 		response.put("columns", columns);
 		response.put("data", menstrualDetails);
 		return new Gson().toJson(response);
 
 	}	
-	
+
 	@Override
 	public String fetchBenPastObstetricHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> femaleObstetricHistory = femaleObstetricHistoryRepo.getBenFemaleObstetricHistoryDetail(beneficiaryRegID);
-	
+
 		Map<String, Object> response = new HashMap<String, Object>();
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
 		Map<String, Object> column = new HashMap<String, Object>();
@@ -1472,12 +1489,12 @@ public class ANCServiceImpl implements ANCService {
 		column.put("columnName", "Preg Order");
 		column.put("keyName", "pregOrder");
 		columns.add(column);
-		
+
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Preg Complication ID");
 		column.put("keyName", "pregComplicationID");
 		columns.add(column);
-		
+
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Preg Complication Type");
 		column.put("keyName", "pregComplicationType");
@@ -1497,7 +1514,7 @@ public class ANCServiceImpl implements ANCService {
 		column.put("columnName", "Duration Type");
 		column.put("keyName", "durationType");
 		columns.add(column);
-		
+
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Delivery Type ID");
 		column.put("keyName", "deliveryTypeID");
@@ -1597,11 +1614,11 @@ public class ANCServiceImpl implements ANCService {
 		column.put("columnName", "Other New Born Complication");
 		column.put("keyName", "otherNewBornComplication");
 		columns.add(column);
-		
+
 		ArrayList<FemaleObstetricHistory> femaleObstetricDetails = new ArrayList<FemaleObstetricHistory>();
 		if (null != femaleObstetricHistory) {
 			for (Object[] obj : femaleObstetricHistory) {		
-				
+
 				FemaleObstetricHistory history = new FemaleObstetricHistory((Short)obj[0], (Short)obj[1], (String)obj[2], 
 						(String)obj[3], (Short)obj[4], (String)obj[5], (Short)obj[6], (String)obj[7], (Short)obj[8], (String)obj[9],
 						(String)obj[10], (Short)obj[11], (String)obj[12], (String)obj[13], (Short)obj[14], (String)obj[15], (Short)obj[16], 
@@ -1610,17 +1627,17 @@ public class ANCServiceImpl implements ANCService {
 			}
 
 		}
-		
+
 		response.put("columns", columns);
 		response.put("data", femaleObstetricDetails);
 		return new Gson().toJson(response);
 
 	}
-	
+
 	@Override
 	public String fetchBenOptionalVaccineHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> childOptionalVaccineDetail = childOptionalVaccineDetailRepo.getBenOptionalVaccineDetail(beneficiaryRegID);
-	
+
 		Map<String, Object> response = new HashMap<String, Object>();
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
 		Map<String, Object> column = new HashMap<String, Object>();
@@ -1633,7 +1650,7 @@ public class ANCServiceImpl implements ANCService {
 		column.put("columnName", "Vaccine Name");
 		column.put("keyName", "vaccineName");
 		columns.add(column);
-		
+
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Status");
 		column.put("keyName", "status");
@@ -1648,12 +1665,12 @@ public class ANCServiceImpl implements ANCService {
 		column.put("columnName", "Actual Receiving Age");
 		column.put("keyName", "actualReceivingAge");
 		columns.add(column);
-		
+
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Received Facility Name");
 		column.put("keyName", "receivedFacilityName");
 		columns.add(column);
-		
+
 		ArrayList<ChildOptionalVaccineDetail> childOptionalVaccineDetails = new ArrayList<ChildOptionalVaccineDetail>();
 		if (null != childOptionalVaccineDetail) {
 			for (Object[] obj : childOptionalVaccineDetail) {
@@ -1662,13 +1679,13 @@ public class ANCServiceImpl implements ANCService {
 				childOptionalVaccineDetails.add(history);
 			}
 		}
-		
+
 		response.put("columns", columns);
 		response.put("data", childOptionalVaccineDetails);
 		return new Gson().toJson(response);
 
 	}
-	
+
 	@Override
 	public String getBenANCHistoryDetails(Long benRegID, Long benVisitID) {
 		Map<String, Object> HistoryDetailsMap = new HashMap<String, Object>();
@@ -1685,74 +1702,74 @@ public class ANCServiceImpl implements ANCService {
 
 		return new Gson().toJson(HistoryDetailsMap);
 	}
-	
-	
+
+
 	public BenMedHistory getPastHistoryData(Long beneficiaryRegID, Long benVisitID){
 		ArrayList<Object[]>  pastHistory = benMedHistoryRepo.getBenPastHistory(beneficiaryRegID, benVisitID);
-		
+
 		BenMedHistory medHistory = new BenMedHistory();
 		BenMedHistory benMedHistory = medHistory.getBenPastHistory(pastHistory);
 		return benMedHistory;
 	}
-	
+
 	public WrapperComorbidCondDetails getComorbidityConditionsHistory(Long beneficiaryRegID, Long benVisitID){
 		ArrayList<Object[]>  comrbidityConds = bencomrbidityCondRepo.getBencomrbidityCondDetails(beneficiaryRegID, benVisitID);
-		
+
 		WrapperComorbidCondDetails comrbidityCondDetails = WrapperComorbidCondDetails.getComorbidityDetails(comrbidityConds);
 		return comrbidityCondDetails;
 	}
 
 	public WrapperMedicationHistory getMedicationHistory(Long beneficiaryRegID, Long benVisitID){
 		ArrayList<Object[]>  medicationHistory = benMedicationHistoryRepo.getBenMedicationHistoryDetail(beneficiaryRegID, benVisitID);
-		
+
 		WrapperMedicationHistory wrapperMedicationHistory = WrapperMedicationHistory.getMedicationHistoryDetails(medicationHistory);
 		return wrapperMedicationHistory;
 	}
-	
+
 	public BenPersonalHabit getPersonalHistory(Long beneficiaryRegID, Long benVisitID){
 		ArrayList<Object[]>  personalDetails = benPersonalHabitRepo.getBenPersonalHabitDetail(beneficiaryRegID, benVisitID);
-		
+
 		ArrayList<Object[]>  allergyDetails = benAllergyHistoryRepo.getBenPersonalAllergyDetail(beneficiaryRegID, benVisitID);
-		
+
 		BenPersonalHabit personalHabits = BenPersonalHabit.getPersonalDetails(personalDetails);
 		ArrayList<BenAllergyHistory>  allergyList= BenAllergyHistory.getBenAllergicHistory(allergyDetails);
 		if(null != allergyList && allergyList.size()>0){
 			personalHabits.setAllergyStatus(allergyList.get(0).getAllergyStatus());
 			personalHabits.setAllergicList(allergyList);
 		}
-		
-		
+
+
 		return personalHabits;
 	}
-	
+
 	public BenFamilyHistory getFamilyHistory(Long beneficiaryRegID, Long benVisitID){
 		ArrayList<Object[]>  familyHistory = benFamilyHistoryRepo.getBenFamilyHistoryDetail(beneficiaryRegID, benVisitID);
 		BenFamilyHistory familyHistoryDetails = BenFamilyHistory.getBenFamilyHistory(familyHistory);
-		
+
 		return familyHistoryDetails;
 	}
-	
+
 	public BenMenstrualDetails getMenstrualHistory(Long beneficiaryRegID, Long benVisitID){
 		ArrayList<Object[]>  menstrualHistory = benMenstrualDetailsRepo.getBenMenstrualDetail(beneficiaryRegID, benVisitID);
 		BenMenstrualDetails menstrualHistoryDetails = BenMenstrualDetails.getBenMenstrualDetails(menstrualHistory);
-		
+
 		return menstrualHistoryDetails;
 	}
-	
+
 	public WrapperFemaleObstetricHistory getFemaleObstetricHistory(Long beneficiaryRegID, Long benVisitID){
 		ArrayList<Object[]>  femaleObstetricHistory = femaleObstetricHistoryRepo.getBenFemaleObstetricHistoryDetail(beneficiaryRegID, benVisitID);
 		WrapperFemaleObstetricHistory femaleObstetricHistoryDetails = WrapperFemaleObstetricHistory.getFemaleObstetricHistory(femaleObstetricHistory);
-		
+
 		return femaleObstetricHistoryDetails;
 	}
-		
+
 	public WrapperChildOptionalVaccineDetail getChildOptionalVaccineHistory(Long beneficiaryRegID, Long benVisitID){
 		ArrayList<Object[]>  childOptionalVaccineDetail = childOptionalVaccineDetailRepo.getBenOptionalVaccineDetail(beneficiaryRegID, benVisitID);
 		WrapperChildOptionalVaccineDetail childOptionalVaccineDetails = WrapperChildOptionalVaccineDetail.getChildOptionalVaccineDetail(childOptionalVaccineDetail);
-		
+
 		return childOptionalVaccineDetails;
 	}
-	
+
 	@Override
 	public int updateBenAdherenceDetails(BenAdherence benAdherence) {
 		int r = 0;
@@ -1766,14 +1783,14 @@ public class ANCServiceImpl implements ANCService {
 	public int updateBenChiefComplaints(List<BenChiefComplaint> benChiefComplaintList) {
 		int r = 0;
 		List<BenChiefComplaint> benChiefComplaintResultList = (List<BenChiefComplaint>) benChiefComplaintRepo
-					.save(benChiefComplaintList);
+				.save(benChiefComplaintList);
 
 		if (benChiefComplaintResultList != null && benChiefComplaintResultList.size() > 0) {
 			r = benChiefComplaintResultList.size();
 		}
 		return r;
 	}
-	
+
 	@Override
 	public Long updateBenInvestigation(WrapperBenInvestigationANC wrapperBenInvestigationANC) {
 		Long r = null;
@@ -1791,7 +1808,7 @@ public class ANCServiceImpl implements ANCService {
 			if (investigationList != null && investigationList.size() > 0) {
 
 				labTestOrderDetailRepo.deleteExistingLabTestOrderDetail(wrapperBenInvestigationANC.getBeneficiaryRegID(), wrapperBenInvestigationANC.getBenVisitID());
-				
+
 				for (LabTestOrderDetail testData : investigationList) {
 
 					testData.setPrescriptionID(prescriptionID);
@@ -1817,7 +1834,7 @@ public class ANCServiceImpl implements ANCService {
 		return r;
 
 	}
-	
+
 	@Override
 	public int updateBenAncCareDetails(ANCCareDetails ancCareDetailsOBJ) throws ParseException {
 		int r = 0;
@@ -1825,13 +1842,13 @@ public class ANCServiceImpl implements ANCService {
 				&& ancCareDetailsOBJ.getLmpDate().length() >= 10) {
 			String lmpDate = ancCareDetailsOBJ.getLmpDate().split("T")[0];
 			ancCareDetailsOBJ
-					.setLastMenstrualPeriod_LMP(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(lmpDate).getTime()));
+			.setLastMenstrualPeriod_LMP(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(lmpDate).getTime()));
 		}
 		if (ancCareDetailsOBJ.getExpDelDt() != null && !ancCareDetailsOBJ.getExpDelDt().isEmpty()
 				&& ancCareDetailsOBJ.getExpDelDt().length() >= 10) {
 			String edDate = ancCareDetailsOBJ.getExpDelDt().split("T")[0];
 			ancCareDetailsOBJ
-					.setExpectedDateofDelivery(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(edDate).getTime()));
+			.setExpectedDateofDelivery(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(edDate).getTime()));
 		}
 		r = ancCareRepo.updateANCCareDetails(ancCareDetailsOBJ.getComolaintType(), ancCareDetailsOBJ.getDuration(), 
 				ancCareDetailsOBJ.getDescription(), ancCareDetailsOBJ.getaNCRegistrationDate(), ancCareDetailsOBJ.getaNCVisitNumber(), 
@@ -1842,7 +1859,7 @@ public class ANCServiceImpl implements ANCService {
 				ancCareDetailsOBJ.getBloodGroup(), ancCareDetailsOBJ.getModifiedBy(), ancCareDetailsOBJ.getBeneficiaryRegID(), ancCareDetailsOBJ.getID());
 		return r;
 	}	
-				
+
 	@Override
 	public int updateBenAncImmunizationDetails(WrapperAncImmunization wrapperAncImmunization) throws ParseException {
 		int r = 0;
@@ -1856,14 +1873,14 @@ public class ANCServiceImpl implements ANCService {
 		}
 		return r;
 	}
-	
+
 	@Override
 	public int updateBenAncPastHistoryDetails(BenMedHistory benMedHistory) throws ParseException {
 		Integer r = 0;
 		if(null !=benMedHistory){
 			//Delete Existing past History of beneficiary before inserting updated history
 			benMedHistoryRepo.deleteExistingBenMedHistory(benMedHistory.getBeneficiaryRegID(), benMedHistory.getBenVisitID());
-			
+
 			ArrayList<BenMedHistory> benMedHistoryList = benMedHistory.getBenPastHistory();
 			ArrayList<BenMedHistory> res = (ArrayList<BenMedHistory>) benMedHistoryRepo.save(benMedHistoryList);
 			if (null != res && res.size() > 0) {
@@ -1872,14 +1889,14 @@ public class ANCServiceImpl implements ANCService {
 		}
 		return r;
 	}
-	
+
 	@Override
 	public Integer updateBenANCComorbidConditions(WrapperComorbidCondDetails wrapperComorbidCondDetails) {
 		Integer r = 0;
 		if(null != wrapperComorbidCondDetails){
 			bencomrbidityCondRepo.deleteExistingBenComrbidityCondDetails(wrapperComorbidCondDetails.getBeneficiaryRegID(), 
 					wrapperComorbidCondDetails.getBenVisitID());
-			
+
 			ArrayList<BencomrbidityCondDetails> bencomrbidityCondDetailsList = wrapperComorbidCondDetails
 					.getComrbidityConds();
 			ArrayList<BencomrbidityCondDetails> res = (ArrayList<BencomrbidityCondDetails>) bencomrbidityCondRepo
@@ -1890,7 +1907,7 @@ public class ANCServiceImpl implements ANCService {
 		}
 		return r;
 	}
-	
+
 	@Override
 	public Integer updateBenANCMedicationHistory(WrapperMedicationHistory wrapperMedicationHistory) {
 		Integer r = 0;
@@ -1908,7 +1925,7 @@ public class ANCServiceImpl implements ANCService {
 		}
 		return r;
 	}
-	
+
 	@Override
 	public Integer updateBenANCPersonalHistory(BenPersonalHabit benPersonalHabit) {
 		Integer r = 0;
@@ -1924,7 +1941,7 @@ public class ANCServiceImpl implements ANCService {
 		}
 		return r;
 	}
-	
+
 	@Override
 	public Integer updateBenANCAllergicHistory(BenAllergyHistory benAllergyHistory) {
 		Integer r = 0;
@@ -1940,7 +1957,7 @@ public class ANCServiceImpl implements ANCService {
 		}
 		return r;
 	}
-	
+
 	@Override
 	public Integer updateBenANCFamilyHistory(BenFamilyHistory benFamilyHistory) {
 		Integer r = 0;
@@ -1956,14 +1973,14 @@ public class ANCServiceImpl implements ANCService {
 		}
 		return r;
 	}
-	
+
 	@Override
 	public Integer updateChildOptionalVaccineDetail(WrapperChildOptionalVaccineDetail wrapperChildOptionalVaccineDetail) {
 		Integer r = 0;
 		if(null != wrapperChildOptionalVaccineDetail){
 			childOptionalVaccineDetailRepo.deleteExistingChildOptionalVaccineDetail(wrapperChildOptionalVaccineDetail.getBeneficiaryRegID(), 
 					wrapperChildOptionalVaccineDetail.getBenVisitID());
-			
+
 			ArrayList<ChildOptionalVaccineDetail> childOptionalVaccineDetails = wrapperChildOptionalVaccineDetail
 					.getChildOptionalVaccineDetails();
 			ArrayList<ChildOptionalVaccineDetail> res = (ArrayList<ChildOptionalVaccineDetail>) childOptionalVaccineDetailRepo
@@ -1975,5 +1992,45 @@ public class ANCServiceImpl implements ANCService {
 		return r;
 	}
 
-	
+	@Override
+	public Integer updateANCAnthropometryDetails(BenAnthropometryDetail anthropometryDetail) {
+		Integer r = 0;
+		if(null != anthropometryDetail){
+			anthropometryDetail.setModifiedBy(anthropometryDetail.getCreatedBy());
+			r = benAnthropometryRepo.updateANCCareDetails(
+					anthropometryDetail.getWeight_Kg(), 
+					anthropometryDetail.getHeight_cm(), 
+					anthropometryDetail.getbMI(),
+					anthropometryDetail.getHeadCircumference_cm(), 
+					anthropometryDetail.getMidUpperArmCircumference_MUAC_cm(), 
+					anthropometryDetail.getHipCircumference_cm(), 
+					anthropometryDetail.getWaistCircumference_cm(), 
+					anthropometryDetail.getWaistHipRatio(), 
+					anthropometryDetail.getModifiedBy(), 
+					anthropometryDetail.getBeneficiaryRegID(), 
+					anthropometryDetail.getBenVisitID());
+		}
+		return r;
+	}
+
+	@Override
+	public Integer updateANCPhysicalVitalDetails(BenPhysicalVitalDetail physicalVitalDetail) {
+		Integer r = 0;
+		if(null != physicalVitalDetail) {
+			physicalVitalDetail.setModifiedBy(physicalVitalDetail.getCreatedBy());
+			r = benPhysicalVitalRepo.updateANCCareDetails(
+					physicalVitalDetail.getTemperature(), 
+					physicalVitalDetail.getPulseRate(), 
+					physicalVitalDetail.getRespiratoryRate(), 
+					physicalVitalDetail.getSystolicBP(), 
+					physicalVitalDetail.getDiastolicBP(), 
+					physicalVitalDetail.getCapillaryRefillTime(), 
+					physicalVitalDetail.getModifiedBy(), 
+					physicalVitalDetail.getBeneficiaryRegID(),
+					physicalVitalDetail.getBenVisitID());
+		}
+		return r;
+	}
+
+
 }
