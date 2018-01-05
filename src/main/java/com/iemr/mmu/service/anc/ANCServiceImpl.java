@@ -2068,7 +2068,7 @@ public class ANCServiceImpl implements ANCService {
 	public Integer updateANCAnthropometryDetails(BenAnthropometryDetail anthropometryDetail) {
 		Integer r = 0;
 		if(null != anthropometryDetail){
-			anthropometryDetail.setModifiedBy(anthropometryDetail.getCreatedBy());
+//			anthropometryDetail.setModifiedBy(anthropometryDetail.getCreatedBy());
 			r = benAnthropometryRepo.updateANCCareDetails(
 					anthropometryDetail.getWeight_Kg(), 
 					anthropometryDetail.getHeight_cm(), 
@@ -2089,7 +2089,7 @@ public class ANCServiceImpl implements ANCService {
 	public Integer updateANCPhysicalVitalDetails(BenPhysicalVitalDetail physicalVitalDetail) {
 		Integer r = 0;
 		if(null != physicalVitalDetail) {
-			physicalVitalDetail.setModifiedBy(physicalVitalDetail.getCreatedBy());
+//			physicalVitalDetail.setModifiedBy(physicalVitalDetail.getCreatedBy());
 			r = benPhysicalVitalRepo.updateANCCareDetails(
 					physicalVitalDetail.getTemperature(), 
 					physicalVitalDetail.getPulseRate(), 
