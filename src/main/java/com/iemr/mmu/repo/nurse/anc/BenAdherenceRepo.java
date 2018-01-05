@@ -22,15 +22,13 @@ public interface BenAdherenceRepo extends CrudRepository<BenAdherence, Long> {
 	@Transactional
 	@Modifying
 	@Query("update BenAdherence set toDrugs=:toDrugs, drugReason=:drugReason, toReferral=:toReferral, referralReason=:referralReason,"
-			+ " progress=:progress, providerServiceMapID=:providerServiceMapID, modifiedBy=:modifiedBy, beneficiaryRegID=:benRegID, "
-			+ " benVisitID = :benVisitID where ID=:ID")
+			+ " progress=:progress,  modifiedBy=:modifiedBy where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID AND ID=:ID")
 	public int updateBenAdherence(@Param("toDrugs") Boolean toDrugs,
 			@Param("drugReason") String drugReason,
 			@Param("toReferral") Boolean toReferral,
 			@Param("referralReason") String referralReason,
 			@Param("progress") String progress,
 			@Param("modifiedBy") String modifiedBy,
-			@Param("providerServiceMapID") Integer providerServiceMapID,
 			@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID,
 			@Param("ID") Long ID);

@@ -54,6 +54,10 @@ public class ChildVaccineDetail1 {
 	@Column(name = "Status")
 	private String status;
 
+	@Transient
+	@Expose
+	private List vaccines;
+	
 	@Expose
 	@Column(name = "ReceivedDate")
 	private Timestamp receivedDate;
@@ -228,6 +232,21 @@ public class ChildVaccineDetail1 {
 
 	public Long getID() {
 		return ID;
+	}
+	
+	public List getVaccines() {
+		return vaccines;
+	}
+
+	public void setVaccines(List vaccines) {
+		this.vaccines = vaccines;
+	}
+
+	public ChildVaccineDetail1(String defaultReceivingAge, String vaccineName, String status) {
+		super();
+		this.defaultReceivingAge = defaultReceivingAge;
+		this.vaccineName = vaccineName;
+		this.status = status;
 	}
 	
 }
