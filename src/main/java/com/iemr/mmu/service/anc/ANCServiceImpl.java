@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.iemr.mmu.data.anc.ANCCareDetails;
+import com.iemr.mmu.data.anc.ANCDiagnosis;
 import com.iemr.mmu.data.anc.ANCWomenVaccineDetail;
 import com.iemr.mmu.data.anc.BenAdherence;
 import com.iemr.mmu.data.anc.BenAllergyHistory;
@@ -61,6 +62,7 @@ import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.repo.nurse.BenAnthropometryRepo;
 import com.iemr.mmu.repo.nurse.BenPhysicalVitalRepo;
 import com.iemr.mmu.repo.nurse.anc.ANCCareRepo;
+import com.iemr.mmu.repo.nurse.anc.ANCDiagnosisRepo;
 import com.iemr.mmu.repo.nurse.anc.ANCWomenVaccineRepo;
 import com.iemr.mmu.repo.nurse.anc.BenAdherenceRepo;
 import com.iemr.mmu.repo.nurse.anc.BenAllergyHistoryRepo;
@@ -153,6 +155,7 @@ public class ANCServiceImpl implements ANCService {
 	private BenFamilyHistoryRepo benFamilyHistoryRepo;
 	private ChildFeedingDetailsRepo childFeedingDetailsRepo;
 	private ChildVaccineDetail1Repo childVaccineDetail1Repo;
+	private ANCDiagnosisRepo ancDiagnosisRepo;
 
 	@Autowired
 	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
@@ -296,7 +299,12 @@ public class ANCServiceImpl implements ANCService {
 	public void setBenPhysicalVitalRepo(BenPhysicalVitalRepo benPhysicalVitalRepo) {
 		this.benPhysicalVitalRepo = benPhysicalVitalRepo;
 	}
-
+	
+	@Autowired
+	public void setAncDiagnosisRepo(ANCDiagnosisRepo ancDiagnosisRepo) {
+		this.ancDiagnosisRepo = ancDiagnosisRepo;
+	}
+	
 	@Override
 	public Long saveBeneficiaryANCDetails(ANCCareDetails ancCareDetails) {
 		ANCCareDetails ancCareDetail = ancCareRepo.save(ancCareDetails);
@@ -468,6 +476,7 @@ public class ANCServiceImpl implements ANCService {
 				.setReceivedDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(TT_1).getTime()));
 			}
 			ancWomenVaccineDetail.setReceivedFacilityName(wrapperAncImmunizationOBJ.getFacilityNameOfTT_1());
+			ancWomenVaccineDetail.setModifiedBy(wrapperAncImmunizationOBJ.getModifiedBy());
 			ancWomenVaccineDetailList.add(ancWomenVaccineDetail);
 
 			// TT-2 details
@@ -486,6 +495,7 @@ public class ANCServiceImpl implements ANCService {
 				.setReceivedDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(TT_2).getTime()));
 			}
 			ancWomenVaccineDetail.setReceivedFacilityName(wrapperAncImmunizationOBJ.getFacilityNameOfTT_2());
+			ancWomenVaccineDetail.setModifiedBy(wrapperAncImmunizationOBJ.getModifiedBy());
 			ancWomenVaccineDetailList.add(ancWomenVaccineDetail);
 
 			// TT-3 (Booster) details
@@ -504,6 +514,7 @@ public class ANCServiceImpl implements ANCService {
 				.setReceivedDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(TT_3).getTime()));
 			}
 			ancWomenVaccineDetail.setReceivedFacilityName(wrapperAncImmunizationOBJ.getFacilityNameOfTT_3());
+			ancWomenVaccineDetail.setModifiedBy(wrapperAncImmunizationOBJ.getModifiedBy());
 			ancWomenVaccineDetailList.add(ancWomenVaccineDetail);
 
 		}
@@ -849,6 +860,15 @@ public class ANCServiceImpl implements ANCService {
 		return prescriptionID;
 	}
 
+	public Long saveBenANCDiagnosis(ANCDiagnosis ancDiagnosis) {
+		Long ID = null;
+		ANCDiagnosis res = ancDiagnosisRepo.save(ancDiagnosis);
+		if (null != res && res.getID() > 0) {
+			ID = res.getID();
+		}
+		return ID;
+	}
+	
 	private PrescribedDrugDetailRepo prescribedDrugDetailRepo;
 
 	@Autowired
@@ -1717,7 +1737,7 @@ public class ANCServiceImpl implements ANCService {
 		ArrayList<ChildVaccineDetail1> childVaccineDetails = new ArrayList<ChildVaccineDetail1>();
 		if (null != childVaccineDetail) {
 			for (Object[] obj : childVaccineDetail) {
-				ChildVaccineDetail1 history = new ChildVaccineDetail1((String)obj[0], (String)obj[1], (String)obj[2]);
+				ChildVaccineDetail1 history = new ChildVaccineDetail1((String)obj[0], (String)obj[1], (Boolean)obj[2]);
 				childVaccineDetails.add(history);
 			}
 		}
@@ -1915,7 +1935,7 @@ public class ANCServiceImpl implements ANCService {
 				ancCareDetailsOBJ.getTrimesterNumber(), ancCareDetailsOBJ.getExpectedDateofDelivery(), ancCareDetailsOBJ.getPrimiGravida(), 
 				ancCareDetailsOBJ.getObstetricFormula(), ancCareDetailsOBJ.getGravida_G(), ancCareDetailsOBJ.getTermDeliveries_T(), 
 				ancCareDetailsOBJ.getPretermDeliveries_P(), ancCareDetailsOBJ.getAbortions_A(), ancCareDetailsOBJ.getLivebirths_L(), 
-				ancCareDetailsOBJ.getBloodGroup(), ancCareDetailsOBJ.getModifiedBy(), ancCareDetailsOBJ.getBeneficiaryRegID(), ancCareDetailsOBJ.getID());
+				ancCareDetailsOBJ.getBloodGroup(), ancCareDetailsOBJ.getModifiedBy(), ancCareDetailsOBJ.getBeneficiaryRegID(), ancCareDetailsOBJ.getBenVisitID());
 		return r;
 	}	
 
@@ -1924,10 +1944,12 @@ public class ANCServiceImpl implements ANCService {
 		int r = 0;
 		List<ANCWomenVaccineDetail> ancWomenVaccineDetailList = getANCWomenVaccineDetail(wrapperAncImmunization);
 		if(null != ancWomenVaccineDetailList){
+				
 			for(ANCWomenVaccineDetail ancWomenVaccineDetail : ancWomenVaccineDetailList){
-				r = ancWomenVaccineRepo.updateANCImmunizationDetails(ancWomenVaccineDetail.getStatus(), ancWomenVaccineDetail.getReceivedDate(), 
-						ancWomenVaccineDetail.getReceivedFacilityName(), ancWomenVaccineDetail.getModifiedBy(), ancWomenVaccineDetail.getID(), 
-						ancWomenVaccineDetail.getBeneficiaryRegID());
+				r = ancWomenVaccineRepo.updateANCImmunizationDetails(ancWomenVaccineDetail.getStatus(), ancWomenVaccineDetail.getReceivedDate(),
+					ancWomenVaccineDetail.getReceivedFacilityName(), ancWomenVaccineDetail.getModifiedBy(),ancWomenVaccineDetail.getBeneficiaryRegID(),
+					 ancWomenVaccineDetail.getBenVisitID(), ancWomenVaccineDetail.getVaccineName());
+				
 			}
 		}
 		return r;
@@ -2056,11 +2078,12 @@ public class ANCServiceImpl implements ANCService {
 		Integer r = 0;
 
 		ArrayList<ChildVaccineDetail1> childVaccineDetails = wrapperImmunizationHistory.getBenChildVaccineDetails();
-		ArrayList<ChildVaccineDetail1> res = (ArrayList<ChildVaccineDetail1>) childVaccineDetail1Repo
-				.save(childVaccineDetails);
-		if (null != res && res.size() > 0) {
-			r = res.size();
+		for(ChildVaccineDetail1 childVaccineDetail:childVaccineDetails){
+			r = childVaccineDetail1Repo.updateChildANCImmunization(
+					childVaccineDetail.getStatus(), childVaccineDetail.getModifiedBy(), childVaccineDetail.getBeneficiaryRegID(), 
+					childVaccineDetail.getBenVisitID(), childVaccineDetail.getDefaultReceivingAge(), childVaccineDetail.getVaccineName());
 		}
+		
 		return r;
 	}
 
@@ -2104,7 +2127,39 @@ public class ANCServiceImpl implements ANCService {
 		return r;
 	}
 
+	public int updatePhyGeneralExamination(PhyGeneralExamination generalExamination) {
+		int response = 0;
+		String TypeOfDangerSigns = "";
+		if (null != generalExamination.getTypeOfDangerSigns() && generalExamination.getTypeOfDangerSigns().size() > 0) {
+			for (String TypeOfDangerSign : generalExamination.getTypeOfDangerSigns()) {
+				TypeOfDangerSigns += TypeOfDangerSign + ",";
+			}
+			generalExamination.setTypeOfDangerSign(TypeOfDangerSigns);
+		}
 
+		response = phyGeneralExaminationRepo.updatePhyGeneralExamination(generalExamination.getConsciousness(), generalExamination.getCoherence(), 
+				generalExamination.getCooperation(), generalExamination.getComfortness(), generalExamination.getBuiltAndAppearance(), generalExamination.getGait(), 
+				generalExamination.getDangerSigns(), generalExamination.getTypeOfDangerSign(), generalExamination.getPallor(), generalExamination.getJaundice(), 
+				generalExamination.getCyanosis(), generalExamination.getClubbing(), generalExamination.getLymphadenopathy(), generalExamination.getTypeOfLymphadenopathy(),
+				generalExamination.getEdema(), generalExamination.getExtentOfEdema(), generalExamination.getEdemaType(), generalExamination.getModifiedBy(),
+				generalExamination.getBeneficiaryRegID(), generalExamination.getBenVisitID());
+		
+		return response;
+	}
+	
+	@Override
+	public int updatePhyHeadToToeExamination(PhyHeadToToeExamination headToToeExamination) {
+		int response = 0;
+		response = phyHeadToToeExaminationRepo.updatePhyHeadToToeExamination(headToToeExamination.getHeadtoToeExam(), 
+				headToToeExamination.getHead(), headToToeExamination.getEyes(), headToToeExamination.getEars(), headToToeExamination.getNose(), 
+				headToToeExamination.getOralCavity(), headToToeExamination.getThroat(), headToToeExamination.getBreastAndNipples(), headToToeExamination.getTrunk(), 
+				headToToeExamination.getUpperLimbs(), headToToeExamination.getLowerLimbs(), headToToeExamination.getSkin(), headToToeExamination.getHair(), 
+				headToToeExamination.getNails(), headToToeExamination.getModifiedBy(), headToToeExamination.getBeneficiaryRegID(), headToToeExamination.getBenVisitID());
+
+		return response;
+	}
+	
+	@Override
 	public int updateSysGastrointestinalExamination(SysGastrointestinalExamination gastrointestinalExamination) {
 		int response = 0;
 		response = sysGastrointestinalExaminationRepo.updateSysGastrointestinalExamination(gastrointestinalExamination.getInspection(), 
@@ -2119,7 +2174,7 @@ public class ANCServiceImpl implements ANCService {
 	@Override
 	public int updateSysCardiovascularExamination(SysCardiovascularExamination cardiovascular) {
 		int response = 0;
-		response = sysCardiovascularExaminationRepo.updateSysGastrointestinalExamination(cardiovascular.getJugularVenousPulse_JVP(), 
+		response = sysCardiovascularExaminationRepo.updateSysCardiovascularExamination(cardiovascular.getJugularVenousPulse_JVP(), 
 				cardiovascular.getApexbeatLocation(), cardiovascular.getApexbeatType(), cardiovascular.getFirstHeartSound_S1(), cardiovascular.getSecondHeartSound_S2(),
 				cardiovascular.getAdditionalHeartSounds(), cardiovascular.getMurmurs(), cardiovascular.getPericardialRub(), cardiovascular.getModifiedBy(),
 				cardiovascular.getBeneficiaryRegID(), cardiovascular.getBenVisitID());
@@ -2128,12 +2183,98 @@ public class ANCServiceImpl implements ANCService {
 	}
 	
 	@Override
-	public int updateSysRespiratoryExamination(SysRespiratoryExamination respiratoryExamination) {
-		// TODO Auto-generated method stub
+	public int updateSysRespiratoryExamination(SysRespiratoryExamination respiratory) {
 		int r = 0;
-		SysRespiratoryExamination respiratoryExaminationRS = sysRespiratoryExaminationRepo.save(respiratoryExamination);
-		if (respiratoryExaminationRS != null)
-			r = 1;
+		r = sysRespiratoryExaminationRepo.updateSysRespiratoryExamination(respiratory.getTrachea(), 
+				respiratory.getInspection(), respiratory.getSignsOfRespiratoryDistress(), respiratory.getPalpation(), respiratory.getAuscultation(), 
+				respiratory.getAuscultation_Stridor(), respiratory.getAuscultation_BreathSounds(), respiratory.getAuscultation_Crepitations(), 
+				respiratory.getAuscultation_Wheezing(), respiratory.getAuscultation_PleuralRub(), respiratory.getAuscultation_ConductedSounds(), 
+				respiratory.getPercussion(), respiratory.getModifiedBy(), respiratory.getBeneficiaryRegID(), respiratory.getBenVisitID());
+		
+		return r;
+	}
+	
+	@Override
+	public int updateSysCentralNervousExamination(SysCentralNervousExamination centralNervous) {
+		int r = 0;
+		r = sysCentralNervousExaminationRepo.updateSysCentralNervousExamination(centralNervous.getHandedness(),
+				centralNervous.getCranialNervesExamination(), centralNervous.getMotorSystem(), centralNervous.getSensorySystem(), centralNervous.getAutonomicSystem(),
+				centralNervous.getCerebellarSigns(), centralNervous.getSignsOfMeningealIrritation(), centralNervous.getSkull(), centralNervous.getModifiedBy(),
+				centralNervous.getBeneficiaryRegID(), centralNervous.getBenVisitID());
+	
+		return r;
+	}
+	
+	@Override
+	public int updateSysMusculoskeletalSystemExamination(SysMusculoskeletalSystemExamination musculoskeletalSystem) {
+		int r = 0;
+		r = sysMusculoskeletalSystemExaminationRepo.updateSysMusculoskeletalSystemExamination(musculoskeletalSystem.getJoint_TypeOfJoint(), 
+				musculoskeletalSystem.getJoint_Laterality(), musculoskeletalSystem.getJoint_Abnormality(), musculoskeletalSystem.getUpperLimb_Laterality(), 
+				musculoskeletalSystem.getUpperLimb_Laterality(), musculoskeletalSystem.getLowerLimb_Laterality(), musculoskeletalSystem.getLowerLimb_Abnormality(),
+				musculoskeletalSystem.getChestWall(), musculoskeletalSystem.getSpine(), musculoskeletalSystem.getModifiedBy(), 
+				musculoskeletalSystem.getBeneficiaryRegID(), musculoskeletalSystem.getBenVisitID());
+		
+		return r;
+	}
+	
+	@Override
+	public int updateSysGenitourinarySystemExamination(SysGenitourinarySystemExamination genitourinarySystem) {
+		int r = 0;
+		r = sysGenitourinarySystemExaminationRepo.updateSysGenitourinarySystemExamination(
+				genitourinarySystem.getRenalAngle(), genitourinarySystem.getSuprapubicRegion(), genitourinarySystem.getExternalGenitalia(), 
+				genitourinarySystem.getModifiedBy(), genitourinarySystem.getBeneficiaryRegID(), genitourinarySystem.getBenVisitID());
+
+		return r;
+	}
+	
+	@Override
+	public int updateSysObstetricExamination(SysObstetricExamination obstetricExamination) {
+		int r = 0;
+		r = sysObstetricExaminationRepo.updateSysObstetricExamination(obstetricExamination.getFundalHeight(), 
+				obstetricExamination.getfHAndPOA_Status(), obstetricExamination.getfHAndPOA_Interpretation(), obstetricExamination.getFetalMovements(), 
+				obstetricExamination.getFetalHeartSounds(), obstetricExamination.getFetalHeartRate_BeatsPerMinute(), obstetricExamination.getFetalPositionOrLie(), 
+				obstetricExamination.getFetalPresentation(), obstetricExamination.getAbdominalScars(), obstetricExamination.getModifiedBy(), 
+				obstetricExamination.getBeneficiaryRegID(), obstetricExamination.getBenVisitID());
+		
+		return r;
+	}
+
+	@Override
+	public int updateANCMenstrualHistory(BenMenstrualDetails benMenstrualDetails) {
+		int response = 0;
+		if(null != benMenstrualDetails) {
+			
+		response = benMenstrualDetailsRepo.updateMenstrualDetails(
+				benMenstrualDetails.getMenstrualCycleStatusID(), 
+				benMenstrualDetails.getRegularity(),
+				benMenstrualDetails.getMenstrualCyclelengthID(), 
+				benMenstrualDetails.getCycleLength(), 
+				benMenstrualDetails.getMenstrualFlowDurationID(), 
+				benMenstrualDetails.getBloodFlowDuration(), 
+				benMenstrualDetails.getMenstrualProblemID(), 
+				benMenstrualDetails.getProblemName(), 
+				benMenstrualDetails.getlMPDate(), 
+				benMenstrualDetails.getModifiedBy(), 
+				benMenstrualDetails.getBeneficiaryRegID(), 
+				benMenstrualDetails.getBenVisitID()); 
+		}
+		return response;
+	}
+
+	@Override
+	public int updateANCPastObstetricHistory(WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory) {
+		Integer r = 0;
+		if(null != wrapperFemaleObstetricHistory){
+			femaleObstetricHistoryRepo.deleteExistingObstetricHistory(wrapperFemaleObstetricHistory.getBeneficiaryRegID(), wrapperFemaleObstetricHistory.getBenVisitID());
+
+			ArrayList<FemaleObstetricHistory> femaleObstetricHistoryDetails = wrapperFemaleObstetricHistory
+					.getFemaleObstetricHistoryDetails();
+			ArrayList<FemaleObstetricHistory> res = (ArrayList<FemaleObstetricHistory>) femaleObstetricHistoryRepo
+					.save(femaleObstetricHistoryDetails);
+			if (null != res && res.size() > 0) {
+				r = 1;
+			}
+		}
 		return r;
 	}
 

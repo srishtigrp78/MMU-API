@@ -2,8 +2,11 @@ package com.iemr.mmu.data.anc;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.collections.map.HashedMap;
 
 public class WrapperImmunizationHistory {
 	private Long beneficiaryRegID;
@@ -26,9 +29,9 @@ public class WrapperImmunizationHistory {
 		ArrayList<ChildVaccineDetail1> childVaccineDetailList = new ArrayList<ChildVaccineDetail1>();
 		for(ChildVaccineDetail1 childVaccineDetail:immunizationList){
 				
-			List<Map<String,String>> vaccinesList = childVaccineDetail.getVaccines();
-			for(Map<String,String> vaccine :vaccinesList){
-				ChildVaccineDetail1 vaccineDetail = new ChildVaccineDetail1(childVaccineDetail.getDefaultReceivingAge(), vaccine.get("vaccine"), vaccine.get("status"));
+			List<Map<String,Object>> vaccinesList = childVaccineDetail.getVaccines();
+			for(Map<String,Object> vaccine :vaccinesList){
+				ChildVaccineDetail1 vaccineDetail = new ChildVaccineDetail1(childVaccineDetail.getDefaultReceivingAge(), vaccine.get("vaccine").toString(), (Boolean)vaccine.get("status"));
 				vaccineDetail.setBeneficiaryRegID(beneficiaryRegID);
 				vaccineDetail.setBenVisitID(benVisitID);
 				vaccineDetail.setProviderServiceMapID(providerServiceMapID);
@@ -50,13 +53,31 @@ public class WrapperImmunizationHistory {
 			WIH.beneficiaryRegID = (Long)obj1[0];
 			WIH.benVisitID = (Long)obj1[1];
 			WIH.providerServiceMapID = (Integer)obj1[2];
-			List<Map<String,String>> vaccinesList = new ArrayList<Map<String,String>>();
+			List<Map<String,Object>> vaccinesList = new ArrayList<Map<String,Object>>();
+			ChildVaccineDetail1 childVaccine = null;
+			Map<String,Object> vaccines = new HashMap<String,Object>();
+			
+			int size =childVaccineDetail.size();
 			for(Object[] obj: childVaccineDetail){
+				if(!(null!= childVaccine && childVaccine.getDefaultReceivingAge().equals((String)obj[3]))){
+					
+					if(null!= childVaccine){
+						WIH.immunizationList.add(childVaccine);
+					}
+					vaccinesList = new ArrayList<Map<String,Object>>();
+					childVaccine= new ChildVaccineDetail1((String)obj[3]);
+				}
 				
-				ChildVaccineDetail1 childVaccine= new ChildVaccineDetail1((String)obj[3], (String)obj[4], (String)obj[5]);
+				vaccines = new HashMap<String,Object>();
+				vaccines.put("vaccine", (String)obj[4]);
+				vaccines.put("status",  (Boolean)obj[5]);
+				vaccinesList.add(vaccines);
+				childVaccine.setVaccines(vaccinesList);
 				
-				WIH.immunizationList.add(childVaccine);
-				
+				int index = childVaccineDetail.indexOf(obj);
+				if(index==size-1){
+					WIH.immunizationList.add(childVaccine);
+				}
 			}
 		}
 		return WIH;

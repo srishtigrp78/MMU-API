@@ -25,12 +25,13 @@ public interface ANCWomenVaccineRepo extends CrudRepository<ANCWomenVaccineDetai
 	@Modifying
 	@Query("update ANCWomenVaccineDetail set status=:status, receivedDate=:receivedDate, receivedFacilityName=:receivedFacilityName, "
 			+ "modifiedBy=:modifiedBy "
-			+ "where benVisitID=:benVisitID AND beneficiaryRegID=:beneficiaryRegID")
+			+ "where benVisitID=:benVisitID AND beneficiaryRegID=:beneficiaryRegID AND vaccineName=:vaccineName")
 	public int updateANCImmunizationDetails(@Param("status") String status,
 			@Param("receivedDate") Date receivedDate,
 			@Param("receivedFacilityName") String receivedFacilityName,
 			@Param("modifiedBy") String modifiedBy,
 			@Param("beneficiaryRegID") Long beneficiaryRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("benVisitID") Long benVisitID,
+			@Param("vaccineName") String vaccineName);
 	
 }

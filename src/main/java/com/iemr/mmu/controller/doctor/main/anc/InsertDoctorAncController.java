@@ -1,5 +1,6 @@
 package com.iemr.mmu.controller.doctor.main.anc;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 import com.iemr.mmu.controller.doctor.main.cancerScreening.InsertDoctorCSController;
+import com.iemr.mmu.data.anc.ANCDiagnosis;
 import com.iemr.mmu.data.anc.WrapperAncFindings;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
@@ -67,6 +69,7 @@ public class InsertDoctorAncController {
 		return response.toString();
 	}
 
+	/** General OPD screen**/
 	@CrossOrigin
 	@ApiOperation(value = "save Beneficiary ANC Diagnosis", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/anc/caseRecord/diagnosis" }, method = { RequestMethod.POST })
@@ -94,6 +97,37 @@ public class InsertDoctorAncController {
 			}
 		} catch (Exception e) {
 			logger.error("error in Save doc anc diagonosis details" + e);
+		}
+		return response.toString();
+	}
+	
+	/** New screen for ANC**/
+	@CrossOrigin
+	@ApiOperation(value = "save Beneficiary ANC Diagnosis", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/anc/caseRecord/ancDiagnosis" }, method = { RequestMethod.POST })
+	public String saveANCDiagnosis(@ApiParam(value = "{\"beneficiaryRegID\":\"Long\",\"benVisitID\": \"Long\","
+			+ "\"providerServiceMapID\":\"Integer\", \"highRiskStatus\":\"String\", "
+			+ "\"highRiskCondition\":\"String\", \"complicationOfCurrentPregnancy\":\"String\", \"isMaternalDeath\":\"String\", "
+			+ "\"placeOfDeath\":\"String\", \"dateOfDeath\":\"String\", \"causeOfDeath\":\"String\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
+		
+		OutputResponse response = new OutputResponse();
+
+		logger.info("saveBenANCDiagnosis request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				ANCDiagnosis ancDiagnosis = InputMapper.gson().fromJson(requestObj,
+						ANCDiagnosis.class);
+				Long r = ancServiceImpl.saveBenANCDiagnosis(ancDiagnosis);
+				if (r > 0) {
+					response.setResponse("ANC Diagnosis Details stored successfully");
+				} else {
+					response.setError(5000, "Something went wrong !!!");
+				}
+			} else {
+				response.setError(5000, "Invalid request Data");
+			}
+		} catch (Exception e) {
+			logger.error("error in Save doc anc diagnosis details" + e);
 		}
 		return response.toString();
 	}
