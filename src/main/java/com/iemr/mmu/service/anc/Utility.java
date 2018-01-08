@@ -56,9 +56,9 @@ public class Utility {
 					timePeriodAgo = day;
 				}
 			}
-			timePeriod.put("timePeriodAgo", timePeriodAgo);
-			timePeriod.put("timePeriodUnit", timePeriodUnit);
 		}
+		timePeriod.put("timePeriodAgo", timePeriodAgo);
+		timePeriod.put("timePeriodUnit", timePeriodUnit);
 		return timePeriod;
 	}
 }

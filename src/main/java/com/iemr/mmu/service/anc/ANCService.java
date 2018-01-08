@@ -176,6 +176,16 @@ public interface ANCService {
 	public int updateSysCardiovascularExamination(SysCardiovascularExamination cardiovascularExamination);
 
 	public int updateSysRespiratoryExamination(SysRespiratoryExamination respiratoryExamination);
+	
+	public int updateSysCentralNervousExamination(SysCentralNervousExamination centralNervousExamination);
+
+	public int updateSysMusculoskeletalSystemExamination(SysMusculoskeletalSystemExamination musculoskeletalSystemExamination);
+
+	public int updateSysGenitourinarySystemExamination(SysGenitourinarySystemExamination genitourinarySystemExamination);
+
+	public int updateSysObstetricExamination(SysObstetricExamination obstetricExamination);
+
+	public int updatePhyHeadToToeExamination(PhyHeadToToeExamination headToToeExamination);
 
 	public int updateANCMenstrualHistory(BenMenstrualDetails benMenstrualDetails);
 	

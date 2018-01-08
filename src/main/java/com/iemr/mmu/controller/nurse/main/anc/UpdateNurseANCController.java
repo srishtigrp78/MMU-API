@@ -19,8 +19,14 @@ import com.iemr.mmu.data.anc.BenFamilyHistory;
 import com.iemr.mmu.data.anc.BenMedHistory;
 import com.iemr.mmu.data.anc.BenMenstrualDetails;
 import com.iemr.mmu.data.anc.BenPersonalHabit;
+import com.iemr.mmu.data.anc.PhyGeneralExamination;
+import com.iemr.mmu.data.anc.PhyHeadToToeExamination;
 import com.iemr.mmu.data.anc.SysCardiovascularExamination;
+import com.iemr.mmu.data.anc.SysCentralNervousExamination;
 import com.iemr.mmu.data.anc.SysGastrointestinalExamination;
+import com.iemr.mmu.data.anc.SysGenitourinarySystemExamination;
+import com.iemr.mmu.data.anc.SysMusculoskeletalSystemExamination;
+import com.iemr.mmu.data.anc.SysObstetricExamination;
 import com.iemr.mmu.data.anc.SysRespiratoryExamination;
 import com.iemr.mmu.data.anc.WrapperAncImmunization;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
@@ -205,10 +211,14 @@ public class UpdateNurseANCController {
 		return response.toString();
 	}
 
+	
 	@CrossOrigin
 	@ApiOperation(value = "Update Beneficiary ANC ComorbidCondition Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/history/comorbidConditions" }, method = { RequestMethod.POST })
-	public String updateANCBenComorbidConditions(@RequestBody String requestObj) {
+	public String updateANCBenComorbidConditions(@ApiParam(value = "{\"comorbidityConcurrentConditionsList\":[{\"comorbidConditionID\": \"Short\","
+			+ "\"comorbidCondition\": \"String\", \"otherComorbidCondition\":\"String\", \"timePeriodAgo\":\"Integer\", \"timePeriodUnit\":\"String\","
+			+ "\"isForHistory\":\"Boolean\"}], \"beneficiaryRegID\":\"String\", \"benVisitID\":\"String\", "
+			+ "\"providerServiceMapID\":\"String\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		logger.info("updateANCBenComorbidConditions request:" + requestObj);
 		try {
@@ -368,6 +378,35 @@ public class UpdateNurseANCController {
 	}
 
 	@CrossOrigin
+	@ApiOperation(value = "Update Beneficiary ANC Child Immunization History", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/history/childImmunizationHistory" }, method = { RequestMethod.POST })
+	public String updateANCChildImmunizationHistory(@RequestBody String requestObj) {
+
+		OutputResponse response = new OutputResponse();
+		logger.info("updateANCChildImmunizationHistory request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				WrapperImmunizationHistory wrapperImmunizationHistory = InputMapper.gson().fromJson(requestObj,
+						WrapperImmunizationHistory.class);
+
+
+				int r = ancServiceImpl.updateANCChildImmunizationDetail(wrapperImmunizationHistory);
+
+				if ( r > 0 ) {
+					response.setResponse("Beneficiary ANC Child Immunization History Details updated successfully");
+				} else {
+					response.setError(5000, "Something went wrong");
+				}
+				logger.info("updateANCChildImmunizationHistory response:" + response);
+			}
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error while storing Beneficiary ANC Child Immunization History."+e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin
 	@ApiOperation(value = "Update Beneficiary Vitals", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/vitals" }, method = { RequestMethod.POST })
 	public String updateANCAnthropometryVitals(@RequestBody String requestObj) {
@@ -396,6 +435,67 @@ public class UpdateNurseANCController {
 		} catch (Exception e) {
 			response.setError(e);
 			logger.error("Error while updating Anc Vitals"+e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin
+	@ApiOperation(value = "Update Beneficiary Physical General Examination Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/examination/generalExamination" }, method = { RequestMethod.POST })
+	public String updateBenGeneralExamination(@ApiParam(value = "{\"beneficiaryRegID\":\"Long\",\"benVisitID\": \"Long\","
+			+ "\"consciousness\":\"String\", \"coherence\":\"String\", \"cooperation\":\"String\", \"comfortness\":\"String\","
+			+ "\"builtAndAppearance\":\"String\", \"gait\":\"String\", \"dangerSigns\":\"String\", \"typeOfDangerSigns\":\"String\", \"pallor\":\"String\", "
+			+ "\"jaundice\":\"String\", \"cyanosis\":\"String\", \"clubbing\":\"String\", \"lymphadenopathy\":\"String\", \"lymphnodesInvolved\":\"String\", "
+			+ "\"typeOfLymphadenopathy\":\"String\", \"edema\":\"String\",  \"extentOfEdema\":\"String\", \"edemaType\":\"String\", \"modifiedBy\":\"String\"}") @RequestBody String requestObj) {
+
+		OutputResponse response = new OutputResponse();
+		logger.info("updateBenGeneralExamination request:" + requestObj);
+		try {
+			inputMapper = new InputMapper();
+			if (requestObj != null) {
+				PhyGeneralExamination generalExamination = InputMapper.gson().fromJson(requestObj,
+						PhyGeneralExamination.class);
+				int r = ancServiceImpl.updatePhyGeneralExamination(generalExamination);
+				if (r > 0) {
+					response.setResponse("Ben General Examination data updated successfully.");
+				} else {
+					response.setError(5000, "Something went wrong !!!");
+				}
+			} else {
+				response.setError(5000, "Invalid request Data");
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+		return response.toString();
+	}
+
+	@ApiOperation(value = "Update Beneficiary Physical Head To Toe Examination Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/examination/headToToeExamination" }, method = { RequestMethod.POST })
+	public String updateBenHeadToToeExamination(
+			@ApiParam(value = "{\"beneficiaryRegID\":\"Long\",\"benVisitID\": \"Long\","
+					+ "\"headtoToeExam\":\"String\", \"head\":\"String\", \"eyes\":\"String\", \"ears\":\"String\", \"nose\":\"String\", "
+					+ "\"oralCavity\":\"String\", \"throat\":\"String\", \"breastAndNipples\":\"String\", \"trunk\":\"String\", \"upperLimbs\":\"String\", "
+					+ "\"lowerLimbs\":\"String\", \"skin\":\"String\", \"hair\":\"String\", \"nails\":\"String\", \"modifiedBy\":\"String\"}") @RequestBody String requestObj) {
+
+		OutputResponse response = new OutputResponse();
+		logger.info("updateBenHeadToToeExamination request:" + requestObj);
+		try {
+			inputMapper = new InputMapper();
+			if (requestObj != null) {
+				PhyHeadToToeExamination headToToeExamination = InputMapper.gson().fromJson(requestObj,
+						PhyHeadToToeExamination.class);
+				int r = ancServiceImpl.updatePhyHeadToToeExamination(headToToeExamination);
+				if (r > 0) {
+					response.setResponse("Ben Head To Toe Examination data updated successfully.");
+				} else {
+					response.setError(5000, "Something went wrong !!!");
+				}
+			} else {
+				response.setError(5000, "Invalid request Data");
+			}
+		} catch (Exception e) {
+			response.setError(e);
 		}
 		return response.toString();
 	}
@@ -430,7 +530,7 @@ public class UpdateNurseANCController {
 		}
 		return response.toString();
 	}
-
+	
 	@CrossOrigin
 	@ApiOperation(value = "Update Beneficiary Cardiovascular System Examination Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/examination/cardiovascularExamination" }, method = { RequestMethod.POST })
@@ -438,7 +538,7 @@ public class UpdateNurseANCController {
 			@ApiParam(value = "{\"beneficiaryRegID\":\"Long\",\"benVisitID\": \"Long\","
 					+ "\"jugularVenousPulse_JVP\":\"String\", \"apexbeatLocation\":\"String\", \"apexbeatType\":\"String\","
 					+ "\"firstHeartSound_S1\":\"String\", \"secondHeartSound_S2\":\"String\", \"additionalHeartSounds\":\"String\", "
-					+ "\"murmurs\":\"String\", \"pericardialRub\":\"String\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
+					+ "\"murmurs\":\"String\", \"pericardialRub\":\"String\", \"modifiedBy\":\"String\"}") @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("updateSysCardiovascularExamination request:" + requestObj);
@@ -461,7 +561,7 @@ public class UpdateNurseANCController {
 		}
 		return response.toString();
 	}
-
+	
 	@CrossOrigin
 	@ApiOperation(value = "Update Beneficairy Respiratory System Examination Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/examination/respiratorySystemExamination" }, method = { RequestMethod.POST })
@@ -473,7 +573,7 @@ public class UpdateNurseANCController {
 				SysRespiratoryExamination sysRespiratoryExamination = InputMapper.gson().fromJson(requestObj,
 						SysRespiratoryExamination.class);
 
-				int r = ancServiceImpl.saveSysRespiratoryExamination(sysRespiratoryExamination);
+				int r = ancServiceImpl.updateSysRespiratoryExamination(sysRespiratoryExamination);
 				if (r > 0) {
 					response.setResponse("Beneficairy Respiratory System Examination Details updated successfully");
 				} else {
@@ -500,6 +600,29 @@ public class UpdateNurseANCController {
 				
 				if (r > 0) {
 					response.setResponse("Beneficairy Menstrual History Details updated successfully");
+	} else {
+					response.setError(5000, "Something went wrong");
+				}
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+		return response.toString();
+	}
+
+	@ApiOperation(value = "Update Beneficairy Central Nervous System Examination Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/examination/centralNervousSystemExamination" }, method = { RequestMethod.POST })
+	public String updateCentralNervousSystemExamination(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		logger.info("updatecentralNervousSystemExamination request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				SysCentralNervousExamination sysCentralNervousExamination = InputMapper.gson().fromJson(requestObj,
+						SysCentralNervousExamination.class);
+
+				int r = ancServiceImpl.updateSysCentralNervousExamination(sysCentralNervousExamination);
+				if (r > 0) {
+					response.setResponse("Beneficairy Central Nervous System Examination Details updated successfully");
 				} else {
 					response.setError(5000, "Something went wrong");
 				}
@@ -525,6 +648,30 @@ public class UpdateNurseANCController {
 				
 				if (r > 0) {
 					response.setResponse("Beneficairy Menstrual History Details updated successfully");
+		response.setResponse("Beneficairy Musculoskeletal System Examination Details updated successfully");
+				} else {
+					response.setError(5000, "Something went wrong");
+				}
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+		return response.toString();
+	}
+	
+	@ApiOperation(value = "Update Beneficairy Musculoskeletal System Examination Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/examination/musculoskeletalSystemExamination" }, method = { RequestMethod.POST })
+	public String updateMusculoskeletalSystemExamination(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		logger.info("updateMusculoskeletalSystemExamination request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				SysMusculoskeletalSystemExamination sysMusculoskeletalSystemExamination = InputMapper.gson()
+						.fromJson(requestObj, SysMusculoskeletalSystemExamination.class);
+
+				int r = ancServiceImpl.updateSysMusculoskeletalSystemExamination(sysMusculoskeletalSystemExamination);
+				if (r > 0) {
+					response.setResponse("Beneficairy Musculoskeletal System Examination Details updated successfully");
 				} else {
 					response.setError(5000, "Something went wrong");
 				}
@@ -536,5 +683,52 @@ public class UpdateNurseANCController {
 	}
 	
 	
+	@CrossOrigin
+	@ApiOperation(value = "Update Beneficairy Genito Urinary System Examination Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/examination/genitoUrinarySystemExamination" }, method = { RequestMethod.POST })
+	public String updateGenitoUrinarySystemExamination(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		logger.info("updateGenitoUrinarySystemExamination request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				SysGenitourinarySystemExamination sysGenitourinarySystemExamination = InputMapper.gson()
+						.fromJson(requestObj, SysGenitourinarySystemExamination.class);
+
+				int r = ancServiceImpl.updateSysGenitourinarySystemExamination(sysGenitourinarySystemExamination);
+				if (r > 0) {
+					response.setResponse("Beneficairy Genito Urinary System Examination Details updated successfully");
+				} else {
+					response.setError(5000, "Something went wrong");
+				}
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin
+	@ApiOperation(value = "Update Beneficiary Obstetric  Examination Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/examination/obstetricExamination" }, method = { RequestMethod.POST })
+	public String updateObstetricExamination(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		logger.info("updateObstetricExamination request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				SysObstetricExamination sysObstetricExamination = InputMapper.gson().fromJson(requestObj,
+						SysObstetricExamination.class);
+
+				int r = ancServiceImpl.updateSysObstetricExamination(sysObstetricExamination);
+				if (r > 0) {
+					response.setResponse("Beneficairy Obstetric  Examination Details updated successfully");
+				} else {
+					response.setError(5000, "Something went wrong");
+				}
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+		return response.toString();
+	}
 
 }

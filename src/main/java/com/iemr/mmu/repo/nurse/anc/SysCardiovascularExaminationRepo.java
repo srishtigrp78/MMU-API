@@ -24,7 +24,7 @@ public interface SysCardiovascularExaminationRepo extends CrudRepository<SysCard
 			+ "firstHeartSound_S1=:firstHeartSound_S1, secondHeartSound_S2=:secondHeartSound_S2, additionalHeartSounds =:additionalHeartSounds, "
 			+ "murmurs=:murmurs, pericardialRub=:pericardialRub, modifiedBy=:modifiedBy "
 			+ "where beneficiaryRegID=:benRegID and benVisitID = :benVisitID ")
-	public int updateSysGastrointestinalExamination(@Param("jugularVenousPulse_JVP") String jugularVenousPulse_JVP,
+	public int updateSysCardiovascularExamination(@Param("jugularVenousPulse_JVP") String jugularVenousPulse_JVP,
 			@Param("apexbeatLocation") String apexbeatLocation,
 			@Param("apexbeatType") String apexbeatType,
 			@Param("firstHeartSound_S1") String firstHeartSound_S1,
