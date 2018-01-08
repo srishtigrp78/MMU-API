@@ -26,6 +26,22 @@ public class WrapperComorbidCondDetails {
 			ArrayList<BencomrbidityCondDetails> comorbidityConcurrentConditionsList) {
 		this.comorbidityConcurrentConditionsList = comorbidityConcurrentConditionsList;
 	}
+	
+	public Long getBeneficiaryRegID() {
+		return beneficiaryRegID;
+	}
+
+	public void setBeneficiaryRegID(Long beneficiaryRegID) {
+		this.beneficiaryRegID = beneficiaryRegID;
+	}
+
+	public Long getBenVisitID() {
+		return benVisitID;
+	}
+
+	public void setBenVisitID(Long benVisitID) {
+		this.benVisitID = benVisitID;
+	}
 
 	public ArrayList<BencomrbidityCondDetails> getComrbidityConds(){
 		for(BencomrbidityCondDetails comrbidityCond:comorbidityConcurrentConditionsList){

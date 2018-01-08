@@ -5,12 +5,15 @@ public class WrapperAncImmunization {
 	private Long benVisitID;
 	private Integer providerServiceMapID;
 	private String createdBy;
+	private Long tT1ID;
 	private String tT_1Status;
 	private String dateReceivedForTT_1;
 	private String facilityNameOfTT_1;
+	private Long tT2ID;
 	private String tT_2Status;
 	private String dateReceivedForTT_2;
 	private String facilityNameOfTT_2;
+	private Long tT3ID;
 	private String tT_3Status;
 	private String dateReceivedForTT_3;
 	private String facilityNameOfTT_3;
@@ -140,6 +143,30 @@ public class WrapperAncImmunization {
 
 	public void setFacilityNameOfTT_3(String facilityNameOfTT_3) {
 		this.facilityNameOfTT_3 = facilityNameOfTT_3;
+	}
+	
+	public Long gettT1ID() {
+		return tT1ID;
+	}
+
+	public void settT1ID(Long tT1ID) {
+		this.tT1ID = tT1ID;
+	}
+
+	public Long gettT2ID() {
+		return tT2ID;
+	}
+
+	public void settT2ID(Long tT2ID) {
+		this.tT2ID = tT2ID;
+	}
+
+	public Long gettT3ID() {
+		return tT3ID;
+	}
+
+	public void settT3ID(Long tT3ID) {
+		this.tT3ID = tT3ID;
 	}
 
 }

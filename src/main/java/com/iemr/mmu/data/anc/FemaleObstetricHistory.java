@@ -450,6 +450,14 @@ public class FemaleObstetricHistory {
 		return obstetricHistoryID;
 	}
 
+	public Short getTotalNoOfPreg() {
+		return totalNoOfPreg;
+	}
+
+	public void setTotalNoOfPreg(Short totalNoOfPreg) {
+		this.totalNoOfPreg = totalNoOfPreg;
+	}
+	
 	public FemaleObstetricHistory(Short pregOrder, Short pregComplicationID, String pregComplicationType,
 			String otherPregComplication, Short pregDurationID, String durationType, Short deliveryTypeID,
 			String deliveryType, Short deliveryPlaceID, String deliveryPlace, String otherDeliveryPlace,

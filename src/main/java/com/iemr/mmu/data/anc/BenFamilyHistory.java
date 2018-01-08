@@ -321,7 +321,7 @@ public class BenFamilyHistory {
 			List<Map<String,Object>> familyDiseaseList = new ArrayList<Map<String, Object>>();
 			
 			for(Object[] obj: familyHistory){
-				BenFamilyHistory familyDetails = new BenFamilyHistory((String)obj1[3], (Short)obj1[4], (String)obj1[5], (String)obj1[6]);
+				BenFamilyHistory familyDetails = new BenFamilyHistory((String)obj[3], (Short)obj[4], (String)obj[5], (String)obj[6]);
 				
 								
 				Map<String,Object> familyDisease = new HashMap<String,Object>();

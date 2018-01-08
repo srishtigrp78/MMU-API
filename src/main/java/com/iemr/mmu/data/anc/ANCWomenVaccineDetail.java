@@ -101,17 +101,19 @@ public class ANCWomenVaccineDetail {
 				wrapperAncImmunization.setBeneficiaryRegID((Long)obj[1]);
 				wrapperAncImmunization.setBenVisitID((Long)obj[2]);
 				wrapperAncImmunization.setProviderServiceMapID((Integer)obj[3]);
-				
+				wrapperAncImmunization.settT1ID((Long)obj[0]);
 				wrapperAncImmunization.settT_1Status((String)obj[5]);
 				if(null != dt)
 				wrapperAncImmunization.setDateReceivedForTT_1(dt.toString());
 				wrapperAncImmunization.setFacilityNameOfTT_1((String)obj[7]);
 			}else if(resList.indexOf(obj) == 1){
+				wrapperAncImmunization.settT2ID((Long)obj[0]);
 				wrapperAncImmunization.settT_2Status((String)obj[5]);
 				if(null != dt)
 				wrapperAncImmunization.setDateReceivedForTT_2(dt.toString());
 				wrapperAncImmunization.setFacilityNameOfTT_2((String)obj[7]);
 			}else if(resList.indexOf(obj) == 2){
+				wrapperAncImmunization.settT3ID((Long)obj[0]);
 				wrapperAncImmunization.settT_3Status((String)obj[5]);
 				if(null != dt)
 				wrapperAncImmunization.setDateReceivedForTT_3(dt.toString());

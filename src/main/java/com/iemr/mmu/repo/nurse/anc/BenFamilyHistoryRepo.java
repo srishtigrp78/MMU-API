@@ -2,6 +2,9 @@ package com.iemr.mmu.repo.nurse.anc;
 
 import java.util.ArrayList;
 
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -21,5 +24,10 @@ public interface BenFamilyHistoryRepo extends CrudRepository<BenFamilyHistory, L
 			+ " WHERE beneficiaryRegID = :benRegID AND benVisitID = :benVisitID ")
 	public ArrayList<Object[]> getBenFamilyHistoryDetail(@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
 	
+	
+	@Modifying
+	@Transactional
+	@Query(" Delete from BenFamilyHistory WHERE beneficiaryRegID = :benRegID and benVisitID = :benVisitID")
+		public int deleteExistingBenFamilyHistory(@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
 	
 }

@@ -31,6 +31,8 @@ import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
 import com.iemr.mmu.data.anc.WrapperFemaleObstetricHistory;
 import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
+import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
+import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
@@ -139,5 +141,39 @@ public interface ANCService {
 	public int updateBenAdherenceDetails(BenAdherence benAdherence);
 
 	public int updateBenChiefComplaints(List<BenChiefComplaint> benChiefComplaintList);
+	
+	public Long updateBenInvestigation(WrapperBenInvestigationANC wrapperBenInvestigationANC);
+
+	public int updateBenAncCareDetails(ANCCareDetails ancCareDetailsOBJ) throws ParseException;
+
+	public int updateBenAncImmunizationDetails(WrapperAncImmunization wrapperAncImmunization) throws ParseException;
+
+	public int updateBenAncPastHistoryDetails(BenMedHistory benMedHistory) throws ParseException;
+
+	public Integer updateBenANCComorbidConditions(WrapperComorbidCondDetails wrapperComorbidCondDetails);
+
+	public Integer updateBenANCMedicationHistory(WrapperMedicationHistory wrapperMedicationHistory);
+
+	public Integer updateBenANCPersonalHistory(BenPersonalHabit benPersonalHabit);
+
+	public Integer updateBenANCAllergicHistory(BenAllergyHistory benAllergyHistory);
+
+	public Integer updateBenANCFamilyHistory(BenFamilyHistory benFamilyHistory);
+
+	public Integer updateChildOptionalVaccineDetail(WrapperChildOptionalVaccineDetail wrapperChildOptionalVaccineDetail);
+
+	public Integer updateANCAnthropometryDetails(BenAnthropometryDetail anthropometryDetail );
+	
+	public Integer updateANCPhysicalVitalDetails(BenPhysicalVitalDetail physicalVitalDetail );
+	
+	public Integer updateANCChildImmunizationDetail(WrapperImmunizationHistory wrapperImmunizationHistory);
+
+	public String fetchBenImmunizationHistory(Long beneficiaryRegID);
+
+	public int updateSysGastrointestinalExamination(SysGastrointestinalExamination gastrointestinalExamination);
+
+	public int updateSysCardiovascularExamination(SysCardiovascularExamination cardiovascularExamination);
+
+	public int updateSysRespiratoryExamination(SysRespiratoryExamination respiratoryExamination);
 
 }

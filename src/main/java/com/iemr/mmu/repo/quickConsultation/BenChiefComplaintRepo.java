@@ -2,6 +2,9 @@ package com.iemr.mmu.repo.quickConsultation;
 
 import java.util.ArrayList;
 
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -17,5 +20,11 @@ public interface BenChiefComplaintRepo extends CrudRepository<BenChiefComplaint,
 			+ "from BenChiefComplaint ba WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID ")
 	public ArrayList<Object[]> getBenChiefComplaints(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
+	
+	
+	@Modifying
+	@Transactional
+	@Query(" Delete from BenChiefComplaint WHERE beneficiaryRegID = :benRegID AND benVisitID = :benVisitID")
+	public int deleteExistingBenChiefComplaints(@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
 	
 }
