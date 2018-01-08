@@ -17,7 +17,8 @@ public class WrapperAncImmunization {
 	private String tT_3Status;
 	private String dateReceivedForTT_3;
 	private String facilityNameOfTT_3;
-
+	private String modifiedBy;
+	
 	public WrapperAncImmunization() {
 	}
 
@@ -167,6 +168,14 @@ public class WrapperAncImmunization {
 
 	public void settT3ID(Long tT3ID) {
 		this.tT3ID = tT3ID;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
 	}
 
 }

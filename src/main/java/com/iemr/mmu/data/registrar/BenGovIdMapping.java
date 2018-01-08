@@ -68,12 +68,14 @@ public class BenGovIdMapping {
 			benGovIdMapOBJ = new BenGovIdMapping();
 			benGovIdMapOBJ.beneficiaryRegID = benRegID;
 			if (benD.has("createdBy") && !benD.get("createdBy").isJsonNull())
-			benGovIdMapOBJ.createdBy = benD.get("createdBy").getAsString();
+				benGovIdMapOBJ.createdBy = benD.get("createdBy").getAsString();
 			// if (!benD.get("createdBy").isJsonNull())
 			JsonObject oo = obj.getAsJsonObject();
-			benGovIdMapOBJ.govtIdentityTypeID = oo.get("type").getAsShort();
-			benGovIdMapOBJ.govtIdentityNo = oo.get("value").getAsString();
-			//ID will get only when to delete the GovID data
+			if (oo.has("type") && oo.has("value")) {
+				benGovIdMapOBJ.govtIdentityTypeID = oo.get("type").getAsShort();
+				benGovIdMapOBJ.govtIdentityNo = oo.get("value").getAsString();
+			}
+			// ID will get only when to delete the GovID data
 			if (oo.has("benGovMapID") && !oo.get("benGovMapID").isJsonNull())
 				benGovIdMapOBJ.ID = oo.get("benGovMapID").getAsLong();
 			System.out.println("ello");
@@ -82,6 +84,7 @@ public class BenGovIdMapping {
 		System.out.println("ello");
 
 		return resArray;
+
 	}
 
 	public Long getID() {

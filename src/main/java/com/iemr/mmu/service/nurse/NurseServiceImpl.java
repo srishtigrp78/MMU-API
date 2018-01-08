@@ -132,15 +132,15 @@ public class NurseServiceImpl implements NurseService {
 		obj.setCreatedBy("neeraj");
 		obj1.setCreatedBy("neeraj");
 
-		//System.out.println("helloooo");
+		// System.out.println("helloooo");
 		RestTemplate restTemplate = new RestTemplate();
 
 		ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:8080/nurse/testrest1", obj,
 				String.class);
-		//System.out.println("helloooo");
+		// System.out.println("helloooo");
 		ResponseEntity<String> response1 = restTemplate.postForEntity("http://localhost:8080/nurse/testrest2", obj1,
 				String.class);
-		//System.out.println("helloooo");
+		// System.out.println("helloooo");
 
 		return "hii";
 	}
@@ -152,7 +152,7 @@ public class NurseServiceImpl implements NurseService {
 			Short benVisitCount = benVisitDetailRepo
 					.getVisitCountForBeneficiary(beneficiaryVisitDetail.getBeneficiaryRegID());
 
-		//	System.out.println(benVisitCount);
+			// System.out.println(benVisitCount);
 			if (benVisitCount != null) {
 				benVisitCount = (short) (benVisitCount + 1);
 			} else {
@@ -179,20 +179,25 @@ public class NurseServiceImpl implements NurseService {
 			List<String> familyMenberList = benFamilyCancerHistoryOBJ.getFamilyMemberList();
 			String familyMemberData = "";
 			if (familyMenberList != null && familyMenberList.size() > 0) {
+				int i = 1;
 				for (String familyMember : familyMenberList) {
-					familyMemberData += familyMember + ",";
+					if (i == familyMenberList.size()) {
+						familyMemberData += familyMember;
+					} else {
+						familyMemberData += familyMember + ",";
+					}
+
+					i++;
 				}
 			}
 			benFamilyCancerHistoryOBJ.setFamilyMember(familyMemberData);
-			//System.out.println("hello...");
+			// System.out.println("hello...");
 		}
 		int responseData = 0;
 		List<BenFamilyCancerHistory> response = (List<BenFamilyCancerHistory>) benFamilyCancerHistoryRepo
 				.save(benFamilyCancerHistoryList);
-		for (BenFamilyCancerHistory obj : response) {
-			if (obj.getID() > 0)
-				responseData = 1;
-		}
+		if (benFamilyCancerHistoryList.size() == response.size())
+			responseData = 1;
 		return responseData;
 	}
 
@@ -285,7 +290,7 @@ public class NurseServiceImpl implements NurseService {
 			e.printStackTrace();
 		}
 
-	//	System.out.println(new Gson().toJson(resMap));
+		// System.out.println(new Gson().toJson(resMap));
 		return new Gson().toJson(resMap);
 
 	}
@@ -490,7 +495,7 @@ public class NurseServiceImpl implements NurseService {
 		resMap.put("benPersonalHistory", getBenPersonalCancerHistoryData(benRegID, benVisitID));
 
 		resMap.put("benPersonalDietHistory", getBenPersonalCancerDietHistoryData(benRegID, benVisitID));
-		//System.out.println(gson.toJson(resMap));
+		// System.out.println(gson.toJson(resMap));
 		return gson.toJson(resMap);
 	}
 
@@ -543,7 +548,7 @@ public class NurseServiceImpl implements NurseService {
 					}
 				}
 				obj.setFamilyMemberList(famMemlist);
-				//System.out.println("hello");
+				// System.out.println("hello");
 			}
 		}
 
@@ -570,7 +575,7 @@ public class NurseServiceImpl implements NurseService {
 
 	public String getNurseWorkList() {
 		List<Object[]> nurseWorkListData = reistrarRepoBenSearch.getNurseWorkList();
-		//System.out.println("hello");
+		// System.out.println("hello");
 		return WrapperRegWorklist.getRegistrarWorkList(nurseWorkListData);
 	}
 
@@ -609,7 +614,8 @@ public class NurseServiceImpl implements NurseService {
 						(String) obj[13], (String) obj[14]);
 			}
 		}
-		//System.out.println("beneficiaryVisitDetail " + beneficiaryVisitDetail);
+		// System.out.println("beneficiaryVisitDetail " +
+		// beneficiaryVisitDetail);
 		return beneficiaryVisit;
 	}
 
@@ -654,7 +660,7 @@ public class NurseServiceImpl implements NurseService {
 					}
 				}
 				obj.setFamilyMemberList(famMemlist);
-				//System.out.println("hello");
+				// System.out.println("hello");
 			}
 		}
 
@@ -1064,5 +1070,5 @@ public class NurseServiceImpl implements NurseService {
 
 		return new Gson().toJson(resMap);
 	}
-	
+
 }
