@@ -52,7 +52,7 @@ public class ChildVaccineDetail1 {
 
 	@Expose
 	@Column(name = "Status")
-	private String status;
+	private Boolean status;
 
 	@Transient
 	@Expose
@@ -158,11 +158,11 @@ public class ChildVaccineDetail1 {
 		this.actualReceivingAge = actualReceivingAge;
 	}
 
-	public String getStatus() {
+	public Boolean getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Boolean status) {
 		this.status = status;
 	}
 
@@ -242,11 +242,15 @@ public class ChildVaccineDetail1 {
 		this.vaccines = vaccines;
 	}
 
-	public ChildVaccineDetail1(String defaultReceivingAge, String vaccineName, String status) {
+	public ChildVaccineDetail1(String defaultReceivingAge, String vaccineName, Boolean status) {
 		super();
 		this.defaultReceivingAge = defaultReceivingAge;
 		this.vaccineName = vaccineName;
 		this.status = status;
 	}
 	
+	public ChildVaccineDetail1(String defaultReceivingAge) {
+		super();
+		this.defaultReceivingAge = defaultReceivingAge;
+	}
 }

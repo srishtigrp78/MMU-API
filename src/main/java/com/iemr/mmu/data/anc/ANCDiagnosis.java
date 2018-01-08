@@ -1,5 +1,6 @@
 package com.iemr.mmu.data.anc;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -7,14 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
 @Entity
-@Table(name = "t_benMedicationHistory")
-public class BenMedicationHistory {
-	
+@Table(name = "t_ancdiagnosis")
+public class ANCDiagnosis {
+
 	@Id
 	@GeneratedValue
 	@Expose
@@ -28,18 +28,38 @@ public class BenMedicationHistory {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
+
+	@Expose
+	@Column(name = "HighRiskStatus")
+	private String highRiskStatus;
+
+	@Expose
+	@Column(name = "HighRiskCondition")
+	private String highRiskCondition;
+
+	@Expose
+	@Column(name = "ComplicationOfCurrentPregnancy")
+	private String complicationOfCurrentPregnancy;
+
+	@Expose
+	@Column(name = "IsMaternalDeath")
+	private Boolean isMaternalDeath;
+
+	@Expose
+	@Column(name = "PlaceOfDeath")
+	private String placeOfDeath;
 	
 	@Expose
-	@Column(name = "CurrentMedication")
-	private String currentMedication;
-	
+	@Column(name = "DateOfDeath")
+	private Date dateOfDeath;
+
 	@Expose
-	@Column(name = "Year")
-	private Timestamp year;
+	@Column(name = "CauseOfDeath")
+	private String causeOfDeath;
 	
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -58,20 +78,20 @@ public class BenMedicationHistory {
 	private Timestamp createdDate;
 
 	@Expose
-	@Column(name = "ModifiedBy", insertable = false, updatable = true)
+	@Column(name = "ModifiedBy")
 	private String modifiedBy;
 
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
-	
-	@Transient
-	@Expose 
-	private Integer timePeriodAgo;
-	
-	@Transient
-	@Expose
-	private String timePeriodUnit;
+
+	public Long getID() {
+		return ID;
+	}
+
+	public void setID(Long iD) {
+		ID = iD;
+	}
 
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
@@ -97,20 +117,60 @@ public class BenMedicationHistory {
 		this.providerServiceMapID = providerServiceMapID;
 	}
 
-	public String getCurrentMedication() {
-		return currentMedication;
+	public String getHighRiskStatus() {
+		return highRiskStatus;
 	}
 
-	public void setCurrentMedication(String currentMedication) {
-		this.currentMedication = currentMedication;
+	public void setHighRiskStatus(String highRiskStatus) {
+		this.highRiskStatus = highRiskStatus;
 	}
 
-	public Timestamp getYear() {
-		return year;
+	public String getHighRiskCondition() {
+		return highRiskCondition;
 	}
 
-	public void setYear(Timestamp year) {
-		this.year = year;
+	public void setHighRiskCondition(String highRiskCondition) {
+		this.highRiskCondition = highRiskCondition;
+	}
+
+	public String getComplicationOfCurrentPregnancy() {
+		return complicationOfCurrentPregnancy;
+	}
+
+	public void setComplicationOfCurrentPregnancy(String complicationOfCurrentPregnancy) {
+		this.complicationOfCurrentPregnancy = complicationOfCurrentPregnancy;
+	}
+
+	public Boolean getIsMaternalDeath() {
+		return isMaternalDeath;
+	}
+
+	public void setIsMaternalDeath(Boolean isMaternalDeath) {
+		this.isMaternalDeath = isMaternalDeath;
+	}
+
+	public String getPlaceOfDeath() {
+		return placeOfDeath;
+	}
+
+	public void setPlaceOfDeath(String placeOfDeath) {
+		this.placeOfDeath = placeOfDeath;
+	}
+
+	public Date getDateOfDeath() {
+		return dateOfDeath;
+	}
+
+	public void setDateOfDeath(Date dateOfDeath) {
+		this.dateOfDeath = dateOfDeath;
+	}
+
+	public String getCauseOfDeath() {
+		return causeOfDeath;
+	}
+
+	public void setCauseOfDeath(String causeOfDeath) {
+		this.causeOfDeath = causeOfDeath;
 	}
 
 	public Boolean getDeleted() {
@@ -159,39 +219,6 @@ public class BenMedicationHistory {
 
 	public void setLastModDate(Timestamp lastModDate) {
 		this.lastModDate = lastModDate;
-	}
-
-	public Integer getTimePeriodAgo() {
-		return timePeriodAgo;
-	}
-
-	public void setTimePeriodAgo(Integer timePeriodAgo) {
-		this.timePeriodAgo = timePeriodAgo;
-	}
-
-	public String getTimePeriodUnit() {
-		return timePeriodUnit;
-	}
-
-	public void setTimePeriodUnit(String timePeriodUnit) {
-		this.timePeriodUnit = timePeriodUnit;
-	}
-
-	public Long getID() {
-		return ID;
-	}
-
-	public BenMedicationHistory(String currentMedication, Timestamp year) {
-		super();
-		this.currentMedication = currentMedication;
-		this.year = year;
-	}
-
-	public BenMedicationHistory(String currentMedication, Integer timePeriodAgo, String timePeriodUnit) {
-		super();
-		this.currentMedication = currentMedication;
-		this.timePeriodAgo = timePeriodAgo;
-		this.timePeriodUnit = timePeriodUnit;
 	}
 	
 }

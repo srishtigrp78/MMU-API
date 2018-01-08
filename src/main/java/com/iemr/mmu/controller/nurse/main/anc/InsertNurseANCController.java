@@ -434,7 +434,7 @@ public class InsertNurseANCController {
 
 				int r = ancServiceImpl.saveSysObstetricExamination(sysObstetricExamination);
 				if (r > 0) {
-					response.setResponse("Save Beneficairy Obstetric  Examination Details saved successfully");
+					response.setResponse("Beneficairy Obstetric  Examination Details saved successfully");
 				} else {
 					response.setError(5000, "Something went wrong");
 				}
@@ -484,7 +484,10 @@ public class InsertNurseANCController {
 	@CrossOrigin
 	@ApiOperation(value = "Save Beneficiary ANC ComorbidCondition Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/history/comorbidConditions" }, method = { RequestMethod.POST })
-	public String saveANCBenComorbidConditions(@RequestBody String requestObj) {
+	public String saveANCBenComorbidConditions(@ApiParam(value = "{\"comorbidityConcurrentConditionsList\":[{\"comorbidConditionID\": \"Short\","
+			+ "\"comorbidCondition\": \"String\", \"otherComorbidCondition\":\"String\", \"timePeriodAgo\":\"Integer\", \"timePeriodUnit\":\"String\","
+			+ "\"isForHistory\":\"Boolean\"}], \"beneficiaryRegID\":\"String\", \"benVisitID\":\"String\", "
+			+ "\"providerServiceMapID\":\"String\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		logger.info("saveANCBenComorbidConditions request:" + requestObj);
 		try {

@@ -4,10 +4,12 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.iemr.mmu.data.anc.ChildVaccineDetail1;
 
@@ -21,5 +23,17 @@ public interface ChildVaccineDetail1Repo extends CrudRepository<ChildVaccineDeta
 	@Query("select beneficiaryRegID, benVisitID, providerServiceMapID, defaultReceivingAge, vaccineName, status"
 			+ " from ChildVaccineDetail1 a where a.beneficiaryRegID = :beneficiaryRegID and a.benVisitID = :benVisitID")
 	public ArrayList<Object[]> getBenChildVaccineDetails(@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("benVisitID") Long benVisitID);
+
+	
+	@Transactional
+	@Modifying
+	@Query("update ChildVaccineDetail1 set status=:status, modifiedBy=:modifiedBy"
+			+ " where  beneficiaryRegID=:benRegID and benVisitID = :benVisitID  AND defaultReceivingAge=:defaultReceivingAge AND vaccineName=:vaccineName")
+	public int updateChildANCImmunization(@Param("status") Boolean status,
+			@Param("modifiedBy") String modifiedBy,
+			@Param("benRegID") Long benRegID,
+			@Param("benVisitID") Long benVisitID,
+			@Param("defaultReceivingAge") String defaultReceivingAge,
+			@Param("vaccineName") String vaccineName);
 	
 }
