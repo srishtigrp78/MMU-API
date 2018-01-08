@@ -288,7 +288,7 @@ public class TestUpdateNurseANCController {
 		@Test
 		public void testNegativeUpdateANCVitals(){
 			try { 
-				String json = "{\"beneficiaryRegID\":\"7921\",\"benVisitID\":561,\"providerServiceMapID\":\"1316\",\"weight_Kg\":\"64\",\"height_cm\":\"166\",\"waistCircumference_cm\":null,\"hipCircumference_cm\":null,\"bMI\":23.2,\"waistHipRatio\":null,\"temperature\":\"98\",\"pulseRate\":\"72\",\"systolicBP\":\"99\",\"diastolicBP\":\"99\",\"respiratoryRate\":\"99\",\"createdBy\":\"786\"}";
+				String json = "{\"benVisitID\":561,\"providerServiceMapID\":\"1316\",\"weight_Kg\":\"64\",\"height_cm\":\"166\",\"waistCircumference_cm\":null,\"hipCircumference_cm\":null,\"bMI\":23.2,\"waistHipRatio\":null,\"temperature\":\"98\",\"pulseRate\":\"72\",\"systolicBP\":\"99\",\"diastolicBP\":\"99\",\"respiratoryRate\":\"99\",\"createdBy\":\"786\"}";
 	
 				mockMvc.perform(post("/anc/update/vitals")
 						.contentType(MediaType.APPLICATION_JSON)
