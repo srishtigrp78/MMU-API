@@ -352,7 +352,11 @@ public class InsertNurseANCController {
 	@CrossOrigin
 	@ApiOperation(value = "Save Beneficairy Central Nervous System Examination Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/examination/centralNervousSystemExamination" }, method = { RequestMethod.POST })
-	public String centralNervousSystemExamination(@RequestBody String requestObj) {
+	public String centralNervousSystemExamination(@ApiParam(value = "{\"handedness\": \"String\","
+			+ "\"cranialNervesExamination\":\"String\", \"motorSystem\":\"String\", \"sensorySystem\":\"Short\","
+			+ "\"autonomicSystem\":\"String\", \"cerebellarSigns\":\"String\", \"signsOfMeningealIrritation\":\"String\", "
+			+ "\"skull\":\"String\", \"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\","
+			+ "\"providerServiceMapID\":\"Integer\",\"createdBy\":\"String\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		logger.info("centralNervousSystemExamination request:" + requestObj);
 		try {
@@ -453,7 +457,11 @@ public class InsertNurseANCController {
 	@CrossOrigin
 	@ApiOperation(value = "Save Beneficiary ANC past history Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/history/pastHistory" }, method = { RequestMethod.POST })
-	public String saveANCBenPastHistory(@RequestBody String requestObj) {
+	public String saveANCBenPastHistory(@ApiParam(value = "{\"pastIllness\":[{\"illnessTypeID\": \"Integer\", \"illnessType\": \"String\","
+			+ "\"otherIllnessType\": \"String\", \"timePeriodAgo\":\"Integer\", \"timePeriodUnit\":\"String\"}], \"pastSurgery\":[{\"surgeryID\": \"Integer\", "
+			+ "\"surgeryType\": \"String\", \"otherSurgeryType\": \"String\", \"timePeriodAgo\":\"Integer\", \"timePeriodUnit\":\"String\"}], "
+			+ "\"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", "
+			+ "\"providerServiceMapID\":\"Integer\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		logger.info("saveANCBenPastHistory request:" + requestObj);
 		try {
@@ -543,7 +551,11 @@ public class InsertNurseANCController {
 	@CrossOrigin
 	@ApiOperation(value = "Save Beneficiary ANC Menstrual History Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/history/menstrualHistory" }, method = { RequestMethod.POST })
-	public String saveANCMenstrualHistory(@RequestBody String requestObj) {
+	public String saveANCMenstrualHistory(@ApiParam(value = "{\"menstrualCycleStatusID\": \"Short\","
+			+ "\"regularity\":\"String\", \"cycleLength\":\"String\", \"menstrualCyclelengthID\":\"Short\","
+			+ "\"menstrualFlowDurationID\":\"Short\", \"bloodFlowDuration\":\"String\", \"menstrualProblemID\":\"Short\", "
+			+ "\"problemName\":\"String\", \"lMPDate\":\"Timestamp\", \"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\","
+			+ "\"providerServiceMapID\":\"Integer\",\"createdBy\":\"String\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		logger.info("saveANCMenstrualHistory request:" + requestObj);
 		try {
@@ -569,7 +581,17 @@ public class InsertNurseANCController {
 	@CrossOrigin
 	@ApiOperation(value = "Save Beneficiary Female Obstetric History Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/history/femaleObstetricHistory" }, method = { RequestMethod.POST })
-	public String saveFemaleObstetricHistory(@RequestBody String requestObj) {
+	public String saveFemaleObstetricHistory(@ApiParam(value = "{\"totalNoOfPreg\": \"Short\","
+			+ "\"femaleObstetricHistoryList\":[{\"pregOrder\":\"Short\", \"pregComplicationID\":\"Short\", \"pregComplicationType\":\"String\","
+			+ "\"otherPregComplication\":\"String\", \"pregDurationID\":\"Short\", \"durationType\":\"String\", \"deliveryTypeID\":\"Short\","
+			+ "\"deliveryType\":\"String\", \"deliveryPlaceID\":\"Short\", \"deliveryPlace\":\"String\", \"otherDeliveryPlace\":\"String\", "
+			+ "\"deliveryComplicationID\":\"Short\", \"deliveryComplicationType\":\"String\", \"otherDeliveryComplication\":\"String\","
+			+ "\"postpartumComplicationID\":\"Short\", \"postpartumComplicationType\":\"String\", \"otherPostpartumCompType\":\"String\","
+			+ "\"pregOutcomeID\":\"Short\", \"pregOutcome\":\"String\", \"postNatalComplicationID\":\"Short\", "
+			+ "\"postNatalComplication\":\"String\", \"otherPostNatalComplication\":\"String\", \"newBornComplicationID\":\"Short\","
+			+ "\"newBornComplication\":\"String\", \"otherNewBornComplication\":\"String\", \"congenitalAnomalies\":\"String\","
+			+ "\"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\","
+			+ "\"providerServiceMapID\":\"Integer\",\"createdBy\":\"String\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		logger.info("saveFemaleObstetricHistory request:" + requestObj);
 		try {

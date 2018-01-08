@@ -187,11 +187,15 @@ public class UpdateNurseANCController {
 		}
 		return response.toString();
 	}
-
+	
 	@CrossOrigin
 	@ApiOperation(value = "Update Beneficiary ANC Past History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/history/pastHistoryDetails" }, method = { RequestMethod.POST })
-	public String updateBenANCPastHistoryDetails(@RequestBody String requestObj) {
+	public String updateBenANCPastHistoryDetails(@ApiParam(value = "{\"pastIllness\":[{\"illnessTypeID\": \"Integer\", \"illnessType\": \"String\","
+			+ "\"otherIllnessType\": \"String\", \"timePeriodAgo\":\"Integer\", \"timePeriodUnit\":\"String\"}], \"pastSurgery\":[{\"surgeryID\": \"Integer\", "
+			+ "\"surgeryType\": \"String\", \"otherSurgeryType\": \"String\", \"timePeriodAgo\":\"Integer\", \"timePeriodUnit\":\"String\"}], "
+			+ "\"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", "
+			+ "\"providerServiceMapID\":\"Integer\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		logger.info("Update Beneficiary ANC Past History details " + requestObj);
 		try {
@@ -586,11 +590,15 @@ public class UpdateNurseANCController {
 		}
 		return response.toString();
 	}
-
+	
 	@CrossOrigin
 	@ApiOperation(value = "Update Beneficairy Menstrual History Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/history/menstrualHistory" }, method = { RequestMethod.POST })
-	public String UpdateANCMenstrualHistory(@RequestBody String requestObj) {
+	public String UpdateANCMenstrualHistory(@ApiParam(value = "{\"menstrualCycleStatusID\": \"Short\","
+			+ "\"regularity\":\"String\", \"cycleLength\":\"String\", \"menstrualCyclelengthID\":\"Short\","
+			+ "\"menstrualFlowDurationID\":\"Short\", \"bloodFlowDuration\":\"String\", \"menstrualProblemID\":\"Short\", "
+			+ "\"problemName\":\"String\", \"lMPDate\":\"Timestamp\", \"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\","
+			+ "\"providerServiceMapID\":\"Integer\",\"modifiedBy\":\"String\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		logger.info("UpdateMenstrualHistory request:" + requestObj);
 		try {
@@ -613,7 +621,11 @@ public class UpdateNurseANCController {
 
 	@ApiOperation(value = "Update Beneficairy Central Nervous System Examination Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/examination/centralNervousSystemExamination" }, method = { RequestMethod.POST })
-	public String updateCentralNervousSystemExamination(@RequestBody String requestObj) {
+	public String updateCentralNervousSystemExamination(@ApiParam(value = "{\"handedness\": \"String\","
+			+ "\"cranialNervesExamination\":\"String\", \"motorSystem\":\"String\", \"sensorySystem\":\"Short\","
+			+ "\"autonomicSystem\":\"String\", \"cerebellarSigns\":\"String\", \"signsOfMeningealIrritation\":\"String\", "
+			+ "\"skull\":\"String\", \"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\","
+			+ "\"providerServiceMapID\":\"Integer\",\"modifiedBy\":\"String\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		logger.info("updatecentralNervousSystemExamination request:" + requestObj);
 		try {
@@ -637,7 +649,17 @@ public class UpdateNurseANCController {
 	@CrossOrigin
 	@ApiOperation(value = "Update Beneficairy Past Obstetric History Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/history/pastObstetricHistory" }, method = { RequestMethod.POST })
-	public String updateANCPastObstetricHistory(@RequestBody String requestObj) {
+	public String updateANCPastObstetricHistory(@ApiParam(value = "{\"totalNoOfPreg\": \"Short\","
+			+ "\"femaleObstetricHistoryList\":[{\"pregOrder\":\"Short\", \"pregComplicationID\":\"Short\", \"pregComplicationType\":\"String\","
+			+ "\"otherPregComplication\":\"String\", \"pregDurationID\":\"Short\", \"durationType\":\"String\", \"deliveryTypeID\":\"Short\","
+			+ "\"deliveryType\":\"String\", \"deliveryPlaceID\":\"Short\", \"deliveryPlace\":\"String\", \"otherDeliveryPlace\":\"String\", "
+			+ "\"deliveryComplicationID\":\"Short\", \"deliveryComplicationType\":\"String\", \"otherDeliveryComplication\":\"String\","
+			+ "\"postpartumComplicationID\":\"Short\", \"postpartumComplicationType\":\"String\", \"otherPostpartumCompType\":\"String\","
+			+ "\"pregOutcomeID\":\"Short\", \"pregOutcome\":\"String\", \"postNatalComplicationID\":\"Short\", "
+			+ "\"postNatalComplication\":\"String\", \"otherPostNatalComplication\":\"String\", \"newBornComplicationID\":\"Short\","
+			+ "\"newBornComplication\":\"String\", \"otherNewBornComplication\":\"String\", \"congenitalAnomalies\":\"String\","
+			+ "\"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\","
+			+ "\"providerServiceMapID\":\"Integer\",\"createdBy\":\"String\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		logger.info("UpdatePastObstetricHistory request:" + requestObj);
 		try {

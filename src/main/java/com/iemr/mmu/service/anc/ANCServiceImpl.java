@@ -476,6 +476,7 @@ public class ANCServiceImpl implements ANCService {
 				.setReceivedDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(TT_1).getTime()));
 			}
 			ancWomenVaccineDetail.setReceivedFacilityName(wrapperAncImmunizationOBJ.getFacilityNameOfTT_1());
+			ancWomenVaccineDetail.setModifiedBy(wrapperAncImmunizationOBJ.getModifiedBy());
 			ancWomenVaccineDetailList.add(ancWomenVaccineDetail);
 
 			// TT-2 details
@@ -494,6 +495,7 @@ public class ANCServiceImpl implements ANCService {
 				.setReceivedDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(TT_2).getTime()));
 			}
 			ancWomenVaccineDetail.setReceivedFacilityName(wrapperAncImmunizationOBJ.getFacilityNameOfTT_2());
+			ancWomenVaccineDetail.setModifiedBy(wrapperAncImmunizationOBJ.getModifiedBy());
 			ancWomenVaccineDetailList.add(ancWomenVaccineDetail);
 
 			// TT-3 (Booster) details
@@ -512,6 +514,7 @@ public class ANCServiceImpl implements ANCService {
 				.setReceivedDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(TT_3).getTime()));
 			}
 			ancWomenVaccineDetail.setReceivedFacilityName(wrapperAncImmunizationOBJ.getFacilityNameOfTT_3());
+			ancWomenVaccineDetail.setModifiedBy(wrapperAncImmunizationOBJ.getModifiedBy());
 			ancWomenVaccineDetailList.add(ancWomenVaccineDetail);
 
 		}
@@ -1941,10 +1944,12 @@ public class ANCServiceImpl implements ANCService {
 		int r = 0;
 		List<ANCWomenVaccineDetail> ancWomenVaccineDetailList = getANCWomenVaccineDetail(wrapperAncImmunization);
 		if(null != ancWomenVaccineDetailList){
+				
 			for(ANCWomenVaccineDetail ancWomenVaccineDetail : ancWomenVaccineDetailList){
-				r = ancWomenVaccineRepo.updateANCImmunizationDetails(ancWomenVaccineDetail.getStatus(), ancWomenVaccineDetail.getReceivedDate(), 
-						ancWomenVaccineDetail.getReceivedFacilityName(), ancWomenVaccineDetail.getModifiedBy(), ancWomenVaccineDetail.getID(), 
-						ancWomenVaccineDetail.getBeneficiaryRegID());
+				r = ancWomenVaccineRepo.updateANCImmunizationDetails(ancWomenVaccineDetail.getStatus(), ancWomenVaccineDetail.getReceivedDate(),
+					ancWomenVaccineDetail.getReceivedFacilityName(), ancWomenVaccineDetail.getModifiedBy(),ancWomenVaccineDetail.getBeneficiaryRegID(),
+					 ancWomenVaccineDetail.getBenVisitID(), ancWomenVaccineDetail.getVaccineName());
+				
 			}
 		}
 		return r;
