@@ -2137,4 +2137,43 @@ public class ANCServiceImpl implements ANCService {
 		return r;
 	}
 
+	@Override
+	public int updateANCMenstrualHistory(BenMenstrualDetails benMenstrualDetails) {
+		int response = 0;
+		if(null != benMenstrualDetails) {
+			
+		response = benMenstrualDetailsRepo.updateMenstrualDetails(
+				benMenstrualDetails.getMenstrualCycleStatusID(), 
+				benMenstrualDetails.getRegularity(),
+				benMenstrualDetails.getMenstrualCyclelengthID(), 
+				benMenstrualDetails.getCycleLength(), 
+				benMenstrualDetails.getMenstrualFlowDurationID(), 
+				benMenstrualDetails.getBloodFlowDuration(), 
+				benMenstrualDetails.getMenstrualProblemID(), 
+				benMenstrualDetails.getProblemName(), 
+				benMenstrualDetails.getlMPDate(), 
+				benMenstrualDetails.getModifiedBy(), 
+				benMenstrualDetails.getBeneficiaryRegID(), 
+				benMenstrualDetails.getBenVisitID()); 
+		}
+		return response;
+	}
+
+	@Override
+	public int updateANCPastObstetricHistory(WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory) {
+		Integer r = 0;
+		if(null != wrapperFemaleObstetricHistory){
+			femaleObstetricHistoryRepo.deleteExistingObstetricHistory(wrapperFemaleObstetricHistory.getBeneficiaryRegID(), wrapperFemaleObstetricHistory.getBenVisitID());
+
+			ArrayList<FemaleObstetricHistory> femaleObstetricHistoryDetails = wrapperFemaleObstetricHistory
+					.getFemaleObstetricHistoryDetails();
+			ArrayList<FemaleObstetricHistory> res = (ArrayList<FemaleObstetricHistory>) femaleObstetricHistoryRepo
+					.save(femaleObstetricHistoryDetails);
+			if (null != res && res.size() > 0) {
+				r = 1;
+			}
+		}
+		return r;
+	}
+
 }

@@ -61,5 +61,45 @@ public class WrapperFemaleObstetricHistory {
 		}
 		return WFO;
 	}
+
+	public Long getBeneficiaryRegID() {
+		return beneficiaryRegID;
+	}
+
+	public void setBeneficiaryRegID(Long beneficiaryRegID) {
+		this.beneficiaryRegID = beneficiaryRegID;
+	}
+
+	public Long getBenVisitID() {
+		return benVisitID;
+	}
+
+	public void setBenVisitID(Long benVisitID) {
+		this.benVisitID = benVisitID;
+	}
+
+	public Integer getProviderServiceMapID() {
+		return providerServiceMapID;
+	}
+
+	public void setProviderServiceMapID(Integer providerServiceMapID) {
+		this.providerServiceMapID = providerServiceMapID;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Short getTotalNoOfPreg() {
+		return totalNoOfPreg;
+	}
+
+	public void setTotalNoOfPreg(Short totalNoOfPreg) {
+		this.totalNoOfPreg = totalNoOfPreg;
+	}
 	
 }

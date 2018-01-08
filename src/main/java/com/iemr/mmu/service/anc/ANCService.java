@@ -13,6 +13,7 @@ import com.iemr.mmu.data.anc.BenMedHistory;
 import com.iemr.mmu.data.anc.BenMenstrualDetails;
 import com.iemr.mmu.data.anc.BenPersonalHabit;
 import com.iemr.mmu.data.anc.ChildFeedingDetails;
+import com.iemr.mmu.data.anc.FemaleObstetricHistory;
 import com.iemr.mmu.data.anc.PerinatalHistory;
 import com.iemr.mmu.data.anc.PhyGeneralExamination;
 import com.iemr.mmu.data.anc.PhyHeadToToeExamination;
@@ -176,4 +177,7 @@ public interface ANCService {
 
 	public int updateSysRespiratoryExamination(SysRespiratoryExamination respiratoryExamination);
 
+	public int updateANCMenstrualHistory(BenMenstrualDetails benMenstrualDetails);
+	
+	public int updateANCPastObstetricHistory(WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory);
 }

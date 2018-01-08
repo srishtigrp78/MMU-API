@@ -56,6 +56,85 @@ public class NCDScreeningReason {
 	@Expose
 	@Column(name = "lastModDate")
 	private Date lastModDate;
-	
+
+	public int getNcdScreeningReasonID() {
+		return ncdScreeningReasonID;
+	}
+
+	public void setNcdScreeningReasonID(int ncdScreeningReasonID) {
+		this.ncdScreeningReasonID = ncdScreeningReasonID;
+	}
+
+	public String getNcdScreeningReason() {
+		return ncdScreeningReason;
+	}
+
+	public void setNcdScreeningReason(String ncdScreeningReason) {
+		this.ncdScreeningReason = ncdScreeningReason;
+	}
+
+	public String getNcdScreeningReasonDesc() {
+		return ncdScreeningReasonDesc;
+	}
+
+	public void setNcdScreeningReasonDesc(String ncdScreeningReasonDesc) {
+		this.ncdScreeningReasonDesc = ncdScreeningReasonDesc;
+	}
+
+	public int getNcdScreeningConditionID() {
+		return ncdScreeningConditionID;
+	}
+
+	public void setNcdScreeningConditionID(int ncdScreeningConditionID) {
+		this.ncdScreeningConditionID = ncdScreeningConditionID;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public String getProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(String processed) {
+		this.processed = processed;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Date getLastModDate() {
+		return lastModDate;
+	}
+
+	public void setLastModDate(Date lastModDate) {
+		this.lastModDate = lastModDate;
+	}
 	
 }

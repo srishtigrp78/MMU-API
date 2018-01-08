@@ -17,6 +17,7 @@ import com.iemr.mmu.data.anc.BenAdherence;
 import com.iemr.mmu.data.anc.BenAllergyHistory;
 import com.iemr.mmu.data.anc.BenFamilyHistory;
 import com.iemr.mmu.data.anc.BenMedHistory;
+import com.iemr.mmu.data.anc.BenMenstrualDetails;
 import com.iemr.mmu.data.anc.BenPersonalHabit;
 import com.iemr.mmu.data.anc.SysCardiovascularExamination;
 import com.iemr.mmu.data.anc.SysGastrointestinalExamination;
@@ -25,7 +26,7 @@ import com.iemr.mmu.data.anc.WrapperAncImmunization;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.anc.WrapperChildOptionalVaccineDetail;
 import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
-import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
+import com.iemr.mmu.data.anc.WrapperFemaleObstetricHistory;
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
@@ -484,5 +485,56 @@ public class UpdateNurseANCController {
 		}
 		return response.toString();
 	}
+	
+	@CrossOrigin
+	@ApiOperation(value = "Update Beneficairy Menstrual History Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/history/menstrualHistory" }, method = { RequestMethod.POST })
+	public String UpdateANCMenstrualHistory(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		logger.info("UpdateMenstrualHistory request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				BenMenstrualDetails benMenstrualDetails = InputMapper.gson().fromJson(requestObj,
+						BenMenstrualDetails.class);
+				int r = ancServiceImpl.updateANCMenstrualHistory(benMenstrualDetails);
+				
+				if (r > 0) {
+					response.setResponse("Beneficairy Menstrual History Details updated successfully");
+				} else {
+					response.setError(5000, "Something went wrong");
+				}
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin
+	@ApiOperation(value = "Update Beneficairy Past Obstetric History Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/history/pastObstetricHistory" }, method = { RequestMethod.POST })
+	public String updateANCPastObstetricHistory(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		logger.info("UpdatePastObstetricHistory request:" + requestObj);
+		try {
+			if (requestObj != null) {
+				WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory = InputMapper.gson().fromJson(requestObj,
+						WrapperFemaleObstetricHistory.class);
+				
+				int r = ancServiceImpl.updateANCPastObstetricHistory(wrapperFemaleObstetricHistory);
+				
+				if (r > 0) {
+					response.setResponse("Beneficairy Menstrual History Details updated successfully");
+				} else {
+					response.setError(5000, "Something went wrong");
+				}
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+		return response.toString();
+	}
+	
+	
 
 }
