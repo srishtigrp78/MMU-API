@@ -13,6 +13,7 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 	private DoctorServiceImpl doctorServiceImpl;
 	private DoctorMasterDataServiceImpl doctorMasterDataServiceImpl;
 	private RegistrarServiceMasterDataImpl registrarServiceMasterDataImpl;
+	private NCDScreeningServiceImpl ncdScreeningServiceImpl;
 
 
 	@Autowired
@@ -39,8 +40,12 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 	public void setDoctorMasterDataServiceImpl(DoctorMasterDataServiceImpl doctorMasterDataServiceImpl) {
 		this.doctorMasterDataServiceImpl = doctorMasterDataServiceImpl;
 	}
-	
-	
+
+	@Autowired
+	public void setNcdScreeningServiceImpl(NCDScreeningServiceImpl ncdScreeningServiceImpl) {
+		this.ncdScreeningServiceImpl = ncdScreeningServiceImpl;
+	}
+
 	@Override
 	public String getVisitReasonAndCategories() {
 		String visitReasonAndCategories = nurseMasterDataServiceImpl.GetVisitReasonAndCategories();
@@ -59,8 +64,7 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 				break;
 				case 2 :{
 					// 2 : NCD screening
-					//TODO: NCD SCreening Master Data call
-					nurseMasterData = "No Master Data found for NCD SCreening";
+					nurseMasterData = ncdScreeningServiceImpl.getNCDScreeningMasterData();
 				}
 				break;
 				case 3 :{

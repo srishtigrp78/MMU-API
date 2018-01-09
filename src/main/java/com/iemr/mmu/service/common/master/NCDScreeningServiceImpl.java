@@ -1,12 +1,20 @@
 package com.iemr.mmu.service.common.master;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
+import com.iemr.mmu.data.doctor.LabTestMaster;
+import com.iemr.mmu.data.masterdata.ncdscreening.BPAndDiabeticStatus;
 import com.iemr.mmu.data.masterdata.ncdscreening.NCDScreeningCondition;
 import com.iemr.mmu.data.masterdata.ncdscreening.NCDScreeningReason;
+import com.iemr.mmu.repo.doctor.LabTestMasterRepo;
+import com.iemr.mmu.repo.masterrepo.ncdScreening.BPAndDiabeticStatusRepo;
 import com.iemr.mmu.repo.masterrepo.ncdScreening.NCDScreeningConditionRepo;
 import com.iemr.mmu.repo.masterrepo.ncdScreening.NCDScreeningReasonRepo;
 
@@ -15,6 +23,8 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 	
 	private NCDScreeningConditionRepo ncdScreeningConditionRepo;
 	private NCDScreeningReasonRepo ncdScreeningReasonRepo;
+	private BPAndDiabeticStatusRepo bpAndDiabeticStatusRepo;
+	private LabTestMasterRepo labTestMasterRepo;
 	
 	@Autowired
 	public void setNcdScreeningConditionRepo(NCDScreeningConditionRepo ncdScreeningConditionRepo) {
@@ -25,12 +35,22 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 	public void setNcdScreeningReasonRepo(NCDScreeningReasonRepo ncdScreeningReasonRepo) {
 		this.ncdScreeningReasonRepo = ncdScreeningReasonRepo;
 	}
+	
+	@Autowired
+	public void setBpAndDiabeticStatusRepo(BPAndDiabeticStatusRepo bpAndDiabeticStatusRepo) {
+		this.bpAndDiabeticStatusRepo = bpAndDiabeticStatusRepo;
+	}
+	
+	@Autowired
+	public void setLabTestMasterRepo(LabTestMasterRepo labTestMasterRepo) {
+		this.labTestMasterRepo = labTestMasterRepo;
+	}
 
 	@Override
-	public List<NCDScreeningCondition> getNCDScreeningConditions() {
-		List<NCDScreeningCondition> ncdScreeningConditions  = null;
+	public List<Object[]> getNCDScreeningConditions() {
+		List<Object[]> ncdScreeningConditions  = null;
 		try {
-			ncdScreeningConditions = (List<NCDScreeningCondition>) ncdScreeningConditionRepo.findAll();
+			ncdScreeningConditions = ncdScreeningConditionRepo.getNCDScreeningConditions();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -38,14 +58,49 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 	}
 
 	@Override
-	public List<NCDScreeningReason> getNCDScreeningReasons() {
-		List<NCDScreeningReason> ncdScreeningReasons = null;
+	public List<Object[]> getNCDScreeningReasons() {
+		List<Object[]> ncdScreeningReasons = null;
 		try {
-			ncdScreeningReasons = (List<NCDScreeningReason>) ncdScreeningReasonRepo.findAll();
+			ncdScreeningReasons = ncdScreeningReasonRepo.getNCDScreeningReasons();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return ncdScreeningReasons;
 	}
 
+	@Override
+	public List<Object[]> getBPAndDiabeticStatus(Boolean isBPStatus) {
+		List<Object[]> bpAndDiabeticStatus = null;
+		try {
+			bpAndDiabeticStatus = bpAndDiabeticStatusRepo.getBPAndDiabeticStatus(isBPStatus);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return bpAndDiabeticStatus;
+	}
+
+	@Override
+	public ArrayList<Object[]> getNCDTest() {
+		ArrayList<Object[]> labTests = null;
+		try {
+			labTests = labTestMasterRepo.getLabTestMaster();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return labTests;
+	}
+
+	
+	@Override
+	public String getNCDScreeningMasterData() {
+		Map<String, Object> resMap = new HashMap<String, Object>();
+		
+		resMap.put("ncdScreeningConditions", NCDScreeningCondition.getNCDScreeningCondition((ArrayList<Object[]>) getNCDScreeningConditions()));
+		resMap.put("ncdScreeningReasons", NCDScreeningReason.getNCDScreeningReason((ArrayList<Object[]>) getNCDScreeningReasons()));
+		resMap.put("bloodPressureStatus", BPAndDiabeticStatus.getBPAndDiabeticStatus((ArrayList<Object[]>) getBPAndDiabeticStatus(true)));
+		resMap.put("diabeticStatus", BPAndDiabeticStatus.getBPAndDiabeticStatus((ArrayList<Object[]>) getBPAndDiabeticStatus(false)));
+		resMap.put("ncdTests", LabTestMaster.getLabTestMasters(getNCDTest()));
+		
+		return new Gson().toJson(resMap);
+	}
 }

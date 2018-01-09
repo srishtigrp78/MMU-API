@@ -21,7 +21,7 @@ public interface BenPhysicalVitalRepo extends CrudRepository<BenPhysicalVitalDet
 	@Transactional
 	@Modifying
 	@Query("update BenPhysicalVitalDetail set temperature=:temperature, pulseRate=:pulseRate, respiratoryRate=:respiratoryRate, diastolicBP_1stReading=:diastolicBP_1stReading,"
-			+ " systolicBP_1stReading=:systolicBP_1stReading, averageSystolicBP=:systolicBP_1stReading, averageDiastolicBP=:diastolicBP_1stReading, capillaryRefillTime=:capillaryRefillTime, "
+			+ " systolicBP_1stReading=:systolicBP_1stReading, averageSystolicBP=:averageSystolicBP, averageDiastolicBP=:averageDiastolicBP, capillaryRefillTime=:capillaryRefillTime, "
 			+ " modifiedBy=:modifiedBy where beneficiaryRegID=:beneficiaryRegID AND benVisitID=:benVisitID")
 	public int updateANCCareDetails(
 			@Param("temperature") Double temperature,
@@ -29,6 +29,8 @@ public interface BenPhysicalVitalRepo extends CrudRepository<BenPhysicalVitalDet
 			@Param("respiratoryRate") Short respiratoryRate,
 			@Param("systolicBP_1stReading") Short systolicBP_1stReading,
 			@Param("diastolicBP_1stReading") Short diastolicBP_1stReading,
+			@Param("averageSystolicBP") Short averageSystolicBP,
+			@Param("averageDiastolicBP") Short averageDiastolicBP,
 			@Param("capillaryRefillTime") String capillaryRefillTime,
 			@Param("modifiedBy") String modifiedBy,
 			@Param("beneficiaryRegID") Long beneficiaryRegID,

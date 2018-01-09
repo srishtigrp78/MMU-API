@@ -1,5 +1,6 @@
 package com.iemr.mmu.data.masterdata.ncdscreening;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -36,7 +37,7 @@ public class NCDScreeningReason {
 	@Expose
 	@Column(name = "deleted")
 	private boolean deleted; 
-	
+
 	@Expose
 	@Column(name = "processed")
 	private String processed; 
@@ -56,7 +57,22 @@ public class NCDScreeningReason {
 	@Expose
 	@Column(name = "lastModDate")
 	private Date lastModDate;
+	
+	public NCDScreeningReason(int ncdScreeningReasonID, String ncdScreeningReason) {
+		super();
+		this.ncdScreeningReasonID = ncdScreeningReasonID;
+		this.ncdScreeningReason = ncdScreeningReason;
+	}
 
+	public static ArrayList<NCDScreeningReason> getNCDScreeningReason(ArrayList<Object[]> resList) {
+		ArrayList<NCDScreeningReason> resArray = new ArrayList<NCDScreeningReason>();
+		for (Object[] obj : resList) {
+			NCDScreeningReason cOBJ = new NCDScreeningReason((Integer)obj[0], (String)obj[1]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
+	}
+	
 	public int getNcdScreeningReasonID() {
 		return ncdScreeningReasonID;
 	}

@@ -11,28 +11,33 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.doctor.LabTestMaster;
 
 @Entity
-@Table(name = "m_ncdscreeningcondition")
-public class NCDScreeningCondition {
+@Table(name = "m_bpanddiabeticstatus")
+public class BPAndDiabeticStatus {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Expose
-	@Column(name = "ncdScreeningConditionID")
-	private Integer ncdScreeningConditionID; 
+	@Column(name = "BPAndDiabeticStatusID")
+	private Short bpAndDiabeticStatusID; 
 	
 	@Expose
-	@Column(name = "ncdScreeningCondition")
-	private String ncdScreeningCondition;
+	@Column(name = "BPAndDiabeticStatus")
+	private String bpAndDiabeticStatus;
 	
 	@Expose
-	@Column(name = "ncdScreeningConditionDesc")
-	private String ncdScreeningConditionDesc;
+	@Column(name = "BPAndDiabeticStatusDesc")
+	private String bpAndDiabeticStatusDesc;
+	
+	@Expose
+	@Column(name = "IsBPStatus")
+	private Boolean isBPStatus;
 	
 	@Expose(serialize = false)
 	@Column(name = "deleted")
-	private boolean deleted; 
+	private Boolean deleted; 
 	
 	@Expose(serialize = false)
 	@Column(name = "processed")
@@ -45,59 +50,73 @@ public class NCDScreeningCondition {
 	@Expose(serialize = false)
 	@Column(name = "createdDate")
 	private Date createdDate; 
-
+	
 	@Expose(serialize = false)
 	@Column(name = "modifiedBy")
 	private String modifiedBy; 
-
+	
 	@Expose(serialize = false)
 	@Column(name = "lastModDate")
 	private Date lastModDate;
-	
-	public NCDScreeningCondition(Integer ncdScreeningConditionID, String ncdScreeningCondition) {
+
+	public BPAndDiabeticStatus() {
 		super();
-		this.ncdScreeningConditionID = ncdScreeningConditionID;
-		this.ncdScreeningCondition = ncdScreeningCondition;
+	}
+	
+	
+	public BPAndDiabeticStatus(Short bpAndDiabeticStatusID, String bpAndDiabeticStatus) {
+		super();
+		this.bpAndDiabeticStatusID = bpAndDiabeticStatusID;
+		this.bpAndDiabeticStatus = bpAndDiabeticStatus;
 	}
 
-	public static ArrayList<NCDScreeningCondition> getNCDScreeningCondition(ArrayList<Object[]> resList) {
-		ArrayList<NCDScreeningCondition> resArray = new ArrayList<NCDScreeningCondition>();
+
+	public static ArrayList<BPAndDiabeticStatus> getBPAndDiabeticStatus(ArrayList<Object[]> resList) {
+		ArrayList<BPAndDiabeticStatus> resArray = new ArrayList<BPAndDiabeticStatus>();
 		for (Object[] obj : resList) {
-			NCDScreeningCondition cOBJ = new NCDScreeningCondition((Integer)obj[0], (String)obj[1]);
+			BPAndDiabeticStatus cOBJ = new BPAndDiabeticStatus((Short)obj[0], (String)obj[1]);
 			resArray.add(cOBJ);
 		}
 		return resArray;
 	}
-	
-	public Integer getNcdScreeningConditionID() {
-		return ncdScreeningConditionID;
+
+	public Short getBpAndDiabeticStatusID() {
+		return bpAndDiabeticStatusID;
 	}
 
-	public void setNcdScreeningConditionID(Integer ncdScreeningConditionID) {
-		this.ncdScreeningConditionID = ncdScreeningConditionID;
+	public void setBpAndDiabeticStatusID(Short bpAndDiabeticStatusID) {
+		this.bpAndDiabeticStatusID = bpAndDiabeticStatusID;
 	}
 
-	public String getNcdScreeningCondition() {
-		return ncdScreeningCondition;
+	public String getBpAndDiabeticStatus() {
+		return bpAndDiabeticStatus;
 	}
 
-	public void setNcdScreeningCondition(String ncdScreeningCondition) {
-		this.ncdScreeningCondition = ncdScreeningCondition;
+	public void setBpAndDiabeticStatus(String bpAndDiabeticStatus) {
+		this.bpAndDiabeticStatus = bpAndDiabeticStatus;
 	}
 
-	public String getNcdScreeningConditionDesc() {
-		return ncdScreeningConditionDesc;
+	public String getBpAndDiabeticStatusDesc() {
+		return bpAndDiabeticStatusDesc;
 	}
 
-	public void setNcdScreeningConditionDesc(String ncdScreeningConditionDesc) {
-		this.ncdScreeningConditionDesc = ncdScreeningConditionDesc;
+	public void setBpAndDiabeticStatusDesc(String bpAndDiabeticStatusDesc) {
+		this.bpAndDiabeticStatusDesc = bpAndDiabeticStatusDesc;
 	}
 
-	public boolean isDeleted() {
+	public Boolean getIsBPStatus() {
+		return isBPStatus;
+	}
+
+	public void setIsBPStatus(Boolean isBPStatus) {
+		this.isBPStatus = isBPStatus;
+	}
+
+	public Boolean getDeleted() {
 		return deleted;
 	}
 
-	public void setDeleted(boolean deleted) {
+	public void setDeleted(Boolean deleted) {
 		this.deleted = deleted;
 	}
 
@@ -140,6 +159,8 @@ public class NCDScreeningCondition {
 	public void setLastModDate(Date lastModDate) {
 		this.lastModDate = lastModDate;
 	}
+
+	
 	
 	
 }

@@ -2119,6 +2119,8 @@ public class ANCServiceImpl implements ANCService {
 					physicalVitalDetail.getRespiratoryRate(), 
 					physicalVitalDetail.getSystolicBP_1stReading(), 
 					physicalVitalDetail.getDiastolicBP_1stReading(), 
+					physicalVitalDetail.getAverageSystolicBP(),
+					physicalVitalDetail.getAverageDiastolicBP(),
 					physicalVitalDetail.getCapillaryRefillTime(), 
 					physicalVitalDetail.getModifiedBy(), 
 					physicalVitalDetail.getBeneficiaryRegID(),
