@@ -718,8 +718,8 @@ public class NurseServiceImpl implements NurseService {
 		// ArrayList<Short> averageSystolicList = new ArrayList<>();
 		// ArrayList<Short> averageDiastolicList = new ArrayList<>();
 
-		Short sysBP = null;
-		Short dysBP = null;
+		short sysBP = 0;
+		short dysBP = 0;
 		int j = 0;
 
 		if (benPhysicalVitalDetail.getSystolicBP_1stReading() != null
