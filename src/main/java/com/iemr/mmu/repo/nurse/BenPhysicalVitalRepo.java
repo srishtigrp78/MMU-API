@@ -1,8 +1,5 @@
 package com.iemr.mmu.repo.nurse;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -23,15 +20,15 @@ public interface BenPhysicalVitalRepo extends CrudRepository<BenPhysicalVitalDet
 		
 	@Transactional
 	@Modifying
-	@Query("update BenPhysicalVitalDetail set temperature=:temperature, pulseRate=:pulseRate, respiratoryRate=:respiratoryRate, systolicBP=:systolicBP,"
-			+ " diastolicBP=:diastolicBP, capillaryRefillTime=:capillaryRefillTime, "
+	@Query("update BenPhysicalVitalDetail set temperature=:temperature, pulseRate=:pulseRate, respiratoryRate=:respiratoryRate, diastolicBP_1stReading=:diastolicBP_1stReading,"
+			+ " systolicBP_1stReading=:systolicBP_1stReading, averageSystolicBP=:systolicBP_1stReading, averageDiastolicBP=:diastolicBP_1stReading, capillaryRefillTime=:capillaryRefillTime, "
 			+ " modifiedBy=:modifiedBy where beneficiaryRegID=:beneficiaryRegID AND benVisitID=:benVisitID")
 	public int updateANCCareDetails(
 			@Param("temperature") Double temperature,
 			@Param("pulseRate") Short pulseRate,
 			@Param("respiratoryRate") Short respiratoryRate,
-			@Param("systolicBP") Short systolicBP,
-			@Param("diastolicBP") Short diastolicBP,
+			@Param("systolicBP_1stReading") Short systolicBP_1stReading,
+			@Param("diastolicBP_1stReading") Short diastolicBP_1stReading,
 			@Param("capillaryRefillTime") String capillaryRefillTime,
 			@Param("modifiedBy") String modifiedBy,
 			@Param("beneficiaryRegID") Long beneficiaryRegID,

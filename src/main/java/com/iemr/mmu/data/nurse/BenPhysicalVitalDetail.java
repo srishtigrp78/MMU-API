@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 @Entity
 @Table(name = "t_phy_vitals")
@@ -27,22 +28,92 @@ public class BenPhysicalVitalDetail {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
+
+	@Expose
+	@Column(name = "ProviderServiceMapID")
+	private Integer providerServiceMapID;
 	
+	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
+	
+
 	@Expose
 	@Column(name = "Temperature")
 	private Double temperature;
+	
 	@Expose
 	@Column(name = "PulseRate")
 	private Short pulseRate;
+	
 	@Expose
 	@Column(name = "RespiratoryRate")
 	private Short respiratoryRate;
+	
 	@Expose
-	@Column(name = "SystolicBP")
-	private Short systolicBP;
+	@Column(name = "SystolicBP_1stReading")
+	private Short systolicBP_1stReading;
+	
 	@Expose
-	@Column(name = "DiastolicBP")
-	private Short diastolicBP;
+	@Column(name = "DiastolicBP_1stReading")
+	private Short diastolicBP_1stReading;
+	
+	@Expose
+	@Column(name = "SystolicBP_2ndReading")
+	private Short systolicBP_2ndReading;
+	
+	@Expose
+	@Column(name = "DiastolicBP_2ndReading")
+	private Short diastolicBP_2ndReading;
+	
+	@Expose
+	@Column(name = "SystolicBP_3rdReading")
+	private Short systolicBP_3rdReading;
+	
+	@Expose
+	@Column(name = "DiastolicBP_3rdReading")
+	private Short diastolicBP_3rdReading;
+	
+	@Expose
+	@Column(name = "BloodPressureStatusID")
+	private Short bloodPressureStatusID;
+	
+	@Expose
+	@Column(name = "BloodPressureStatus")
+	private String bloodPressureStatus;
+
+	@Expose
+	@Column(name = "BloodGlucose_Fasting")
+	private Short bloodGlucose_Fasting;
+	
+	@Expose
+	@Column(name = "BloodGlucose_Random")
+	private Short bloodGlucose_Random;
+	
+	@Expose
+	@Column(name = "BloodGlucose_2hr_PP")
+	private Short bloodGlucose_2hr_PP;
+
+	@Expose
+	@Column(name = "BloodGlucose_NotSpecified")
+	private Short bloodGlucose_NotSpecified;
+	
+	@Expose
+	@Column(name = "DiabeticStatusID")
+	private Short diabeticStatusID;
+	
+	@Expose
+	@Column(name = "DiabeticStatus")
+	private String diabeticStatus;
+	
+	@Expose
+	@Column(name = "AverageSystolicBP")
+	private Short averageSystolicBP;
+
+	@Expose
+	@Column(name = "AverageDiastolicBP")
+	private Short averageDiastolicBP;
+	
 	@Expose
 	@Column(name = "CapillaryRefillTime")
 	private String capillaryRefillTime;
@@ -50,25 +121,37 @@ public class BenPhysicalVitalDetail {
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
+	
 	@Expose
 	@Column(name = "Processed", insertable = false, updatable = true)
 	private String processed;
+	
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
+	
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
 	private Timestamp createdDate;
+	
 	@Expose
 	@Column(name = "ModifiedBy")
 	private String modifiedBy;
+	
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
-	
+
 	public BenPhysicalVitalDetail() {
 		super();
-		// TODO Auto-generated constructor stub
+	}
+
+	public Long getID() {
+		return ID;
+	}
+
+	public void setID(Long iD) {
+		ID = iD;
 	}
 
 	public Long getBeneficiaryRegID() {
@@ -85,6 +168,22 @@ public class BenPhysicalVitalDetail {
 
 	public void setBenVisitID(Long benVisitID) {
 		this.benVisitID = benVisitID;
+	}
+
+	public Integer getProviderServiceMapID() {
+		return providerServiceMapID;
+	}
+
+	public void setProviderServiceMapID(Integer providerServiceMapID) {
+		this.providerServiceMapID = providerServiceMapID;
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 
 	public Double getTemperature() {
@@ -111,20 +210,132 @@ public class BenPhysicalVitalDetail {
 		this.respiratoryRate = respiratoryRate;
 	}
 
-	public Short getSystolicBP() {
-		return systolicBP;
+	public Short getSystolicBP_1stReading() {
+		return systolicBP_1stReading;
 	}
 
-	public void setSystolicBP(Short systolicBP) {
-		this.systolicBP = systolicBP;
+	public void setSystolicBP_1stReading(Short systolicBP_1stReading) {
+		this.systolicBP_1stReading = systolicBP_1stReading;
 	}
 
-	public Short getDiastolicBP() {
-		return diastolicBP;
+	public Short getDiastolicBP_1stReading() {
+		return diastolicBP_1stReading;
 	}
 
-	public void setDiastolicBP(Short diastolicBP) {
-		this.diastolicBP = diastolicBP;
+	public void setDiastolicBP_1stReading(Short diastolicBP_1stReading) {
+		this.diastolicBP_1stReading = diastolicBP_1stReading;
+	}
+
+	public Short getSystolicBP_2ndReading() {
+		return systolicBP_2ndReading;
+	}
+
+	public void setSystolicBP_2ndReading(Short systolicBP_2ndReading) {
+		this.systolicBP_2ndReading = systolicBP_2ndReading;
+	}
+
+	public Short getDiastolicBP_2ndReading() {
+		return diastolicBP_2ndReading;
+	}
+
+	public void setDiastolicBP_2ndReading(Short diastolicBP_2ndReading) {
+		this.diastolicBP_2ndReading = diastolicBP_2ndReading;
+	}
+
+	public Short getSystolicBP_3rdReading() {
+		return systolicBP_3rdReading;
+	}
+
+	public void setSystolicBP_3rdReading(Short systolicBP_3rdReading) {
+		this.systolicBP_3rdReading = systolicBP_3rdReading;
+	}
+
+	public Short getDiastolicBP_3rdReading() {
+		return diastolicBP_3rdReading;
+	}
+
+	public void setDiastolicBP_3rdReading(Short diastolicBP_3rdReading) {
+		this.diastolicBP_3rdReading = diastolicBP_3rdReading;
+	}
+
+	public Short getBloodPressureStatusID() {
+		return bloodPressureStatusID;
+	}
+
+	public void setBloodPressureStatusID(Short bloodPressureStatusID) {
+		this.bloodPressureStatusID = bloodPressureStatusID;
+	}
+
+	public String getBloodPressureStatus() {
+		return bloodPressureStatus;
+	}
+
+	public void setBloodPressureStatus(String bloodPressureStatus) {
+		this.bloodPressureStatus = bloodPressureStatus;
+	}
+
+	public Short getBloodGlucose_Fasting() {
+		return bloodGlucose_Fasting;
+	}
+
+	public void setBloodGlucose_Fasting(Short bloodGlucose_Fasting) {
+		this.bloodGlucose_Fasting = bloodGlucose_Fasting;
+	}
+
+	public Short getBloodGlucose_Random() {
+		return bloodGlucose_Random;
+	}
+
+	public void setBloodGlucose_Random(Short bloodGlucose_Random) {
+		this.bloodGlucose_Random = bloodGlucose_Random;
+	}
+
+	public Short getBloodGlucose_2hr_PP() {
+		return bloodGlucose_2hr_PP;
+	}
+
+	public void setBloodGlucose_2hr_PP(Short bloodGlucose_2hr_PP) {
+		this.bloodGlucose_2hr_PP = bloodGlucose_2hr_PP;
+	}
+
+	public Short getBloodGlucose_NotSpecified() {
+		return bloodGlucose_NotSpecified;
+	}
+
+	public void setBloodGlucose_NotSpecified(Short bloodGlucose_NotSpecified) {
+		this.bloodGlucose_NotSpecified = bloodGlucose_NotSpecified;
+	}
+
+	public Short getDiabeticStatusID() {
+		return diabeticStatusID;
+	}
+
+	public void setDiabeticStatusID(Short diabeticStatusID) {
+		this.diabeticStatusID = diabeticStatusID;
+	}
+
+	public String getDiabeticStatus() {
+		return diabeticStatus;
+	}
+
+	public void setDiabeticStatus(String diabeticStatus) {
+		this.diabeticStatus = diabeticStatus;
+	}
+
+	public Short getAverageSystolicBP() {
+		return averageSystolicBP;
+	}
+
+	public void setAverageSystolicBP(Short averageSystolicBP) {
+		this.averageSystolicBP = averageSystolicBP;
+	}
+
+	public Short getAverageDiastolicBP() {
+		return averageDiastolicBP;
+	}
+
+	public void setAverageDiastolicBP(Short averageDiastolicBP) {
+		this.averageDiastolicBP = averageDiastolicBP;
 	}
 
 	public String getCapillaryRefillTime() {
@@ -183,9 +394,5 @@ public class BenPhysicalVitalDetail {
 		this.lastModDate = lastModDate;
 	}
 
-	public Long getID() {
-		return ID;
-	}
-	
 	
 }
