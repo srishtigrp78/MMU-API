@@ -742,9 +742,6 @@ public class NurseServiceImpl implements NurseService {
 		Short  averageSystolic = (short) ((averageSystolicList.stream().mapToInt(i -> i.shortValue()).sum())/averageSystolicList.size());
 		Short  averageDiastolic = (short) ((averageDiastolicList.stream().mapToInt(i -> i.shortValue()).sum())/averageDiastolicList.size());
 
-		System.out.println(averageSystolic);
-		System.out.println(averageDiastolic);
-		
 		benPhysicalVitalDetail.setAverageSystolicBP(averageSystolic);
 		benPhysicalVitalDetail.setAverageDiastolicBP(averageDiastolic);
 		

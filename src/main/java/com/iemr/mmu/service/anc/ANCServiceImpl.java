@@ -2112,7 +2112,8 @@ public class ANCServiceImpl implements ANCService {
 	public Integer updateANCPhysicalVitalDetails(BenPhysicalVitalDetail physicalVitalDetail) {
 		Integer r = 0;
 		if(null != physicalVitalDetail) {
-//			physicalVitalDetail.setModifiedBy(physicalVitalDetail.getCreatedBy());
+			physicalVitalDetail.setAverageSystolicBP(physicalVitalDetail.getSystolicBP_1stReading());
+			physicalVitalDetail.setAverageDiastolicBP(physicalVitalDetail.getDiastolicBP_1stReading());
 			r = benPhysicalVitalRepo.updateANCCareDetails(
 					physicalVitalDetail.getTemperature(), 
 					physicalVitalDetail.getPulseRate(), 
