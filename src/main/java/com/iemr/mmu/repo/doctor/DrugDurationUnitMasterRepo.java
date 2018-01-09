@@ -10,7 +10,7 @@ import com.iemr.mmu.data.doctor.DrugDurationUnitMaster;
 @Repository
 public interface DrugDurationUnitMasterRepo extends CrudRepository<DrugDurationUnitMaster, Integer> {
 	
-	@Query("SELECT drugDurationID, drugDuration FROM DrugDurationUnitMaster c where c.deleted != 1")
+	@Query("SELECT drugDurationID, drugDuration FROM DrugDurationUnitMaster c where c.deleted != 1 order by drugDuration")
 	public  ArrayList<Object[]> getDrugDurationUnitMaster();
 	
 }

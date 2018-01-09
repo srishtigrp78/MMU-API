@@ -10,7 +10,7 @@ import com.iemr.mmu.data.doctor.DrugFrequencyMaster;
 @Repository
 public interface DrugFrequencyMasterRepo extends CrudRepository<DrugFrequencyMaster, Integer> {
 	
-	@Query("SELECT drugFrequencyID, frequency FROM DrugFrequencyMaster c where c.deleted != 1")
+	@Query("SELECT drugFrequencyID, frequency FROM DrugFrequencyMaster c where c.deleted != 1 order by frequency")
 	public  ArrayList<Object[]> getDrugFrequencyMaster();
 	
 }
