@@ -16,12 +16,17 @@ public interface SysGastrointestinalExaminationRepo extends CrudRepository<SysGa
 	public SysGastrointestinalExamination getSSysGastrointestinalExamination(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 	
+
+	@Query("SELECT processed from SysGastrointestinalExamination where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	public String getBenGastrointestinalExaminationStatus(@Param("benRegID") Long benRegID,
+			@Param("benVisitID") Long benVisitID);
+	
 	@Transactional
 	@Modifying
 	@Query("update SysGastrointestinalExamination set inspection=:inspection, palpation=:palpation, palpation_AbdomenTexture=:palpation_AbdomenTexture, "
 			+ "palpation_Liver=:palpation_Liver, palpation_Spleen=:palpation_Spleen, palpation_Tenderness =:palpation_Tenderness, "
 			+ "palpation_LocationOfTenderness=:palpation_LocationOfTenderness, percussion=:percussion, auscultation=:auscultation, analRegion=:analRegion,"
-			+ " modifiedBy=:modifiedBy where beneficiaryRegID=:benRegID and benVisitID = :benVisitID ")
+			+ " modifiedBy=:modifiedBy, processed=:processed where beneficiaryRegID=:benRegID and benVisitID = :benVisitID ")
 	public int updateSysGastrointestinalExamination(@Param("inspection") String inspection,
 			@Param("palpation") String palpation,
 			@Param("palpation_AbdomenTexture") String palpation_AbdomenTexture,
@@ -33,6 +38,7 @@ public interface SysGastrointestinalExaminationRepo extends CrudRepository<SysGa
 			@Param("auscultation") String auscultation,
 			@Param("analRegion") String analRegion,
 			@Param("modifiedBy") String modifiedBy,
+			@Param("processed") String processed,
 			@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 }

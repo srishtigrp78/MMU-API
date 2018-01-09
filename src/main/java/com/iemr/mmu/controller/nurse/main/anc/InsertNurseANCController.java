@@ -814,12 +814,15 @@ public class InsertNurseANCController {
 			if (requestObj != null) {
 				WrapperImmunizationHistory wrapperImmunizationHistory = InputMapper.gson().fromJson(requestObj,
 						WrapperImmunizationHistory.class);
-
-				int r = ancServiceImpl.saveANCImmunizationHistory(wrapperImmunizationHistory);
-				if (r > 0) {
-					response.setResponse("Beneficairy ANC Immunization History Details saved successfully");
-				} else {
-					response.setError(5000, "Something went wrong");
+				if(null != wrapperImmunizationHistory.getImmunizationList()){
+					int r = ancServiceImpl.saveANCImmunizationHistory(wrapperImmunizationHistory);
+					if (r > 0) {
+						response.setResponse("Beneficairy ANC Immunization History Details saved successfully");
+					} else {
+						response.setError(5000, "Something went wrong");
+					}
+				}else{
+					response.setError(5000, "ImmunizationList Data not Available");
 				}
 				logger.info("saveImmunizationHistory response:" + response);
 			}

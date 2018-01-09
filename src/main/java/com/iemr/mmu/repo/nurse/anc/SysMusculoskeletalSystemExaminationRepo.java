@@ -19,11 +19,17 @@ public interface SysMusculoskeletalSystemExaminationRepo
 	public SysMusculoskeletalSystemExamination getSysMusculoskeletalSystemExamination(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 	
+
+	@Query("SELECT processed from SysMusculoskeletalSystemExamination where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	public String getBenMusculoskeletalSystemExaminationStatus(@Param("benRegID") Long benRegID,
+			@Param("benVisitID") Long benVisitID);
+	
 	@Transactional
 	@Modifying
 	@Query("update SysMusculoskeletalSystemExamination set joint_TypeOfJoint=:joint_TypeOfJoint, joint_Laterality=:joint_Laterality, "
 			+ "joint_Abnormality=:joint_Abnormality, upperLimb_Laterality=:upperLimb_Laterality, upperLimb_Abnormality=:upperLimb_Abnormality,"
-			+ " lowerLimb_Laterality =:lowerLimb_Laterality, lowerLimb_Abnormality=:lowerLimb_Abnormality, chestWall=:chestWall, spine =:spine, modifiedBy=:modifiedBy "
+			+ " lowerLimb_Laterality =:lowerLimb_Laterality, lowerLimb_Abnormality=:lowerLimb_Abnormality, chestWall=:chestWall, spine =:spine, "
+			+ "modifiedBy=:modifiedBy, processed=:processed "
 			+ "where beneficiaryRegID=:benRegID and benVisitID = :benVisitID ")
 	public int updateSysMusculoskeletalSystemExamination(@Param("joint_TypeOfJoint") String joint_TypeOfJoint,
 			@Param("joint_Laterality") String joint_Laterality,
@@ -35,6 +41,7 @@ public interface SysMusculoskeletalSystemExaminationRepo
 			@Param("chestWall") String chestWall,
 			@Param("spine") String spine,
 			@Param("modifiedBy") String modifiedBy,
+			@Param("processed") String processed,
 			@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 	

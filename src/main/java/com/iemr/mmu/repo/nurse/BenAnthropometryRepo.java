@@ -19,13 +19,16 @@ public interface BenAnthropometryRepo extends CrudRepository<BenAnthropometryDet
 	public BenAnthropometryDetail getBenAnthropometryDetail(@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("benVisitID") Long benVisitID);
 	
+	@Query("SELECT processed from BenAnthropometryDetail where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	public String getBenAnthropometryStatus(@Param("benRegID") Long benRegID,
+			@Param("benVisitID") Long benVisitID);
 	
 	@Transactional
 	@Modifying
 	@Query("update BenAnthropometryDetail set weight_Kg=:weight_Kg, height_cm=:height_cm, bMI=:bMI, headCircumference_cm=:headCircumference_cm,"
 			+ " midUpperArmCircumference_MUAC_cm=:midUpperArmCircumference_MUAC_cm, hipCircumference_cm=:hipCircumference_cm, "
 			+ " waistCircumference_cm=:waistCircumference_cm, waistHipRatio=:waistHipRatio, "
-			+ " modifiedBy=:modifiedBy where beneficiaryRegID=:beneficiaryRegID AND benVisitID=:benVisitID")
+			+ " modifiedBy=:modifiedBy, processed=:processed where beneficiaryRegID=:beneficiaryRegID AND benVisitID=:benVisitID")
 	public int updateANCCareDetails(
 			@Param("weight_Kg") Double weight_Kg,
 			@Param("height_cm") Double height_cm,
@@ -36,6 +39,7 @@ public interface BenAnthropometryRepo extends CrudRepository<BenAnthropometryDet
 			@Param("waistCircumference_cm") Double waistCircumference_cm,
 			@Param("waistHipRatio") Double waistHipRatio,
 			@Param("modifiedBy") String modifiedBy,
+			@Param("processed") String processed,
 			@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("benVisitID") Long benVisitID );
 	
