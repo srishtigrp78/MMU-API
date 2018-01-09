@@ -20,11 +20,12 @@ public interface SysCentralNervousExaminationRepo extends CrudRepository<SysCent
 	
 	@Transactional
 	@Modifying
-	@Query("update SysRespiratoryExamination set handedness=:handedness, cranialNervesExamination=:cranialNervesExamination, "
+	@Query("UPDATE SysCentralNervousExamination set handedness=:handedness, cranialNervesExamination=:cranialNervesExamination, "
 			+ "motorSystem=:motorSystem, sensorySystem=:sensorySystem, autonomicSystem =:autonomicSystem, "
 			+ "cerebellarSigns=:cerebellarSigns, signsOfMeningealIrritation=:signsOfMeningealIrritation, skull =:skull, modifiedBy=:modifiedBy "
 			+ "where beneficiaryRegID=:benRegID and benVisitID = :benVisitID ")
-	public int updateSysCentralNervousExamination(@Param("handedness") String handedness,
+	public int updateSysCentralNervousExamination(
+			@Param("handedness") String handedness,
 			@Param("cranialNervesExamination") String cranialNervesExamination,
 			@Param("motorSystem") String motorSystem,
 			@Param("sensorySystem") String sensorySystem,

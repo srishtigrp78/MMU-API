@@ -470,6 +470,7 @@ public class UpdateNurseANCController {
 				response.setError(5000, "Invalid request Data");
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			response.setError(e);
 		}
 		return response.toString();
@@ -641,6 +642,7 @@ public class UpdateNurseANCController {
 				}
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			response.setError(e);
 		}
 		return response.toString();

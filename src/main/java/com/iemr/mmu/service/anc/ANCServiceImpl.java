@@ -2140,7 +2140,7 @@ public class ANCServiceImpl implements ANCService {
 		response = phyGeneralExaminationRepo.updatePhyGeneralExamination(generalExamination.getConsciousness(), generalExamination.getCoherence(), 
 				generalExamination.getCooperation(), generalExamination.getComfortness(), generalExamination.getBuiltAndAppearance(), generalExamination.getGait(), 
 				generalExamination.getDangerSigns(), generalExamination.getTypeOfDangerSign(), generalExamination.getPallor(), generalExamination.getJaundice(), 
-				generalExamination.getCyanosis(), generalExamination.getClubbing(), generalExamination.getLymphadenopathy(), generalExamination.getTypeOfLymphadenopathy(),
+				generalExamination.getCyanosis(), generalExamination.getClubbing(), generalExamination.getLymphadenopathy(), generalExamination.getLymphnodesInvolved(),generalExamination.getTypeOfLymphadenopathy(),
 				generalExamination.getEdema(), generalExamination.getExtentOfEdema(), generalExamination.getEdemaType(), generalExamination.getModifiedBy(),
 				generalExamination.getBeneficiaryRegID(), generalExamination.getBenVisitID());
 		

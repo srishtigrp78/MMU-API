@@ -21,8 +21,10 @@ public interface PhyGeneralExaminationRepo extends CrudRepository<PhyGeneralExam
 
 	@Transactional
 	@Modifying
-	@Query("update PhyGeneralExamination set consciousness=:consciousness, cooperation=:cooperation, coherence=:coherence, comfortness=:comfortness, "
-			+ "builtAndAppearance=:builtAndAppearance, gait=:gait, dangerSigns=:dangerSigns, typeOfDangerSign =:typeOfDangerSign, pallor=:pallor, jaundice=:jaundice, "
+	@Query("update PhyGeneralExamination set consciousness=:consciousness, cooperation=:cooperation, coherence=:coherence, "
+			+ " comfortness=:comfortness, "
+			+ "builtAndAppearance=:builtAndAppearance, gait=:gait, dangerSigns=:dangerSigns, "
+			+ " typeOfDangerSign =:typeOfDangerSign, pallor=:pallor, jaundice=:jaundice, "
 			+ "cyanosis=:cyanosis, clubbing=:clubbing, lymphadenopathy=:lymphadenopathy, lymphnodesInvolved=:lymphnodesInvolved, "
 			+ "typeOfLymphadenopathy=:typeOfLymphadenopathy, edema=:edema, extentOfEdema=:extentOfEdema, edemaType=:edemaType,"
 			+ " modifiedBy=:modifiedBy where beneficiaryRegID=:benRegID and benVisitID = :benVisitID ")
@@ -39,6 +41,7 @@ public interface PhyGeneralExaminationRepo extends CrudRepository<PhyGeneralExam
 			@Param("cyanosis") String cyanosis,
 			@Param("clubbing") String clubbing,
 			@Param("lymphadenopathy") String lymphadenopathy,
+			@Param("lymphnodesInvolved") String lymphnodesInvolved,
 			@Param("typeOfLymphadenopathy") String typeOfLymphadenopathy,
 			@Param("edema") String edema,
 			@Param("extentOfEdema") String extentOfEdema,
