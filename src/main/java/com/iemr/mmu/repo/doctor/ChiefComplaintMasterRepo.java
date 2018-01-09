@@ -11,7 +11,7 @@ import com.iemr.mmu.data.doctor.ChiefComplaintMaster;
 @Repository
 public interface ChiefComplaintMasterRepo extends CrudRepository<ChiefComplaintMaster, Integer> {
 	
-	@Query("SELECT chiefComplaintID, chiefComplaint, chiefComplaintDesc FROM ChiefComplaintMaster c where c.deleted != 1 ")
+	@Query("SELECT chiefComplaintID, chiefComplaint, chiefComplaintDesc FROM ChiefComplaintMaster c where c.deleted != 1 order by chiefComplaint")
 	public  ArrayList<Object[]> getChiefComplaintMaster();
 	
 }

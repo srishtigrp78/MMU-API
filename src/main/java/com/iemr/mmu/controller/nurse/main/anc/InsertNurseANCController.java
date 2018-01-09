@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -595,7 +596,9 @@ public class InsertNurseANCController {
 		OutputResponse response = new OutputResponse();
 		logger.info("saveFemaleObstetricHistory request:" + requestObj);
 		try {
-			if (requestObj != null) {
+			JSONObject obj = new JSONObject(requestObj);
+			String totalNoOfPreg = obj.getString("totalNoOfPreg");
+			if (requestObj != null && null != totalNoOfPreg) {
 				WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory = InputMapper.gson().fromJson(requestObj,
 						WrapperFemaleObstetricHistory.class);
 
@@ -610,6 +613,8 @@ public class InsertNurseANCController {
 				}else{
 					response.setResponse("Female Obstetric Details not provided.");
 				}
+			}else{
+				response.setError(5000, "No Data Available to Store.");
 			}
 		} catch (Exception e) {
 			response.setError(e);

@@ -10,7 +10,7 @@ import com.iemr.mmu.data.doctor.DrugFormMaster;
 @Repository
 public interface DrugFormMasterRepo extends CrudRepository<DrugFormMaster, Integer> {
 	
-	@Query("SELECT drugFormID, drugForm FROM DrugFormMaster c where c.deleted != 1")
+	@Query("SELECT drugFormID, drugForm FROM DrugFormMaster c where c.deleted != 1 order by drugForm")
 	public  ArrayList<Object[]> getDrugFormMaster();
 	
 }

@@ -3,6 +3,7 @@ package com.iemr.mmu.controller.nurse.main.anc;
 import java.util.Arrays;
 import java.util.List;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -665,7 +666,9 @@ public class UpdateNurseANCController {
 		OutputResponse response = new OutputResponse();
 		logger.info("UpdatePastObstetricHistory request:" + requestObj);
 		try {
-			if (requestObj != null) {
+			JSONObject obj = new JSONObject(requestObj);
+			Object totalNoOfPreg = obj.get("totalNoOfPreg");
+			if (requestObj != null && !totalNoOfPreg.equals(null)) {
 				WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory = InputMapper.gson().fromJson(requestObj,
 						WrapperFemaleObstetricHistory.class);
 
@@ -677,6 +680,8 @@ public class UpdateNurseANCController {
 				} else {
 					response.setError(5000, "Something went wrong");
 				}
+			}else{
+				response.setError(5000, "No Data Available to update.");
 			}
 		} catch (Exception e) {
 			response.setError(e);

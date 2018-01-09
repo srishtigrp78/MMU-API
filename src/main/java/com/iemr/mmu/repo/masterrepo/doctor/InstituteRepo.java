@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import com.iemr.mmu.data.institution.Institute;
 
 public interface InstituteRepo extends CrudRepository<Institute, Long> {
-	@Query("SELECT institutionID, institutionName FROM Institute WHERE providerServiceMapID = :psmID AND deleted != 1 ")
+	@Query("SELECT institutionID, institutionName FROM Institute WHERE providerServiceMapID = :psmID AND deleted != 1 order by institutionName")
 	public ArrayList<Object[]> getInstituteDetails(@Param("psmID") Integer psmID);
 
 }
