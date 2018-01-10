@@ -19,7 +19,7 @@ import com.iemr.mmu.repo.masterrepo.ncdScreening.NCDScreeningConditionRepo;
 import com.iemr.mmu.repo.masterrepo.ncdScreening.NCDScreeningReasonRepo;
 
 @Service
-public class NCDScreeningServiceImpl implements NCDScreeningService {
+public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService {
 	
 	private NCDScreeningConditionRepo ncdScreeningConditionRepo;
 	private NCDScreeningReasonRepo ncdScreeningReasonRepo;
@@ -83,7 +83,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 	public ArrayList<Object[]> getNCDTest() {
 		ArrayList<Object[]> labTests = null;
 		try {
-			labTests = labTestMasterRepo.getLabTestMaster();
+			labTests = labTestMasterRepo.getTestsBYVisitCategory("NCD Screening");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -99,7 +99,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		resMap.put("ncdScreeningReasons", NCDScreeningReason.getNCDScreeningReason((ArrayList<Object[]>) getNCDScreeningReasons()));
 		resMap.put("bloodPressureStatus", BPAndDiabeticStatus.getBPAndDiabeticStatus((ArrayList<Object[]>) getBPAndDiabeticStatus(true)));
 		resMap.put("diabeticStatus", BPAndDiabeticStatus.getBPAndDiabeticStatus((ArrayList<Object[]>) getBPAndDiabeticStatus(false)));
-		resMap.put("ncdTests", LabTestMaster.getLabTestMasters(getNCDTest()));
+		resMap.put("ncdTests", LabTestMaster.getNCDScreeningTests(getNCDTest()));
 		
 		return new Gson().toJson(resMap);
 	}

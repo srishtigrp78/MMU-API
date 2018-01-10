@@ -13,7 +13,7 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 	private DoctorServiceImpl doctorServiceImpl;
 	private DoctorMasterDataServiceImpl doctorMasterDataServiceImpl;
 	private RegistrarServiceMasterDataImpl registrarServiceMasterDataImpl;
-	private NCDScreeningServiceImpl ncdScreeningServiceImpl;
+	private NCDScreeningMasterServiceImpl ncdScreeningServiceImpl;
 
 
 	@Autowired
@@ -42,7 +42,7 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 	}
 
 	@Autowired
-	public void setNcdScreeningServiceImpl(NCDScreeningServiceImpl ncdScreeningServiceImpl) {
+	public void setNcdScreeningServiceImpl(NCDScreeningMasterServiceImpl ncdScreeningServiceImpl) {
 		this.ncdScreeningServiceImpl = ncdScreeningServiceImpl;
 	}
 

@@ -1,5 +1,6 @@
 package com.iemr.mmu.data.masterdata.ncdscreening;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -20,7 +21,7 @@ public class NCDScreeningReason {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Expose
 	@Column(name = "ncdScreeningReasonID")
-	private int ncdScreeningReasonID; 
+	private Integer ncdScreeningReasonID; 
 	
 	@Expose
 	@Column(name = "ncdScreeningReason")
@@ -32,33 +33,34 @@ public class NCDScreeningReason {
 	
 	@Expose
 	@Column(name = "ncdScreeningConditionID")
-	private int ncdScreeningConditionID; 
+	private Integer ncdScreeningConditionID; 
 	
 	@Expose
-	@Column(name = "deleted")
-	private boolean deleted; 
+	@Column(name = "Deleted", insertable = false, updatable = true)
+	private Boolean deleted;
+	
+	@Expose
+	@Column(name = "Processed", insertable = false, updatable = true)
+	private String processed;
+	
+	@Expose
+	@Column(name = "CreatedBy")
+	private String createdBy;
+	
+	@Expose
+	@Column(name = "CreatedDate", insertable = false, updatable = false)
+	private Timestamp createdDate;
+	
+	@Expose
+	@Column(name = "ModifiedBy")
+	private String modifiedBy;
+	
+	@Expose
+	@Column(name = "LastModDate", insertable = false, updatable = false)
+	private Timestamp lastModDate;
 
-	@Expose
-	@Column(name = "processed")
-	private String processed; 
 	
-	@Expose
-	@Column(name = "createdBy")
-	private String createdBy; 
-	
-	@Expose
-	@Column(name = "createdDate")
-	private Date createdDate; 
-	
-	@Expose
-	@Column(name = "modifiedBy")
-	private String modifiedBy; 
-	
-	@Expose
-	@Column(name = "lastModDate")
-	private Date lastModDate;
-	
-	public NCDScreeningReason(int ncdScreeningReasonID, String ncdScreeningReason) {
+	public NCDScreeningReason(Integer ncdScreeningReasonID, String ncdScreeningReason) {
 		super();
 		this.ncdScreeningReasonID = ncdScreeningReasonID;
 		this.ncdScreeningReason = ncdScreeningReason;
@@ -73,11 +75,11 @@ public class NCDScreeningReason {
 		return resArray;
 	}
 	
-	public int getNcdScreeningReasonID() {
+	public Integer getNcdScreeningReasonID() {
 		return ncdScreeningReasonID;
 	}
 
-	public void setNcdScreeningReasonID(int ncdScreeningReasonID) {
+	public void setNcdScreeningReasonID(Integer ncdScreeningReasonID) {
 		this.ncdScreeningReasonID = ncdScreeningReasonID;
 	}
 
@@ -97,19 +99,19 @@ public class NCDScreeningReason {
 		this.ncdScreeningReasonDesc = ncdScreeningReasonDesc;
 	}
 
-	public int getNcdScreeningConditionID() {
+	public Integer getNcdScreeningConditionID() {
 		return ncdScreeningConditionID;
 	}
 
-	public void setNcdScreeningConditionID(int ncdScreeningConditionID) {
+	public void setNcdScreeningConditionID(Integer ncdScreeningConditionID) {
 		this.ncdScreeningConditionID = ncdScreeningConditionID;
 	}
 
-	public boolean isDeleted() {
+	public Boolean isDeleted() {
 		return deleted;
 	}
 
-	public void setDeleted(boolean deleted) {
+	public void setDeleted(Boolean deleted) {
 		this.deleted = deleted;
 	}
 
@@ -129,11 +131,11 @@ public class NCDScreeningReason {
 		this.createdBy = createdBy;
 	}
 
-	public Date getCreatedDate() {
+	public Timestamp getCreatedDate() {
 		return createdDate;
 	}
 
-	public void setCreatedDate(Date createdDate) {
+	public void setCreatedDate(Timestamp createdDate) {
 		this.createdDate = createdDate;
 	}
 
@@ -145,11 +147,11 @@ public class NCDScreeningReason {
 		this.modifiedBy = modifiedBy;
 	}
 
-	public Date getLastModDate() {
+	public Timestamp getLastModDate() {
 		return lastModDate;
 	}
 
-	public void setLastModDate(Date lastModDate) {
+	public void setLastModDate(Timestamp lastModDate) {
 		this.lastModDate = lastModDate;
 	}
 	

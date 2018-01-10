@@ -1,5 +1,6 @@
 package com.iemr.mmu.data.masterdata.ncdscreening;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -30,29 +31,30 @@ public class NCDScreeningCondition {
 	@Column(name = "ncdScreeningConditionDesc")
 	private String ncdScreeningConditionDesc;
 	
-	@Expose(serialize = false)
-	@Column(name = "deleted")
-	private boolean deleted; 
+	@Expose
+	@Column(name = "Deleted", insertable = false, updatable = true)
+	private Boolean deleted;
 	
-	@Expose(serialize = false)
-	@Column(name = "processed")
-	private String processed; 
+	@Expose
+	@Column(name = "Processed", insertable = false, updatable = true)
+	private String processed;
 	
-	@Expose(serialize = false)
-	@Column(name = "createdBy")
-	private String createdBy; 
+	@Expose
+	@Column(name = "CreatedBy")
+	private String createdBy;
 	
-	@Expose(serialize = false)
-	@Column(name = "createdDate")
-	private Date createdDate; 
+	@Expose
+	@Column(name = "CreatedDate", insertable = false, updatable = false)
+	private Timestamp createdDate;
+	
+	@Expose
+	@Column(name = "ModifiedBy")
+	private String modifiedBy;
+	
+	@Expose
+	@Column(name = "LastModDate", insertable = false, updatable = false)
+	private Timestamp lastModDate;
 
-	@Expose(serialize = false)
-	@Column(name = "modifiedBy")
-	private String modifiedBy; 
-
-	@Expose(serialize = false)
-	@Column(name = "lastModDate")
-	private Date lastModDate;
 	
 	public NCDScreeningCondition(Integer ncdScreeningConditionID, String ncdScreeningCondition) {
 		super();
@@ -93,11 +95,11 @@ public class NCDScreeningCondition {
 		this.ncdScreeningConditionDesc = ncdScreeningConditionDesc;
 	}
 
-	public boolean isDeleted() {
+	public Boolean isDeleted() {
 		return deleted;
 	}
 
-	public void setDeleted(boolean deleted) {
+	public void setDeleted(Boolean deleted) {
 		this.deleted = deleted;
 	}
 
@@ -117,11 +119,11 @@ public class NCDScreeningCondition {
 		this.createdBy = createdBy;
 	}
 
-	public Date getCreatedDate() {
+	public Timestamp getCreatedDate() {
 		return createdDate;
 	}
 
-	public void setCreatedDate(Date createdDate) {
+	public void setCreatedDate(Timestamp createdDate) {
 		this.createdDate = createdDate;
 	}
 
@@ -133,11 +135,11 @@ public class NCDScreeningCondition {
 		this.modifiedBy = modifiedBy;
 	}
 
-	public Date getLastModDate() {
+	public Timestamp getLastModDate() {
 		return lastModDate;
 	}
 
-	public void setLastModDate(Date lastModDate) {
+	public void setLastModDate(Timestamp lastModDate) {
 		this.lastModDate = lastModDate;
 	}
 	

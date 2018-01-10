@@ -18,43 +18,59 @@ public class LabTestMaster {
 	@Expose
 	@Column(name = "TestID")
 	private Integer testID;
+	
 	@Expose
 	@Column(name = "TestName")
 	private String testName;
+	
 	@Expose
 	@Column(name = "TestDesc")
 	private String testDesc;
+	
+	@Expose
+	@Column(name = "TestFor")
+	private String testFor;
+	
+	
 	@Expose
 	@Column(name = "IsRadiologyImaging")
 	private Boolean isRadiologyImaging;
+	
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = false)
 	private Boolean deleted;
+	
 	@Expose
 	@Column(name = "Processed", insertable = false, updatable = false)
 	private Character processed;
+	
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
+	
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
 	private Timestamp createdDate;
+	
 	@Expose
 	@Column(name = "ModifiedBy")
 	private String modifiedBy;
+	
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
 	public LabTestMaster() {
 	}
-
-	public LabTestMaster(Integer testID, String testName, String testDesc, Boolean isRadiologyImaging, Boolean deleted,
-			Character processed, String createdBy, Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
+	
+	public LabTestMaster(Integer testID, String testName, String testDesc, String testFor, Boolean isRadiologyImaging,
+			Boolean deleted, Character processed, String createdBy, Timestamp createdDate, String modifiedBy,
+			Timestamp lastModDate) {
 		super();
 		this.testID = testID;
 		this.testName = testName;
 		this.testDesc = testDesc;
+		this.testFor = testFor;
 		this.isRadiologyImaging = isRadiologyImaging;
 		this.deleted = deleted;
 		this.processed = processed;
@@ -63,18 +79,33 @@ public class LabTestMaster {
 		this.modifiedBy = modifiedBy;
 		this.lastModDate = lastModDate;
 	}
-	
+
 	public LabTestMaster(Integer testID, String testName, Boolean isRadiologyImaging) {
 		super();
 		this.testID = testID;
 		this.testName = testName;
 		this.isRadiologyImaging = isRadiologyImaging;
 	}
+	
+	public LabTestMaster(Integer testID, String testName) {
+		super();
+		this.testID = testID;
+		this.testName = testName;
+	}
 
 	public static ArrayList<LabTestMaster> getLabTestMasters(ArrayList<Object[]> resList) {
 		ArrayList<LabTestMaster> resArray = new ArrayList<LabTestMaster>();
 		for (Object[] obj : resList) {
 			LabTestMaster cOBJ = new LabTestMaster((Integer)obj[0], (String)obj[1], (Boolean)obj[2]);
+			resArray.add(cOBJ);
+		}
+		return resArray;
+	}
+	
+	public static ArrayList<LabTestMaster> getNCDScreeningTests(ArrayList<Object[]> resList) {
+		ArrayList<LabTestMaster> resArray = new ArrayList<LabTestMaster>();
+		for (Object[] obj : resList) {
+			LabTestMaster cOBJ = new LabTestMaster((Integer)obj[0], (String)obj[1]);
 			resArray.add(cOBJ);
 		}
 		return resArray;
@@ -159,5 +190,15 @@ public class LabTestMaster {
 	public void setLastModDate(Timestamp lastModDate) {
 		this.lastModDate = lastModDate;
 	}
+
+	public String getTestFor() {
+		return testFor;
+	}
+
+	public void setTestFor(String testFor) {
+		this.testFor = testFor;
+	}
+	
+	
 
 }
