@@ -13,6 +13,7 @@ public class WrapperImmunizationHistory {
 	private Long benVisitID;
 	private Integer providerServiceMapID;
 	private String createdBy;
+	private String modifiedBy;
 	
 	private ArrayList<ChildVaccineDetail1> immunizationList;
 
@@ -22,6 +23,14 @@ public class WrapperImmunizationHistory {
 
 	public void setImmunizationList(ArrayList<ChildVaccineDetail1> immunizationList) {
 		this.immunizationList = immunizationList;
+	}
+	
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
 	}
 	
 	public ArrayList<ChildVaccineDetail1> getBenChildVaccineDetails(){
@@ -36,7 +45,7 @@ public class WrapperImmunizationHistory {
 				vaccineDetail.setBenVisitID(benVisitID);
 				vaccineDetail.setProviderServiceMapID(providerServiceMapID);
 				vaccineDetail.setCreatedBy(createdBy);
-				
+				vaccineDetail.setModifiedBy(modifiedBy);
 				childVaccineDetailList.add(vaccineDetail);
 			}
 			

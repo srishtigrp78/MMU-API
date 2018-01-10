@@ -19,6 +19,11 @@ public interface PhyGeneralExaminationRepo extends CrudRepository<PhyGeneralExam
 	public PhyGeneralExamination getPhyGeneralExaminationData(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 
+
+	@Query("SELECT processed from PhyGeneralExamination where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	public String getBenGeneralExaminationStatus(@Param("benRegID") Long benRegID,
+			@Param("benVisitID") Long benVisitID);
+	
 	@Transactional
 	@Modifying
 	@Query("update PhyGeneralExamination set consciousness=:consciousness, cooperation=:cooperation, coherence=:coherence, "
@@ -27,7 +32,7 @@ public interface PhyGeneralExaminationRepo extends CrudRepository<PhyGeneralExam
 			+ " typeOfDangerSign =:typeOfDangerSign, pallor=:pallor, jaundice=:jaundice, "
 			+ "cyanosis=:cyanosis, clubbing=:clubbing, lymphadenopathy=:lymphadenopathy, lymphnodesInvolved=:lymphnodesInvolved, "
 			+ "typeOfLymphadenopathy=:typeOfLymphadenopathy, edema=:edema, extentOfEdema=:extentOfEdema, edemaType=:edemaType,"
-			+ " modifiedBy=:modifiedBy where beneficiaryRegID=:benRegID and benVisitID = :benVisitID ")
+			+ " modifiedBy=:modifiedBy, processed=:processed where beneficiaryRegID=:benRegID and benVisitID = :benVisitID ")
 	public int updatePhyGeneralExamination(@Param("consciousness") String consciousness,
 			@Param("coherence") String coherence,
 			@Param("cooperation") String cooperation,
@@ -47,6 +52,7 @@ public interface PhyGeneralExaminationRepo extends CrudRepository<PhyGeneralExam
 			@Param("extentOfEdema") String extentOfEdema,
 			@Param("edemaType") String edemaType,
 			@Param("modifiedBy") String modifiedBy,
+			@Param("processed") String processed,
 			@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 }

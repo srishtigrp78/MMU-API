@@ -80,6 +80,8 @@ public class UpdateNurseANCController {
 				response.setError(5000, "Invalid request Data");
 			}
 		} catch (Exception e) {
+			response.setError(5000, "Error while updating Beneficiary Adherence Details."+e);
+			logger.error("Error while updating Beneficiary Adherence Details."+e);
 		}
 		return response.toString();
 	}
@@ -184,7 +186,8 @@ public class UpdateNurseANCController {
 				response.setError(5000, "Invalid request Data");
 			}
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while updating Beneficiary ANC Immunization Details."+e);
+			logger.error("Error while updating Beneficiary ANC Immunization Details."+e);
 		}
 		return response.toString();
 	}
@@ -212,7 +215,8 @@ public class UpdateNurseANCController {
 				response.setError(5000, "Invalid request Data");
 			}
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while updating Beneficiary ANC Past History."+e);
+			logger.error("Error while updating Beneficiary ANC Past History."+e);
 		}
 		return response.toString();
 	}
@@ -234,7 +238,7 @@ public class UpdateNurseANCController {
 
 				int r = ancServiceImpl.updateBenANCComorbidConditions(wrapperComorbidCondDetails);
 				if (r > 0) {
-					response.setResponse("Beneficairy ComorbidCondition Details updated successfully");
+					response.setResponse("Beneficiary ComorbidCondition Details updated successfully");
 				} else {
 					response.setError(5000, "Something went wrong");
 				}
@@ -242,7 +246,7 @@ public class UpdateNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Comorbid Conditions."+e);
+			logger.error("Error while updating Beneficiary ANC Comorbid Conditions."+e);
 		}
 		return response.toString();
 	}
@@ -272,7 +276,7 @@ public class UpdateNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Medication History."+e);
+			logger.error("Error while updating Beneficiary ANC Medication History."+e);
 		}
 		return response.toString();
 	}
@@ -314,7 +318,7 @@ public class UpdateNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Personal History."+e);
+			logger.error("Error while updating Beneficiary ANC Personal History."+e);
 		}
 		return response.toString();
 	}
@@ -346,7 +350,7 @@ public class UpdateNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Personal History."+e);
+			logger.error("Error while updating Beneficiary ANC Personal History."+e);
 		}
 		return response.toString();
 	}
@@ -378,7 +382,7 @@ public class UpdateNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Child Optional Vaccine History."+e);
+			logger.error("Error while updating Beneficiary ANC Child Optional Vaccine History."+e);
 		}
 		return response.toString();
 	}
@@ -407,7 +411,7 @@ public class UpdateNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Child Immunization History."+e);
+			logger.error("Error while updating Beneficiary ANC Child Immunization History."+e);
 		}
 		return response.toString();
 	}
@@ -471,7 +475,7 @@ public class UpdateNurseANCController {
 				response.setError(5000, "Invalid request Data");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Error while updating Beneficiary Physical General Examination Details."+e);
 			response.setError(e);
 		}
 		return response.toString();
@@ -503,6 +507,7 @@ public class UpdateNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error while updating Beneficiary Physical Head To Toe Examination Details."+e);
 		}
 		return response.toString();
 	}
@@ -534,6 +539,7 @@ public class UpdateNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error while updating Beneficiary Gastrointestinal System Examination Details."+e);
 		}
 		return response.toString();
 	}
@@ -565,12 +571,13 @@ public class UpdateNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error while updating Beneficiary Cardiovascular System Examination Details."+e);
 		}
 		return response.toString();
 	}
 
 	@CrossOrigin
-	@ApiOperation(value = "Update Beneficairy Respiratory System Examination Details", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Update Beneficiary Respiratory System Examination Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/examination/respiratorySystemExamination" }, method = { RequestMethod.POST })
 	public String UpdateRespiratorySystemExamination(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
@@ -582,19 +589,20 @@ public class UpdateNurseANCController {
 
 				int r = ancServiceImpl.updateSysRespiratoryExamination(sysRespiratoryExamination);
 				if (r > 0) {
-					response.setResponse("Beneficairy Respiratory System Examination Details updated successfully");
+					response.setResponse("Beneficiary Respiratory System Examination Details updated successfully");
 				} else {
 					response.setError(5000, "Something went wrong");
 				}
 			}
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error while updating Beneficiary Respiratory System Examination Details."+e);
 		}
 		return response.toString();
 	}
 	
 	@CrossOrigin
-	@ApiOperation(value = "Update Beneficairy Menstrual History Details", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Update Beneficiary Menstrual History Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/history/menstrualHistory" }, method = { RequestMethod.POST })
 	public String UpdateANCMenstrualHistory(@ApiParam(value = "{\"menstrualCycleStatusID\": \"Short\","
 			+ "\"regularity\":\"String\", \"cycleLength\":\"String\", \"menstrualCyclelengthID\":\"Short\","
@@ -610,18 +618,19 @@ public class UpdateNurseANCController {
 				int r = ancServiceImpl.updateANCMenstrualHistory(benMenstrualDetails);
 
 				if (r > 0) {
-					response.setResponse("Beneficairy Menstrual History Details updated successfully");
+					response.setResponse("Beneficiary Menstrual History Details updated successfully");
 				} else {
 					response.setError(5000, "Something went wrong");
 				}
 			}
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error while updating Beneficiary Menstrual History Examination Details."+e);
 		}
 		return response.toString();
 	}
 
-	@ApiOperation(value = "Update Beneficairy Central Nervous System Examination Details", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Update Beneficiary Central Nervous System Examination Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/examination/centralNervousSystemExamination" }, method = { RequestMethod.POST })
 	public String updateCentralNervousSystemExamination(@ApiParam(value = "{\"handedness\": \"String\","
 			+ "\"cranialNervesExamination\":\"String\", \"motorSystem\":\"String\", \"sensorySystem\":\"Short\","
@@ -637,20 +646,20 @@ public class UpdateNurseANCController {
 
 				int r = ancServiceImpl.updateSysCentralNervousExamination(sysCentralNervousExamination);
 				if (r > 0) {
-					response.setResponse("Beneficairy Central Nervous System Examination Details updated successfully");
+					response.setResponse("Beneficiary Central Nervous System Examination Details updated successfully");
 				} else {
 					response.setError(5000, "Something went wrong");
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Error while updating Beneficiary Central Nervous System Examination Details."+e);
 			response.setError(e);
 		}
 		return response.toString();
 	}
 
 	@CrossOrigin
-	@ApiOperation(value = "Update Beneficairy Past Obstetric History Details", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Update Beneficiary Past Obstetric History Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/history/pastObstetricHistory" }, method = { RequestMethod.POST })
 	public String updateANCPastObstetricHistory(@ApiParam(value = "{\"totalNoOfPreg\": \"Short\","
 			+ "\"femaleObstetricHistoryList\":[{\"pregOrder\":\"Short\", \"pregComplicationID\":\"Short\", \"pregComplicationType\":\"String\","
@@ -675,8 +684,7 @@ public class UpdateNurseANCController {
 				int r = ancServiceImpl.updateANCPastObstetricHistory(wrapperFemaleObstetricHistory);
 
 				if (r > 0) {
-					response.setResponse("Beneficairy Menstrual History Details updated successfully");
-					response.setResponse("Beneficairy Musculoskeletal System Examination Details updated successfully");
+					response.setResponse("Beneficiary Past Obstetric Details updated successfully");
 				} else {
 					response.setError(5000, "Something went wrong");
 				}
@@ -685,11 +693,12 @@ public class UpdateNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error while updating Beneficiary Past Obstetric Details."+e);
 		}
 		return response.toString();
 	}
 
-	@ApiOperation(value = "Update Beneficairy Musculoskeletal System Examination Details", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Update Beneficiary Musculoskeletal System Examination Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/examination/musculoskeletalSystemExamination" }, method = { RequestMethod.POST })
 	public String updateMusculoskeletalSystemExamination(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
@@ -701,20 +710,21 @@ public class UpdateNurseANCController {
 
 				int r = ancServiceImpl.updateSysMusculoskeletalSystemExamination(sysMusculoskeletalSystemExamination);
 				if (r > 0) {
-					response.setResponse("Beneficairy Musculoskeletal System Examination Details updated successfully");
+					response.setResponse("Beneficiary Musculoskeletal System Examination Details updated successfully");
 				} else {
 					response.setError(5000, "Something went wrong");
 				}
 			}
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error while updating Beneficiary Musculoskeletal System Examination Details."+e);
 		}
 		return response.toString();
 	}
 
 
 	@CrossOrigin
-	@ApiOperation(value = "Update Beneficairy Genito Urinary System Examination Details", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Update Beneficiary Genito Urinary System Examination Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/examination/genitoUrinarySystemExamination" }, method = { RequestMethod.POST })
 	public String updateGenitoUrinarySystemExamination(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
@@ -726,13 +736,14 @@ public class UpdateNurseANCController {
 
 				int r = ancServiceImpl.updateSysGenitourinarySystemExamination(sysGenitourinarySystemExamination);
 				if (r > 0) {
-					response.setResponse("Beneficairy Genito Urinary System Examination Details updated successfully");
+					response.setResponse("Beneficiary Genito Urinary System Examination Details updated successfully");
 				} else {
 					response.setError(5000, "Something went wrong");
 				}
 			}
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error while updating Beneficiary Genito Urinary System Examination Details."+e);
 		}
 		return response.toString();
 	}
@@ -750,13 +761,14 @@ public class UpdateNurseANCController {
 
 				int r = ancServiceImpl.updateSysObstetricExamination(sysObstetricExamination);
 				if (r > 0) {
-					response.setResponse("Beneficairy Obstetric  Examination Details updated successfully");
+					response.setResponse("Beneficiary Obstetric  Examination Details updated successfully");
 				} else {
 					response.setError(5000, "Something went wrong");
 				}
 			}
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Error while updating Beneficiary Obstetric Examination Details."+e);
 		}
 		return response.toString();
 	}

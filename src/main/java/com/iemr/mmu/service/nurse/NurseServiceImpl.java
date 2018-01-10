@@ -715,36 +715,74 @@ public class NurseServiceImpl implements NurseService {
 
 	@Override
 	public Long saveBeneficiaryPhysicalVitalDetails(BenPhysicalVitalDetail benPhysicalVitalDetail) {
-		ArrayList<Short> averageSystolicList = new ArrayList<>();
-		ArrayList<Short> averageDiastolicList = new ArrayList<>();
+		// ArrayList<Short> averageSystolicList = new ArrayList<>();
+		// ArrayList<Short> averageDiastolicList = new ArrayList<>();
 
-		Short systolicBP_1stReading = benPhysicalVitalDetail.getSystolicBP_1stReading();
-		Short diastolicBP_1stReading = benPhysicalVitalDetail.getDiastolicBP_1stReading();
-		if(systolicBP_1stReading != null && diastolicBP_1stReading != null) {
-			averageSystolicList.add(systolicBP_1stReading);
-			averageDiastolicList.add(diastolicBP_1stReading);
-		}
-		
-		Short systolicBP_2ndReading = benPhysicalVitalDetail.getSystolicBP_2ndReading();
-		Short diastolicBP_2ndReading = benPhysicalVitalDetail.getDiastolicBP_2ndReading();
-		if(systolicBP_2ndReading != null && diastolicBP_2ndReading != null) {
-			averageSystolicList.add(systolicBP_2ndReading);
-			averageDiastolicList.add(diastolicBP_2ndReading);
-		}
-		
-		Short systolicBP_3rdReading = benPhysicalVitalDetail.getSystolicBP_3rdReading();
-		Short diastolicBP_3rdReading = benPhysicalVitalDetail.getDiastolicBP_3rdReading();
-		if(systolicBP_3rdReading != null && diastolicBP_3rdReading != null) {
-			averageSystolicList.add(systolicBP_3rdReading);
-			averageDiastolicList.add(diastolicBP_3rdReading);
-		}
-		
-		Short  averageSystolic = (short) ((averageSystolicList.stream().mapToInt(i -> i.shortValue()).sum())/averageSystolicList.size());
-		Short  averageDiastolic = (short) ((averageDiastolicList.stream().mapToInt(i -> i.shortValue()).sum())/averageDiastolicList.size());
+		short sysBP = 0;
+		short dysBP = 0;
+		int j = 0;
 
-		benPhysicalVitalDetail.setAverageSystolicBP(averageSystolic);
-		benPhysicalVitalDetail.setAverageDiastolicBP(averageDiastolic);
-		
+		if (benPhysicalVitalDetail.getSystolicBP_1stReading() != null
+				&& benPhysicalVitalDetail.getDiastolicBP_1stReading() != null) {
+			sysBP = (short) (sysBP + benPhysicalVitalDetail.getSystolicBP_1stReading());
+			dysBP = (short) (dysBP + benPhysicalVitalDetail.getDiastolicBP_1stReading());
+			j++;
+		}
+		if (benPhysicalVitalDetail.getSystolicBP_2ndReading() != null
+				&& benPhysicalVitalDetail.getDiastolicBP_2ndReading() != null) {
+			sysBP = (short) (sysBP + benPhysicalVitalDetail.getSystolicBP_2ndReading());
+			dysBP = (short) (dysBP + benPhysicalVitalDetail.getDiastolicBP_2ndReading());
+			j++;
+		}
+		if (benPhysicalVitalDetail.getSystolicBP_3rdReading() != null
+				&& benPhysicalVitalDetail.getDiastolicBP_3rdReading() != null) {
+			sysBP = (short) (sysBP + benPhysicalVitalDetail.getSystolicBP_3rdReading());
+			dysBP = (short) (dysBP + benPhysicalVitalDetail.getDiastolicBP_3rdReading());
+			j++;
+		}
+
+		if (j > 0) {
+			benPhysicalVitalDetail.setAverageSystolicBP((short) (sysBP / j));
+			benPhysicalVitalDetail.setAverageDiastolicBP((short) (dysBP / j));
+		}
+		/**
+		 * 
+		 * 
+		 * Short systolicBP_1stReading =
+		 * benPhysicalVitalDetail.getSystolicBP_1stReading(); Short
+		 * diastolicBP_1stReading =
+		 * benPhysicalVitalDetail.getDiastolicBP_1stReading(); if
+		 * (systolicBP_1stReading != null && diastolicBP_1stReading != null) {
+		 * averageSystolicList.add(systolicBP_1stReading);
+		 * averageDiastolicList.add(diastolicBP_1stReading); }
+		 * 
+		 * Short systolicBP_2ndReading =
+		 * benPhysicalVitalDetail.getSystolicBP_2ndReading(); Short
+		 * diastolicBP_2ndReading =
+		 * benPhysicalVitalDetail.getDiastolicBP_2ndReading(); if
+		 * (systolicBP_2ndReading != null && diastolicBP_2ndReading != null) {
+		 * averageSystolicList.add(systolicBP_2ndReading);
+		 * averageDiastolicList.add(diastolicBP_2ndReading); }
+		 * 
+		 * Short systolicBP_3rdReading =
+		 * benPhysicalVitalDetail.getSystolicBP_3rdReading(); Short
+		 * diastolicBP_3rdReading =
+		 * benPhysicalVitalDetail.getDiastolicBP_3rdReading(); if
+		 * (systolicBP_3rdReading != null && diastolicBP_3rdReading != null) {
+		 * averageSystolicList.add(systolicBP_3rdReading);
+		 * averageDiastolicList.add(diastolicBP_3rdReading); }
+		 * 
+		 * Short averageSystolic = (short)
+		 * ((averageSystolicList.stream().mapToInt(i -> i.shortValue()).sum()) /
+		 * averageSystolicList.size()); Short averageDiastolic = (short)
+		 * ((averageDiastolicList.stream().mapToInt(i -> i.shortValue()).sum())
+		 * / averageDiastolicList.size());
+		 * 
+		 * benPhysicalVitalDetail.setAverageSystolicBP(averageSystolic);
+		 * benPhysicalVitalDetail.setAverageDiastolicBP(averageDiastolic);
+		 * 
+		 */
+
 		BenPhysicalVitalDetail response = benPhysicalVitalRepo.save(benPhysicalVitalDetail);
 		if (response != null)
 			return response.getID();

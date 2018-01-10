@@ -1843,8 +1843,13 @@ public class ANCServiceImpl implements ANCService {
 	@Override
 	public int updateBenAdherenceDetails(BenAdherence benAdherence) {
 		int r = 0;
+		String processed = benAdherenceRepo.getBenAdherenceDetailsStatus(benAdherence.getBeneficiaryRegID(), 
+				benAdherence.getBenVisitID(), benAdherence.getID());
+		if( null != processed && !"N".equals(processed)){
+			processed = "U";
+		}
 		r = benAdherenceRepo.updateBenAdherence(benAdherence.getToDrugs(), benAdherence.getDrugReason(), benAdherence.getToReferral(), 
-				benAdherence.getReferralReason(), benAdherence.getProgress(), benAdherence.getModifiedBy(), benAdherence.getBeneficiaryRegID(), 
+				benAdherence.getReferralReason(), benAdherence.getProgress(), benAdherence.getModifiedBy(), processed, benAdherence.getBeneficiaryRegID(), 
 				benAdherence.getBenVisitID(), benAdherence.getID());
 		/*BenAdherence  adherence= benAdherenceRepo.save(benAdherence);
 		if(null !=adherence){
@@ -1917,6 +1922,13 @@ public class ANCServiceImpl implements ANCService {
 	@Override
 	public int updateBenAncCareDetails(ANCCareDetails ancCareDetailsOBJ) throws ParseException {
 		int r = 0;
+		
+		String processed = ancCareRepo.getBenANCCareDetailsStatus(ancCareDetailsOBJ.getBeneficiaryRegID(), 
+				ancCareDetailsOBJ.getBenVisitID());
+		if( null != processed && !"N".equals(processed)){
+			processed = "U";
+		}
+		
 		if (ancCareDetailsOBJ.getLmpDate() != null && !ancCareDetailsOBJ.getLmpDate().isEmpty()
 				&& ancCareDetailsOBJ.getLmpDate().length() >= 10) {
 			String lmpDate = ancCareDetailsOBJ.getLmpDate().split("T")[0];
@@ -1935,19 +1947,36 @@ public class ANCServiceImpl implements ANCService {
 				ancCareDetailsOBJ.getTrimesterNumber(), ancCareDetailsOBJ.getExpectedDateofDelivery(), ancCareDetailsOBJ.getPrimiGravida(), 
 				ancCareDetailsOBJ.getObstetricFormula(), ancCareDetailsOBJ.getGravida_G(), ancCareDetailsOBJ.getTermDeliveries_T(), 
 				ancCareDetailsOBJ.getPretermDeliveries_P(), ancCareDetailsOBJ.getAbortions_A(), ancCareDetailsOBJ.getLivebirths_L(), 
-				ancCareDetailsOBJ.getBloodGroup(), ancCareDetailsOBJ.getModifiedBy(), ancCareDetailsOBJ.getBeneficiaryRegID(), ancCareDetailsOBJ.getBenVisitID());
+				ancCareDetailsOBJ.getBloodGroup(), ancCareDetailsOBJ.getModifiedBy(), processed, ancCareDetailsOBJ.getBeneficiaryRegID(), ancCareDetailsOBJ.getBenVisitID());
 		return r;
 	}	
 
 	@Override
 	public int updateBenAncImmunizationDetails(WrapperAncImmunization wrapperAncImmunization) throws ParseException {
 		int r = 0;
+		
 		List<ANCWomenVaccineDetail> ancWomenVaccineDetailList = getANCWomenVaccineDetail(wrapperAncImmunization);
+		
 		if(null != ancWomenVaccineDetailList){
-				
+			
+			String processed = "N";
+			ANCWomenVaccineDetail ancWomenVaccine = ancWomenVaccineDetailList.get(0);
+			ArrayList<Object[]> ancWomenVaccineStatuses = ancWomenVaccineRepo.getBenANCWomenVaccineStatus(ancWomenVaccine.getBeneficiaryRegID(), 
+					ancWomenVaccine.getBenVisitID());
+			Map<String, String> womenVaccineStatuses = new HashMap<String, String>();
+			
+			for(Object[] obj : ancWomenVaccineStatuses){
+				womenVaccineStatuses.put((String)obj[0], (String)obj[1]);
+			}
+			
 			for(ANCWomenVaccineDetail ancWomenVaccineDetail : ancWomenVaccineDetailList){
+				processed = womenVaccineStatuses.get(ancWomenVaccineDetail.getVaccineName());
+				if(!processed.equals("N")){
+					processed = "U";
+				}
+				
 				r = ancWomenVaccineRepo.updateANCImmunizationDetails(ancWomenVaccineDetail.getStatus(), ancWomenVaccineDetail.getReceivedDate(),
-					ancWomenVaccineDetail.getReceivedFacilityName(), ancWomenVaccineDetail.getModifiedBy(),ancWomenVaccineDetail.getBeneficiaryRegID(),
+					ancWomenVaccineDetail.getReceivedFacilityName(), ancWomenVaccineDetail.getModifiedBy(), processed, ancWomenVaccineDetail.getBeneficiaryRegID(),
 					 ancWomenVaccineDetail.getBenVisitID(), ancWomenVaccineDetail.getVaccineName());
 				
 			}
@@ -2078,12 +2107,30 @@ public class ANCServiceImpl implements ANCService {
 		Integer r = 0;
 
 		ArrayList<ChildVaccineDetail1> childVaccineDetails = wrapperImmunizationHistory.getBenChildVaccineDetails();
-		for(ChildVaccineDetail1 childVaccineDetail:childVaccineDetails){
-			r = childVaccineDetail1Repo.updateChildANCImmunization(
-					childVaccineDetail.getStatus(), childVaccineDetail.getModifiedBy(), childVaccineDetail.getBeneficiaryRegID(), 
-					childVaccineDetail.getBenVisitID(), childVaccineDetail.getDefaultReceivingAge(), childVaccineDetail.getVaccineName());
-		}
 		
+		if(null != childVaccineDetails){
+			String processed = "N";
+			ChildVaccineDetail1 childVaccine = childVaccineDetails.get(0);
+			ArrayList<Object[]> childVaccineStatuses = childVaccineDetail1Repo.getBenChildVaccineDetailStatus(childVaccine.getBeneficiaryRegID(), 
+					childVaccine.getBenVisitID());
+			
+			Map<String, String> vaccineStatuses = new HashMap<String, String>();
+			
+			for(Object[] obj : childVaccineStatuses){
+				vaccineStatuses.put((String)obj[0]+"-"+(String)obj[1], (String)obj[2]);
+			}
+			
+			for(ChildVaccineDetail1 childVaccineDetail:childVaccineDetails){
+				
+				processed = vaccineStatuses.get(childVaccineDetail.getDefaultReceivingAge()+"-"+childVaccineDetail.getVaccineName());
+				if( null != processed && !processed.equals("N")){
+					processed = "U";
+				}
+				r = childVaccineDetail1Repo.updateChildANCImmunization(
+						childVaccineDetail.getStatus(), childVaccineDetail.getModifiedBy(), processed, childVaccineDetail.getBeneficiaryRegID(), 
+						childVaccineDetail.getBenVisitID(), childVaccineDetail.getDefaultReceivingAge(), childVaccineDetail.getVaccineName());
+			}
+		}
 		return r;
 	}
 
@@ -2091,6 +2138,13 @@ public class ANCServiceImpl implements ANCService {
 	public Integer updateANCAnthropometryDetails(BenAnthropometryDetail anthropometryDetail) {
 		Integer r = 0;
 		if(null != anthropometryDetail){
+			
+			String processed = benAnthropometryRepo.getBenAnthropometryStatus(anthropometryDetail.getBeneficiaryRegID(), 
+					anthropometryDetail.getBenVisitID());
+			if(!processed.equals("N")){
+				processed = "U";
+			}
+			
 //			anthropometryDetail.setModifiedBy(anthropometryDetail.getCreatedBy());
 			r = benAnthropometryRepo.updateANCCareDetails(
 					anthropometryDetail.getWeight_Kg(), 
@@ -2102,6 +2156,7 @@ public class ANCServiceImpl implements ANCService {
 					anthropometryDetail.getWaistCircumference_cm(), 
 					anthropometryDetail.getWaistHipRatio(), 
 					anthropometryDetail.getModifiedBy(), 
+					processed,
 					anthropometryDetail.getBeneficiaryRegID(), 
 					anthropometryDetail.getBenVisitID());
 		}
@@ -2112,6 +2167,13 @@ public class ANCServiceImpl implements ANCService {
 	public Integer updateANCPhysicalVitalDetails(BenPhysicalVitalDetail physicalVitalDetail) {
 		Integer r = 0;
 		if(null != physicalVitalDetail) {
+			
+			String processed = benPhysicalVitalRepo.getBenPhysicalVitalStatus(physicalVitalDetail.getBeneficiaryRegID(), 
+					physicalVitalDetail.getBenVisitID());
+			if(!processed.equals("N")){
+				processed = "U";
+			}
+			
 			physicalVitalDetail.setAverageSystolicBP(physicalVitalDetail.getSystolicBP_1stReading());
 			physicalVitalDetail.setAverageDiastolicBP(physicalVitalDetail.getDiastolicBP_1stReading());
 			r = benPhysicalVitalRepo.updateANCCareDetails(
@@ -2124,86 +2186,127 @@ public class ANCServiceImpl implements ANCService {
 					physicalVitalDetail.getAverageDiastolicBP(),
 					physicalVitalDetail.getCapillaryRefillTime(), 
 					physicalVitalDetail.getModifiedBy(), 
+					processed,
 					physicalVitalDetail.getBeneficiaryRegID(),
 					physicalVitalDetail.getBenVisitID());
 		}
 		return r;
 	}
-
+	
 	public int updatePhyGeneralExamination(PhyGeneralExamination generalExamination) {
 		int response = 0;
 		String TypeOfDangerSigns = "";
-		if (null != generalExamination.getTypeOfDangerSigns() && generalExamination.getTypeOfDangerSigns().size() > 0) {
-			for (String TypeOfDangerSign : generalExamination.getTypeOfDangerSigns()) {
-				TypeOfDangerSigns += TypeOfDangerSign + ",";
-			}
-			generalExamination.setTypeOfDangerSign(TypeOfDangerSigns);
-		}
-
-		response = phyGeneralExaminationRepo.updatePhyGeneralExamination(generalExamination.getConsciousness(), generalExamination.getCoherence(), 
-				generalExamination.getCooperation(), generalExamination.getComfortness(), generalExamination.getBuiltAndAppearance(), generalExamination.getGait(), 
-				generalExamination.getDangerSigns(), generalExamination.getTypeOfDangerSign(), generalExamination.getPallor(), generalExamination.getJaundice(), 
-				generalExamination.getCyanosis(), generalExamination.getClubbing(), generalExamination.getLymphadenopathy(), generalExamination.getLymphnodesInvolved(),generalExamination.getTypeOfLymphadenopathy(),
-				generalExamination.getEdema(), generalExamination.getExtentOfEdema(), generalExamination.getEdemaType(), generalExamination.getModifiedBy(),
-				generalExamination.getBeneficiaryRegID(), generalExamination.getBenVisitID());
 		
+		if(null!=generalExamination){
+			
+			String processed = phyGeneralExaminationRepo.getBenGeneralExaminationStatus(generalExamination.getBeneficiaryRegID(), 
+					generalExamination.getBenVisitID());
+			if(!processed.equals("N")){
+				processed = "U";
+			}
+			
+			if (null != generalExamination.getTypeOfDangerSigns() && generalExamination.getTypeOfDangerSigns().size() > 0) {
+				for (String TypeOfDangerSign : generalExamination.getTypeOfDangerSigns()) {
+					TypeOfDangerSigns += TypeOfDangerSign + ",";
+				}
+				generalExamination.setTypeOfDangerSign(TypeOfDangerSigns);
+			}
+	
+			response = phyGeneralExaminationRepo.updatePhyGeneralExamination(generalExamination.getConsciousness(), generalExamination.getCoherence(), 
+					generalExamination.getCooperation(), generalExamination.getComfortness(), generalExamination.getBuiltAndAppearance(), generalExamination.getGait(), 
+					generalExamination.getDangerSigns(), generalExamination.getTypeOfDangerSign(), generalExamination.getPallor(), generalExamination.getJaundice(), 
+					generalExamination.getCyanosis(), generalExamination.getClubbing(), generalExamination.getLymphadenopathy(), generalExamination.getLymphnodesInvolved(),generalExamination.getTypeOfLymphadenopathy(),
+					generalExamination.getEdema(), generalExamination.getExtentOfEdema(), generalExamination.getEdemaType(), generalExamination.getModifiedBy(), processed,
+					generalExamination.getBeneficiaryRegID(), generalExamination.getBenVisitID());
+		}
 		return response;
 	}
 	
 	@Override
 	public int updatePhyHeadToToeExamination(PhyHeadToToeExamination headToToeExamination) {
 		int response = 0;
-		response = phyHeadToToeExaminationRepo.updatePhyHeadToToeExamination(headToToeExamination.getHeadtoToeExam(), 
-				headToToeExamination.getHead(), headToToeExamination.getEyes(), headToToeExamination.getEars(), headToToeExamination.getNose(), 
-				headToToeExamination.getOralCavity(), headToToeExamination.getThroat(), headToToeExamination.getBreastAndNipples(), headToToeExamination.getTrunk(), 
-				headToToeExamination.getUpperLimbs(), headToToeExamination.getLowerLimbs(), headToToeExamination.getSkin(), headToToeExamination.getHair(), 
-				headToToeExamination.getNails(), headToToeExamination.getModifiedBy(), headToToeExamination.getBeneficiaryRegID(), headToToeExamination.getBenVisitID());
-
+		if(null!=headToToeExamination){
+			String processed = phyHeadToToeExaminationRepo.getBenHeadToToeExaminationStatus(headToToeExamination.getBeneficiaryRegID(), 
+					headToToeExamination.getBenVisitID());
+			if(!processed.equals("N")){
+				processed = "U";
+			}
+			response = phyHeadToToeExaminationRepo.updatePhyHeadToToeExamination(headToToeExamination.getHeadtoToeExam(), 
+					headToToeExamination.getHead(), headToToeExamination.getEyes(), headToToeExamination.getEars(), headToToeExamination.getNose(), 
+					headToToeExamination.getOralCavity(), headToToeExamination.getThroat(), headToToeExamination.getBreastAndNipples(), headToToeExamination.getTrunk(), 
+					headToToeExamination.getUpperLimbs(), headToToeExamination.getLowerLimbs(), headToToeExamination.getSkin(), headToToeExamination.getHair(), 
+					headToToeExamination.getNails(), headToToeExamination.getModifiedBy(), processed, headToToeExamination.getBeneficiaryRegID(), headToToeExamination.getBenVisitID());
+		}
 		return response;
 	}
 	
 	@Override
 	public int updateSysGastrointestinalExamination(SysGastrointestinalExamination gastrointestinalExamination) {
 		int response = 0;
-		response = sysGastrointestinalExaminationRepo.updateSysGastrointestinalExamination(gastrointestinalExamination.getInspection(), 
-				gastrointestinalExamination.getPalpation(), gastrointestinalExamination.getPalpation_AbdomenTexture(), gastrointestinalExamination.getPalpation_Liver(), 
-				gastrointestinalExamination.getPalpation_Spleen(), gastrointestinalExamination.getPalpation_Tenderness(), gastrointestinalExamination.getPalpation_LocationOfTenderness(),
-				gastrointestinalExamination.getPercussion(), gastrointestinalExamination.getAuscultation(), gastrointestinalExamination.getAnalRegion(), 
-				gastrointestinalExamination.getModifiedBy(), gastrointestinalExamination.getBeneficiaryRegID(), gastrointestinalExamination.getBenVisitID());
-		
+		if(null!=gastrointestinalExamination){
+			String processed = sysGastrointestinalExaminationRepo.getBenGastrointestinalExaminationStatus(gastrointestinalExamination.getBeneficiaryRegID(), 
+					gastrointestinalExamination.getBenVisitID());
+			if(!processed.equals("N")){
+				processed = "U";
+			}
+			response = sysGastrointestinalExaminationRepo.updateSysGastrointestinalExamination(gastrointestinalExamination.getInspection(), 
+					gastrointestinalExamination.getPalpation(), gastrointestinalExamination.getPalpation_AbdomenTexture(), gastrointestinalExamination.getPalpation_Liver(), 
+					gastrointestinalExamination.getPalpation_Spleen(), gastrointestinalExamination.getPalpation_Tenderness(), gastrointestinalExamination.getPalpation_LocationOfTenderness(),
+					gastrointestinalExamination.getPercussion(), gastrointestinalExamination.getAuscultation(), gastrointestinalExamination.getAnalRegion(), 
+					gastrointestinalExamination.getModifiedBy(), processed, gastrointestinalExamination.getBeneficiaryRegID(), gastrointestinalExamination.getBenVisitID());
+		}
 		return response;
 	}
 	
 	@Override
 	public int updateSysCardiovascularExamination(SysCardiovascularExamination cardiovascular) {
 		int response = 0;
-		response = sysCardiovascularExaminationRepo.updateSysCardiovascularExamination(cardiovascular.getJugularVenousPulse_JVP(), 
-				cardiovascular.getApexbeatLocation(), cardiovascular.getApexbeatType(), cardiovascular.getFirstHeartSound_S1(), cardiovascular.getSecondHeartSound_S2(),
-				cardiovascular.getAdditionalHeartSounds(), cardiovascular.getMurmurs(), cardiovascular.getPericardialRub(), cardiovascular.getModifiedBy(),
-				cardiovascular.getBeneficiaryRegID(), cardiovascular.getBenVisitID());
-
+		if(null!=cardiovascular){
+			String processed = sysCardiovascularExaminationRepo.getBenCardiovascularExaminationStatus(cardiovascular.getBeneficiaryRegID(), 
+					cardiovascular.getBenVisitID());
+			if(!processed.equals("N")){
+				processed = "U";
+			}
+			response = sysCardiovascularExaminationRepo.updateSysCardiovascularExamination(cardiovascular.getJugularVenousPulse_JVP(), 
+					cardiovascular.getApexbeatLocation(), cardiovascular.getApexbeatType(), cardiovascular.getFirstHeartSound_S1(), cardiovascular.getSecondHeartSound_S2(),
+					cardiovascular.getAdditionalHeartSounds(), cardiovascular.getMurmurs(), cardiovascular.getPericardialRub(), cardiovascular.getModifiedBy(),
+					processed, cardiovascular.getBeneficiaryRegID(), cardiovascular.getBenVisitID());
+		}
 		return response;
 	}
 	
 	@Override
 	public int updateSysRespiratoryExamination(SysRespiratoryExamination respiratory) {
 		int r = 0;
-		r = sysRespiratoryExaminationRepo.updateSysRespiratoryExamination(respiratory.getTrachea(), 
-				respiratory.getInspection(), respiratory.getSignsOfRespiratoryDistress(), respiratory.getPalpation(), respiratory.getAuscultation(), 
-				respiratory.getAuscultation_Stridor(), respiratory.getAuscultation_BreathSounds(), respiratory.getAuscultation_Crepitations(), 
-				respiratory.getAuscultation_Wheezing(), respiratory.getAuscultation_PleuralRub(), respiratory.getAuscultation_ConductedSounds(), 
-				respiratory.getPercussion(), respiratory.getModifiedBy(), respiratory.getBeneficiaryRegID(), respiratory.getBenVisitID());
-		
+		if(null!=respiratory){
+			String processed = sysRespiratoryExaminationRepo.getBenRespiratoryExaminationStatus(respiratory.getBeneficiaryRegID(), 
+					respiratory.getBenVisitID());
+			if(!processed.equals("N")){
+				processed = "U";
+			}
+			r = sysRespiratoryExaminationRepo.updateSysRespiratoryExamination(respiratory.getTrachea(), 
+					respiratory.getInspection(), respiratory.getSignsOfRespiratoryDistress(), respiratory.getPalpation(), respiratory.getAuscultation(), 
+					respiratory.getAuscultation_Stridor(), respiratory.getAuscultation_BreathSounds(), respiratory.getAuscultation_Crepitations(), 
+					respiratory.getAuscultation_Wheezing(), respiratory.getAuscultation_PleuralRub(), respiratory.getAuscultation_ConductedSounds(), 
+					respiratory.getPercussion(), respiratory.getModifiedBy(), processed, respiratory.getBeneficiaryRegID(), respiratory.getBenVisitID());
+		}
 		return r;
 	}
 	
 	@Override
 	public int updateSysCentralNervousExamination(SysCentralNervousExamination centralNervous) {
 		int r = 0;
-		r = sysCentralNervousExaminationRepo.updateSysCentralNervousExamination(centralNervous.getHandedness(),
-				centralNervous.getCranialNervesExamination(), centralNervous.getMotorSystem(), centralNervous.getSensorySystem(), centralNervous.getAutonomicSystem(),
-				centralNervous.getCerebellarSigns(), centralNervous.getSignsOfMeningealIrritation(), centralNervous.getSkull(), centralNervous.getModifiedBy(),
-				centralNervous.getBeneficiaryRegID(), centralNervous.getBenVisitID());
+		if(null!=centralNervous){
+			String processed = sysCentralNervousExaminationRepo.getBenCentralNervousExaminationStatus(centralNervous.getBeneficiaryRegID(), 
+					centralNervous.getBenVisitID());
+			if(!processed.equals("N")){
+				processed = "U";
+			}
+			r = sysCentralNervousExaminationRepo.updateSysCentralNervousExamination(centralNervous.getHandedness(),
+					centralNervous.getCranialNervesExamination(), centralNervous.getMotorSystem(), centralNervous.getSensorySystem(), centralNervous.getAutonomicSystem(),
+					centralNervous.getCerebellarSigns(), centralNervous.getSignsOfMeningealIrritation(), centralNervous.getSkull(), centralNervous.getModifiedBy(),
+					processed, centralNervous.getBeneficiaryRegID(), centralNervous.getBenVisitID());
+		}
 	
 		return r;
 	}
@@ -2211,34 +2314,52 @@ public class ANCServiceImpl implements ANCService {
 	@Override
 	public int updateSysMusculoskeletalSystemExamination(SysMusculoskeletalSystemExamination musculoskeletalSystem) {
 		int r = 0;
-		r = sysMusculoskeletalSystemExaminationRepo.updateSysMusculoskeletalSystemExamination(musculoskeletalSystem.getJoint_TypeOfJoint(), 
-				musculoskeletalSystem.getJoint_Laterality(), musculoskeletalSystem.getJoint_Abnormality(), musculoskeletalSystem.getUpperLimb_Laterality(), 
-				musculoskeletalSystem.getUpperLimb_Laterality(), musculoskeletalSystem.getLowerLimb_Laterality(), musculoskeletalSystem.getLowerLimb_Abnormality(),
-				musculoskeletalSystem.getChestWall(), musculoskeletalSystem.getSpine(), musculoskeletalSystem.getModifiedBy(), 
-				musculoskeletalSystem.getBeneficiaryRegID(), musculoskeletalSystem.getBenVisitID());
-		
+		if(null!=musculoskeletalSystem){
+			String processed = sysMusculoskeletalSystemExaminationRepo.getBenMusculoskeletalSystemExaminationStatus(musculoskeletalSystem.getBeneficiaryRegID(), 
+					musculoskeletalSystem.getBenVisitID());
+			if(!processed.equals("N")){
+				processed = "U";
+			}
+			r = sysMusculoskeletalSystemExaminationRepo.updateSysMusculoskeletalSystemExamination(musculoskeletalSystem.getJoint_TypeOfJoint(), 
+					musculoskeletalSystem.getJoint_Laterality(), musculoskeletalSystem.getJoint_Abnormality(), musculoskeletalSystem.getUpperLimb_Laterality(), 
+					musculoskeletalSystem.getUpperLimb_Laterality(), musculoskeletalSystem.getLowerLimb_Laterality(), musculoskeletalSystem.getLowerLimb_Abnormality(),
+					musculoskeletalSystem.getChestWall(), musculoskeletalSystem.getSpine(), musculoskeletalSystem.getModifiedBy(), processed,
+					musculoskeletalSystem.getBeneficiaryRegID(), musculoskeletalSystem.getBenVisitID());
+		}
 		return r;
 	}
 	
 	@Override
 	public int updateSysGenitourinarySystemExamination(SysGenitourinarySystemExamination genitourinarySystem) {
 		int r = 0;
-		r = sysGenitourinarySystemExaminationRepo.updateSysGenitourinarySystemExamination(
-				genitourinarySystem.getRenalAngle(), genitourinarySystem.getSuprapubicRegion(), genitourinarySystem.getExternalGenitalia(), 
-				genitourinarySystem.getModifiedBy(), genitourinarySystem.getBeneficiaryRegID(), genitourinarySystem.getBenVisitID());
-
+		if(null!=genitourinarySystem){
+			String processed = sysGenitourinarySystemExaminationRepo.getBenGenitourinarySystemExaminationStatus(genitourinarySystem.getBeneficiaryRegID(), 
+					genitourinarySystem.getBenVisitID());
+			if(!processed.equals("N")){
+				processed = "U";
+			}
+			r = sysGenitourinarySystemExaminationRepo.updateSysGenitourinarySystemExamination(
+					genitourinarySystem.getRenalAngle(), genitourinarySystem.getSuprapubicRegion(), genitourinarySystem.getExternalGenitalia(), 
+					genitourinarySystem.getModifiedBy(), processed, genitourinarySystem.getBeneficiaryRegID(), genitourinarySystem.getBenVisitID());
+		}
 		return r;
 	}
 	
 	@Override
 	public int updateSysObstetricExamination(SysObstetricExamination obstetricExamination) {
 		int r = 0;
-		r = sysObstetricExaminationRepo.updateSysObstetricExamination(obstetricExamination.getFundalHeight(), 
-				obstetricExamination.getfHAndPOA_Status(), obstetricExamination.getfHAndPOA_Interpretation(), obstetricExamination.getFetalMovements(), 
-				obstetricExamination.getFetalHeartSounds(), obstetricExamination.getFetalHeartRate_BeatsPerMinute(), obstetricExamination.getFetalPositionOrLie(), 
-				obstetricExamination.getFetalPresentation(), obstetricExamination.getAbdominalScars(), obstetricExamination.getModifiedBy(), 
-				obstetricExamination.getBeneficiaryRegID(), obstetricExamination.getBenVisitID());
-		
+		if(null!=obstetricExamination){
+			String processed = sysObstetricExaminationRepo.getBenObstetricExaminationStatus(obstetricExamination.getBeneficiaryRegID(), 
+					obstetricExamination.getBenVisitID());
+			if(!processed.equals("N")){
+				processed = "U";
+			}
+			r = sysObstetricExaminationRepo.updateSysObstetricExamination(obstetricExamination.getFundalHeight(), 
+					obstetricExamination.getfHAndPOA_Status(), obstetricExamination.getfHAndPOA_Interpretation(), obstetricExamination.getFetalMovements(), 
+					obstetricExamination.getFetalHeartSounds(), obstetricExamination.getFetalHeartRate_BeatsPerMinute(), obstetricExamination.getFetalPositionOrLie(), 
+					obstetricExamination.getFetalPresentation(), obstetricExamination.getAbdominalScars(), obstetricExamination.getModifiedBy(), processed, 
+					obstetricExamination.getBeneficiaryRegID(), obstetricExamination.getBenVisitID());
+		}
 		return r;
 	}
 
@@ -2246,20 +2367,25 @@ public class ANCServiceImpl implements ANCService {
 	public int updateANCMenstrualHistory(BenMenstrualDetails benMenstrualDetails) {
 		int response = 0;
 		if(null != benMenstrualDetails) {
-			
-		response = benMenstrualDetailsRepo.updateMenstrualDetails(
-				benMenstrualDetails.getMenstrualCycleStatusID(), 
-				benMenstrualDetails.getRegularity(),
-				benMenstrualDetails.getMenstrualCyclelengthID(), 
-				benMenstrualDetails.getCycleLength(), 
-				benMenstrualDetails.getMenstrualFlowDurationID(), 
-				benMenstrualDetails.getBloodFlowDuration(), 
-				benMenstrualDetails.getMenstrualProblemID(), 
-				benMenstrualDetails.getProblemName(), 
-				benMenstrualDetails.getlMPDate(), 
-				benMenstrualDetails.getModifiedBy(), 
-				benMenstrualDetails.getBeneficiaryRegID(), 
-				benMenstrualDetails.getBenVisitID()); 
+			String processed = benMenstrualDetailsRepo.getBenMenstrualDetailStatus(benMenstrualDetails.getBeneficiaryRegID(), 
+					benMenstrualDetails.getBenVisitID());
+			if(!processed.equals("N")){
+				processed = "U";
+			}
+			response = benMenstrualDetailsRepo.updateMenstrualDetails(
+					benMenstrualDetails.getMenstrualCycleStatusID(), 
+					benMenstrualDetails.getRegularity(),
+					benMenstrualDetails.getMenstrualCyclelengthID(), 
+					benMenstrualDetails.getCycleLength(), 
+					benMenstrualDetails.getMenstrualFlowDurationID(), 
+					benMenstrualDetails.getBloodFlowDuration(), 
+					benMenstrualDetails.getMenstrualProblemID(), 
+					benMenstrualDetails.getProblemName(), 
+					benMenstrualDetails.getlMPDate(), 
+					benMenstrualDetails.getModifiedBy(), 
+					processed,
+					benMenstrualDetails.getBeneficiaryRegID(), 
+					benMenstrualDetails.getBenVisitID()); 
 		}
 		return response;
 	}

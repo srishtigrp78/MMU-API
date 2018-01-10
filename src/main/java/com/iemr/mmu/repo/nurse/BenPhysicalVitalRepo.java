@@ -17,12 +17,15 @@ public interface BenPhysicalVitalRepo extends CrudRepository<BenPhysicalVitalDet
 	public BenPhysicalVitalDetail getBenPhysicalVitalDetail(@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("benVisitID") Long benVisitID);
 	
+	@Query("SELECT processed from BenPhysicalVitalDetail where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	public String getBenPhysicalVitalStatus(@Param("benRegID") Long benRegID,
+			@Param("benVisitID") Long benVisitID);
 		
 	@Transactional
 	@Modifying
 	@Query("update BenPhysicalVitalDetail set temperature=:temperature, pulseRate=:pulseRate, respiratoryRate=:respiratoryRate, diastolicBP_1stReading=:diastolicBP_1stReading,"
 			+ " systolicBP_1stReading=:systolicBP_1stReading, averageSystolicBP=:averageSystolicBP, averageDiastolicBP=:averageDiastolicBP, capillaryRefillTime=:capillaryRefillTime, "
-			+ " modifiedBy=:modifiedBy where beneficiaryRegID=:beneficiaryRegID AND benVisitID=:benVisitID")
+			+ " modifiedBy=:modifiedBy, processed=:processed where beneficiaryRegID=:beneficiaryRegID AND benVisitID=:benVisitID")
 	public int updateANCCareDetails(
 			@Param("temperature") Double temperature,
 			@Param("pulseRate") Short pulseRate,
@@ -33,6 +36,7 @@ public interface BenPhysicalVitalRepo extends CrudRepository<BenPhysicalVitalDet
 			@Param("averageDiastolicBP") Short averageDiastolicBP,
 			@Param("capillaryRefillTime") String capillaryRefillTime,
 			@Param("modifiedBy") String modifiedBy,
+			@Param("processed") String processed,
 			@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("benVisitID") Long benVisitID );
 

@@ -19,19 +19,25 @@ public interface BenAdherenceRepo extends CrudRepository<BenAdherence, Long> {
 	public ArrayList<Object[]> getBenAdherence(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 	
+	@Query(" SELECT processed from BenAdherence where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID AND ID=:ID")
+	public String getBenAdherenceDetailsStatus(@Param("benRegID") Long benRegID,
+			@Param("benVisitID") Long benVisitID,
+			@Param("ID") Long ID);
+	
+	
 	@Transactional
 	@Modifying
 	@Query("update BenAdherence set toDrugs=:toDrugs, drugReason=:drugReason, toReferral=:toReferral, referralReason=:referralReason,"
-			+ " progress=:progress,  modifiedBy=:modifiedBy where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID AND ID=:ID")
+			+ " progress=:progress,  modifiedBy=:modifiedBy, processed=:processed where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID AND ID=:ID")
 	public int updateBenAdherence(@Param("toDrugs") Boolean toDrugs,
 			@Param("drugReason") String drugReason,
 			@Param("toReferral") Boolean toReferral,
 			@Param("referralReason") String referralReason,
 			@Param("progress") String progress,
 			@Param("modifiedBy") String modifiedBy,
+			@Param("processed") String processed,
 			@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID,
 			@Param("ID") Long ID);
-	
 	
 }
