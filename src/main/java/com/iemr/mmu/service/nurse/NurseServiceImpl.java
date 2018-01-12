@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.iemr.mmu.data.masterdata.nurse.CancerDiseaseType;
 import com.iemr.mmu.data.masterdata.nurse.CancerPersonalHabitType;
 import com.iemr.mmu.data.masterdata.nurse.FamilyMemberType;
@@ -44,6 +47,7 @@ import com.iemr.mmu.repo.nurse.BenPhysicalVitalRepo;
 import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
+import com.iemr.utils.mapper.InputMapper;
 
 @Service
 public class NurseServiceImpl implements NurseService {
@@ -145,27 +149,52 @@ public class NurseServiceImpl implements NurseService {
 		return "hii";
 	}
 
-	@Override
-	public Long saveBeneficiaryVisitDetails(BeneficiaryVisitDetail beneficiaryVisitDetail) {
-		BeneficiaryVisitDetail response = null;
-		try {
-			Short benVisitCount = benVisitDetailRepo
-					.getVisitCountForBeneficiary(beneficiaryVisitDetail.getBeneficiaryRegID());
+	public Integer quickConsultNurseDataInsert(JsonObject jsnOBJ) throws Exception {
+		Integer returnOBJ = 0;
+		BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(jsnOBJ.get("visitDetails"),
+				BeneficiaryVisitDetail.class);
+		Long benVisitID = saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
 
-			// System.out.println(benVisitCount);
-			if (benVisitCount != null) {
-				benVisitCount = (short) (benVisitCount + 1);
+		if (benVisitID != null && benVisitID > 0) {
+			BenAnthropometryDetail benAnthropometryDetail = InputMapper.gson().fromJson(jsnOBJ.get("vitalsDetails"),
+					BenAnthropometryDetail.class);
+			benAnthropometryDetail.setBenVisitID(benVisitID);
+			Long benAnthropometryID = saveBeneficiaryPhysicalAnthropometryDetails(benAnthropometryDetail);
+			BenPhysicalVitalDetail benPhysicalVitalDetail = InputMapper.gson().fromJson(jsnOBJ.get("vitalsDetails"),
+					BenPhysicalVitalDetail.class);
+			benPhysicalVitalDetail.setBenVisitID(benVisitID);
+			Long benPhysicalVitalID = saveBeneficiaryPhysicalVitalDetails(benPhysicalVitalDetail);
+			if (benAnthropometryID != null && benAnthropometryID > 0 && benPhysicalVitalID != null
+					&& benPhysicalVitalID > 0) {
+				returnOBJ = 1;
+
 			} else {
-				benVisitCount = 1;
+
 			}
-			beneficiaryVisitDetail.setVisitNo(benVisitCount);
-
-			response = benVisitDetailRepo.save(beneficiaryVisitDetail);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-
+		} else {
+			// Error in beneficiary visit creation...
 		}
+		return returnOBJ;
+	}
+
+	@Override
+	@Transactional(rollbackOn = Exception.class)
+	public Long saveBeneficiaryVisitDetails(BeneficiaryVisitDetail beneficiaryVisitDetail) throws Exception {
+		BeneficiaryVisitDetail response = null;
+
+		Short benVisitCount = benVisitDetailRepo
+				.getVisitCountForBeneficiary(beneficiaryVisitDetail.getBeneficiaryRegID());
+
+		// System.out.println(benVisitCount);
+		if (benVisitCount != null) {
+			benVisitCount = (short) (benVisitCount + 1);
+		} else {
+			benVisitCount = 1;
+		}
+		beneficiaryVisitDetail.setVisitNo(benVisitCount);
+
+		response = benVisitDetailRepo.save(beneficiaryVisitDetail);
+
 		if (response != null)
 			return response.getBenVisitID();
 		else

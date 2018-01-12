@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.JsonObject;
-import com.iemr.mmu.controller.doctor.main.cancerScreening.DoctorController;
 import com.iemr.mmu.data.quickConsultation.WrapperQuickConsultation;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
 import com.iemr.utils.mapper.InputMapper;
@@ -22,7 +21,7 @@ import io.swagger.annotations.ApiParam;
 @CrossOrigin
 @RestController
 @RequestMapping({ "/quickConsultation" })
-/** Objective: Saves Beneficiary Quick consultation details entered by doctor*/
+/** Objective: Saves Beneficiary Quick consultation details entered by doctor */
 public class InsertDoctorQCController {
 
 	private InputMapper inputMapper = new InputMapper();

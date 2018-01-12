@@ -13,7 +13,7 @@ import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 
 public interface NurseService {
 
-	public Long saveBeneficiaryVisitDetails(BeneficiaryVisitDetail beneficiaryVisitDetail);
+	public Long saveBeneficiaryVisitDetails(BeneficiaryVisitDetail beneficiaryVisitDetail) throws Exception;
 
 	public int saveBenFamilyCancerHistory(List<BenFamilyCancerHistory> benFamilyCancerHistory);
 
@@ -38,15 +38,15 @@ public interface NurseService {
 	int updateBenPersonalCancerDietHistory(BenPersonalCancerDietHistory benPersonalCancerDietHistory);
 
 	int updateBenVitalDetail(BenCancerVitalDetail benCancerVitalDetail);
-	
+
 	public Long saveBeneficiaryPhysicalAnthropometryDetails(BenAnthropometryDetail benAnthropometryDetail);
-	
+
 	public Long saveBeneficiaryPhysicalVitalDetails(BenPhysicalVitalDetail benPhysicalVitalDetail);
-	
+
 	public String getBeneficiaryVitalDetails(Long beneficiaryRegID, Long benVisitID);
-	
+
 	public String getBenCancerFamilyHistory(Long beneficiaryRegID);
-	
+
 	public String getBenCancerObstetricHistory(Long beneficiaryRegID);
 
 }
