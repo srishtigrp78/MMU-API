@@ -23,9 +23,6 @@ import io.swagger.annotations.ApiParam;
 @RequestMapping({ "/quickConsultation" })
 /** Objective: Saves Beneficiary Quick consultation details entered by doctor */
 public class InsertDoctorQCController {
-
-	private InputMapper inputMapper = new InputMapper();
-	private OutputResponse response;
 	private Logger logger = LoggerFactory.getLogger(InsertDoctorQCController.class);
 	private QuickConsultationServiceImpl quickConsultationServiceImpl;
 
@@ -49,27 +46,13 @@ public class InsertDoctorQCController {
 					+ "\"createdBy\":\"String\"}}") @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		inputMapper = new InputMapper();
 		logger.info("saveQuickConsultationDetail request:" + requestObj);
-
-		/*
-		 * BenChiefComplaint benChiefComplaint =
-		 * InputMapper.gson().fromJson(requestObj,BenChiefComplaint.class);
-		 * BenClinicalObservations benClinicalObservations =
-		 * InputMapper.gson().fromJson(requestObj,BenClinicalObservations.class)
-		 * ; PrescriptionDetail prescriptionDetail =
-		 * InputMapper.gson().fromJson(requestObj,PrescriptionDetail.class);
-		 * PrescribedDrugDetail prescribedDrugDetail =
-		 * InputMapper.gson().fromJson(requestObj,PrescribedDrugDetail.class);
-		 */
 
 		WrapperQuickConsultation wrapperQuickConsultation = InputMapper.gson().fromJson(requestObj,
 				WrapperQuickConsultation.class);
 
 		JsonObject caseSheet = wrapperQuickConsultation.getQuickConsultation();
 
-		// List<LabTestOrderDetail> labTestOrderDetails =
-		// wrapperQuickConsultation.getLabTestOrders();
 		try {
 			Long benChiefComplaintID = quickConsultationServiceImpl.saveBeneficiaryChiefComplaint(caseSheet);
 			Long clinicalObservationID = quickConsultationServiceImpl.saveBeneficiaryClinicalObservations(caseSheet);
@@ -87,9 +70,6 @@ public class InsertDoctorQCController {
 						prescriptionID);
 
 			}
-			// Long externalLabTestOrderID =
-			// quickConsultationServiceImpl.saveBeneficiaryExternalLabTestOrderDetails(caseSheet);
-			// && (null != externalLabTestOrderID && externalLabTestOrderID > 0)
 			if ((null != benChiefComplaintID && benChiefComplaintID > 0)
 					&& (null != clinicalObservationID && clinicalObservationID > 0) && prescriptionID > 0) {
 				response.setResponse("Quick Consultation Details stored successfully");

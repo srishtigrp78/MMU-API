@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.iemr.mmu.controller.nurse.main.quickConsultation.InsertNurseQCController;
-import com.iemr.mmu.service.nurse.NurseServiceImpl;
+import com.iemr.mmu.data.quickConsultation.WrapperQuickConsultation;
+import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
+import com.iemr.utils.mapper.InputMapper;
 import com.iemr.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 /**
  * 
@@ -29,12 +31,12 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping({ "/genOPD-QC-quickConsult" })
 public class QuickConsultCreateController {
-	private Logger logger = LoggerFactory.getLogger(InsertNurseQCController.class);
-	private NurseServiceImpl nurseServiceImpl;
+	private Logger logger = LoggerFactory.getLogger(QuickConsultCreateController.class);
+	private QuickConsultationServiceImpl quickConsultationServiceImpl;
 
 	@Autowired
-	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
-		this.nurseServiceImpl = nurseServiceImpl;
+	public void setQuickConsultationServiceImpl(QuickConsultationServiceImpl quickConsultationServiceImpl) {
+		this.quickConsultationServiceImpl = quickConsultationServiceImpl;
 	}
 
 	/**
@@ -47,11 +49,11 @@ public class QuickConsultCreateController {
 	 *            and pushed to Database table
 	 */
 	@CrossOrigin
-	@ApiOperation(value = "Save quick consult nurse data..", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Save quick consult nurse data (QC)..", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
 	public String saveBenQuickConsultDataNurse(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
-		logger.info("saveBenPhysicalVitalDetail request:" + requestObj);
+		logger.info("Save quick consult nurse data request (QC): " + requestObj);
 		try {
 			JsonObject jsnOBJ = new JsonObject();
 			JsonParser jsnParser = new JsonParser();
@@ -59,19 +61,64 @@ public class QuickConsultCreateController {
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
-				Integer r = nurseServiceImpl.quickConsultNurseDataInsert(jsnOBJ);
+				Integer r = quickConsultationServiceImpl.quickConsultNurseDataInsert(jsnOBJ);
 				if (r == 1) {
-					response.setResponse("Beneficiary Visit Details and Vitals data saved successfully");
+					response.setResponse("Beneficiary Visit Details and Vitals data saved successfully (QC)");
+				} else {
+					// Handle error and required msg...
 				}
 			} else {
 				response.setError(5000, "Invalid Data !!!");
 			}
-			System.out.println("hii");
 		} catch (Exception e) {
-			// e.printStackTrace();
-			logger.error("Error in beneficiary Visit details and Vitals data in Nurse");
+			logger.error("Error in beneficiary Visit details and Vitals data in Nurse (QC): " + e);
 
 		}
+		return response.toString();
+	}
+
+	/**
+	 * 
+	 * @param requestObj
+	 * @return success or failure response
+	 * @objective Save beneficiary data for doctor quick consult - QC.
+	 */
+
+	@CrossOrigin
+	@ApiOperation(value = "save Quick Consultation Detail for doctor", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/doctorData" }, method = { RequestMethod.POST })
+	public String saveQuickConsultationDetail(
+			@ApiParam(value = "{\"quickConsultation\":{\"beneficiaryRegID\":\"Long\",\"providerServiceMapID\": \"Integer\", \"benVisitID\":\"Long\", \"benChiefComplaint\":[{\"chiefComplaintID\":\"Integer\", "
+					+ "\"chiefComplaint\":\"String\", \"duration\":\"Integer\", \"unitOfDuration\":\"String\"}], \"description\":\"String\""
+					+ "\"clinicalObservation\":\"String\", \"externalInvestigation\":\"String\", \"diagnosisProvided\":\"String\", \"instruction\":\"String\", \"remarks\":\"String\","
+					+ "\"prescribedDrugs\":[{\"drugForm\":\"String\", \"drugTradeOrBrandName\":\"String\", \"genericDrugName\":\"String\", \"drugStrength\":\"String\", "
+					+ "\"dose\":\"String\", \"route\":\"String\", \"frequency\":\"String\", \"drugDuration\":\"String\", \"relationToFood\":\"String\", "
+					+ "\"specialInstruction\":\"String\"}], \"labTestOrders\":[{\"testID\":\"String\", \"testName\":\"String\", \"testingRequirements\":\"String\","
+					+ " \"isRadiologyImaging\":\"String\", \"createdBy\":\"String\"}, {\"testID\":\"Integer\", \"testName\":\"String\", "
+					+ "\"testingRequirements\":\"String\", \"isRadiologyImaging\":\"Boolean\"}],"
+					+ "\"createdBy\":\"String\"}}") @RequestBody String requestObj) {
+
+		OutputResponse response = new OutputResponse();
+		logger.info("saveQuickConsultationDetail for doctor request:" + requestObj);
+
+		try {
+			WrapperQuickConsultation wrapperQuickConsultation = InputMapper.gson().fromJson(requestObj,
+					WrapperQuickConsultation.class);
+
+			JsonObject quickConsultDoctorOBJ = wrapperQuickConsultation.getQuickConsultation();
+			Integer i = quickConsultationServiceImpl.quickConsultDoctorDataInsert(quickConsultDoctorOBJ);
+
+			if (i != null && i > 0) {
+				response.setResponse("Doctor Quick Consultation Details stored successfully");
+			} else {
+				response.setError(500, "Something Went-Wrong");
+			}
+			logger.info("saveQuickConsultationDetail for doctor response:" + response);
+		} catch (Exception e) {
+			logger.error("Error in saveQuickConsultationDetail doctor:" + e);
+			response.setError(e);
+		}
+
 		return response.toString();
 	}
 }

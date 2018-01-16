@@ -35,6 +35,10 @@ public class PrescribedDrugDetail {
 	private String drugTradeOrBrandName;
 
 	@Expose
+	@Column(name = "DrugID")
+	private Integer drugID;
+
+	@Expose
 	@Column(name = "GenericDrugName")
 	private String genericDrugName;
 
@@ -93,6 +97,26 @@ public class PrescribedDrugDetail {
 	public PrescribedDrugDetail() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	public Integer getDrugID() {
+		return drugID;
+	}
+
+	public void setDrugID(Integer drugID) {
+		this.drugID = drugID;
+	}
+
+	public String getDrugDuration() {
+		return drugDuration;
+	}
+
+	public void setDrugDuration(String drugDuration) {
+		this.drugDuration = drugDuration;
+	}
+
+	public void setPrescribedDrugID(Long prescribedDrugID) {
+		this.prescribedDrugID = prescribedDrugID;
 	}
 
 	public Long getPrescriptionID() {
@@ -254,8 +278,20 @@ public class PrescribedDrugDetail {
 				if (obj.has("drugTradeOrBrandName") && !obj.get("drugTradeOrBrandName").isJsonNull())
 					prescribedDrugDetail.setDrugTradeOrBrandName(obj.get("drugTradeOrBrandName").getAsString());
 
-				if (obj.has("genericDrugName") && !obj.get("genericDrugName").isJsonNull())
-					prescribedDrugDetail.setGenericDrugName(obj.get("genericDrugName").getAsString());
+				// if (obj.has("genericDrugName") &&
+				// !obj.get("genericDrugName").isJsonNull())
+				// prescribedDrugDetail.setGenericDrugName(obj.get("genericDrugName").getAsString());
+
+				if (obj.has("drug") && !obj.get("drug").isJsonNull() && obj.size() > 0) {
+					JsonObject tmpDugDeailsOBJ = obj.getAsJsonObject("drug");
+					if (tmpDugDeailsOBJ.has("drugID") && !tmpDugDeailsOBJ.get("drugID").isJsonNull()
+							&& tmpDugDeailsOBJ.has("drugDisplayName")
+							&& !tmpDugDeailsOBJ.get("drugDisplayName").isJsonNull()) {
+						prescribedDrugDetail.setDrugID(tmpDugDeailsOBJ.get("drugID").getAsInt());
+						prescribedDrugDetail.setGenericDrugName(tmpDugDeailsOBJ.get("drugDisplayName").getAsString());
+					}
+
+				}
 
 				if (obj.has("drugStrength") && !obj.get("drugStrength").isJsonNull())
 					prescribedDrugDetail.setDrugStrength(obj.get("drugStrength").getAsString());

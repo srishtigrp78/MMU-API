@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -149,6 +147,9 @@ public class NurseServiceImpl implements NurseService {
 		return "hii";
 	}
 
+	// Depricated by Neeraj on 15-jan-2018. Function moved to
+	// QuickConsultationServiceImpl class.
+	@Deprecated
 	public Integer quickConsultNurseDataInsert(JsonObject jsnOBJ) throws Exception {
 		Integer returnOBJ = 0;
 		BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(jsnOBJ.get("visitDetails"),
@@ -166,6 +167,7 @@ public class NurseServiceImpl implements NurseService {
 			Long benPhysicalVitalID = saveBeneficiaryPhysicalVitalDetails(benPhysicalVitalDetail);
 			if (benAnthropometryID != null && benAnthropometryID > 0 && benPhysicalVitalID != null
 					&& benPhysicalVitalID > 0) {
+				Integer i = updateBeneficiaryStatus('N', benVisitDetailsOBJ.getBeneficiaryRegID());
 				returnOBJ = 1;
 
 			} else {
@@ -177,9 +179,7 @@ public class NurseServiceImpl implements NurseService {
 		return returnOBJ;
 	}
 
-	@Override
-	@Transactional(rollbackOn = Exception.class)
-	public Long saveBeneficiaryVisitDetails(BeneficiaryVisitDetail beneficiaryVisitDetail) throws Exception {
+	public Long saveBeneficiaryVisitDetails(BeneficiaryVisitDetail beneficiaryVisitDetail) {
 		BeneficiaryVisitDetail response = null;
 
 		Short benVisitCount = benVisitDetailRepo

@@ -24,6 +24,7 @@ import com.iemr.mmu.data.doctor.DrugDurationUnitMaster;
 import com.iemr.mmu.data.doctor.DrugFormMaster;
 import com.iemr.mmu.data.doctor.DrugFrequencyMaster;
 import com.iemr.mmu.data.doctor.LabTestMaster;
+import com.iemr.mmu.data.doctor.TempMasterDrug;
 import com.iemr.mmu.data.doctor.WrapperCancerExamImgAnotasn;
 import com.iemr.mmu.data.registrar.WrapperRegWorklist;
 import com.iemr.mmu.repo.doctor.CancerAbdominalExaminationRepo;
@@ -41,6 +42,7 @@ import com.iemr.mmu.repo.doctor.DrugDurationUnitMasterRepo;
 import com.iemr.mmu.repo.doctor.DrugFormMasterRepo;
 import com.iemr.mmu.repo.doctor.DrugFrequencyMasterRepo;
 import com.iemr.mmu.repo.doctor.LabTestMasterRepo;
+import com.iemr.mmu.repo.doctor.TempMasterDrugRepo;
 import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
 import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
 
@@ -249,16 +251,14 @@ public class DoctorServiceImpl implements DoctorService {
 
 	public String getDocWorkList() {
 		List<Object[]> docWorkListData = docWorkListRepo.getDocWorkList();
-		//System.out.println("hello");
+		// System.out.println("hello");
 		return WrapperRegWorklist.getDocWorkListData(docWorkListData);
 	}
-
-	
 
 	public Map<String, Object> getBenDoctorEnteredDataForCaseSheet(Long benRegID, Long benVisitID, Date visitDateTime) {
 		Map<String, Object> resMap = new HashMap<>();
 
-		//System.out.println("getBenDoctorEnteredDataForCaseSheet");
+		// System.out.println("getBenDoctorEnteredDataForCaseSheet");
 		resMap.put("abdominalExamination", getBenCancerAbdominalExaminationData(benRegID, benVisitID, visitDateTime));
 
 		resMap.put("breastExamination", getBenCancerBreastExaminationData(benRegID, benVisitID, visitDateTime));
@@ -294,7 +294,7 @@ public class DoctorServiceImpl implements DoctorService {
 	private CancerDiagnosis getBenCancerDiagnosisData(Long benRegID, Long benVisitID, Date visitDateTime) {
 		CancerDiagnosis cancerDiagnosis = cancerDiagnosisRepo.getBenCancerDiagnosisDetails(benRegID, benVisitID,
 				visitDateTime);
-	//	System.out.println("cancerDiagnosis .....");
+		// System.out.println("cancerDiagnosis .....");
 		if (null != cancerDiagnosis && null != cancerDiagnosis.getInstitute()) {
 			cancerDiagnosis.setReferredToInstituteName(cancerDiagnosis.getInstitute().getInstitutionName());
 		}
@@ -338,6 +338,13 @@ public class DoctorServiceImpl implements DoctorService {
 		return new Gson().toJson(resMap);
 	}
 
+	private TempMasterDrugRepo tempMasterDrugRepo;
+
+	@Autowired
+	public void setTempMasterDrugRepo(TempMasterDrugRepo tempMasterDrugRepo) {
+		this.tempMasterDrugRepo = tempMasterDrugRepo;
+	}
+
 	@Override
 	public String getQuickConsultMasterData() {
 		Map<String, Object> resMap = new HashMap<>();
@@ -347,18 +354,20 @@ public class DoctorServiceImpl implements DoctorService {
 		ArrayList<Object[]> dfmList = drugFormMasterRepo.getDrugFormMaster();
 		ArrayList<Object[]> dfrmList = drugFrequencyMasterRepo.getDrugFrequencyMaster();
 		ArrayList<Object[]> ltmList = labTestMasterRepo.getLabTestMaster();
+		ArrayList<TempMasterDrug> tempMasterDrugList = tempMasterDrugRepo.findByDeletedFalseOrderByDrugDisplayNameAsc();
 		resMap.put("chiefComplaintMaster", ChiefComplaintMaster.getChiefComplaintMasters(ccList));
 		resMap.put("drugDoseMaster", DrugDoseMaster.getDrugDoseMasters(ddmList));
 		resMap.put("drugDurationUnitMaster", DrugDurationUnitMaster.getDrugDurationUnitMaster(ddumList));
 		resMap.put("drugFormMaster", DrugFormMaster.getDrugFormMaster(dfmList));
 		resMap.put("drugFrequencyMaster", DrugFrequencyMaster.getDrugFrequencyMaster(dfrmList));
 		resMap.put("labTestMaster", LabTestMaster.getLabTestMasters(ltmList));
+		resMap.put("tempDrugMaster", TempMasterDrug.getTempDrugMasterList(tempMasterDrugList));
 		return new Gson().toJson(resMap);
 	}
 
 	@Override
 	public Long saveDocExaminationImageAnnotation(List<WrapperCancerExamImgAnotasn> wrapperCancerExamImgAnotasnList) {
-		//System.out.println("hello");
+		// System.out.println("hello");
 		Long x = null;
 		List<CancerExaminationImageAnnotation> objList = (List<CancerExaminationImageAnnotation>) cancerExaminationImageAnnotationRepo
 				.save(getCancerExaminationImageAnnotationList(wrapperCancerExamImgAnotasnList));
