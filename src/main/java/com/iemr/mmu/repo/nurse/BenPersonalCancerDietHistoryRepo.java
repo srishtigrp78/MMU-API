@@ -22,13 +22,14 @@ public interface BenPersonalCancerDietHistoryRepo extends CrudRepository<BenPers
 
 	@Transactional
 	@Modifying
-	@Query("update BenPersonalCancerDietHistory set dietType=:dietType, fruitConsumptionDays=:fruitConsumptionDays, "
+	@Query("update BenPersonalCancerDietHistory set providerServiceMapID=:providerServiceMapID, dietType=:dietType, fruitConsumptionDays=:fruitConsumptionDays, "
 			+ "fruitQuantityPerDay=:fruitQuantityPerDay, vegetableConsumptionDays=:vegetableConsumptionDays, vegetableQuantityPerDay=:vegetableQuantityPerDay, "
 			+ " intakeOfOutsidePreparedMeal=:intakeOfOutsidePreparedMeal, typeOfOilConsumed=:typeOfOilConsumed, physicalActivityType=:physicalActivityType,"
 			+ " ssRadiationExposure=:ssRadiationExposure, isThyroidDisorder=:isThyroidDisorder,"
-			+ " modifiedBy=:modifiedBy where "
+			+ " modifiedBy=:modifiedBy, processed=:processed where "
 			+ "  beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
-	public int updateBenPersonalCancerDietHistory(@Param("dietType") String dietType,
+	public int updateBenPersonalCancerDietHistory(@Param("providerServiceMapID") Integer providerServiceMapID,
+			@Param("dietType") String dietType,
 			@Param("fruitConsumptionDays") Integer fruitConsumptionDays,
 			@Param("fruitQuantityPerDay") Integer fruitQuantityPerDay,
 			@Param("vegetableConsumptionDays") Integer vegetableConsumptionDays,
@@ -39,7 +40,8 @@ public interface BenPersonalCancerDietHistoryRepo extends CrudRepository<BenPers
 			@Param("ssRadiationExposure") Boolean ssRadiationExposure,
 			@Param("isThyroidDisorder") Boolean isThyroidDisorder, @Param("modifiedBy") String modifiedBy,
 			@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("benVisitID") Long benVisitID,
+			@Param("processed") Character processed);
 
 	@Query("SELECT bpdh from BenPersonalCancerDietHistory bpdh  WHERE bpdh.beneficiaryRegID = :benRegID AND bpdh.benVisitID = :benVisitID"
 			+ " AND DATE(createdDate) = :createdDate")
@@ -53,5 +55,9 @@ public interface BenPersonalCancerDietHistoryRepo extends CrudRepository<BenPers
 			+ "or typeOfOilConsumed <> '' or physicalActivityType is not null or ssRadiationExposure is not null or isThyroidDisorder is not null) order by createdDate desc")
 	public ArrayList<Object[]> getBenPersonaDietHistory(@Param("benRegID") Long benRegID);
 	
+	
+	@Query("SELECT processed from BenPersonalCancerDietHistory where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	public Character getPersonalCancerDietHistoryStatus(@Param("benRegID") Long benRegID,
+			@Param("benVisitID") Long benVisitID);
 	
 }

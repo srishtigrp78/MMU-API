@@ -346,33 +346,47 @@ public class NurseServiceImpl implements NurseService {
 	@Override
 	public int updateBeneficiaryFamilyCancerHistory(List<BenFamilyCancerHistory> benFamilyCancerHistoryList) {
 		int response = 0;
+		int delRes = 0;
 		try {
 			if (benFamilyCancerHistoryList.size() > 0) {
-				benFamilyCancerHistoryRepo.deleteExistingFamilyRecord(
-						benFamilyCancerHistoryList.get(0).getBeneficiaryRegID(),
+				
+				ArrayList<Object[]> benFamilyCancerHistoryStatuses = benFamilyCancerHistoryRepo.getFamilyCancerHistoryStatus(benFamilyCancerHistoryList.get(0).getBeneficiaryRegID(), 
 						benFamilyCancerHistoryList.get(0).getBenVisitID());
+				
+				for(Object[] obj : benFamilyCancerHistoryStatuses){
+					Character processed = (Character)obj[1];
+					if( null != processed && processed!='N'){
+						processed = 'U';
+					}
+					delRes = benFamilyCancerHistoryRepo.deleteExistingFamilyRecord((Long)obj[0], processed);
+				}
+				
 			}
 			ArrayList<BenFamilyCancerHistory> newbenFamilyCancerHistoryList = new ArrayList<BenFamilyCancerHistory>();
-			for (BenFamilyCancerHistory benFamilyCancerHistory : benFamilyCancerHistoryList) {
-				List<String> familyMenberList = benFamilyCancerHistory.getFamilyMemberList();
-				if (null != familyMenberList && !familyMenberList.isEmpty()) {
-					String familyMemberData = "";
-					for (String familyMember : familyMenberList) {
-						familyMemberData += familyMember + ",";
+			if(delRes>0){
+				for (BenFamilyCancerHistory benFamilyCancerHistory : benFamilyCancerHistoryList) {
+					List<String> familyMenberList = benFamilyCancerHistory.getFamilyMemberList();
+					if (null != familyMenberList && !familyMenberList.isEmpty()) {
+						String familyMemberData = "";
+						for (String familyMember : familyMenberList) {
+							familyMemberData += familyMember + ",";
+						}
+						benFamilyCancerHistory.setFamilyMember(familyMemberData);
+						newbenFamilyCancerHistoryList.add(benFamilyCancerHistory);
 					}
-					benFamilyCancerHistory.setFamilyMember(familyMemberData);
-					newbenFamilyCancerHistoryList.add(benFamilyCancerHistory);
+	
 				}
-
-			}
-			if (newbenFamilyCancerHistoryList.size() > 0) {
-				ArrayList<BenFamilyCancerHistory> benFamilyCancerHistories = (ArrayList<BenFamilyCancerHistory>) benFamilyCancerHistoryRepo
-						.save(newbenFamilyCancerHistoryList);
-				if (benFamilyCancerHistories.size() > 0) {
-					response = benFamilyCancerHistories.size();
+				if (newbenFamilyCancerHistoryList.size() > 0) {
+					ArrayList<BenFamilyCancerHistory> benFamilyCancerHistories = (ArrayList<BenFamilyCancerHistory>) benFamilyCancerHistoryRepo
+							.save(newbenFamilyCancerHistoryList);
+					if (benFamilyCancerHistories.size() > 0) {
+						response = benFamilyCancerHistories.size();
+					}
+				} else {
+					response = 0;
 				}
 			} else {
-				response = 1;
+				response = 0;
 			}
 
 		} catch (Exception e) {
@@ -386,9 +400,15 @@ public class NurseServiceImpl implements NurseService {
 	@Override
 	public int updateBenObstetricCancerHistory(BenObstetricCancerHistory benObstetricCancerHistory) {
 		int response = 0;
+		
+		Character processed = benObstetricCancerHistoryRepo.getObstetricCancerHistoryStatus(benObstetricCancerHistory.getBeneficiaryRegID(), 
+				benObstetricCancerHistory.getBenVisitID());
+		if( null != processed && processed!='N'){
+			processed = 'U';
+		}
 		try {
 
-			response = benObstetricCancerHistoryRepo.updateBenObstetricCancerHistory(
+			response = benObstetricCancerHistoryRepo.updateBenObstetricCancerHistory(benObstetricCancerHistory.getProviderServiceMapID(),
 					benObstetricCancerHistory.getPregnancyStatus(), benObstetricCancerHistory.getIsUrinePregTest(),
 					benObstetricCancerHistory.getPregnant_No(), benObstetricCancerHistory.getNoOfLivingChild(),
 					benObstetricCancerHistory.getIsAbortion(), benObstetricCancerHistory.getIsOralContraceptiveUsed(),
@@ -400,7 +420,7 @@ public class NurseServiceImpl implements NurseService {
 					benObstetricCancerHistory.getIsInterMenstrualBleeding(),
 					benObstetricCancerHistory.getMenopauseAge(), benObstetricCancerHistory.getIsPostMenopauseBleeding(),
 					benObstetricCancerHistory.getIsFoulSmellingDischarge(), benObstetricCancerHistory.getModifiedBy(),
-					benObstetricCancerHistory.getBeneficiaryRegID(), benObstetricCancerHistory.getBenVisitID());
+					benObstetricCancerHistory.getBeneficiaryRegID(), benObstetricCancerHistory.getBenVisitID(), processed);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -413,6 +433,13 @@ public class NurseServiceImpl implements NurseService {
 	@Override
 	public int updateBenPersonalCancerHistory(BenPersonalCancerHistory benPersonalCancerHistory) {
 		int response = 0;
+		
+		Character processed = benPersonalCancerHistoryRepo.getPersonalCancerHistoryStatus(benPersonalCancerHistory.getBeneficiaryRegID(), 
+				benPersonalCancerHistory.getBenVisitID());
+		if( null != processed && processed!='N'){
+			processed = 'U';
+		}
+		
 		try {
 
 			List<String> typeOfTobaccoProductList = benPersonalCancerHistory.getTypeOfTobaccoProductList();
@@ -423,7 +450,7 @@ public class NurseServiceImpl implements NurseService {
 				}
 				benPersonalCancerHistory.setTypeOfTobaccoProduct(typeOfTobaccoProductData);
 			}
-			response = benPersonalCancerHistoryRepo.updateBenPersonalCancerHistory(
+			response = benPersonalCancerHistoryRepo.updateBenPersonalCancerHistory(benPersonalCancerHistory.getProviderServiceMapID(),
 					benPersonalCancerHistory.getTobaccoUse(), benPersonalCancerHistory.getStartAge_year(),
 					benPersonalCancerHistory.getEndAge_year(), benPersonalCancerHistory.getTypeOfTobaccoProduct(),
 					benPersonalCancerHistory.getQuantityPerDay(), benPersonalCancerHistory.getIsFilteredCigaerette(),
@@ -431,7 +458,7 @@ public class NurseServiceImpl implements NurseService {
 					benPersonalCancerHistory.getDurationOfBetelQuid(), benPersonalCancerHistory.getAlcoholUse(),
 					benPersonalCancerHistory.getSsAlcoholUsed(), benPersonalCancerHistory.getFrequencyOfAlcoholUsed(),
 					benPersonalCancerHistory.getModifiedBy(), benPersonalCancerHistory.getBeneficiaryRegID(),
-					benPersonalCancerHistory.getBenVisitID());
+					benPersonalCancerHistory.getBenVisitID(), processed);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -444,6 +471,13 @@ public class NurseServiceImpl implements NurseService {
 	@Override
 	public int updateBenPersonalCancerDietHistory(BenPersonalCancerDietHistory benPersonalCancerDietHistory) {
 		int response = 0;
+		
+		Character processed = benPersonalCancerDietHistoryRepo.getPersonalCancerDietHistoryStatus(benPersonalCancerDietHistory.getBeneficiaryRegID(), 
+				benPersonalCancerDietHistory.getBenVisitID());
+		if( null != processed && processed!='N'){
+			processed = 'U';
+		}
+		
 		try {
 			List<String> typeOfOilConsumedList = benPersonalCancerDietHistory.getTypeOfOilConsumedList();
 			if (null != typeOfOilConsumedList && !typeOfOilConsumedList.isEmpty()) {
@@ -454,7 +488,7 @@ public class NurseServiceImpl implements NurseService {
 				benPersonalCancerDietHistory.setTypeOfOilConsumed(typeOfOilConsumedData);
 			}
 
-			response = benPersonalCancerDietHistoryRepo.updateBenPersonalCancerDietHistory(
+			response = benPersonalCancerDietHistoryRepo.updateBenPersonalCancerDietHistory(benPersonalCancerDietHistory.getProviderServiceMapID(),
 					benPersonalCancerDietHistory.getDietType(), benPersonalCancerDietHistory.getFruitConsumptionDays(),
 					benPersonalCancerDietHistory.getFruitQuantityPerDay(),
 					benPersonalCancerDietHistory.getVegetableConsumptionDays(),
@@ -464,7 +498,7 @@ public class NurseServiceImpl implements NurseService {
 					benPersonalCancerDietHistory.getPhysicalActivityType(),
 					benPersonalCancerDietHistory.getSsRadiationExposure(),
 					benPersonalCancerDietHistory.getIsThyroidDisorder(), benPersonalCancerDietHistory.getModifiedBy(),
-					benPersonalCancerDietHistory.getBeneficiaryRegID(), benPersonalCancerDietHistory.getBenVisitID());
+					benPersonalCancerDietHistory.getBeneficiaryRegID(), benPersonalCancerDietHistory.getBenVisitID(), processed);
 
 		} catch (Exception e) {
 			e.printStackTrace();
