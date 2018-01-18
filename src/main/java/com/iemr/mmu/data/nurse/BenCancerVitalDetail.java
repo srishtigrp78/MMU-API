@@ -91,7 +91,7 @@ public class BenCancerVitalDetail {
 	private Boolean deleted;
 	@Expose
 	@Column(name = "Processed", insertable = false, updatable = true)
-	private String processed;
+	private Character processed;
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
@@ -115,7 +115,7 @@ public class BenCancerVitalDetail {
 			Short bloodGlucose_Random, Short bloodGlucose_2HrPostPrandial, Short systolicBP_1stReading,
 			Short diastolicBP_1stReading, Short systolicBP_2ndReading, Short diastolicBP_2ndReading,
 			Short systolicBP_3rdReading, Short diastolicBP_3rdReading, Short hbA1C, Short hemoglobin, Boolean deleted,
-			String processed, String createdBy, Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
+			Character processed, String createdBy, Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -295,11 +295,11 @@ public class BenCancerVitalDetail {
 		this.deleted = deleted;
 	}
 
-	public String getProcessed() {
+	public Character getProcessed() {
 		return processed;
 	}
 
-	public void setProcessed(String processed) {
+	public void setProcessed(Character processed) {
 		this.processed = processed;
 	}
 

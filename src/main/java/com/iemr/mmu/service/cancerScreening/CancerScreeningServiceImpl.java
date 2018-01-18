@@ -10,11 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonObject;
+import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
 import com.iemr.mmu.data.nurse.BenFamilyCancerHistory;
 import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
+import com.iemr.mmu.repo.nurse.BenCancerVitalDetailRepo;
 import com.iemr.mmu.repo.nurse.BenFamilyCancerHistoryRepo;
 import com.iemr.mmu.repo.nurse.BenObstetricCancerHistoryRepo;
 import com.iemr.mmu.repo.nurse.BenPersonalCancerDietHistoryRepo;
@@ -31,6 +33,7 @@ public class CancerScreeningServiceImpl implements CancerScreeningService {
 	private BenObstetricCancerHistoryRepo benObstetricCancerHistoryRepo;
 	private BenPersonalCancerDietHistoryRepo benPersonalCancerDietHistoryRepo;
 	private BenPersonalCancerHistoryRepo benPersonalCancerHistoryRepo;
+	private BenCancerVitalDetailRepo benCancerVitalDetailRepo;
 	
 	@Autowired
 	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
@@ -55,6 +58,11 @@ public class CancerScreeningServiceImpl implements CancerScreeningService {
 	@Autowired
 	public void setBenPersonalCancerHistoryRepo(BenPersonalCancerHistoryRepo benPersonalCancerHistoryRepo) {
 		this.benPersonalCancerHistoryRepo = benPersonalCancerHistoryRepo;
+	}
+	
+	@Autowired
+	public void setBenCancerVitalDetailRepo(BenCancerVitalDetailRepo benCancerVitalDetailRepo) {
+		this.benCancerVitalDetailRepo = benCancerVitalDetailRepo;
 	}
 	
 	public void saveCancerScreeningNurseData(JsonObject requestOBJ) {
@@ -150,6 +158,7 @@ public class CancerScreeningServiceImpl implements CancerScreeningService {
 		}
 		return historyUpdateRes;
 	}
+	
 	@Override
 	public int updateBeneficiaryFamilyCancerHistory(List<BenFamilyCancerHistory> benFamilyCancerHistoryList) {
 		int response = 0;
@@ -314,4 +323,26 @@ public class CancerScreeningServiceImpl implements CancerScreeningService {
 		return response;
 
 	}
+	
+	@Override
+	public int updateBenVitalDetail(BenCancerVitalDetail benCancerVitalDetail) {
+
+		Character processed = benCancerVitalDetailRepo.getCancerVitalStatus(benCancerVitalDetail.getBeneficiaryRegID(), 
+				benCancerVitalDetail.getBenVisitID());
+		if( null != processed && processed!='N'){
+			processed = 'U';
+		}
+		int response = benCancerVitalDetailRepo.updateBenCancerVitalDetail(benCancerVitalDetail.getProviderServiceMapID(),
+				benCancerVitalDetail.getWeight_Kg(),
+				benCancerVitalDetail.getHeight_cm(), benCancerVitalDetail.getWaistCircumference_cm(),
+				benCancerVitalDetail.getBloodGlucose_Fasting(), benCancerVitalDetail.getBloodGlucose_Random(),
+				benCancerVitalDetail.getBloodGlucose_2HrPostPrandial(), benCancerVitalDetail.getSystolicBP_1stReading(),
+				benCancerVitalDetail.getDiastolicBP_1stReading(), benCancerVitalDetail.getSystolicBP_2ndReading(),
+				benCancerVitalDetail.getDiastolicBP_2ndReading(), benCancerVitalDetail.getSystolicBP_3rdReading(),
+				benCancerVitalDetail.getDiastolicBP_3rdReading(), benCancerVitalDetail.getHbA1C(),
+				benCancerVitalDetail.getHemoglobin(), benCancerVitalDetail.getModifiedBy(),
+				benCancerVitalDetail.getBeneficiaryRegID(), benCancerVitalDetail.getBenVisitID(), processed);
+		return response;
+	}
+
 }

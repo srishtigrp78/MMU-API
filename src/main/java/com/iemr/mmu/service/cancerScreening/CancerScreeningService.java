@@ -3,6 +3,7 @@ package com.iemr.mmu.service.cancerScreening;
 import java.util.List;
 
 import com.google.gson.JsonObject;
+import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
 import com.iemr.mmu.data.nurse.BenFamilyCancerHistory;
 import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
@@ -19,5 +20,7 @@ public interface CancerScreeningService {
 	public int updateBenPersonalCancerHistory(BenPersonalCancerHistory benPersonalCancerHistory);
 
 	public int updateBenPersonalCancerDietHistory(BenPersonalCancerDietHistory benPersonalCancerDietHistory);
+
+	public int updateBenVitalDetail(BenCancerVitalDetail benCancerVitalDetail);
 
 }

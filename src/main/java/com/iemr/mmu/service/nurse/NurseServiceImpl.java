@@ -510,7 +510,13 @@ public class NurseServiceImpl implements NurseService {
 
 	@Override
 	public int updateBenVitalDetail(BenCancerVitalDetail benCancerVitalDetail) {
-		int response = benCancerVitalDetailRepo.updateBenCancerVitalDetail(benCancerVitalDetail.getWeight_Kg(),
+		Character processed = benCancerVitalDetailRepo.getCancerVitalStatus(benCancerVitalDetail.getBeneficiaryRegID(), 
+				benCancerVitalDetail.getBenVisitID());
+		if( null != processed && processed!='N'){
+			processed = 'U';
+		}
+		int response = benCancerVitalDetailRepo.updateBenCancerVitalDetail(benCancerVitalDetail.getProviderServiceMapID(),
+				benCancerVitalDetail.getWeight_Kg(),
 				benCancerVitalDetail.getHeight_cm(), benCancerVitalDetail.getWaistCircumference_cm(),
 				benCancerVitalDetail.getBloodGlucose_Fasting(), benCancerVitalDetail.getBloodGlucose_Random(),
 				benCancerVitalDetail.getBloodGlucose_2HrPostPrandial(), benCancerVitalDetail.getSystolicBP_1stReading(),
@@ -518,7 +524,7 @@ public class NurseServiceImpl implements NurseService {
 				benCancerVitalDetail.getDiastolicBP_2ndReading(), benCancerVitalDetail.getSystolicBP_3rdReading(),
 				benCancerVitalDetail.getDiastolicBP_3rdReading(), benCancerVitalDetail.getHbA1C(),
 				benCancerVitalDetail.getHemoglobin(), benCancerVitalDetail.getModifiedBy(),
-				benCancerVitalDetail.getBeneficiaryRegID(), benCancerVitalDetail.getBenVisitID());
+				benCancerVitalDetail.getBeneficiaryRegID(), benCancerVitalDetail.getBenVisitID(), processed);
 		return response;
 	}
 
