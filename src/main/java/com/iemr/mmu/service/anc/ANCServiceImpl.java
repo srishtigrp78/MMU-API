@@ -92,6 +92,7 @@ import com.iemr.mmu.repo.quickConsultation.BenClinicalObservationsRepo;
 import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
+import com.iemr.mmu.service.cancerScreening.CancerScreeningServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
 
@@ -107,6 +108,8 @@ public class ANCServiceImpl implements ANCService {
 	private BenAnthropometryRepo benAnthropometryRepo;
 	private BenPhysicalVitalRepo benPhysicalVitalRepo;
 
+	private CancerScreeningServiceImpl cancerScreeningServiceImpl;
+	
 	@Autowired
 	public void setBenChiefComplaintRepo(BenChiefComplaintRepo benChiefComplaintRepo) {
 		this.benChiefComplaintRepo = benChiefComplaintRepo;
@@ -129,6 +132,11 @@ public class ANCServiceImpl implements ANCService {
 	@Autowired
 	public void setPrescriptionDetailRepo(PrescriptionDetailRepo prescriptionDetailRepo) {
 		this.prescriptionDetailRepo = prescriptionDetailRepo;
+	}
+	
+	@Autowired
+	public void setCancerScreeningServiceImpl(CancerScreeningServiceImpl cancerScreeningServiceImpl) {
+		this.cancerScreeningServiceImpl = cancerScreeningServiceImpl;
 	}
 
 	private PhyGeneralExaminationRepo phyGeneralExaminationRepo;
@@ -730,7 +738,7 @@ public class ANCServiceImpl implements ANCService {
 		Map<String, Object> resMap = new HashMap<>();
 
 		resMap.put("ANCNurseVisitDetail",
-				nurseServiceImpl.getBenDataFrmNurseToDocVisitDetailsScreen(benRegID, benVisitID));
+				nurseServiceImpl.getCSVisitDetails(benRegID, benVisitID));
 
 		resMap.put("BenAdherence", getBenAdherence(benRegID, benVisitID));
 

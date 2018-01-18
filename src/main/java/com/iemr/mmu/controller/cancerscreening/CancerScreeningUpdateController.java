@@ -1,8 +1,6 @@
 package com.iemr.mmu.controller.cancerscreening;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -20,10 +18,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.iemr.mmu.controller.doctor.main.cancerScreening.UpdateDoctorCSController;
 import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
-import com.iemr.mmu.data.nurse.BenFamilyCancerHistory;
 import com.iemr.mmu.service.cancerScreening.CancerScreeningServiceImpl;
-import com.iemr.mmu.service.common.master.DoctorMasterDataService;
-import com.iemr.mmu.service.common.master.DoctorMasterDataServiceImpl;
 import com.iemr.utils.mapper.InputMapper;
 import com.iemr.utils.response.OutputResponse;
 
@@ -106,6 +101,15 @@ public class CancerScreeningUpdateController {
 
 		return response.toString();
 	}
+	
+	
+	/**
+	 * 
+	 * @param requestObj
+	 * @return success or failure response
+	 * @objective Replace Cancer Screening Vital Details 
+	 * 				entered by Nurse with the details entered by Doctor
+	 */
 	
 	@CrossOrigin
 	@ApiOperation(value = "update Ben Vital Detail", consumes = "application/json", produces = "application/json")
