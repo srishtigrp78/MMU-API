@@ -1,6 +1,5 @@
 package com.iemr.mmu.service.registrar;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,8 +16,6 @@ import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
-import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.registrar.BenGovIdMapping;
 import com.iemr.mmu.data.registrar.BeneficiaryData;
 import com.iemr.mmu.data.registrar.BeneficiaryDemographicAdditional;
@@ -180,10 +177,10 @@ public class RegistrarServiceImpl implements RegistrarService {
 			cal.set(Calendar.MONTH, 1);
 			cal.set(Calendar.DAY_OF_YEAR, 1);
 
-			//System.out.println(cal.getTime());
+			// System.out.println(cal.getTime());
 
 			Timestamp timestamp = new java.sql.Timestamp(cal.getTimeInMillis());
-			//System.out.println(timestamp);
+			// System.out.println(timestamp);
 			benDemoAd.setMarrigeDate(timestamp);
 
 		}
@@ -215,10 +212,10 @@ public class RegistrarServiceImpl implements RegistrarService {
 		Long tempBenGovMapID = null;
 		// Call repository for saving Data to table m_bengovidmap and
 		// Persistence Class = BenGovIdMapping
-		//System.out.println("hello");
+		// System.out.println("hello");
 		ArrayList<BenGovIdMapping> benGovIDMap = (ArrayList<BenGovIdMapping>) registrarRepoBenGovIdMapping
 				.save(BenGovIdMapping.getBenGovIdMappingOBJList(benD, benRegID));
-		//System.out.println("hello");
+		// System.out.println("hello");
 		return benGovIDMap.size();
 	}
 
@@ -229,7 +226,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 		// Persistence Class: BeneficiaryData, BeneficiaryDemographicData,
 		// ...................BeneficiaryPhoneMapping
 		List<Object[]> resList = registrarRepoBenData.getRegistrarWorkList(i);
-		//System.out.println("helloo.....");
+		// System.out.println("helloo.....");
 		return WrapperRegWorklist.getRegistrarWorkList(resList);
 	}
 
@@ -237,7 +234,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 	public String getQuickSearchBenData(String benID) {
 		// List<Object[]> resList = registrarRepoBenData.getQuickSearch(benID);
 		List<Object[]> resList = reistrarRepoBenSearch.getQuickSearch(benID);
-		//System.out.println("hello...");
+		// System.out.println("hello...");
 		return WrapperRegWorklist.getRegistrarWorkList(resList);
 	}
 
@@ -290,7 +287,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 					benLastName, phoneNo, aadharNo, govIDNo, stateID, districtID);
 
 			result = WrapperRegWorklist.getRegistrarWorkList(resList);
-			//System.out.println(resList);
+			// System.out.println(resList);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -315,7 +312,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 				parsedDate = dateFormat.parse(benD.get("dob").getAsString());
 				Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
 				benData.setDob(timestamp);
-				//System.out.println("hello");
+				// System.out.println("hello");
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -335,7 +332,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 
 		if (benD.has("aadharNo") && !benD.get("aadharNo").isJsonNull())
 			benData.setAadharNo(benD.get("aadharNo").getAsString());
-		//System.out.println(benData);
+		// System.out.println(benData);
 		// Following values will get only in update request
 		if (benD.has("beneficiaryRegID")) {
 			if (!benD.get("beneficiaryRegID").isJsonNull()) {
@@ -347,7 +344,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 				benData.setModifiedBy(benD.get("modifiedBy").getAsString());
 			}
 		}
-		//System.out.println(benData);
+		// System.out.println(benData);
 		return benData;
 	}
 
@@ -381,13 +378,13 @@ public class RegistrarServiceImpl implements RegistrarService {
 			benDemoData.setEducationID(benD.get("educationQualification").getAsShort());
 		if (benD.has("income") && !benD.get("income").isJsonNull())
 			benDemoData.setIncomeStatusID(benD.get("income").getAsShort());
-		//System.out.println(benDemoData);
+		// System.out.println(benDemoData);
 		// Following values will get only in update request
 		if (benD.has("benDemographicsID") && !benD.get("benDemographicsID").isJsonNull())
 			benDemoData.setBenDemographicsID(benD.get("benDemographicsID").getAsLong());
 		if (benD.has("modifiedBy") && !benD.get("modifiedBy").isJsonNull())
 			benDemoData.setModifiedBy(benD.get("modifiedBy").getAsString());
-		//System.out.println(benDemoData);
+		// System.out.println(benDemoData);
 		return benDemoData;
 	}
 
@@ -399,13 +396,13 @@ public class RegistrarServiceImpl implements RegistrarService {
 			benPhoneMap.setPhoneNo(benD.get("phoneNo").getAsString());
 		if (benD.has("createdBy") && !benD.get("createdBy").isJsonNull())
 			benPhoneMap.setCreatedBy(benD.get("createdBy").getAsString());
-		//System.out.println(benPhoneMap);
+		// System.out.println(benPhoneMap);
 		// Following values will get only in update request
 		if (benD.has("benPhMapID") && !benD.get("benPhMapID").isJsonNull())
 			benPhoneMap.setBenPhMapID(benD.get("benPhMapID").getAsLong());
 		if (benD.has("modifiedBy") && !benD.get("modifiedBy").isJsonNull())
 			benPhoneMap.setModifiedBy(benD.get("modifiedBy").getAsString());
-		//System.out.println(benPhoneMap);
+		// System.out.println(benPhoneMap);
 		return benPhoneMap;
 	}
 
@@ -416,7 +413,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 		Gson gson = gsonBuilder.create();
 		List<Object[]> resList = registrarRepoBeneficiaryDetails.getBeneficiaryDetails(beneficiaryRegID);
 
-		//System.out.println("hello");
+		// System.out.println("hello");
 
 		if (resList != null && resList.size() > 0) {
 
@@ -425,7 +422,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 			Map<String, Object> govIDMap;
 			Map<String, Object> otherGovIDMap;
 			Object[] objarr = resList.get(0);
-			//System.out.println("helooo");
+			// System.out.println("helooo");
 			for (Object[] arrayObj : resList) {
 				if (arrayObj[26] != null) {
 					if ((Boolean) arrayObj[26] == true) {
@@ -449,10 +446,10 @@ public class RegistrarServiceImpl implements RegistrarService {
 			String s = beneficiaryImageRepo.getBenImage(beneficiaryRegID);
 			FetchBeneficiaryDetails fetchBeneficiaryDetailsOBJ = FetchBeneficiaryDetails.getBeneficiaryDetails(objarr,
 					govIdList, s, otherGovIdList);
-			//System.out.println("helooo");
+			// System.out.println("helooo");
 			return gson.toJson(fetchBeneficiaryDetailsOBJ);
 		} else {
-			//System.out.println("helooo");
+			// System.out.println("helooo");
 			return null;
 		}
 
@@ -607,17 +604,17 @@ public class RegistrarServiceImpl implements RegistrarService {
 
 		return response;
 	}
-	
+
 	public BeneficiaryDemographicData getBeneficiaryDemographicData(Long benRegID) {
 		List<Objects[]> beneficiaryDemographicData = registrarRepoBenDemoData.getBeneficiaryDemographicData(benRegID);
-		BeneficiaryDemographicData beneficiaryDemographics =null;
-		if(null != beneficiaryDemographicData){
-			for(Object[] obj: beneficiaryDemographicData){
-				beneficiaryDemographics = new BeneficiaryDemographicData((Long)obj[0], (Integer)obj[1], (String)obj[2]);
+		BeneficiaryDemographicData beneficiaryDemographics = null;
+		if (null != beneficiaryDemographicData) {
+			for (Object[] obj : beneficiaryDemographicData) {
+				beneficiaryDemographics = new BeneficiaryDemographicData((Long) obj[0], (Integer) obj[1],
+						(String) obj[2]);
 			}
 		}
 		return beneficiaryDemographics;
 	}
-
 
 }

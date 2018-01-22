@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.iemr.mmu.controller.common.master.CommonMasterController;
 import com.iemr.mmu.service.location.LocationServiceImpl;
-import com.iemr.utils.response.OutputResponse;
+import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin
 @RestController
-@RequestMapping({ "/location" })
+@RequestMapping(value = "/location", headers = "Authorization")
 public class LocationController {
 	private OutputResponse response;
 	private Logger logger = LoggerFactory.getLogger(CommonMasterController.class);

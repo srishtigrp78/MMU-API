@@ -14,14 +14,14 @@ import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.service.common.master.NurseMasterDataService;
 import com.iemr.mmu.service.common.master.NurseMasterDataServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
-import com.iemr.utils.mapper.InputMapper;
-import com.iemr.utils.response.OutputResponse;
+import com.iemr.mmu.utils.mapper.InputMapper;
+import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin
 @RestController
-@RequestMapping({ "/nurse" })
+@RequestMapping(value = "/nurse", headers = "Authorization")
 /**
  * Objective: Performs saving Beneficiary Quick consultation Details entered by
  * nurse
@@ -75,6 +75,5 @@ public class InsertNurseQCController {
 
 		return response.toString();
 	}
-	
-	
+
 }

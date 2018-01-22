@@ -11,7 +11,7 @@ import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
 
 public interface CancerScreeningService {
 
-	public int UpdateCSHistoryNurseData(JsonObject jsnOBJ);
+	public int UpdateCSHistoryNurseData(JsonObject jsnOBJ) throws Exception;
 
 	public int updateBeneficiaryFamilyCancerHistory(List<BenFamilyCancerHistory> benFamilyCancerHistoryList);
 

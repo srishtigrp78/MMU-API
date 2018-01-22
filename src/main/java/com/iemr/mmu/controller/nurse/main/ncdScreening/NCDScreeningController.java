@@ -1,8 +1,5 @@
 package com.iemr.mmu.controller.nurse.main.ncdScreening;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,23 +10,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.gson.Gson;
 import com.iemr.mmu.controller.nurse.main.cancerScreening.InsertNurseCSController;
 import com.iemr.mmu.data.ncdScreening.NCDScreening;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
-import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.service.ncdscreening.NCDScreeningService;
 import com.iemr.mmu.service.nurse.NurseService;
-import com.iemr.utils.mapper.InputMapper;
-import com.iemr.utils.response.OutputResponse;
+import com.iemr.mmu.utils.mapper.InputMapper;
+import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping({ "/nurse" })
+@RequestMapping(value = "/nurse", headers = "Authorization")
 public class NCDScreeningController {
 
 	private InputMapper inputMapper;
@@ -47,25 +42,31 @@ public class NCDScreeningController {
 		this.nurseService = nurseService;
 	}
 
-
 	@CrossOrigin
 	@ApiOperation(value = "save Beneficiary NCD Screening Detail", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/ncdScreeningDetails" }, method = { RequestMethod.POST })
-	public String saveBeneficiaryNCDScreeningDetails( @RequestBody String requestObj) {
+	public String saveBeneficiaryNCDScreeningDetails(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		inputMapper = new InputMapper();
 		logger.info("saveNCDScreeningDetails request:" + requestObj);
-		NCDScreening ncdScreening = InputMapper.gson().fromJson(requestObj, NCDScreening.class);
-		
-		System.out.println(ncdScreening);
-		BenPhysicalVitalDetail benPhysicalVitalDetail =  InputMapper.gson().fromJson(requestObj, BenPhysicalVitalDetail.class);
-		BenAnthropometryDetail anthropometryDetail = InputMapper.gson().fromJson(requestObj, BenAnthropometryDetail.class);
+
 		try {
+			NCDScreening ncdScreening = InputMapper.gson().fromJson(requestObj, NCDScreening.class);
+
+			System.out.println(ncdScreening);
+			BenPhysicalVitalDetail benPhysicalVitalDetail = InputMapper.gson().fromJson(requestObj,
+					BenPhysicalVitalDetail.class);
+			BenAnthropometryDetail anthropometryDetail = InputMapper.gson().fromJson(requestObj,
+					BenAnthropometryDetail.class);
+
 			Long saveNCDScreeningDetails = ncdScreeningService.saveNCDScreeningDetails(ncdScreening);
-			Long saveBeneficiaryPhysicalVitalDetails = nurseService.saveBeneficiaryPhysicalVitalDetails(benPhysicalVitalDetail);
-			Long saveBeneficiaryPhysicalAnthropometryDetails = nurseService.saveBeneficiaryPhysicalAnthropometryDetails(anthropometryDetail);
-			if (null != saveNCDScreeningDetails && null !=saveBeneficiaryPhysicalVitalDetails && null != saveBeneficiaryPhysicalAnthropometryDetails) {
+			Long saveBeneficiaryPhysicalVitalDetails = nurseService
+					.saveBeneficiaryPhysicalVitalDetails(benPhysicalVitalDetail);
+			Long saveBeneficiaryPhysicalAnthropometryDetails = nurseService
+					.saveBeneficiaryPhysicalAnthropometryDetails(anthropometryDetail);
+			if (null != saveNCDScreeningDetails && null != saveBeneficiaryPhysicalVitalDetails
+					&& null != saveBeneficiaryPhysicalAnthropometryDetails) {
 				response.setResponse("Beneficiary NCD Screening Details saved successfully.");
 			} else {
 				response.setError(500, "Failed to Store Beneficiary NCD Screening Details");
@@ -83,7 +84,8 @@ public class NCDScreeningController {
 	@CrossOrigin()
 	@ApiOperation(value = "Get NCD Screening Visit Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/fetch/ncdScreeningDetails" }, method = { RequestMethod.POST })
-	public String getNCDScreenigDetails( @ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getNCDScreenigDetails(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("getNCDScreeningDetails:" + comingRequest);
@@ -94,7 +96,7 @@ public class NCDScreeningController {
 				Long benVisitID = obj.getLong("benVisitID");
 
 				String s = ncdScreeningService.getNCDScreeningDetails(benRegID, benVisitID);
-				if(s != null) {
+				if (s != null) {
 					response.setResponse(s);
 				} else {
 					response.setError(5000, "Failed to Fetch Beneficiary NCD Screening Details");

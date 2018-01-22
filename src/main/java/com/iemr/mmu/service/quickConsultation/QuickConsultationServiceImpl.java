@@ -25,7 +25,7 @@ import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.mmu.service.doctor.DoctorServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
-import com.iemr.utils.mapper.InputMapper;
+import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
 public class QuickConsultationServiceImpl implements QuickConsultationService {
@@ -100,7 +100,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	}
 
 	@Override
-	public Long saveBeneficiaryClinicalObservations(JsonObject caseSheet) {
+	public Long saveBeneficiaryClinicalObservations(JsonObject caseSheet) throws Exception {
 
 		BenClinicalObservations benClinicalObservations = InputMapper.gson().fromJson(caseSheet,
 				BenClinicalObservations.class);
@@ -112,7 +112,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	}
 
 	@Override
-	public Long saveBeneficiaryPrescription(JsonObject caseSheet) {
+	public Long saveBeneficiaryPrescription(JsonObject caseSheet) throws Exception {
 
 		PrescriptionDetail prescriptionDetail = InputMapper.gson().fromJson(caseSheet, PrescriptionDetail.class);
 
@@ -181,7 +181,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	}
 
 	@Override
-	public Integer quickConsultNurseDataInsert(JsonObject jsnOBJ) {
+	public Integer quickConsultNurseDataInsert(JsonObject jsnOBJ) throws Exception {
 		Integer returnOBJ = 0;
 		BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(jsnOBJ.get("visitDetails"),
 				BeneficiaryVisitDetail.class);
@@ -212,7 +212,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	}
 
 	@Override
-	public Integer quickConsultDoctorDataInsert(JsonObject quickConsultDoctorOBJ){
+	public Integer quickConsultDoctorDataInsert(JsonObject quickConsultDoctorOBJ) throws Exception {
 		Integer returnOBJ = 0;
 		Long benChiefComplaintID = saveBeneficiaryChiefComplaint(quickConsultDoctorOBJ);
 		Long clinicalObservationID = saveBeneficiaryClinicalObservations(quickConsultDoctorOBJ);
@@ -232,7 +232,8 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 				&& (null != clinicalObservationID && clinicalObservationID > 0)
 				&& (prescriptionID != null && prescriptionID > 0)) {
 			if (quickConsultDoctorOBJ.has("benVisitID") && !quickConsultDoctorOBJ.get("benVisitID").isJsonNull()) {
-				Integer i = benVisitDetailRepo.updateBenFlowStatus("D",quickConsultDoctorOBJ.get("benVisitID").getAsLong());
+				Integer i = benVisitDetailRepo.updateBenFlowStatus("D",
+						quickConsultDoctorOBJ.get("benVisitID").getAsLong());
 			}
 			returnOBJ = 1;
 		}

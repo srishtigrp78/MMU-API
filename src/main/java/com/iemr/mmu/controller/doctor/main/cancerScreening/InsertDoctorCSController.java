@@ -27,15 +27,15 @@ import com.iemr.mmu.service.common.master.DoctorMasterDataService;
 import com.iemr.mmu.service.common.master.DoctorMasterDataServiceImpl;
 import com.iemr.mmu.service.doctor.DoctorServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
-import com.iemr.utils.mapper.InputMapper;
-import com.iemr.utils.response.OutputResponse;
+import com.iemr.mmu.utils.mapper.InputMapper;
+import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping({ "/doctor" })
+@RequestMapping(value = "/doctor", headers = "Authorization")
 /**
  * Objective: Performs Saving Beneficiary Cancer Screening Details entered by
  * doctor
@@ -324,7 +324,7 @@ public class InsertDoctorCSController {
 				response.setResponse("Data Successfully saved");
 			}
 		} catch (Exception e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 			response.setError(e);
 		}
 		return response.toString();

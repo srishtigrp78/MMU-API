@@ -10,23 +10,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.iemr.mmu.service.common.master.DoctorMasterDataService;
 import com.iemr.mmu.service.common.master.DoctorMasterDataServiceImpl;
 import com.iemr.mmu.service.doctor.DoctorServiceImpl;
-import com.iemr.utils.mapper.InputMapper;
-import com.iemr.utils.response.OutputResponse;
+import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin
 @RestController
-@RequestMapping({ "/doctor" })
+@RequestMapping(value = "/doctor", headers = "Authorization")
 /** Objective: Provides Cancer Screening master data for doctor */
 public class DoctorCSMasterController {
-	private InputMapper inputMapper = new InputMapper();
-	private OutputResponse response;
 	private Logger logger = LoggerFactory.getLogger(DoctorCSMasterController.class);
-	private DoctorMasterDataService doctorMasterDataService;
+	// private DoctorMasterDataService doctorMasterDataService;
 	private DoctorMasterDataServiceImpl doctorMasterDataServiceImpl;
 
 	@Autowired

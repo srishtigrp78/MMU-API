@@ -1,8 +1,6 @@
 package com.iemr.mmu.controller.cancerscreening;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -20,12 +18,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.iemr.mmu.controller.doctor.main.cancerScreening.UpdateDoctorCSController;
 import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
-import com.iemr.mmu.data.nurse.BenFamilyCancerHistory;
 import com.iemr.mmu.service.cancerScreening.CancerScreeningServiceImpl;
-import com.iemr.mmu.service.common.master.DoctorMasterDataService;
-import com.iemr.mmu.service.common.master.DoctorMasterDataServiceImpl;
-import com.iemr.utils.mapper.InputMapper;
-import com.iemr.utils.response.OutputResponse;
+import com.iemr.mmu.utils.mapper.InputMapper;
+import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -39,26 +34,26 @@ import io.swagger.annotations.ApiParam;
  */
 @CrossOrigin
 @RestController
-@RequestMapping({ "/CS-cancerScreening" })
+@RequestMapping(value = "/CS-cancerScreening", headers = "Authorization")
 public class CancerScreeningUpdateController {
 	private InputMapper inputMapper = new InputMapper();
 	private OutputResponse response;
 	private Logger logger = LoggerFactory.getLogger(UpdateDoctorCSController.class);
 	private CancerScreeningServiceImpl cancerScreeningServiceImpl;
-	
+
 	@Autowired
 	public void setCancerScreeningServiceImpl(CancerScreeningServiceImpl cancerScreeningServiceImpl) {
 		this.cancerScreeningServiceImpl = cancerScreeningServiceImpl;
 	}
-	
+
 	/**
 	 * 
 	 * @param requestObj
 	 * @return success or failure response
-	 * @objective Replace Cancer Screening History Details 
-	 * 				entered by Nurse with the details entered by Doctor
+	 * @objective Replace Cancer Screening History Details entered by Nurse with
+	 *            the details entered by Doctor
 	 */
-	
+
 	@CrossOrigin
 	@ApiOperation(value = "update Cancer Screening History Nurse Data in Doctor screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/historyScreen" }, method = { RequestMethod.POST })
@@ -78,7 +73,7 @@ public class CancerScreeningUpdateController {
 					+ "\"isMenstrualCycleRegular\":\"Boolean\",\"menstrualCycleLength\":\"Integer\", \"menstrualFlowDuration\":\"Integer\", "
 					+ "\"menstrualFlowType\":\"String\", \"isDysmenorrhea\":\"Boolean\", \"isInterMenstrualBleeding\":\"Boolean\", "
 					+ "\"menopauseAge\":\"Integer\", \"isPostMenopauseBleeding\":\"Boolean\", \"createdBy\":\"String\"}}}") @RequestBody String requestObj) {
-		
+
 		OutputResponse response = new OutputResponse();
 		inputMapper = new InputMapper();
 		logger.info("updateCSHistoryNurse request:" + requestObj);
@@ -88,7 +83,6 @@ public class CancerScreeningUpdateController {
 		JsonElement jsnElmnt = jsnParser.parse(requestObj);
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
-		
 		try {
 			int result = cancerScreeningServiceImpl.UpdateCSHistoryNurseData(jsnOBJ);
 			if (result > 0) {
@@ -106,7 +100,7 @@ public class CancerScreeningUpdateController {
 
 		return response.toString();
 	}
-	
+
 	@CrossOrigin
 	@ApiOperation(value = "update Ben Vital Detail", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/vitalScreen" }, method = { RequestMethod.POST })
@@ -120,8 +114,10 @@ public class CancerScreeningUpdateController {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("upodateBenVitalDetail request:" + requestObj);
-		BenCancerVitalDetail benCancerVitalDetail = InputMapper.gson().fromJson(requestObj, BenCancerVitalDetail.class);
+
 		try {
+			BenCancerVitalDetail benCancerVitalDetail = InputMapper.gson().fromJson(requestObj,
+					BenCancerVitalDetail.class);
 			int responseObj = cancerScreeningServiceImpl.updateBenVitalDetail(benCancerVitalDetail);
 			if (responseObj > 0) {
 				response.setResponse("Beneficiary Vital Details updated Successfully");

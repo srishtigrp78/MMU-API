@@ -1,7 +1,6 @@
 package com.iemr.mmu.controller.nurse.main.anc;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
@@ -15,9 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.iemr.mmu.data.anc.WrapperMedicationHistory;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
-import com.iemr.utils.mapper.InputMapper;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

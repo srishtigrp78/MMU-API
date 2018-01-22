@@ -13,7 +13,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.iemr.mmu.service.cancerScreening.CancerScreeningServiceImpl;
-import com.iemr.utils.response.OutputResponse;
+import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -26,7 +26,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @CrossOrigin
 @RestController
-@RequestMapping({ "/CS-cancerScreening" })
+@RequestMapping(value = "/CS-cancerScreening", headers = "Authorization")
 public class CancerScreeningCreateController {
 	private Logger logger = LoggerFactory.getLogger(CancerScreeningCreateController.class);
 

@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.iemr.mmu.service.common.master.DoctorMasterDataService;
 import com.iemr.mmu.service.common.master.DoctorMasterDataServiceImpl;
 import com.iemr.mmu.service.doctor.DoctorServiceImpl;
-import com.iemr.utils.mapper.InputMapper;
-import com.iemr.utils.response.OutputResponse;
+import com.iemr.mmu.utils.mapper.InputMapper;
+import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin
 @RestController
-@RequestMapping({ "/doctor" })
+@RequestMapping(value = "/doctor", headers = "Authorization")
 /**
  * Objective: Performs Fetching Beneficiary Cancer Screening Details entered by
  * doctor
@@ -52,7 +52,5 @@ public class FetchDoctorCSController {
 		}
 		return response.toString();
 	}
-
-	
 
 }

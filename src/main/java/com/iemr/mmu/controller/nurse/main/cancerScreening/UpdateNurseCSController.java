@@ -5,12 +5,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.iemr.utils.mapper.InputMapper;
+
+import com.iemr.mmu.utils.mapper.InputMapper;
 
 @CrossOrigin
 @RestController
 @RequestMapping({ "/nurse" })
-/** Objective: Performs Update Beneficiary Cancer Screening Details entered by nurse*/
+/**
+ * Objective: Performs Update Beneficiary Cancer Screening Details entered by
+ * nurse
+ */
 public class UpdateNurseCSController {
 	private InputMapper inputMapper;
 	private Logger logger = LoggerFactory.getLogger(UpdateNurseCSController.class);

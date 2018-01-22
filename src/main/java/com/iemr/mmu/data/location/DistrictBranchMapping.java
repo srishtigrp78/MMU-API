@@ -1,20 +1,17 @@
 package com.iemr.mmu.data.location;
 
 import java.sql.Timestamp;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
-import com.iemr.utils.mapper.OutputMapper;
+import com.iemr.mmu.utils.mapper.OutputMapper;
 
 @Entity
 @Table(name = "m_DistrictBranchMapping")
@@ -24,9 +21,9 @@ public class DistrictBranchMapping {
 	@Column(name = "DistrictBranchID")
 	@Expose
 	private Integer districtBranchID;
-//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "m_districtbranchmapping")
-//	@Transient
-//	private Set<I_BenDemographics> i_bendemographics;
+	// @OneToMany(fetch = FetchType.LAZY, mappedBy = "m_districtbranchmapping")
+	// @Transient
+	// private Set<I_BenDemographics> i_bendemographics;
 	@Column(name = "BlockID")
 	@Expose
 	private Integer blockID;

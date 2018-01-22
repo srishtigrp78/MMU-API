@@ -16,16 +16,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.iemr.mmu.service.casesheet.CaseSheetServiceImpl;
-import com.iemr.utils.mapper.InputMapper;
-import com.iemr.utils.response.OutputResponse;
+import com.iemr.mmu.utils.mapper.InputMapper;
+import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping({ "/casesheet" })
-/** Objective: Provides Nurse and doctor entered details for casesheet*/
+@RequestMapping(value = "/casesheet", headers = "Authorization")
+/** Objective: Provides Nurse and doctor entered details for casesheet */
 public class CaseSheetController {
 
 	private InputMapper inputMapper = new InputMapper();
@@ -64,10 +64,10 @@ public class CaseSheetController {
 						// new Date(timestamp.getYear(), timestamp.getMonth(),
 						// timestamp.getDate());
 						visitDateTime = new Date(timestamp.getTime());
-						//System.out.println("hello");
+						// System.out.println("hello");
 					} catch (ParseException e) {
 						// TODO Auto-generated catch block
-						//e.printStackTrace();
+						// e.printStackTrace();
 						logger.error("Error in getBenDataForCaseSheet:" + e);
 					}
 				}
@@ -126,7 +126,7 @@ public class CaseSheetController {
 				Long benRegID = obj.getLong("benRegID");
 				Long benVisitID = obj.getLong("benVisitID");
 				String s = caseSheetServiceImpl.getCancerExaminationImageAnnotation(benRegID, benVisitID);
-				//System.out.println(s);
+				// System.out.println(s);
 				response.setResponse(s);
 
 			} else {

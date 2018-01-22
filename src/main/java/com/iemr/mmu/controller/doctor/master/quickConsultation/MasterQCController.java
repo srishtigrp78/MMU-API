@@ -8,19 +8,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.iemr.mmu.controller.doctor.main.cancerScreening.DoctorController;
 import com.iemr.mmu.service.common.master.DoctorMasterDataService;
 import com.iemr.mmu.service.common.master.DoctorMasterDataServiceImpl;
 import com.iemr.mmu.service.doctor.DoctorServiceImpl;
-import com.iemr.utils.mapper.InputMapper;
-import com.iemr.utils.response.OutputResponse;
+import com.iemr.mmu.utils.mapper.InputMapper;
+import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin
 @RestController
-@RequestMapping({ "/doctor" })
-/** Objective: Provides Quick Consultation master data for doctor*/
+@RequestMapping(value = "/doctor", headers = "Authorization")
+/** Objective: Provides Quick Consultation master data for doctor */
 public class MasterQCController {
 
 	private InputMapper inputMapper = new InputMapper();
@@ -36,7 +35,7 @@ public class MasterQCController {
 	public void setDoctorMasterDataServiceImpl(DoctorMasterDataServiceImpl doctorMasterDataServiceImpl) {
 		this.doctorMasterDataServiceImpl = doctorMasterDataServiceImpl;
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Quick Consultation master data", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/quickConsultationMasterData" }, method = { RequestMethod.GET })
@@ -55,5 +54,5 @@ public class MasterQCController {
 		}
 		return response.toString();
 	}
-	
+
 }

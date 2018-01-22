@@ -15,15 +15,15 @@ import com.iemr.mmu.data.registrar.WrapperBeneficiaryRegistration;
 import com.iemr.mmu.service.common.master.RegistrarServiceMasterDataImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.service.registrar.RegistrarServiceImpl;
-import com.iemr.utils.mapper.InputMapper;
-import com.iemr.utils.response.OutputResponse;
+import com.iemr.mmu.utils.mapper.InputMapper;
+import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping({ "/registrar" })
+@RequestMapping(value = "/registrar", headers = "Authorization")
 /** Objective: Performs Beneficiary Registration */
 public class InsertRegistrarController {
 	private Logger logger = LoggerFactory.getLogger(InsertRegistrarController.class);

@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.iemr.mmu.service.anc.ANCServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
-import com.iemr.utils.mapper.InputMapper;
-import com.iemr.utils.response.OutputResponse;
+import com.iemr.mmu.utils.mapper.InputMapper;
+import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping({ "/anc" })
+@RequestMapping(value = "/anc", headers = "Authorization")
 public class FetchNurseANCController {
 	private InputMapper inputMapper;
 	private Logger logger = LoggerFactory.getLogger(FetchNurseANCController.class);
@@ -151,7 +151,8 @@ public class FetchNurseANCController {
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary ANC Tobacco History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenANCTobaccoHistory" }, method = { RequestMethod.POST })
-	public String getBenANCTobaccoHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenANCTobaccoHistory(
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("getBenANCTobaccoHistory request:" + comingRequest);
@@ -173,11 +174,12 @@ public class FetchNurseANCController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary ANC Alcohol History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenANCAlcoholHistory" }, method = { RequestMethod.POST })
-	public String getBenANCAlcoholHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenANCAlcoholHistory(
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("getBenANCAlcoholHistory request:" + comingRequest);
@@ -199,11 +201,12 @@ public class FetchNurseANCController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary ANC Allergy History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenANCAllergyHistory" }, method = { RequestMethod.POST })
-	public String getBenANCAllergyHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenANCAllergyHistory(
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("getBenANCAllergyHistory request:" + comingRequest);
@@ -225,11 +228,12 @@ public class FetchNurseANCController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary ANC Medication History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenANCMedicationHistory" }, method = { RequestMethod.POST })
-	public String getBenANCMedicationHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenANCMedicationHistory(
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("getBenANCMedicationHistory request:" + comingRequest);
@@ -251,11 +255,12 @@ public class FetchNurseANCController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary ANC Family History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenANCFamilyHistory" }, method = { RequestMethod.POST })
-	public String getBenANCFamilyHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenANCFamilyHistory(
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("getBenANCFamilyHistory request:" + comingRequest);
@@ -277,11 +282,12 @@ public class FetchNurseANCController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary ANC Menstrual History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenANCMenstrualHistory" }, method = { RequestMethod.POST })
-	public String getBenANCMenstrualHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenANCMenstrualHistory(
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("getBenANCMenstrualHistory request:" + comingRequest);
@@ -303,11 +309,12 @@ public class FetchNurseANCController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary ANC past Obstetric History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenANCPastObstetricHistory" }, method = { RequestMethod.POST })
-	public String getBenANCPastObstetricHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenANCPastObstetricHistory(
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("getBenANCPastObstetricHistory request:" + comingRequest);
@@ -329,11 +336,12 @@ public class FetchNurseANCController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary ANC Comorbidity Condition Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenANCComorbidityConditionHistory" }, method = { RequestMethod.POST })
-	public String getBenANCComorbidityConditionHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenANCComorbidityConditionHistory(
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("getBenANCComorbidityConditionHistory request:" + comingRequest);
@@ -355,11 +363,12 @@ public class FetchNurseANCController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary ANC Optional Vaccine Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenANCOptionalVaccineHistory" }, method = { RequestMethod.POST })
-	public String getBenANCOptionalVaccineHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenANCOptionalVaccineHistory(
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("getBenANCOptionalVaccineHistory request:" + comingRequest);
@@ -381,11 +390,12 @@ public class FetchNurseANCController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary ANC Child Vaccine(Immunization) Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenANCChildVaccineHistory" }, method = { RequestMethod.POST })
-	public String getBenANCImmunizationHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenANCImmunizationHistory(
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("getBenANCImmunizationHistory request:" + comingRequest);
@@ -407,7 +417,7 @@ public class FetchNurseANCController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary ANC History details from Nurse to Doctor ", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenANCHistoryDetails" }, method = { RequestMethod.POST })

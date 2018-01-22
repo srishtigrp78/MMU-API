@@ -14,8 +14,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.iemr.mmu.data.quickConsultation.WrapperQuickConsultation;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
-import com.iemr.utils.mapper.InputMapper;
-import com.iemr.utils.response.OutputResponse;
+import com.iemr.mmu.utils.mapper.InputMapper;
+import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -29,7 +29,7 @@ import io.swagger.annotations.ApiParam;
  */
 @CrossOrigin
 @RestController
-@RequestMapping({ "/genOPD-QC-quickConsult" })
+@RequestMapping(value = "/genOPD-QC-quickConsult", headers = "Authorization")
 public class QuickConsultCreateController {
 	private Logger logger = LoggerFactory.getLogger(QuickConsultCreateController.class);
 	private QuickConsultationServiceImpl quickConsultationServiceImpl;

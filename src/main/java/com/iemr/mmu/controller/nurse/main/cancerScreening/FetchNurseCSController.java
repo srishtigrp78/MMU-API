@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.iemr.mmu.service.common.master.NurseMasterDataService;
 import com.iemr.mmu.service.common.master.NurseMasterDataServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
-import com.iemr.utils.mapper.InputMapper;
-import com.iemr.utils.response.OutputResponse;
+import com.iemr.mmu.utils.mapper.InputMapper;
+import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping({ "/nurse" })
+@RequestMapping(value = "/nurse", headers = "Authorization")
 /**
  * Objective: Performs fetching Beneficiary Cancer Screening Details entered by
  * nurse
@@ -97,7 +97,7 @@ public class FetchNurseCSController {
 			response.setError(e);
 			logger.error("Error in getBenDataFrmNurseScrnToDocScrnHistory:" + e);
 		}
-		//System.out.println(response.toString());
+		// System.out.println(response.toString());
 		return response.toString();
 	}
 
@@ -136,7 +136,7 @@ public class FetchNurseCSController {
 			String s = nurseServiceImpl.getNurseWorkList();
 			response.setResponse(s);
 		} catch (Exception e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 			logger.error("Error in getNurseWorklist:" + e);
 			response.setError(e);
 		}
@@ -231,7 +231,7 @@ public class FetchNurseCSController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Cancer Personal Diet History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenCancerPersonalDietHistory" }, method = { RequestMethod.POST })
@@ -258,7 +258,7 @@ public class FetchNurseCSController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Cancer Obstetric History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenCancerObstetricHistory" }, method = { RequestMethod.POST })

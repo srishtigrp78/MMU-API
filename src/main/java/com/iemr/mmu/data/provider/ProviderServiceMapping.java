@@ -1,6 +1,5 @@
 package com.iemr.mmu.data.provider;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -17,7 +16,6 @@ import javax.persistence.Transient;
 import com.google.gson.annotations.Expose;
 import com.iemr.mmu.data.location.Districts;
 import com.iemr.mmu.data.location.States;
-import com.iemr.utils.mapper.OutputMapper;
 
 /**
  * 
@@ -43,15 +41,15 @@ public class ProviderServiceMapping {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(updatable = false, insertable = false, name = "serviceProviderID")
 	private ServiceProvider serviceProvider;
-	
+
 	@Expose
 	@Transient
 	private String serviceProviderName;
-	
+
 	@Expose
 	@Column(name = "ServiceID")
 	private Short serviceID;
-	
+
 	@Expose
 	@Column(name = "CountryID")
 	private Integer countryID;
@@ -66,12 +64,12 @@ public class ProviderServiceMapping {
 	@Expose
 	@Column(name = "DistrictID")
 	private Integer districtID;
-	
+
 	@Expose
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(updatable = false, insertable = false, name = "StateID")
 	private Districts m_district;
-	
+
 	@Expose
 	@Column(name = "CityID")
 	private Integer cityID;
@@ -102,18 +100,17 @@ public class ProviderServiceMapping {
 
 	public ProviderServiceMapping() {
 	}
-	
-	
-	public ProviderServiceMapping(Integer serviceProviderID){
-		this.serviceProviderID=serviceProviderID;
-		
+
+	public ProviderServiceMapping(Integer serviceProviderID) {
+		this.serviceProviderID = serviceProviderID;
+
 	}
 
 	public ProviderServiceMapping(Integer providerServiceMapID, Integer serviceProviderID, Short serviceID,
 			Integer countryID, Integer stateID, Integer districtID, Integer cityID, Integer districtBlockID,
 
 			String address, Short statusID, Boolean deleted, String createdBy, Timestamp createdDate, String modifiedBy,
-			Timestamp lastModDate,States state) {
+			Timestamp lastModDate, States state) {
 		super();
 		this.providerServiceMapID = providerServiceMapID;
 		this.serviceProviderID = serviceProviderID;
@@ -244,20 +241,18 @@ public class ProviderServiceMapping {
 	public void setLastModDate(Timestamp lastModDate) {
 		this.lastModDate = lastModDate;
 	}
-	
+
 	public States getState() {
 		return state;
 	}
 
-
 	public void setState(States state) {
 		this.state = state;
 	}
-	
+
 	public Integer getStatusID() {
 		return statusID;
 	}
-
 
 	public void setStatusID(Integer statusID) {
 		this.statusID = statusID;
@@ -266,7 +261,6 @@ public class ProviderServiceMapping {
 	public Districts getM_district() {
 		return m_district;
 	}
-
 
 	public void setM_district(Districts m_district) {
 		this.m_district = m_district;

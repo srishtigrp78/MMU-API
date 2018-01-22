@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.iemr.mmu.controller.doctor.main.cancerScreening.UpdateDoctorCSController;
 import com.iemr.mmu.data.doctor.CancerDiagnosis;
 import com.iemr.mmu.service.oncologist.OncologistServiceImpl;
-import com.iemr.utils.mapper.InputMapper;
-import com.iemr.utils.response.OutputResponse;
+import com.iemr.mmu.utils.mapper.InputMapper;
+import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping({ "/oncologist" })
+@RequestMapping(value = "/oncologist", headers = "Authorization")
 public class UpdateOncologistCSController {
 
 	private InputMapper inputMapper;

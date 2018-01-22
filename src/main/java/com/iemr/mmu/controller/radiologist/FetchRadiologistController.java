@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.iemr.mmu.controller.doctor.main.cancerScreening.FetchDoctorCSController;
 import com.iemr.mmu.service.common.master.DoctorMasterDataService;
 import com.iemr.mmu.service.radiologist.RadiologistServiceImpl;
-import com.iemr.utils.response.OutputResponse;
+import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin
 @RestController
-@RequestMapping({ "/radiologist" })
+@RequestMapping(value = "/radiologist", headers = "Authorization")
 public class FetchRadiologistController {
 
 	private OutputResponse response;

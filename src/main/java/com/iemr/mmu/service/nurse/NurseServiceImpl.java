@@ -45,7 +45,7 @@ import com.iemr.mmu.repo.nurse.BenPhysicalVitalRepo;
 import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
-import com.iemr.utils.mapper.InputMapper;
+import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
 public class NurseServiceImpl implements NurseService {
@@ -349,21 +349,22 @@ public class NurseServiceImpl implements NurseService {
 		int delRes = 0;
 		try {
 			if (benFamilyCancerHistoryList.size() > 0) {
-				
-				ArrayList<Object[]> benFamilyCancerHistoryStatuses = benFamilyCancerHistoryRepo.getFamilyCancerHistoryStatus(benFamilyCancerHistoryList.get(0).getBeneficiaryRegID(), 
-						benFamilyCancerHistoryList.get(0).getBenVisitID());
-				
-				for(Object[] obj : benFamilyCancerHistoryStatuses){
-					Character processed = (Character)obj[1];
-					if( null != processed && processed!='N'){
+
+				ArrayList<Object[]> benFamilyCancerHistoryStatuses = benFamilyCancerHistoryRepo
+						.getFamilyCancerHistoryStatus(benFamilyCancerHistoryList.get(0).getBeneficiaryRegID(),
+								benFamilyCancerHistoryList.get(0).getBenVisitID());
+
+				for (Object[] obj : benFamilyCancerHistoryStatuses) {
+					Character processed = (Character) obj[1];
+					if (null != processed && processed != 'N') {
 						processed = 'U';
 					}
-					delRes = benFamilyCancerHistoryRepo.deleteExistingFamilyRecord((Long)obj[0], processed);
+					delRes = benFamilyCancerHistoryRepo.deleteExistingFamilyRecord((Long) obj[0], processed);
 				}
-				
+
 			}
 			ArrayList<BenFamilyCancerHistory> newbenFamilyCancerHistoryList = new ArrayList<BenFamilyCancerHistory>();
-			if(delRes>0){
+			if (delRes > 0) {
 				for (BenFamilyCancerHistory benFamilyCancerHistory : benFamilyCancerHistoryList) {
 					List<String> familyMenberList = benFamilyCancerHistory.getFamilyMemberList();
 					if (null != familyMenberList && !familyMenberList.isEmpty()) {
@@ -374,7 +375,7 @@ public class NurseServiceImpl implements NurseService {
 						benFamilyCancerHistory.setFamilyMember(familyMemberData);
 						newbenFamilyCancerHistoryList.add(benFamilyCancerHistory);
 					}
-	
+
 				}
 				if (newbenFamilyCancerHistoryList.size() > 0) {
 					ArrayList<BenFamilyCancerHistory> benFamilyCancerHistories = (ArrayList<BenFamilyCancerHistory>) benFamilyCancerHistoryRepo
@@ -400,18 +401,19 @@ public class NurseServiceImpl implements NurseService {
 	@Override
 	public int updateBenObstetricCancerHistory(BenObstetricCancerHistory benObstetricCancerHistory) {
 		int response = 0;
-		
-		Character processed = benObstetricCancerHistoryRepo.getObstetricCancerHistoryStatus(benObstetricCancerHistory.getBeneficiaryRegID(), 
-				benObstetricCancerHistory.getBenVisitID());
-		if( null != processed && processed!='N'){
+
+		Character processed = benObstetricCancerHistoryRepo.getObstetricCancerHistoryStatus(
+				benObstetricCancerHistory.getBeneficiaryRegID(), benObstetricCancerHistory.getBenVisitID());
+		if (null != processed && processed != 'N') {
 			processed = 'U';
 		}
 		try {
 
-			response = benObstetricCancerHistoryRepo.updateBenObstetricCancerHistory(benObstetricCancerHistory.getProviderServiceMapID(),
-					benObstetricCancerHistory.getPregnancyStatus(), benObstetricCancerHistory.getIsUrinePregTest(),
-					benObstetricCancerHistory.getPregnant_No(), benObstetricCancerHistory.getNoOfLivingChild(),
-					benObstetricCancerHistory.getIsAbortion(), benObstetricCancerHistory.getIsOralContraceptiveUsed(),
+			response = benObstetricCancerHistoryRepo.updateBenObstetricCancerHistory(
+					benObstetricCancerHistory.getProviderServiceMapID(), benObstetricCancerHistory.getPregnancyStatus(),
+					benObstetricCancerHistory.getIsUrinePregTest(), benObstetricCancerHistory.getPregnant_No(),
+					benObstetricCancerHistory.getNoOfLivingChild(), benObstetricCancerHistory.getIsAbortion(),
+					benObstetricCancerHistory.getIsOralContraceptiveUsed(),
 					benObstetricCancerHistory.getIsHormoneReplacementTherapy(),
 					benObstetricCancerHistory.getMenarche_Age(), benObstetricCancerHistory.getIsMenstrualCycleRegular(),
 					benObstetricCancerHistory.getMenstrualCycleLength(),
@@ -420,7 +422,8 @@ public class NurseServiceImpl implements NurseService {
 					benObstetricCancerHistory.getIsInterMenstrualBleeding(),
 					benObstetricCancerHistory.getMenopauseAge(), benObstetricCancerHistory.getIsPostMenopauseBleeding(),
 					benObstetricCancerHistory.getIsFoulSmellingDischarge(), benObstetricCancerHistory.getModifiedBy(),
-					benObstetricCancerHistory.getBeneficiaryRegID(), benObstetricCancerHistory.getBenVisitID(), processed);
+					benObstetricCancerHistory.getBeneficiaryRegID(), benObstetricCancerHistory.getBenVisitID(),
+					processed);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -433,13 +436,13 @@ public class NurseServiceImpl implements NurseService {
 	@Override
 	public int updateBenPersonalCancerHistory(BenPersonalCancerHistory benPersonalCancerHistory) {
 		int response = 0;
-		
-		Character processed = benPersonalCancerHistoryRepo.getPersonalCancerHistoryStatus(benPersonalCancerHistory.getBeneficiaryRegID(), 
-				benPersonalCancerHistory.getBenVisitID());
-		if( null != processed && processed!='N'){
+
+		Character processed = benPersonalCancerHistoryRepo.getPersonalCancerHistoryStatus(
+				benPersonalCancerHistory.getBeneficiaryRegID(), benPersonalCancerHistory.getBenVisitID());
+		if (null != processed && processed != 'N') {
 			processed = 'U';
 		}
-		
+
 		try {
 
 			List<String> typeOfTobaccoProductList = benPersonalCancerHistory.getTypeOfTobaccoProductList();
@@ -450,10 +453,11 @@ public class NurseServiceImpl implements NurseService {
 				}
 				benPersonalCancerHistory.setTypeOfTobaccoProduct(typeOfTobaccoProductData);
 			}
-			response = benPersonalCancerHistoryRepo.updateBenPersonalCancerHistory(benPersonalCancerHistory.getProviderServiceMapID(),
-					benPersonalCancerHistory.getTobaccoUse(), benPersonalCancerHistory.getStartAge_year(),
-					benPersonalCancerHistory.getEndAge_year(), benPersonalCancerHistory.getTypeOfTobaccoProduct(),
-					benPersonalCancerHistory.getQuantityPerDay(), benPersonalCancerHistory.getIsFilteredCigaerette(),
+			response = benPersonalCancerHistoryRepo.updateBenPersonalCancerHistory(
+					benPersonalCancerHistory.getProviderServiceMapID(), benPersonalCancerHistory.getTobaccoUse(),
+					benPersonalCancerHistory.getStartAge_year(), benPersonalCancerHistory.getEndAge_year(),
+					benPersonalCancerHistory.getTypeOfTobaccoProduct(), benPersonalCancerHistory.getQuantityPerDay(),
+					benPersonalCancerHistory.getIsFilteredCigaerette(),
 					benPersonalCancerHistory.getIsCigaretteExposure(), benPersonalCancerHistory.getIsBetelNutChewing(),
 					benPersonalCancerHistory.getDurationOfBetelQuid(), benPersonalCancerHistory.getAlcoholUse(),
 					benPersonalCancerHistory.getSsAlcoholUsed(), benPersonalCancerHistory.getFrequencyOfAlcoholUsed(),
@@ -471,13 +475,13 @@ public class NurseServiceImpl implements NurseService {
 	@Override
 	public int updateBenPersonalCancerDietHistory(BenPersonalCancerDietHistory benPersonalCancerDietHistory) {
 		int response = 0;
-		
-		Character processed = benPersonalCancerDietHistoryRepo.getPersonalCancerDietHistoryStatus(benPersonalCancerDietHistory.getBeneficiaryRegID(), 
-				benPersonalCancerDietHistory.getBenVisitID());
-		if( null != processed && processed!='N'){
+
+		Character processed = benPersonalCancerDietHistoryRepo.getPersonalCancerDietHistoryStatus(
+				benPersonalCancerDietHistory.getBeneficiaryRegID(), benPersonalCancerDietHistory.getBenVisitID());
+		if (null != processed && processed != 'N') {
 			processed = 'U';
 		}
-		
+
 		try {
 			List<String> typeOfOilConsumedList = benPersonalCancerDietHistory.getTypeOfOilConsumedList();
 			if (null != typeOfOilConsumedList && !typeOfOilConsumedList.isEmpty()) {
@@ -488,8 +492,9 @@ public class NurseServiceImpl implements NurseService {
 				benPersonalCancerDietHistory.setTypeOfOilConsumed(typeOfOilConsumedData);
 			}
 
-			response = benPersonalCancerDietHistoryRepo.updateBenPersonalCancerDietHistory(benPersonalCancerDietHistory.getProviderServiceMapID(),
-					benPersonalCancerDietHistory.getDietType(), benPersonalCancerDietHistory.getFruitConsumptionDays(),
+			response = benPersonalCancerDietHistoryRepo.updateBenPersonalCancerDietHistory(
+					benPersonalCancerDietHistory.getProviderServiceMapID(), benPersonalCancerDietHistory.getDietType(),
+					benPersonalCancerDietHistory.getFruitConsumptionDays(),
 					benPersonalCancerDietHistory.getFruitQuantityPerDay(),
 					benPersonalCancerDietHistory.getVegetableConsumptionDays(),
 					benPersonalCancerDietHistory.getVegetableQuantityPerDay(),
@@ -498,7 +503,8 @@ public class NurseServiceImpl implements NurseService {
 					benPersonalCancerDietHistory.getPhysicalActivityType(),
 					benPersonalCancerDietHistory.getSsRadiationExposure(),
 					benPersonalCancerDietHistory.getIsThyroidDisorder(), benPersonalCancerDietHistory.getModifiedBy(),
-					benPersonalCancerDietHistory.getBeneficiaryRegID(), benPersonalCancerDietHistory.getBenVisitID(), processed);
+					benPersonalCancerDietHistory.getBeneficiaryRegID(), benPersonalCancerDietHistory.getBenVisitID(),
+					processed);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -510,13 +516,13 @@ public class NurseServiceImpl implements NurseService {
 
 	@Override
 	public int updateBenVitalDetail(BenCancerVitalDetail benCancerVitalDetail) {
-		Character processed = benCancerVitalDetailRepo.getCancerVitalStatus(benCancerVitalDetail.getBeneficiaryRegID(), 
+		Character processed = benCancerVitalDetailRepo.getCancerVitalStatus(benCancerVitalDetail.getBeneficiaryRegID(),
 				benCancerVitalDetail.getBenVisitID());
-		if( null != processed && processed!='N'){
+		if (null != processed && processed != 'N') {
 			processed = 'U';
 		}
-		int response = benCancerVitalDetailRepo.updateBenCancerVitalDetail(benCancerVitalDetail.getProviderServiceMapID(),
-				benCancerVitalDetail.getWeight_Kg(),
+		int response = benCancerVitalDetailRepo.updateBenCancerVitalDetail(
+				benCancerVitalDetail.getProviderServiceMapID(), benCancerVitalDetail.getWeight_Kg(),
 				benCancerVitalDetail.getHeight_cm(), benCancerVitalDetail.getWaistCircumference_cm(),
 				benCancerVitalDetail.getBloodGlucose_Fasting(), benCancerVitalDetail.getBloodGlucose_Random(),
 				benCancerVitalDetail.getBloodGlucose_2HrPostPrandial(), benCancerVitalDetail.getSystolicBP_1stReading(),

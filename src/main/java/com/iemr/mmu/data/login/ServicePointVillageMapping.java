@@ -15,24 +15,22 @@ import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 import com.iemr.mmu.data.location.DistrictBranchMapping;
-import com.iemr.utils.mapper.OutputMapper;
 
 @Entity
-@Table(name="m_servicepointvillagemap")
+@Table(name = "m_servicepointvillagemap")
 public class ServicePointVillageMapping {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Expose
-	@Column(name="ServicePointVillageMapID")
+	@Column(name = "ServicePointVillageMapID")
 	private Integer servicePointVillageMapID;
-	
+
 	@Expose
-	@Column(name="ServicePointID")
+	@Column(name = "ServicePointID")
 	private Integer servicePointID;
 
-
 	@Expose
-	@Column(name="DistrictBranchID")
+	@Column(name = "DistrictBranchID")
 	private Integer districtBranchID;
 	@Expose
 	@OneToOne(fetch = FetchType.LAZY)
@@ -41,48 +39,45 @@ public class ServicePointVillageMapping {
 	@Expose
 	@Transient
 	String villageName;
-	
+
 	@Expose
-	@Column(name="ProviderServiceMapID")
+	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-//	@Expose
-//	@OneToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(updatable = false, insertable = false, name = "ProviderServiceMapID")
-//	private M_ProviderServiceMapping m_providerServiceMapping;
-	
+	// @Expose
+	// @OneToOne(fetch = FetchType.LAZY)
+	// @JoinColumn(updatable = false, insertable = false, name =
+	// "ProviderServiceMapID")
+	// private M_ProviderServiceMapping m_providerServiceMapping;
+
 	@Expose
-	@Column(name = "Deleted",insertable = false, updatable = true)
-	private Boolean deleted; 
+	@Column(name = "Deleted", insertable = false, updatable = true)
+	private Boolean deleted;
 	@Expose
-	@Column(name = "Processed",insertable = false, updatable = true)
+	@Column(name = "Processed", insertable = false, updatable = true)
 	private String processed;
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
 	@Expose
-	@Column(name = "CreatedDate" ,insertable = false, updatable = false)
+	@Column(name = "CreatedDate", insertable = false, updatable = false)
 	private Date createdDate;
 	@Expose
 	@Column(name = "ModifiedBy")
-	private String modifiedBy; 
+	private String modifiedBy;
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Date lastModDate;
-	
+
 	public ServicePointVillageMapping() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	
-	
 	public ServicePointVillageMapping(Integer districtBranchID, String villageName) {
 		super();
 		this.districtBranchID = districtBranchID;
 		this.villageName = villageName;
 	}
-
-
 
 	public Integer getServicePointID() {
 		return servicePointID;
@@ -176,5 +171,4 @@ public class ServicePointVillageMapping {
 		return servicePointVillageMapID;
 	}
 
-	
 }

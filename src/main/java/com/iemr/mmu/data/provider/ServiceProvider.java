@@ -2,6 +2,7 @@ package com.iemr.mmu.data.provider;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,12 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
-import com.iemr.utils.mapper.OutputMapper;
+import com.iemr.mmu.utils.mapper.OutputMapper;
 
 @Entity
 @Table(name = "m_ServiceProvider")
-public class ServiceProvider
-{
+public class ServiceProvider {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Expose
@@ -72,7 +72,7 @@ public class ServiceProvider
 	private Integer statusID;
 	@Expose
 
-	@Column(name="Deleted",insertable = false, updatable = true)
+	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
 	@Expose
 	@Column(name = "CreatedBy")
@@ -90,19 +90,16 @@ public class ServiceProvider
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp LastModDate;
 
-	public ServiceProvider()
-	{
+	public ServiceProvider() {
 
 	}
 
-	public ServiceProvider(Integer serviceProviderId, String serviceProviderName, Date joiningDate,
-			Integer stateId, String logoFileName, String logoFilePath, String primaryContactName,
-			String primaryContactNo, String primaryContactEmailID, String primaryContactAddress,
-			String primaryContactValidityTillDate, String secondaryContactName, String secondaryContactNo,
-			String secondaryContactEmailID, String secondaryContactAddress, Date secondaryContactValidityTillDate,
-			Boolean deleted, String createdBy, Date validFrom, Date validTill, Timestamp createdDate, String modifiedBy,
-			Timestamp lastModDate)
-	{
+	public ServiceProvider(Integer serviceProviderId, String serviceProviderName, Date joiningDate, Integer stateId,
+			String logoFileName, String logoFilePath, String primaryContactName, String primaryContactNo,
+			String primaryContactEmailID, String primaryContactAddress, String primaryContactValidityTillDate,
+			String secondaryContactName, String secondaryContactNo, String secondaryContactEmailID,
+			String secondaryContactAddress, Date secondaryContactValidityTillDate, Boolean deleted, String createdBy,
+			Date validFrom, Date validTill, Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
 
 		this.serviceProviderId = serviceProviderId;
 		this.serviceProviderName = serviceProviderName;
@@ -129,252 +126,203 @@ public class ServiceProvider
 		LastModDate = lastModDate;
 	}
 
-	public Integer getServiceProviderId()
-	{
+	public Integer getServiceProviderId() {
 		return serviceProviderId;
 	}
 
-	public void setServiceProviderId(Integer serviceProviderId)
-	{
+	public void setServiceProviderId(Integer serviceProviderId) {
 		this.serviceProviderId = serviceProviderId;
 	}
 
-	public String getServiceProviderName()
-	{
+	public String getServiceProviderName() {
 		return serviceProviderName;
 	}
 
-	public void setServiceProviderName(String serviceProviderName)
-	{
+	public void setServiceProviderName(String serviceProviderName) {
 		this.serviceProviderName = serviceProviderName;
 	}
 
-	public Date getJoiningDate()
-	{
+	public Date getJoiningDate() {
 		return joiningDate;
 	}
 
-	public void setJoiningDate(Date joiningDate)
-	{
+	public void setJoiningDate(Date joiningDate) {
 		this.joiningDate = joiningDate;
 	}
 
-	public Integer getStateId()
-	{
+	public Integer getStateId() {
 		return stateId;
 	}
 
-	public void setStateId(Integer stateId)
-	{
+	public void setStateId(Integer stateId) {
 		this.stateId = stateId;
 	}
 
-	public String getLogoFileName()
-	{
+	public String getLogoFileName() {
 		return logoFileName;
 	}
 
-	public void setLogoFileName(String logoFileName)
-	{
+	public void setLogoFileName(String logoFileName) {
 		this.logoFileName = logoFileName;
 	}
 
-	public String getLogoFilePath()
-	{
+	public String getLogoFilePath() {
 		return logoFilePath;
 	}
 
-	public void setLogoFilePath(String logoFilePath)
-	{
+	public void setLogoFilePath(String logoFilePath) {
 		this.logoFilePath = logoFilePath;
 	}
 
-	public String getPrimaryContactName()
-	{
+	public String getPrimaryContactName() {
 		return primaryContactName;
 	}
 
-	public void setPrimaryContactName(String primaryContactName)
-	{
+	public void setPrimaryContactName(String primaryContactName) {
 		this.primaryContactName = primaryContactName;
 	}
 
-	public String getPrimaryContactNo()
-	{
+	public String getPrimaryContactNo() {
 		return primaryContactNo;
 	}
 
-	public void setPrimaryContactNo(String primaryContactNo)
-	{
+	public void setPrimaryContactNo(String primaryContactNo) {
 		this.primaryContactNo = primaryContactNo;
 	}
 
-	public String getPrimaryContactEmailID()
-	{
+	public String getPrimaryContactEmailID() {
 		return primaryContactEmailID;
 	}
 
-	public void setPrimaryContactEmailID(String primaryContactEmailID)
-	{
+	public void setPrimaryContactEmailID(String primaryContactEmailID) {
 		this.primaryContactEmailID = primaryContactEmailID;
 	}
 
-	public String getPrimaryContactAddress()
-	{
+	public String getPrimaryContactAddress() {
 		return primaryContactAddress;
 	}
 
-	public void setPrimaryContactAddress(String primaryContactAddress)
-	{
+	public void setPrimaryContactAddress(String primaryContactAddress) {
 		this.primaryContactAddress = primaryContactAddress;
 	}
 
-	public String getPrimaryContactValidityTillDate()
-	{
+	public String getPrimaryContactValidityTillDate() {
 		return primaryContactValidityTillDate;
 	}
 
-	public void setPrimaryContactValidityTillDate(String primaryContactValidityTillDate)
-	{
+	public void setPrimaryContactValidityTillDate(String primaryContactValidityTillDate) {
 		this.primaryContactValidityTillDate = primaryContactValidityTillDate;
 	}
 
-	public String getSecondaryContactName()
-	{
+	public String getSecondaryContactName() {
 		return secondaryContactName;
 	}
 
-	public void setSecondaryContactName(String secondaryContactName)
-	{
+	public void setSecondaryContactName(String secondaryContactName) {
 		this.secondaryContactName = secondaryContactName;
 	}
 
-	public String getSecondaryContactNo()
-	{
+	public String getSecondaryContactNo() {
 		return secondaryContactNo;
 	}
 
-	public void setSecondaryContactNo(String secondaryContactNo)
-	{
+	public void setSecondaryContactNo(String secondaryContactNo) {
 		this.secondaryContactNo = secondaryContactNo;
 	}
 
-	public String getSecondaryContactEmailID()
-	{
+	public String getSecondaryContactEmailID() {
 		return secondaryContactEmailID;
 	}
 
-	public void setSecondaryContactEmailID(String secondaryContactEmailID)
-	{
+	public void setSecondaryContactEmailID(String secondaryContactEmailID) {
 		this.secondaryContactEmailID = secondaryContactEmailID;
 	}
 
-	public String getSecondaryContactAddress()
-	{
+	public String getSecondaryContactAddress() {
 		return secondaryContactAddress;
 	}
 
-	public void setSecondaryContactAddress(String secondaryContactAddress)
-	{
+	public void setSecondaryContactAddress(String secondaryContactAddress) {
 		this.secondaryContactAddress = secondaryContactAddress;
 	}
 
-	public Date getSecondaryContactValidityTillDate()
-	{
+	public Date getSecondaryContactValidityTillDate() {
 		return secondaryContactValidityTillDate;
 	}
 
-	public void setSecondaryContactValidityTillDate(Date secondaryContactValidityTillDate)
-	{
+	public void setSecondaryContactValidityTillDate(Date secondaryContactValidityTillDate) {
 		this.secondaryContactValidityTillDate = secondaryContactValidityTillDate;
 	}
 
-	public Boolean getDeleted()
-	{
+	public Boolean getDeleted() {
 		return deleted;
 	}
 
-	public void setDeleted(Boolean deleted)
-	{
+	public void setDeleted(Boolean deleted) {
 
 		this.deleted = deleted;
 	}
 
-	public String getCreatedBy()
-	{
+	public String getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(String createdBy)
-	{
+	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
 
-	public Date getValidFrom()
-	{
+	public Date getValidFrom() {
 		return validFrom;
 	}
 
-	public void setValidFrom(Date validFrom)
-	{
+	public void setValidFrom(Date validFrom) {
 		this.validFrom = validFrom;
 	}
 
-	public Date getValidTill()
-	{
+	public Date getValidTill() {
 		return validTill;
 	}
 
-	public void setValidTill(Date validTill)
-	{
+	public void setValidTill(Date validTill) {
 		this.validTill = validTill;
 	}
 
-	public Timestamp getCreatedDate()
-	{
+	public Timestamp getCreatedDate() {
 		return CreatedDate;
 	}
 
-	public void setCreatedDate(Timestamp createdDate)
-	{
+	public void setCreatedDate(Timestamp createdDate) {
 		CreatedDate = createdDate;
 	}
 
-	public String getModifiedBy()
-	{
+	public String getModifiedBy() {
 		return ModifiedBy;
 	}
 
-	public void setModifiedBy(String modifiedBy)
-	{
+	public void setModifiedBy(String modifiedBy) {
 		ModifiedBy = modifiedBy;
 	}
 
-	public Timestamp getLastModDate()
-	{
+	public Timestamp getLastModDate() {
 		return LastModDate;
 	}
 
-	public void setLastModDate(Timestamp lastModDate)
-	{
+	public void setLastModDate(Timestamp lastModDate) {
 		LastModDate = lastModDate;
 	}
 
-	public Integer getStatusID()
-	{
+	public Integer getStatusID() {
 		return statusID;
 	}
 
-	public void setStatusID(Integer statusID)
-	{
+	public void setStatusID(Integer statusID) {
 		this.statusID = statusID;
 	}
 
 	private static OutputMapper outputMapper = new OutputMapper();
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return outputMapper.gson().toJson(this);
 	}
 

@@ -16,14 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
-import com.iemr.mmu.data.doctor.CancerAbdominalExamination;
-import com.iemr.mmu.data.doctor.CancerBreastExamination;
-import com.iemr.mmu.data.doctor.CancerDiagnosis;
-import com.iemr.mmu.data.doctor.CancerGynecologicalExamination;
-import com.iemr.mmu.data.doctor.CancerLymphNodeDetails;
-import com.iemr.mmu.data.doctor.CancerOralExamination;
-import com.iemr.mmu.data.doctor.WrapperCancerExamImgAnotasn;
-import com.iemr.mmu.data.doctor.WrapperCancerSymptoms;
 import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
 import com.iemr.mmu.data.nurse.BenFamilyCancerHistory;
 import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
@@ -34,16 +26,19 @@ import com.iemr.mmu.service.common.master.DoctorMasterDataService;
 import com.iemr.mmu.service.common.master.DoctorMasterDataServiceImpl;
 import com.iemr.mmu.service.doctor.DoctorServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
-import com.iemr.utils.mapper.InputMapper;
-import com.iemr.utils.response.OutputResponse;
+import com.iemr.mmu.utils.mapper.InputMapper;
+import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping({ "/doctor" })
-/** Objective: Performs update Beneficiary Cancer Screening Details entered by nurse*/
+@RequestMapping(value = "/doctor", headers = "Authorization")
+/**
+ * Objective: Performs update Beneficiary Cancer Screening Details entered by
+ * nurse
+ */
 public class UpdateDoctorCSController {
 	private InputMapper inputMapper = new InputMapper();
 	private OutputResponse response;
@@ -62,7 +57,6 @@ public class UpdateDoctorCSController {
 	@Autowired
 	private NurseServiceImpl nurseServiceImpl;
 
-	
 	@CrossOrigin
 	@ApiOperation(value = "update nurse visit detail", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/visitDetailScreen/VisitDetail" }, method = { RequestMethod.POST })
@@ -76,9 +70,10 @@ public class UpdateDoctorCSController {
 		OutputResponse response = new OutputResponse();
 		inputMapper = new InputMapper();
 		logger.info("updateBeneficiaryVisitDetail request:" + requestObj);
-		BeneficiaryVisitDetail beneficiaryVisitDetail = InputMapper.gson().fromJson(requestObj,
-				BeneficiaryVisitDetail.class);
+
 		try {
+			BeneficiaryVisitDetail beneficiaryVisitDetail = InputMapper.gson().fromJson(requestObj,
+					BeneficiaryVisitDetail.class);
 			int result = nurseServiceImpl.updateBeneficiaryVisitDetails(beneficiaryVisitDetail);
 			if (result > 0) {
 				Map<String, Integer> resMap = new HashMap<String, Integer>();
@@ -93,7 +88,7 @@ public class UpdateDoctorCSController {
 			logger.error("Error in updateBeneficiaryVisitDetail :" + e);
 		}
 
-		//System.out.println(response.toString());
+		// System.out.println(response.toString());
 		return response.toString();
 	}
 
@@ -109,12 +104,14 @@ public class UpdateDoctorCSController {
 		OutputResponse response = new OutputResponse();
 		inputMapper = new InputMapper();
 		logger.info("updateBenFamilyCancerHistory request:" + requestObj);
-		BenFamilyCancerHistory[] benFamilyCancerHistoryArray = InputMapper.gson().fromJson(requestObj,
-				BenFamilyCancerHistory[].class);
-
-		List<BenFamilyCancerHistory> benFamilyCancerHistoryList = Arrays.asList(benFamilyCancerHistoryArray);
 		try {
+			BenFamilyCancerHistory[] benFamilyCancerHistoryArray = InputMapper.gson().fromJson(requestObj,
+					BenFamilyCancerHistory[].class);
+
+			List<BenFamilyCancerHistory> benFamilyCancerHistoryList = Arrays.asList(benFamilyCancerHistoryArray);
+
 			int result = nurseServiceImpl.updateBeneficiaryFamilyCancerHistory(benFamilyCancerHistoryList);
+
 			if (result > 0) {
 				Map<String, Integer> resMap = new HashMap<String, Integer>();
 				resMap.put("result", result);
@@ -214,8 +211,11 @@ public class UpdateDoctorCSController {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("upodateBenVitalDetail request:" + requestObj);
-		BenCancerVitalDetail benCancerVitalDetail = InputMapper.gson().fromJson(requestObj, BenCancerVitalDetail.class);
+
 		try {
+			BenCancerVitalDetail benCancerVitalDetail = InputMapper.gson().fromJson(requestObj,
+					BenCancerVitalDetail.class);
+
 			int responseObj = nurseServiceImpl.updateBenVitalDetail(benCancerVitalDetail);
 			if (responseObj > 0) {
 				response.setResponse("Beneficiary Vital Details updated Successfully");

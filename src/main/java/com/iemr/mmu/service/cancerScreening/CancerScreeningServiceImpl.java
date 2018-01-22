@@ -20,7 +20,7 @@ import com.iemr.mmu.repo.nurse.BenObstetricCancerHistoryRepo;
 import com.iemr.mmu.repo.nurse.BenPersonalCancerDietHistoryRepo;
 import com.iemr.mmu.repo.nurse.BenPersonalCancerHistoryRepo;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
-import com.iemr.utils.mapper.InputMapper;
+import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
 public class CancerScreeningServiceImpl implements CancerScreeningService {
@@ -62,7 +62,7 @@ public class CancerScreeningServiceImpl implements CancerScreeningService {
 		this.benCancerVitalDetailRepo = benCancerVitalDetailRepo;
 	}
 
-	public void saveCancerScreeningNurseData(JsonObject requestOBJ) {
+	public void saveCancerScreeningNurseData(JsonObject requestOBJ) throws Exception {
 		// check if visit details data is not null
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
 			// Call method to save visit details data
@@ -85,7 +85,7 @@ public class CancerScreeningServiceImpl implements CancerScreeningService {
 	 * @param requestOBJ
 	 * @return success or failure flag for visitDetails data saving
 	 */
-	public Long saveBenVisitDetails(JsonObject requestOBJ) {
+	public Long saveBenVisitDetails(JsonObject requestOBJ) throws Exception {
 		BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(requestOBJ.get("visitDetails"),
 				BeneficiaryVisitDetail.class);
 		Long benVisitID = nurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
@@ -97,8 +97,9 @@ public class CancerScreeningServiceImpl implements CancerScreeningService {
 	 * @param requestOBJ
 	 * @param benVisitID
 	 * @return success or failure flag for history data saving
+	 * @throws Exception
 	 */
-	public Long saveBenHistoryDetails(JsonObject requestOBJ, Long benVisitID) {
+	public Long saveBenHistoryDetails(JsonObject requestOBJ, Long benVisitID) throws Exception {
 		if (requestOBJ != null && requestOBJ.has("historyDetails") && !requestOBJ.get("historyDetails").isJsonNull()) {
 			JsonObject historyOBJ = requestOBJ.getAsJsonObject("historyDetails");
 			System.out.println("hi...");
@@ -181,8 +182,9 @@ public class CancerScreeningServiceImpl implements CancerScreeningService {
 	 * @param requestOBJ
 	 * @param benVisitID
 	 * @return success or failure flag for vitals data saving
+	 * @throws Exception
 	 */
-	public Long saveBenVitalsDetails(JsonObject requestOBJ, Long benVisitID) {
+	public Long saveBenVitalsDetails(JsonObject requestOBJ, Long benVisitID) throws Exception {
 		Long benVitalSaveSuccessFlag = null;
 		if (requestOBJ != null && requestOBJ.has("vitalsDetails") && !requestOBJ.get("vitalsDetails").isJsonNull()) {
 			BenCancerVitalDetail benCancerVitalDetail = InputMapper.gson().fromJson(requestOBJ.get("vitalsDetails"),
@@ -198,7 +200,7 @@ public class CancerScreeningServiceImpl implements CancerScreeningService {
 	}
 
 	@Override
-	public int UpdateCSHistoryNurseData(JsonObject jsnOBJ) {
+	public int UpdateCSHistoryNurseData(JsonObject jsnOBJ) throws Exception {
 
 		int familyCURes = 0;
 		int pastObstetricCURes = 0;

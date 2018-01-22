@@ -1,6 +1,5 @@
 package com.iemr.mmu.controller.nurse.main.anc;
 
-import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,11 +21,7 @@ import com.iemr.mmu.data.anc.BenFamilyHistory;
 import com.iemr.mmu.data.anc.BenMedHistory;
 import com.iemr.mmu.data.anc.BenMenstrualDetails;
 import com.iemr.mmu.data.anc.BenPersonalHabit;
-import com.iemr.mmu.data.anc.BencomrbidityCondDetails;
 import com.iemr.mmu.data.anc.ChildFeedingDetails;
-import com.iemr.mmu.data.anc.ChildOptionalVaccineDetail;
-import com.iemr.mmu.data.anc.ChildVaccineDetail1;
-import com.iemr.mmu.data.anc.FemaleObstetricHistory;
 import com.iemr.mmu.data.anc.PerinatalHistory;
 import com.iemr.mmu.data.anc.PhyGeneralExamination;
 import com.iemr.mmu.data.anc.PhyHeadToToeExamination;
@@ -47,15 +42,15 @@ import com.iemr.mmu.data.anc.WrapperMedicationHistory;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
-import com.iemr.utils.mapper.InputMapper;
-import com.iemr.utils.response.OutputResponse;
+import com.iemr.mmu.utils.mapper.InputMapper;
+import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping({ "/anc" })
+@RequestMapping(value = "/anc", headers = "Authorization")
 public class InsertNurseANCController {
 	private InputMapper inputMapper;
 	private Logger logger = LoggerFactory.getLogger(InsertNurseANCController.class);
@@ -449,26 +444,30 @@ public class InsertNurseANCController {
 		}
 		return response.toString();
 	}
-	
-//	{ "beneficiaryRegID":"7506",
-//		"benVisitID":"222",
-//		"providerServiceMapID":"1251",
-//		"createdBy":"Test",
-//		 "pastIllness": [ { "illnessType": { "illnessID": "12", "illnessType": "Malaria" }, "otherIllnessType": "sfdgfd", "timePeriodAgo": "2", "timePeriodUnit": "Years" } ], "pastSurgery": [ { "surgeryType": { "surgeryID": "3", "surgeryType": "Appendicectomy" }, "otherSurgeryType": null, "timePeriodAgo": "4", "timePeriodUnit": "Weeks" } ] }
+
+	// { "beneficiaryRegID":"7506",
+	// "benVisitID":"222",
+	// "providerServiceMapID":"1251",
+	// "createdBy":"Test",
+	// "pastIllness": [ { "illnessType": { "illnessID": "12", "illnessType":
+	// "Malaria" }, "otherIllnessType": "sfdgfd", "timePeriodAgo": "2",
+	// "timePeriodUnit": "Years" } ], "pastSurgery": [ { "surgeryType": {
+	// "surgeryID": "3", "surgeryType": "Appendicectomy" }, "otherSurgeryType":
+	// null, "timePeriodAgo": "4", "timePeriodUnit": "Weeks" } ] }
 	@CrossOrigin
 	@ApiOperation(value = "Save Beneficiary ANC past history Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/history/pastHistory" }, method = { RequestMethod.POST })
-	public String saveANCBenPastHistory(@ApiParam(value = "{\"pastIllness\":[{\"illnessTypeID\": \"Integer\", \"illnessType\": \"String\","
-			+ "\"otherIllnessType\": \"String\", \"timePeriodAgo\":\"Integer\", \"timePeriodUnit\":\"String\"}], \"pastSurgery\":[{\"surgeryID\": \"Integer\", "
-			+ "\"surgeryType\": \"String\", \"otherSurgeryType\": \"String\", \"timePeriodAgo\":\"Integer\", \"timePeriodUnit\":\"String\"}], "
-			+ "\"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", "
-			+ "\"providerServiceMapID\":\"Integer\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
+	public String saveANCBenPastHistory(
+			@ApiParam(value = "{\"pastIllness\":[{\"illnessTypeID\": \"Integer\", \"illnessType\": \"String\","
+					+ "\"otherIllnessType\": \"String\", \"timePeriodAgo\":\"Integer\", \"timePeriodUnit\":\"String\"}], \"pastSurgery\":[{\"surgeryID\": \"Integer\", "
+					+ "\"surgeryType\": \"String\", \"otherSurgeryType\": \"String\", \"timePeriodAgo\":\"Integer\", \"timePeriodUnit\":\"String\"}], "
+					+ "\"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", "
+					+ "\"providerServiceMapID\":\"Integer\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		logger.info("saveANCBenPastHistory request:" + requestObj);
 		try {
 			if (requestObj != null) {
-				BenMedHistory benMedHistory = InputMapper.gson().fromJson(requestObj,
-						BenMedHistory.class);
+				BenMedHistory benMedHistory = InputMapper.gson().fromJson(requestObj, BenMedHistory.class);
 
 				int r = ancServiceImpl.saveBenANCPastHistory(benMedHistory);
 				if (r > 0) {
@@ -480,23 +479,26 @@ public class InsertNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Past History."+e);
+			logger.error("Error while storing Beneficiary ANC Past History." + e);
 		}
 		return response.toString();
 	}
-	
-//	
-//	 {"comrbidityCondDetails":[ { "beneficiaryRegID":"7506",
-//		 "benVisitID":"222",
-//		 "providerServiceMapID":"1251",
-//		 "createdBy":"Test","comorbidConditionID":5,"comorbidCondition": "Hypertension", "otherComorbidConditions": null, "timePeriodAgo": "2", "timePeriodUnit": "Months", "showNextTime": null } ] }
+
+	//
+	// {"comrbidityCondDetails":[ { "beneficiaryRegID":"7506",
+	// "benVisitID":"222",
+	// "providerServiceMapID":"1251",
+	// "createdBy":"Test","comorbidConditionID":5,"comorbidCondition":
+	// "Hypertension", "otherComorbidConditions": null, "timePeriodAgo": "2",
+	// "timePeriodUnit": "Months", "showNextTime": null } ] }
 	@CrossOrigin
 	@ApiOperation(value = "Save Beneficiary ANC ComorbidCondition Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/history/comorbidConditions" }, method = { RequestMethod.POST })
-	public String saveANCBenComorbidConditions(@ApiParam(value = "{\"comorbidityConcurrentConditionsList\":[{\"comorbidConditionID\": \"Short\","
-			+ "\"comorbidCondition\": \"String\", \"otherComorbidCondition\":\"String\", \"timePeriodAgo\":\"Integer\", \"timePeriodUnit\":\"String\","
-			+ "\"isForHistory\":\"Boolean\"}], \"beneficiaryRegID\":\"String\", \"benVisitID\":\"String\", "
-			+ "\"providerServiceMapID\":\"String\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
+	public String saveANCBenComorbidConditions(
+			@ApiParam(value = "{\"comorbidityConcurrentConditionsList\":[{\"comorbidConditionID\": \"Short\","
+					+ "\"comorbidCondition\": \"String\", \"otherComorbidCondition\":\"String\", \"timePeriodAgo\":\"Integer\", \"timePeriodUnit\":\"String\","
+					+ "\"isForHistory\":\"Boolean\"}], \"beneficiaryRegID\":\"String\", \"benVisitID\":\"String\", "
+					+ "\"providerServiceMapID\":\"String\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		logger.info("saveANCBenComorbidConditions request:" + requestObj);
 		try {
@@ -514,19 +516,22 @@ public class InsertNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Comorbid Conditions."+e);
+			logger.error("Error while storing Beneficiary ANC Comorbid Conditions." + e);
 		}
 		return response.toString();
 	}
 
-	
-//	{ "medicationHistoryList": [ { "beneficiaryRegID":"7506", "benVisitID":"222", "providerServiceMapID":"1251", "createdBy":"Test","currentMedication": "saff", "timePeriodAgo": 2, "timePeriodUnit": "Years"} ] }
+	// { "medicationHistoryList": [ { "beneficiaryRegID":"7506",
+	// "benVisitID":"222", "providerServiceMapID":"1251",
+	// "createdBy":"Test","currentMedication": "saff", "timePeriodAgo": 2,
+	// "timePeriodUnit": "Years"} ] }
 	@CrossOrigin
 	@ApiOperation(value = "Save Beneficiary ANC Medication History Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/history/medicationHistory" }, method = { RequestMethod.POST })
-	public String saveANCBenMedicationHistory(@ApiParam(value = "{\"medicationHistoryList\":[{\"currentMedication\": \"String\","
-			+ "\"timePeriodAgo\":\"Integer\", \"timePeriodUnit\":\"String\"}], \"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", "
-			+ "\"providerServiceMapID\":\"Integer\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
+	public String saveANCBenMedicationHistory(
+			@ApiParam(value = "{\"medicationHistoryList\":[{\"currentMedication\": \"String\","
+					+ "\"timePeriodAgo\":\"Integer\", \"timePeriodUnit\":\"String\"}], \"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", "
+					+ "\"providerServiceMapID\":\"Integer\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		logger.info("saveANCBenMedicationHistory request:" + requestObj);
 		try {
@@ -544,11 +549,11 @@ public class InsertNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Medication History."+e);
+			logger.error("Error while storing Beneficiary ANC Medication History." + e);
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin
 	@ApiOperation(value = "Save Beneficiary ANC Menstrual History Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/history/menstrualHistory" }, method = { RequestMethod.POST })
@@ -574,11 +579,11 @@ public class InsertNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Menstrual Details."+e);
+			logger.error("Error while storing Beneficiary ANC Menstrual Details." + e);
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin
 	@ApiOperation(value = "Save Beneficiary Female Obstetric History Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/history/femaleObstetricHistory" }, method = { RequestMethod.POST })
@@ -602,7 +607,7 @@ public class InsertNurseANCController {
 				WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory = InputMapper.gson().fromJson(requestObj,
 						WrapperFemaleObstetricHistory.class);
 
-				if(wrapperFemaleObstetricHistory.getFemaleObstetricHistoryList().size()>0){
+				if (wrapperFemaleObstetricHistory.getFemaleObstetricHistoryList().size() > 0) {
 					int r = ancServiceImpl.saveFemaleObstetricHistory(wrapperFemaleObstetricHistory);
 					if (r > 0) {
 						response.setResponse("Beneficairy ANC Female Obstetric History saved successfully");
@@ -610,15 +615,15 @@ public class InsertNurseANCController {
 						response.setError(5000, "Something went wrong");
 					}
 					logger.info("saveFemaleObstetricHistory response:" + response);
-				}else{
+				} else {
 					response.setResponse("Female Obstetric Details not provided.");
 				}
-			}else{
+			} else {
 				response.setError(5000, "No Data Available to Store.");
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Female Obstetric History Details."+e);
+			logger.error("Error while storing Beneficiary ANC Female Obstetric History Details." + e);
 		}
 		return response.toString();
 	}
@@ -631,8 +636,7 @@ public class InsertNurseANCController {
 		logger.info("saveANCPerinatalHistory request:" + requestObj);
 		try {
 			if (requestObj != null) {
-				PerinatalHistory perinatalHistory = InputMapper.gson().fromJson(requestObj,
-						PerinatalHistory.class);
+				PerinatalHistory perinatalHistory = InputMapper.gson().fromJson(requestObj, PerinatalHistory.class);
 
 				int r = ancServiceImpl.savePerinatalHistory(perinatalHistory);
 				if (r > 0) {
@@ -644,24 +648,25 @@ public class InsertNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Perinatal History Details."+e);
+			logger.error("Error while storing Beneficiary ANC Perinatal History Details." + e);
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin
 	@ApiOperation(value = "Save child Vaccine Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/history/childVaccineDetails" }, method = { RequestMethod.POST })
-	public String saveANCChildVaccineDetails(@ApiParam(value = "{\"childOptionalVaccineList\": [{\"vaccineName\":\"String\", \"otherVaccineName\":\"String\","
-			+ "\"actualReceivingAge\":\"String\", \"receivedFacilityName\":\"String\", \"vaccineID\":\"String\"}], \"beneficiaryRegID\":\"Long\", "
-			+ "\"benVisitID\":\"Long\", \"providerServiceMapID\":\"Integer\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
+	public String saveANCChildVaccineDetails(
+			@ApiParam(value = "{\"childOptionalVaccineList\": [{\"vaccineName\":\"String\", \"otherVaccineName\":\"String\","
+					+ "\"actualReceivingAge\":\"String\", \"receivedFacilityName\":\"String\", \"vaccineID\":\"String\"}], \"beneficiaryRegID\":\"Long\", "
+					+ "\"benVisitID\":\"Long\", \"providerServiceMapID\":\"Integer\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		logger.info("saveANCChildVaccineDetails request:" + requestObj);
 		try {
 			if (requestObj != null) {
 				WrapperChildOptionalVaccineDetail wrapperChildVaccineDetail = InputMapper.gson().fromJson(requestObj,
 						WrapperChildOptionalVaccineDetail.class);
-				if(null != wrapperChildVaccineDetail.getChildOptionalVaccineList()){
+				if (null != wrapperChildVaccineDetail.getChildOptionalVaccineList()) {
 					int r = ancServiceImpl.saveChildOptionalVaccineDetail(wrapperChildVaccineDetail);
 					if (r > 0) {
 						response.setResponse("Beneficairy ANC Child Vaccine Details saved successfully");
@@ -669,17 +674,17 @@ public class InsertNurseANCController {
 						response.setError(5000, "Something went wrong");
 					}
 					logger.info("saveANCChildVaccineDetails response:" + response);
-				}else{
+				} else {
 					response.setResponse("Child Optional Vaccine Detail not provided.");
 				}
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Child Vaccine Details."+e);
+			logger.error("Error while storing Beneficiary ANC Child Vaccine Details." + e);
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin
 	@ApiOperation(value = "Save child Development Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/history/childDevelopmentHistory" }, method = { RequestMethod.POST })
@@ -701,11 +706,11 @@ public class InsertNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Child Development History Details."+e);
+			logger.error("Error while storing Beneficiary ANC Child Development History Details." + e);
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin
 	@ApiOperation(value = "Save ANC Personal History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/history/PersonalHistory" }, method = { RequestMethod.POST })
@@ -720,22 +725,18 @@ public class InsertNurseANCController {
 			+ "\"otherAllergicReaction\":\"String\", \"remarks\":\"String\"}],"
 			+ "\"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", "
 			+ "\"providerServiceMapID\":\"Integer\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
-		
-		
-			
+
 		OutputResponse response = new OutputResponse();
 		logger.info("saveANCPersonalHistory request:" + requestObj);
 		try {
 			if (requestObj != null) {
-				BenPersonalHabit personalHabit = InputMapper.gson().fromJson(requestObj,
-						BenPersonalHabit.class);
-				
-				BenAllergyHistory benAllergyHistory = InputMapper.gson().fromJson(requestObj,
-						BenAllergyHistory.class);
+				BenPersonalHabit personalHabit = InputMapper.gson().fromJson(requestObj, BenPersonalHabit.class);
+
+				BenAllergyHistory benAllergyHistory = InputMapper.gson().fromJson(requestObj, BenAllergyHistory.class);
 
 				int r = ancServiceImpl.saveANCPersonalHistory(personalHabit);
-				int s= ancServiceImpl.saveANCAllergyHistory(benAllergyHistory);
-				if ( r > 0 && s > 0) {
+				int s = ancServiceImpl.saveANCAllergyHistory(benAllergyHistory);
+				if (r > 0 && s > 0) {
 					response.setResponse("Beneficairy ANC Personal History Details saved successfully");
 				} else {
 					response.setError(5000, "Something went wrong");
@@ -744,24 +745,24 @@ public class InsertNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Personal History Details."+e);
+			logger.error("Error while storing Beneficiary ANC Personal History Details." + e);
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin
 	@ApiOperation(value = "Save ANC Family History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/history/familyHistory" }, method = { RequestMethod.POST })
-	public String saveANCFamilyHistory(@ApiParam(value = "{\"familyDiseaseList\": [{\"diseaseTypeID\":\"Short\", \"diseaseType\":\"String\","
-			+ "\"otherDiseaseType\":\"String\", \"familyMembers\":\"List\"]}, \"isGeneticDisorder\":\"Boolean\",\"geneticDisorder\":\"String\", "
-			+ "\"isConsanguineousMarrige\":\"Boolean\", \"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", "
-			+ "\"providerServiceMapID\":\"Integer\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
+	public String saveANCFamilyHistory(
+			@ApiParam(value = "{\"familyDiseaseList\": [{\"diseaseTypeID\":\"Short\", \"diseaseType\":\"String\","
+					+ "\"otherDiseaseType\":\"String\", \"familyMembers\":\"List\"]}, \"isGeneticDisorder\":\"Boolean\",\"geneticDisorder\":\"String\", "
+					+ "\"isConsanguineousMarrige\":\"Boolean\", \"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", "
+					+ "\"providerServiceMapID\":\"Integer\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		logger.info("saveANCFamilyHistory request:" + requestObj);
 		try {
 			if (requestObj != null) {
-				BenFamilyHistory benFamilyHistory = InputMapper.gson().fromJson(requestObj,
-						BenFamilyHistory.class);
+				BenFamilyHistory benFamilyHistory = InputMapper.gson().fromJson(requestObj, BenFamilyHistory.class);
 
 				int r = ancServiceImpl.saveANCBenFamilyHistory(benFamilyHistory);
 				if (r > 0) {
@@ -773,11 +774,11 @@ public class InsertNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Family History Details."+e);
+			logger.error("Error while storing Beneficiary ANC Family History Details." + e);
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin
 	@ApiOperation(value = "Save ANC Child Feeding History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/history/childFeedingHistory" }, method = { RequestMethod.POST })
@@ -799,11 +800,11 @@ public class InsertNurseANCController {
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Child Feeding History Details."+e);
+			logger.error("Error while storing Beneficiary ANC Child Feeding History Details." + e);
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin
 	@ApiOperation(value = "Save ANC Immunization History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/history/immunizationHistory" }, method = { RequestMethod.POST })
@@ -814,21 +815,21 @@ public class InsertNurseANCController {
 			if (requestObj != null) {
 				WrapperImmunizationHistory wrapperImmunizationHistory = InputMapper.gson().fromJson(requestObj,
 						WrapperImmunizationHistory.class);
-				if(null != wrapperImmunizationHistory.getImmunizationList()){
+				if (null != wrapperImmunizationHistory.getImmunizationList()) {
 					int r = ancServiceImpl.saveANCImmunizationHistory(wrapperImmunizationHistory);
 					if (r > 0) {
 						response.setResponse("Beneficairy ANC Immunization History Details saved successfully");
 					} else {
 						response.setError(5000, "Something went wrong");
 					}
-				}else{
+				} else {
 					response.setError(5000, "ImmunizationList Data not Available");
 				}
 				logger.info("saveImmunizationHistory response:" + response);
 			}
 		} catch (Exception e) {
 			response.setError(e);
-			logger.error("Error while storing Beneficiary ANC Immunization History Details."+e);
+			logger.error("Error while storing Beneficiary ANC Immunization History Details." + e);
 		}
 		return response.toString();
 	}

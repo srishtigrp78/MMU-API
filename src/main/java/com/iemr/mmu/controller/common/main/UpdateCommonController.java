@@ -10,20 +10,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.iemr.mmu.controller.registrar.master.RegistrarController;
-import com.iemr.mmu.service.common.master.RegistrarServiceMasterDataImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
-import com.iemr.mmu.service.registrar.RegistrarServiceImpl;
-import com.iemr.utils.mapper.InputMapper;
-import com.iemr.utils.response.OutputResponse;
+import com.iemr.mmu.utils.mapper.InputMapper;
+import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping({ "/registrar" })
-/** Objective: Performs updating Beneficiary status flag*/
+@RequestMapping(value = "/registrar", headers = "Authorization")
+/** Objective: Performs updating Beneficiary status flag */
 public class UpdateCommonController {
 	private Logger logger = LoggerFactory.getLogger(UpdateCommonController.class);
 	private InputMapper inputMapper = new InputMapper();

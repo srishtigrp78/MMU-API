@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,27 +15,28 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
-import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
 import com.iemr.mmu.data.nurse.BenFamilyCancerHistory;
 import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
-import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.service.common.master.NurseMasterDataService;
 import com.iemr.mmu.service.common.master.NurseMasterDataServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
-import com.iemr.utils.mapper.InputMapper;
-import com.iemr.utils.response.OutputResponse;
+import com.iemr.mmu.utils.mapper.InputMapper;
+import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping({ "/nurse" })
-/** Objective: Performs saving Beneficiary Cancer Screening Details entered by nurse*/
+@RequestMapping(value = "/nurse", headers = "Authorization")
+/**
+ * Objective: Performs saving Beneficiary Cancer Screening Details entered by
+ * nurse
+ */
 public class InsertNurseCSController {
 	private InputMapper inputMapper;
 	private Logger logger = LoggerFactory.getLogger(InsertNurseCSController.class);
@@ -68,9 +68,10 @@ public class InsertNurseCSController {
 		OutputResponse response = new OutputResponse();
 		inputMapper = new InputMapper();
 		logger.info("saveBeneficiaryVisitDetail request:" + requestObj);
-		BeneficiaryVisitDetail beneficiaryVisitDetail = InputMapper.gson().fromJson(requestObj,
-				BeneficiaryVisitDetail.class);
+
 		try {
+			BeneficiaryVisitDetail beneficiaryVisitDetail = InputMapper.gson().fromJson(requestObj,
+					BeneficiaryVisitDetail.class);
 			Long benVisitID = nurseServiceImpl.saveBeneficiaryVisitDetails(beneficiaryVisitDetail);
 			if (benVisitID != null && benVisitID > 0) {
 
@@ -231,8 +232,10 @@ public class InsertNurseCSController {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("saveBenVitalDetail request:" + requestObj);
-		BenCancerVitalDetail benCancerVitalDetail = InputMapper.gson().fromJson(requestObj, BenCancerVitalDetail.class);
+
 		try {
+			BenCancerVitalDetail benCancerVitalDetail = InputMapper.gson().fromJson(requestObj,
+					BenCancerVitalDetail.class);
 			Long responseObj = nurseServiceImpl.saveBenVitalDetail(benCancerVitalDetail);
 			if (responseObj != null && responseObj > 0) {
 				response.setResponse("Beneficiary Vital Details Stored Successfully");

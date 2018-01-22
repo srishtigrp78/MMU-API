@@ -1,6 +1,5 @@
 package com.iemr.mmu.controller.doctor.main.anc;
 
-import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -24,19 +23,21 @@ import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
-import com.iemr.utils.mapper.InputMapper;
-import com.iemr.utils.response.OutputResponse;
+import com.iemr.mmu.utils.mapper.InputMapper;
+import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping({ "/doctor" })
+@RequestMapping(value = "/doctor", headers = "Authorization")
 public class InsertDoctorAncController {
 	private OutputResponse response;
 	private Logger logger = LoggerFactory.getLogger(InsertDoctorCSController.class);
-	private ANCServiceImpl ancServiceImpl;	@Autowired
+	private ANCServiceImpl ancServiceImpl;
+
+	@Autowired
 	public void setAncServiceImpl(ANCServiceImpl ancServiceImpl) {
 		this.ancServiceImpl = ancServiceImpl;
 	}
@@ -69,7 +70,7 @@ public class InsertDoctorAncController {
 		return response.toString();
 	}
 
-	/** General OPD screen**/
+	/** General OPD screen **/
 	@CrossOrigin
 	@ApiOperation(value = "save Beneficiary ANC Diagnosis", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/anc/caseRecord/diagnosis" }, method = { RequestMethod.POST })
@@ -100,8 +101,8 @@ public class InsertDoctorAncController {
 		}
 		return response.toString();
 	}
-	
-	/** New screen for ANC**/
+
+	/** New screen for ANC **/
 	@CrossOrigin
 	@ApiOperation(value = "save Beneficiary ANC Diagnosis", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/anc/caseRecord/ancDiagnosis" }, method = { RequestMethod.POST })
@@ -109,14 +110,13 @@ public class InsertDoctorAncController {
 			+ "\"providerServiceMapID\":\"Integer\", \"highRiskStatus\":\"String\", "
 			+ "\"highRiskCondition\":\"String\", \"complicationOfCurrentPregnancy\":\"String\", \"isMaternalDeath\":\"String\", "
 			+ "\"placeOfDeath\":\"String\", \"dateOfDeath\":\"String\", \"causeOfDeath\":\"String\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
-		
+
 		OutputResponse response = new OutputResponse();
 
 		logger.info("saveBenANCDiagnosis request:" + requestObj);
 		try {
 			if (requestObj != null) {
-				ANCDiagnosis ancDiagnosis = InputMapper.gson().fromJson(requestObj,
-						ANCDiagnosis.class);
+				ANCDiagnosis ancDiagnosis = InputMapper.gson().fromJson(requestObj, ANCDiagnosis.class);
 				Long r = ancServiceImpl.saveBenANCDiagnosis(ancDiagnosis);
 				if (r > 0) {
 					response.setResponse("ANC Diagnosis Details stored successfully");
@@ -172,7 +172,7 @@ public class InsertDoctorAncController {
 			if (requestObj != null) {
 				JSONObject obj = new JSONObject(requestObj);
 				if (obj.has("prescribedDrugs")) {
-					
+
 					PrescribedDrugDetail[] prescribedDrugDetail = InputMapper.gson()
 							.fromJson(obj.get("prescribedDrugs").toString(), PrescribedDrugDetail[].class);
 
@@ -191,5 +191,5 @@ public class InsertDoctorAncController {
 		}
 		return response.toString();
 	}
-	
+
 }

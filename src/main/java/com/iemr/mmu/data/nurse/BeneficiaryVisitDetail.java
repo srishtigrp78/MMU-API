@@ -36,16 +36,16 @@ public class BeneficiaryVisitDetail {
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Transient
 	private String serviceProviderName;
-	
+
 	@Expose
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(updatable = false, insertable = false, name = "providerServiceMapID")
 	private ProviderServiceMapping providerServiceMapping;
-	
+
 	@Expose
 	@Column(name = "VisitDateTime")
 	private Timestamp visitDateTime;
@@ -176,7 +176,7 @@ public class BeneficiaryVisitDetail {
 		this.modifiedBy = modifiedBy;
 		this.lastModDate = lastModDate;
 	}
-	
+
 	public BeneficiaryVisitDetail(Long benVisitID, Long beneficiaryRegID, Integer providerServiceMapID,
 			Timestamp visitDateTime, Short visitNo, Short visitReasonID, String visitReason, Integer visitCategoryID,
 			String visitCategory, String pregnancyStatus, String rCHID, String healthFacilityType,

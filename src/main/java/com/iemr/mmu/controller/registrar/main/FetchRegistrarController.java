@@ -15,24 +15,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.iemr.mmu.controller.registrar.master.RegistrarController;
-import com.iemr.mmu.data.registrar.BeneficiaryData;
 import com.iemr.mmu.data.registrar.V_BenAdvanceSearch;
-import com.iemr.mmu.data.registrar.WrapperBeneficiaryRegistration;
 import com.iemr.mmu.service.common.master.RegistrarServiceMasterDataImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.service.registrar.RegistrarServiceImpl;
-import com.iemr.utils.mapper.InputMapper;
-import com.iemr.utils.response.OutputResponse;
+import com.iemr.mmu.utils.mapper.InputMapper;
+import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping({ "/registrar" })
-/** Objective: Performs QuickSearch, AdvancedSearch and fetching Beneficiary Details*/
+@RequestMapping(value = "/registrar", headers = "Authorization")
+/**
+ * Objective: Performs QuickSearch, AdvancedSearch and fetching Beneficiary
+ * Details
+ */
 public class FetchRegistrarController {
 	private Logger logger = LoggerFactory.getLogger(FetchRegistrarController.class);
 	private InputMapper inputMapper = new InputMapper();

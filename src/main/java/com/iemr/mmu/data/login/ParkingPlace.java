@@ -19,7 +19,7 @@ import com.iemr.mmu.data.location.DistrictBlock;
 import com.iemr.mmu.data.location.DistrictBranchMapping;
 import com.iemr.mmu.data.location.Districts;
 import com.iemr.mmu.data.location.States;
-import com.iemr.utils.mapper.OutputMapper;
+import com.iemr.mmu.utils.mapper.OutputMapper;
 
 @Entity
 @Table(name = "m_parkingplace")

@@ -1,9 +1,5 @@
 package com.iemr.mmu.controller.registrar.master;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,29 +10,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.iemr.mmu.data.registrar.BeneficiaryData;
-import com.iemr.mmu.data.registrar.V_BenAdvanceSearch;
-import com.iemr.mmu.data.registrar.WrapperBeneficiaryRegistration;
 import com.iemr.mmu.service.common.master.RegistrarServiceMasterDataImpl;
-import com.iemr.mmu.service.nurse.NurseServiceImpl;
-import com.iemr.mmu.service.registrar.RegistrarServiceImpl;
-import com.iemr.utils.mapper.InputMapper;
-import com.iemr.utils.response.OutputResponse;
+import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping({ "/registrar" })
-/** Objective: Get Registration related master Data*/
+@RequestMapping(value = "/registrar", headers = "Authorization")
+/** Objective: Get Registration related master Data */
 public class RegistrarMasterController {
-	
+
 	private Logger logger = LoggerFactory.getLogger(RegistrarMasterController.class);
 	private RegistrarServiceMasterDataImpl registrarServiceMasterDataImpl;
-
 
 	@Autowired
 	public void setRegistrarServiceMasterDataImpl(RegistrarServiceMasterDataImpl registrarServiceMasterDataImpl) {
