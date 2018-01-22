@@ -1,5 +1,7 @@
 package com.iemr.mmu.controller.anc;
 
+import java.text.ParseException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +64,7 @@ public class ANCCreateController {
 				response.setError(5000, "Invalid Request !!!");
 			}
 
-		} catch (Exception e) {
+		} catch (ParseException e) {
 			logger.error("Exception occurs in ANC nurse data saving :" + e);
 			response.setError(e);
 		}

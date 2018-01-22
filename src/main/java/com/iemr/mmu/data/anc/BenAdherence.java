@@ -45,23 +45,30 @@ public class BenAdherence {
 	@Expose
 	@Column(name = "Progress")
 	private String progress;
+	
+	
 	@Expose
-	@Column(name = "Deleted")
+	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
+
 	@Expose
-	@Column(name = "Processed", insertable = false)
+	@Column(name = "Processed", insertable = false, updatable = true)
 	private String processed;
+
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
+
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
 	private Timestamp createdDate;
+
 	@Expose
 	@Column(name = "ModifiedBy")
 	private String modifiedBy;
+
 	@Expose
-	@Column(name = "LastModDate", insertable = false)
+	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
 	public BenAdherence() {

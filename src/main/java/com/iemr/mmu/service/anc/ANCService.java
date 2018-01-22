@@ -41,6 +41,6 @@ import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 
 public interface ANCService {
 
-	public void saveANCNurseData(JsonObject requestOBJ);
+	public void saveANCNurseData(JsonObject requestOBJ) throws ParseException;
 
 }

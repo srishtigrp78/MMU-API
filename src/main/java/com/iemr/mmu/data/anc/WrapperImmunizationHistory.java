@@ -33,6 +33,14 @@ public class WrapperImmunizationHistory {
 		this.modifiedBy = modifiedBy;
 	}
 	
+	public Long getBenVisitID() {
+		return benVisitID;
+	}
+
+	public void setBenVisitID(Long benVisitID) {
+		this.benVisitID = benVisitID;
+	}
+	
 	public ArrayList<ChildVaccineDetail1> getBenChildVaccineDetails(){
 		
 		ArrayList<ChildVaccineDetail1> childVaccineDetailList = new ArrayList<ChildVaccineDetail1>();
