@@ -24,22 +24,28 @@ public interface BenFamilyCancerHistoryRepo extends CrudRepository<BenFamilyCanc
 			@Param("familyMember") String familyMember, @Param("modifiedBy") String modifiedBy, @Param("iD") Long iD,
 			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
 
-	@Query(" SELECT bfh from BenFamilyCancerHistory bfh WHERE bfh.beneficiaryRegID = :benRegID AND bfh.benVisitID = :benVisitID ")
+	@Query(" SELECT bfh from BenFamilyCancerHistory bfh WHERE bfh.beneficiaryRegID = :benRegID AND bfh.benVisitID = :benVisitID AND bfh.deleted = false")
 	public List<BenFamilyCancerHistory> getBenFamilyHistory(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 
 	@Query(" SELECT bfh from BenFamilyCancerHistory bfh WHERE bfh.beneficiaryRegID = :benRegID AND bfh.benVisitID = :benVisitID "
-			+ " AND DATE(createdDate) = :createdDate")
+			+ " AND DATE(createdDate) = :createdDate AND bfh.deleted = false")
 	public List<BenFamilyCancerHistory> getBenFamilyHistory(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID, @Param("createdDate") Date createdDate);
 
 	@Modifying
 	@Transactional
-	@Query(" Delete from BenFamilyCancerHistory WHERE beneficiaryRegID = :benRegID AND benVisitID = :benVisitID ")
-	public int deleteExistingFamilyRecord(@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
+	@Query("update BenFamilyCancerHistory set deleted=true, processed=:processed WHERE ID = :ID")
+	public int deleteExistingFamilyRecord(@Param("ID") Long ID, @Param("processed") Character processed);
 
 	@Query(" SELECT cancerDiseaseType, familyMember, Date(createdDate) FROM BenFamilyCancerHistory "
 			+ " WHERE beneficiaryRegID = :benRegID AND cancerDiseaseType IS NOT NULL "
-			+ " AND familyMember IS NOT NULL ORDER BY createdDate DESC  ")
+			+ " AND familyMember IS NOT NULL AND deleted = false ORDER BY createdDate DESC  ")
 	public ArrayList<Object[]> getBenCancerFamilyHistory(@Param("benRegID") Long benRegID);
+	
+	
+	@Query("SELECT ID, processed from BenFamilyCancerHistory where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID AND deleted=false")
+	public ArrayList<Object[]> getFamilyCancerHistoryStatus(@Param("benRegID") Long benRegID,
+			@Param("benVisitID") Long benVisitID);
+	
 }

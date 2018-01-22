@@ -48,7 +48,7 @@ public class FetchNurseCSController {
 	 * Fething beneficiary data filled by Nurse for Doctor screen...
 	 */
 
-	@CrossOrigin()
+	/*@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Visit details from Nurse screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenDataFrmNurseToDocVisitDetailsScreen" }, method = { RequestMethod.POST })
 	public String getBenDataFrmNurseScrnToDocScrnVisitDetails(
@@ -125,7 +125,7 @@ public class FetchNurseCSController {
 			logger.error("Error in getBenDataFrmNurseToDocVitalScreen:" + e);
 		}
 		return response.toString();
-	}
+	}*/
 
 	@CrossOrigin()
 	@ApiOperation(value = "Get Nurse worklist", consumes = "application/json", produces = "application/json")
