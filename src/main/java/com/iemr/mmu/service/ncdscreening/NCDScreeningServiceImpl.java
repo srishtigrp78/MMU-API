@@ -13,6 +13,7 @@ import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.repo.nurse.ncdscreening.NCDScreeningRepo;
+import com.iemr.mmu.service.anc.ANCNurseServiceImpl;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.utils.mapper.InputMapper;
@@ -22,7 +23,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService{
 
 	private NCDScreeningRepo ncdScreeningRepo;
 	private NurseServiceImpl nurseServiceImpl;
-	private ANCServiceImpl ancServiceImpl;
+	private ANCNurseServiceImpl ancNurseServiceImpl;
 
 	@Autowired
 	public void setNcdScreeningRepo(NCDScreeningRepo ncdScreeningRepo) {
@@ -35,8 +36,8 @@ public class NCDScreeningServiceImpl implements NCDScreeningService{
 	}
 
 	@Autowired
-	public void setAncServiceImpl(ANCServiceImpl ancServiceImpl) {
-		this.ancServiceImpl = ancServiceImpl;
+	public void setAncServiceImpl(ANCNurseServiceImpl ancNurseServiceImpl) {
+		this.ancNurseServiceImpl = ancNurseServiceImpl;
 	}
 
 	@Transactional(rollbackFor=Exception.class)
@@ -90,8 +91,8 @@ public class NCDScreeningServiceImpl implements NCDScreeningService{
 		Integer result = null;
 
 		Integer updateNCDScreeningDetails = updateNCDScreeningDetails(ncdScreening);
-		Integer updateANCAnthropometryDetails = ancServiceImpl.updateANCAnthropometryDetails(anthropometryDetail);
-		Integer updateANCPhysicalVitalDetails = ancServiceImpl.updateANCPhysicalVitalDetails(physicalVitalDetail);
+		Integer updateANCAnthropometryDetails = ancNurseServiceImpl.updateANCAnthropometryDetails(anthropometryDetail);
+		Integer updateANCPhysicalVitalDetails = ancNurseServiceImpl.updateANCPhysicalVitalDetails(physicalVitalDetail);
 
 		 
 		if(null != updateANCAnthropometryDetails && null != updateANCPhysicalVitalDetails && null != updateNCDScreeningDetails ) 
