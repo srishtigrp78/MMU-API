@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.iemr.mmu.controller.doctor.main.cancerScreening.DoctorController;
 import com.iemr.mmu.service.common.master.ANCMasterDataServiceImpl;
 import com.iemr.utils.mapper.InputMapper;
 import com.iemr.utils.response.OutputResponse;

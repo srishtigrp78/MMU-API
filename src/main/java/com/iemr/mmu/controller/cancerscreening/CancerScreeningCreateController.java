@@ -67,4 +67,35 @@ public class CancerScreeningCreateController {
 		}
 		return null;
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+
+	@CrossOrigin
+	@ApiOperation(value = "Save cancer screening doctor data..", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/doctorData" }, method = { RequestMethod.POST })
+	public String saveBenCancerScreeningDoctorData(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		try {
+			logger.info("Request object for cancer screening doctor data saving :" + requestObj);
+
+			JsonObject jsnOBJ = new JsonObject();
+			JsonParser jsnParser = new JsonParser();
+			JsonElement jsnElmnt = jsnParser.parse(requestObj);
+			jsnOBJ = jsnElmnt.getAsJsonObject();
+
+			if (jsnOBJ != null) {
+				cancerScreeningServiceImpl.saveCancerScreeningDoctorData(jsnOBJ);
+			} else {
+				response.setError(5000, "Invalid Request !!!");
+			}
+
+		} catch (Exception e) {
+			logger.error("Exception occurs in cancer screening doctor saving :" + e);
+			response.setError(e);
+		}
+		return null;
+	}
 }

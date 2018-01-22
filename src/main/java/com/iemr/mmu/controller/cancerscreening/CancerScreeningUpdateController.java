@@ -38,7 +38,7 @@ import io.swagger.annotations.ApiParam;
 public class CancerScreeningUpdateController {
 	private InputMapper inputMapper = new InputMapper();
 	private OutputResponse response;
-	private Logger logger = LoggerFactory.getLogger(UpdateDoctorCSController.class);
+	private Logger logger = LoggerFactory.getLogger(CancerScreeningUpdateController.class);
 	private CancerScreeningServiceImpl cancerScreeningServiceImpl;
 	
 	@Autowired

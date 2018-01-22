@@ -23,7 +23,7 @@ import io.swagger.annotations.ApiParam;
  * 
  * @author NA874500
  * @Objective Updating Cancer screening data for Nurse.
- * @Date 17-01-2018
+ * @Date 18-01-2018
  *
  */
 @CrossOrigin
@@ -32,7 +32,7 @@ import io.swagger.annotations.ApiParam;
 public class CancerScreeningFetchController {
 
 	private InputMapper inputMapper;
-	private Logger logger = LoggerFactory.getLogger(FetchNurseCSController.class);
+	private Logger logger = LoggerFactory.getLogger(CancerScreeningFetchController.class);
 
 	private CancerScreeningServiceImpl cancerScreeningServiceImpl;
 	

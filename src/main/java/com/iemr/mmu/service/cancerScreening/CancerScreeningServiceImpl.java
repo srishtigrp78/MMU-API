@@ -1,6 +1,5 @@
 package com.iemr.mmu.service.cancerScreening;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -12,17 +11,20 @@ import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.iemr.mmu.data.doctor.CancerAbdominalExamination;
+import com.iemr.mmu.data.doctor.CancerBreastExamination;
+import com.iemr.mmu.data.doctor.CancerDiagnosis;
+import com.iemr.mmu.data.doctor.CancerGynecologicalExamination;
+import com.iemr.mmu.data.doctor.CancerOralExamination;
+import com.iemr.mmu.data.doctor.WrapperCancerExamImgAnotasn;
+import com.iemr.mmu.data.doctor.WrapperCancerSymptoms;
 import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
 import com.iemr.mmu.data.nurse.BenFamilyCancerHistory;
 import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
-import com.iemr.mmu.repo.nurse.BenCancerVitalDetailRepo;
-import com.iemr.mmu.repo.nurse.BenFamilyCancerHistoryRepo;
-import com.iemr.mmu.repo.nurse.BenObstetricCancerHistoryRepo;
-import com.iemr.mmu.repo.nurse.BenPersonalCancerDietHistoryRepo;
-import com.iemr.mmu.repo.nurse.BenPersonalCancerHistoryRepo;
+import com.iemr.mmu.service.doctor.DoctorServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.utils.mapper.InputMapper;
 
@@ -30,11 +32,7 @@ import com.iemr.utils.mapper.InputMapper;
 public class CancerScreeningServiceImpl implements CancerScreeningService {
 
 	private NurseServiceImpl nurseServiceImpl;
-	private BenFamilyCancerHistoryRepo benFamilyCancerHistoryRepo;
-	private BenObstetricCancerHistoryRepo benObstetricCancerHistoryRepo;
-	private BenPersonalCancerDietHistoryRepo benPersonalCancerDietHistoryRepo;
-	private BenPersonalCancerHistoryRepo benPersonalCancerHistoryRepo;
-	private BenCancerVitalDetailRepo benCancerVitalDetailRepo;
+	private DoctorServiceImpl doctorServiceImpl;
 
 	@Autowired
 	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
@@ -42,28 +40,8 @@ public class CancerScreeningServiceImpl implements CancerScreeningService {
 	}
 
 	@Autowired
-	public void setBenFamilyCancerHistoryRepo(BenFamilyCancerHistoryRepo benFamilyCancerHistoryRepo) {
-		this.benFamilyCancerHistoryRepo = benFamilyCancerHistoryRepo;
-	}
-
-	@Autowired
-	public void setBenObstetricCancerHistoryRepo(BenObstetricCancerHistoryRepo benObstetricCancerHistoryRepo) {
-		this.benObstetricCancerHistoryRepo = benObstetricCancerHistoryRepo;
-	}
-
-	@Autowired
-	public void setBenPersonalCancerDietHistoryRepo(BenPersonalCancerDietHistoryRepo benPersonalCancerDietHistoryRepo) {
-		this.benPersonalCancerDietHistoryRepo = benPersonalCancerDietHistoryRepo;
-	}
-
-	@Autowired
-	public void setBenPersonalCancerHistoryRepo(BenPersonalCancerHistoryRepo benPersonalCancerHistoryRepo) {
-		this.benPersonalCancerHistoryRepo = benPersonalCancerHistoryRepo;
-	}
-
-	@Autowired
-	public void setBenCancerVitalDetailRepo(BenCancerVitalDetailRepo benCancerVitalDetailRepo) {
-		this.benCancerVitalDetailRepo = benCancerVitalDetailRepo;
+	public void setDoctorServiceImpl(DoctorServiceImpl doctorServiceImpl) {
+		this.doctorServiceImpl = doctorServiceImpl;
 	}
 
 	public void saveCancerScreeningNurseData(JsonObject requestOBJ) {
@@ -295,4 +273,158 @@ public class CancerScreeningServiceImpl implements CancerScreeningService {
 		resMap.put("benVitalDetails", nurseServiceImpl.getBenCancerVitalDetailData(benRegID, benVisitID));
 		return new Gson().toJson(resMap);
 	}
+	
+
+	public void saveCancerScreeningDoctorData(JsonObject requestOBJ) {
+		if (requestOBJ != null ){
+			Long exmntnRes = saveBenExaminationDetails(requestOBJ);
+			
+			Long DgsRes = saveBenDiagnosisDetails(requestOBJ);
+			
+		}else{
+			// NO input available..
+		}
+		
+		
+	}
+	
+	/**
+	 * 
+	 * @param requestOBJ
+	 * @return success or failure flag for Examination data saving
+	 */
+	public Long saveBenExaminationDetails(JsonObject requestOBJ) {
+		if (requestOBJ != null && requestOBJ.has("signsDetails") && !requestOBJ.get("signsDetails").isJsonNull()) {
+			
+			JsonObject signsDetailsOBJ = requestOBJ.getAsJsonObject("signsDetails");
+			
+			WrapperCancerSymptoms wrapperCancerSymptoms = InputMapper.gson().fromJson(signsDetailsOBJ,
+					WrapperCancerSymptoms.class);
+			
+			if ( null != wrapperCancerSymptoms.getCancerSignAndSymptoms() ) {
+				Long ID = doctorServiceImpl.saveCancerSignAndSymptomsData(wrapperCancerSymptoms.getCancerSignAndSymptoms());
+				
+				if (ID != null && ID > 0) {
+					if ( null != wrapperCancerSymptoms.getCancerLymphNodeDetails()) {
+						int result = doctorServiceImpl.saveLymphNodeDetails(wrapperCancerSymptoms.getCancerLymphNodeDetails());
+						if (result > 0) {
+							// LymphNode Details stored successfully..
+						} else {
+							
+						}//Failed to store LymphNode Details..
+					}
+
+				}
+				
+			} else {
+				//Failed to store SingsANdSymptoms..
+			}
+			
+		} else {
+			// signsDetails not available..
+		}
+		
+		if (requestOBJ != null && requestOBJ.has("oralDetails") && !requestOBJ.get("oralDetails").isJsonNull()) {
+			
+			CancerOralExamination cancerOralExamination = InputMapper.gson().fromJson(requestOBJ.get("oralDetails"),
+					CancerOralExamination.class);
+			Long ID = doctorServiceImpl.saveCancerOralExaminationData(cancerOralExamination);
+			if (ID != null && ID > 0) {
+				// oralDetails stored successfully...
+			} else {
+				// Failed to store oralDetails..
+			}
+			
+		} else {
+			// oralDetails not available..
+		}
+		
+		if (requestOBJ != null && requestOBJ.has("breastDetails") && !requestOBJ.get("breastDetails").isJsonNull()) {
+			
+			CancerBreastExamination cancerBreastExamination = InputMapper.gson().fromJson(requestOBJ.get("breastDetails"),
+					CancerBreastExamination.class);
+			Long ID = doctorServiceImpl.saveCancerBreastExaminationData(cancerBreastExamination);
+			if (ID != null && ID > 0) {
+				// breastDetails stored successfully...
+			} else {
+				// Failed to store breastDetails..
+			}
+			
+		} else {
+			// breastDetails not available..
+		}
+		
+		if (requestOBJ != null && requestOBJ.has("abdominalDetails") && !requestOBJ.get("abdominalDetails").isJsonNull()) {
+			
+			CancerAbdominalExamination cancerAbdominalExamination = InputMapper.gson().fromJson(requestOBJ.get("abdominalDetails"),
+					CancerAbdominalExamination.class);
+			Long ID = doctorServiceImpl.saveCancerAbdominalExaminationData(cancerAbdominalExamination);
+			if (ID != null && ID > 0) {
+				// abdominalDetails stored successfully...
+			} else {
+				// Failed to store abdominalDetails..
+			}
+			
+		} else {
+			// abdominalDetails not available..
+		}
+		
+		if (requestOBJ != null && requestOBJ.has("gynecologicalDetails") && !requestOBJ.get("gynecologicalDetails").isJsonNull()) {
+			
+			CancerGynecologicalExamination cancerGynecologicalExamination = InputMapper.gson().fromJson(requestOBJ.get("gynecologicalDetails"),
+					CancerGynecologicalExamination.class);
+			Long ID = doctorServiceImpl.saveCancerGynecologicalExaminationData(cancerGynecologicalExamination);
+			if (ID != null && ID > 0) {
+				// gynecologicalDetails stored successfully...
+			} else {
+				// Failed to store gynecologicalDetails..
+			}
+			
+		} else {
+			// gynecologicalDetails not available..
+		}
+		
+		if (requestOBJ != null && requestOBJ.has("imageCoordinates") && !requestOBJ.get("imageCoordinates").isJsonNull()) {
+			
+			WrapperCancerExamImgAnotasn[] wrapperCancerExamImgAnotasn = InputMapper.gson().fromJson(requestOBJ.get("imageCoordinates"),
+					WrapperCancerExamImgAnotasn[].class);
+
+			List<WrapperCancerExamImgAnotasn> wrapperCancerExamImgAnotasnList = Arrays
+					.asList(wrapperCancerExamImgAnotasn);
+
+			Long r = doctorServiceImpl.saveDocExaminationImageAnnotation(wrapperCancerExamImgAnotasnList);
+			if (r != null && r > 0) {
+				// imageCoordinates stored successfully...
+			} else {
+				// Failed to store imageCoordinates..
+			}
+			
+		} else {
+			// imageCoordinates not available..
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * 
+	 * @param requestOBJ
+	 * @return success or failure flag for Diagnosis data saving
+	 */
+	public Long saveBenDiagnosisDetails(JsonObject requestOBJ) {
+		if (requestOBJ != null && requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
+			CancerDiagnosis cancerDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), CancerDiagnosis.class);
+			Long ID = doctorServiceImpl.saveCancerDiagnosisData(cancerDiagnosis);
+			if (ID != null && ID > 0) {
+				// diagnosis details stored successfully...
+			} else {
+				// Failed to store diagnosis details..
+			}
+		} else {
+			// diagnosis details not available..
+		}
+		
+		return null;
+	}
+	
 }

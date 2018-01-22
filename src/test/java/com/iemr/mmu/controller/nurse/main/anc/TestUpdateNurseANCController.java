@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
+import com.iemr.mmu.service.anc.ANCNurseServiceImpl;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
 import com.iemr.utils.mapper.InputMapper;
 
@@ -25,7 +26,7 @@ import com.iemr.utils.mapper.InputMapper;
 public class TestUpdateNurseANCController {
 
 	private UpdateNurseANCController controllerMock;
-	private ANCServiceImpl serviceMock;
+	private ANCNurseServiceImpl serviceMock;
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -33,7 +34,7 @@ public class TestUpdateNurseANCController {
 	@Before
 	public void initialize()
 	{
-		serviceMock = mock(ANCServiceImpl.class);
+		serviceMock = mock(ANCNurseServiceImpl.class);
 		controllerMock = new UpdateNurseANCController();
 		controllerMock.setAncServiceImpl(serviceMock);
 	}
@@ -294,7 +295,7 @@ public class TestUpdateNurseANCController {
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(json)).andExpect(content().string("{\"statusCode\":5000,\"errorMessage\":\"Something went wrong\",\"status\":\"Something went wrong\"}"));
 			
-			} catch (Exception e) {
+			} catch (Exception e) { 
 				e.printStackTrace();
 			}
 		}

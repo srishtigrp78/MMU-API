@@ -23,6 +23,7 @@ import com.iemr.mmu.data.anc.WrapperAncFindings;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
+import com.iemr.mmu.service.anc.ANCNurseServiceImpl;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
 import com.iemr.utils.mapper.InputMapper;
 import com.iemr.utils.response.OutputResponse;
@@ -36,8 +37,8 @@ import io.swagger.annotations.ApiParam;
 public class InsertDoctorAncController {
 	private OutputResponse response;
 	private Logger logger = LoggerFactory.getLogger(InsertDoctorCSController.class);
-	private ANCServiceImpl ancServiceImpl;	@Autowired
-	public void setAncServiceImpl(ANCServiceImpl ancServiceImpl) {
+	private ANCNurseServiceImpl ancServiceImpl;	@Autowired
+	public void setAncServiceImpl(ANCNurseServiceImpl ancServiceImpl) {
 		this.ancServiceImpl = ancServiceImpl;
 	}
 
