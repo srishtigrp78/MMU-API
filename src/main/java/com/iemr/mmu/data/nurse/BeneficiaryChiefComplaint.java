@@ -82,6 +82,29 @@ public class BeneficiaryChiefComplaint {
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 	
+	@Expose
+	@Column(name = "VanSerialNo")
+	private Long vanSerialNo;
+	
+	@Expose
+	@Column(name = "VehicalNo")
+	private String vehicalNo;
+	
+	@Expose
+	@Column(name = "ParkingPlaceID")
+	private Integer parkingPlaceID;
+	
+	@Expose
+	@Column(name = "SyncedBy")
+	private String syncedBy;
+	
+	@Expose
+	@Column(name = "SyncedDate")
+	private Timestamp syncedDate;
+	
+	@Expose
+	@Column(name = "ReservedForChange")
+	private String reservedForChange;
 	
 	
 }

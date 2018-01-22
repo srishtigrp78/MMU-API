@@ -87,7 +87,30 @@ public class BencomrbidityCondDetails {
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
-		
+	@Expose
+	@Column(name = "VanSerialNo")
+	private Long vanSerialNo;
+	
+	@Expose
+	@Column(name = "VehicalNo")
+	private String vehicalNo;
+	
+	@Expose
+	@Column(name = "ParkingPlaceID")
+	private Integer parkingPlaceID;
+	
+	@Expose
+	@Column(name = "SyncedBy")
+	private String syncedBy;
+	
+	@Expose
+	@Column(name = "SyncedDate")
+	private Timestamp syncedDate;
+	
+	@Expose
+	@Column(name = "ReservedForChange")
+	private String reservedForChange;
+	
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
@@ -247,6 +270,66 @@ public class BencomrbidityCondDetails {
 	public void setIsForHistory(Boolean isForHistory) {
 		this.isForHistory = isForHistory;
 	}
+
+	public Long getVanSerialNo() {
+		return vanSerialNo;
+	}
+
+
+	public void setVanSerialNo(Long vanSerialNo) {
+		this.vanSerialNo = vanSerialNo;
+	}
+
+
+	public String getVehicalNo() {
+		return vehicalNo;
+	}
+
+
+	public void setVehicalNo(String vehicalNo) {
+		this.vehicalNo = vehicalNo;
+	}
+
+
+	public Integer getParkingPlaceID() {
+		return parkingPlaceID;
+	}
+
+
+	public void setParkingPlaceID(Integer parkingPlaceID) {
+		this.parkingPlaceID = parkingPlaceID;
+	}
+
+
+	public String getSyncedBy() {
+		return syncedBy;
+	}
+
+
+	public void setSyncedBy(String syncedBy) {
+		this.syncedBy = syncedBy;
+	}
+
+
+	public Timestamp getSyncedDate() {
+		return syncedDate;
+	}
+
+
+	public void setSyncedDate(Timestamp syncedDate) {
+		this.syncedDate = syncedDate;
+	}
+
+
+	public String getReservedForChange() {
+		return reservedForChange;
+	}
+
+
+	public void setReservedForChange(String reservedForChange) {
+		this.reservedForChange = reservedForChange;
+	}
+
 
 	public BencomrbidityCondDetails(String comorbidCondition,String otherComorbidCondition, Timestamp year) {
 		super();

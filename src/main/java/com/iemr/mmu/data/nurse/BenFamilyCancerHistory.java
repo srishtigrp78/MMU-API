@@ -57,6 +57,30 @@ public class BenFamilyCancerHistory {
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
+	@Expose
+	@Column(name = "VanSerialNo")
+	private Long vanSerialNo;
+	
+	@Expose
+	@Column(name = "VehicalNo")
+	private String vehicalNo;
+	
+	@Expose
+	@Column(name = "ParkingPlaceID")
+	private Integer parkingPlaceID;
+	
+	@Expose
+	@Column(name = "SyncedBy")
+	private String syncedBy;
+	
+	@Expose
+	@Column(name = "SyncedDate")
+	private Timestamp syncedDate;
+	
+	@Expose
+	@Column(name = "ReservedForChange")
+	private String reservedForChange;
+	
 	@JsonIgnore
 	@Transient
 	private List<String> familyMemberList;
@@ -194,6 +218,62 @@ public class BenFamilyCancerHistory {
 
 	public void setFamilyMemberList(List<String> familyMemberList) {
 		this.familyMemberList = familyMemberList;
+	}
+
+	public Long getVanSerialNo() {
+		return vanSerialNo;
+	}
+
+	public void setVanSerialNo(Long vanSerialNo) {
+		this.vanSerialNo = vanSerialNo;
+	}
+
+	public String getVehicalNo() {
+		return vehicalNo;
+	}
+
+	public void setVehicalNo(String vehicalNo) {
+		this.vehicalNo = vehicalNo;
+	}
+
+	public Integer getParkingPlaceID() {
+		return parkingPlaceID;
+	}
+
+	public void setParkingPlaceID(Integer parkingPlaceID) {
+		this.parkingPlaceID = parkingPlaceID;
+	}
+
+	public String getSyncedBy() {
+		return syncedBy;
+	}
+
+	public void setSyncedBy(String syncedBy) {
+		this.syncedBy = syncedBy;
+	}
+
+	public Timestamp getSyncedDate() {
+		return syncedDate;
+	}
+
+	public void setSyncedDate(Timestamp syncedDate) {
+		this.syncedDate = syncedDate;
+	}
+
+	public String getReservedForChange() {
+		return reservedForChange;
+	}
+
+	public void setReservedForChange(String reservedForChange) {
+		this.reservedForChange = reservedForChange;
+	}
+
+	public Date getCaptureDate() {
+		return captureDate;
+	}
+
+	public void setCaptureDate(Date captureDate) {
+		this.captureDate = captureDate;
 	}
 
 }
