@@ -2176,14 +2176,26 @@ public class ANCServiceImpl implements ANCService {
 			
 			physicalVitalDetail.setAverageSystolicBP(physicalVitalDetail.getSystolicBP_1stReading());
 			physicalVitalDetail.setAverageDiastolicBP(physicalVitalDetail.getDiastolicBP_1stReading());
-			r = benPhysicalVitalRepo.updateANCCareDetails(
+			r = benPhysicalVitalRepo.updatePhysicalVitalDetails(
 					physicalVitalDetail.getTemperature(), 
 					physicalVitalDetail.getPulseRate(), 
 					physicalVitalDetail.getRespiratoryRate(), 
 					physicalVitalDetail.getSystolicBP_1stReading(), 
 					physicalVitalDetail.getDiastolicBP_1stReading(), 
+					physicalVitalDetail.getSystolicBP_2ndReading(),
+					physicalVitalDetail.getDiastolicBP_2ndReading(),
+					physicalVitalDetail.getSystolicBP_3rdReading(),
+					physicalVitalDetail.getDiastolicBP_3rdReading(),
 					physicalVitalDetail.getAverageSystolicBP(),
 					physicalVitalDetail.getAverageDiastolicBP(),
+					physicalVitalDetail.getBloodPressureStatusID(),
+					physicalVitalDetail.getBloodPressureStatus(),
+					physicalVitalDetail.getBloodGlucose_Fasting(),
+					physicalVitalDetail.getBloodGlucose_Random(),
+					physicalVitalDetail.getBloodGlucose_2hr_PP(),
+					physicalVitalDetail.getBloodGlucose_NotSpecified(),
+					physicalVitalDetail.getDiabeticStatusID(),
+					physicalVitalDetail.getDiabeticStatus(),
 					physicalVitalDetail.getCapillaryRefillTime(), 
 					physicalVitalDetail.getModifiedBy(), 
 					processed,

@@ -70,27 +70,27 @@ public class NCDScreening {
 	@Column(name = "IsScreeningComplete")
 	private Boolean isScreeningComplete;
 	
-	@Expose
+	@Expose(serialize= false)
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
 
-	@Expose
+	@Expose(serialize= false)
 	@Column(name = "Processed", insertable = false, updatable = true)
 	private String processed;
 
-	@Expose
+	@Expose(serialize= false)
 	@Column(name = "CreatedBy")
 	private String createdBy;
 
-	@Expose
+	@Expose(serialize= false)
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
 	private Timestamp createdDate;
 
-	@Expose
+	@Expose(serialize= false)
 	@Column(name = "ModifiedBy")
 	private String modifiedBy;
 
-	@Expose
+	@Expose(serialize= false)
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 	

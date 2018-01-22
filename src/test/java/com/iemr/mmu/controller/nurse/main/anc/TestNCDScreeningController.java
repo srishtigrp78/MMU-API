@@ -24,14 +24,14 @@ import com.iemr.mmu.service.ncdscreening.NCDScreeningServiceImpl;
 public class TestNCDScreeningController {
 
 	private NCDScreeningController controllerMock;
-	private NCDScreeningService serviceMock;
+	private NCDScreeningServiceImpl serviceMock;
 
 	@Autowired
 	private MockMvc mockMvc;
 
 	@Before
 	public void initialize() {
-		serviceMock = mock(NCDScreeningServiceImpl.class);
+		serviceMock = mock(NCDScreeningServiceImpl .class);
 		controllerMock = new NCDScreeningController();
 		controllerMock.setNcdScreeningService(serviceMock);
 	}
