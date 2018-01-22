@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.iemr.mmu.service.cancerScreening.CancerScreeningServiceImpl;
 import com.iemr.mmu.service.common.master.NurseMasterDataService;
 import com.iemr.mmu.service.common.master.NurseMasterDataServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
@@ -30,6 +31,7 @@ public class FetchNurseCSController {
 	private InputMapper inputMapper;
 	private Logger logger = LoggerFactory.getLogger(FetchNurseCSController.class);
 
+	private CancerScreeningServiceImpl cancerScreeningServiceImpl;
 	private NurseServiceImpl nurseServiceImpl;
 	private NurseMasterDataService nurseMasterDataService;
 	private NurseMasterDataServiceImpl nurseMasterDataServiceImpl;
@@ -48,7 +50,7 @@ public class FetchNurseCSController {
 	 * Fething beneficiary data filled by Nurse for Doctor screen...
 	 */
 
-	/*@CrossOrigin()
+	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Visit details from Nurse screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenDataFrmNurseToDocVisitDetailsScreen" }, method = { RequestMethod.POST })
 	public String getBenDataFrmNurseScrnToDocScrnVisitDetails(
@@ -61,7 +63,7 @@ public class FetchNurseCSController {
 				Long benRegID = obj.getLong("benRegID");
 				Long benVisitID = obj.getLong("benVisitID");
 
-				String s = nurseServiceImpl.getBenDataFrmNurseToDocVisitDetailsScreen(benRegID, benVisitID);
+				String s = cancerScreeningServiceImpl.getBenDataFrmNurseToDocVisitDetailsScreen(benRegID, benVisitID);
 				response.setResponse(s);
 			} else {
 
@@ -87,7 +89,7 @@ public class FetchNurseCSController {
 				Long benRegID = obj.getLong("benRegID");
 				Long benVisitID = obj.getLong("benVisitID");
 
-				String s = nurseServiceImpl.getBenDataFrmNurseToDocHistoryScreen(benRegID, benVisitID);
+				String s = cancerScreeningServiceImpl.getBenDataFrmNurseToDocHistoryScreen(benRegID, benVisitID);
 				response.setResponse(s);
 			} else {
 
@@ -114,7 +116,7 @@ public class FetchNurseCSController {
 				Long benRegID = obj.getLong("benRegID");
 				Long benVisitID = obj.getLong("benVisitID");
 
-				String s = nurseServiceImpl.getBenDataFrmNurseToDocVitalScreen(benRegID, benVisitID);
+				String s = cancerScreeningServiceImpl.getBenDataFrmNurseToDocVitalScreen(benRegID, benVisitID);
 				response.setResponse(s);
 			} else {
 
@@ -125,7 +127,7 @@ public class FetchNurseCSController {
 			logger.error("Error in getBenDataFrmNurseToDocVitalScreen:" + e);
 		}
 		return response.toString();
-	}*/
+	}
 
 	@CrossOrigin()
 	@ApiOperation(value = "Get Nurse worklist", consumes = "application/json", produces = "application/json")
