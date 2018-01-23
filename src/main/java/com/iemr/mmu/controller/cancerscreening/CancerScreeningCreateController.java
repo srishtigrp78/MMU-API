@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.iemr.mmu.service.cancerScreening.CancerScreeningServiceImpl;
+import com.iemr.mmu.service.cancerScreening.CSServiceImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
@@ -30,11 +30,11 @@ import io.swagger.annotations.ApiOperation;
 public class CancerScreeningCreateController {
 	private Logger logger = LoggerFactory.getLogger(CancerScreeningCreateController.class);
 
-	private CancerScreeningServiceImpl cancerScreeningServiceImpl;
+	private CSServiceImpl cSServiceImpl;
 
 	@Autowired
-	public void setCancerScreeningServiceImpl(CancerScreeningServiceImpl cancerScreeningServiceImpl) {
-		this.cancerScreeningServiceImpl = cancerScreeningServiceImpl;
+	public void setCancerScreeningServiceImpl(CSServiceImpl cSServiceImpl) {
+		this.cSServiceImpl = cSServiceImpl;
 	}
 
 	/**
@@ -56,13 +56,54 @@ public class CancerScreeningCreateController {
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
-				cancerScreeningServiceImpl.saveCancerScreeningNurseData(jsnOBJ);
+				Long nurseDataSaveSuccessFlag = cSServiceImpl.saveCancerScreeningNurseData(jsnOBJ);
+				if (nurseDataSaveSuccessFlag != null && nurseDataSaveSuccessFlag > 0) {
+					response.setResponse("Nurse data saved successfully.");
+				} else {
+					response.setError(5000, "Something went wrong !!!");
+				}
 			} else {
 				response.setError(5000, "Invalid Request !!!");
 			}
 
 		} catch (Exception e) {
 			logger.error("Exception occurs in cancer screening nurse data saving :" + e);
+			response.setError(e);
+		}
+		return null;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+
+	@CrossOrigin
+	@ApiOperation(value = "Save cancer screening doctor data..", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/doctorData" }, method = { RequestMethod.POST })
+	public String saveBenCancerScreeningDoctorData(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		try {
+			logger.info("Request object for cancer screening doctor data saving :" + requestObj);
+
+			JsonObject jsnOBJ = new JsonObject();
+			JsonParser jsnParser = new JsonParser();
+			JsonElement jsnElmnt = jsnParser.parse(requestObj);
+			jsnOBJ = jsnElmnt.getAsJsonObject();
+
+			if (jsnOBJ != null) {
+				Long csDocDataSaveSuccessFlag = cSServiceImpl.saveCancerScreeningDoctorData(jsnOBJ);
+				if (csDocDataSaveSuccessFlag != null && csDocDataSaveSuccessFlag > 0) {
+					response.setResponse("Doc data saved successfully.");
+				} else {
+					response.setError(5000, "Something went wrong !!!");
+				}
+			} else {
+				response.setError(5000, "Invalid Request !!!");
+			}
+
+		} catch (Exception e) {
+			logger.error("Exception occurs in cancer screening doctor saving :" + e);
 			response.setError(e);
 		}
 		return null;

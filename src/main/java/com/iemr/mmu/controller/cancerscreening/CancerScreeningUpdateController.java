@@ -16,9 +16,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.iemr.mmu.controller.doctor.main.cancerScreening.UpdateDoctorCSController;
 import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
-import com.iemr.mmu.service.cancerScreening.CancerScreeningServiceImpl;
+import com.iemr.mmu.service.cancerScreening.CSServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
@@ -38,12 +37,12 @@ import io.swagger.annotations.ApiParam;
 public class CancerScreeningUpdateController {
 	private InputMapper inputMapper = new InputMapper();
 	private OutputResponse response;
-	private Logger logger = LoggerFactory.getLogger(UpdateDoctorCSController.class);
-	private CancerScreeningServiceImpl cancerScreeningServiceImpl;
+	private Logger logger = LoggerFactory.getLogger(CancerScreeningUpdateController.class);
+	private CSServiceImpl cSServiceImpl;
 
 	@Autowired
-	public void setCancerScreeningServiceImpl(CancerScreeningServiceImpl cancerScreeningServiceImpl) {
-		this.cancerScreeningServiceImpl = cancerScreeningServiceImpl;
+	public void setCancerScreeningServiceImpl(CSServiceImpl cSServiceImpl) {
+		this.cSServiceImpl = cSServiceImpl;
 	}
 
 	/**
@@ -84,7 +83,7 @@ public class CancerScreeningUpdateController {
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
-			int result = cancerScreeningServiceImpl.UpdateCSHistoryNurseData(jsnOBJ);
+			int result = cSServiceImpl.UpdateCSHistoryNurseData(jsnOBJ);
 			if (result > 0) {
 				Map<String, Integer> resMap = new HashMap<String, Integer>();
 				resMap.put("result", result);
@@ -100,6 +99,14 @@ public class CancerScreeningUpdateController {
 
 		return response.toString();
 	}
+
+	/**
+	 * 
+	 * @param requestObj
+	 * @return success or failure response
+	 * @objective Replace Cancer Screening Vital Details entered by Nurse with
+	 *            the details entered by Doctor
+	 */
 
 	@CrossOrigin
 	@ApiOperation(value = "update Ben Vital Detail", consumes = "application/json", produces = "application/json")
@@ -118,7 +125,7 @@ public class CancerScreeningUpdateController {
 		try {
 			BenCancerVitalDetail benCancerVitalDetail = InputMapper.gson().fromJson(requestObj,
 					BenCancerVitalDetail.class);
-			int responseObj = cancerScreeningServiceImpl.updateBenVitalDetail(benCancerVitalDetail);
+			int responseObj = cSServiceImpl.updateBenVitalDetail(benCancerVitalDetail);
 			if (responseObj > 0) {
 				response.setResponse("Beneficiary Vital Details updated Successfully");
 			} else {

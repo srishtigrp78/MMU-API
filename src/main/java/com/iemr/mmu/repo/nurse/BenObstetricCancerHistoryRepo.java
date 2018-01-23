@@ -1,6 +1,5 @@
 package com.iemr.mmu.repo.nurse;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -26,10 +25,9 @@ public interface BenObstetricCancerHistoryRepo extends CrudRepository<BenObstetr
 			+ " isFoulSmellingDischarge=:isFoulSmellingDischarge, modifiedBy=:modifiedBy, processed=:processed where "
 			+ " beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
 	public int updateBenObstetricCancerHistory(@Param("providerServiceMapID") Integer providerServiceMapID,
-			@Param("pregnancyStatus") String pregnancyStatus,
-			@Param("isUrinePregTest") Boolean isUrinePregTest, @Param("pregnant_No") String pregnant_No,
-			@Param("noOfLivingChild") Integer noOfLivingChild, @Param("isAbortion") Boolean isAbortion,
-			@Param("isOralContraceptiveUsed") Boolean isOralContraceptiveUsed,
+			@Param("pregnancyStatus") String pregnancyStatus, @Param("isUrinePregTest") Boolean isUrinePregTest,
+			@Param("pregnant_No") String pregnant_No, @Param("noOfLivingChild") Integer noOfLivingChild,
+			@Param("isAbortion") Boolean isAbortion, @Param("isOralContraceptiveUsed") Boolean isOralContraceptiveUsed,
 			@Param("isHormoneReplacementTherapy") Boolean isHormoneReplacementTherapy,
 			@Param("menarche_Age") Integer menarche_Age,
 			@Param("isMenstrualCycleRegular") Boolean isMenstrualCycleRegular,
@@ -40,22 +38,26 @@ public interface BenObstetricCancerHistoryRepo extends CrudRepository<BenObstetr
 			@Param("menopauseAge") Integer menopauseAge,
 			@Param("isPostMenopauseBleeding") Boolean isPostMenopauseBleeding,
 			@Param("isFoulSmellingDischarge") Boolean isFoulSmellingDischarge, @Param("modifiedBy") String modifiedBy,
-			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID, @Param("processed") Character processed);
+			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID,
+			@Param("processed") Character processed);
 
-	@Query("SELECT boh from BenObstetricCancerHistory boh WHERE boh.beneficiaryRegID = :benRegID AND boh.benVisitID = :benVisitID")
+	@Query("SELECT boh from BenObstetricCancerHistory boh WHERE boh.beneficiaryRegID = :benRegID AND boh.benVisitID = :benVisitID Where boh.deleted = false ")
 	public BenObstetricCancerHistory getBenObstetricCancerHistory(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 
-	@Query("SELECT boh from BenObstetricCancerHistory boh WHERE boh.beneficiaryRegID = :benRegID AND boh.benVisitID = :benVisitID "
-			+ "AND DATE(boh.createdDate) = :createdDate")
-	public BenObstetricCancerHistory getBenObstetricCancerHistory(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID, @Param("createdDate") Date createdDate);
+	// @Query("SELECT boh from BenObstetricCancerHistory boh WHERE
+	// boh.beneficiaryRegID = :benRegID AND boh.benVisitID = :benVisitID "
+	// + "AND DATE(boh.createdDate) = :createdDate")
+	// public BenObstetricCancerHistory
+	// getBenObstetricCancerHistory(@Param("benRegID") Long benRegID,
+	// @Param("benVisitID") Long benVisitID, @Param("createdDate") Date
+	// createdDate);
 
 	@Query(" SELECT  pregnancyStatus, isUrinePregTest, pregnant_No, noOfLivingChild, isAbortion, isOralContraceptiveUsed, "
 			+ " isHormoneReplacementTherapy, menarche_Age, isMenstrualCycleRegular, menstrualCycleLength, "
 			+ " menstrualFlowDuration, menstrualFlowType, isDysmenorrhea, isInterMenstrualBleeding, menopauseAge, "
-			+ " isPostMenopauseBleeding, isFoulSmellingDischarge, Date(createdDate)  " + " from BenObstetricCancerHistory "
-			+ " WHERE beneficiaryRegID = :benRegID "
+			+ " isPostMenopauseBleeding, isFoulSmellingDischarge, Date(createdDate)  "
+			+ " from BenObstetricCancerHistory " + " WHERE beneficiaryRegID = :benRegID "
 			+ " and (pregnancyStatus is not null or isUrinePregTest is not null or pregnant_No is not null or "
 			+ " noOfLivingChild is not null or isAbortion is not null or isOralContraceptiveUsed is not null or "
 			+ " isHormoneReplacementTherapy is not null or menarche_Age is not null or "
@@ -65,7 +67,7 @@ public interface BenObstetricCancerHistoryRepo extends CrudRepository<BenObstetr
 			+ " menopauseAge is not null or isPostMenopauseBleeding is not null or "
 			+ " isFoulSmellingDischarge is not null) order by createdDate desc")
 	public ArrayList<Object[]> getBenObstetricCancerHistoryData(@Param("benRegID") Long benRegID);
-	
+
 	@Query("SELECT processed from BenObstetricCancerHistory where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
 	public Character getObstetricCancerHistoryStatus(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);

@@ -8,5 +8,5 @@ public interface NCDScreeningService {
 	
 	public String getNCDScreeningDetails(Long beneficiaryRegID, Long benVisitID);
 	
-	public int updateNCDScreeningDetails(NCDScreening ncdScreening); 
+	public Integer updateNCDScreeningDetails(NCDScreening ncdScreening); 
 }

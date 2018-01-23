@@ -8,12 +8,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.iemr.mmu.data.doctor.CancerBreastExamination;
-import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
+
 @Repository
-public interface CancerBreastExaminationRepo extends CrudRepository<CancerBreastExamination, Long>{
+public interface CancerBreastExaminationRepo extends CrudRepository<CancerBreastExamination, Long> {
 
 	@Query(" SELECT c from CancerBreastExamination c WHERE c.beneficiaryRegID = :benRegID AND c.benVisitID = :benVisitID "
-			+ " AND DATE(c.createdDate) = :createdDate")
+			+ " AND c.deleted = fasle")
 	public CancerBreastExamination getBenCancerBreastExaminationDetails(@Param("benRegID") Long benRegID,
-	@Param("benVisitID") Long benVisitID, @Param("createdDate") Date createdDate);
+			@Param("benVisitID") Long benVisitID);
 }

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.masterdata.nurse.CancerDiseaseType;
 import com.iemr.mmu.data.masterdata.nurse.CancerPersonalHabitType;
@@ -202,6 +201,7 @@ public class NurseServiceImpl implements NurseService {
 
 	}
 
+	@Deprecated
 	@Override
 	public int saveBenFamilyCancerHistory(List<BenFamilyCancerHistory> benFamilyCancerHistoryList) {
 		for (BenFamilyCancerHistory benFamilyCancerHistoryOBJ : benFamilyCancerHistoryList) {
@@ -230,6 +230,7 @@ public class NurseServiceImpl implements NurseService {
 		return responseData;
 	}
 
+	@Deprecated
 	@Override
 	public Long saveBenObstetricCancerHistory(BenObstetricCancerHistory benObstetricCancerHistory) {
 		BenObstetricCancerHistory response = benObstetricCancerHistoryRepo.save(benObstetricCancerHistory);
@@ -239,6 +240,7 @@ public class NurseServiceImpl implements NurseService {
 			return null;
 	}
 
+	@Deprecated
 	@Override
 	public Long saveBenPersonalCancerDietHistory(BenPersonalCancerDietHistory benPersonalCancerDietHistory) {
 		List<String> personalOilConsumedList = benPersonalCancerDietHistory.getTypeOfOilConsumedList();
@@ -256,6 +258,7 @@ public class NurseServiceImpl implements NurseService {
 			return null;
 	}
 
+	@Deprecated
 	@Override
 	public Long saveBenPersonalCancerHistory(BenPersonalCancerHistory benPersonalCancerHistory) {
 		List<String> typeOfTobaccoProductUseList = benPersonalCancerHistory.getTypeOfTobaccoProductList();
@@ -273,6 +276,7 @@ public class NurseServiceImpl implements NurseService {
 			return null;
 	}
 
+	@Deprecated
 	@Override
 	public Long saveBenVitalDetail(BenCancerVitalDetail benCancerVitalDetail) {
 		BenCancerVitalDetail response = benCancerVitalDetailRepo.save(benCancerVitalDetail);
@@ -343,6 +347,7 @@ public class NurseServiceImpl implements NurseService {
 
 	}
 
+	@Deprecated
 	@Override
 	public int updateBeneficiaryFamilyCancerHistory(List<BenFamilyCancerHistory> benFamilyCancerHistoryList) {
 		int response = 0;
@@ -398,6 +403,7 @@ public class NurseServiceImpl implements NurseService {
 
 	}
 
+	@Deprecated
 	@Override
 	public int updateBenObstetricCancerHistory(BenObstetricCancerHistory benObstetricCancerHistory) {
 		int response = 0;
@@ -433,6 +439,7 @@ public class NurseServiceImpl implements NurseService {
 
 	}
 
+	@Deprecated
 	@Override
 	public int updateBenPersonalCancerHistory(BenPersonalCancerHistory benPersonalCancerHistory) {
 		int response = 0;
@@ -472,6 +479,7 @@ public class NurseServiceImpl implements NurseService {
 
 	}
 
+	@Deprecated
 	@Override
 	public int updateBenPersonalCancerDietHistory(BenPersonalCancerDietHistory benPersonalCancerDietHistory) {
 		int response = 0;
@@ -514,6 +522,7 @@ public class NurseServiceImpl implements NurseService {
 
 	}
 
+	@Deprecated
 	@Override
 	public int updateBenVitalDetail(BenCancerVitalDetail benCancerVitalDetail) {
 		Character processed = benCancerVitalDetailRepo.getCancerVitalStatus(benCancerVitalDetail.getBeneficiaryRegID(),
@@ -534,12 +543,12 @@ public class NurseServiceImpl implements NurseService {
 		return response;
 	}
 
-	public String getBenDataFrmNurseToDocVisitDetailsScreen(Long benRegID, Long benVisitID) {
-		Map<String, Object> resMap = new HashMap<>();
+	public BeneficiaryVisitDetail getCSVisitDetails(Long benRegID, Long benVisitID) {
 		BeneficiaryVisitDetail benVisitDetailsOBJ = benVisitDetailRepo.getVisitDetails(benRegID, benVisitID);
 
+		BeneficiaryVisitDetail benVisitDetailsOBJ1 = null;
 		if (null != benVisitDetailsOBJ) {
-			BeneficiaryVisitDetail benVisitDetailsOBJ1 = new BeneficiaryVisitDetail(benVisitDetailsOBJ.getBenVisitID(),
+			benVisitDetailsOBJ1 = new BeneficiaryVisitDetail(benVisitDetailsOBJ.getBenVisitID(),
 					benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitDetailsOBJ.getProviderServiceMapID(),
 					benVisitDetailsOBJ.getVisitDateTime(), benVisitDetailsOBJ.getVisitNo(),
 					benVisitDetailsOBJ.getVisitReasonID(), benVisitDetailsOBJ.getVisitReason(),
@@ -551,30 +560,13 @@ public class NurseServiceImpl implements NurseService {
 					benVisitDetailsOBJ.getCreatedDate(), benVisitDetailsOBJ.getModifiedBy(),
 					benVisitDetailsOBJ.getLastModDate());
 
-			resMap.put("benVisitDetails", benVisitDetailsOBJ1);
 		}
 
-		return new Gson().toJson(resMap);
+		return benVisitDetailsOBJ1;
 	}
 
-	public String getBenDataFrmNurseToDocHistoryScreen(Long benRegID, Long benVisitID) {
-		Map<String, Object> resMap = new HashMap<>();
-		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.serializeNulls();
-		Gson gson = gsonBuilder.create();
-
-		resMap.put("benFamilyHistory", getBenFamilyHisData(benRegID, benVisitID));
-
-		resMap.put("benObstetricHistory", getBenObstetricDetailsData(benRegID, benVisitID));
-
-		resMap.put("benPersonalHistory", getBenPersonalCancerHistoryData(benRegID, benVisitID));
-
-		resMap.put("benPersonalDietHistory", getBenPersonalCancerDietHistoryData(benRegID, benVisitID));
-		// System.out.println(gson.toJson(resMap));
-		return gson.toJson(resMap);
-	}
-
-	private BenPersonalCancerHistory getBenPersonalCancerHistoryData(Long benRegID, Long benVisitID) {
+	@Deprecated
+	public BenPersonalCancerHistory getBenPersonalCancerHistoryData(Long benRegID, Long benVisitID) {
 		BenPersonalCancerHistory benPersonalCancerHistory = benPersonalCancerHistoryRepo.getBenPersonalHistory(benRegID,
 				benVisitID);
 		List<String> typeOfTobaccoProductList = new ArrayList<>();
@@ -590,7 +582,8 @@ public class NurseServiceImpl implements NurseService {
 		return benPersonalCancerHistory;
 	}
 
-	private BenPersonalCancerDietHistory getBenPersonalCancerDietHistoryData(Long benRegID, Long benVisitID) {
+	@Deprecated
+	public BenPersonalCancerDietHistory getBenPersonalCancerDietHistoryData(Long benRegID, Long benVisitID) {
 		BenPersonalCancerDietHistory benPersonalCancerDietHistory = benPersonalCancerDietHistoryRepo
 				.getBenPersonaDietHistory(benRegID, benVisitID);
 
@@ -609,7 +602,8 @@ public class NurseServiceImpl implements NurseService {
 		return benPersonalCancerDietHistory;
 	}
 
-	private List<BenFamilyCancerHistory> getBenFamilyHisData(Long benRegID, Long benVisitID) {
+	@Deprecated
+	public List<BenFamilyCancerHistory> getBenFamilyHisData(Long benRegID, Long benVisitID) {
 		List<BenFamilyCancerHistory> benFamilyCancerHistoryList = benFamilyCancerHistoryRepo
 				.getBenFamilyHistory(benRegID, benVisitID);
 		if (benFamilyCancerHistoryList.size() > 0) {
@@ -630,19 +624,15 @@ public class NurseServiceImpl implements NurseService {
 		return benFamilyCancerHistoryList;
 	}
 
-	private BenObstetricCancerHistory getBenObstetricDetailsData(Long benRegID, Long benVisitID) {
+	@Deprecated
+	public BenObstetricCancerHistory getBenObstetricDetailsData(Long benRegID, Long benVisitID) {
 		BenObstetricCancerHistory benObstetricCancerHistoryData = benObstetricCancerHistoryRepo
 				.getBenObstetricCancerHistory(benRegID, benVisitID);
 		return benObstetricCancerHistoryData;
 	}
 
-	public String getBenDataFrmNurseToDocVitalScreen(Long benRegID, Long benVisitID) {
-		Map<String, Object> resMap = new HashMap<>();
-		resMap.put("benVitalDetails", getBenCancerVitalDetailData(benRegID, benVisitID));
-		return new Gson().toJson(resMap);
-	}
-
-	private BenCancerVitalDetail getBenCancerVitalDetailData(Long benRegID, Long benVisitID) {
+	@Deprecated
+	public BenCancerVitalDetail getBenCancerVitalDetailData(Long benRegID, Long benVisitID) {
 		BenCancerVitalDetail benCancerVitalDetail = benCancerVitalDetailRepo.getBenCancerVitalDetail(benRegID,
 				benVisitID);
 		return benCancerVitalDetail;
@@ -678,8 +668,7 @@ public class NurseServiceImpl implements NurseService {
 	}
 
 	private BeneficiaryVisitDetail getBeneficiaryVisitDetails(Long benRegID, Long benVisitID, Date visitDateTime) {
-		List<Objects[]> beneficiaryVisitDetail = benVisitDetailRepo.getBeneficiaryVisitDetails(benRegID, benVisitID,
-				visitDateTime);
+		List<Objects[]> beneficiaryVisitDetail = benVisitDetailRepo.getBeneficiaryVisitDetails(benRegID, benVisitID);
 		BeneficiaryVisitDetail beneficiaryVisit = null;
 		if (null != beneficiaryVisitDetail) {
 			for (Object[] obj : beneficiaryVisitDetail) {
@@ -697,14 +686,14 @@ public class NurseServiceImpl implements NurseService {
 	private BenPersonalCancerHistory getBenPersonalCancerHistoryData(Long benRegID, Long benVisitID,
 			Date visitDateTime) {
 		BenPersonalCancerHistory benPersonalCancerHistory = benPersonalCancerHistoryRepo.getBenPersonalHistory(benRegID,
-				benVisitID, visitDateTime);
+				benVisitID);
 		return benPersonalCancerHistory;
 	}
 
 	private BenPersonalCancerDietHistory getBenPersonalCancerDietHistoryData(Long benRegID, Long benVisitID,
 			Date visitDateTime) {
 		BenPersonalCancerDietHistory benPersonalCancerDietHistory = benPersonalCancerDietHistoryRepo
-				.getBenPersonaDietHistory(benRegID, benVisitID, visitDateTime);
+				.getBenPersonaDietHistory(benRegID, benVisitID);
 
 		if (null != benPersonalCancerDietHistory) {
 			String s = benPersonalCancerDietHistory.getTypeOfOilConsumed();
@@ -723,7 +712,7 @@ public class NurseServiceImpl implements NurseService {
 
 	private List<BenFamilyCancerHistory> getBenFamilyHisData(Long benRegID, Long benVisitID, Date visitDateTime) {
 		List<BenFamilyCancerHistory> benFamilyCancerHistoryList = benFamilyCancerHistoryRepo
-				.getBenFamilyHistory(benRegID, benVisitID, visitDateTime);
+				.getBenFamilyHistory(benRegID, benVisitID);
 		if (benFamilyCancerHistoryList.size() > 0) {
 			for (BenFamilyCancerHistory obj : benFamilyCancerHistoryList) {
 				String s = obj.getFamilyMember();
@@ -744,13 +733,13 @@ public class NurseServiceImpl implements NurseService {
 
 	private BenObstetricCancerHistory getBenObstetricDetailsData(Long benRegID, Long benVisitID, Date visitDateTime) {
 		BenObstetricCancerHistory benObstetricCancerHistoryData = benObstetricCancerHistoryRepo
-				.getBenObstetricCancerHistory(benRegID, benVisitID, visitDateTime);
+				.getBenObstetricCancerHistory(benRegID, benVisitID);
 		return benObstetricCancerHistoryData;
 	}
 
 	private BenCancerVitalDetail getBenCancerVitalDetailData(Long benRegID, Long benVisitID, Date visitDateTime) {
 		BenCancerVitalDetail benCancerVitalDetail = benCancerVitalDetailRepo.getBenCancerVitalDetail(benRegID,
-				benVisitID, visitDateTime);
+				benVisitID);
 		return benCancerVitalDetail;
 	}
 

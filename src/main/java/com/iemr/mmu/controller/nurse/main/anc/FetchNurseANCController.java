@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.iemr.mmu.service.anc.ANCNurseServiceImpl;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
@@ -31,10 +32,10 @@ public class FetchNurseANCController {
 		this.nurseServiceImpl = nurseServiceImpl;
 	}
 
-	private ANCServiceImpl aNCServiceImpl;
+	private ANCNurseServiceImpl aNCServiceImpl;
 
 	@Autowired
-	public void setANCServiceImpl(ANCServiceImpl aNCServiceImpl) {
+	public void setANCServiceImpl(ANCNurseServiceImpl aNCServiceImpl) {
 		this.aNCServiceImpl = aNCServiceImpl;
 	}
 

@@ -39,6 +39,7 @@ import com.iemr.mmu.data.anc.WrapperMedicationHistory;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
+import com.iemr.mmu.service.anc.ANCNurseServiceImpl;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
@@ -53,10 +54,10 @@ public class UpdateNurseANCController {
 	private InputMapper inputMapper;
 	private Logger logger = LoggerFactory.getLogger(UpdateNurseANCController.class);
 
-	private ANCServiceImpl ancServiceImpl;
+	private ANCNurseServiceImpl ancServiceImpl;
 
 	@Autowired
-	public void setAncServiceImpl(ANCServiceImpl ancServiceImpl) {
+	public void setAncServiceImpl(ANCNurseServiceImpl ancServiceImpl) {
 		this.ancServiceImpl = ancServiceImpl;
 	}
 

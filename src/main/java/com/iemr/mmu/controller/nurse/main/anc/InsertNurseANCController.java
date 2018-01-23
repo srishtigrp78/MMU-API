@@ -40,6 +40,7 @@ import com.iemr.mmu.data.anc.WrapperFemaleObstetricHistory;
 import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
+import com.iemr.mmu.service.anc.ANCNurseServiceImpl;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
@@ -55,10 +56,10 @@ public class InsertNurseANCController {
 	private InputMapper inputMapper;
 	private Logger logger = LoggerFactory.getLogger(InsertNurseANCController.class);
 
-	private ANCServiceImpl ancServiceImpl;
+	private ANCNurseServiceImpl ancServiceImpl;
 
 	@Autowired
-	public void setAncServiceImpl(ANCServiceImpl ancServiceImpl) {
+	public void setAncServiceImpl(ANCNurseServiceImpl ancServiceImpl) {
 		this.ancServiceImpl = ancServiceImpl;
 	}
 

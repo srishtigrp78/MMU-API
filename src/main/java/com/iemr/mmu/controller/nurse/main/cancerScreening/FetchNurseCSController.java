@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.iemr.mmu.service.cancerScreening.CSServiceImpl;
 import com.iemr.mmu.service.common.master.NurseMasterDataService;
 import com.iemr.mmu.service.common.master.NurseMasterDataServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
@@ -30,6 +31,7 @@ public class FetchNurseCSController {
 	private InputMapper inputMapper;
 	private Logger logger = LoggerFactory.getLogger(FetchNurseCSController.class);
 
+	private CSServiceImpl cSServiceImpl;
 	private NurseServiceImpl nurseServiceImpl;
 	private NurseMasterDataService nurseMasterDataService;
 	private NurseMasterDataServiceImpl nurseMasterDataServiceImpl;
@@ -61,7 +63,7 @@ public class FetchNurseCSController {
 				Long benRegID = obj.getLong("benRegID");
 				Long benVisitID = obj.getLong("benVisitID");
 
-				String s = nurseServiceImpl.getBenDataFrmNurseToDocVisitDetailsScreen(benRegID, benVisitID);
+				String s = cSServiceImpl.getBenDataFrmNurseToDocVisitDetailsScreen(benRegID, benVisitID);
 				response.setResponse(s);
 			} else {
 
@@ -87,7 +89,7 @@ public class FetchNurseCSController {
 				Long benRegID = obj.getLong("benRegID");
 				Long benVisitID = obj.getLong("benVisitID");
 
-				String s = nurseServiceImpl.getBenDataFrmNurseToDocHistoryScreen(benRegID, benVisitID);
+				String s = cSServiceImpl.getBenDataFrmNurseToDocHistoryScreen(benRegID, benVisitID);
 				response.setResponse(s);
 			} else {
 
@@ -114,7 +116,7 @@ public class FetchNurseCSController {
 				Long benRegID = obj.getLong("benRegID");
 				Long benVisitID = obj.getLong("benVisitID");
 
-				String s = nurseServiceImpl.getBenDataFrmNurseToDocVitalScreen(benRegID, benVisitID);
+				String s = cSServiceImpl.getBenDataFrmNurseToDocVitalScreen(benRegID, benVisitID);
 				response.setResponse(s);
 			} else {
 

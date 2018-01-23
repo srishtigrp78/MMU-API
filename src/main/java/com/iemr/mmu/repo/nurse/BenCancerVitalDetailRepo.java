@@ -24,8 +24,7 @@ public interface BenCancerVitalDetailRepo extends CrudRepository<BenCancerVitalD
 			+ " modifiedBy=:modifiedBy, processed=:processed where  "
 			+ "  beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
 	public int updateBenCancerVitalDetail(@Param("providerServiceMapID") Integer providerServiceMapID,
-			@Param("weight_Kg") Double weight_Kg,
-			@Param("height_cm") Double height_cm,
+			@Param("weight_Kg") Double weight_Kg, @Param("height_cm") Double height_cm,
 			@Param("waistCircumference_cm") Double waistCircumference_cm,
 			@Param("bloodGlucose_Fasting") Short bloodGlucose_Fasting,
 			@Param("bloodGlucose_Random") Short bloodGlucose_Random,
@@ -35,25 +34,22 @@ public interface BenCancerVitalDetailRepo extends CrudRepository<BenCancerVitalD
 			@Param("systolicBP_2ndReading") Short systolicBP_2ndReading,
 			@Param("diastolicBP_2ndReading") Short diastolicBP_2ndReading,
 			@Param("systolicBP_3rdReading") Short systolicBP_3rdReading,
-			@Param("diastolicBP_3rdReading") Short diastolicBP_3rdReading,
-			@Param("hbA1C") Short hbA1C,
-			@Param("hemoglobin") Short hemoglobin,
-			@Param("modifiedBy") String modifiedBy,
-			@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID,
+			@Param("diastolicBP_3rdReading") Short diastolicBP_3rdReading, @Param("hbA1C") Short hbA1C,
+			@Param("hemoglobin") Short hemoglobin, @Param("modifiedBy") String modifiedBy,
+			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID,
 			@Param("processed") Character processed);
 
-	@Query(" SELECT bvd from BenCancerVitalDetail bvd WHERE bvd.beneficiaryRegID = :benRegID AND bvd.benVisitID = :benVisitID ")
+	@Query(" SELECT bvd from BenCancerVitalDetail bvd WHERE bvd.beneficiaryRegID = :benRegID AND bvd.benVisitID = :benVisitID AND bvd.deleted = false ")
 	public BenCancerVitalDetail getBenCancerVitalDetail(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
-	
+
+	@Deprecated
 	@Query(" SELECT bvd from BenCancerVitalDetail bvd WHERE bvd.beneficiaryRegID = :benRegID AND bvd.benVisitID = :benVisitID "
 			+ " AND DATE(bvd.createdDate) = :createdDate")
 	public BenCancerVitalDetail getBenCancerVitalDetail(@Param("benRegID") Long benRegID,
-	@Param("benVisitID") Long benVisitID, @Param("createdDate") Date createdDate);
-	
+			@Param("benVisitID") Long benVisitID, @Param("createdDate") Date createdDate);
+
 	@Query("SELECT processed from BenCancerVitalDetail where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
-	public Character getCancerVitalStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
-	
+	public Character getCancerVitalStatus(@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
+
 }

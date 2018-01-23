@@ -45,25 +45,56 @@ public class BenAdherence {
 	@Expose
 	@Column(name = "Progress")
 	private String progress;
+	
+	
 	@Expose
-	@Column(name = "Deleted")
+	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
+
 	@Expose
-	@Column(name = "Processed", insertable = false)
+	@Column(name = "Processed", insertable = false, updatable = true)
 	private String processed;
+
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
+
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
 	private Timestamp createdDate;
+
 	@Expose
 	@Column(name = "ModifiedBy")
 	private String modifiedBy;
+
 	@Expose
-	@Column(name = "LastModDate", insertable = false)
+	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
+	@Expose
+	@Column(name = "VanSerialNo")
+	private Long vanSerialNo;
+	
+	@Expose
+	@Column(name = "VehicalNo")
+	private String vehicalNo;
+	
+	@Expose
+	@Column(name = "ParkingPlaceID")
+	private Integer parkingPlaceID;
+	
+	@Expose
+	@Column(name = "SyncedBy")
+	private String syncedBy;
+	
+	@Expose
+	@Column(name = "SyncedDate")
+	private Timestamp syncedDate;
+	
+	@Expose
+	@Column(name = "ReservedForChange")
+	private String reservedForChange;
+	
 	public BenAdherence() {
 	}
 
@@ -209,6 +240,54 @@ public class BenAdherence {
 
 	public void setLastModDate(Timestamp lastModDate) {
 		this.lastModDate = lastModDate;
+	}
+
+	public Long getVanSerialNo() {
+		return vanSerialNo;
+	}
+
+	public void setVanSerialNo(Long vanSerialNo) {
+		this.vanSerialNo = vanSerialNo;
+	}
+
+	public String getVehicalNo() {
+		return vehicalNo;
+	}
+
+	public void setVehicalNo(String vehicalNo) {
+		this.vehicalNo = vehicalNo;
+	}
+
+	public Integer getParkingPlaceID() {
+		return parkingPlaceID;
+	}
+
+	public void setParkingPlaceID(Integer parkingPlaceID) {
+		this.parkingPlaceID = parkingPlaceID;
+	}
+
+	public String getSyncedBy() {
+		return syncedBy;
+	}
+
+	public void setSyncedBy(String syncedBy) {
+		this.syncedBy = syncedBy;
+	}
+
+	public Timestamp getSyncedDate() {
+		return syncedDate;
+	}
+
+	public void setSyncedDate(Timestamp syncedDate) {
+		this.syncedDate = syncedDate;
+	}
+
+	public String getReservedForChange() {
+		return reservedForChange;
+	}
+
+	public void setReservedForChange(String reservedForChange) {
+		this.reservedForChange = reservedForChange;
 	}
 
 }

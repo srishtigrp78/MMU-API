@@ -155,6 +155,7 @@ public class DoctorServiceImpl implements DoctorService {
 		this.cancerSignAndSymptomsRepo = cancerSignAndSymptomsRepo;
 	}
 
+	@Deprecated
 	@Override
 	public Long saveCancerAbdominalExaminationData(CancerAbdominalExamination cancerAbdominalExamination) {
 		CancerAbdominalExamination response = cancerAbdominalExaminationRepo.save(cancerAbdominalExamination);
@@ -164,6 +165,7 @@ public class DoctorServiceImpl implements DoctorService {
 			return null;
 	}
 
+	@Deprecated
 	@Override
 	public Long saveCancerBreastExaminationData(CancerBreastExamination cancerBreastExamination) {
 		CancerBreastExamination response = cancerBreastExaminationRepo.save(cancerBreastExamination);
@@ -173,6 +175,7 @@ public class DoctorServiceImpl implements DoctorService {
 			return null;
 	}
 
+	@Deprecated
 	@Override
 	public Long saveCancerDiagnosisData(CancerDiagnosis cancerDiagnosis) {
 
@@ -191,6 +194,7 @@ public class DoctorServiceImpl implements DoctorService {
 			return null;
 	}
 
+	@Deprecated
 	@Override
 	public Long saveCancerGynecologicalExaminationData(CancerGynecologicalExamination cancerGynecologicalExamination) {
 		List<String> typeOfLesionList = cancerGynecologicalExamination.getTypeOfLesionList();
@@ -210,6 +214,7 @@ public class DoctorServiceImpl implements DoctorService {
 			return null;
 	}
 
+	@Deprecated
 	@Override
 	public int saveLymphNodeDetails(List<CancerLymphNodeDetails> cancerLymphNodeDetails) {
 		int responseData = 0;
@@ -222,6 +227,7 @@ public class DoctorServiceImpl implements DoctorService {
 		return responseData;
 	}
 
+	@Deprecated
 	@Override
 	public Long saveCancerOralExaminationData(CancerOralExamination cancerOralExamination) {
 		List<String> preMalignantLesionTypeList = cancerOralExamination.getPreMalignantLesionTypeList();
@@ -240,6 +246,7 @@ public class DoctorServiceImpl implements DoctorService {
 			return null;
 	}
 
+	@Deprecated
 	@Override
 	public Long saveCancerSignAndSymptomsData(CancerSignAndSymptoms cancerSignAndSymptoms) {
 		CancerSignAndSymptoms response = cancerSignAndSymptomsRepo.save(cancerSignAndSymptoms);
@@ -280,20 +287,19 @@ public class DoctorServiceImpl implements DoctorService {
 	private CancerAbdominalExamination getBenCancerAbdominalExaminationData(Long benRegID, Long benVisitID,
 			Date visitDateTime) {
 		CancerAbdominalExamination cancerAbdominalExamination = cancerAbdominalExaminationRepo
-				.getBenCancerAbdominalExaminationDetails(benRegID, benVisitID, visitDateTime);
+				.getBenCancerAbdominalExaminationDetails(benRegID, benVisitID);
 		return cancerAbdominalExamination;
 	}
 
 	private CancerBreastExamination getBenCancerBreastExaminationData(Long benRegID, Long benVisitID,
 			Date visitDateTime) {
 		CancerBreastExamination cancerBreastExamination = cancerBreastExaminationRepo
-				.getBenCancerBreastExaminationDetails(benRegID, benVisitID, visitDateTime);
+				.getBenCancerBreastExaminationDetails(benRegID, benVisitID);
 		return cancerBreastExamination;
 	}
 
 	private CancerDiagnosis getBenCancerDiagnosisData(Long benRegID, Long benVisitID, Date visitDateTime) {
-		CancerDiagnosis cancerDiagnosis = cancerDiagnosisRepo.getBenCancerDiagnosisDetails(benRegID, benVisitID,
-				visitDateTime);
+		CancerDiagnosis cancerDiagnosis = cancerDiagnosisRepo.getBenCancerDiagnosisDetails(benRegID, benVisitID);
 		// System.out.println("cancerDiagnosis .....");
 		if (null != cancerDiagnosis && null != cancerDiagnosis.getInstitute()) {
 			cancerDiagnosis.setReferredToInstituteName(cancerDiagnosis.getInstitute().getInstitutionName());
@@ -365,6 +371,7 @@ public class DoctorServiceImpl implements DoctorService {
 		return new Gson().toJson(resMap);
 	}
 
+	@Deprecated
 	@Override
 	public Long saveDocExaminationImageAnnotation(List<WrapperCancerExamImgAnotasn> wrapperCancerExamImgAnotasnList) {
 		// System.out.println("hello");
@@ -377,6 +384,7 @@ public class DoctorServiceImpl implements DoctorService {
 		return x;
 	}
 
+	@Deprecated
 	private List<CancerExaminationImageAnnotation> getCancerExaminationImageAnnotationList(
 			List<WrapperCancerExamImgAnotasn> wrapperCancerExamImgAnotasnList) {
 		List<CancerExaminationImageAnnotation> objList = new ArrayList<>();
