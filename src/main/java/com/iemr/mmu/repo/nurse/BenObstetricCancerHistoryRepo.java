@@ -41,7 +41,7 @@ public interface BenObstetricCancerHistoryRepo extends CrudRepository<BenObstetr
 			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID,
 			@Param("processed") Character processed);
 
-	@Query("SELECT boh from BenObstetricCancerHistory boh WHERE boh.beneficiaryRegID = :benRegID AND boh.benVisitID = :benVisitID Where boh.deleted = false ")
+	@Query("SELECT boh from BenObstetricCancerHistory boh WHERE boh.beneficiaryRegID = :benRegID AND boh.benVisitID = :benVisitID AND boh.deleted = false ")
 	public BenObstetricCancerHistory getBenObstetricCancerHistory(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 

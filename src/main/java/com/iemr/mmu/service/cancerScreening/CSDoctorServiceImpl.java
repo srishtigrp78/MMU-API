@@ -1,12 +1,15 @@
 package com.iemr.mmu.service.cancerScreening;
 
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
 import com.iemr.mmu.data.doctor.CancerAbdominalExamination;
 import com.iemr.mmu.data.doctor.CancerBreastExamination;
 import com.iemr.mmu.data.doctor.CancerDiagnosis;
@@ -219,5 +222,73 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 			return response.getID();
 		else
 			return null;
+	}
+	
+	public Map<String, Object> getBenDoctorEnteredDataForCaseSheet(Long benRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		// System.out.println("getBenDoctorEnteredDataForCaseSheet");
+		resMap.put("abdominalExamination", getBenCancerAbdominalExaminationData(benRegID, benVisitID));
+
+		resMap.put("breastExamination", getBenCancerBreastExaminationData(benRegID, benVisitID));
+
+		resMap.put("diagnosis", getBenCancerDiagnosisData(benRegID, benVisitID));
+
+		resMap.put("gynecologicalExamination",
+				getBenCancerGynecologicalExaminationData(benRegID, benVisitID));
+
+		resMap.put("signsAndSymptoms", getBenCancerSignAndSymptomsData(benRegID, benVisitID));
+
+		resMap.put("BenCancerLymphNodeDetails", getBenCancerLymphNodeDetailsData(benRegID, benVisitID));
+
+		resMap.put("oralExamination", getBenCancerOralExaminationData(benRegID, benVisitID));
+
+		return resMap;
+	}
+
+	private CancerAbdominalExamination getBenCancerAbdominalExaminationData(Long benRegID, Long benVisitID) {
+		CancerAbdominalExamination cancerAbdominalExamination = cancerAbdominalExaminationRepo
+				.getBenCancerAbdominalExaminationDetails(benRegID, benVisitID);
+		return cancerAbdominalExamination;
+	}
+
+	private CancerBreastExamination getBenCancerBreastExaminationData(Long benRegID, Long benVisitID) {
+		CancerBreastExamination cancerBreastExamination = cancerBreastExaminationRepo
+				.getBenCancerBreastExaminationDetails(benRegID, benVisitID);
+		return cancerBreastExamination;
+	}
+
+	private CancerDiagnosis getBenCancerDiagnosisData(Long benRegID, Long benVisitID) {
+		CancerDiagnosis cancerDiagnosis = cancerDiagnosisRepo.getBenCancerDiagnosisDetails(benRegID, benVisitID);
+		// System.out.println("cancerDiagnosis .....");
+		if (null != cancerDiagnosis && null != cancerDiagnosis.getInstitute()) {
+			cancerDiagnosis.setReferredToInstituteName(cancerDiagnosis.getInstitute().getInstitutionName());
+		}
+
+		return cancerDiagnosis;
+	}
+
+	private CancerGynecologicalExamination getBenCancerGynecologicalExaminationData(Long benRegID, Long benVisitID) {
+		CancerGynecologicalExamination cancerGynecologicalExamination = cancerGynecologicalExaminationRepo
+				.getBenCancerGynecologicalExaminationDetails(benRegID, benVisitID);
+		return cancerGynecologicalExamination;
+	}
+
+	private CancerSignAndSymptoms getBenCancerSignAndSymptomsData(Long benRegID, Long benVisitID) {
+		CancerSignAndSymptoms cancerSignAndSymptoms = cancerSignAndSymptomsRepo
+				.getBenCancerSignAndSymptomsDetails(benRegID, benVisitID);
+		return cancerSignAndSymptoms;
+	}
+	
+	private List<CancerLymphNodeDetails> getBenCancerLymphNodeDetailsData(Long benRegID, Long benVisitID) {
+		List<CancerLymphNodeDetails> cancerLymphNodeDetails = cancerLymphNodeExaminationRepo
+				.getBenCancerLymphNodeDetails(benRegID, benVisitID);
+		return cancerLymphNodeDetails;
+	}
+
+	private CancerOralExamination getBenCancerOralExaminationData(Long benRegID, Long benVisitID) {
+		CancerOralExamination cancerOralExamination = cancerOralExaminationRepo
+				.getBenCancerOralExaminationDetails(benRegID, benVisitID);
+		return cancerOralExamination;
 	}
 }

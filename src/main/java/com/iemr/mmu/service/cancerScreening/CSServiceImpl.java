@@ -1,10 +1,15 @@
 package com.iemr.mmu.service.cancerScreening;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +31,7 @@ import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
+import com.iemr.mmu.service.registrar.RegistrarServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
@@ -34,7 +40,13 @@ public class CSServiceImpl implements CSService {
 	private NurseServiceImpl nurseServiceImpl;
 	private CSNurseServiceImpl cSNurseServiceImpl;
 	private CSDoctorServiceImpl cSDoctorServiceImpl;
-
+	private RegistrarServiceImpl registrarServiceImpl;
+	
+	@Autowired
+	public void setRegistrarServiceImpl(RegistrarServiceImpl registrarServiceImpl) {
+		this.registrarServiceImpl = registrarServiceImpl;
+	}
+	
 	@Autowired
 	public void setcSDoctorServiceImpl(CSDoctorServiceImpl cSDoctorServiceImpl) {
 		this.cSDoctorServiceImpl = cSDoctorServiceImpl;
@@ -49,6 +61,8 @@ public class CSServiceImpl implements CSService {
 	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
 		this.nurseServiceImpl = nurseServiceImpl;
 	}
+	
+	
 
 	// ----------Save/Create (Nurse)--------------------------------------
 
@@ -504,8 +518,37 @@ public class CSServiceImpl implements CSService {
 	// -------Fetch Case-sheet data ----------------------------------
 
 	public String getCancerCasesheetData(JSONObject obj) {
+		
+		if (obj.length() > 1) {
+			Long benRegID = null;
+			Long benVisitID = null;
+			try {
+				benRegID = obj.getLong("benRegID");
+				benVisitID = obj.getLong("benVisitID");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			String caseSheetData = getBenDataForCaseSheet(benRegID, benVisitID);
+
+		} else {
+
+		}
+		
 		return null;
 	}
+	
+	public String getBenDataForCaseSheet(Long benRegID, Long benVisitID) {
+		
+		Map<String, Object> caseSheetData = cSNurseServiceImpl.getBenNurseDataForCaseSheet(benRegID, benVisitID);
+		
+		caseSheetData.putAll(cSDoctorServiceImpl.getBenDoctorEnteredDataForCaseSheet(benRegID, benVisitID));
+		caseSheetData.put("BeneficiaryDemographicData", registrarServiceImpl.getBeneficiaryDemographicData(benRegID));
+		
+		return new Gson().toJson(caseSheetData);
+	}
+	
 	/// -------End of Fetch Case-sheet data ----------------------------------
 
 }

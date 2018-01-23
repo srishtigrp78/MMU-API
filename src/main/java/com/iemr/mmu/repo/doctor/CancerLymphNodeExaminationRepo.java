@@ -14,7 +14,7 @@ import com.iemr.mmu.data.doctor.CancerLymphNodeDetails;
 public interface CancerLymphNodeExaminationRepo extends CrudRepository<CancerLymphNodeDetails, Long>{
 	
 	@Query(" SELECT c from CancerLymphNodeDetails c WHERE c.beneficiaryRegID = :benRegID AND c.benVisitID = :benVisitID "
-			+ " AND DATE(c.createdDate) = :createdDate")
+			+ "AND c.deleted = false")
 	public List<CancerLymphNodeDetails> getBenCancerLymphNodeDetails(@Param("benRegID") Long benRegID,
-	@Param("benVisitID") Long benVisitID, @Param("createdDate") Date createdDate);
+	@Param("benVisitID") Long benVisitID);
 }

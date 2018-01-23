@@ -13,7 +13,7 @@ import com.iemr.mmu.data.doctor.CancerSignAndSymptoms;
 public interface CancerSignAndSymptomsRepo extends CrudRepository<CancerSignAndSymptoms, Long>{
 	
 	@Query(" SELECT c from CancerSignAndSymptoms c WHERE c.beneficiaryRegID = :benRegID AND c.benVisitID = :benVisitID "
-			+ " AND DATE(c.createdDate) = :createdDate")
+			+ "AND c.deleted = false")
 	public CancerSignAndSymptoms getBenCancerSignAndSymptomsDetails(@Param("benRegID") Long benRegID,
-	@Param("benVisitID") Long benVisitID, @Param("createdDate") Date createdDate);
+	@Param("benVisitID") Long benVisitID);
 }

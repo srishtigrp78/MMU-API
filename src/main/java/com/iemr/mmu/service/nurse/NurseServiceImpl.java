@@ -649,6 +649,7 @@ public class NurseServiceImpl implements NurseService {
 		return i;
 	}
 
+	@Deprecated
 	public Map<String, Object> getBenNurseDataForCaseSheet(Long benRegID, Long benVisitID, Date visitDateTime) {
 		Map<String, Object> resMap = new HashMap<>();
 
@@ -667,6 +668,7 @@ public class NurseServiceImpl implements NurseService {
 		return resMap;
 	}
 
+	@Deprecated
 	private BeneficiaryVisitDetail getBeneficiaryVisitDetails(Long benRegID, Long benVisitID, Date visitDateTime) {
 		List<Objects[]> beneficiaryVisitDetail = benVisitDetailRepo.getBeneficiaryVisitDetails(benRegID, benVisitID);
 		BeneficiaryVisitDetail beneficiaryVisit = null;
@@ -683,6 +685,7 @@ public class NurseServiceImpl implements NurseService {
 		return beneficiaryVisit;
 	}
 
+	@Deprecated
 	private BenPersonalCancerHistory getBenPersonalCancerHistoryData(Long benRegID, Long benVisitID,
 			Date visitDateTime) {
 		BenPersonalCancerHistory benPersonalCancerHistory = benPersonalCancerHistoryRepo.getBenPersonalHistory(benRegID,
@@ -690,6 +693,7 @@ public class NurseServiceImpl implements NurseService {
 		return benPersonalCancerHistory;
 	}
 
+	@Deprecated
 	private BenPersonalCancerDietHistory getBenPersonalCancerDietHistoryData(Long benRegID, Long benVisitID,
 			Date visitDateTime) {
 		BenPersonalCancerDietHistory benPersonalCancerDietHistory = benPersonalCancerDietHistoryRepo
@@ -710,6 +714,7 @@ public class NurseServiceImpl implements NurseService {
 		return benPersonalCancerDietHistory;
 	}
 
+	@Deprecated
 	private List<BenFamilyCancerHistory> getBenFamilyHisData(Long benRegID, Long benVisitID, Date visitDateTime) {
 		List<BenFamilyCancerHistory> benFamilyCancerHistoryList = benFamilyCancerHistoryRepo
 				.getBenFamilyHistory(benRegID, benVisitID);
@@ -731,12 +736,14 @@ public class NurseServiceImpl implements NurseService {
 		return benFamilyCancerHistoryList;
 	}
 
+	@Deprecated
 	private BenObstetricCancerHistory getBenObstetricDetailsData(Long benRegID, Long benVisitID, Date visitDateTime) {
 		BenObstetricCancerHistory benObstetricCancerHistoryData = benObstetricCancerHistoryRepo
 				.getBenObstetricCancerHistory(benRegID, benVisitID);
 		return benObstetricCancerHistoryData;
 	}
-
+	
+	@Deprecated
 	private BenCancerVitalDetail getBenCancerVitalDetailData(Long benRegID, Long benVisitID, Date visitDateTime) {
 		BenCancerVitalDetail benCancerVitalDetail = benCancerVitalDetailRepo.getBenCancerVitalDetail(benRegID,
 				benVisitID);

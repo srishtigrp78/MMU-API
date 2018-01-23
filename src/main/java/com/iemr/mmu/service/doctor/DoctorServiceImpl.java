@@ -262,6 +262,7 @@ public class DoctorServiceImpl implements DoctorService {
 		return WrapperRegWorklist.getDocWorkListData(docWorkListData);
 	}
 
+	@Deprecated
 	public Map<String, Object> getBenDoctorEnteredDataForCaseSheet(Long benRegID, Long benVisitID, Date visitDateTime) {
 		Map<String, Object> resMap = new HashMap<>();
 
@@ -272,32 +273,35 @@ public class DoctorServiceImpl implements DoctorService {
 
 		resMap.put("diagnosis", getBenCancerDiagnosisData(benRegID, benVisitID, visitDateTime));
 
-		resMap.put("gynecologicalExamination",
-				getBenCancerGynecologicalExaminationData(benRegID, benVisitID, visitDateTime));
+//		resMap.put("gynecologicalExamination",
+//				getBenCancerGynecologicalExaminationData(benRegID, benVisitID, visitDateTime));
 
-		resMap.put("signsAndSymptoms", getBenCancerSignAndSymptomsData(benRegID, benVisitID, visitDateTime));
+		//resMap.put("signsAndSymptoms", getBenCancerSignAndSymptomsData(benRegID, benVisitID, visitDateTime));
 
-		resMap.put("BenCancerLymphNodeDetails", getBenCancerLymphNodeDetailsData(benRegID, benVisitID, visitDateTime));
+		//resMap.put("BenCancerLymphNodeDetails", getBenCancerLymphNodeDetailsData(benRegID, benVisitID, visitDateTime));
 
-		resMap.put("oralExamination", getBenCancerOralExaminationData(benRegID, benVisitID, visitDateTime));
+		//resMap.put("oralExamination", getBenCancerOralExaminationData(benRegID, benVisitID, visitDateTime));
 
 		return resMap;
 	}
-
+	
+	@Deprecated
 	private CancerAbdominalExamination getBenCancerAbdominalExaminationData(Long benRegID, Long benVisitID,
 			Date visitDateTime) {
 		CancerAbdominalExamination cancerAbdominalExamination = cancerAbdominalExaminationRepo
 				.getBenCancerAbdominalExaminationDetails(benRegID, benVisitID);
 		return cancerAbdominalExamination;
 	}
-
+	
+	@Deprecated
 	private CancerBreastExamination getBenCancerBreastExaminationData(Long benRegID, Long benVisitID,
 			Date visitDateTime) {
 		CancerBreastExamination cancerBreastExamination = cancerBreastExaminationRepo
 				.getBenCancerBreastExaminationDetails(benRegID, benVisitID);
 		return cancerBreastExamination;
 	}
-
+	
+	@Deprecated
 	private CancerDiagnosis getBenCancerDiagnosisData(Long benRegID, Long benVisitID, Date visitDateTime) {
 		CancerDiagnosis cancerDiagnosis = cancerDiagnosisRepo.getBenCancerDiagnosisDetails(benRegID, benVisitID);
 		// System.out.println("cancerDiagnosis .....");
@@ -307,32 +311,36 @@ public class DoctorServiceImpl implements DoctorService {
 
 		return cancerDiagnosis;
 	}
-
-	private CancerGynecologicalExamination getBenCancerGynecologicalExaminationData(Long benRegID, Long benVisitID,
-			Date visitDateTime) {
-		CancerGynecologicalExamination cancerGynecologicalExamination = cancerGynecologicalExaminationRepo
-				.getBenCancerGynecologicalExaminationDetails(benRegID, benVisitID, visitDateTime);
-		return cancerGynecologicalExamination;
-	}
-
-	private CancerSignAndSymptoms getBenCancerSignAndSymptomsData(Long benRegID, Long benVisitID, Date visitDateTime) {
-		CancerSignAndSymptoms cancerSignAndSymptoms = cancerSignAndSymptomsRepo
-				.getBenCancerSignAndSymptomsDetails(benRegID, benVisitID, visitDateTime);
-		return cancerSignAndSymptoms;
-	}
-
-	private List<CancerLymphNodeDetails> getBenCancerLymphNodeDetailsData(Long benRegID, Long benVisitID,
-			Date visitDateTime) {
-		List<CancerLymphNodeDetails> cancerLymphNodeDetails = cancerLymphNodeExaminationRepo
-				.getBenCancerLymphNodeDetails(benRegID, benVisitID, visitDateTime);
-		return cancerLymphNodeDetails;
-	}
-
-	private CancerOralExamination getBenCancerOralExaminationData(Long benRegID, Long benVisitID, Date visitDateTime) {
-		CancerOralExamination cancerOralExamination = cancerOralExaminationRepo
-				.getBenCancerOralExaminationDetails(benRegID, benVisitID, visitDateTime);
-		return cancerOralExamination;
-	}
+	
+//	@Deprecated
+//	private CancerGynecologicalExamination getBenCancerGynecologicalExaminationData(Long benRegID, Long benVisitID,
+//			Date visitDateTime) {
+//		CancerGynecologicalExamination cancerGynecologicalExamination = cancerGynecologicalExaminationRepo
+//				.getBenCancerGynecologicalExaminationDetails(benRegID, benVisitID, visitDateTime);
+//		return cancerGynecologicalExamination;
+//	}
+//	
+//	@Deprecated
+//	private CancerSignAndSymptoms getBenCancerSignAndSymptomsData(Long benRegID, Long benVisitID, Date visitDateTime) {
+//		CancerSignAndSymptoms cancerSignAndSymptoms = cancerSignAndSymptomsRepo
+//				.getBenCancerSignAndSymptomsDetails(benRegID, benVisitID, visitDateTime);
+//		return cancerSignAndSymptoms;
+//	}
+//	
+//	@Deprecated
+//	private List<CancerLymphNodeDetails> getBenCancerLymphNodeDetailsData(Long benRegID, Long benVisitID,
+//			Date visitDateTime) {
+//		List<CancerLymphNodeDetails> cancerLymphNodeDetails = cancerLymphNodeExaminationRepo
+//				.getBenCancerLymphNodeDetails(benRegID, benVisitID, visitDateTime);
+//		return cancerLymphNodeDetails;
+//	}
+//	
+//	@Deprecated
+//	private CancerOralExamination getBenCancerOralExaminationData(Long benRegID, Long benVisitID, Date visitDateTime) {
+//		CancerOralExamination cancerOralExamination = cancerOralExaminationRepo
+//				.getBenCancerOralExaminationDetails(benRegID, benVisitID, visitDateTime);
+//		return cancerOralExamination;
+//	}
 
 	@Override
 	public String updateBenStatus(Long benVisitID, String c) {

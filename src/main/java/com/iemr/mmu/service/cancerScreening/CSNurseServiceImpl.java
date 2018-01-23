@@ -1,7 +1,12 @@
 package com.iemr.mmu.service.cancerScreening;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,11 +16,13 @@ import com.iemr.mmu.data.nurse.BenFamilyCancerHistory;
 import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
+import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.repo.nurse.BenCancerVitalDetailRepo;
 import com.iemr.mmu.repo.nurse.BenFamilyCancerHistoryRepo;
 import com.iemr.mmu.repo.nurse.BenObstetricCancerHistoryRepo;
 import com.iemr.mmu.repo.nurse.BenPersonalCancerDietHistoryRepo;
 import com.iemr.mmu.repo.nurse.BenPersonalCancerHistoryRepo;
+import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
 
 @Service
 public class CSNurseServiceImpl implements CSNurseService {
@@ -24,7 +31,8 @@ public class CSNurseServiceImpl implements CSNurseService {
 	private BenPersonalCancerDietHistoryRepo benPersonalCancerDietHistoryRepo;
 	private BenObstetricCancerHistoryRepo benObstetricCancerHistoryRepo;
 	private BenCancerVitalDetailRepo benCancerVitalDetailRepo;
-
+	private BenVisitDetailRepo benVisitDetailRepo;
+	
 	@Autowired
 	public void setBenPersonalCancerHistoryRepo(BenPersonalCancerHistoryRepo benPersonalCancerHistoryRepo) {
 		this.benPersonalCancerHistoryRepo = benPersonalCancerHistoryRepo;
@@ -50,6 +58,11 @@ public class CSNurseServiceImpl implements CSNurseService {
 		this.benCancerVitalDetailRepo = benCancerVitalDetailRepo;
 	}
 
+	@Autowired
+	public void setBenVisitDetailRepo(BenVisitDetailRepo benVisitDetailRepo) {
+		this.benVisitDetailRepo = benVisitDetailRepo;
+	}
+	
 	@Override
 	public int saveBenFamilyCancerHistory(List<BenFamilyCancerHistory> benFamilyCancerHistoryList) {
 		for (BenFamilyCancerHistory benFamilyCancerHistoryOBJ : benFamilyCancerHistoryList) {
@@ -394,4 +407,37 @@ public class CSNurseServiceImpl implements CSNurseService {
 		return benCancerVitalDetail;
 	}
 
+	public Map<String, Object> getBenNurseDataForCaseSheet(Long benRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("benVisitDetail", getBeneficiaryVisitDetails(benRegID, benVisitID));
+
+		resMap.put("familyDiseaseHistory", getBenFamilyHisData(benRegID, benVisitID));
+
+		resMap.put("patientObstetricHistory", getBenObstetricDetailsData(benRegID, benVisitID));
+
+		resMap.put("patientPersonalHistory", getBenPersonalCancerHistoryData(benRegID, benVisitID));
+
+		resMap.put("benPersonalDietHistory", getBenPersonalCancerDietHistoryData(benRegID, benVisitID));
+
+		resMap.put("currentVitals", getBenCancerVitalDetailData(benRegID, benVisitID));
+
+		return resMap;
+	}
+
+	private BeneficiaryVisitDetail getBeneficiaryVisitDetails(Long benRegID, Long benVisitID) {
+		List<Objects[]> beneficiaryVisitDetail = benVisitDetailRepo.getBeneficiaryVisitDetails(benRegID, benVisitID);
+		BeneficiaryVisitDetail beneficiaryVisit = null;
+		if (null != beneficiaryVisitDetail) {
+			for (Object[] obj : beneficiaryVisitDetail) {
+				beneficiaryVisit = new BeneficiaryVisitDetail((Long) obj[0], (Long) obj[1], (Integer) obj[2],
+						(Timestamp) obj[3], (Short) obj[4], (Short) obj[5], (String) obj[6], (Integer) obj[7],
+						(String) obj[8], (String) obj[9], (String) obj[10], (String) obj[11], (String) obj[12],
+						(String) obj[13], (String) obj[14]);
+			}
+		}
+
+		return beneficiaryVisit;
+	}
+	
 }
