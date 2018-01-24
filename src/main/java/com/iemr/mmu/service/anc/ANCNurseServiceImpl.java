@@ -91,6 +91,7 @@ import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.mmu.service.cancerScreening.CSServiceImpl;
+import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
 
 @Service
@@ -146,7 +147,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	private SysObstetricExaminationRepo sysObstetricExaminationRepo;
 	private SysRespiratoryExaminationRepo sysRespiratoryExaminationRepo;
 
-	private ANCNurseServiceImpl nurseServiceImpl;
+	private NurseServiceImpl nurseServiceImpl;
 	private BenMedHistoryRepo benMedHistoryRepo;
 	private BencomrbidityCondRepo bencomrbidityCondRepo;
 	private BenMedicationHistoryRepo benMedicationHistoryRepo;
@@ -163,10 +164,10 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	private ANCDiagnosisRepo ancDiagnosisRepo;
 
 	@Autowired
-	public void setNurseServiceImpl(ANCNurseServiceImpl nurseServiceImpl) {
+	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
 		this.nurseServiceImpl = nurseServiceImpl;
 	}
-
+	
 	@Autowired
 	public void setBenAdherenceRepo(BenAdherenceRepo benAdherenceRepo) {
 		this.benAdherenceRepo = benAdherenceRepo;
@@ -427,8 +428,8 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	}
 
 	@Override
-	public int saveBenAncCareDetails(ANCCareDetails ancCareDetailsOBJ) throws ParseException {
-		int r = 0;
+	public Long saveBenAncCareDetails(ANCCareDetails ancCareDetailsOBJ) throws ParseException {
+		Long ancCareSuccessFlag = null;
 		if (ancCareDetailsOBJ.getLmpDate() != null && !ancCareDetailsOBJ.getLmpDate().isEmpty()
 				&& ancCareDetailsOBJ.getLmpDate().length() >= 10) {
 			String lmpDate = ancCareDetailsOBJ.getLmpDate().split("T")[0];
@@ -443,20 +444,21 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		}
 		ANCCareDetails ancCareDetailsRS = ancCareRepo.save(ancCareDetailsOBJ);
 		if (ancCareDetailsRS != null) {
-			r = 1;
+			ancCareSuccessFlag = ancCareDetailsRS.getID();
 		}
-		return r;
+		return ancCareSuccessFlag;
 	}
 
 	@Override
-	public int saveAncImmunizationDetails(WrapperAncImmunization wrapperAncImmunizationOBJ) throws ParseException {
-		int r = 0;
+	public Long saveAncImmunizationDetails(WrapperAncImmunization wrapperAncImmunizationOBJ) throws ParseException {
+		Long successFlag = null;
 		List<ANCWomenVaccineDetail> ancWomenVaccineDetailList = getANCWomenVaccineDetail(wrapperAncImmunizationOBJ);
 		List<ANCWomenVaccineDetail> ancWomenVaccineDetailRSList = (List<ANCWomenVaccineDetail>) ancWomenVaccineRepo
 				.save(ancWomenVaccineDetailList);
-		if (ancWomenVaccineDetailRSList != null && ancWomenVaccineDetailRSList.size() > 0)
-			r = 1;
-		return r;
+		if (ancWomenVaccineDetailRSList != null && ancWomenVaccineDetailRSList.size() > 0){
+			successFlag = ancWomenVaccineDetailRSList.get(0).getID();
+		}
+		return successFlag;
 	}
 
 	private List<ANCWomenVaccineDetail> getANCWomenVaccineDetail(WrapperAncImmunization wrapperAncImmunizationOBJ)
@@ -526,8 +528,8 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		return ancWomenVaccineDetailList;
 	}
 
-	public int savePhyGeneralExamination(PhyGeneralExamination generalExamination) {
-		int generalExaminationID = 0;
+	public Long savePhyGeneralExamination(PhyGeneralExamination generalExamination) {
+		Long generalExaminationID = null;
 		String TypeOfDangerSigns = "";
 		if (null != generalExamination.getTypeOfDangerSigns() && generalExamination.getTypeOfDangerSigns().size() > 0) {
 			for (String TypeOfDangerSign : generalExamination.getTypeOfDangerSigns()) {
@@ -538,100 +540,101 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 
 		PhyGeneralExamination response = phyGeneralExaminationRepo.save(generalExamination);
 		if (null != response) {
-			generalExaminationID = 1;
+			generalExaminationID = response.getID();
 		}
 		return generalExaminationID;
 	}
 
 	@Override
-	public int savePhyHeadToToeExamination(PhyHeadToToeExamination headToToeExamination) {
-		int examinationID = 0;
+	public Long savePhyHeadToToeExamination(PhyHeadToToeExamination headToToeExamination) {
+		Long examinationID = null;
 		PhyHeadToToeExamination response = phyHeadToToeExaminationRepo.save(headToToeExamination);
 
 		if (null != response) {
-			examinationID = 1;
+			examinationID = response.getID();
 		}
 		return examinationID;
 	}
 
 	@Override
-	public int saveSysCardiovascularExamination(SysCardiovascularExamination cardiovascularExamination) {
-		int examinationID = 0;
+	public Long saveSysCardiovascularExamination(SysCardiovascularExamination cardiovascularExamination) {
+		Long examinationID = null;
 		SysCardiovascularExamination response = sysCardiovascularExaminationRepo.save(cardiovascularExamination);
 
 		if (null != response) {
-			examinationID = 1;
+			examinationID = response.getID();
 		}
 		return examinationID;
 	}
 
 	@Override
-	public int saveSysCentralNervousExamination(SysCentralNervousExamination centralNervousExamination) {
+	public Long saveSysCentralNervousExamination(SysCentralNervousExamination centralNervousExamination) {
 		// TODO Auto-generated method stub
-		int r = 0;
+		Long r = null;
 		SysCentralNervousExamination centralNervousExaminationRS = sysCentralNervousExaminationRepo
 				.save(centralNervousExamination);
 		if (centralNervousExaminationRS != null) {
-			r = 1;
+			r = centralNervousExaminationRS.getID();
 		}
 		return r;
 	}
 
 	@Override
-	public int saveSysGastrointestinalExamination(SysGastrointestinalExamination gastrointestinalExamination) {
-		int examinationID = 0;
+	public Long saveSysGastrointestinalExamination(SysGastrointestinalExamination gastrointestinalExamination) {
+		Long examinationID = null;
 		SysGastrointestinalExamination response = sysGastrointestinalExaminationRepo.save(gastrointestinalExamination);
 		if (null != response) {
-			examinationID = 1;
+			examinationID = response.getID();
 		}
 		return examinationID;
 	}
 
 	@Override
-	public int saveSysGenitourinarySystemExamination(SysGenitourinarySystemExamination genitourinarySystemExamination) {
+	public Long saveSysGenitourinarySystemExamination(SysGenitourinarySystemExamination genitourinarySystemExamination) {
 		// TODO Auto-generated method stub
-		int r = 0;
+		Long r = null;
 		SysGenitourinarySystemExamination sysGenitourinarySystemExaminationRS = sysGenitourinarySystemExaminationRepo
 				.save(genitourinarySystemExamination);
 		if (null != sysGenitourinarySystemExaminationRS) {
-			r = 1;
+			r = genitourinarySystemExamination.getID();
 		}
 		return r;
 	}
 
 	@Override
-	public int saveSysMusculoskeletalSystemExamination(
+	public Long saveSysMusculoskeletalSystemExamination(
 			SysMusculoskeletalSystemExamination musculoskeletalSystemExamination) {
 		// TODO Auto-generated method stub
-		int r = 0;
+		Long r = null;
 		SysMusculoskeletalSystemExamination musculoskeletalSystemExaminationRS = sysMusculoskeletalSystemExaminationRepo
 				.save(musculoskeletalSystemExamination);
 		if (null != musculoskeletalSystemExaminationRS) {
-			r = 1;
+			r = musculoskeletalSystemExaminationRS.getID();
 		}
 		return r;
 	}
 
 	@Override
-	public int saveSysObstetricExamination(SysObstetricExamination obstetricExamination) {
+	public Long saveSysObstetricExamination(SysObstetricExamination obstetricExamination) {
 		// TODO Auto-generated method stub
-		int r = 0;
+		Long r = null;
 		SysObstetricExamination obstetricExaminationRS = sysObstetricExaminationRepo.save(obstetricExamination);
 		if (obstetricExaminationRS != null)
-			r = 1;
+			r = obstetricExaminationRS.getID();
 		return r;
 	}
 
 	@Override
-	public int saveSysRespiratoryExamination(SysRespiratoryExamination respiratoryExamination) {
+	public Long saveSysRespiratoryExamination(SysRespiratoryExamination respiratoryExamination) {
 		// TODO Auto-generated method stub
-		int r = 0;
+		Long r = null;
 		SysRespiratoryExamination respiratoryExaminationRS = sysRespiratoryExaminationRepo.save(respiratoryExamination);
 		if (respiratoryExaminationRS != null)
-			r = 1;
+			r = respiratoryExaminationRS.getID();
 		return r;
 	}
 
+	@Deprecated
 	@Override
 	public String getANCExaminationDetailsData(Long benRegID, Long benVisitID) {
 		Map<String, Object> examinationDetailsMap = new HashMap<String, Object>();
@@ -650,7 +653,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		return new Gson().toJson(examinationDetailsMap);
 	}
 
-	private PhyGeneralExamination getGeneralExaminationData(Long benRegID, Long benVisitID) {
+	public PhyGeneralExamination getGeneralExaminationData(Long benRegID, Long benVisitID) {
 		PhyGeneralExamination phyGeneralExaminationData = phyGeneralExaminationRepo
 				.getPhyGeneralExaminationData(benRegID, benVisitID);
 		if (null != phyGeneralExaminationData) {
@@ -674,7 +677,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 
 	}
 
-	private PhyHeadToToeExamination getHeadToToeExaminationData(Long benRegID, Long benVisitID) {
+	public PhyHeadToToeExamination getHeadToToeExaminationData(Long benRegID, Long benVisitID) {
 		PhyHeadToToeExamination phyHeadToToeExaminationData = phyHeadToToeExaminationRepo
 				.getPhyHeadToToeExaminationData(benRegID, benVisitID);
 
@@ -682,60 +685,61 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 
 	}
 
-	private SysGastrointestinalExamination getSysGastrointestinalExamination(Long benRegID, Long benVisitID) {
+	public SysGastrointestinalExamination getSysGastrointestinalExamination(Long benRegID, Long benVisitID) {
 		SysGastrointestinalExamination sysGastrointestinalExaminationData = sysGastrointestinalExaminationRepo
 				.getSSysGastrointestinalExamination(benRegID, benVisitID);
 
 		return sysGastrointestinalExaminationData;
 	}
 
-	private SysCardiovascularExamination getCardiovascularExamination(Long benRegID, Long benVisitID) {
+	public SysCardiovascularExamination getCardiovascularExamination(Long benRegID, Long benVisitID) {
 		SysCardiovascularExamination sysCardiovascularExaminationData = sysCardiovascularExaminationRepo
 				.getSysCardiovascularExaminationData(benRegID, benVisitID);
 
 		return sysCardiovascularExaminationData;
 	}
 
-	private SysRespiratoryExamination getRespiratoryExamination(Long benRegID, Long benVisitID) {
+	public SysRespiratoryExamination getRespiratoryExamination(Long benRegID, Long benVisitID) {
 		SysRespiratoryExamination sysRespiratoryExaminationData = sysRespiratoryExaminationRepo
 				.getSysRespiratoryExaminationData(benRegID, benVisitID);
 
 		return sysRespiratoryExaminationData;
 	}
 
-	private SysCentralNervousExamination getSysCentralNervousExamination(Long benRegID, Long benVisitID) {
+	public SysCentralNervousExamination getSysCentralNervousExamination(Long benRegID, Long benVisitID) {
 		SysCentralNervousExamination sysCentralNervousExaminationData = sysCentralNervousExaminationRepo
 				.getSysCentralNervousExaminationData(benRegID, benVisitID);
 
 		return sysCentralNervousExaminationData;
 	}
 
-	private SysMusculoskeletalSystemExamination getMusculoskeletalExamination(Long benRegID, Long benVisitID) {
+	public SysMusculoskeletalSystemExamination getMusculoskeletalExamination(Long benRegID, Long benVisitID) {
 		SysMusculoskeletalSystemExamination sysMusculoskeletalSystemExaminationData = sysMusculoskeletalSystemExaminationRepo
 				.getSysMusculoskeletalSystemExamination(benRegID, benVisitID);
 
 		return sysMusculoskeletalSystemExaminationData;
 	}
 
-	private SysGenitourinarySystemExamination getGenitourinaryExamination(Long benRegID, Long benVisitID) {
+	public SysGenitourinarySystemExamination getGenitourinaryExamination(Long benRegID, Long benVisitID) {
 		SysGenitourinarySystemExamination sysGenitourinarySystemExaminationData = sysGenitourinarySystemExaminationRepo
 				.getSysGenitourinarySystemExaminationData(benRegID, benVisitID);
 
 		return sysGenitourinarySystemExaminationData;
 	}
 
-	private SysObstetricExamination getSysObstetricExamination(Long benRegID, Long benVisitID) {
+	public SysObstetricExamination getSysObstetricExamination(Long benRegID, Long benVisitID) {
 		SysObstetricExamination sysObstetricExaminationData = sysObstetricExaminationRepo
 				.getSysObstetricExaminationData(benRegID, benVisitID);
 
 		return sysObstetricExaminationData;
 	}
 
+	@Deprecated
 	public String getBenVisitDetailsFrmNurseANC(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
 
 		resMap.put("ANCNurseVisitDetail",
-				getCSVisitDetails(benRegID, benVisitID));
+				nurseServiceImpl.getCSVisitDetails(benRegID, benVisitID));
 
 		resMap.put("BenAdherence", getBenAdherence(benRegID, benVisitID));
 
@@ -746,7 +750,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		return resMap.toString();
 	}
 
-	public BeneficiaryVisitDetail getCSVisitDetails(Long benRegID, Long benVisitID) {
+	/*public BeneficiaryVisitDetail getCSVisitDetails(Long benRegID, Long benVisitID) {
 		BeneficiaryVisitDetail benVisitDetailsOBJ = benVisitDetailRepo.getVisitDetails(benRegID, benVisitID);
 
 		BeneficiaryVisitDetail benVisitDetailsOBJ1 = null;
@@ -766,7 +770,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		}
 
 		return benVisitDetailsOBJ1;
-	}
+	}*/
 	
 	@Override
 	public String getBenAdherence(Long beneficiaryRegID, Long benVisitID) {
@@ -789,6 +793,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		return new Gson().toJson(labTestOrderDetails);
 	}
 
+	@Deprecated
 	public String getBenANCDetailsFrmNurseANC(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
 
@@ -915,166 +920,177 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		return r;
 	}
 
-	@Override
-	public Integer saveBenANCPastHistory(BenMedHistory benMedHistory) {
-		Integer r = 0;
+	public Long saveBenANCPastHistory(BenMedHistory benMedHistory) {
+		Long pastHistorySuccessFlag = null;
 		ArrayList<BenMedHistory> benMedHistoryList = benMedHistory.getBenPastHistory();
 		ArrayList<BenMedHistory> res = (ArrayList<BenMedHistory>) benMedHistoryRepo.save(benMedHistoryList);
 		if (null != res && res.size() > 0) {
-			r = res.size();
+			pastHistorySuccessFlag = res.get(0).getBenMedHistoryID();
 		}
-		return r;
+		return pastHistorySuccessFlag;
 	}
 
 	@Override
-	public Integer saveBenANCComorbidConditions(WrapperComorbidCondDetails wrapperComorbidCondDetails) {
-		Integer r = 0;
+	public Long saveBenANCComorbidConditions(WrapperComorbidCondDetails wrapperComorbidCondDetails) {
+		Long comrbidSuccessFlag = null;
 		ArrayList<BencomrbidityCondDetails> bencomrbidityCondDetailsList = wrapperComorbidCondDetails
 				.getComrbidityConds();
 		ArrayList<BencomrbidityCondDetails> res = (ArrayList<BencomrbidityCondDetails>) bencomrbidityCondRepo
 				.save(bencomrbidityCondDetailsList);
 		if (null != res && res.size() > 0) {
-			r = res.size();
+			comrbidSuccessFlag = res.get(0).getID();
 		}
-		return r;
+		return comrbidSuccessFlag;
 	}
 
 	@Override
-	public Integer saveBenANCMedicationHistory(WrapperMedicationHistory wrapperMedicationHistory) {
-		Integer r = 0;
+	public Long saveBenANCMedicationHistory(WrapperMedicationHistory wrapperMedicationHistory) {
+		Long medicationSuccessFlag = null;
 		ArrayList<BenMedicationHistory> benMedicationHistoryList = wrapperMedicationHistory
 				.getBenMedicationHistoryDetails();
 		ArrayList<BenMedicationHistory> res = (ArrayList<BenMedicationHistory>) benMedicationHistoryRepo
 				.save(benMedicationHistoryList);
 		if (null != res && res.size() > 0) {
-			r = res.size();
+			medicationSuccessFlag = res.get(0).getID();
 		}
-		return r;
+		return medicationSuccessFlag;
 	}
 
 	@Override
 	public Integer saveBenANCMenstrualHistory(BenMenstrualDetails benMenstrualDetails) {
-		Integer r = 0;
+		Integer menstrualHistorySuccessFlag = null;
 
 		BenMenstrualDetails res = benMenstrualDetailsRepo.save(benMenstrualDetails);
 		if (null != res && res.getBenMenstrualID() > 0) {
-			r = res.getBenMenstrualID();
+			menstrualHistorySuccessFlag = res.getBenMenstrualID();
 		}
-		return r;
+		return menstrualHistorySuccessFlag;
 	}
 
 	@Override
-	public Integer saveFemaleObstetricHistory(WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory) {
-		Integer r = 0;
+	public Long saveFemaleObstetricHistory(WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory) {
+		Long obstetricSuccessFlag = null;
 
 		ArrayList<FemaleObstetricHistory> FemaleObstetricHistorylist = wrapperFemaleObstetricHistory
 				.getFemaleObstetricHistoryDetails();
 		ArrayList<FemaleObstetricHistory> res = (ArrayList<FemaleObstetricHistory>) femaleObstetricHistoryRepo
 				.save(FemaleObstetricHistorylist);
 		if (null != res && res.size() > 0) {
-			r = 1;
+			obstetricSuccessFlag = res.get(0).getObstetricHistoryID();
 		}
-		return r;
+		return obstetricSuccessFlag;
 	}
 
 	@Override
-	public Integer savePerinatalHistory(PerinatalHistory perinatalHistory) {
-		Integer r = 0;
+	public Long savePerinatalHistory(PerinatalHistory perinatalHistory) {
+		Long perinatalSuccessFlag = null;
 
 		PerinatalHistory res = perinatalHistoryRepo.save(perinatalHistory);
 		if (null != res && res.getID() > 0) {
-			r = 1;
+			perinatalSuccessFlag = res.getID();
 		}
-		return r;
+		return perinatalSuccessFlag;
 	}
 
 	@Override
-	public Integer saveChildOptionalVaccineDetail(WrapperChildOptionalVaccineDetail wrapperChildVaccineDetail) {
-		Integer r = 0;
+	public Long saveChildOptionalVaccineDetail(WrapperChildOptionalVaccineDetail wrapperChildVaccineDetail) {
+		Long childVaccineSuccessFlag = null;
 		ArrayList<ChildOptionalVaccineDetail> childOptionalVaccineDetails = wrapperChildVaccineDetail
 				.getChildOptionalVaccineDetails();
 		ArrayList<ChildOptionalVaccineDetail> res = (ArrayList<ChildOptionalVaccineDetail>) childOptionalVaccineDetailRepo
 				.save(childOptionalVaccineDetails);
 		if (null != res && res.size() > 0) {
-			r = 1;
+			childVaccineSuccessFlag = res.get(0).getID();
 		}
-		return r;
+		return childVaccineSuccessFlag;
 	}
 
 	@Override
-	public Integer saveChildDevelopmentHistory(BenChildDevelopmentHistory benChildDevelopmentHistory) {
-		Integer r = 0;
+	public Long saveChildDevelopmentHistory(BenChildDevelopmentHistory benChildDevelopmentHistory) {
+		Long developmentSuccessFlag = null;
 
 		BenChildDevelopmentHistory childDevelopmentHistory = BenChildDevelopmentHistory
 				.getDevelopmentHistory(benChildDevelopmentHistory);
 		BenChildDevelopmentHistory res = benChildDevelopmentHistoryRepo.save(childDevelopmentHistory);
 		if (null != res && res.getID() > 0) {
-			r = 1;
+			developmentSuccessFlag = res.getID();
 		}
-		return r;
+		return developmentSuccessFlag;
 	}
 
 	@Override
 	public Integer saveANCPersonalHistory(BenPersonalHabit benPersonalHabit) {
-		Integer r = 0;
+		Integer personalHistorySuccessFlag = null;
 
 		ArrayList<BenPersonalHabit> personalHabits = benPersonalHabit.getPersonalHistory();
 		ArrayList<BenPersonalHabit> res = (ArrayList<BenPersonalHabit>) benPersonalHabitRepo.save(personalHabits);
 		if (null != res && res.size() > 0) {
-			r = res.size();
+			personalHistorySuccessFlag = res.get(0).getBenPersonalHabitID();
 		}
-		return r;
+		return personalHistorySuccessFlag;
 	}
 
 	@Override
-	public Integer saveANCAllergyHistory(BenAllergyHistory benAllergyHistory) {
-		Integer r = 0;
+	public Long saveANCAllergyHistory(BenAllergyHistory benAllergyHistory) {
+		Long allergyHistorySuccessFlag = null;
 
 		ArrayList<BenAllergyHistory> allergyList = benAllergyHistory.getBenAllergicHistory();
 		ArrayList<BenAllergyHistory> res = (ArrayList<BenAllergyHistory>) benAllergyHistoryRepo.save(allergyList);
 		if (null != res && res.size() > 0) {
-			r = res.size();
+			allergyHistorySuccessFlag = res.get(0).getID();
 		}
-		return r;
+		return allergyHistorySuccessFlag;
 	}
 
 	@Override
-	public Integer saveANCBenFamilyHistory(BenFamilyHistory benFamilyHistory) {
-		Integer r = 0;
+	public Long saveANCBenFamilyHistory(BenFamilyHistory benFamilyHistory) {
+		Long familyHistorySuccessFlag = null;
 
 		ArrayList<BenFamilyHistory> familyHistoryList = benFamilyHistory.getBenFamilyHistory();
 		ArrayList<BenFamilyHistory> res = (ArrayList<BenFamilyHistory>) benFamilyHistoryRepo.save(familyHistoryList);
 		if (null != res && res.size() > 0) {
-			r = res.size();
+			familyHistorySuccessFlag = res.get(0).getID();
 		}
-		return r;
+		return familyHistorySuccessFlag;
 	}
 
+	/*	Long pastHistorySuccessFlag = null;
+	Long comrbidSuccessFlag = null;
+	Long medicationSuccessFlag = null;
+	Long personalHistorySuccessFlag = null;
+	Long allergyHistorySuccessFlag = null;
+	Long familyHistorySuccessFlag = null;
+	Long menstrualHistorySuccessFlag = null;
+	Long obstetricSuccessFlag = null;
+	Long immunizationSuccessFlag = null;
+	Long childVaccineSuccessFlag = null;
+	*/
+	
 	@Override
-	public Integer saveChildFeedingHistory(ChildFeedingDetails childFeedingDetails) {
-		Integer r = 0;
+	public Long saveChildFeedingHistory(ChildFeedingDetails childFeedingDetails) {
+		Long feedingSuccessFlag = null;
 		ChildFeedingDetails res = childFeedingDetailsRepo.save(childFeedingDetails);
 		if (null != res && res.getID() > 0) {
-			r = 1;
+			feedingSuccessFlag = res.getID();
 		}
-		return r;
+		return feedingSuccessFlag;
 	}
 
 	@Override
-	public Integer saveANCImmunizationHistory(WrapperImmunizationHistory wrapperImmunizationHistory) {
-		Integer r = 0;
+	public Long saveANCImmunizationHistory(WrapperImmunizationHistory wrapperImmunizationHistory) {
+		Long immunizationSuccessFlag = null;
 
 		ArrayList<ChildVaccineDetail1> childVaccineDetails = wrapperImmunizationHistory.getBenChildVaccineDetails();
 		ArrayList<ChildVaccineDetail1> res = (ArrayList<ChildVaccineDetail1>) childVaccineDetail1Repo
 				.save(childVaccineDetails);
 		if (null != res && res.size() > 0) {
-			r = res.size();
+			immunizationSuccessFlag = res.get(0).getID();
 		}
-		return r;
+		return immunizationSuccessFlag;
 	}
 
 	@Override
-	public String fetchBenPastMedicalHistory(Long benRegID) throws Exception {
+	public String fetchBenPastMedicalHistory(Long benRegID) {
 		Map<String, Object> resMap = new HashMap<>();
 		ArrayList<Object[]> benPastHistoryDataArray = benMedHistoryRepo.getBenPastHistory(benRegID);
 		ArrayList<BenMedHistory> benMedHistoryArrayList = new ArrayList<>();
@@ -1775,6 +1791,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 
 	}
 	
+	@Deprecated
 	@Override
 	public String getBenANCHistoryDetails(Long benRegID, Long benVisitID) {
 		Map<String, Object> HistoryDetailsMap = new HashMap<String, Object>();
@@ -2028,8 +2045,8 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	}
 
 	@Override
-	public Integer updateBenANCComorbidConditions(WrapperComorbidCondDetails wrapperComorbidCondDetails) {
-		Integer r = 0;
+	public int updateBenANCComorbidConditions(WrapperComorbidCondDetails wrapperComorbidCondDetails) {
+		int r = 0;
 		if(null != wrapperComorbidCondDetails){
 			bencomrbidityCondRepo.deleteExistingBenComrbidityCondDetails(wrapperComorbidCondDetails.getBeneficiaryRegID(), 
 					wrapperComorbidCondDetails.getBenVisitID());
@@ -2046,7 +2063,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	}
 
 	@Override
-	public Integer updateBenANCMedicationHistory(WrapperMedicationHistory wrapperMedicationHistory) {
+	public int updateBenANCMedicationHistory(WrapperMedicationHistory wrapperMedicationHistory) {
 		Integer r = 0;
 		if(null != wrapperMedicationHistory){
 			benMedicationHistoryRepo.deleteExistingBenMedicationHistory(wrapperMedicationHistory.getBeneficiaryRegID(), 
@@ -2064,7 +2081,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	}
 
 	@Override
-	public Integer updateBenANCPersonalHistory(BenPersonalHabit benPersonalHabit) {
+	public int updateBenANCPersonalHistory(BenPersonalHabit benPersonalHabit) {
 		Integer r = 0;
 		if(null != benPersonalHabit){
 			benPersonalHabitRepo.deleteExistingBenPersonalHistory(benPersonalHabit.getBeneficiaryRegID(), 
@@ -2080,7 +2097,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	}
 
 	@Override
-	public Integer updateBenANCAllergicHistory(BenAllergyHistory benAllergyHistory) {
+	public int updateBenANCAllergicHistory(BenAllergyHistory benAllergyHistory) {
 		Integer r = 0;
 		if(null != benAllergyHistory){
 			benAllergyHistoryRepo.deleteExistingBenAllergyHistory(benAllergyHistory.getBeneficiaryRegID(), 
@@ -2096,7 +2113,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	}
 
 	@Override
-	public Integer updateBenANCFamilyHistory(BenFamilyHistory benFamilyHistory) {
+	public int updateBenANCFamilyHistory(BenFamilyHistory benFamilyHistory) {
 		Integer r = 0;
 		if(null != benFamilyHistory){
 			benFamilyHistoryRepo.deleteExistingBenFamilyHistory(benFamilyHistory.getBeneficiaryRegID(), 
@@ -2112,7 +2129,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	}
 
 	@Override
-	public Integer updateChildOptionalVaccineDetail(WrapperChildOptionalVaccineDetail wrapperChildOptionalVaccineDetail) {
+	public int updateChildOptionalVaccineDetail(WrapperChildOptionalVaccineDetail wrapperChildOptionalVaccineDetail) {
 		Integer r = 0;
 		if(null != wrapperChildOptionalVaccineDetail){
 			childOptionalVaccineDetailRepo.deleteExistingChildOptionalVaccineDetail(wrapperChildOptionalVaccineDetail.getBeneficiaryRegID(), 
@@ -2130,7 +2147,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	}
 	
 	@Override
-	public Integer updateANCChildImmunizationDetail(WrapperImmunizationHistory wrapperImmunizationHistory) {
+	public int updateANCChildImmunizationDetail(WrapperImmunizationHistory wrapperImmunizationHistory) {
 		Integer r = 0;
 
 		ArrayList<ChildVaccineDetail1> childVaccineDetails = wrapperImmunizationHistory.getBenChildVaccineDetails();
@@ -2161,8 +2178,9 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		return r;
 	}
 
+	@Deprecated
 	@Override
-	public Integer updateANCAnthropometryDetails(BenAnthropometryDetail anthropometryDetail) {
+	public int updateANCAnthropometryDetails(BenAnthropometryDetail anthropometryDetail) {
 		Integer r = 0;
 		if(null != anthropometryDetail){
 			
@@ -2190,8 +2208,9 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		return r;
 	}
 
+	@Deprecated
 	@Override
-	public Integer updateANCPhysicalVitalDetails(BenPhysicalVitalDetail physicalVitalDetail) {
+	public int updateANCPhysicalVitalDetails(BenPhysicalVitalDetail physicalVitalDetail) {
 		Integer r = 0;
 		if(null != physicalVitalDetail) {
 			

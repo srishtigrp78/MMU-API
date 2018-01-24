@@ -44,9 +44,9 @@ public class NCDScreeningController {
 		this.nurseService = nurseService;
 	}
 
+	@Deprecated
 	@CrossOrigin
 	@ApiOperation(value = "save Beneficiary NCD Screening Detail", consumes = "application/json", produces = "application/json")
-
 	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
 	public String saveBeneficiaryNCDScreeningDetails(@RequestBody String requestObj) {
 
@@ -61,7 +61,7 @@ public class NCDScreeningController {
 			jsonObject = jsonElement.getAsJsonObject();
 
 			if (jsonObject != null) {
-				Integer r = ncdScreeningService.handleSaveNCDScreeningRequest(jsonObject);
+				Integer r = ncdScreeningService.saveNCDScreeningNurseData(jsonObject);
 				if (r != null && r == 1) {
 					response.setResponse("Beneficiary Visit Details and NCD Screening data saved successfully");
 				} else {
@@ -77,7 +77,8 @@ public class NCDScreeningController {
 		logger.info("Save NCDScreening Details response:" + response);
 		return response.toString();
 	}
-
+	
+	@Deprecated
 	@CrossOrigin
 	@ApiOperation(value = "update Beneficiary NCD Screening Detail", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/nurseData" }, method = { RequestMethod.POST })
@@ -93,7 +94,7 @@ public class NCDScreeningController {
 			jsonObject = jsonElement.getAsJsonObject();
 
 			if (jsonObject != null) {
-				Integer r = ncdScreeningService.handleUpdateNCDScreeningRequest(jsonObject);
+				Integer r = ncdScreeningService.updateNurseNCDScreeningDetails(jsonObject);
 				if (r != null && r == 1) {
 					response.setResponse("Beneficiary NCD Screening data updated successfully");
 				} else {
@@ -110,6 +111,7 @@ public class NCDScreeningController {
 		return response.toString();
 	}
 
+	@Deprecated
 	@CrossOrigin()
 	@ApiOperation(value = "Get NCD Screening Visit Details", consumes = "application/json", produces = "application/json")
 

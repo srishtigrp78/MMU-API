@@ -47,25 +47,25 @@ public interface ANCNurseService {
 
 	Long saveBenInvestigation(WrapperBenInvestigationANC wrapperBenInvestigationANC);
 
-	int saveBenAncCareDetails(ANCCareDetails ancCareDetailsOBJ) throws ParseException;
+	Long saveBenAncCareDetails(ANCCareDetails ancCareDetailsOBJ) throws ParseException;
 
-	int saveAncImmunizationDetails(WrapperAncImmunization wrapperAncImmunizationOBJ) throws ParseException;
+	Long saveAncImmunizationDetails(WrapperAncImmunization wrapperAncImmunizationOBJ) throws ParseException;
 
-	int savePhyHeadToToeExamination(PhyHeadToToeExamination headToToeExamination);
+	Long savePhyHeadToToeExamination(PhyHeadToToeExamination headToToeExamination);
 
-	int saveSysCardiovascularExamination(SysCardiovascularExamination cardiovascularExamination);
+	Long saveSysCardiovascularExamination(SysCardiovascularExamination cardiovascularExamination);
 
-	int saveSysCentralNervousExamination(SysCentralNervousExamination centralNervousExamination);
+	Long saveSysCentralNervousExamination(SysCentralNervousExamination centralNervousExamination);
 
-	int saveSysGastrointestinalExamination(SysGastrointestinalExamination gastrointestinalExamination);
+	Long saveSysGastrointestinalExamination(SysGastrointestinalExamination gastrointestinalExamination);
 
-	int saveSysGenitourinarySystemExamination(SysGenitourinarySystemExamination genitourinarySystemExamination);
+	Long saveSysGenitourinarySystemExamination(SysGenitourinarySystemExamination genitourinarySystemExamination);
 
-	int saveSysMusculoskeletalSystemExamination(SysMusculoskeletalSystemExamination musculoskeletalSystemExamination);
+	Long saveSysMusculoskeletalSystemExamination(SysMusculoskeletalSystemExamination musculoskeletalSystemExamination);
 
-	int saveSysObstetricExamination(SysObstetricExamination obstetricExamination);
+	Long saveSysObstetricExamination(SysObstetricExamination obstetricExamination);
 
-	int saveSysRespiratoryExamination(SysRespiratoryExamination respiratoryExamination);
+	Long saveSysRespiratoryExamination(SysRespiratoryExamination respiratoryExamination);
 
 	String getANCExaminationDetailsData(Long benRegID, Long benVisitID);
 
@@ -83,31 +83,31 @@ public interface ANCNurseService {
 
 	Integer saveBenANCPrescription(List<PrescribedDrugDetail> prescribedDrugDetailList);
 
-	Integer saveBenANCPastHistory(BenMedHistory benMedHistory);
+	Long saveBenANCPastHistory(BenMedHistory benMedHistory);
 
-	Integer saveBenANCComorbidConditions(WrapperComorbidCondDetails wrapperComorbidCondDetails);
+	Long saveBenANCComorbidConditions(WrapperComorbidCondDetails wrapperComorbidCondDetails);
 
-	Integer saveBenANCMedicationHistory(WrapperMedicationHistory wrapperMedicationHistory);
+	Long saveBenANCMedicationHistory(WrapperMedicationHistory wrapperMedicationHistory);
 
 	Integer saveBenANCMenstrualHistory(BenMenstrualDetails benMenstrualDetails);
 
-	Integer saveFemaleObstetricHistory(WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory);
+	Long saveFemaleObstetricHistory(WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory);
 
-	Integer savePerinatalHistory(PerinatalHistory perinatalHistory);
+	Long savePerinatalHistory(PerinatalHistory perinatalHistory);
 
-	Integer saveChildOptionalVaccineDetail(WrapperChildOptionalVaccineDetail wrapperChildVaccineDetail);
+	Long saveChildOptionalVaccineDetail(WrapperChildOptionalVaccineDetail wrapperChildVaccineDetail);
 
-	Integer saveChildDevelopmentHistory(BenChildDevelopmentHistory benChildDevelopmentHistory);
+	Long saveChildDevelopmentHistory(BenChildDevelopmentHistory benChildDevelopmentHistory);
 
 	Integer saveANCPersonalHistory(BenPersonalHabit benPersonalHabit);
 
-	Integer saveANCAllergyHistory(BenAllergyHistory benAllergyHistory);
+	Long saveANCAllergyHistory(BenAllergyHistory benAllergyHistory);
 
-	Integer saveANCBenFamilyHistory(BenFamilyHistory benFamilyHistory);
+	Long saveANCBenFamilyHistory(BenFamilyHistory benFamilyHistory);
 
-	Integer saveChildFeedingHistory(ChildFeedingDetails childFeedingDetails);
+	Long saveChildFeedingHistory(ChildFeedingDetails childFeedingDetails);
 
-	Integer saveANCImmunizationHistory(WrapperImmunizationHistory wrapperImmunizationHistory);
+	Long saveANCImmunizationHistory(WrapperImmunizationHistory wrapperImmunizationHistory);
 
 	public String fetchBenPastMedicalHistory(Long benRegID) throws Exception;
 
@@ -143,23 +143,23 @@ public interface ANCNurseService {
 
 	public int updateBenAncPastHistoryDetails(BenMedHistory benMedHistory) throws ParseException;
 
-	public Integer updateBenANCComorbidConditions(WrapperComorbidCondDetails wrapperComorbidCondDetails);
+	public int updateBenANCComorbidConditions(WrapperComorbidCondDetails wrapperComorbidCondDetails);
 
-	public Integer updateBenANCMedicationHistory(WrapperMedicationHistory wrapperMedicationHistory);
+	public int updateBenANCMedicationHistory(WrapperMedicationHistory wrapperMedicationHistory);
 
-	public Integer updateBenANCPersonalHistory(BenPersonalHabit benPersonalHabit);
+	public int updateBenANCPersonalHistory(BenPersonalHabit benPersonalHabit);
 
-	public Integer updateBenANCAllergicHistory(BenAllergyHistory benAllergyHistory);
+	public int updateBenANCAllergicHistory(BenAllergyHistory benAllergyHistory);
 
-	public Integer updateBenANCFamilyHistory(BenFamilyHistory benFamilyHistory);
+	public int updateBenANCFamilyHistory(BenFamilyHistory benFamilyHistory);
 
-	public Integer updateChildOptionalVaccineDetail(WrapperChildOptionalVaccineDetail wrapperChildOptionalVaccineDetail);
+	public int updateChildOptionalVaccineDetail(WrapperChildOptionalVaccineDetail wrapperChildOptionalVaccineDetail);
 
-	public Integer updateANCAnthropometryDetails(BenAnthropometryDetail anthropometryDetail );
+	public int updateANCAnthropometryDetails(BenAnthropometryDetail anthropometryDetail );
 	
-	public Integer updateANCPhysicalVitalDetails(BenPhysicalVitalDetail physicalVitalDetail );
+	public int updateANCPhysicalVitalDetails(BenPhysicalVitalDetail physicalVitalDetail );
 	
-	public Integer updateANCChildImmunizationDetail(WrapperImmunizationHistory wrapperImmunizationHistory);
+	public int updateANCChildImmunizationDetail(WrapperImmunizationHistory wrapperImmunizationHistory);
 
 	public String fetchBenImmunizationHistory(Long beneficiaryRegID);
 

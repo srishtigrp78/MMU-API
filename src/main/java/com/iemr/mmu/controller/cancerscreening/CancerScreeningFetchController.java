@@ -126,7 +126,7 @@ public class CancerScreeningFetchController {
 	@ApiOperation(value = "Get Beneficiary data for case sheet", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBeneficiaryDataEnteredByNurseAndDoctor" }, method = { RequestMethod.POST })
 	public String getBenDataForCaseSheet(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\", \"visitDateTime\":\"Date\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		logger.info("getBenDataForCaseSheet request:" + comingRequest);
 		try {

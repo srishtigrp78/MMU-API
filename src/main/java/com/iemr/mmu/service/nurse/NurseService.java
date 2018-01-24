@@ -49,4 +49,8 @@ public interface NurseService {
 
 	public String getBenCancerObstetricHistory(Long beneficiaryRegID);
 
+	int updateANCPhysicalVitalDetails(BenPhysicalVitalDetail physicalVitalDetail);
+
+	int updateANCAnthropometryDetails(BenAnthropometryDetail anthropometryDetail);
+
 }

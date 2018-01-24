@@ -775,6 +775,7 @@ public class NurseServiceImpl implements NurseService {
 		return new Gson().toJson(resMap);
 	}
 
+	
 	@Override
 	public Long saveBeneficiaryPhysicalAnthropometryDetails(BenAnthropometryDetail benAnthropometryDetail) {
 		BenAnthropometryDetail response = benAnthropometryRepo.save(benAnthropometryDetail);
@@ -873,6 +874,7 @@ public class NurseServiceImpl implements NurseService {
 		return new Gson().toJson(benPhysicalVitalDetail);
 	}
 
+	@Deprecated
 	@Override
 	public String getBeneficiaryVitalDetails(Long beneficiaryRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
@@ -1214,4 +1216,76 @@ public class NurseServiceImpl implements NurseService {
 		return new Gson().toJson(resMap);
 	}
 
+	@Override
+	public int updateANCAnthropometryDetails(BenAnthropometryDetail anthropometryDetail) {
+		Integer r = 0;
+		if(null != anthropometryDetail){
+			
+			String processed = benAnthropometryRepo.getBenAnthropometryStatus(anthropometryDetail.getBeneficiaryRegID(), 
+					anthropometryDetail.getBenVisitID());
+			if(!processed.equals("N")){
+				processed = "U";
+			}
+			
+//			anthropometryDetail.setModifiedBy(anthropometryDetail.getCreatedBy());
+			r = benAnthropometryRepo.updateANCCareDetails(
+					anthropometryDetail.getWeight_Kg(), 
+					anthropometryDetail.getHeight_cm(), 
+					anthropometryDetail.getbMI(),
+					anthropometryDetail.getHeadCircumference_cm(), 
+					anthropometryDetail.getMidUpperArmCircumference_MUAC_cm(), 
+					anthropometryDetail.getHipCircumference_cm(), 
+					anthropometryDetail.getWaistCircumference_cm(), 
+					anthropometryDetail.getWaistHipRatio(), 
+					anthropometryDetail.getModifiedBy(), 
+					processed,
+					anthropometryDetail.getBeneficiaryRegID(), 
+					anthropometryDetail.getBenVisitID());
+		}
+		return r;
+	}
+
+	@Override
+	public int updateANCPhysicalVitalDetails(BenPhysicalVitalDetail physicalVitalDetail) {
+		Integer r = 0;
+		if(null != physicalVitalDetail) {
+			
+			String processed = benPhysicalVitalRepo.getBenPhysicalVitalStatus(physicalVitalDetail.getBeneficiaryRegID(), 
+					physicalVitalDetail.getBenVisitID());
+			if(!processed.equals("N")){
+				processed = "U";
+			}
+			
+			physicalVitalDetail.setAverageSystolicBP(physicalVitalDetail.getSystolicBP_1stReading());
+			physicalVitalDetail.setAverageDiastolicBP(physicalVitalDetail.getDiastolicBP_1stReading());
+			r = benPhysicalVitalRepo.updatePhysicalVitalDetails(
+					physicalVitalDetail.getTemperature(), 
+					physicalVitalDetail.getPulseRate(), 
+					physicalVitalDetail.getRespiratoryRate(), 
+					physicalVitalDetail.getSystolicBP_1stReading(), 
+					physicalVitalDetail.getDiastolicBP_1stReading(), 
+					physicalVitalDetail.getSystolicBP_2ndReading(),
+					physicalVitalDetail.getDiastolicBP_2ndReading(),
+					physicalVitalDetail.getSystolicBP_3rdReading(),
+					physicalVitalDetail.getDiastolicBP_3rdReading(),
+					physicalVitalDetail.getAverageSystolicBP(),
+					physicalVitalDetail.getAverageDiastolicBP(),
+					physicalVitalDetail.getBloodPressureStatusID(),
+					physicalVitalDetail.getBloodPressureStatus(),
+					physicalVitalDetail.getBloodGlucose_Fasting(),
+					physicalVitalDetail.getBloodGlucose_Random(),
+					physicalVitalDetail.getBloodGlucose_2hr_PP(),
+					physicalVitalDetail.getBloodGlucose_NotSpecified(),
+					physicalVitalDetail.getDiabeticStatusID(),
+					physicalVitalDetail.getDiabeticStatus(),
+					physicalVitalDetail.getCapillaryRefillTime(), 
+					physicalVitalDetail.getModifiedBy(), 
+					processed,
+					physicalVitalDetail.getBeneficiaryRegID(),
+					physicalVitalDetail.getBenVisitID());
+			
+		}
+		return r;
+	}
+	
 }

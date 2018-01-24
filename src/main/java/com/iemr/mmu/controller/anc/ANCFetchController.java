@@ -1,4 +1,4 @@
-package com.iemr.mmu.controller.nurse.main.anc;
+package com.iemr.mmu.controller.anc;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -10,36 +10,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.iemr.mmu.service.anc.ANCNurseServiceImpl;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
-import com.iemr.mmu.service.nurse.NurseServiceImpl;
-import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
+/**
+ * 
+ * @author NA874500
+ * @Objective Fetch ANC Nurse data.
+ * @Date 19-01-2018
+ *
+ */
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/anc", headers = "Authorization")
-public class FetchNurseANCController {
-	private InputMapper inputMapper;
-	private Logger logger = LoggerFactory.getLogger(FetchNurseANCController.class);
-	private NurseServiceImpl nurseServiceImpl;
+@RequestMapping({ "/ANC" })
+public class ANCFetchController {
+	
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+	
+	private ANCServiceImpl ancServiceImpl;
 
 	@Autowired
-	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
-		this.nurseServiceImpl = nurseServiceImpl;
+	public void setAncServiceImpl(ANCServiceImpl ancServiceImpl) {
+		this.ancServiceImpl = ancServiceImpl;
 	}
-
-	private ANCNurseServiceImpl aNCServiceImpl;
-
-	@Autowired
-	public void setANCServiceImpl(ANCNurseServiceImpl aNCServiceImpl) {
-		this.aNCServiceImpl = aNCServiceImpl;
-	}
-
-	@Deprecated
+	
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Visit details from Nurse ANC", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenVisitDetailsFrmNurseANC" }, method = { RequestMethod.POST })
@@ -54,7 +51,7 @@ public class FetchNurseANCController {
 				Long benRegID = obj.getLong("benRegID");
 				Long benVisitID = obj.getLong("benVisitID");
 
-				String res = aNCServiceImpl.getBenVisitDetailsFrmNurseANC(benRegID, benVisitID);
+				String res = ancServiceImpl.getBenVisitDetailsFrmNurseANC(benRegID, benVisitID);
 				response.setResponse(res);
 			} else {
 				logger.info("Invalid Request Data.");
@@ -67,8 +64,91 @@ public class FetchNurseANCController {
 		}
 		return response.toString();
 	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary ANC Care details from Nurse ANC", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenANCDetailsFrmNurseANC" }, method = { RequestMethod.POST })
+	public String getBenANCDetailsFrmNurseANC(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
 
-	@Deprecated
+		logger.info("getBenANCDetailsFrmNurseANC request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID") && obj.has("benVisitID")) {
+				Long benRegID = obj.getLong("benRegID");
+				Long benVisitID = obj.getLong("benVisitID");
+
+				String res = ancServiceImpl.getBenANCDetailsFrmNurseANC(benRegID, benVisitID);
+				response.setResponse(res);
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenANCDetailsFrmNurseANC response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenANCDetailsFrmNurseANC:" + e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary ANC History details from Nurse to Doctor ", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenANCHistoryDetails" }, method = { RequestMethod.POST })
+
+	public String getBenANCHistoryDetails(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenANCHistoryDetails request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID") && obj.has("benVisitID")) {
+				Long benRegID = obj.getLong("benRegID");
+				Long benVisitID = obj.getLong("benVisitID");
+
+				String s = ancServiceImpl.getBenANCHistoryDetails(benRegID, benVisitID);
+				response.setResponse(s);
+			} else {
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenANCHistoryDetails response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenANCHistoryDetails:" + e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary ANC vital details from Nurse ANC", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenANCVitalDetailsFrmNurseANC" }, method = { RequestMethod.POST })
+	public String getBenANCVitalDetailsFrmNurseANC(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenANCVitalDetailsFrmNurseANC request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID") && obj.has("benVisitID")) {
+				Long benRegID = obj.getLong("benRegID");
+				Long benVisitID = obj.getLong("benVisitID");
+
+				String res = ancServiceImpl.getBeneficiaryVitalDetails(benRegID, benVisitID);
+				response.setResponse(res);
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenANCVitalDetailsFrmNurseANC response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenANCVitalDetailsFrmNurseANC:" + e);
+		}
+		return response.toString();
+	}
+	
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary ANC Examination details from Nurse to Doctor ", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenExaminationDetailsANC" }, method = { RequestMethod.POST })
@@ -84,7 +164,7 @@ public class FetchNurseANCController {
 				Long benRegID = obj.getLong("benRegID");
 				Long benVisitID = obj.getLong("benVisitID");
 
-				String s = aNCServiceImpl.getANCExaminationDetailsData(benRegID, benVisitID);
+				String s = ancServiceImpl.getANCExaminationDetailsData(benRegID, benVisitID);
 				response.setResponse(s);
 			} else {
 				response.setError(5000, "Invalid Request Data !!!");
@@ -96,36 +176,7 @@ public class FetchNurseANCController {
 		}
 		return response.toString();
 	}
-
-	@Deprecated
-	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary ANC Care details from Nurse ANC", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenANCDetailsFrmNurseANC" }, method = { RequestMethod.POST })
-	public String getBenANCDetailsFrmNurseANC(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
-		OutputResponse response = new OutputResponse();
-
-		logger.info("getBenANCDetailsFrmNurseANC request:" + comingRequest);
-		try {
-			JSONObject obj = new JSONObject(comingRequest);
-			if (obj.has("benRegID") && obj.has("benVisitID")) {
-				Long benRegID = obj.getLong("benRegID");
-				Long benVisitID = obj.getLong("benVisitID");
-
-				String res = aNCServiceImpl.getBenANCDetailsFrmNurseANC(benRegID, benVisitID);
-				response.setResponse(res);
-			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
-			}
-			logger.info("getBenANCDetailsFrmNurseANC response:" + response);
-		} catch (Exception e) {
-			response.setError(e);
-			logger.error("Error in getBenANCDetailsFrmNurseANC:" + e);
-		}
-		return response.toString();
-	}
-
+	
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary ANC Past History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenANCPastHistory" }, method = { RequestMethod.POST })
@@ -137,7 +188,7 @@ public class FetchNurseANCController {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
 				Long benRegID = obj.getLong("benRegID");
-				String s = aNCServiceImpl.fetchBenPastMedicalHistory(benRegID);
+				String s = ancServiceImpl.getANCPastHistoryData(benRegID);
 				response.setResponse(s);
 
 			} else {
@@ -164,7 +215,7 @@ public class FetchNurseANCController {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
 				Long benRegID = obj.getLong("benRegID");
-				String s = aNCServiceImpl.fetchBenPersonalTobaccoHistory(benRegID);
+				String s = ancServiceImpl.getANCPersonalTobaccoHistoryData(benRegID);
 				response.setResponse(s);
 
 			} else {
@@ -191,7 +242,7 @@ public class FetchNurseANCController {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
 				Long benRegID = obj.getLong("benRegID");
-				String s = aNCServiceImpl.fetchBenPersonalAlcoholHistory(benRegID);
+				String s = ancServiceImpl.getANCPersonalAlcoholHistoryData(benRegID);
 				response.setResponse(s);
 
 			} else {
@@ -218,7 +269,7 @@ public class FetchNurseANCController {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
 				Long benRegID = obj.getLong("benRegID");
-				String s = aNCServiceImpl.fetchBenPersonalAllergyHistory(benRegID);
+				String s = ancServiceImpl.getANCPersonalAllergyHistoryData(benRegID);
 				response.setResponse(s);
 
 			} else {
@@ -245,7 +296,7 @@ public class FetchNurseANCController {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
 				Long benRegID = obj.getLong("benRegID");
-				String s = aNCServiceImpl.fetchBenPersonalMedicationHistory(benRegID);
+				String s = ancServiceImpl.getANCImmunizationHistoryData(benRegID);
 				response.setResponse(s);
 
 			} else {
@@ -272,7 +323,7 @@ public class FetchNurseANCController {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
 				Long benRegID = obj.getLong("benRegID");
-				String s = aNCServiceImpl.fetchBenPersonalFamilyHistory(benRegID);
+				String s = ancServiceImpl.getANCFamilyHistoryData(benRegID);
 				response.setResponse(s);
 
 			} else {
@@ -299,7 +350,7 @@ public class FetchNurseANCController {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
 				Long benRegID = obj.getLong("benRegID");
-				String s = aNCServiceImpl.fetchBenMenstrualHistory(benRegID);
+				String s = ancServiceImpl.getANCMenstrualHistoryData(benRegID);
 				response.setResponse(s);
 
 			} else {
@@ -326,7 +377,7 @@ public class FetchNurseANCController {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
 				Long benRegID = obj.getLong("benRegID");
-				String s = aNCServiceImpl.fetchBenPastObstetricHistory(benRegID);
+				String s = ancServiceImpl.getANCPastHistoryData(benRegID);
 				response.setResponse(s);
 
 			} else {
@@ -353,7 +404,7 @@ public class FetchNurseANCController {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
 				Long benRegID = obj.getLong("benRegID");
-				String s = aNCServiceImpl.fetchBenComorbidityHistory(benRegID);
+				String s = ancServiceImpl.getANCComorbidHistoryData(benRegID);
 				response.setResponse(s);
 
 			} else {
@@ -380,7 +431,7 @@ public class FetchNurseANCController {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
 				Long benRegID = obj.getLong("benRegID");
-				String s = aNCServiceImpl.fetchBenOptionalVaccineHistory(benRegID);
+				String s = ancServiceImpl.getANCChildVaccineHistoryData(benRegID);
 				response.setResponse(s);
 
 			} else {
@@ -407,7 +458,7 @@ public class FetchNurseANCController {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
 				Long benRegID = obj.getLong("benRegID");
-				String s = aNCServiceImpl.fetchBenImmunizationHistory(benRegID);
+				String s = ancServiceImpl.getANCImmunizationHistoryData(benRegID);
 				response.setResponse(s);
 
 			} else {
@@ -422,31 +473,4 @@ public class FetchNurseANCController {
 		return response.toString();
 	}
 
-	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary ANC History details from Nurse to Doctor ", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenANCHistoryDetails" }, method = { RequestMethod.POST })
-
-	public String getBenANCHistoryDetails(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
-		OutputResponse response = new OutputResponse();
-
-		logger.info("getBenANCHistoryDetails request:" + comingRequest);
-		try {
-			JSONObject obj = new JSONObject(comingRequest);
-			if (obj.has("benRegID") && obj.has("benVisitID")) {
-				Long benRegID = obj.getLong("benRegID");
-				Long benVisitID = obj.getLong("benVisitID");
-
-				String s = aNCServiceImpl.getBenANCHistoryDetails(benRegID, benVisitID);
-				response.setResponse(s);
-			} else {
-				response.setError(5000, "Invalid Request Data !!!");
-			}
-			logger.info("getBenANCHistoryDetails response:" + response);
-		} catch (Exception e) {
-			response.setError(e);
-			logger.error("Error in getBenANCHistoryDetails:" + e);
-		}
-		return response.toString();
-	}
 }

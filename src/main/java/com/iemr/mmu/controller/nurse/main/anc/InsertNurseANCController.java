@@ -158,7 +158,7 @@ public class InsertNurseANCController {
 		try {
 			if (requestObj != null) {
 				ANCCareDetails ancCareDetailsOBJ = InputMapper.gson().fromJson(requestObj, ANCCareDetails.class);
-				int r = ancServiceImpl.saveBenAncCareDetails(ancCareDetailsOBJ);
+				Long r = ancServiceImpl.saveBenAncCareDetails(ancCareDetailsOBJ);
 				if (r > 0) {
 					response.setResponse("ANC Care data saved successfully.");
 				} else {
@@ -184,7 +184,7 @@ public class InsertNurseANCController {
 			if (requestObj != null) {
 				WrapperAncImmunization wrapperAncImmunizationOBJ = InputMapper.gson().fromJson(requestObj,
 						WrapperAncImmunization.class);
-				int r = ancServiceImpl.saveAncImmunizationDetails(wrapperAncImmunizationOBJ);
+				Long r = ancServiceImpl.saveAncImmunizationDetails(wrapperAncImmunizationOBJ);
 				if (r > 0) {
 					response.setResponse("ANC Immunization data saved Successfully.");
 				} else {
@@ -215,7 +215,7 @@ public class InsertNurseANCController {
 			if (requestObj != null) {
 				PhyGeneralExamination generalExamination = InputMapper.gson().fromJson(requestObj,
 						PhyGeneralExamination.class);
-				int r = ancServiceImpl.savePhyGeneralExamination(generalExamination);
+				Long r = ancServiceImpl.savePhyGeneralExamination(generalExamination);
 				if (r > 0) {
 					response.setResponse("Ben General Examination data saved successfully.");
 				} else {
@@ -245,7 +245,7 @@ public class InsertNurseANCController {
 			if (requestObj != null) {
 				PhyHeadToToeExamination headToToeExamination = InputMapper.gson().fromJson(requestObj,
 						PhyHeadToToeExamination.class);
-				int r = ancServiceImpl.savePhyHeadToToeExamination(headToToeExamination);
+				Long r = ancServiceImpl.savePhyHeadToToeExamination(headToToeExamination);
 				if (r > 0) {
 					response.setResponse("Ben Head To Toe Examination data saved successfully.");
 				} else {
@@ -276,7 +276,7 @@ public class InsertNurseANCController {
 			if (requestObj != null) {
 				SysGastrointestinalExamination gastrointestinalExamination = InputMapper.gson().fromJson(requestObj,
 						SysGastrointestinalExamination.class);
-				int r = ancServiceImpl.saveSysGastrointestinalExamination(gastrointestinalExamination);
+				Long r = ancServiceImpl.saveSysGastrointestinalExamination(gastrointestinalExamination);
 				if (r > 0) {
 					response.setResponse("Ben Gastrointestinal Examination data saved successfully.");
 				} else {
@@ -307,7 +307,7 @@ public class InsertNurseANCController {
 			if (requestObj != null) {
 				SysCardiovascularExamination cardiovascularExamination = InputMapper.gson().fromJson(requestObj,
 						SysCardiovascularExamination.class);
-				int r = ancServiceImpl.saveSysCardiovascularExamination(cardiovascularExamination);
+				Long r = ancServiceImpl.saveSysCardiovascularExamination(cardiovascularExamination);
 				if (r > 0) {
 					response.setResponse("Ben Cardiovascular Examination data saved successfully.");
 				} else {
@@ -333,7 +333,7 @@ public class InsertNurseANCController {
 				SysRespiratoryExamination sysRespiratoryExamination = InputMapper.gson().fromJson(requestObj,
 						SysRespiratoryExamination.class);
 
-				int r = ancServiceImpl.saveSysRespiratoryExamination(sysRespiratoryExamination);
+				Long r = ancServiceImpl.saveSysRespiratoryExamination(sysRespiratoryExamination);
 				if (r > 0) {
 					response.setResponse("Beneficairy Respiratory System Examination Details saved successfully");
 				} else {
@@ -361,7 +361,7 @@ public class InsertNurseANCController {
 				SysCentralNervousExamination sysCentralNervousExamination = InputMapper.gson().fromJson(requestObj,
 						SysCentralNervousExamination.class);
 
-				int r = ancServiceImpl.saveSysCentralNervousExamination(sysCentralNervousExamination);
+				Long r = ancServiceImpl.saveSysCentralNervousExamination(sysCentralNervousExamination);
 				if (r > 0) {
 					response.setResponse("Beneficairy Central Nervous System Examination Details saved successfully");
 				} else {
@@ -385,7 +385,7 @@ public class InsertNurseANCController {
 				SysMusculoskeletalSystemExamination sysMusculoskeletalSystemExamination = InputMapper.gson()
 						.fromJson(requestObj, SysMusculoskeletalSystemExamination.class);
 
-				int r = ancServiceImpl.saveSysMusculoskeletalSystemExamination(sysMusculoskeletalSystemExamination);
+				Long r = ancServiceImpl.saveSysMusculoskeletalSystemExamination(sysMusculoskeletalSystemExamination);
 				if (r > 0) {
 					response.setResponse("Beneficairy Musculoskeletal System Examination Details saved successfully");
 				} else {
@@ -409,7 +409,7 @@ public class InsertNurseANCController {
 				SysGenitourinarySystemExamination sysGenitourinarySystemExamination = InputMapper.gson()
 						.fromJson(requestObj, SysGenitourinarySystemExamination.class);
 
-				int r = ancServiceImpl.saveSysGenitourinarySystemExamination(sysGenitourinarySystemExamination);
+				Long r = ancServiceImpl.saveSysGenitourinarySystemExamination(sysGenitourinarySystemExamination);
 				if (r > 0) {
 					response.setResponse("Beneficairy Genito Urinary System Examination Details saved successfully");
 				} else {
@@ -433,7 +433,7 @@ public class InsertNurseANCController {
 				SysObstetricExamination sysObstetricExamination = InputMapper.gson().fromJson(requestObj,
 						SysObstetricExamination.class);
 
-				int r = ancServiceImpl.saveSysObstetricExamination(sysObstetricExamination);
+				Long r = ancServiceImpl.saveSysObstetricExamination(sysObstetricExamination);
 				if (r > 0) {
 					response.setResponse("Beneficairy Obstetric  Examination Details saved successfully");
 				} else {
@@ -470,7 +470,7 @@ public class InsertNurseANCController {
 			if (requestObj != null) {
 				BenMedHistory benMedHistory = InputMapper.gson().fromJson(requestObj, BenMedHistory.class);
 
-				int r = ancServiceImpl.saveBenANCPastHistory(benMedHistory);
+				Long r = ancServiceImpl.saveBenANCPastHistory(benMedHistory);
 				if (r > 0) {
 					response.setResponse("Beneficairy Past History Details saved successfully");
 				} else {
@@ -507,7 +507,7 @@ public class InsertNurseANCController {
 				WrapperComorbidCondDetails wrapperComorbidCondDetails = InputMapper.gson().fromJson(requestObj,
 						WrapperComorbidCondDetails.class);
 
-				int r = ancServiceImpl.saveBenANCComorbidConditions(wrapperComorbidCondDetails);
+				Long r = ancServiceImpl.saveBenANCComorbidConditions(wrapperComorbidCondDetails);
 				if (r > 0) {
 					response.setResponse("Beneficairy ComorbidCondition Details saved successfully");
 				} else {
@@ -540,7 +540,7 @@ public class InsertNurseANCController {
 				WrapperMedicationHistory wrapperMedicationHistory = InputMapper.gson().fromJson(requestObj,
 						WrapperMedicationHistory.class);
 
-				int r = ancServiceImpl.saveBenANCMedicationHistory(wrapperMedicationHistory);
+				Long r = ancServiceImpl.saveBenANCMedicationHistory(wrapperMedicationHistory);
 				if (r > 0) {
 					response.setResponse("Beneficairy ANC Medication History Details saved successfully");
 				} else {
@@ -609,7 +609,7 @@ public class InsertNurseANCController {
 						WrapperFemaleObstetricHistory.class);
 
 				if (wrapperFemaleObstetricHistory.getFemaleObstetricHistoryList().size() > 0) {
-					int r = ancServiceImpl.saveFemaleObstetricHistory(wrapperFemaleObstetricHistory);
+					Long r = ancServiceImpl.saveFemaleObstetricHistory(wrapperFemaleObstetricHistory);
 					if (r > 0) {
 						response.setResponse("Beneficairy ANC Female Obstetric History saved successfully");
 					} else {
@@ -639,7 +639,7 @@ public class InsertNurseANCController {
 			if (requestObj != null) {
 				PerinatalHistory perinatalHistory = InputMapper.gson().fromJson(requestObj, PerinatalHistory.class);
 
-				int r = ancServiceImpl.savePerinatalHistory(perinatalHistory);
+				Long r = ancServiceImpl.savePerinatalHistory(perinatalHistory);
 				if (r > 0) {
 					response.setResponse("Beneficairy ANC  Perinatal History saved successfully");
 				} else {
@@ -668,7 +668,7 @@ public class InsertNurseANCController {
 				WrapperChildOptionalVaccineDetail wrapperChildVaccineDetail = InputMapper.gson().fromJson(requestObj,
 						WrapperChildOptionalVaccineDetail.class);
 				if (null != wrapperChildVaccineDetail.getChildOptionalVaccineList()) {
-					int r = ancServiceImpl.saveChildOptionalVaccineDetail(wrapperChildVaccineDetail);
+					Long r = ancServiceImpl.saveChildOptionalVaccineDetail(wrapperChildVaccineDetail);
 					if (r > 0) {
 						response.setResponse("Beneficairy ANC Child Vaccine Details saved successfully");
 					} else {
@@ -697,7 +697,7 @@ public class InsertNurseANCController {
 				BenChildDevelopmentHistory benChildDevelopmentHistory = InputMapper.gson().fromJson(requestObj,
 						BenChildDevelopmentHistory.class);
 
-				int r = ancServiceImpl.saveChildDevelopmentHistory(benChildDevelopmentHistory);
+				Long r = ancServiceImpl.saveChildDevelopmentHistory(benChildDevelopmentHistory);
 				if (r > 0) {
 					response.setResponse("Beneficairy ANC Child Development History Details saved successfully");
 				} else {
@@ -736,7 +736,7 @@ public class InsertNurseANCController {
 				BenAllergyHistory benAllergyHistory = InputMapper.gson().fromJson(requestObj, BenAllergyHistory.class);
 
 				int r = ancServiceImpl.saveANCPersonalHistory(personalHabit);
-				int s = ancServiceImpl.saveANCAllergyHistory(benAllergyHistory);
+				Long s = ancServiceImpl.saveANCAllergyHistory(benAllergyHistory);
 				if (r > 0 && s > 0) {
 					response.setResponse("Beneficairy ANC Personal History Details saved successfully");
 				} else {
@@ -765,7 +765,7 @@ public class InsertNurseANCController {
 			if (requestObj != null) {
 				BenFamilyHistory benFamilyHistory = InputMapper.gson().fromJson(requestObj, BenFamilyHistory.class);
 
-				int r = ancServiceImpl.saveANCBenFamilyHistory(benFamilyHistory);
+				Long r = ancServiceImpl.saveANCBenFamilyHistory(benFamilyHistory);
 				if (r > 0) {
 					response.setResponse("Beneficairy ANC Family History Details saved successfully");
 				} else {
@@ -791,7 +791,7 @@ public class InsertNurseANCController {
 				ChildFeedingDetails childFeedingDetails = InputMapper.gson().fromJson(requestObj,
 						ChildFeedingDetails.class);
 
-				int r = ancServiceImpl.saveChildFeedingHistory(childFeedingDetails);
+				Long r = ancServiceImpl.saveChildFeedingHistory(childFeedingDetails);
 				if (r > 0) {
 					response.setResponse("Beneficairy ANC Child Feeding History Details saved successfully");
 				} else {
@@ -817,7 +817,7 @@ public class InsertNurseANCController {
 				WrapperImmunizationHistory wrapperImmunizationHistory = InputMapper.gson().fromJson(requestObj,
 						WrapperImmunizationHistory.class);
 				if (null != wrapperImmunizationHistory.getImmunizationList()) {
-					int r = ancServiceImpl.saveANCImmunizationHistory(wrapperImmunizationHistory);
+					Long r = ancServiceImpl.saveANCImmunizationHistory(wrapperImmunizationHistory);
 					if (r > 0) {
 						response.setResponse("Beneficairy ANC Immunization History Details saved successfully");
 					} else {
