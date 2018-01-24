@@ -742,7 +742,7 @@ public class NurseServiceImpl implements NurseService {
 				.getBenObstetricCancerHistory(benRegID, benVisitID);
 		return benObstetricCancerHistoryData;
 	}
-	
+
 	@Deprecated
 	private BenCancerVitalDetail getBenCancerVitalDetailData(Long benRegID, Long benVisitID, Date visitDateTime) {
 		BenCancerVitalDetail benCancerVitalDetail = benCancerVitalDetailRepo.getBenCancerVitalDetail(benRegID,
@@ -883,6 +883,7 @@ public class NurseServiceImpl implements NurseService {
 		return resMap.toString();
 	}
 
+	@Deprecated
 	@Override
 	public String getBenCancerFamilyHistory(Long beneficiaryRegID) {
 		Map<String, Object> resMap = new HashMap<>();
@@ -922,6 +923,7 @@ public class NurseServiceImpl implements NurseService {
 		return new Gson().toJson(resMap);
 	}
 
+	@Deprecated
 	public String getBenCancerPersonalHistory(Long beneficiaryRegID) {
 		Map<String, Object> resMap = new HashMap<>();
 		Map<String, String> columnMap = new HashMap<>();
@@ -1011,6 +1013,7 @@ public class NurseServiceImpl implements NurseService {
 		return new Gson().toJson(resMap);
 	}
 
+	@Deprecated
 	public String getBenCancerPersonalDietHistory(Long beneficiaryRegID) {
 
 		Map<String, Object> resMap = new HashMap<>();
@@ -1092,6 +1095,7 @@ public class NurseServiceImpl implements NurseService {
 		return new Gson().toJson(resMap);
 	}
 
+	@Deprecated
 	@Override
 	public String getBenCancerObstetricHistory(Long beneficiaryRegID) {
 		Map<String, Object> resMap = new HashMap<>();

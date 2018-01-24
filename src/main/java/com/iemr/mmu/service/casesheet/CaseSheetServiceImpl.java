@@ -60,6 +60,7 @@ public class CaseSheetServiceImpl {
 		return caseSheetHistory;
 	}
 
+	@Deprecated
 	public String getCancerExaminationImageAnnotation(Long benRegID, Long benVisitID) {
 		ArrayList<WrapperCancerExamImgAnotasn> resList = new ArrayList<>();
 		// System.out.println("hello");

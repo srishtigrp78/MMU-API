@@ -1,6 +1,5 @@
 package com.iemr.mmu.service.cancerScreening;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,39 +37,39 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 	private CancerGynecologicalExaminationRepo cancerGynecologicalExaminationRepo;
 	private CancerExaminationImageAnnotationRepo cancerExaminationImageAnnotationRepo;
 	private CancerDiagnosisRepo cancerDiagnosisRepo;
-	
+
 	@Autowired
 	public void setCancerDiagnosisRepo(CancerDiagnosisRepo cancerDiagnosisRepo) {
 		this.cancerDiagnosisRepo = cancerDiagnosisRepo;
 	}
-	
+
 	@Autowired
 	public void setCancerExaminationImageAnnotationRepo(
 			CancerExaminationImageAnnotationRepo cancerExaminationImageAnnotationRepo) {
 		this.cancerExaminationImageAnnotationRepo = cancerExaminationImageAnnotationRepo;
 	}
-	
+
 	@Autowired
 	public void setCancerGynecologicalExaminationRepo(
 			CancerGynecologicalExaminationRepo cancerGynecologicalExaminationRepo) {
 		this.cancerGynecologicalExaminationRepo = cancerGynecologicalExaminationRepo;
 	}
-	
+
 	@Autowired
 	public void setCancerAbdominalExaminationRepo(CancerAbdominalExaminationRepo cancerAbdominalExaminationRepo) {
 		this.cancerAbdominalExaminationRepo = cancerAbdominalExaminationRepo;
 	}
-	
+
 	@Autowired
 	public void setCancerBreastExaminationRepo(CancerBreastExaminationRepo cancerBreastExaminationRepo) {
 		this.cancerBreastExaminationRepo = cancerBreastExaminationRepo;
 	}
-	
+
 	@Autowired
 	public void setCancerOralExaminationRepo(CancerOralExaminationRepo cancerOralExaminationRepo) {
 		this.cancerOralExaminationRepo = cancerOralExaminationRepo;
 	}
-	
+
 	@Autowired
 	public void setCancerLymphNodeExaminationRepo(CancerLymphNodeExaminationRepo cancerLymphNodeExaminationRepo) {
 		this.cancerLymphNodeExaminationRepo = cancerLymphNodeExaminationRepo;
@@ -95,7 +94,7 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 		Long responseData = null;
 		List<CancerLymphNodeDetails> response = (List<CancerLymphNodeDetails>) cancerLymphNodeExaminationRepo
 				.save(cancerLymphNodeDetails);
-		if(null != response && response.size()>0){
+		if (null != response && response.size() > 0) {
 			for (CancerLymphNodeDetails obj : response) {
 				if (obj.getID() > 0)
 					responseData = obj.getID();
@@ -223,7 +222,7 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 		else
 			return null;
 	}
-	
+
 	public Map<String, Object> getBenDoctorEnteredDataForCaseSheet(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
 
@@ -234,8 +233,7 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 
 		resMap.put("diagnosis", getBenCancerDiagnosisData(benRegID, benVisitID));
 
-		resMap.put("gynecologicalExamination",
-				getBenCancerGynecologicalExaminationData(benRegID, benVisitID));
+		resMap.put("gynecologicalExamination", getBenCancerGynecologicalExaminationData(benRegID, benVisitID));
 
 		resMap.put("signsAndSymptoms", getBenCancerSignAndSymptomsData(benRegID, benVisitID));
 
@@ -279,7 +277,7 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 				.getBenCancerSignAndSymptomsDetails(benRegID, benVisitID);
 		return cancerSignAndSymptoms;
 	}
-	
+
 	private List<CancerLymphNodeDetails> getBenCancerLymphNodeDetailsData(Long benRegID, Long benVisitID) {
 		List<CancerLymphNodeDetails> cancerLymphNodeDetails = cancerLymphNodeExaminationRepo
 				.getBenCancerLymphNodeDetails(benRegID, benVisitID);
@@ -290,5 +288,64 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 		CancerOralExamination cancerOralExamination = cancerOralExaminationRepo
 				.getBenCancerOralExaminationDetails(benRegID, benVisitID);
 		return cancerOralExamination;
+	}
+
+	public String getCancerExaminationImageAnnotationCasesheet(Long benRegID, Long benVisitID) {
+		ArrayList<WrapperCancerExamImgAnotasn> resList = new ArrayList<>();
+		// System.out.println("hello");
+		List<CancerExaminationImageAnnotation> cancerExaminationImageAnnotationList = cancerExaminationImageAnnotationRepo
+				.getCancerExaminationImageAnnotationList(benRegID, benVisitID);
+
+		if (cancerExaminationImageAnnotationList.size() > 0) {
+			int a = 0;
+			int b = 0;
+
+			ArrayList<Map<String, Object>> markerList = null;
+			Map<String, Object> markerMap;
+
+			WrapperCancerExamImgAnotasn wrapperCancerExamImgAnotasnOBJ = null;
+
+			for (CancerExaminationImageAnnotation obj : cancerExaminationImageAnnotationList) {
+				markerMap = new HashMap<String, Object>();
+				b = obj.getCancerImageID();
+				if (a != b) {
+					wrapperCancerExamImgAnotasnOBJ = new WrapperCancerExamImgAnotasn();
+					wrapperCancerExamImgAnotasnOBJ.setBeneficiaryRegID(benRegID);
+					wrapperCancerExamImgAnotasnOBJ.setVisitID(benVisitID);
+					wrapperCancerExamImgAnotasnOBJ.setProviderServiceMapID(obj.getProviderServiceMapID());
+					wrapperCancerExamImgAnotasnOBJ.setCreatedBy(obj.getCreatedBy());
+					wrapperCancerExamImgAnotasnOBJ.setImageID(obj.getCancerImageID());
+
+					markerList = new ArrayList<>();
+					markerMap.put("xCord", obj.getxCoordinate());
+					markerMap.put("yCord", obj.getyCoordinate());
+					markerMap.put("description", obj.getPointDesc());
+					markerMap.put("point", obj.getPoint());
+
+					markerList.add(markerMap);
+
+					wrapperCancerExamImgAnotasnOBJ.setMarkers(markerList);
+
+					resList.add(wrapperCancerExamImgAnotasnOBJ);
+
+				} else {
+					markerMap.put("xCord", obj.getxCoordinate());
+					markerMap.put("yCord", obj.getyCoordinate());
+					markerMap.put("description", obj.getPointDesc());
+					markerMap.put("point", obj.getPoint());
+
+					markerList.add(markerMap);
+					wrapperCancerExamImgAnotasnOBJ.setMarkers(markerList);
+				}
+
+				a = b;
+
+			}
+
+		} else {
+
+		}
+		// System.out.println("hello");
+		return new Gson().toJson(resList);
 	}
 }

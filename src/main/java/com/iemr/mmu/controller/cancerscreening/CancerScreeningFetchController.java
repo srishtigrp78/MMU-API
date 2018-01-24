@@ -1,10 +1,5 @@
 package com.iemr.mmu.controller.cancerscreening;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -147,6 +142,114 @@ public class CancerScreeningFetchController {
 		} catch (Exception e) {
 			response.setError(e);
 			logger.error("Error in getBenDataForCaseSheet:" + e);
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary Cancer Family History", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenCancerFamilyHistory" }, method = { RequestMethod.POST })
+	public String getBenCancerFamilyHistory(
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenCancerFamilyHistory request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID")) {
+				Long benRegID = obj.getLong("benRegID");
+				String s = cSServiceImpl.getBenFamilyHistoryData(benRegID);
+				response.setResponse(s);
+
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenCancerFamilyHistory response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenCancerFamilyHistory:" + e);
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary Cancer Personal History", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenCancerPersonalHistory" }, method = { RequestMethod.POST })
+	public String getBenCancerPersonalHistory(
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenCancerPersonalHistory request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID")) {
+				Long benRegID = obj.getLong("benRegID");
+				String s = cSServiceImpl.getBenPersonalHistoryData(benRegID);
+				response.setResponse(s);
+
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenCancerPersonalHistory response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenCancerPersonalHistory:" + e);
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary Cancer Personal Diet History", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenCancerPersonalDietHistory" }, method = { RequestMethod.POST })
+	public String getBenCancerPersonalDietHistory(
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenCancerPersonalDietHistory request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID")) {
+				Long benRegID = obj.getLong("benRegID");
+				String s = cSServiceImpl.getBenPersonalDietHistoryData(benRegID);
+				response.setResponse(s);
+
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenCancerPersonalDietHistory response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenCancerPersonalDietHistory:" + e);
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary Cancer Obstetric History", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenCancerObstetricHistory" }, method = { RequestMethod.POST })
+	public String getBenCancerObstetricHistory(
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenCancerObstetricHistory request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID")) {
+				Long benRegID = obj.getLong("benRegID");
+				String s = cSServiceImpl.getBenObstetricHistoryData(benRegID);
+				response.setResponse(s);
+
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenCancerObstetricHistory response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenCancerObstetricHistory:" + e);
 		}
 		return response.toString();
 	}

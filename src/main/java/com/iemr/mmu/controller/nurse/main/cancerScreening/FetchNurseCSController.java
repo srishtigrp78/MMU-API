@@ -180,6 +180,7 @@ public class FetchNurseCSController {
 		return response.toString();
 	}
 
+	@Deprecated
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Cancer Family History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenCancerFamilyHistory" }, method = { RequestMethod.POST })
@@ -207,6 +208,7 @@ public class FetchNurseCSController {
 		return response.toString();
 	}
 
+	@Deprecated
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Cancer Personal History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenCancerPersonalHistory" }, method = { RequestMethod.POST })
@@ -234,6 +236,7 @@ public class FetchNurseCSController {
 		return response.toString();
 	}
 
+	@Deprecated
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Cancer Personal Diet History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenCancerPersonalDietHistory" }, method = { RequestMethod.POST })
@@ -261,6 +264,7 @@ public class FetchNurseCSController {
 		return response.toString();
 	}
 
+	@Deprecated
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Cancer Obstetric History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenCancerObstetricHistory" }, method = { RequestMethod.POST })

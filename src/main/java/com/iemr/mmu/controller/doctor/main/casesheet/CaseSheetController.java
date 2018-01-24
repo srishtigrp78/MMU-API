@@ -38,10 +38,11 @@ public class CaseSheetController {
 		this.caseSheetServiceImpl = caseSheetServiceImpl;
 	}
 
+	
 	/**
 	 * Fething beneficiary data filled by Nurse and Doctor for case sheet...
 	 */
-
+	@Deprecated
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary data for case sheet", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBeneficiaryDataEnteredByNurseAndDoctor" }, method = { RequestMethod.POST })
@@ -112,6 +113,7 @@ public class CaseSheetController {
 		return response.toString();
 	}
 
+	@Deprecated
 	@CrossOrigin()
 	@ApiOperation(value = "Get Cancer Examination Image-Annotation of Beneficiary", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getCancerExaminationImageAnnotation" }, method = { RequestMethod.POST })
