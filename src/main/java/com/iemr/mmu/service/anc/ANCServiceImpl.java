@@ -101,6 +101,10 @@ public class ANCServiceImpl implements ANCService {
 		}
 		return saveSuccessFlag;
 	}
+	
+	public Long saveANCDoctorData(JsonObject requestOBJ) {
+		return null;
+	}
 
 	/**
 	 * 

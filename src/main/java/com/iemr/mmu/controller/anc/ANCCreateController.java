@@ -86,6 +86,16 @@ public class ANCCreateController {
 			JsonParser jsnParser = new JsonParser();
 			JsonElement jsnElmnt = jsnParser.parse(requestObj);
 			jsnOBJ = jsnElmnt.getAsJsonObject();
+			if (jsnOBJ != null) {
+				Long r = ancServiceImpl.saveANCDoctorData(jsnOBJ);
+				if (r != null && r > 0) {
+
+				} else {
+					// soething went wrong
+				}
+			} else {
+				// data is null}
+			}
 
 		} catch (Exception e) {
 			logger.error("Exception occurs in ANC nurse data saving :" + e);
