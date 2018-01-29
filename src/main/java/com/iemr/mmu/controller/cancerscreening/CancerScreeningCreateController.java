@@ -70,7 +70,7 @@ public class CancerScreeningCreateController {
 			logger.error("Exception occurs in cancer screening nurse data saving :" + e);
 			response.setError(e);
 		}
-		return null;
+		return response.toString();
 	}
 
 	/**
@@ -106,6 +106,6 @@ public class CancerScreeningCreateController {
 			logger.error("Exception occurs in cancer screening doctor saving :" + e);
 			response.setError(e);
 		}
-		return null;
+		return response.toString();
 	}
 }

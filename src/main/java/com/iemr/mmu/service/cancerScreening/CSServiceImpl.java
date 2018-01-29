@@ -26,6 +26,7 @@ import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
+import com.iemr.mmu.service.doctor.DoctorServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.service.registrar.RegistrarServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
@@ -38,7 +39,13 @@ public class CSServiceImpl implements CSService {
 	private CSDoctorServiceImpl cSDoctorServiceImpl;
 	private RegistrarServiceImpl registrarServiceImpl;
 	private CSOncologistServiceImpl csOncologistServiceImpl;
-	
+	private DoctorServiceImpl doctorServiceImpl;
+
+	@Autowired
+	public void setDoctorServiceImpl(DoctorServiceImpl doctorServiceImpl) {
+		this.doctorServiceImpl = doctorServiceImpl;
+	}
+
 	@Autowired
 	public void setRegistrarServiceImpl(RegistrarServiceImpl registrarServiceImpl) {
 		this.registrarServiceImpl = registrarServiceImpl;
@@ -63,7 +70,7 @@ public class CSServiceImpl implements CSService {
 	public void setCsOncologistServiceImpl(CSOncologistServiceImpl csOncologistServiceImpl) {
 		this.csOncologistServiceImpl = csOncologistServiceImpl;
 	}
-	
+
 	// ----------Save/Create (Nurse)--------------------------------------
 
 	/***
@@ -331,7 +338,10 @@ public class CSServiceImpl implements CSService {
 
 			if ((examinationSuccessFlag != null && examinationSuccessFlag > 0)
 					&& (diagnosisSuccessFlag != null && diagnosisSuccessFlag > 0)) {
-				docDataSuccessFlag = examinationSuccessFlag;
+
+				String s = doctorServiceImpl.updateBenStatus(getBenVisitID(requestOBJ), "D");
+				if (s != null && s.length() > 0)
+					docDataSuccessFlag = examinationSuccessFlag;
 			}
 
 		} else {
@@ -339,6 +349,19 @@ public class CSServiceImpl implements CSService {
 		}
 		return docDataSuccessFlag;
 
+	}
+
+	private Long getBenVisitID(JsonObject requestOBJ) throws Exception {
+		if (requestOBJ != null && requestOBJ.has("signsDetails") && !requestOBJ.get("signsDetails").isJsonNull()) {
+
+			JsonObject signsDetailsOBJ = requestOBJ.getAsJsonObject("signsDetails");
+
+			WrapperCancerSymptoms wrapperCancerSymptoms = InputMapper.gson().fromJson(signsDetailsOBJ,
+					WrapperCancerSymptoms.class);
+			return wrapperCancerSymptoms.getCancerSignAndSymptoms().getBenVisitID();
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -582,5 +605,5 @@ public class CSServiceImpl implements CSService {
 		return csOncologistServiceImpl.updateCancerDiagnosisDetailsByOncologist(cancerDiagnosis);
 
 	}
-	
+
 }
