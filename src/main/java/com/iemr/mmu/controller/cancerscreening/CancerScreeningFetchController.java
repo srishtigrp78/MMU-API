@@ -26,7 +26,7 @@ import io.swagger.annotations.ApiParam;
  */
 @CrossOrigin
 @RestController
-@RequestMapping({ "/CS-cancerScreening" })
+@RequestMapping(value = "/CS-cancerScreening", headers = "Authorization")
 public class CancerScreeningFetchController {
 
 	private InputMapper inputMapper;

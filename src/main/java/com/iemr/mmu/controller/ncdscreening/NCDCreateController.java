@@ -26,7 +26,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @CrossOrigin
 @RestController
-@RequestMapping({ "/NCD" })
+@RequestMapping(value =  "/NCD", headers = "Authorization")
 public class NCDCreateController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	
