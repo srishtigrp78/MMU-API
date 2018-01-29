@@ -93,6 +93,8 @@ public class CSServiceImpl implements CSService {
 
 				if ((historySaveSuccessFlag != null && historySaveSuccessFlag > 0)
 						&& (vitalSaveSuccessFlag != null && vitalSaveSuccessFlag > 0)) {
+
+					Integer i = nurseServiceImpl.updateBeneficiaryStatus('N', getBenRegID(requestOBJ));
 					nurseDataSuccessFlag = historySaveSuccessFlag;
 				}
 
@@ -102,6 +104,12 @@ public class CSServiceImpl implements CSService {
 
 		}
 		return nurseDataSuccessFlag;
+	}
+
+	private Long getBenRegID(JsonObject requestOBJ) throws Exception {
+		BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(requestOBJ.get("visitDetails"),
+				BeneficiaryVisitDetail.class);
+		return benVisitDetailsOBJ.getBeneficiaryRegID();
 	}
 
 	/**
