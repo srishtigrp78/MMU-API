@@ -500,14 +500,14 @@ public class CSServiceImpl implements CSService {
 
 			List<WrapperCancerExamImgAnotasn> wrapperCancerExamImgAnotasnList = Arrays
 					.asList(wrapperCancerExamImgAnotasn);
-			if(null != wrapperCancerExamImgAnotasnList && wrapperCancerExamImgAnotasnList.size() > 0){
+			if (null != wrapperCancerExamImgAnotasnList && wrapperCancerExamImgAnotasnList.size() > 0) {
 				Long r = cSDoctorServiceImpl.saveDocExaminationImageAnnotation(wrapperCancerExamImgAnotasnList);
 				if (r != null && r > 0) {
 					// imageCoordinates stored successfully...
 					imgCoordinatesSuccessFlag = r;
 				}
-			}else{
-				imgCoordinatesSuccessFlag = new  Long(1);
+			} else {
+				imgCoordinatesSuccessFlag = new Long(1);
 			}
 		} else {
 			// imageCoordinates not available..
@@ -557,7 +557,7 @@ public class CSServiceImpl implements CSService {
 	// -------Fetch Case-sheet data ----------------------------------
 
 	public String getCancerCasesheetData(JSONObject obj) {
-
+		String caseSheetData = null;
 		if (obj.length() > 1) {
 			Long benRegID = null;
 			Long benVisitID = null;
@@ -569,13 +569,13 @@ public class CSServiceImpl implements CSService {
 				e.printStackTrace();
 			}
 
-			String caseSheetData = getBenDataForCaseSheet(benRegID, benVisitID);
+			 caseSheetData = getBenDataForCaseSheet(benRegID, benVisitID);
 
 		} else {
 
 		}
 
-		return null;
+		return caseSheetData;
 	}
 
 	public String getBenDataForCaseSheet(Long benRegID, Long benVisitID) {
