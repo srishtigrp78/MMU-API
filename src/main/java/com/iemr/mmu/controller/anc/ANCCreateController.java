@@ -57,12 +57,12 @@ public class ANCCreateController {
 
 			if (jsnOBJ != null) {
 				Long ancRes = ancServiceImpl.saveANCNurseData(jsnOBJ);
-				if(null != ancRes && ancRes>0){
+				if (null != ancRes && ancRes > 0) {
 					response.setResponse("ANC Nurse Entered Details stored successfully.");
-				}else{
+				} else {
 					response.setResponse("Failed to store ANC Details.");
 				}
-				
+
 			} else {
 				response.setError(5000, "Invalid Request !!!");
 			}
@@ -71,6 +71,27 @@ public class ANCCreateController {
 			logger.error("Exception occurs in ANC nurse data saving :" + e);
 			response.setError(e);
 		}
-		return null;
+		return response.toString();
 	}
+
+	@CrossOrigin
+	@ApiOperation(value = "Save ANC doctor data..", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/doctorData" }, method = { RequestMethod.POST })
+	public String saveBenANCDoctorData(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		try {
+			logger.info("Request object for ANC doctor data saving :" + requestObj);
+
+			JsonObject jsnOBJ = new JsonObject();
+			JsonParser jsnParser = new JsonParser();
+			JsonElement jsnElmnt = jsnParser.parse(requestObj);
+			jsnOBJ = jsnElmnt.getAsJsonObject();
+
+		} catch (Exception e) {
+			logger.error("Exception occurs in ANC nurse data saving :" + e);
+			response.setError(e);
+		}
+		return response.toString();
+	}
+
 }
