@@ -314,6 +314,11 @@ public class ChildVaccineDetail1 {
 		this.reservedForChange = reservedForChange;
 	}
 
+	public ChildVaccineDetail1() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public ChildVaccineDetail1(String defaultReceivingAge, String vaccineName, Boolean status) {
 		super();
 		this.defaultReceivingAge = defaultReceivingAge;

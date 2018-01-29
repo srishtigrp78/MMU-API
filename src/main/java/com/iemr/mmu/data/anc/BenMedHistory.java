@@ -39,39 +39,39 @@ public class BenMedHistory {
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
 
-	//@Expose
+	@Expose
 	@Column(name = "YearofIllness")
 	private Timestamp yearofIllness;
 
-	//@Expose
+	@Expose
 	@Column(name = "IllnessTypeID")
 	private Integer illnessTypeID;
 
-	//@Expose
+	@Expose
 	@Column(name = "IllnessType")
 	private String illnessType;
 
-	//@Expose
+	@Expose
 	@Column(name = "OtherIllnessType")
 	private String otherIllnessType;
 
-	//@Expose
+	@Expose
 	@Column(name = "SurgeryID")
 	private Integer surgeryID;
 
-	//@Expose
+	@Expose
 	@Column(name = "SurgeryType")
 	private String surgeryType;
 
-	//@Expose
+	@Expose
 	@Column(name = "YearofSurgery")
 	private Timestamp yearofSurgery;
 
-	//@Expose
+	@Expose
 	@Column(name = "OtherSurgeryType")
 	private String otherSurgeryType;
 
-	//@Expose
+	@Expose
 	@Column(name = "DrugComplianceID")
 	private Short drugComplianceID;
 

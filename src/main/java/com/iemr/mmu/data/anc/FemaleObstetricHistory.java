@@ -7,14 +7,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
 @Entity
 @Table(name = "t_FemaleObstetricHistory")
 public class FemaleObstetricHistory {
-	
+
 	@Id
 	@GeneratedValue
 	@Expose
@@ -28,15 +27,15 @@ public class FemaleObstetricHistory {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "PregOrder")
 	private Short pregOrder;
-	
+
 	@Expose
 	@Column(name = "totalNoOfPreg")
 	private Short totalNoOfPreg;
@@ -68,19 +67,19 @@ public class FemaleObstetricHistory {
 	@Expose
 	@Column(name = "DeliveryType")
 	private String deliveryType;
-	
+
 	@Expose
 	@Column(name = "DeliveryPlaceID")
 	private Short deliveryPlaceID;
-	
+
 	@Expose
 	@Column(name = "DeliveryPlace")
 	private String deliveryPlace;
-	
+
 	@Expose
 	@Column(name = "OtherDeliveryPlace")
 	private String otherDeliveryPlace;
-	
+
 	@Expose
 	@Column(name = "DeliveryComplicationID")
 	private Short deliveryComplicationID;
@@ -88,7 +87,7 @@ public class FemaleObstetricHistory {
 	@Expose
 	@Column(name = "DeliveryComplicationType")
 	private String deliveryComplicationType;
-	
+
 	@Expose
 	@Column(name = "OtherDeliveryComplication")
 	private String otherDeliveryComplication;
@@ -108,11 +107,11 @@ public class FemaleObstetricHistory {
 	@Expose
 	@Column(name = "PostpartumComplicationType")
 	private String postpartumComplicationType;
-	
+
 	@Expose
 	@Column(name = "OtherPostpartumCompType")
 	private String otherPostpartumCompType;
-	
+
 	@Expose
 	@Column(name = "PostNatalComplicationID")
 	private Short postNatalComplicationID;
@@ -120,7 +119,7 @@ public class FemaleObstetricHistory {
 	@Expose
 	@Column(name = "PostNatalComplication")
 	private String postNatalComplication;
-	
+
 	@Expose
 	@Column(name = "OtherPostNatalComplication")
 	private String otherPostNatalComplication;
@@ -129,19 +128,18 @@ public class FemaleObstetricHistory {
 	@Column(name = "CongenitalAnomalies")
 	private String congenitalAnomalies;
 
-	
 	@Expose
 	@Column(name = "NewBornComplicationID")
 	private Short newBornComplicationID;
-	
+
 	@Expose
 	@Column(name = "NewBornComplication")
 	private String newBornComplication;
-	
+
 	@Expose
 	@Column(name = "OtherNewBornComplication")
 	private String otherNewBornComplication;
-	
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -169,27 +167,27 @@ public class FemaleObstetricHistory {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
@@ -481,7 +479,7 @@ public class FemaleObstetricHistory {
 	public void setTotalNoOfPreg(Short totalNoOfPreg) {
 		this.totalNoOfPreg = totalNoOfPreg;
 	}
-	
+
 	public Long getVanSerialNo() {
 		return vanSerialNo;
 	}
@@ -530,6 +528,9 @@ public class FemaleObstetricHistory {
 		this.reservedForChange = reservedForChange;
 	}
 
+	public FemaleObstetricHistory() {
+	}
+
 	public FemaleObstetricHistory(Short pregOrder, Short pregComplicationID, String pregComplicationType,
 			String otherPregComplication, Short pregDurationID, String durationType, Short deliveryTypeID,
 			String deliveryType, Short deliveryPlaceID, String deliveryPlace, String otherDeliveryPlace,
@@ -567,5 +568,4 @@ public class FemaleObstetricHistory {
 		this.otherNewBornComplication = otherNewBornComplication;
 	}
 
-	
 }

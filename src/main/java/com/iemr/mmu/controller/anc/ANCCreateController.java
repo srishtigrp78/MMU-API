@@ -26,7 +26,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @CrossOrigin
 @RestController
-@RequestMapping({ "/ANC" })
+@RequestMapping(value =  "/ANC", headers = "Authorization")
 public class ANCCreateController {
 	private Logger logger = LoggerFactory.getLogger(ANCCreateController.class);
 

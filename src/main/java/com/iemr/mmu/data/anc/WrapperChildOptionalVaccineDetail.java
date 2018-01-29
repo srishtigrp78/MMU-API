@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class WrapperChildOptionalVaccineDetail {
-	
+
 	private Long beneficiaryRegID;
 	private Long benVisitID;
 	private Integer providerServiceMapID;
@@ -35,35 +35,46 @@ public class WrapperChildOptionalVaccineDetail {
 	public void setChildOptionalVaccineList(ArrayList<ChildOptionalVaccineDetail> childOptionalVaccineList) {
 		this.childOptionalVaccineList = childOptionalVaccineList;
 	}
-	
-	public ArrayList<ChildOptionalVaccineDetail> getChildOptionalVaccineDetails(){
-		for(ChildOptionalVaccineDetail childOptionalVaccine:childOptionalVaccineList){
-			
+
+	public ArrayList<ChildOptionalVaccineDetail> getChildOptionalVaccineDetails() {
+		if (null != childOptionalVaccineList && childOptionalVaccineList.size() > 0) {
+			for (ChildOptionalVaccineDetail childOptionalVaccine : childOptionalVaccineList) {
+
+				childOptionalVaccine.setBeneficiaryRegID(beneficiaryRegID);
+				childOptionalVaccine.setBenVisitID(benVisitID);
+				childOptionalVaccine.setProviderServiceMapID(providerServiceMapID);
+				childOptionalVaccine.setCreatedBy(createdBy);
+			}
+		} else {
+			ChildOptionalVaccineDetail childOptionalVaccine = new ChildOptionalVaccineDetail();
 			childOptionalVaccine.setBeneficiaryRegID(beneficiaryRegID);
 			childOptionalVaccine.setBenVisitID(benVisitID);
 			childOptionalVaccine.setProviderServiceMapID(providerServiceMapID);
 			childOptionalVaccine.setCreatedBy(createdBy);
+
+			childOptionalVaccineList = new ArrayList<ChildOptionalVaccineDetail>();
+			childOptionalVaccineList.add(childOptionalVaccine);
 		}
 		return childOptionalVaccineList;
 	}
-	
-	public static WrapperChildOptionalVaccineDetail getChildOptionalVaccineDetail(ArrayList<Object[]> childOptionalVaccineDetail){
+
+	public static WrapperChildOptionalVaccineDetail getChildOptionalVaccineDetail(
+			ArrayList<Object[]> childOptionalVaccineDetail) {
 		WrapperChildOptionalVaccineDetail WCO = new WrapperChildOptionalVaccineDetail();
 		WCO.childOptionalVaccineList = new ArrayList<ChildOptionalVaccineDetail>();
-		
-		if(null != childOptionalVaccineDetail && childOptionalVaccineDetail.size()>0){
+
+		if (null != childOptionalVaccineDetail && childOptionalVaccineDetail.size() > 0) {
 			Object[] obj1 = childOptionalVaccineDetail.get(0);
-			WCO.beneficiaryRegID = (Long)obj1[0];
-			WCO.benVisitID = (Long)obj1[1];
-			WCO.providerServiceMapID = (Integer)obj1[2];
-			for(Object[] obj: childOptionalVaccineDetail){
-				
-				
-				ChildOptionalVaccineDetail obstetricHistory= new ChildOptionalVaccineDetail((String)obj[3], (String)obj[4], (String)obj[5], 
-						(Timestamp)obj[6], (String)obj[7], (String)obj[8]);
-				
+			WCO.beneficiaryRegID = (Long) obj1[0];
+			WCO.benVisitID = (Long) obj1[1];
+			WCO.providerServiceMapID = (Integer) obj1[2];
+			for (Object[] obj : childOptionalVaccineDetail) {
+
+				ChildOptionalVaccineDetail obstetricHistory = new ChildOptionalVaccineDetail((String) obj[3],
+						(String) obj[4], (String) obj[5], (Timestamp) obj[6], (String) obj[7], (String) obj[8]);
+
 				WCO.childOptionalVaccineList.add(obstetricHistory);
-				
+
 			}
 		}
 		return WCO;

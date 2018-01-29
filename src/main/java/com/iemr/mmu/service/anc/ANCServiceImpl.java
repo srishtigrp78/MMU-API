@@ -101,7 +101,7 @@ public class ANCServiceImpl implements ANCService {
 		}
 		return saveSuccessFlag;
 	}
-	
+
 	public Long saveANCDoctorData(JsonObject requestOBJ) {
 		return null;
 	}
@@ -304,41 +304,49 @@ public class ANCServiceImpl implements ANCService {
 			WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory = InputMapper.gson()
 					.fromJson(ancHistoryOBJ.get("femaleObstetricHistory"), WrapperFemaleObstetricHistory.class);
 
-			if (wrapperFemaleObstetricHistory.getFemaleObstetricHistoryList().size() > 0) {
+			if (wrapperFemaleObstetricHistory != null) {
 				wrapperFemaleObstetricHistory.setBenVisitID(benVisitID);
 				obstetricSuccessFlag = ancNurseServiceImpl.saveFemaleObstetricHistory(wrapperFemaleObstetricHistory);
 			} else {
 				// Female Obstetric Details not provided.
 			}
 
+		} else {
+			obstetricSuccessFlag = new Long(1);
 		}
 
-		/** For Female below 15 years.. **/
+		/** For Female above 12 and below 16 years.. **/
 		// Save Immunization History
 		if (ancHistoryOBJ != null && ancHistoryOBJ.has("immunizationHistory")
 				&& !ancHistoryOBJ.get("immunizationHistory").isJsonNull()) {
 			WrapperImmunizationHistory wrapperImmunizationHistory = InputMapper.gson()
 					.fromJson(ancHistoryOBJ.get("immunizationHistory"), WrapperImmunizationHistory.class);
-			if (null != wrapperImmunizationHistory.getImmunizationList()) {
+			if (null != wrapperImmunizationHistory) {
 				wrapperImmunizationHistory.setBenVisitID(benVisitID);
 				immunizationSuccessFlag = ancNurseServiceImpl.saveANCImmunizationHistory(wrapperImmunizationHistory);
 			} else {
+
 				// ImmunizationList Data not Available
 			}
 
+		} else {
+			immunizationSuccessFlag = new Long(1);
 		}
+		
 		// Save Other/Optional Vaccines History
 		if (ancHistoryOBJ != null && ancHistoryOBJ.has("childVaccineDetails")
 				&& !ancHistoryOBJ.get("childVaccineDetails").isJsonNull()) {
 			WrapperChildOptionalVaccineDetail wrapperChildVaccineDetail = InputMapper.gson()
 					.fromJson(ancHistoryOBJ.get("childVaccineDetails"), WrapperChildOptionalVaccineDetail.class);
-			if (null != wrapperChildVaccineDetail.getChildOptionalVaccineList()) {
+			if (null != wrapperChildVaccineDetail) {
 				wrapperChildVaccineDetail.setBenVisitID(benVisitID);
 				childVaccineSuccessFlag = ancNurseServiceImpl.saveChildOptionalVaccineDetail(wrapperChildVaccineDetail);
 			} else {
 				// Child Optional Vaccine Detail not provided.
 			}
 
+		} else {
+			childVaccineSuccessFlag = new Long(1);
 		}
 
 		Long historySuccessFlag = null;

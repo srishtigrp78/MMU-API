@@ -44,19 +44,29 @@ public class WrapperImmunizationHistory {
 	public ArrayList<ChildVaccineDetail1> getBenChildVaccineDetails(){
 		
 		ArrayList<ChildVaccineDetail1> childVaccineDetailList = new ArrayList<ChildVaccineDetail1>();
-		for(ChildVaccineDetail1 childVaccineDetail:immunizationList){
+		if(null != immunizationList && immunizationList.size()>0){
+			for(ChildVaccineDetail1 childVaccineDetail:immunizationList){
+					
+				List<Map<String,Object>> vaccinesList = childVaccineDetail.getVaccines();
+				for(Map<String,Object> vaccine :vaccinesList){
+					ChildVaccineDetail1 vaccineDetail = new ChildVaccineDetail1(childVaccineDetail.getDefaultReceivingAge(), vaccine.get("vaccine").toString(), (Boolean)vaccine.get("status"));
+					vaccineDetail.setBeneficiaryRegID(beneficiaryRegID);
+					vaccineDetail.setBenVisitID(benVisitID);
+					vaccineDetail.setProviderServiceMapID(providerServiceMapID);
+					vaccineDetail.setCreatedBy(createdBy);
+					vaccineDetail.setModifiedBy(modifiedBy);
+					childVaccineDetailList.add(vaccineDetail);
+				}
 				
-			List<Map<String,Object>> vaccinesList = childVaccineDetail.getVaccines();
-			for(Map<String,Object> vaccine :vaccinesList){
-				ChildVaccineDetail1 vaccineDetail = new ChildVaccineDetail1(childVaccineDetail.getDefaultReceivingAge(), vaccine.get("vaccine").toString(), (Boolean)vaccine.get("status"));
-				vaccineDetail.setBeneficiaryRegID(beneficiaryRegID);
-				vaccineDetail.setBenVisitID(benVisitID);
-				vaccineDetail.setProviderServiceMapID(providerServiceMapID);
-				vaccineDetail.setCreatedBy(createdBy);
-				vaccineDetail.setModifiedBy(modifiedBy);
-				childVaccineDetailList.add(vaccineDetail);
 			}
-			
+		} else {
+			ChildVaccineDetail1 vaccineDetail = new ChildVaccineDetail1();
+			vaccineDetail.setBeneficiaryRegID(beneficiaryRegID);
+			vaccineDetail.setBenVisitID(benVisitID);
+			vaccineDetail.setProviderServiceMapID(providerServiceMapID);
+			vaccineDetail.setCreatedBy(createdBy);
+			vaccineDetail.setModifiedBy(modifiedBy);
+			childVaccineDetailList.add(vaccineDetail);
 		}
 		return childVaccineDetailList;
 	}

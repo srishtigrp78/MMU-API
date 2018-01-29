@@ -298,5 +298,10 @@ public class ChildOptionalVaccineDetail {
 		this.actualReceivingAge = actualReceivingAge;
 		this.receivedFacilityName = receivedFacilityName;
 	}
+
+	public ChildOptionalVaccineDetail() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
 }
