@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.iemr.mmu.data.doctor.CancerDiagnosis;
 import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
 import com.iemr.mmu.service.cancerScreening.CSServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
@@ -135,6 +136,34 @@ public class CancerScreeningUpdateController {
 		} catch (Exception e) {
 			response.setError(e);
 			logger.error("Error in upodateBenVitalDetail:" + e);
+		}
+
+		return response.toString();
+	}
+	
+	@CrossOrigin
+	@ApiOperation(value = "update Cancer Diagnosis Details By Oncologist", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/examinationScreen/diagnosis" }, method = { RequestMethod.POST })
+	public String updateCancerDiagnosisDetailsByOncologist(
+			@ApiParam(value = "{\"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", "
+					+ "\"provisionalDiagnosisOncologist\":\"String\", \"modifiedBy\":\"string\"}") @RequestBody String requestObj) {
+
+		response = new OutputResponse();
+		inputMapper = new InputMapper();
+		logger.info("updateCancerDiagnosisDetailsByOncologist request:" + requestObj);
+
+		try {
+			CancerDiagnosis cancerDiagnosis = InputMapper.gson().fromJson(requestObj, CancerDiagnosis.class);
+			int result = cSServiceImpl.updateCancerDiagnosisDetailsByOncologist(cancerDiagnosis);
+			if (result > 0) {
+				response.setResponse("Cancer Diagnosis Details updated By Oncologist Successfully");
+			} else {
+				response.setError(5000, "Failed to update Cancer Diagnosis Details By Oncologist");
+			}
+			logger.info("updateCancerDiagnosisDetailsByOncologist response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in updateCancerDiagnosisDetailsByOncologist :" + e);
 		}
 
 		return response.toString();

@@ -37,7 +37,8 @@ public class CSServiceImpl implements CSService {
 	private CSNurseServiceImpl cSNurseServiceImpl;
 	private CSDoctorServiceImpl cSDoctorServiceImpl;
 	private RegistrarServiceImpl registrarServiceImpl;
-
+	private CSOncologistServiceImpl csOncologistServiceImpl;
+	
 	@Autowired
 	public void setRegistrarServiceImpl(RegistrarServiceImpl registrarServiceImpl) {
 		this.registrarServiceImpl = registrarServiceImpl;
@@ -58,6 +59,11 @@ public class CSServiceImpl implements CSService {
 		this.nurseServiceImpl = nurseServiceImpl;
 	}
 
+	@Autowired
+	public void setCsOncologistServiceImpl(CSOncologistServiceImpl csOncologistServiceImpl) {
+		this.csOncologistServiceImpl = csOncologistServiceImpl;
+	}
+	
 	// ----------Save/Create (Nurse)--------------------------------------
 
 	/***
@@ -571,4 +577,10 @@ public class CSServiceImpl implements CSService {
 	}
 	/// ------- End of Fetch beneficiary all past obstetric history data------
 
+	@Override
+	public int updateCancerDiagnosisDetailsByOncologist(CancerDiagnosis cancerDiagnosis) {
+		return csOncologistServiceImpl.updateCancerDiagnosisDetailsByOncologist(cancerDiagnosis);
+
+	}
+	
 }

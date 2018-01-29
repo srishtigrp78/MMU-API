@@ -9,7 +9,7 @@ import com.iemr.mmu.repo.doctor.CancerDiagnosisRepo;
 @Service
 public class CSOncologistServiceImpl implements CSOncologistService {
 	
-private CancerDiagnosisRepo cancerDiagnosisRepo;
+	private CancerDiagnosisRepo cancerDiagnosisRepo;
 	
 	@Autowired
 	public void setCancerDiagnosisRepo(CancerDiagnosisRepo cancerDiagnosisRepo) {

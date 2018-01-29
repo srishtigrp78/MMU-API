@@ -33,6 +33,7 @@ public class UpdateOncologistCSController {
 		this.oncologistServiceImpl = oncologistServiceImpl;
 	}
 
+	@Deprecated
 	@CrossOrigin
 	@ApiOperation(value = "update Cancer Diagnosis Details By Oncologist", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/examinationScreen/diagnosis" }, method = { RequestMethod.POST })

@@ -32,7 +32,7 @@ import io.swagger.annotations.ApiParam;
  */
 @CrossOrigin
 @RestController
-@RequestMapping({ "/ANC" })
+@RequestMapping(value =  "/ANC", headers = "Authorization")
 public class ANCUpdateController {
 
 private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
