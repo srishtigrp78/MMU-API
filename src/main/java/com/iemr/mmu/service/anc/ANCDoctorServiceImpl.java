@@ -20,6 +20,7 @@ import com.iemr.mmu.repo.quickConsultation.BenChiefComplaintRepo;
 import com.iemr.mmu.repo.quickConsultation.BenClinicalObservationsRepo;
 import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
+import com.iemr.mmu.service.doctor.DoctorServiceImpl;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
@@ -30,6 +31,13 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 	private ANCDiagnosisRepo ancDiagnosisRepo;
 	private LabTestOrderDetailRepo labTestOrderDetailRepo;
 	private PrescribedDrugDetailRepo prescribedDrugDetailRepo;
+
+	private DoctorServiceImpl doctorServiceImpl;
+
+	@Autowired
+	public void setDoctorServiceImpl(DoctorServiceImpl doctorServiceImpl) {
+		this.doctorServiceImpl = doctorServiceImpl;
+	}
 
 	@Autowired
 	public void setPrescribedDrugDetailRepo(PrescribedDrugDetailRepo prescribedDrugDetailRepo) {
@@ -169,6 +177,10 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 			r = prescribedDrugDetailListRS.size();
 		}
 		return r;
+	}
+
+	public String updateBenVisitStatusFlag(Long benVisitID, String c) {
+		return doctorServiceImpl.updateBenStatus(benVisitID, c);
 	}
 
 }

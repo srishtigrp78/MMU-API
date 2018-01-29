@@ -118,7 +118,7 @@ public class ANCServiceImpl implements ANCService {
 		Integer prescriptionSuccessFlag = null;
 
 		String createdBy = null;
-		// Integer psmID = null;
+		Long bvID = null;
 
 		if (requestOBJ != null) {
 			if (requestOBJ.has("findings") && !requestOBJ.get("findings").isJsonNull()) {
@@ -144,8 +144,7 @@ public class ANCServiceImpl implements ANCService {
 							wrapperBenInvestigationANC.getCreatedBy());
 
 					createdBy = wrapperBenInvestigationANC.getCreatedBy();
-					// psmID =
-					// wrapperBenInvestigationANC.getProviderServiceMapID();
+					bvID = wrapperBenInvestigationANC.getBenVisitID();
 
 					wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
 					investigationSuccessFlag = ancDoctorServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
@@ -182,7 +181,10 @@ public class ANCServiceImpl implements ANCService {
 					&& (diagnosisSuccessFlag != null && diagnosisSuccessFlag > 0)
 					&& (investigationSuccessFlag != null && investigationSuccessFlag > 0)
 					&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)) {
-				saveSuccessFlag = diagnosisSuccessFlag;
+
+				String s = ancDoctorServiceImpl.updateBenVisitStatusFlag(bvID, "D");
+				if (s != null && s.length() > 0)
+					saveSuccessFlag = diagnosisSuccessFlag;
 			}
 		} else {
 			// request OBJ is null.
