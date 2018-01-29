@@ -26,7 +26,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @CrossOrigin
 @RestController
-@RequestMapping(value =  "/ANC", headers = "Authorization")
+@RequestMapping(value = "/ANC", headers = "Authorization")
 public class ANCCreateController {
 	private Logger logger = LoggerFactory.getLogger(ANCCreateController.class);
 
@@ -89,12 +89,14 @@ public class ANCCreateController {
 			if (jsnOBJ != null) {
 				Long r = ancServiceImpl.saveANCDoctorData(jsnOBJ);
 				if (r != null && r > 0) {
-
+					response.setResponse("ANC Doc data saved successfully.");
 				} else {
 					// soething went wrong
+					response.setError(5000, "Something went Wrong !!!");
 				}
 			} else {
-				// data is null}
+				// data is null
+				response.setError(5000, "Invalid Request !!!");
 			}
 
 		} catch (Exception e) {

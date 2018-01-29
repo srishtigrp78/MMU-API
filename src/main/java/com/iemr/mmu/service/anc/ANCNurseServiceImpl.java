@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
@@ -50,7 +49,6 @@ import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
-import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
@@ -90,12 +88,11 @@ import com.iemr.mmu.repo.quickConsultation.BenClinicalObservationsRepo;
 import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
-import com.iemr.mmu.service.cancerScreening.CSServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
 
 @Service
-public class ANCNurseServiceImpl implements ANCNurseService{
+public class ANCNurseServiceImpl implements ANCNurseService {
 
 	private ANCCareRepo ancCareRepo;
 	private ANCWomenVaccineRepo ancWomenVaccineRepo;
@@ -107,12 +104,12 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	private BenPhysicalVitalRepo benPhysicalVitalRepo;
 
 	private BenVisitDetailRepo benVisitDetailRepo;
-	
+
 	@Autowired
 	public void setBenVisitDetailRepo(BenVisitDetailRepo benVisitDetailRepo) {
 		this.benVisitDetailRepo = benVisitDetailRepo;
 	}
-	
+
 	@Autowired
 	public void setBenChiefComplaintRepo(BenChiefComplaintRepo benChiefComplaintRepo) {
 		this.benChiefComplaintRepo = benChiefComplaintRepo;
@@ -136,7 +133,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	public void setPrescriptionDetailRepo(PrescriptionDetailRepo prescriptionDetailRepo) {
 		this.prescriptionDetailRepo = prescriptionDetailRepo;
 	}
-	
+
 	private PhyGeneralExaminationRepo phyGeneralExaminationRepo;
 	private PhyHeadToToeExaminationRepo phyHeadToToeExaminationRepo;
 	private SysCardiovascularExaminationRepo sysCardiovascularExaminationRepo;
@@ -167,7 +164,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
 		this.nurseServiceImpl = nurseServiceImpl;
 	}
-	
+
 	@Autowired
 	public void setBenAdherenceRepo(BenAdherenceRepo benAdherenceRepo) {
 		this.benAdherenceRepo = benAdherenceRepo;
@@ -305,12 +302,12 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	public void setBenPhysicalVitalRepo(BenPhysicalVitalRepo benPhysicalVitalRepo) {
 		this.benPhysicalVitalRepo = benPhysicalVitalRepo;
 	}
-	
+
 	@Autowired
 	public void setAncDiagnosisRepo(ANCDiagnosisRepo ancDiagnosisRepo) {
 		this.ancDiagnosisRepo = ancDiagnosisRepo;
 	}
-	
+
 	@Override
 	public Long saveBeneficiaryANCDetails(ANCCareDetails ancCareDetails) {
 		ANCCareDetails ancCareDetail = ancCareRepo.save(ancCareDetails);
@@ -385,9 +382,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		return r;
 	}
 
-	@Override
-	public Long saveBenInvestigation(WrapperBenInvestigationANC wrapperBenInvestigationANC) {
-		Long r = null;
+	public Long savePrescriptionDetailsAndGetPrescriptionID(WrapperBenInvestigationANC wrapperBenInvestigationANC) {
 		PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
 		prescriptionDetail.setBeneficiaryRegID(wrapperBenInvestigationANC.getBeneficiaryRegID());
 		prescriptionDetail.setBenVisitID(wrapperBenInvestigationANC.getBenVisitID());
@@ -395,32 +390,49 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		prescriptionDetail.setCreatedBy(wrapperBenInvestigationANC.getCreatedBy());
 
 		Long prescriptionID = quickConsultationServiceImpl.saveBenPrescriptionForANC(prescriptionDetail);
+		return prescriptionID;
+	}
 
-		if (prescriptionID != null && prescriptionID > 0) {
-			ArrayList<LabTestOrderDetail> LabTestOrderDetailList = new ArrayList<>();
-			ArrayList<LabTestOrderDetail> investigationList = wrapperBenInvestigationANC.getLaboratoryList();
-			if (investigationList != null && investigationList.size() > 0) {
+	public Long savePrescriptionDetailsAndGetPrescriptionID(Long benRegID, Long benVisitID, Integer psmID,
+			String createdBy) {
+		PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
+		prescriptionDetail.setBeneficiaryRegID(benRegID);
+		prescriptionDetail.setBenVisitID(benVisitID);
+		prescriptionDetail.setProviderServiceMapID(psmID);
+		prescriptionDetail.setCreatedBy(createdBy);
 
-				for (LabTestOrderDetail testData : investigationList) {
+		Long prescriptionID = quickConsultationServiceImpl.saveBenPrescriptionForANC(prescriptionDetail);
+		return prescriptionID;
+	}
 
-					testData.setPrescriptionID(prescriptionID);
-					testData.setBeneficiaryRegID(wrapperBenInvestigationANC.getBeneficiaryRegID());
-					testData.setBenVisitID(wrapperBenInvestigationANC.getBenVisitID());
-					testData.setProviderServiceMapID(wrapperBenInvestigationANC.getProviderServiceMapID());
-					testData.setCreatedBy(wrapperBenInvestigationANC.getCreatedBy());
+	@Override
+	public Long saveBenInvestigation(WrapperBenInvestigationANC wrapperBenInvestigationANC) {
+		Long r = null;
 
-					LabTestOrderDetailList.add(testData);
-				}
-				ArrayList<LabTestOrderDetail> LabTestOrderDetailListRS = (ArrayList<LabTestOrderDetail>) labTestOrderDetailRepo
-						.save(LabTestOrderDetailList);
+		ArrayList<LabTestOrderDetail> LabTestOrderDetailList = new ArrayList<>();
+		ArrayList<LabTestOrderDetail> investigationList = wrapperBenInvestigationANC.getLaboratoryList();
+		if (investigationList != null && investigationList.size() > 0) {
 
-				if (prescriptionID > 0 && LabTestOrderDetailListRS.size() > 0) {
-					r = prescriptionID;
-				}
+			for (LabTestOrderDetail testData : investigationList) {
 
-			} else {
-				r = prescriptionID;
+				testData.setPrescriptionID(wrapperBenInvestigationANC.getPrescriptionID());
+				testData.setBeneficiaryRegID(wrapperBenInvestigationANC.getBeneficiaryRegID());
+				testData.setBenVisitID(wrapperBenInvestigationANC.getBenVisitID());
+				testData.setProviderServiceMapID(wrapperBenInvestigationANC.getProviderServiceMapID());
+				testData.setCreatedBy(wrapperBenInvestigationANC.getCreatedBy());
+
+				LabTestOrderDetailList.add(testData);
 			}
+			ArrayList<LabTestOrderDetail> LabTestOrderDetailListRS = (ArrayList<LabTestOrderDetail>) labTestOrderDetailRepo
+					.save(LabTestOrderDetailList);
+
+			if (LabTestOrderDetailListRS.size() == investigationList.size()) {
+				r = new Long(1);
+			}
+
+		} else {
+			r = new Long(1);
+			;
 		}
 
 		return r;
@@ -434,13 +446,13 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 				&& ancCareDetailsOBJ.getLmpDate().length() >= 10) {
 			String lmpDate = ancCareDetailsOBJ.getLmpDate().split("T")[0];
 			ancCareDetailsOBJ
-			.setLastMenstrualPeriod_LMP(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(lmpDate).getTime()));
+					.setLastMenstrualPeriod_LMP(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(lmpDate).getTime()));
 		}
 		if (ancCareDetailsOBJ.getExpDelDt() != null && !ancCareDetailsOBJ.getExpDelDt().isEmpty()
 				&& ancCareDetailsOBJ.getExpDelDt().length() >= 10) {
 			String edDate = ancCareDetailsOBJ.getExpDelDt().split("T")[0];
 			ancCareDetailsOBJ
-			.setExpectedDateofDelivery(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(edDate).getTime()));
+					.setExpectedDateofDelivery(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(edDate).getTime()));
 		}
 		ANCCareDetails ancCareDetailsRS = ancCareRepo.save(ancCareDetailsOBJ);
 		if (ancCareDetailsRS != null) {
@@ -455,7 +467,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		List<ANCWomenVaccineDetail> ancWomenVaccineDetailList = getANCWomenVaccineDetail(wrapperAncImmunizationOBJ);
 		List<ANCWomenVaccineDetail> ancWomenVaccineDetailRSList = (List<ANCWomenVaccineDetail>) ancWomenVaccineRepo
 				.save(ancWomenVaccineDetailList);
-		if (ancWomenVaccineDetailRSList != null && ancWomenVaccineDetailRSList.size() > 0){
+		if (ancWomenVaccineDetailRSList != null && ancWomenVaccineDetailRSList.size() > 0) {
 			successFlag = ancWomenVaccineDetailRSList.get(0).getID();
 		}
 		return successFlag;
@@ -480,7 +492,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 					&& wrapperAncImmunizationOBJ.getDateReceivedForTT_1().length() >= 10) {
 				String TT_1 = wrapperAncImmunizationOBJ.getDateReceivedForTT_1().split("T")[0];
 				ancWomenVaccineDetail
-				.setReceivedDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(TT_1).getTime()));
+						.setReceivedDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(TT_1).getTime()));
 			}
 			ancWomenVaccineDetail.setReceivedFacilityName(wrapperAncImmunizationOBJ.getFacilityNameOfTT_1());
 			ancWomenVaccineDetail.setModifiedBy(wrapperAncImmunizationOBJ.getModifiedBy());
@@ -499,7 +511,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 					&& wrapperAncImmunizationOBJ.getDateReceivedForTT_2().length() >= 10) {
 				String TT_2 = wrapperAncImmunizationOBJ.getDateReceivedForTT_2().split("T")[0];
 				ancWomenVaccineDetail
-				.setReceivedDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(TT_2).getTime()));
+						.setReceivedDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(TT_2).getTime()));
 			}
 			ancWomenVaccineDetail.setReceivedFacilityName(wrapperAncImmunizationOBJ.getFacilityNameOfTT_2());
 			ancWomenVaccineDetail.setModifiedBy(wrapperAncImmunizationOBJ.getModifiedBy());
@@ -518,7 +530,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 					&& wrapperAncImmunizationOBJ.getDateReceivedForTT_3().length() >= 10) {
 				String TT_3 = wrapperAncImmunizationOBJ.getDateReceivedForTT_3().split("T")[0];
 				ancWomenVaccineDetail
-				.setReceivedDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(TT_3).getTime()));
+						.setReceivedDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(TT_3).getTime()));
 			}
 			ancWomenVaccineDetail.setReceivedFacilityName(wrapperAncImmunizationOBJ.getFacilityNameOfTT_3());
 			ancWomenVaccineDetail.setModifiedBy(wrapperAncImmunizationOBJ.getModifiedBy());
@@ -590,7 +602,8 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	}
 
 	@Override
-	public Long saveSysGenitourinarySystemExamination(SysGenitourinarySystemExamination genitourinarySystemExamination) {
+	public Long saveSysGenitourinarySystemExamination(
+			SysGenitourinarySystemExamination genitourinarySystemExamination) {
 		// TODO Auto-generated method stub
 		Long r = null;
 		SysGenitourinarySystemExamination sysGenitourinarySystemExaminationRS = sysGenitourinarySystemExaminationRepo
@@ -738,8 +751,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	public String getBenVisitDetailsFrmNurseANC(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
 
-		resMap.put("ANCNurseVisitDetail",
-				nurseServiceImpl.getCSVisitDetails(benRegID, benVisitID));
+		resMap.put("ANCNurseVisitDetail", nurseServiceImpl.getCSVisitDetails(benRegID, benVisitID));
 
 		resMap.put("BenAdherence", getBenAdherence(benRegID, benVisitID));
 
@@ -750,28 +762,34 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		return resMap.toString();
 	}
 
-	/*public BeneficiaryVisitDetail getCSVisitDetails(Long benRegID, Long benVisitID) {
-		BeneficiaryVisitDetail benVisitDetailsOBJ = benVisitDetailRepo.getVisitDetails(benRegID, benVisitID);
+	/*
+	 * public BeneficiaryVisitDetail getCSVisitDetails(Long benRegID, Long
+	 * benVisitID) { BeneficiaryVisitDetail benVisitDetailsOBJ =
+	 * benVisitDetailRepo.getVisitDetails(benRegID, benVisitID);
+	 * 
+	 * BeneficiaryVisitDetail benVisitDetailsOBJ1 = null; if (null !=
+	 * benVisitDetailsOBJ) { benVisitDetailsOBJ1 = new
+	 * BeneficiaryVisitDetail(benVisitDetailsOBJ.getBenVisitID(),
+	 * benVisitDetailsOBJ.getBeneficiaryRegID(),
+	 * benVisitDetailsOBJ.getProviderServiceMapID(),
+	 * benVisitDetailsOBJ.getVisitDateTime(), benVisitDetailsOBJ.getVisitNo(),
+	 * benVisitDetailsOBJ.getVisitReasonID(),
+	 * benVisitDetailsOBJ.getVisitReason(),
+	 * benVisitDetailsOBJ.getVisitCategoryID(),
+	 * benVisitDetailsOBJ.getVisitCategory(),
+	 * benVisitDetailsOBJ.getPregnancyStatus(), benVisitDetailsOBJ.getrCHID(),
+	 * benVisitDetailsOBJ.getHealthFacilityType(),
+	 * benVisitDetailsOBJ.getHealthFacilityLocation(),
+	 * benVisitDetailsOBJ.getReportFilePath(), benVisitDetailsOBJ.getDeleted(),
+	 * benVisitDetailsOBJ.getProcessed(), benVisitDetailsOBJ.getCreatedBy(),
+	 * benVisitDetailsOBJ.getCreatedDate(), benVisitDetailsOBJ.getModifiedBy(),
+	 * benVisitDetailsOBJ.getLastModDate());
+	 * 
+	 * }
+	 * 
+	 * return benVisitDetailsOBJ1; }
+	 */
 
-		BeneficiaryVisitDetail benVisitDetailsOBJ1 = null;
-		if (null != benVisitDetailsOBJ) {
-			benVisitDetailsOBJ1 = new BeneficiaryVisitDetail(benVisitDetailsOBJ.getBenVisitID(),
-					benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitDetailsOBJ.getProviderServiceMapID(),
-					benVisitDetailsOBJ.getVisitDateTime(), benVisitDetailsOBJ.getVisitNo(),
-					benVisitDetailsOBJ.getVisitReasonID(), benVisitDetailsOBJ.getVisitReason(),
-					benVisitDetailsOBJ.getVisitCategoryID(), benVisitDetailsOBJ.getVisitCategory(),
-					benVisitDetailsOBJ.getPregnancyStatus(), benVisitDetailsOBJ.getrCHID(),
-					benVisitDetailsOBJ.getHealthFacilityType(), benVisitDetailsOBJ.getHealthFacilityLocation(),
-					benVisitDetailsOBJ.getReportFilePath(), benVisitDetailsOBJ.getDeleted(),
-					benVisitDetailsOBJ.getProcessed(), benVisitDetailsOBJ.getCreatedBy(),
-					benVisitDetailsOBJ.getCreatedDate(), benVisitDetailsOBJ.getModifiedBy(),
-					benVisitDetailsOBJ.getLastModDate());
-
-		}
-
-		return benVisitDetailsOBJ1;
-	}*/
-	
 	@Override
 	public String getBenAdherence(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> resList = benAdherenceRepo.getBenAdherence(beneficiaryRegID, benVisitID);
@@ -818,6 +836,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		return new Gson().toJson(ancWomenVaccineDetails);
 	}
 
+	@Deprecated
 	@Override
 	public Integer saveAncDocFindings(WrapperAncFindings wrapperAncFindings) {
 		int i = 0;
@@ -892,6 +911,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		return prescriptionID;
 	}
 
+	@Deprecated
 	public Long saveBenANCDiagnosis(ANCDiagnosis ancDiagnosis) {
 		Long ID = null;
 		ANCDiagnosis res = ancDiagnosisRepo.save(ancDiagnosis);
@@ -900,14 +920,17 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		}
 		return ID;
 	}
-	
+
+	@Deprecated
 	private PrescribedDrugDetailRepo prescribedDrugDetailRepo;
 
+	@Deprecated
 	@Autowired
 	public void setPrescribedDrugDetailRepo(PrescribedDrugDetailRepo prescribedDrugDetailRepo) {
 		this.prescribedDrugDetailRepo = prescribedDrugDetailRepo;
 	}
 
+	@Deprecated
 	@Override
 	public Integer saveBenANCPrescription(List<PrescribedDrugDetail> prescribedDrugDetailList) {
 		Integer r = 0;
@@ -1054,18 +1077,15 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		return familyHistorySuccessFlag;
 	}
 
-	/*	Long pastHistorySuccessFlag = null;
-	Long comrbidSuccessFlag = null;
-	Long medicationSuccessFlag = null;
-	Long personalHistorySuccessFlag = null;
-	Long allergyHistorySuccessFlag = null;
-	Long familyHistorySuccessFlag = null;
-	Long menstrualHistorySuccessFlag = null;
-	Long obstetricSuccessFlag = null;
-	Long immunizationSuccessFlag = null;
-	Long childVaccineSuccessFlag = null;
-	*/
-	
+	/*
+	 * Long pastHistorySuccessFlag = null; Long comrbidSuccessFlag = null; Long
+	 * medicationSuccessFlag = null; Long personalHistorySuccessFlag = null;
+	 * Long allergyHistorySuccessFlag = null; Long familyHistorySuccessFlag =
+	 * null; Long menstrualHistorySuccessFlag = null; Long obstetricSuccessFlag
+	 * = null; Long immunizationSuccessFlag = null; Long childVaccineSuccessFlag
+	 * = null;
+	 */
+
 	@Override
 	public Long saveChildFeedingHistory(ChildFeedingDetails childFeedingDetails) {
 		Long feedingSuccessFlag = null;
@@ -1145,8 +1165,8 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 
 	@Override
 	public String fetchBenComorbidityHistory(Long beneficiaryRegID) {
-		ArrayList<Object[]> bencomrbidityCondDetails = bencomrbidityCondRepo.getBencomrbidityCondDetails(beneficiaryRegID);
-
+		ArrayList<Object[]> bencomrbidityCondDetails = bencomrbidityCondRepo
+				.getBencomrbidityCondDetails(beneficiaryRegID);
 
 		Map<String, Object> response = new HashMap<String, Object>();
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
@@ -1167,13 +1187,12 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		column.put("keyName", "year");
 		columns.add(column);
 
-
-
 		ArrayList<BencomrbidityCondDetails> bencomrbidityConds = new ArrayList<BencomrbidityCondDetails>();
 		if (null != bencomrbidityCondDetails) {
 			for (Object[] obj : bencomrbidityCondDetails) {
 
-				BencomrbidityCondDetails history = new BencomrbidityCondDetails((String)obj[0], (String)obj[1], (Timestamp)obj[2]);
+				BencomrbidityCondDetails history = new BencomrbidityCondDetails((String) obj[0], (String) obj[1],
+						(Timestamp) obj[2]);
 				bencomrbidityConds.add(history);
 			}
 
@@ -1394,7 +1413,6 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		ArrayList<Object[]> beMedicationHistory = benMedicationHistoryRepo
 				.getBenMedicationHistoryDetail(beneficiaryRegID);
 
-
 		Map<String, Object> response = new HashMap<String, Object>();
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
 		Map<String, Object> column = new HashMap<String, Object>();
@@ -1425,8 +1443,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 
 	@Override
 	public String fetchBenPersonalFamilyHistory(Long beneficiaryRegID) {
-		ArrayList<Object[]> benFamilyHistory = benFamilyHistoryRepo
-				.getBenFamilyHistoryDetail(beneficiaryRegID);
+		ArrayList<Object[]> benFamilyHistory = benFamilyHistoryRepo.getBenFamilyHistoryDetail(beneficiaryRegID);
 
 		Map<String, Object> response = new HashMap<String, Object>();
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
@@ -1469,8 +1486,8 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		ArrayList<BenFamilyHistory> familyHistory = new ArrayList<BenFamilyHistory>();
 		if (null != benFamilyHistory) {
 			for (Object[] obj : benFamilyHistory) {
-				BenFamilyHistory history = new BenFamilyHistory((String)obj[0], (Short)obj[1], (String)obj[2], (String)obj[3], (Boolean)obj[4],
-						(String)obj[5], (Boolean)obj[6]);
+				BenFamilyHistory history = new BenFamilyHistory((String) obj[0], (Short) obj[1], (String) obj[2],
+						(String) obj[3], (Boolean) obj[4], (String) obj[5], (Boolean) obj[6]);
 				familyHistory.add(history);
 			}
 
@@ -1484,8 +1501,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 
 	@Override
 	public String fetchBenMenstrualHistory(Long beneficiaryRegID) {
-		ArrayList<Object[]> benMenstrualDetails = benMenstrualDetailsRepo
-				.getBenMenstrualDetail(beneficiaryRegID);
+		ArrayList<Object[]> benMenstrualDetails = benMenstrualDetailsRepo.getBenMenstrualDetail(beneficiaryRegID);
 
 		Map<String, Object> response = new HashMap<String, Object>();
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
@@ -1533,8 +1549,9 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		ArrayList<BenMenstrualDetails> menstrualDetails = new ArrayList<BenMenstrualDetails>();
 		if (null != benMenstrualDetails) {
 			for (Object[] obj : benMenstrualDetails) {
-				BenMenstrualDetails history = new BenMenstrualDetails((Short)obj[0], (String)obj[1], (Short)obj[2], (String)obj[3], 
-						(Short)obj[4], (String)obj[5], (Short)obj[6], (String)obj[7], (Timestamp)obj[8]);
+				BenMenstrualDetails history = new BenMenstrualDetails((Short) obj[0], (String) obj[1], (Short) obj[2],
+						(String) obj[3], (Short) obj[4], (String) obj[5], (Short) obj[6], (String) obj[7],
+						(Timestamp) obj[8]);
 				menstrualDetails.add(history);
 			}
 
@@ -1544,11 +1561,12 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		response.put("data", menstrualDetails);
 		return new Gson().toJson(response);
 
-	}	
+	}
 
 	@Override
 	public String fetchBenPastObstetricHistory(Long beneficiaryRegID) {
-		ArrayList<Object[]> femaleObstetricHistory = femaleObstetricHistoryRepo.getBenFemaleObstetricHistoryDetail(beneficiaryRegID);
+		ArrayList<Object[]> femaleObstetricHistory = femaleObstetricHistoryRepo
+				.getBenFemaleObstetricHistoryDetail(beneficiaryRegID);
 
 		Map<String, Object> response = new HashMap<String, Object>();
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
@@ -1685,12 +1703,14 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 
 		ArrayList<FemaleObstetricHistory> femaleObstetricDetails = new ArrayList<FemaleObstetricHistory>();
 		if (null != femaleObstetricHistory) {
-			for (Object[] obj : femaleObstetricHistory) {		
+			for (Object[] obj : femaleObstetricHistory) {
 
-				FemaleObstetricHistory history = new FemaleObstetricHistory((Short)obj[0], (Short)obj[1], (String)obj[2], 
-						(String)obj[3], (Short)obj[4], (String)obj[5], (Short)obj[6], (String)obj[7], (Short)obj[8], (String)obj[9],
-						(String)obj[10], (Short)obj[11], (String)obj[12], (String)obj[13], (Short)obj[14], (String)obj[15], (Short)obj[16], 
-						(String)obj[17],(String)obj[18], (Short)obj[19], (String)obj[20], (String)obj[21], (String)obj[22], (Short)obj[23],(String)obj[24], (String)obj[25]);
+				FemaleObstetricHistory history = new FemaleObstetricHistory((Short) obj[0], (Short) obj[1],
+						(String) obj[2], (String) obj[3], (Short) obj[4], (String) obj[5], (Short) obj[6],
+						(String) obj[7], (Short) obj[8], (String) obj[9], (String) obj[10], (Short) obj[11],
+						(String) obj[12], (String) obj[13], (Short) obj[14], (String) obj[15], (Short) obj[16],
+						(String) obj[17], (String) obj[18], (Short) obj[19], (String) obj[20], (String) obj[21],
+						(String) obj[22], (Short) obj[23], (String) obj[24], (String) obj[25]);
 				femaleObstetricDetails.add(history);
 			}
 
@@ -1704,7 +1724,8 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 
 	@Override
 	public String fetchBenOptionalVaccineHistory(Long beneficiaryRegID) {
-		ArrayList<Object[]> childOptionalVaccineDetail = childOptionalVaccineDetailRepo.getBenOptionalVaccineDetail(beneficiaryRegID);
+		ArrayList<Object[]> childOptionalVaccineDetail = childOptionalVaccineDetailRepo
+				.getBenOptionalVaccineDetail(beneficiaryRegID);
 
 		Map<String, Object> response = new HashMap<String, Object>();
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
@@ -1742,8 +1763,8 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		ArrayList<ChildOptionalVaccineDetail> childOptionalVaccineDetails = new ArrayList<ChildOptionalVaccineDetail>();
 		if (null != childOptionalVaccineDetail) {
 			for (Object[] obj : childOptionalVaccineDetail) {
-				ChildOptionalVaccineDetail history = new ChildOptionalVaccineDetail((String)obj[0], (String)obj[1], (String)obj[2], (Timestamp)obj[3], 
-						(String)obj[4], (String)obj[5]);
+				ChildOptionalVaccineDetail history = new ChildOptionalVaccineDetail((String) obj[0], (String) obj[1],
+						(String) obj[2], (Timestamp) obj[3], (String) obj[4], (String) obj[5]);
 				childOptionalVaccineDetails.add(history);
 			}
 		}
@@ -1757,7 +1778,7 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	@Override
 	public String fetchBenImmunizationHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> childVaccineDetail = childVaccineDetail1Repo.getBenChildVaccineDetails(beneficiaryRegID);
-	
+
 		Map<String, Object> response = new HashMap<String, Object>();
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
 		Map<String, Object> column = new HashMap<String, Object>();
@@ -1770,27 +1791,27 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		column.put("columnName", "Vaccine Name");
 		column.put("keyName", "vaccineName");
 		columns.add(column);
-		
+
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Status");
 		column.put("keyName", "status");
 		columns.add(column);
 
-		
 		ArrayList<ChildVaccineDetail1> childVaccineDetails = new ArrayList<ChildVaccineDetail1>();
 		if (null != childVaccineDetail) {
 			for (Object[] obj : childVaccineDetail) {
-				ChildVaccineDetail1 history = new ChildVaccineDetail1((String)obj[0], (String)obj[1], (Boolean)obj[2]);
+				ChildVaccineDetail1 history = new ChildVaccineDetail1((String) obj[0], (String) obj[1],
+						(Boolean) obj[2]);
 				childVaccineDetails.add(history);
 			}
 		}
-		
+
 		response.put("columns", columns);
 		response.put("data", childVaccineDetails);
 		return new Gson().toJson(response);
 
 	}
-	
+
 	@Deprecated
 	@Override
 	public String getBenANCHistoryDetails(Long benRegID, Long benVisitID) {
@@ -1809,109 +1830,121 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		return new Gson().toJson(HistoryDetailsMap);
 	}
 
-
-	public BenMedHistory getPastHistoryData(Long beneficiaryRegID, Long benVisitID){
-		ArrayList<Object[]>  pastHistory = benMedHistoryRepo.getBenPastHistory(beneficiaryRegID, benVisitID);
+	public BenMedHistory getPastHistoryData(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> pastHistory = benMedHistoryRepo.getBenPastHistory(beneficiaryRegID, benVisitID);
 
 		BenMedHistory medHistory = new BenMedHistory();
 		BenMedHistory benMedHistory = medHistory.getBenPastHistory(pastHistory);
 		return benMedHistory;
 	}
 
-	public WrapperComorbidCondDetails getComorbidityConditionsHistory(Long beneficiaryRegID, Long benVisitID){
-		ArrayList<Object[]>  comrbidityConds = bencomrbidityCondRepo.getBencomrbidityCondDetails(beneficiaryRegID, benVisitID);
+	public WrapperComorbidCondDetails getComorbidityConditionsHistory(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> comrbidityConds = bencomrbidityCondRepo.getBencomrbidityCondDetails(beneficiaryRegID,
+				benVisitID);
 
-		WrapperComorbidCondDetails comrbidityCondDetails = WrapperComorbidCondDetails.getComorbidityDetails(comrbidityConds);
+		WrapperComorbidCondDetails comrbidityCondDetails = WrapperComorbidCondDetails
+				.getComorbidityDetails(comrbidityConds);
 		return comrbidityCondDetails;
 	}
 
-	public WrapperMedicationHistory getMedicationHistory(Long beneficiaryRegID, Long benVisitID){
-		ArrayList<Object[]>  medicationHistory = benMedicationHistoryRepo.getBenMedicationHistoryDetail(beneficiaryRegID, benVisitID);
+	public WrapperMedicationHistory getMedicationHistory(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> medicationHistory = benMedicationHistoryRepo.getBenMedicationHistoryDetail(beneficiaryRegID,
+				benVisitID);
 
-		WrapperMedicationHistory wrapperMedicationHistory = WrapperMedicationHistory.getMedicationHistoryDetails(medicationHistory);
+		WrapperMedicationHistory wrapperMedicationHistory = WrapperMedicationHistory
+				.getMedicationHistoryDetails(medicationHistory);
 		return wrapperMedicationHistory;
 	}
 
-	public BenPersonalHabit getPersonalHistory(Long beneficiaryRegID, Long benVisitID){
-		ArrayList<Object[]>  personalDetails = benPersonalHabitRepo.getBenPersonalHabitDetail(beneficiaryRegID, benVisitID);
+	public BenPersonalHabit getPersonalHistory(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> personalDetails = benPersonalHabitRepo.getBenPersonalHabitDetail(beneficiaryRegID,
+				benVisitID);
 
-		ArrayList<Object[]>  allergyDetails = benAllergyHistoryRepo.getBenPersonalAllergyDetail(beneficiaryRegID, benVisitID);
+		ArrayList<Object[]> allergyDetails = benAllergyHistoryRepo.getBenPersonalAllergyDetail(beneficiaryRegID,
+				benVisitID);
 
 		BenPersonalHabit personalHabits = BenPersonalHabit.getPersonalDetails(personalDetails);
-		ArrayList<BenAllergyHistory>  allergyList= BenAllergyHistory.getBenAllergicHistory(allergyDetails);
-		if(null != allergyList && allergyList.size()>0){
+		ArrayList<BenAllergyHistory> allergyList = BenAllergyHistory.getBenAllergicHistory(allergyDetails);
+		if (null != allergyList && allergyList.size() > 0) {
 			personalHabits.setAllergyStatus(allergyList.get(0).getAllergyStatus());
 			personalHabits.setAllergicList(allergyList);
 		}
 
-
 		return personalHabits;
 	}
 
-	public BenFamilyHistory getFamilyHistory(Long beneficiaryRegID, Long benVisitID){
-		ArrayList<Object[]>  familyHistory = benFamilyHistoryRepo.getBenFamilyHistoryDetail(beneficiaryRegID, benVisitID);
+	public BenFamilyHistory getFamilyHistory(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> familyHistory = benFamilyHistoryRepo.getBenFamilyHistoryDetail(beneficiaryRegID,
+				benVisitID);
 		BenFamilyHistory familyHistoryDetails = BenFamilyHistory.getBenFamilyHistory(familyHistory);
 
 		return familyHistoryDetails;
 	}
 
-	public BenMenstrualDetails getMenstrualHistory(Long beneficiaryRegID, Long benVisitID){
-		ArrayList<Object[]>  menstrualHistory = benMenstrualDetailsRepo.getBenMenstrualDetail(beneficiaryRegID, benVisitID);
+	public BenMenstrualDetails getMenstrualHistory(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> menstrualHistory = benMenstrualDetailsRepo.getBenMenstrualDetail(beneficiaryRegID,
+				benVisitID);
 		BenMenstrualDetails menstrualHistoryDetails = BenMenstrualDetails.getBenMenstrualDetails(menstrualHistory);
 
 		return menstrualHistoryDetails;
 	}
 
-	public WrapperFemaleObstetricHistory getFemaleObstetricHistory(Long beneficiaryRegID, Long benVisitID){
-		ArrayList<Object[]>  femaleObstetricHistory = femaleObstetricHistoryRepo.getBenFemaleObstetricHistoryDetail(beneficiaryRegID, benVisitID);
-		WrapperFemaleObstetricHistory femaleObstetricHistoryDetails = WrapperFemaleObstetricHistory.getFemaleObstetricHistory(femaleObstetricHistory);
+	public WrapperFemaleObstetricHistory getFemaleObstetricHistory(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> femaleObstetricHistory = femaleObstetricHistoryRepo
+				.getBenFemaleObstetricHistoryDetail(beneficiaryRegID, benVisitID);
+		WrapperFemaleObstetricHistory femaleObstetricHistoryDetails = WrapperFemaleObstetricHistory
+				.getFemaleObstetricHistory(femaleObstetricHistory);
 
 		return femaleObstetricHistoryDetails;
 	}
 
-	public WrapperChildOptionalVaccineDetail getChildOptionalVaccineHistory(Long beneficiaryRegID, Long benVisitID){
-		ArrayList<Object[]>  childOptionalVaccineDetail = childOptionalVaccineDetailRepo.getBenOptionalVaccineDetail(beneficiaryRegID, benVisitID);
-		WrapperChildOptionalVaccineDetail childOptionalVaccineDetails = WrapperChildOptionalVaccineDetail.getChildOptionalVaccineDetail(childOptionalVaccineDetail);
+	public WrapperChildOptionalVaccineDetail getChildOptionalVaccineHistory(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> childOptionalVaccineDetail = childOptionalVaccineDetailRepo
+				.getBenOptionalVaccineDetail(beneficiaryRegID, benVisitID);
+		WrapperChildOptionalVaccineDetail childOptionalVaccineDetails = WrapperChildOptionalVaccineDetail
+				.getChildOptionalVaccineDetail(childOptionalVaccineDetail);
 
 		return childOptionalVaccineDetails;
 	}
 
-	
-	public WrapperImmunizationHistory getImmunizationHistory(Long beneficiaryRegID, Long benVisitID){
-		ArrayList<Object[]>  childVaccineDetail = childVaccineDetail1Repo.getBenChildVaccineDetails(beneficiaryRegID, benVisitID);
-		WrapperImmunizationHistory childVaccineDetails = WrapperImmunizationHistory.getChildVaccineDetail(childVaccineDetail);
-		
+	public WrapperImmunizationHistory getImmunizationHistory(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> childVaccineDetail = childVaccineDetail1Repo.getBenChildVaccineDetails(beneficiaryRegID,
+				benVisitID);
+		WrapperImmunizationHistory childVaccineDetails = WrapperImmunizationHistory
+				.getChildVaccineDetail(childVaccineDetail);
+
 		return childVaccineDetails;
 	}
-	
+
 	@Override
 	public int updateBenAdherenceDetails(BenAdherence benAdherence) {
 		int r = 0;
-		String processed = benAdherenceRepo.getBenAdherenceDetailsStatus(benAdherence.getBeneficiaryRegID(), 
+		String processed = benAdherenceRepo.getBenAdherenceDetailsStatus(benAdherence.getBeneficiaryRegID(),
 				benAdherence.getBenVisitID(), benAdherence.getID());
-		if( null != processed && !"N".equals(processed)){
+		if (null != processed && !"N".equals(processed)) {
 			processed = "U";
 		}
-		r = benAdherenceRepo.updateBenAdherence(benAdherence.getToDrugs(), benAdherence.getDrugReason(), benAdherence.getToReferral(), 
-				benAdherence.getReferralReason(), benAdherence.getProgress(), benAdherence.getModifiedBy(), processed, benAdherence.getBeneficiaryRegID(), 
+		r = benAdherenceRepo.updateBenAdherence(benAdherence.getToDrugs(), benAdherence.getDrugReason(),
+				benAdherence.getToReferral(), benAdherence.getReferralReason(), benAdherence.getProgress(),
+				benAdherence.getModifiedBy(), processed, benAdherence.getBeneficiaryRegID(),
 				benAdherence.getBenVisitID(), benAdherence.getID());
-		/*BenAdherence  adherence= benAdherenceRepo.save(benAdherence);
-		if(null !=adherence){
-			r=1;
-		}*/
+		/*
+		 * BenAdherence adherence= benAdherenceRepo.save(benAdherence); if(null
+		 * !=adherence){ r=1; }
+		 */
 		return r;
 	}
 
 	@Override
 	public int updateBenChiefComplaints(List<BenChiefComplaint> benChiefComplaintList) {
 		int r = 0;
-		if(null != benChiefComplaintList && benChiefComplaintList.size()>0){
-			benChiefComplaintRepo.deleteExistingBenChiefComplaints(benChiefComplaintList.get(0).getBeneficiaryRegID(), 
+		if (null != benChiefComplaintList && benChiefComplaintList.size() > 0) {
+			benChiefComplaintRepo.deleteExistingBenChiefComplaints(benChiefComplaintList.get(0).getBeneficiaryRegID(),
 					benChiefComplaintList.get(0).getBenVisitID());
-			
+
 			List<BenChiefComplaint> benChiefComplaintResultList = (List<BenChiefComplaint>) benChiefComplaintRepo
-						.save(benChiefComplaintList);
-	
+					.save(benChiefComplaintList);
+
 			if (benChiefComplaintResultList != null && benChiefComplaintResultList.size() > 0) {
 				r = benChiefComplaintResultList.size();
 			}
@@ -1935,7 +1968,8 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 			ArrayList<LabTestOrderDetail> investigationList = wrapperBenInvestigationANC.getLaboratoryList();
 			if (investigationList != null && investigationList.size() > 0) {
 
-				labTestOrderDetailRepo.deleteExistingLabTestOrderDetail(wrapperBenInvestigationANC.getBeneficiaryRegID(), wrapperBenInvestigationANC.getBenVisitID());
+				labTestOrderDetailRepo.deleteExistingLabTestOrderDetail(
+						wrapperBenInvestigationANC.getBeneficiaryRegID(), wrapperBenInvestigationANC.getBenVisitID());
 
 				for (LabTestOrderDetail testData : investigationList) {
 
@@ -1966,63 +2000,67 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	@Override
 	public int updateBenAncCareDetails(ANCCareDetails ancCareDetailsOBJ) throws ParseException {
 		int r = 0;
-		
-		String processed = ancCareRepo.getBenANCCareDetailsStatus(ancCareDetailsOBJ.getBeneficiaryRegID(), 
+
+		String processed = ancCareRepo.getBenANCCareDetailsStatus(ancCareDetailsOBJ.getBeneficiaryRegID(),
 				ancCareDetailsOBJ.getBenVisitID());
-		if( null != processed && !"N".equals(processed)){
+		if (null != processed && !"N".equals(processed)) {
 			processed = "U";
 		}
-		
+
 		if (ancCareDetailsOBJ.getLmpDate() != null && !ancCareDetailsOBJ.getLmpDate().isEmpty()
 				&& ancCareDetailsOBJ.getLmpDate().length() >= 10) {
 			String lmpDate = ancCareDetailsOBJ.getLmpDate().split("T")[0];
 			ancCareDetailsOBJ
-			.setLastMenstrualPeriod_LMP(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(lmpDate).getTime()));
+					.setLastMenstrualPeriod_LMP(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(lmpDate).getTime()));
 		}
 		if (ancCareDetailsOBJ.getExpDelDt() != null && !ancCareDetailsOBJ.getExpDelDt().isEmpty()
 				&& ancCareDetailsOBJ.getExpDelDt().length() >= 10) {
 			String edDate = ancCareDetailsOBJ.getExpDelDt().split("T")[0];
 			ancCareDetailsOBJ
-			.setExpectedDateofDelivery(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(edDate).getTime()));
+					.setExpectedDateofDelivery(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(edDate).getTime()));
 		}
-		r = ancCareRepo.updateANCCareDetails(ancCareDetailsOBJ.getComolaintType(), ancCareDetailsOBJ.getDuration(), 
-				ancCareDetailsOBJ.getDescription(), ancCareDetailsOBJ.getaNCRegistrationDate(), ancCareDetailsOBJ.getaNCVisitNumber(), 
-				ancCareDetailsOBJ.getLastMenstrualPeriod_LMP(), ancCareDetailsOBJ.getGestationalAgeOrPeriodofAmenorrhea_POA(), 
-				ancCareDetailsOBJ.getTrimesterNumber(), ancCareDetailsOBJ.getExpectedDateofDelivery(), ancCareDetailsOBJ.getPrimiGravida(), 
-				ancCareDetailsOBJ.getObstetricFormula(), ancCareDetailsOBJ.getGravida_G(), ancCareDetailsOBJ.getTermDeliveries_T(), 
-				ancCareDetailsOBJ.getPretermDeliveries_P(), ancCareDetailsOBJ.getAbortions_A(), ancCareDetailsOBJ.getLivebirths_L(), 
-				ancCareDetailsOBJ.getBloodGroup(), ancCareDetailsOBJ.getModifiedBy(), processed, ancCareDetailsOBJ.getBeneficiaryRegID(), ancCareDetailsOBJ.getBenVisitID());
+		r = ancCareRepo.updateANCCareDetails(ancCareDetailsOBJ.getComolaintType(), ancCareDetailsOBJ.getDuration(),
+				ancCareDetailsOBJ.getDescription(), ancCareDetailsOBJ.getaNCRegistrationDate(),
+				ancCareDetailsOBJ.getaNCVisitNumber(), ancCareDetailsOBJ.getLastMenstrualPeriod_LMP(),
+				ancCareDetailsOBJ.getGestationalAgeOrPeriodofAmenorrhea_POA(), ancCareDetailsOBJ.getTrimesterNumber(),
+				ancCareDetailsOBJ.getExpectedDateofDelivery(), ancCareDetailsOBJ.getPrimiGravida(),
+				ancCareDetailsOBJ.getObstetricFormula(), ancCareDetailsOBJ.getGravida_G(),
+				ancCareDetailsOBJ.getTermDeliveries_T(), ancCareDetailsOBJ.getPretermDeliveries_P(),
+				ancCareDetailsOBJ.getAbortions_A(), ancCareDetailsOBJ.getLivebirths_L(),
+				ancCareDetailsOBJ.getBloodGroup(), ancCareDetailsOBJ.getModifiedBy(), processed,
+				ancCareDetailsOBJ.getBeneficiaryRegID(), ancCareDetailsOBJ.getBenVisitID());
 		return r;
-	}	
+	}
 
 	@Override
 	public int updateBenAncImmunizationDetails(WrapperAncImmunization wrapperAncImmunization) throws ParseException {
 		int r = 0;
-		
+
 		List<ANCWomenVaccineDetail> ancWomenVaccineDetailList = getANCWomenVaccineDetail(wrapperAncImmunization);
-		
-		if(null != ancWomenVaccineDetailList){
-			
+
+		if (null != ancWomenVaccineDetailList) {
+
 			String processed = "N";
 			ANCWomenVaccineDetail ancWomenVaccine = ancWomenVaccineDetailList.get(0);
-			ArrayList<Object[]> ancWomenVaccineStatuses = ancWomenVaccineRepo.getBenANCWomenVaccineStatus(ancWomenVaccine.getBeneficiaryRegID(), 
-					ancWomenVaccine.getBenVisitID());
+			ArrayList<Object[]> ancWomenVaccineStatuses = ancWomenVaccineRepo.getBenANCWomenVaccineStatus(
+					ancWomenVaccine.getBeneficiaryRegID(), ancWomenVaccine.getBenVisitID());
 			Map<String, String> womenVaccineStatuses = new HashMap<String, String>();
-			
-			for(Object[] obj : ancWomenVaccineStatuses){
-				womenVaccineStatuses.put((String)obj[0], (String)obj[1]);
+
+			for (Object[] obj : ancWomenVaccineStatuses) {
+				womenVaccineStatuses.put((String) obj[0], (String) obj[1]);
 			}
-			
-			for(ANCWomenVaccineDetail ancWomenVaccineDetail : ancWomenVaccineDetailList){
+
+			for (ANCWomenVaccineDetail ancWomenVaccineDetail : ancWomenVaccineDetailList) {
 				processed = womenVaccineStatuses.get(ancWomenVaccineDetail.getVaccineName());
-				if(!processed.equals("N")){
+				if (!processed.equals("N")) {
 					processed = "U";
 				}
-				
-				r = ancWomenVaccineRepo.updateANCImmunizationDetails(ancWomenVaccineDetail.getStatus(), ancWomenVaccineDetail.getReceivedDate(),
-					ancWomenVaccineDetail.getReceivedFacilityName(), ancWomenVaccineDetail.getModifiedBy(), processed, ancWomenVaccineDetail.getBeneficiaryRegID(),
-					 ancWomenVaccineDetail.getBenVisitID(), ancWomenVaccineDetail.getVaccineName());
-				
+
+				r = ancWomenVaccineRepo.updateANCImmunizationDetails(ancWomenVaccineDetail.getStatus(),
+						ancWomenVaccineDetail.getReceivedDate(), ancWomenVaccineDetail.getReceivedFacilityName(),
+						ancWomenVaccineDetail.getModifiedBy(), processed, ancWomenVaccineDetail.getBeneficiaryRegID(),
+						ancWomenVaccineDetail.getBenVisitID(), ancWomenVaccineDetail.getVaccineName());
+
 			}
 		}
 		return r;
@@ -2031,9 +2069,11 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	@Override
 	public int updateBenAncPastHistoryDetails(BenMedHistory benMedHistory) throws ParseException {
 		Integer r = 0;
-		if(null !=benMedHistory){
-			//Delete Existing past History of beneficiary before inserting updated history
-			benMedHistoryRepo.deleteExistingBenMedHistory(benMedHistory.getBeneficiaryRegID(), benMedHistory.getBenVisitID());
+		if (null != benMedHistory) {
+			// Delete Existing past History of beneficiary before inserting
+			// updated history
+			benMedHistoryRepo.deleteExistingBenMedHistory(benMedHistory.getBeneficiaryRegID(),
+					benMedHistory.getBenVisitID());
 
 			ArrayList<BenMedHistory> benMedHistoryList = benMedHistory.getBenPastHistory();
 			ArrayList<BenMedHistory> res = (ArrayList<BenMedHistory>) benMedHistoryRepo.save(benMedHistoryList);
@@ -2047,9 +2087,9 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	@Override
 	public int updateBenANCComorbidConditions(WrapperComorbidCondDetails wrapperComorbidCondDetails) {
 		int r = 0;
-		if(null != wrapperComorbidCondDetails){
-			bencomrbidityCondRepo.deleteExistingBenComrbidityCondDetails(wrapperComorbidCondDetails.getBeneficiaryRegID(), 
-					wrapperComorbidCondDetails.getBenVisitID());
+		if (null != wrapperComorbidCondDetails) {
+			bencomrbidityCondRepo.deleteExistingBenComrbidityCondDetails(
+					wrapperComorbidCondDetails.getBeneficiaryRegID(), wrapperComorbidCondDetails.getBenVisitID());
 
 			ArrayList<BencomrbidityCondDetails> bencomrbidityCondDetailsList = wrapperComorbidCondDetails
 					.getComrbidityConds();
@@ -2065,8 +2105,8 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	@Override
 	public int updateBenANCMedicationHistory(WrapperMedicationHistory wrapperMedicationHistory) {
 		Integer r = 0;
-		if(null != wrapperMedicationHistory){
-			benMedicationHistoryRepo.deleteExistingBenMedicationHistory(wrapperMedicationHistory.getBeneficiaryRegID(), 
+		if (null != wrapperMedicationHistory) {
+			benMedicationHistoryRepo.deleteExistingBenMedicationHistory(wrapperMedicationHistory.getBeneficiaryRegID(),
 					wrapperMedicationHistory.getBenVisitID());
 
 			ArrayList<BenMedicationHistory> benMedicationHistoryList = wrapperMedicationHistory
@@ -2083,8 +2123,8 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	@Override
 	public int updateBenANCPersonalHistory(BenPersonalHabit benPersonalHabit) {
 		Integer r = 0;
-		if(null != benPersonalHabit){
-			benPersonalHabitRepo.deleteExistingBenPersonalHistory(benPersonalHabit.getBeneficiaryRegID(), 
+		if (null != benPersonalHabit) {
+			benPersonalHabitRepo.deleteExistingBenPersonalHistory(benPersonalHabit.getBeneficiaryRegID(),
 					benPersonalHabit.getBenVisitID());
 
 			ArrayList<BenPersonalHabit> personalHabits = benPersonalHabit.getPersonalHistory();
@@ -2099,8 +2139,8 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	@Override
 	public int updateBenANCAllergicHistory(BenAllergyHistory benAllergyHistory) {
 		Integer r = 0;
-		if(null != benAllergyHistory){
-			benAllergyHistoryRepo.deleteExistingBenAllergyHistory(benAllergyHistory.getBeneficiaryRegID(), 
+		if (null != benAllergyHistory) {
+			benAllergyHistoryRepo.deleteExistingBenAllergyHistory(benAllergyHistory.getBeneficiaryRegID(),
 					benAllergyHistory.getBenVisitID());
 
 			ArrayList<BenAllergyHistory> allergyList = benAllergyHistory.getBenAllergicHistory();
@@ -2115,12 +2155,13 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	@Override
 	public int updateBenANCFamilyHistory(BenFamilyHistory benFamilyHistory) {
 		Integer r = 0;
-		if(null != benFamilyHistory){
-			benFamilyHistoryRepo.deleteExistingBenFamilyHistory(benFamilyHistory.getBeneficiaryRegID(), 
+		if (null != benFamilyHistory) {
+			benFamilyHistoryRepo.deleteExistingBenFamilyHistory(benFamilyHistory.getBeneficiaryRegID(),
 					benFamilyHistory.getBenVisitID());
 
 			ArrayList<BenFamilyHistory> familyHistoryList = benFamilyHistory.getBenFamilyHistory();
-			ArrayList<BenFamilyHistory> res = (ArrayList<BenFamilyHistory>) benFamilyHistoryRepo.save(familyHistoryList);
+			ArrayList<BenFamilyHistory> res = (ArrayList<BenFamilyHistory>) benFamilyHistoryRepo
+					.save(familyHistoryList);
 			if (null != res && res.size() > 0) {
 				r = res.size();
 			}
@@ -2131,8 +2172,9 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	@Override
 	public int updateChildOptionalVaccineDetail(WrapperChildOptionalVaccineDetail wrapperChildOptionalVaccineDetail) {
 		Integer r = 0;
-		if(null != wrapperChildOptionalVaccineDetail){
-			childOptionalVaccineDetailRepo.deleteExistingChildOptionalVaccineDetail(wrapperChildOptionalVaccineDetail.getBeneficiaryRegID(), 
+		if (null != wrapperChildOptionalVaccineDetail) {
+			childOptionalVaccineDetailRepo.deleteExistingChildOptionalVaccineDetail(
+					wrapperChildOptionalVaccineDetail.getBeneficiaryRegID(),
 					wrapperChildOptionalVaccineDetail.getBenVisitID());
 
 			ArrayList<ChildOptionalVaccineDetail> childOptionalVaccineDetails = wrapperChildOptionalVaccineDetail
@@ -2145,34 +2187,36 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 		}
 		return r;
 	}
-	
+
 	@Override
 	public int updateANCChildImmunizationDetail(WrapperImmunizationHistory wrapperImmunizationHistory) {
 		Integer r = 0;
 
 		ArrayList<ChildVaccineDetail1> childVaccineDetails = wrapperImmunizationHistory.getBenChildVaccineDetails();
-		
-		if(null != childVaccineDetails){
+
+		if (null != childVaccineDetails) {
 			String processed = "N";
 			ChildVaccineDetail1 childVaccine = childVaccineDetails.get(0);
-			ArrayList<Object[]> childVaccineStatuses = childVaccineDetail1Repo.getBenChildVaccineDetailStatus(childVaccine.getBeneficiaryRegID(), 
-					childVaccine.getBenVisitID());
-			
+			ArrayList<Object[]> childVaccineStatuses = childVaccineDetail1Repo
+					.getBenChildVaccineDetailStatus(childVaccine.getBeneficiaryRegID(), childVaccine.getBenVisitID());
+
 			Map<String, String> vaccineStatuses = new HashMap<String, String>();
-			
-			for(Object[] obj : childVaccineStatuses){
-				vaccineStatuses.put((String)obj[0]+"-"+(String)obj[1], (String)obj[2]);
+
+			for (Object[] obj : childVaccineStatuses) {
+				vaccineStatuses.put((String) obj[0] + "-" + (String) obj[1], (String) obj[2]);
 			}
-			
-			for(ChildVaccineDetail1 childVaccineDetail:childVaccineDetails){
-				
-				processed = vaccineStatuses.get(childVaccineDetail.getDefaultReceivingAge()+"-"+childVaccineDetail.getVaccineName());
-				if( null != processed && !processed.equals("N")){
+
+			for (ChildVaccineDetail1 childVaccineDetail : childVaccineDetails) {
+
+				processed = vaccineStatuses
+						.get(childVaccineDetail.getDefaultReceivingAge() + "-" + childVaccineDetail.getVaccineName());
+				if (null != processed && !processed.equals("N")) {
 					processed = "U";
 				}
-				r = childVaccineDetail1Repo.updateChildANCImmunization(
-						childVaccineDetail.getStatus(), childVaccineDetail.getModifiedBy(), processed, childVaccineDetail.getBeneficiaryRegID(), 
-						childVaccineDetail.getBenVisitID(), childVaccineDetail.getDefaultReceivingAge(), childVaccineDetail.getVaccineName());
+				r = childVaccineDetail1Repo.updateChildANCImmunization(childVaccineDetail.getStatus(),
+						childVaccineDetail.getModifiedBy(), processed, childVaccineDetail.getBeneficiaryRegID(),
+						childVaccineDetail.getBenVisitID(), childVaccineDetail.getDefaultReceivingAge(),
+						childVaccineDetail.getVaccineName());
 			}
 		}
 		return r;
@@ -2182,28 +2226,22 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	@Override
 	public int updateANCAnthropometryDetails(BenAnthropometryDetail anthropometryDetail) {
 		Integer r = 0;
-		if(null != anthropometryDetail){
-			
-			String processed = benAnthropometryRepo.getBenAnthropometryStatus(anthropometryDetail.getBeneficiaryRegID(), 
+		if (null != anthropometryDetail) {
+
+			String processed = benAnthropometryRepo.getBenAnthropometryStatus(anthropometryDetail.getBeneficiaryRegID(),
 					anthropometryDetail.getBenVisitID());
-			if(!processed.equals("N")){
+			if (!processed.equals("N")) {
 				processed = "U";
 			}
-			
-//			anthropometryDetail.setModifiedBy(anthropometryDetail.getCreatedBy());
-			r = benAnthropometryRepo.updateANCCareDetails(
-					anthropometryDetail.getWeight_Kg(), 
-					anthropometryDetail.getHeight_cm(), 
-					anthropometryDetail.getbMI(),
-					anthropometryDetail.getHeadCircumference_cm(), 
-					anthropometryDetail.getMidUpperArmCircumference_MUAC_cm(), 
-					anthropometryDetail.getHipCircumference_cm(), 
-					anthropometryDetail.getWaistCircumference_cm(), 
-					anthropometryDetail.getWaistHipRatio(), 
-					anthropometryDetail.getModifiedBy(), 
-					processed,
-					anthropometryDetail.getBeneficiaryRegID(), 
-					anthropometryDetail.getBenVisitID());
+
+			// anthropometryDetail.setModifiedBy(anthropometryDetail.getCreatedBy());
+			r = benAnthropometryRepo.updateANCCareDetails(anthropometryDetail.getWeight_Kg(),
+					anthropometryDetail.getHeight_cm(), anthropometryDetail.getbMI(),
+					anthropometryDetail.getHeadCircumference_cm(),
+					anthropometryDetail.getMidUpperArmCircumference_MUAC_cm(),
+					anthropometryDetail.getHipCircumference_cm(), anthropometryDetail.getWaistCircumference_cm(),
+					anthropometryDetail.getWaistHipRatio(), anthropometryDetail.getModifiedBy(), processed,
+					anthropometryDetail.getBeneficiaryRegID(), anthropometryDetail.getBenVisitID());
 		}
 		return r;
 	}
@@ -2212,211 +2250,224 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	@Override
 	public int updateANCPhysicalVitalDetails(BenPhysicalVitalDetail physicalVitalDetail) {
 		Integer r = 0;
-		if(null != physicalVitalDetail) {
-			
-			String processed = benPhysicalVitalRepo.getBenPhysicalVitalStatus(physicalVitalDetail.getBeneficiaryRegID(), 
+		if (null != physicalVitalDetail) {
+
+			String processed = benPhysicalVitalRepo.getBenPhysicalVitalStatus(physicalVitalDetail.getBeneficiaryRegID(),
 					physicalVitalDetail.getBenVisitID());
-			if(!processed.equals("N")){
+			if (!processed.equals("N")) {
 				processed = "U";
 			}
-			
+
 			physicalVitalDetail.setAverageSystolicBP(physicalVitalDetail.getSystolicBP_1stReading());
 			physicalVitalDetail.setAverageDiastolicBP(physicalVitalDetail.getDiastolicBP_1stReading());
-			r = benPhysicalVitalRepo.updatePhysicalVitalDetails(
-					physicalVitalDetail.getTemperature(), 
-					physicalVitalDetail.getPulseRate(), 
-					physicalVitalDetail.getRespiratoryRate(), 
-					physicalVitalDetail.getSystolicBP_1stReading(), 
-					physicalVitalDetail.getDiastolicBP_1stReading(), 
-					physicalVitalDetail.getSystolicBP_2ndReading(),
-					physicalVitalDetail.getDiastolicBP_2ndReading(),
-					physicalVitalDetail.getSystolicBP_3rdReading(),
-					physicalVitalDetail.getDiastolicBP_3rdReading(),
-					physicalVitalDetail.getAverageSystolicBP(),
-					physicalVitalDetail.getAverageDiastolicBP(),
-					physicalVitalDetail.getBloodPressureStatusID(),
-					physicalVitalDetail.getBloodPressureStatus(),
-					physicalVitalDetail.getBloodGlucose_Fasting(),
-					physicalVitalDetail.getBloodGlucose_Random(),
-					physicalVitalDetail.getBloodGlucose_2hr_PP(),
-					physicalVitalDetail.getBloodGlucose_NotSpecified(),
-					physicalVitalDetail.getDiabeticStatusID(),
-					physicalVitalDetail.getDiabeticStatus(),
-					physicalVitalDetail.getCapillaryRefillTime(), 
-					physicalVitalDetail.getModifiedBy(), 
-					processed,
-					physicalVitalDetail.getBeneficiaryRegID(),
-					physicalVitalDetail.getBenVisitID());
-			
+			r = benPhysicalVitalRepo.updatePhysicalVitalDetails(physicalVitalDetail.getTemperature(),
+					physicalVitalDetail.getPulseRate(), physicalVitalDetail.getRespiratoryRate(),
+					physicalVitalDetail.getSystolicBP_1stReading(), physicalVitalDetail.getDiastolicBP_1stReading(),
+					physicalVitalDetail.getSystolicBP_2ndReading(), physicalVitalDetail.getDiastolicBP_2ndReading(),
+					physicalVitalDetail.getSystolicBP_3rdReading(), physicalVitalDetail.getDiastolicBP_3rdReading(),
+					physicalVitalDetail.getAverageSystolicBP(), physicalVitalDetail.getAverageDiastolicBP(),
+					physicalVitalDetail.getBloodPressureStatusID(), physicalVitalDetail.getBloodPressureStatus(),
+					physicalVitalDetail.getBloodGlucose_Fasting(), physicalVitalDetail.getBloodGlucose_Random(),
+					physicalVitalDetail.getBloodGlucose_2hr_PP(), physicalVitalDetail.getBloodGlucose_NotSpecified(),
+					physicalVitalDetail.getDiabeticStatusID(), physicalVitalDetail.getDiabeticStatus(),
+					physicalVitalDetail.getCapillaryRefillTime(), physicalVitalDetail.getModifiedBy(), processed,
+					physicalVitalDetail.getBeneficiaryRegID(), physicalVitalDetail.getBenVisitID());
+
 		}
 		return r;
 	}
-	
+
 	public int updatePhyGeneralExamination(PhyGeneralExamination generalExamination) {
 		int response = 0;
 		String TypeOfDangerSigns = "";
-		
-		if(null!=generalExamination){
-			
-			String processed = phyGeneralExaminationRepo.getBenGeneralExaminationStatus(generalExamination.getBeneficiaryRegID(), 
-					generalExamination.getBenVisitID());
-			if(!processed.equals("N")){
+
+		if (null != generalExamination) {
+
+			String processed = phyGeneralExaminationRepo.getBenGeneralExaminationStatus(
+					generalExamination.getBeneficiaryRegID(), generalExamination.getBenVisitID());
+			if (!processed.equals("N")) {
 				processed = "U";
 			}
-			
-			if (null != generalExamination.getTypeOfDangerSigns() && generalExamination.getTypeOfDangerSigns().size() > 0) {
+
+			if (null != generalExamination.getTypeOfDangerSigns()
+					&& generalExamination.getTypeOfDangerSigns().size() > 0) {
 				for (String TypeOfDangerSign : generalExamination.getTypeOfDangerSigns()) {
 					TypeOfDangerSigns += TypeOfDangerSign + ",";
 				}
 				generalExamination.setTypeOfDangerSign(TypeOfDangerSigns);
 			}
-	
-			response = phyGeneralExaminationRepo.updatePhyGeneralExamination(generalExamination.getConsciousness(), generalExamination.getCoherence(), 
-					generalExamination.getCooperation(), generalExamination.getComfortness(), generalExamination.getBuiltAndAppearance(), generalExamination.getGait(), 
-					generalExamination.getDangerSigns(), generalExamination.getTypeOfDangerSign(), generalExamination.getPallor(), generalExamination.getJaundice(), 
-					generalExamination.getCyanosis(), generalExamination.getClubbing(), generalExamination.getLymphadenopathy(), generalExamination.getLymphnodesInvolved(),generalExamination.getTypeOfLymphadenopathy(),
-					generalExamination.getEdema(), generalExamination.getExtentOfEdema(), generalExamination.getEdemaType(), generalExamination.getModifiedBy(), processed,
+
+			response = phyGeneralExaminationRepo.updatePhyGeneralExamination(generalExamination.getConsciousness(),
+					generalExamination.getCoherence(), generalExamination.getCooperation(),
+					generalExamination.getComfortness(), generalExamination.getBuiltAndAppearance(),
+					generalExamination.getGait(), generalExamination.getDangerSigns(),
+					generalExamination.getTypeOfDangerSign(), generalExamination.getPallor(),
+					generalExamination.getJaundice(), generalExamination.getCyanosis(),
+					generalExamination.getClubbing(), generalExamination.getLymphadenopathy(),
+					generalExamination.getLymphnodesInvolved(), generalExamination.getTypeOfLymphadenopathy(),
+					generalExamination.getEdema(), generalExamination.getExtentOfEdema(),
+					generalExamination.getEdemaType(), generalExamination.getModifiedBy(), processed,
 					generalExamination.getBeneficiaryRegID(), generalExamination.getBenVisitID());
 		}
 		return response;
 	}
-	
+
 	@Override
 	public int updatePhyHeadToToeExamination(PhyHeadToToeExamination headToToeExamination) {
 		int response = 0;
-		if(null!=headToToeExamination){
-			String processed = phyHeadToToeExaminationRepo.getBenHeadToToeExaminationStatus(headToToeExamination.getBeneficiaryRegID(), 
-					headToToeExamination.getBenVisitID());
-			if(!processed.equals("N")){
+		if (null != headToToeExamination) {
+			String processed = phyHeadToToeExaminationRepo.getBenHeadToToeExaminationStatus(
+					headToToeExamination.getBeneficiaryRegID(), headToToeExamination.getBenVisitID());
+			if (!processed.equals("N")) {
 				processed = "U";
 			}
-			response = phyHeadToToeExaminationRepo.updatePhyHeadToToeExamination(headToToeExamination.getHeadtoToeExam(), 
-					headToToeExamination.getHead(), headToToeExamination.getEyes(), headToToeExamination.getEars(), headToToeExamination.getNose(), 
-					headToToeExamination.getOralCavity(), headToToeExamination.getThroat(), headToToeExamination.getBreastAndNipples(), headToToeExamination.getTrunk(), 
-					headToToeExamination.getUpperLimbs(), headToToeExamination.getLowerLimbs(), headToToeExamination.getSkin(), headToToeExamination.getHair(), 
-					headToToeExamination.getNails(), headToToeExamination.getModifiedBy(), processed, headToToeExamination.getBeneficiaryRegID(), headToToeExamination.getBenVisitID());
+			response = phyHeadToToeExaminationRepo.updatePhyHeadToToeExamination(
+					headToToeExamination.getHeadtoToeExam(), headToToeExamination.getHead(),
+					headToToeExamination.getEyes(), headToToeExamination.getEars(), headToToeExamination.getNose(),
+					headToToeExamination.getOralCavity(), headToToeExamination.getThroat(),
+					headToToeExamination.getBreastAndNipples(), headToToeExamination.getTrunk(),
+					headToToeExamination.getUpperLimbs(), headToToeExamination.getLowerLimbs(),
+					headToToeExamination.getSkin(), headToToeExamination.getHair(), headToToeExamination.getNails(),
+					headToToeExamination.getModifiedBy(), processed, headToToeExamination.getBeneficiaryRegID(),
+					headToToeExamination.getBenVisitID());
 		}
 		return response;
 	}
-	
+
 	@Override
 	public int updateSysGastrointestinalExamination(SysGastrointestinalExamination gastrointestinalExamination) {
 		int response = 0;
-		if(null!=gastrointestinalExamination){
-			String processed = sysGastrointestinalExaminationRepo.getBenGastrointestinalExaminationStatus(gastrointestinalExamination.getBeneficiaryRegID(), 
-					gastrointestinalExamination.getBenVisitID());
-			if(!processed.equals("N")){
+		if (null != gastrointestinalExamination) {
+			String processed = sysGastrointestinalExaminationRepo.getBenGastrointestinalExaminationStatus(
+					gastrointestinalExamination.getBeneficiaryRegID(), gastrointestinalExamination.getBenVisitID());
+			if (!processed.equals("N")) {
 				processed = "U";
 			}
-			response = sysGastrointestinalExaminationRepo.updateSysGastrointestinalExamination(gastrointestinalExamination.getInspection(), 
-					gastrointestinalExamination.getPalpation(), gastrointestinalExamination.getPalpation_AbdomenTexture(), gastrointestinalExamination.getPalpation_Liver(), 
-					gastrointestinalExamination.getPalpation_Spleen(), gastrointestinalExamination.getPalpation_Tenderness(), gastrointestinalExamination.getPalpation_LocationOfTenderness(),
-					gastrointestinalExamination.getPercussion(), gastrointestinalExamination.getAuscultation(), gastrointestinalExamination.getAnalRegion(), 
-					gastrointestinalExamination.getModifiedBy(), processed, gastrointestinalExamination.getBeneficiaryRegID(), gastrointestinalExamination.getBenVisitID());
+			response = sysGastrointestinalExaminationRepo.updateSysGastrointestinalExamination(
+					gastrointestinalExamination.getInspection(), gastrointestinalExamination.getPalpation(),
+					gastrointestinalExamination.getPalpation_AbdomenTexture(),
+					gastrointestinalExamination.getPalpation_Liver(), gastrointestinalExamination.getPalpation_Spleen(),
+					gastrointestinalExamination.getPalpation_Tenderness(),
+					gastrointestinalExamination.getPalpation_LocationOfTenderness(),
+					gastrointestinalExamination.getPercussion(), gastrointestinalExamination.getAuscultation(),
+					gastrointestinalExamination.getAnalRegion(), gastrointestinalExamination.getModifiedBy(), processed,
+					gastrointestinalExamination.getBeneficiaryRegID(), gastrointestinalExamination.getBenVisitID());
 		}
 		return response;
 	}
-	
+
 	@Override
 	public int updateSysCardiovascularExamination(SysCardiovascularExamination cardiovascular) {
 		int response = 0;
-		if(null!=cardiovascular){
-			String processed = sysCardiovascularExaminationRepo.getBenCardiovascularExaminationStatus(cardiovascular.getBeneficiaryRegID(), 
-					cardiovascular.getBenVisitID());
-			if(!processed.equals("N")){
+		if (null != cardiovascular) {
+			String processed = sysCardiovascularExaminationRepo.getBenCardiovascularExaminationStatus(
+					cardiovascular.getBeneficiaryRegID(), cardiovascular.getBenVisitID());
+			if (!processed.equals("N")) {
 				processed = "U";
 			}
-			response = sysCardiovascularExaminationRepo.updateSysCardiovascularExamination(cardiovascular.getJugularVenousPulse_JVP(), 
-					cardiovascular.getApexbeatLocation(), cardiovascular.getApexbeatType(), cardiovascular.getFirstHeartSound_S1(), cardiovascular.getSecondHeartSound_S2(),
-					cardiovascular.getAdditionalHeartSounds(), cardiovascular.getMurmurs(), cardiovascular.getPericardialRub(), cardiovascular.getModifiedBy(),
+			response = sysCardiovascularExaminationRepo.updateSysCardiovascularExamination(
+					cardiovascular.getJugularVenousPulse_JVP(), cardiovascular.getApexbeatLocation(),
+					cardiovascular.getApexbeatType(), cardiovascular.getFirstHeartSound_S1(),
+					cardiovascular.getSecondHeartSound_S2(), cardiovascular.getAdditionalHeartSounds(),
+					cardiovascular.getMurmurs(), cardiovascular.getPericardialRub(), cardiovascular.getModifiedBy(),
 					processed, cardiovascular.getBeneficiaryRegID(), cardiovascular.getBenVisitID());
 		}
 		return response;
 	}
-	
+
 	@Override
 	public int updateSysRespiratoryExamination(SysRespiratoryExamination respiratory) {
 		int r = 0;
-		if(null!=respiratory){
-			String processed = sysRespiratoryExaminationRepo.getBenRespiratoryExaminationStatus(respiratory.getBeneficiaryRegID(), 
-					respiratory.getBenVisitID());
-			if(!processed.equals("N")){
+		if (null != respiratory) {
+			String processed = sysRespiratoryExaminationRepo
+					.getBenRespiratoryExaminationStatus(respiratory.getBeneficiaryRegID(), respiratory.getBenVisitID());
+			if (!processed.equals("N")) {
 				processed = "U";
 			}
-			r = sysRespiratoryExaminationRepo.updateSysRespiratoryExamination(respiratory.getTrachea(), 
-					respiratory.getInspection(), respiratory.getSignsOfRespiratoryDistress(), respiratory.getPalpation(), respiratory.getAuscultation(), 
-					respiratory.getAuscultation_Stridor(), respiratory.getAuscultation_BreathSounds(), respiratory.getAuscultation_Crepitations(), 
-					respiratory.getAuscultation_Wheezing(), respiratory.getAuscultation_PleuralRub(), respiratory.getAuscultation_ConductedSounds(), 
-					respiratory.getPercussion(), respiratory.getModifiedBy(), processed, respiratory.getBeneficiaryRegID(), respiratory.getBenVisitID());
+			r = sysRespiratoryExaminationRepo.updateSysRespiratoryExamination(respiratory.getTrachea(),
+					respiratory.getInspection(), respiratory.getSignsOfRespiratoryDistress(),
+					respiratory.getPalpation(), respiratory.getAuscultation(), respiratory.getAuscultation_Stridor(),
+					respiratory.getAuscultation_BreathSounds(), respiratory.getAuscultation_Crepitations(),
+					respiratory.getAuscultation_Wheezing(), respiratory.getAuscultation_PleuralRub(),
+					respiratory.getAuscultation_ConductedSounds(), respiratory.getPercussion(),
+					respiratory.getModifiedBy(), processed, respiratory.getBeneficiaryRegID(),
+					respiratory.getBenVisitID());
 		}
 		return r;
 	}
-	
+
 	@Override
 	public int updateSysCentralNervousExamination(SysCentralNervousExamination centralNervous) {
 		int r = 0;
-		if(null!=centralNervous){
-			String processed = sysCentralNervousExaminationRepo.getBenCentralNervousExaminationStatus(centralNervous.getBeneficiaryRegID(), 
-					centralNervous.getBenVisitID());
-			if(!processed.equals("N")){
+		if (null != centralNervous) {
+			String processed = sysCentralNervousExaminationRepo.getBenCentralNervousExaminationStatus(
+					centralNervous.getBeneficiaryRegID(), centralNervous.getBenVisitID());
+			if (!processed.equals("N")) {
 				processed = "U";
 			}
 			r = sysCentralNervousExaminationRepo.updateSysCentralNervousExamination(centralNervous.getHandedness(),
-					centralNervous.getCranialNervesExamination(), centralNervous.getMotorSystem(), centralNervous.getSensorySystem(), centralNervous.getAutonomicSystem(),
-					centralNervous.getCerebellarSigns(), centralNervous.getSignsOfMeningealIrritation(), centralNervous.getSkull(), centralNervous.getModifiedBy(),
-					processed, centralNervous.getBeneficiaryRegID(), centralNervous.getBenVisitID());
+					centralNervous.getCranialNervesExamination(), centralNervous.getMotorSystem(),
+					centralNervous.getSensorySystem(), centralNervous.getAutonomicSystem(),
+					centralNervous.getCerebellarSigns(), centralNervous.getSignsOfMeningealIrritation(),
+					centralNervous.getSkull(), centralNervous.getModifiedBy(), processed,
+					centralNervous.getBeneficiaryRegID(), centralNervous.getBenVisitID());
 		}
-	
+
 		return r;
 	}
-	
+
 	@Override
 	public int updateSysMusculoskeletalSystemExamination(SysMusculoskeletalSystemExamination musculoskeletalSystem) {
 		int r = 0;
-		if(null!=musculoskeletalSystem){
-			String processed = sysMusculoskeletalSystemExaminationRepo.getBenMusculoskeletalSystemExaminationStatus(musculoskeletalSystem.getBeneficiaryRegID(), 
-					musculoskeletalSystem.getBenVisitID());
-			if(!processed.equals("N")){
+		if (null != musculoskeletalSystem) {
+			String processed = sysMusculoskeletalSystemExaminationRepo.getBenMusculoskeletalSystemExaminationStatus(
+					musculoskeletalSystem.getBeneficiaryRegID(), musculoskeletalSystem.getBenVisitID());
+			if (!processed.equals("N")) {
 				processed = "U";
 			}
-			r = sysMusculoskeletalSystemExaminationRepo.updateSysMusculoskeletalSystemExamination(musculoskeletalSystem.getJoint_TypeOfJoint(), 
-					musculoskeletalSystem.getJoint_Laterality(), musculoskeletalSystem.getJoint_Abnormality(), musculoskeletalSystem.getUpperLimb_Laterality(), 
-					musculoskeletalSystem.getUpperLimb_Laterality(), musculoskeletalSystem.getLowerLimb_Laterality(), musculoskeletalSystem.getLowerLimb_Abnormality(),
-					musculoskeletalSystem.getChestWall(), musculoskeletalSystem.getSpine(), musculoskeletalSystem.getModifiedBy(), processed,
+			r = sysMusculoskeletalSystemExaminationRepo.updateSysMusculoskeletalSystemExamination(
+					musculoskeletalSystem.getJoint_TypeOfJoint(), musculoskeletalSystem.getJoint_Laterality(),
+					musculoskeletalSystem.getJoint_Abnormality(), musculoskeletalSystem.getUpperLimb_Laterality(),
+					musculoskeletalSystem.getUpperLimb_Laterality(), musculoskeletalSystem.getLowerLimb_Laterality(),
+					musculoskeletalSystem.getLowerLimb_Abnormality(), musculoskeletalSystem.getChestWall(),
+					musculoskeletalSystem.getSpine(), musculoskeletalSystem.getModifiedBy(), processed,
 					musculoskeletalSystem.getBeneficiaryRegID(), musculoskeletalSystem.getBenVisitID());
 		}
 		return r;
 	}
-	
+
 	@Override
 	public int updateSysGenitourinarySystemExamination(SysGenitourinarySystemExamination genitourinarySystem) {
 		int r = 0;
-		if(null!=genitourinarySystem){
-			String processed = sysGenitourinarySystemExaminationRepo.getBenGenitourinarySystemExaminationStatus(genitourinarySystem.getBeneficiaryRegID(), 
-					genitourinarySystem.getBenVisitID());
-			if(!processed.equals("N")){
+		if (null != genitourinarySystem) {
+			String processed = sysGenitourinarySystemExaminationRepo.getBenGenitourinarySystemExaminationStatus(
+					genitourinarySystem.getBeneficiaryRegID(), genitourinarySystem.getBenVisitID());
+			if (!processed.equals("N")) {
 				processed = "U";
 			}
 			r = sysGenitourinarySystemExaminationRepo.updateSysGenitourinarySystemExamination(
-					genitourinarySystem.getRenalAngle(), genitourinarySystem.getSuprapubicRegion(), genitourinarySystem.getExternalGenitalia(), 
-					genitourinarySystem.getModifiedBy(), processed, genitourinarySystem.getBeneficiaryRegID(), genitourinarySystem.getBenVisitID());
+					genitourinarySystem.getRenalAngle(), genitourinarySystem.getSuprapubicRegion(),
+					genitourinarySystem.getExternalGenitalia(), genitourinarySystem.getModifiedBy(), processed,
+					genitourinarySystem.getBeneficiaryRegID(), genitourinarySystem.getBenVisitID());
 		}
 		return r;
 	}
-	
+
 	@Override
 	public int updateSysObstetricExamination(SysObstetricExamination obstetricExamination) {
 		int r = 0;
-		if(null!=obstetricExamination){
-			String processed = sysObstetricExaminationRepo.getBenObstetricExaminationStatus(obstetricExamination.getBeneficiaryRegID(), 
-					obstetricExamination.getBenVisitID());
-			if(!processed.equals("N")){
+		if (null != obstetricExamination) {
+			String processed = sysObstetricExaminationRepo.getBenObstetricExaminationStatus(
+					obstetricExamination.getBeneficiaryRegID(), obstetricExamination.getBenVisitID());
+			if (!processed.equals("N")) {
 				processed = "U";
 			}
-			r = sysObstetricExaminationRepo.updateSysObstetricExamination(obstetricExamination.getFundalHeight(), 
-					obstetricExamination.getfHAndPOA_Status(), obstetricExamination.getfHAndPOA_Interpretation(), obstetricExamination.getFetalMovements(), 
-					obstetricExamination.getFetalHeartSounds(), obstetricExamination.getFetalHeartRate_BeatsPerMinute(), obstetricExamination.getFetalPositionOrLie(), 
-					obstetricExamination.getFetalPresentation(), obstetricExamination.getAbdominalScars(), obstetricExamination.getModifiedBy(), processed, 
+			r = sysObstetricExaminationRepo.updateSysObstetricExamination(obstetricExamination.getFundalHeight(),
+					obstetricExamination.getfHAndPOA_Status(), obstetricExamination.getfHAndPOA_Interpretation(),
+					obstetricExamination.getFetalMovements(), obstetricExamination.getFetalHeartSounds(),
+					obstetricExamination.getFetalHeartRate_BeatsPerMinute(),
+					obstetricExamination.getFetalPositionOrLie(), obstetricExamination.getFetalPresentation(),
+					obstetricExamination.getAbdominalScars(), obstetricExamination.getModifiedBy(), processed,
 					obstetricExamination.getBeneficiaryRegID(), obstetricExamination.getBenVisitID());
 		}
 		return r;
@@ -2425,26 +2476,19 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	@Override
 	public int updateANCMenstrualHistory(BenMenstrualDetails benMenstrualDetails) {
 		int response = 0;
-		if(null != benMenstrualDetails) {
-			String processed = benMenstrualDetailsRepo.getBenMenstrualDetailStatus(benMenstrualDetails.getBeneficiaryRegID(), 
-					benMenstrualDetails.getBenVisitID());
-			if(!processed.equals("N")){
+		if (null != benMenstrualDetails) {
+			String processed = benMenstrualDetailsRepo.getBenMenstrualDetailStatus(
+					benMenstrualDetails.getBeneficiaryRegID(), benMenstrualDetails.getBenVisitID());
+			if (!processed.equals("N")) {
 				processed = "U";
 			}
-			response = benMenstrualDetailsRepo.updateMenstrualDetails(
-					benMenstrualDetails.getMenstrualCycleStatusID(), 
-					benMenstrualDetails.getRegularity(),
-					benMenstrualDetails.getMenstrualCyclelengthID(), 
-					benMenstrualDetails.getCycleLength(), 
-					benMenstrualDetails.getMenstrualFlowDurationID(), 
-					benMenstrualDetails.getBloodFlowDuration(), 
-					benMenstrualDetails.getMenstrualProblemID(), 
-					benMenstrualDetails.getProblemName(), 
-					benMenstrualDetails.getlMPDate(), 
-					benMenstrualDetails.getModifiedBy(), 
-					processed,
-					benMenstrualDetails.getBeneficiaryRegID(), 
-					benMenstrualDetails.getBenVisitID()); 
+			response = benMenstrualDetailsRepo.updateMenstrualDetails(benMenstrualDetails.getMenstrualCycleStatusID(),
+					benMenstrualDetails.getRegularity(), benMenstrualDetails.getMenstrualCyclelengthID(),
+					benMenstrualDetails.getCycleLength(), benMenstrualDetails.getMenstrualFlowDurationID(),
+					benMenstrualDetails.getBloodFlowDuration(), benMenstrualDetails.getMenstrualProblemID(),
+					benMenstrualDetails.getProblemName(), benMenstrualDetails.getlMPDate(),
+					benMenstrualDetails.getModifiedBy(), processed, benMenstrualDetails.getBeneficiaryRegID(),
+					benMenstrualDetails.getBenVisitID());
 		}
 		return response;
 	}
@@ -2452,8 +2496,9 @@ public class ANCNurseServiceImpl implements ANCNurseService{
 	@Override
 	public int updateANCPastObstetricHistory(WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory) {
 		Integer r = 0;
-		if(null != wrapperFemaleObstetricHistory){
-			femaleObstetricHistoryRepo.deleteExistingObstetricHistory(wrapperFemaleObstetricHistory.getBeneficiaryRegID(), wrapperFemaleObstetricHistory.getBenVisitID());
+		if (null != wrapperFemaleObstetricHistory) {
+			femaleObstetricHistoryRepo.deleteExistingObstetricHistory(
+					wrapperFemaleObstetricHistory.getBeneficiaryRegID(), wrapperFemaleObstetricHistory.getBenVisitID());
 
 			ArrayList<FemaleObstetricHistory> femaleObstetricHistoryDetails = wrapperFemaleObstetricHistory
 					.getFemaleObstetricHistoryDetails();
