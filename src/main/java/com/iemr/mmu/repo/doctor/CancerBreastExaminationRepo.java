@@ -13,7 +13,7 @@ import com.iemr.mmu.data.doctor.CancerBreastExamination;
 public interface CancerBreastExaminationRepo extends CrudRepository<CancerBreastExamination, Long> {
 
 	@Query(" SELECT c from CancerBreastExamination c WHERE c.beneficiaryRegID = :benRegID AND c.benVisitID = :benVisitID "
-			+ " AND c.deleted = fasle")
+			+ " AND c.deleted = false")
 	public CancerBreastExamination getBenCancerBreastExaminationDetails(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 }

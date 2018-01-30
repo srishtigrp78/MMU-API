@@ -38,6 +38,11 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 	public void setAncServiceImpl(ANCNurseServiceImpl ancNurseServiceImpl) {
 		this.ancNurseServiceImpl = ancNurseServiceImpl;
 	}
+	
+	@Autowired
+	public void setNcdScreeningNurseServiceImpl(NCDScreeningNurseServiceImpl ncdScreeningNurseServiceImpl) {
+		this.ncdScreeningNurseServiceImpl = ncdScreeningNurseServiceImpl;
+	}
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
@@ -64,6 +69,16 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 				saveNCDScreeningDetails = ncdScreeningNurseServiceImpl.saveNCDScreeningDetails(ncdScreening);
 			}
 
+			Long prescriptionID = nurseServiceImpl.saveBeneficiaryPrescription(jsonObject);
+
+			Long labTestOrderID = null;
+
+			if (prescriptionID != null && prescriptionID > 0) {
+
+				labTestOrderID = nurseServiceImpl.saveBeneficiaryLabTestOrderDetails(jsonObject, prescriptionID);
+
+			}
+			
 			if (null != vitalSuccessFlag && null != saveNCDScreeningDetails) {
 				updateStatus = nurseServiceImpl.updateBeneficiaryStatus('N',
 						beneficiaryVisitDetail.getBeneficiaryRegID());
@@ -149,7 +164,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 				benVisitID);
 		String vitalDetails = nurseServiceImpl.getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, benVisitID);
 	
-		Map<String, String> res = new HashMap<String, String>();
+		Map<String, Object> res = new HashMap<String, Object>();
 	
 		if (ncdScreeningDetails != null && anthropometryDetails != null && vitalDetails != null) {
 			res.put("ncdScreeningDetails", ncdScreeningDetails);
@@ -158,7 +173,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		} else {
 			// Failed to Fetch Beneficiary NCD Screening Details
 		}
-		return new Gson().toJson(res);
+		return res.toString();
 	}
 
 }

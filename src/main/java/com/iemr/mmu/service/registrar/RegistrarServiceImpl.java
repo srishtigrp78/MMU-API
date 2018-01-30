@@ -605,16 +605,30 @@ public class RegistrarServiceImpl implements RegistrarService {
 		return response;
 	}
 
-	public BeneficiaryDemographicData getBeneficiaryDemographicData(Long benRegID) {
+	public BeneficiaryData getBeneficiaryPersonalDetails(Long benRegID) {
 		List<Objects[]> beneficiaryDemographicData = registrarRepoBenDemoData.getBeneficiaryDemographicData(benRegID);
-		BeneficiaryDemographicData beneficiaryDemographics = null;
-		if (null != beneficiaryDemographicData) {
-			for (Object[] obj : beneficiaryDemographicData) {
-				beneficiaryDemographics = new BeneficiaryDemographicData((Long) obj[0], (Integer) obj[1],
-						(String) obj[2]);
+		
+		List<Object[]> benDetailsList = registrarRepoBenData.getBenDetailsByRegID(benRegID);
+		BeneficiaryData benDetails = BeneficiaryData.getBeneficiaryPersonalData(benDetailsList).get(0);
+		if (benDetails != null) {
+			if (benDetails.getGenderID() != null) {
+				if (benDetails.getGenderID() == 1) {
+					benDetails.setGenderName("Male");
+				} else if (benDetails.getGenderID() == 2) {
+					benDetails.setGenderName("Female");
+				} else {
+					if (benDetails.getGenderID() == 3) {
+						benDetails.setGenderName("Transgender");
+					}
+				}
 			}
 		}
-		return beneficiaryDemographics;
+		if (null != beneficiaryDemographicData) {
+			for (Object[] obj : beneficiaryDemographicData) {
+				benDetails.setServicePointName((String) obj[2]);
+			}
+		}
+		return benDetails;
 	}
-
+	
 }

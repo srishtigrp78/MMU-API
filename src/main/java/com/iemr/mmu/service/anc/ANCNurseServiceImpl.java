@@ -1923,6 +1923,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 				benAdherence.getBenVisitID(), benAdherence.getID());
 		if (null != processed && !"N".equals(processed)) {
 			processed = "U";
+		}else{
+			processed = "N";
 		}
 		r = benAdherenceRepo.updateBenAdherence(benAdherence.getToDrugs(), benAdherence.getDrugReason(),
 				benAdherence.getToReferral(), benAdherence.getReferralReason(), benAdherence.getProgress(),
@@ -2005,6 +2007,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 				ancCareDetailsOBJ.getBenVisitID());
 		if (null != processed && !"N".equals(processed)) {
 			processed = "U";
+		}else{
+			processed = "N";
 		}
 
 		if (ancCareDetailsOBJ.getLmpDate() != null && !ancCareDetailsOBJ.getLmpDate().isEmpty()
@@ -2052,8 +2056,10 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 			for (ANCWomenVaccineDetail ancWomenVaccineDetail : ancWomenVaccineDetailList) {
 				processed = womenVaccineStatuses.get(ancWomenVaccineDetail.getVaccineName());
-				if (!processed.equals("N")) {
+				if (null != processed && !processed.equals("N")) {
 					processed = "U";
+				}else{
+					processed = "N";
 				}
 
 				r = ancWomenVaccineRepo.updateANCImmunizationDetails(ancWomenVaccineDetail.getStatus(),
@@ -2212,6 +2218,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 						.get(childVaccineDetail.getDefaultReceivingAge() + "-" + childVaccineDetail.getVaccineName());
 				if (null != processed && !processed.equals("N")) {
 					processed = "U";
+				}else{
+					processed = "N";
 				}
 				r = childVaccineDetail1Repo.updateChildANCImmunization(childVaccineDetail.getStatus(),
 						childVaccineDetail.getModifiedBy(), processed, childVaccineDetail.getBeneficiaryRegID(),
@@ -2230,8 +2238,10 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 			String processed = benAnthropometryRepo.getBenAnthropometryStatus(anthropometryDetail.getBeneficiaryRegID(),
 					anthropometryDetail.getBenVisitID());
-			if (!processed.equals("N")) {
+			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
+			}else{
+				processed = "N";
 			}
 
 			// anthropometryDetail.setModifiedBy(anthropometryDetail.getCreatedBy());
@@ -2254,8 +2264,10 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 			String processed = benPhysicalVitalRepo.getBenPhysicalVitalStatus(physicalVitalDetail.getBeneficiaryRegID(),
 					physicalVitalDetail.getBenVisitID());
-			if (!processed.equals("N")) {
+			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
+			}else{
+				processed = "N";
 			}
 
 			physicalVitalDetail.setAverageSystolicBP(physicalVitalDetail.getSystolicBP_1stReading());
@@ -2285,8 +2297,10 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 			String processed = phyGeneralExaminationRepo.getBenGeneralExaminationStatus(
 					generalExamination.getBeneficiaryRegID(), generalExamination.getBenVisitID());
-			if (!processed.equals("N")) {
+			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
+			}else{
+				processed = "N";
 			}
 
 			if (null != generalExamination.getTypeOfDangerSigns()
@@ -2318,8 +2332,10 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		if (null != headToToeExamination) {
 			String processed = phyHeadToToeExaminationRepo.getBenHeadToToeExaminationStatus(
 					headToToeExamination.getBeneficiaryRegID(), headToToeExamination.getBenVisitID());
-			if (!processed.equals("N")) {
+			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
+			}else{
+				processed = "N";
 			}
 			response = phyHeadToToeExaminationRepo.updatePhyHeadToToeExamination(
 					headToToeExamination.getHeadtoToeExam(), headToToeExamination.getHead(),
@@ -2340,8 +2356,10 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		if (null != gastrointestinalExamination) {
 			String processed = sysGastrointestinalExaminationRepo.getBenGastrointestinalExaminationStatus(
 					gastrointestinalExamination.getBeneficiaryRegID(), gastrointestinalExamination.getBenVisitID());
-			if (!processed.equals("N")) {
+			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
+			}else{
+				processed = "N";
 			}
 			response = sysGastrointestinalExaminationRepo.updateSysGastrointestinalExamination(
 					gastrointestinalExamination.getInspection(), gastrointestinalExamination.getPalpation(),
@@ -2381,8 +2399,10 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		if (null != respiratory) {
 			String processed = sysRespiratoryExaminationRepo
 					.getBenRespiratoryExaminationStatus(respiratory.getBeneficiaryRegID(), respiratory.getBenVisitID());
-			if (!processed.equals("N")) {
+			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
+			}else{
+				processed = "N";
 			}
 			r = sysRespiratoryExaminationRepo.updateSysRespiratoryExamination(respiratory.getTrachea(),
 					respiratory.getInspection(), respiratory.getSignsOfRespiratoryDistress(),
@@ -2402,8 +2422,10 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		if (null != centralNervous) {
 			String processed = sysCentralNervousExaminationRepo.getBenCentralNervousExaminationStatus(
 					centralNervous.getBeneficiaryRegID(), centralNervous.getBenVisitID());
-			if (!processed.equals("N")) {
+			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
+			}else{
+				processed = "N";
 			}
 			r = sysCentralNervousExaminationRepo.updateSysCentralNervousExamination(centralNervous.getHandedness(),
 					centralNervous.getCranialNervesExamination(), centralNervous.getMotorSystem(),
@@ -2422,8 +2444,10 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		if (null != musculoskeletalSystem) {
 			String processed = sysMusculoskeletalSystemExaminationRepo.getBenMusculoskeletalSystemExaminationStatus(
 					musculoskeletalSystem.getBeneficiaryRegID(), musculoskeletalSystem.getBenVisitID());
-			if (!processed.equals("N")) {
+			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
+			}else{
+				processed = "N";
 			}
 			r = sysMusculoskeletalSystemExaminationRepo.updateSysMusculoskeletalSystemExamination(
 					musculoskeletalSystem.getJoint_TypeOfJoint(), musculoskeletalSystem.getJoint_Laterality(),
@@ -2442,8 +2466,10 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		if (null != genitourinarySystem) {
 			String processed = sysGenitourinarySystemExaminationRepo.getBenGenitourinarySystemExaminationStatus(
 					genitourinarySystem.getBeneficiaryRegID(), genitourinarySystem.getBenVisitID());
-			if (!processed.equals("N")) {
+			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
+			}else{
+				processed = "N";
 			}
 			r = sysGenitourinarySystemExaminationRepo.updateSysGenitourinarySystemExamination(
 					genitourinarySystem.getRenalAngle(), genitourinarySystem.getSuprapubicRegion(),
@@ -2459,8 +2485,10 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		if (null != obstetricExamination) {
 			String processed = sysObstetricExaminationRepo.getBenObstetricExaminationStatus(
 					obstetricExamination.getBeneficiaryRegID(), obstetricExamination.getBenVisitID());
-			if (!processed.equals("N")) {
+			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
+			}else{
+				processed = "N";
 			}
 			r = sysObstetricExaminationRepo.updateSysObstetricExamination(obstetricExamination.getFundalHeight(),
 					obstetricExamination.getfHAndPOA_Status(), obstetricExamination.getfHAndPOA_Interpretation(),
@@ -2479,8 +2507,10 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		if (null != benMenstrualDetails) {
 			String processed = benMenstrualDetailsRepo.getBenMenstrualDetailStatus(
 					benMenstrualDetails.getBeneficiaryRegID(), benMenstrualDetails.getBenVisitID());
-			if (!processed.equals("N")) {
+			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
+			}else{
+				processed = "N";
 			}
 			response = benMenstrualDetailsRepo.updateMenstrualDetails(benMenstrualDetails.getMenstrualCycleStatusID(),
 					benMenstrualDetails.getRegularity(), benMenstrualDetails.getMenstrualCyclelengthID(),

@@ -21,7 +21,7 @@ public interface ANCWomenVaccineRepo extends CrudRepository<ANCWomenVaccineDetai
 	public ArrayList<Object[]> getANCWomenVaccineDetails(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 	
-	@Query(" SELECT vaccineName, processed from ANCWomenVaccineDetail where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID AND vaccineName=:vaccineName")
+	@Query(" SELECT vaccineName, processed from ANCWomenVaccineDetail where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID AND deleted = false")
 	public ArrayList<Object[]> getBenANCWomenVaccineStatus(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 	

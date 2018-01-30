@@ -3,6 +3,7 @@ package com.iemr.mmu.service.ncdscreening;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.iemr.mmu.data.ncdScreening.NCDScreening;
 import com.iemr.mmu.repo.nurse.ncdscreening.NCDScreeningRepo;
@@ -31,10 +32,9 @@ public class NCDScreeningNurseServiceImpl implements NCDScreeningNurseService{
 	@Override
 	public String getNCDScreeningDetails(Long beneficiaryRegID, Long benVisitID) {
 		NCDScreening ncdScreeningDetails = ncdScreeningRepo.getNCDScreeningDetails(beneficiaryRegID, benVisitID);
-		GsonBuilder builder = new GsonBuilder();
-		builder.excludeFieldsWithoutExposeAnnotation();
+
 		if (null != ncdScreeningDetails) {
-			return builder.create().toJson(ncdScreeningDetails);
+			return new Gson().toJson(ncdScreeningDetails);
 		} else {
 			return null;
 		}

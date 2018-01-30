@@ -51,7 +51,7 @@ public class CaseSheetServiceImpl {
 				visitDateTime);
 		caseSheetData
 				.putAll(doctorServiceImpl.getBenDoctorEnteredDataForCaseSheet(benRegID, benVisitID, visitDateTime));
-		caseSheetData.put("BeneficiaryDemographicData", registrarServiceImpl.getBeneficiaryDemographicData(benRegID));
+		caseSheetData.put("BeneficiaryDemographicData", registrarServiceImpl.getBeneficiaryPersonalDetails(benRegID));
 		return new Gson().toJson(caseSheetData);
 	}
 

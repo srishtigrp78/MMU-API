@@ -290,7 +290,7 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 		return cancerOralExamination;
 	}
 
-	public String getCancerExaminationImageAnnotationCasesheet(Long benRegID, Long benVisitID) {
+	public ArrayList<WrapperCancerExamImgAnotasn> getCancerExaminationImageAnnotationCasesheet(Long benRegID, Long benVisitID) {
 		ArrayList<WrapperCancerExamImgAnotasn> resList = new ArrayList<>();
 		// System.out.println("hello");
 		List<CancerExaminationImageAnnotation> cancerExaminationImageAnnotationList = cancerExaminationImageAnnotationRepo
@@ -346,6 +346,6 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 
 		}
 		// System.out.println("hello");
-		return new Gson().toJson(resList);
+		return resList;
 	}
 }

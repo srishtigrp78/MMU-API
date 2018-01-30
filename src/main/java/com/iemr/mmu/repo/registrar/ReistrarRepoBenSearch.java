@@ -49,7 +49,7 @@ public interface ReistrarRepoBenSearch extends CrudRepository<V_BenAdvanceSearch
 			+ " Date(dob), genderID, regCreatedDate, districtName, villageName "
 			+ "from V_BenAdvanceSearch  WHERE beneficiaryRegID =:benRegID ")
 	public List<Object[]> getBenDetails(@Param("benRegID") Long benRegID);
-
+	
 //	@Query("SELECT DISTINCT beneficiaryRegID, beneficiaryID, "
 //			+ " UPPER( concat(IFNULL(firstName, ''), ' ',IFNULL(lastName,''))) as benName, "
 //			+ " Date(dob), genderID, genderName, UPPER(fatherName) as fatherName, "

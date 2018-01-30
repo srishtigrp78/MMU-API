@@ -111,6 +111,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		return null;
 	}
 
+	@Deprecated
 	@Override
 	public Long saveBeneficiaryPrescription(JsonObject caseSheet) throws Exception {
 
@@ -150,6 +151,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		return null;
 	}
 
+	@Deprecated
 	@Override
 	public Long saveBeneficiaryLabTestOrderDetails(JsonObject caseSheet, Long prescriptionID) {
 
@@ -216,7 +218,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		Integer returnOBJ = 0;
 		Long benChiefComplaintID = saveBeneficiaryChiefComplaint(quickConsultDoctorOBJ);
 		Long clinicalObservationID = saveBeneficiaryClinicalObservations(quickConsultDoctorOBJ);
-		Long prescriptionID = saveBeneficiaryPrescription(quickConsultDoctorOBJ);
+		Long prescriptionID = nurseServiceImpl.saveBeneficiaryPrescription(quickConsultDoctorOBJ);
 
 		Long prescribedDrugID = null;
 		Long labTestOrderID = null;
@@ -225,7 +227,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 
 			prescribedDrugID = saveBeneficiaryPrescribedDrugDetail(quickConsultDoctorOBJ, prescriptionID);
 
-			labTestOrderID = saveBeneficiaryLabTestOrderDetails(quickConsultDoctorOBJ, prescriptionID);
+			labTestOrderID = nurseServiceImpl.saveBeneficiaryLabTestOrderDetails(quickConsultDoctorOBJ, prescriptionID);
 
 		}
 		if ((null != benChiefComplaintID && benChiefComplaintID > 0)

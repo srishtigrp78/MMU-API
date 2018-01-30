@@ -159,6 +159,8 @@ public class CSNurseServiceImpl implements CSNurseService {
 					Character processed = (Character) obj[1];
 					if (null != processed && processed != 'N') {
 						processed = 'U';
+					}else{
+						processed = 'N';
 					}
 					delRes = benFamilyCancerHistoryRepo.deleteExistingFamilyRecord((Long) obj[0], processed);
 				}
@@ -207,6 +209,8 @@ public class CSNurseServiceImpl implements CSNurseService {
 				benObstetricCancerHistory.getBeneficiaryRegID(), benObstetricCancerHistory.getBenVisitID());
 		if (null != processed && processed != 'N') {
 			processed = 'U';
+		}else{
+			processed = 'N';
 		}
 		try {
 
@@ -242,6 +246,8 @@ public class CSNurseServiceImpl implements CSNurseService {
 				benPersonalCancerHistory.getBeneficiaryRegID(), benPersonalCancerHistory.getBenVisitID());
 		if (null != processed && processed != 'N') {
 			processed = 'U';
+		}else{
+			processed = 'N';
 		}
 
 		try {
@@ -281,6 +287,8 @@ public class CSNurseServiceImpl implements CSNurseService {
 				benPersonalCancerDietHistory.getBeneficiaryRegID(), benPersonalCancerDietHistory.getBenVisitID());
 		if (null != processed && processed != 'N') {
 			processed = 'U';
+		}else{
+			processed = 'N';
 		}
 
 		try {
@@ -321,7 +329,10 @@ public class CSNurseServiceImpl implements CSNurseService {
 				benCancerVitalDetail.getBenVisitID());
 		if (null != processed && processed != 'N') {
 			processed = 'U';
+		}else{
+			processed = 'N';
 		}
+		
 		int response = benCancerVitalDetailRepo.updateBenCancerVitalDetail(
 				benCancerVitalDetail.getProviderServiceMapID(), benCancerVitalDetail.getWeight_Kg(),
 				benCancerVitalDetail.getHeight_cm(), benCancerVitalDetail.getWaistCircumference_cm(),
@@ -368,15 +379,17 @@ public class CSNurseServiceImpl implements CSNurseService {
 	public BenPersonalCancerHistory getBenPersonalCancerHistoryData(Long benRegID, Long benVisitID) {
 		BenPersonalCancerHistory benPersonalCancerHistory = benPersonalCancerHistoryRepo.getBenPersonalHistory(benRegID,
 				benVisitID);
-		List<String> typeOfTobaccoProductList = new ArrayList<>();
-		String s = benPersonalCancerHistory.getTypeOfTobaccoProduct();
-		if (s != null) {
-			String[] arr = s.split(",");
-			for (int i = 0; i < arr.length; i++) {
-				typeOfTobaccoProductList.add(arr[i]);
+		if(null != benPersonalCancerHistory){
+			List<String> typeOfTobaccoProductList = new ArrayList<>();
+			String s = benPersonalCancerHistory.getTypeOfTobaccoProduct();
+			if (s != null) {
+				String[] arr = s.split(",");
+				for (int i = 0; i < arr.length; i++) {
+					typeOfTobaccoProductList.add(arr[i]);
+				}
+				benPersonalCancerHistory.setTypeOfTobaccoProductList(typeOfTobaccoProductList);
+	
 			}
-			benPersonalCancerHistory.setTypeOfTobaccoProductList(typeOfTobaccoProductList);
-
 		}
 		return benPersonalCancerHistory;
 	}

@@ -4,6 +4,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +41,7 @@ public class ANCFetchController {
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Visit details from Nurse ANC", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenVisitDetailsFrmNurseANC" }, method = { RequestMethod.POST })
+	@Transactional(rollbackFor = Exception.class)
 	public String getBenVisitDetailsFrmNurseANC(
 			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -68,6 +70,7 @@ public class ANCFetchController {
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary ANC Care details from Nurse ANC", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenANCDetailsFrmNurseANC" }, method = { RequestMethod.POST })
+	@Transactional(rollbackFor = Exception.class)
 	public String getBenANCDetailsFrmNurseANC(
 			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -377,7 +380,7 @@ public class ANCFetchController {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
 				Long benRegID = obj.getLong("benRegID");
-				String s = ancServiceImpl.getANCPastHistoryData(benRegID);
+				String s = ancServiceImpl.getANCObstetricHistoryData(benRegID);
 				response.setResponse(s);
 
 			} else {

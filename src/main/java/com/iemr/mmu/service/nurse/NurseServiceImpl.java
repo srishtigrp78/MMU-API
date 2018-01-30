@@ -28,6 +28,8 @@ import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
+import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
+import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.data.registrar.WrapperRegWorklist;
 import com.iemr.mmu.repo.masterrepo.nurse.CancerDiseaseMasterRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.CancerPersonalHabitMasterRepo;
@@ -42,6 +44,8 @@ import com.iemr.mmu.repo.nurse.BenPersonalCancerDietHistoryRepo;
 import com.iemr.mmu.repo.nurse.BenPersonalCancerHistoryRepo;
 import com.iemr.mmu.repo.nurse.BenPhysicalVitalRepo;
 import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
+import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
+import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
 import com.iemr.mmu.utils.mapper.InputMapper;
@@ -60,7 +64,19 @@ public class NurseServiceImpl implements NurseService {
 	private RegistrarRepoBenData registrarRepoBenData;
 	private BenAnthropometryRepo benAnthropometryRepo;
 	private BenPhysicalVitalRepo benPhysicalVitalRepo;
-
+	private LabTestOrderDetailRepo labTestOrderDetailRepo;
+	private PrescriptionDetailRepo prescriptionDetailRepo; 
+	
+	@Autowired
+	public void setLabTestOrderDetailRepo(LabTestOrderDetailRepo labTestOrderDetailRepo) {
+		this.labTestOrderDetailRepo = labTestOrderDetailRepo;
+	}
+	
+	@Autowired
+	public void setPrescriptionDetailRepo(PrescriptionDetailRepo prescriptionDetailRepo) {
+		this.prescriptionDetailRepo = prescriptionDetailRepo;
+	}
+	
 	@Autowired
 	public void setRegistrarRepoBenData(RegistrarRepoBenData registrarRepoBenData) {
 		this.registrarRepoBenData = registrarRepoBenData;
@@ -1223,8 +1239,10 @@ public class NurseServiceImpl implements NurseService {
 			
 			String processed = benAnthropometryRepo.getBenAnthropometryStatus(anthropometryDetail.getBeneficiaryRegID(), 
 					anthropometryDetail.getBenVisitID());
-			if(!processed.equals("N")){
+			if(null!= processed && !processed.equals("N")){
 				processed = "U";
+			}else{
+				processed = "N";
 			}
 			
 //			anthropometryDetail.setModifiedBy(anthropometryDetail.getCreatedBy());
@@ -1252,8 +1270,10 @@ public class NurseServiceImpl implements NurseService {
 			
 			String processed = benPhysicalVitalRepo.getBenPhysicalVitalStatus(physicalVitalDetail.getBeneficiaryRegID(), 
 					physicalVitalDetail.getBenVisitID());
-			if(!processed.equals("N")){
+			if(null != processed && !processed.equals("N")){
 				processed = "U";
+			}else{
+				processed = "N";
 			}
 			
 			physicalVitalDetail.setAverageSystolicBP(physicalVitalDetail.getSystolicBP_1stReading());
@@ -1287,5 +1307,38 @@ public class NurseServiceImpl implements NurseService {
 		}
 		return r;
 	}
+	
+	//common functions for QC and NCD
+	
+	@Override
+	public Long saveBeneficiaryPrescription(JsonObject caseSheet) throws Exception {
+
+		PrescriptionDetail prescriptionDetail = InputMapper.gson().fromJson(caseSheet, PrescriptionDetail.class);
+
+		PrescriptionDetail prescription = prescriptionDetailRepo.save(prescriptionDetail);
+		if (null != prescription && prescription.getPrescriptionID() > 0) {
+			return prescriptionDetail.getPrescriptionID();
+		}
+		return null;
+	}
+	
+	@Override
+	public Long saveBeneficiaryLabTestOrderDetails(JsonObject caseSheet, Long prescriptionID) {
+
+		ArrayList<LabTestOrderDetail> labTestOrderDetails = LabTestOrderDetail.getLabTestOrderDetailList(caseSheet,
+				prescriptionID);
+
+		List<LabTestOrderDetail> labTestOrders = (List<LabTestOrderDetail>) labTestOrderDetailRepo
+				.save(labTestOrderDetails);
+
+		if (null != labTestOrders && labTestOrders.size() >= 0) {
+			for (LabTestOrderDetail labTestOrder : labTestOrders) {
+				return labTestOrder.getLabTestOrderID();
+			}
+		}
+
+		return null;
+	}
+
 	
 }

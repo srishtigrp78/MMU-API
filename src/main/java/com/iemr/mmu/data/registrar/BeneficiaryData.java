@@ -145,6 +145,9 @@ public class BeneficiaryData {
 	@Expose
 	private String districtName;
 	
+	@Transient
+	@Expose 
+	private String servicePointName;
 
 	public String getImage() {
 		return benImage;
@@ -254,6 +257,17 @@ public class BeneficiaryData {
 		}
 		return resArray;
 	}
+	
+	public static ArrayList<BeneficiaryData> getBeneficiaryPersonalData(List<Object[]> resList) {
+		ArrayList<BeneficiaryData> resArray = new ArrayList<BeneficiaryData>();
+		for (Object[] obj : resList) {
+			BeneficiaryData cOBJ = new BeneficiaryData((Long) obj[0], (String) obj[1], (String) obj[2], (Date) obj[3],
+					(Short) obj[4], (Timestamp) obj[5], null, null);
+			resArray.add(cOBJ);
+		}
+		return resArray;
+	}
+	
 
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
@@ -509,6 +523,14 @@ public class BeneficiaryData {
 
 	public void setBenPhoneMap(Set<BeneficiaryPhoneMapping> benPhoneMap) {
 		this.benPhoneMap = benPhoneMap;
+	}
+
+	public String getServicePointName() {
+		return servicePointName;
+	}
+
+	public void setServicePointName(String servicePointName) {
+		this.servicePointName = servicePointName;
 	}
 
 }

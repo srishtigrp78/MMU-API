@@ -583,7 +583,7 @@ public class CSServiceImpl implements CSService {
 		Map<String, Object> caseSheetData = cSNurseServiceImpl.getBenNurseDataForCaseSheet(benRegID, benVisitID);
 
 		caseSheetData.putAll(cSDoctorServiceImpl.getBenDoctorEnteredDataForCaseSheet(benRegID, benVisitID));
-		caseSheetData.put("BeneficiaryDemographicData", registrarServiceImpl.getBeneficiaryDemographicData(benRegID));
+		caseSheetData.put("BeneficiaryData", registrarServiceImpl.getBeneficiaryPersonalDetails(benRegID));
 		caseSheetData.put("ImageAnnotatedData",
 				cSDoctorServiceImpl.getCancerExaminationImageAnnotationCasesheet(benRegID, benVisitID));
 
