@@ -485,7 +485,7 @@ public class BenPersonalHabit {
 			String timePeriodUnit = "";
 			Integer timePeriodAgo = 0;
 			
-			if(tobaccoList.size()>i){
+			if(null !=tobaccoList && tobaccoList.size()>i){
 				Map<String, String> tobaccoInfo=(Map<String, String>) tobaccoList.get(i);
 				benPersonalHabit.setTobaccoUseTypeID(tobaccoInfo.get("tobaccoUseTypeID"));
 				benPersonalHabit.setTobaccoUseType(tobaccoInfo.get("tobaccoUseType"));
@@ -502,7 +502,7 @@ public class BenPersonalHabit {
 				benPersonalHabit.setTobaccoUseDuration(Utility.convertToDateFormat(timePeriodUnit, timePeriodAgo));
 			}
 			
-			if(alcoholList.size()>i){
+			if(null != alcoholList && alcoholList.size()>i){
 				Map<String, String> alcoholInfo=(Map<String, String>) alcoholList.get(i);
 				
 				benPersonalHabit.setAlcoholTypeID(alcoholInfo.get("alcoholTypeID"));

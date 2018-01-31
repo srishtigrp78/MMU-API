@@ -147,7 +147,7 @@ public class ANCServiceImpl implements ANCService {
 					bvID = wrapperBenInvestigationANC.getBenVisitID();
 
 					wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
-					investigationSuccessFlag = ancDoctorServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
+					investigationSuccessFlag = nurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
 				}
 			} else {
 			}
@@ -165,7 +165,7 @@ public class ANCServiceImpl implements ANCService {
 							tmpObj.setCreatedBy(createdBy);
 
 						}
-						Integer r = ancDoctorServiceImpl.saveBenANCPrescription(prescribedDrugDetailList);
+						Integer r = nurseServiceImpl.saveBenPrescribedDrugsList(prescribedDrugDetailList);
 						if (r > 0 && r != null) {
 							prescriptionSuccessFlag = r;
 						}
@@ -240,7 +240,7 @@ public class ANCServiceImpl implements ANCService {
 								wrapperBenInvestigationANC.getCreatedBy());
 						wrapperBenInvestigationANC.setBenVisitID(benVisitID);
 						wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
-						Long investigationSuccessFlag = ancNurseServiceImpl
+						Long investigationSuccessFlag = nurseServiceImpl
 								.saveBenInvestigation(wrapperBenInvestigationANC);
 						if (investigationSuccessFlag != null && investigationSuccessFlag > 0) {
 							// Investigation data saved successfully.
@@ -955,13 +955,15 @@ public class ANCServiceImpl implements ANCService {
 			obstetricSuccessFlag = ancNurseServiceImpl.updateANCPastObstetricHistory(wrapperFemaleObstetricHistory);
 		}
 
-		/** For Female below 15 years.. **/
+		/** For Female above 12 yrs old and below 16 years old.. **/
 		// Update Immunization History
 		if (ancHistoryOBJ != null && ancHistoryOBJ.has("immunizationHistory")
 				&& !ancHistoryOBJ.get("immunizationHistory").isJsonNull()) {
 			WrapperImmunizationHistory wrapperImmunizationHistory = InputMapper.gson()
 					.fromJson(ancHistoryOBJ.get("immunizationHistory"), WrapperImmunizationHistory.class);
 			immunizationSuccessFlag = ancNurseServiceImpl.updateANCChildImmunizationDetail(wrapperImmunizationHistory);
+		}else{
+			immunizationSuccessFlag = 1;
 		}
 		// Update Other/Optional Vaccines History
 		if (ancHistoryOBJ != null && ancHistoryOBJ.has("childVaccineDetails")
@@ -969,6 +971,8 @@ public class ANCServiceImpl implements ANCService {
 			WrapperChildOptionalVaccineDetail wrapperChildVaccineDetail = InputMapper.gson()
 					.fromJson(ancHistoryOBJ.get("childVaccineDetails"), WrapperChildOptionalVaccineDetail.class);
 			childVaccineSuccessFlag = ancNurseServiceImpl.updateChildOptionalVaccineDetail(wrapperChildVaccineDetail);
+		} else {
+			childVaccineSuccessFlag = 1;
 		}
 
 		int historyUpdateSuccessFlag = 0;

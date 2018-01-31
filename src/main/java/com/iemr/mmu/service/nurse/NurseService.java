@@ -3,6 +3,7 @@ package com.iemr.mmu.service.nurse;
 import java.util.List;
 
 import com.google.gson.JsonObject;
+import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
 import com.iemr.mmu.data.nurse.BenFamilyCancerHistory;
@@ -57,5 +58,7 @@ public interface NurseService {
 	Long saveBeneficiaryPrescription(JsonObject caseSheet) throws Exception;
 
 	Long saveBeneficiaryLabTestOrderDetails(JsonObject caseSheet, Long prescriptionID);
+
+	Long saveBenInvestigation(WrapperBenInvestigationANC wrapperBenInvestigationANC);
 
 }

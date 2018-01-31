@@ -382,7 +382,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
-	public Long savePrescriptionDetailsAndGetPrescriptionID(WrapperBenInvestigationANC wrapperBenInvestigationANC) {
+	/*public Long savePrescriptionDetailsAndGetPrescriptionID(WrapperBenInvestigationANC wrapperBenInvestigationANC) {
 		PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
 		prescriptionDetail.setBeneficiaryRegID(wrapperBenInvestigationANC.getBeneficiaryRegID());
 		prescriptionDetail.setBenVisitID(wrapperBenInvestigationANC.getBenVisitID());
@@ -392,7 +392,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		Long prescriptionID = quickConsultationServiceImpl.saveBenPrescriptionForANC(prescriptionDetail);
 		return prescriptionID;
 	}
-
+*/
 	public Long savePrescriptionDetailsAndGetPrescriptionID(Long benRegID, Long benVisitID, Integer psmID,
 			String createdBy) {
 		PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
@@ -401,10 +401,11 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		prescriptionDetail.setProviderServiceMapID(psmID);
 		prescriptionDetail.setCreatedBy(createdBy);
 
-		Long prescriptionID = quickConsultationServiceImpl.saveBenPrescriptionForANC(prescriptionDetail);
+		Long prescriptionID = nurseServiceImpl.saveBenPrescription(prescriptionDetail);
 		return prescriptionID;
 	}
-
+	
+	@Deprecated
 	@Override
 	public Long saveBenInvestigation(WrapperBenInvestigationANC wrapperBenInvestigationANC) {
 		Long r = null;

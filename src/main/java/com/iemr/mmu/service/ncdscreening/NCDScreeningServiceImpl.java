@@ -68,7 +68,9 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 					saveNCDScreeningDetails = ncdScreeningNurseServiceImpl.saveNCDScreeningDetails(ncdScreening);
 				}
 
-				Long prescriptionID = nurseServiceImpl.saveBeneficiaryPrescription(jsonObject);
+				Long prescriptionID = nurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
+						ncdScreening.getBeneficiaryRegID(), ncdScreening.getBenVisitID(),
+						ncdScreening.getProviderServiceMapID(), ncdScreening.getCreatedBy());
 
 				if (prescriptionID != null && prescriptionID > 0) {
 

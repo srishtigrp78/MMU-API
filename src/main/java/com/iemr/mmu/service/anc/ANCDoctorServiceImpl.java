@@ -135,7 +135,7 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 		return ID;
 	}
 
-	public Long saveBenInvestigation(WrapperBenInvestigationANC wrapperBenInvestigationANC) {
+	/*public Long saveBenInvestigation(WrapperBenInvestigationANC wrapperBenInvestigationANC) {
 		Long r = null;
 
 		ArrayList<LabTestOrderDetail> LabTestOrderDetailList = new ArrayList<>();
@@ -167,7 +167,8 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 		return r;
 
 	}
-
+*/
+	@Deprecated
 	public Integer saveBenANCPrescription(List<PrescribedDrugDetail> prescribedDrugDetailList) {
 		Integer r = 0;
 		List<PrescribedDrugDetail> prescribedDrugDetailListRS = (List<PrescribedDrugDetail>) prescribedDrugDetailRepo

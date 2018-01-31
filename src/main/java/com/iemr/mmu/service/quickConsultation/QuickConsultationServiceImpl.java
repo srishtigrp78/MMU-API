@@ -125,6 +125,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	}
 
 	// Prescription for ANC...
+	@Deprecated
 	public Long saveBenPrescriptionForANC(PrescriptionDetail prescription) {
 		Long r = null;
 		PrescriptionDetail prescriptionRS = prescriptionDetailRepo.save(prescription);
@@ -136,19 +137,25 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 
 	@Override
 	public Long saveBeneficiaryPrescribedDrugDetail(JsonObject caseSheet, Long prescriptionID) {
-
+		Long prescribedDrugSuccessFlag = null;
 		ArrayList<PrescribedDrugDetail> prescriptionDetails = PrescribedDrugDetail
 				.getBenPrescribedDrugDetailList(caseSheet, prescriptionID);
 
-		List<PrescribedDrugDetail> prescribedDrugs = (List<PrescribedDrugDetail>) prescribedDrugDetailRepo
+/*		List<PrescribedDrugDetail> prescribedDrugs = (List<PrescribedDrugDetail>) prescribedDrugDetailRepo
 				.save(prescriptionDetails);
 
 		if (null != prescribedDrugs && prescribedDrugs.size() > 0) {
 			for (PrescribedDrugDetail prescribedDrug : prescribedDrugs) {
 				return prescribedDrug.getPrescribedDrugID();
 			}
+		}*/
+		
+		Integer r = nurseServiceImpl.saveBenPrescribedDrugsList(prescriptionDetails);
+		if (r > 0 && r != null) {
+			prescribedDrugSuccessFlag = new Long(r);
 		}
-		return null;
+		
+		return prescribedDrugSuccessFlag;
 	}
 
 	@Deprecated

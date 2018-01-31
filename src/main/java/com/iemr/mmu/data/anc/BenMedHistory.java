@@ -102,27 +102,27 @@ public class BenMedHistory {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	public BenMedHistory() {
 	}
 
@@ -156,10 +156,10 @@ public class BenMedHistory {
 		this.benVisitID = benVisitID;
 		this.providerServiceMapID = providerServiceMapID;
 	}
-	
-	public BenMedHistory(Timestamp yearofIllness,
-			Integer illnessTypeID, String illnessType, String otherIllnessType, Integer surgeryID, String surgeryType,
-			Timestamp yearofSurgery, String otherSurgeryType, Timestamp createdDate) {
+
+	public BenMedHistory(Timestamp yearofIllness, Integer illnessTypeID, String illnessType, String otherIllnessType,
+			Integer surgeryID, String surgeryType, Timestamp yearofSurgery, String otherSurgeryType,
+			Timestamp createdDate) {
 		super();
 		this.yearofIllness = yearofIllness;
 		this.illnessTypeID = illnessTypeID;
@@ -327,7 +327,7 @@ public class BenMedHistory {
 	@Transient
 	@Expose
 	private ArrayList<Map<String, Object>> pastSurgery;
-	
+
 	public ArrayList<Map<String, Object>> getPastIllness() {
 		return pastIllness;
 	}
@@ -407,48 +407,51 @@ public class BenMedHistory {
 			benMedHistory.setBenVisitID(benVisitID);
 			benMedHistory.setProviderServiceMapID(providerServiceMapID);
 			benMedHistory.setCreatedBy(createdBy);
-			Map<String, Object> illness = (Map<String, Object>) pastIllness.get(i);
+			if (null != pastIllness && pastIllness.size() > i) {
+				Map<String, Object> illness = (Map<String, Object>) pastIllness.get(i);
 
-			if (null != illness) {
-				if (null != illness.get("illnessTypeID")) {
-					benMedHistory.setIllnessTypeID(Integer.parseInt(illness.get("illnessTypeID").toString()));
+				if (null != illness) {
+					if (null != illness.get("illnessTypeID")) {
+						benMedHistory.setIllnessTypeID(Integer.parseInt(illness.get("illnessTypeID").toString()));
+					}
+					if (null != illness.get("illnessType")) {
+						benMedHistory.setIllnessType(illness.get("illnessType").toString());
+					}
+					if (null != illness.get("otherIllnessType")) {
+						benMedHistory.setOtherIllnessType(illness.get("otherIllnessType").toString());
+					}
 				}
-				if (null != illness.get("illnessType")) {
-					benMedHistory.setIllnessType(illness.get("illnessType").toString());
+
+				String timePeriodUnit = (String) illness.get("timePeriodUnit");
+				Integer timePeriodAgo = 0;
+				if (null != illness.get("timePeriodAgo")) {
+					timePeriodAgo = Integer.parseInt(illness.get("timePeriodAgo").toString());
 				}
-				if (null != illness.get("otherIllnessType")) {
-					benMedHistory.setOtherIllnessType(illness.get("otherIllnessType").toString());
-				}
+				benMedHistory.setYearofIllness(Utility.convertToDateFormat(timePeriodUnit, timePeriodAgo));
 			}
+			if (null != pastSurgery && pastSurgery.size() > i) {
+				Map<String, Object> surgery = (Map<String, Object>) pastSurgery.get(i);
+				if (null != surgery) {
+					if (null != surgery.get("surgeryID")) {
+						benMedHistory.setSurgeryID(Integer.parseInt(surgery.get("surgeryID").toString()));
+					}
+					if (null != surgery.get("surgeryType")) {
+						benMedHistory.setSurgeryType(surgery.get("surgeryType").toString());
+					}
 
-			String timePeriodUnit = (String) illness.get("timePeriodUnit");
-			Integer timePeriodAgo = 0;
-			if (null != illness.get("timePeriodAgo")) {
-				timePeriodAgo = Integer.parseInt(illness.get("timePeriodAgo").toString());
-			}
-			benMedHistory.setYearofIllness(Utility.convertToDateFormat(timePeriodUnit, timePeriodAgo));
-
-			Map<String, Object> surgery = (Map<String, Object>) pastSurgery.get(i);
-			if (null != surgery) {
-				if (null != surgery.get("surgeryID")) {
-					benMedHistory.setSurgeryID(Integer.parseInt(surgery.get("surgeryID").toString()));
-				}
-				if (null != surgery.get("surgeryType")) {
-					benMedHistory.setSurgeryType(surgery.get("surgeryType").toString());
+					if (null != surgery.get("otherSurgeryType")) {
+						benMedHistory.setOtherSurgeryType(surgery.get("otherSurgeryType").toString());
+					}
 				}
 
-				if (null != surgery.get("otherSurgeryType")) {
-					benMedHistory.setOtherSurgeryType(surgery.get("otherSurgeryType").toString());
+				String surgeryTimePeriodUnit = (String) surgery.get("timePeriodUnit");
+				Integer surgeryTimePeriodAgo = 0;
+				if (null != surgery.get("timePeriodAgo")) {
+					surgeryTimePeriodAgo = Integer.parseInt(surgery.get("timePeriodAgo").toString());
 				}
+				benMedHistory
+						.setYearofSurgery(Utility.convertToDateFormat(surgeryTimePeriodUnit, surgeryTimePeriodAgo));
 			}
-
-			String surgeryTimePeriodUnit = (String) surgery.get("timePeriodUnit");
-			Integer surgeryTimePeriodAgo = 0;
-			if (null != surgery.get("timePeriodAgo")) {
-				surgeryTimePeriodAgo = Integer.parseInt(surgery.get("timePeriodAgo").toString());
-			}
-			benMedHistory.setYearofSurgery(Utility.convertToDateFormat(surgeryTimePeriodUnit, surgeryTimePeriodAgo));
-
 			medHistoryList.add(benMedHistory);
 		}
 
@@ -456,52 +459,54 @@ public class BenMedHistory {
 	}
 
 	public BenMedHistory getBenPastHistory(ArrayList<Object[]> pastHistory) {
-		
+
 		BenMedHistory benHistory = null;
-		if(null != pastHistory && pastHistory.size()>0){
-			Object[] obj1= pastHistory.get(0);
-			benHistory = new BenMedHistory((Long)obj1[0], (Long)obj1[1], (Integer)obj1[2]);
-			
+		if (null != pastHistory && pastHistory.size() > 0) {
+			Object[] obj1 = pastHistory.get(0);
+			benHistory = new BenMedHistory((Long) obj1[0], (Long) obj1[1], (Integer) obj1[2]);
+
 			ArrayList<Map<String, Object>> pastIllness = new ArrayList<Map<String, Object>>();
 			ArrayList<Map<String, Object>> pastSurgery = new ArrayList<Map<String, Object>>();
-			for(Object[] obj: pastHistory){
-				BenMedHistory benMedHistory = new BenMedHistory((Timestamp)obj[3], (Integer)obj[4], (String)obj[5], (String)obj[6],
-						(Integer)obj[7], (String)obj[8], (Timestamp)obj[9], (String)obj[10], (Timestamp)obj1[11]);
-				
+			for (Object[] obj : pastHistory) {
+				BenMedHistory benMedHistory = new BenMedHistory((Timestamp) obj[3], (Integer) obj[4], (String) obj[5],
+						(String) obj[6], (Integer) obj[7], (String) obj[8], (Timestamp) obj[9], (String) obj[10],
+						(Timestamp) obj1[11]);
+
 				Map<String, Object> illness = new HashMap<String, Object>();
-				
+
 				illness.put("illnessTypeID", benMedHistory.getIllnessTypeID());
 				illness.put("illnessType", benMedHistory.getIllnessType());
 				illness.put("otherIllnessType", benMedHistory.getOtherIllnessType());
-				
-				Map<String,Object> timePeriod = Utility.convertTimeToWords(benMedHistory.getYearofIllness(), benMedHistory.getCreatedDate());
-				
+
+				Map<String, Object> timePeriod = Utility.convertTimeToWords(benMedHistory.getYearofIllness(),
+						benMedHistory.getCreatedDate());
+
 				illness.put("timePeriodAgo", timePeriod.get("timePeriodAgo"));
 				illness.put("timePeriodUnit", timePeriod.get("timePeriodUnit"));
 				pastIllness.add(illness);
-				
+
 				benHistory.setPastIllness(pastIllness);
-				
+
 				Map<String, Object> surgery = new HashMap<String, Object>();
-				
+
 				surgery.put("surgeryID", benMedHistory.getSurgeryID());
 				surgery.put("surgeryType", benMedHistory.getSurgeryType());
 				surgery.put("otherSurgeryType", benMedHistory.getOtherSurgeryType());
-				
-				timePeriod = Utility.convertTimeToWords(benMedHistory.getYearofSurgery(), benMedHistory.getCreatedDate());
-				
+
+				timePeriod = Utility.convertTimeToWords(benMedHistory.getYearofSurgery(),
+						benMedHistory.getCreatedDate());
+
 				surgery.put("timePeriodAgo", timePeriod.get("timePeriodAgo"));
 				surgery.put("timePeriodUnit", timePeriod.get("timePeriodUnit"));
-				
+
 				pastSurgery.add(surgery);
-				
+
 				benHistory.setPastSurgery(pastSurgery);
-				
+
 			}
 		}
 		return benHistory;
-		
+
 	}
-	
-	
+
 }

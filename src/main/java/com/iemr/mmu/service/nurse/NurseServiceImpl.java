@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.masterdata.nurse.CancerDiseaseType;
 import com.iemr.mmu.data.masterdata.nurse.CancerPersonalHabitType;
 import com.iemr.mmu.data.masterdata.nurse.FamilyMemberType;
@@ -29,6 +30,7 @@ import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
+import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.data.registrar.WrapperRegWorklist;
 import com.iemr.mmu.repo.masterrepo.nurse.CancerDiseaseMasterRepo;
@@ -45,6 +47,7 @@ import com.iemr.mmu.repo.nurse.BenPersonalCancerHistoryRepo;
 import com.iemr.mmu.repo.nurse.BenPhysicalVitalRepo;
 import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
+import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
@@ -66,6 +69,12 @@ public class NurseServiceImpl implements NurseService {
 	private BenPhysicalVitalRepo benPhysicalVitalRepo;
 	private LabTestOrderDetailRepo labTestOrderDetailRepo;
 	private PrescriptionDetailRepo prescriptionDetailRepo; 
+	private PrescribedDrugDetailRepo prescribedDrugDetailRepo;
+	
+	@Autowired
+	public void setPrescribedDrugDetailRepo(PrescribedDrugDetailRepo prescribedDrugDetailRepo) {
+		this.prescribedDrugDetailRepo = prescribedDrugDetailRepo;
+	}
 	
 	@Autowired
 	public void setLabTestOrderDetailRepo(LabTestOrderDetailRepo labTestOrderDetailRepo) {
@@ -1308,18 +1317,47 @@ public class NurseServiceImpl implements NurseService {
 		return r;
 	}
 	
-	//common functions for QC and NCD
+	/**
+	 * 
+	 * @param benRegID
+	 * @param benVisitID
+	 * @param psmID
+	 * @param createdBy
+	 * @return
+	 * 
+	 * temp code
+	 */
+	public Long savePrescriptionDetailsAndGetPrescriptionID(Long benRegID, Long benVisitID, Integer psmID,
+			String createdBy) {
+		PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
+		prescriptionDetail.setBeneficiaryRegID(benRegID);
+		prescriptionDetail.setBenVisitID(benVisitID);
+		prescriptionDetail.setProviderServiceMapID(psmID);
+		prescriptionDetail.setCreatedBy(createdBy);
+
+		Long prescriptionID = saveBenPrescription(prescriptionDetail);
+		return prescriptionID;
+	}
+	
+	
+	
+	//common functions for ANC, QC and NCD
 	
 	@Override
 	public Long saveBeneficiaryPrescription(JsonObject caseSheet) throws Exception {
 
 		PrescriptionDetail prescriptionDetail = InputMapper.gson().fromJson(caseSheet, PrescriptionDetail.class);
 
-		PrescriptionDetail prescription = prescriptionDetailRepo.save(prescriptionDetail);
-		if (null != prescription && prescription.getPrescriptionID() > 0) {
-			return prescriptionDetail.getPrescriptionID();
+		return saveBenPrescription(prescriptionDetail);
+	}
+	
+	public Long saveBenPrescription(PrescriptionDetail prescription) {
+		Long r = null;
+		PrescriptionDetail prescriptionRS = prescriptionDetailRepo.save(prescription);
+		if (prescriptionRS != null && prescriptionRS.getPrescriptionID() > 0) {
+			r = prescriptionRS.getPrescriptionID();
 		}
-		return null;
+		return r;
 	}
 	
 	@Override
@@ -1338,6 +1376,51 @@ public class NurseServiceImpl implements NurseService {
 		}
 
 		return null;
+	}
+
+	public Integer saveBenPrescribedDrugsList(List<PrescribedDrugDetail> prescribedDrugDetailList) {
+		Integer r = 0;
+		List<PrescribedDrugDetail> prescribedDrugDetailListRS = (List<PrescribedDrugDetail>) prescribedDrugDetailRepo
+				.save(prescribedDrugDetailList);
+		if (prescribedDrugDetailList.size() > 0 && prescribedDrugDetailListRS != null
+				&& prescribedDrugDetailListRS.size() > 0) {
+			r = prescribedDrugDetailListRS.size();
+		}
+		return r;
+	}
+	
+	@Override
+	public Long saveBenInvestigation(WrapperBenInvestigationANC wrapperBenInvestigationANC) {
+		Long r = null;
+
+		ArrayList<LabTestOrderDetail> LabTestOrderDetailList = new ArrayList<>();
+		ArrayList<LabTestOrderDetail> investigationList = wrapperBenInvestigationANC.getLaboratoryList();
+		if (investigationList != null && investigationList.size() > 0) {
+
+			for (LabTestOrderDetail testData : investigationList) {
+
+				testData.setPrescriptionID(wrapperBenInvestigationANC.getPrescriptionID());
+				testData.setBeneficiaryRegID(wrapperBenInvestigationANC.getBeneficiaryRegID());
+				testData.setBenVisitID(wrapperBenInvestigationANC.getBenVisitID());
+				testData.setProviderServiceMapID(wrapperBenInvestigationANC.getProviderServiceMapID());
+				testData.setCreatedBy(wrapperBenInvestigationANC.getCreatedBy());
+
+				LabTestOrderDetailList.add(testData);
+			}
+			ArrayList<LabTestOrderDetail> LabTestOrderDetailListRS = (ArrayList<LabTestOrderDetail>) labTestOrderDetailRepo
+					.save(LabTestOrderDetailList);
+
+			if (LabTestOrderDetailListRS.size() == investigationList.size()) {
+				r = new Long(1);
+			}
+
+		} else {
+			r = new Long(1);
+			;
+		}
+
+		return r;
+
 	}
 
 	
