@@ -1,5 +1,6 @@
 package com.iemr.mmu.data.anc;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -7,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
@@ -187,6 +189,9 @@ public class FemaleObstetricHistory {
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
+
+	@Transient
+	private Date captureDate;
 
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
@@ -529,6 +534,33 @@ public class FemaleObstetricHistory {
 	}
 
 	public FemaleObstetricHistory() {
+	}
+
+	public FemaleObstetricHistory(Date createdDate, Short pregOrder, String pregComplicationType,
+			String otherPregComplication, String durationType, String deliveryType, String deliveryPlace,
+			String otherDeliveryPlace, String deliveryComplicationType, String otherDeliveryComplication,
+			String pregOutcome, String postpartumComplicationType, String otherPostpartumCompType,
+			String postNatalComplication, String otherPostNatalComplication, String congenitalAnomalies,
+			String newBornComplication, String otherNewBornComplication) {
+		super();
+		this.captureDate = createdDate;
+		this.pregOrder = pregOrder;
+		this.pregComplicationType = pregComplicationType;
+		this.otherPregComplication = otherPregComplication;
+		this.durationType = durationType;
+		this.deliveryType = deliveryType;
+		this.deliveryPlace = deliveryPlace;
+		this.otherDeliveryPlace = otherDeliveryPlace;
+		this.deliveryComplicationType = deliveryComplicationType;
+		this.otherDeliveryComplication = otherDeliveryComplication;
+		this.pregOutcome = pregOutcome;
+		this.postpartumComplicationType = postpartumComplicationType;
+		this.otherPostpartumCompType = otherPostpartumCompType;
+		this.postNatalComplication = postNatalComplication;
+		this.otherPostNatalComplication = otherPostNatalComplication;
+		this.congenitalAnomalies = congenitalAnomalies;
+		this.newBornComplication = newBornComplication;
+		this.otherNewBornComplication = otherNewBornComplication;
 	}
 
 	public FemaleObstetricHistory(Short pregOrder, Short pregComplicationID, String pregComplicationType,

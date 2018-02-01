@@ -1,5 +1,6 @@
 package com.iemr.mmu.data.anc;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -121,23 +122,38 @@ public class BenAllergyHistory {
 	@Expose
 	private List<Map<String, Object>> allergicList;
 
+	@Transient
+	private Date captureDate;
+	
 	public BenAllergyHistory() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
-	public BenAllergyHistory(String allergyStatus, String allergyType, String allergenName,
-			String allergicReactionTypeID, String allergicReactionType, String otherAllergicReaction, String remarks) {
+	public BenAllergyHistory(Date createdDate, String allergyStatus, String allergyType, String allergenName,
+			String allergicReactionType, String otherAllergicReaction, String remarks) {
 		super();
+		this.captureDate = createdDate;
 		this.allergyStatus = allergyStatus;
 		this.allergyType = allergyType;
 		this.allergyName = allergenName;
-		this.allergicReactionTypeID = allergicReactionTypeID;
 		this.allergicReactionType = allergicReactionType;
 		this.otherAllergicReaction = otherAllergicReaction;
 		this.remarks = remarks;
 	}
 
+	 public BenAllergyHistory(String allergyStatus, String allergyType, String allergenName,
+				String allergicReactionTypeID, String allergicReactionType, String otherAllergicReaction, String remarks) {
+			super();
+			this.allergyStatus = allergyStatus;
+			this.allergyType = allergyType;
+			this.allergyName = allergenName;
+			this.allergicReactionTypeID = allergicReactionTypeID;
+			this.allergicReactionType = allergicReactionType;
+			this.otherAllergicReaction = otherAllergicReaction;
+			this.remarks = remarks;
+		}
+	 
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}

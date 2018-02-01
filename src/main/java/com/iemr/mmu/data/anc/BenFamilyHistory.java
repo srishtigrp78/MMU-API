@@ -1,5 +1,6 @@
 package com.iemr.mmu.data.anc;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -116,6 +117,9 @@ public class BenFamilyHistory {
 	@Expose
 	private List<Map<String,Object>> familyDiseaseList;
 
+	@Transient
+	private Date captureDate;
+	
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
@@ -309,11 +313,11 @@ public class BenFamilyHistory {
 		// TODO Auto-generated constructor stub
 	}
 
-	public BenFamilyHistory(String familyMember, Short diseaseTypeID, String diseaseType, String otherDiseaseType,
+	public BenFamilyHistory(Date createdDate, String familyMember, String diseaseType, String otherDiseaseType,
 			Boolean isGeneticDisorder, String geneticDisorder, Boolean isConsanguineousMarrige) {
 		super();
+		this.captureDate = createdDate;
 		this.familyMember = familyMember;
-		this.diseaseTypeID = diseaseTypeID;
 		this.diseaseType = diseaseType;
 		this.otherDiseaseType = otherDiseaseType;
 		this.isGeneticDisorder = isGeneticDisorder;

@@ -16,7 +16,7 @@ import com.iemr.mmu.data.anc.ChildVaccineDetail1;
 @Repository
 public interface ChildVaccineDetail1Repo extends CrudRepository<ChildVaccineDetail1, Long>{
 	
-	@Query("select defaultReceivingAge, vaccineName, status "
+	@Query("select Date(createdDate), defaultReceivingAge, vaccineName, status "
 			+ "from ChildVaccineDetail1 a where a.beneficiaryRegID = :beneficiaryRegID ORDER BY createdDate DESC ")
 	public ArrayList<Object[]> getBenChildVaccineDetails(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	

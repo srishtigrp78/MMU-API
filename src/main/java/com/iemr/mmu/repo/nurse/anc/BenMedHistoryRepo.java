@@ -16,9 +16,9 @@ import com.iemr.mmu.data.anc.BenMedHistory;
 @Repository
 public interface BenMedHistoryRepo extends CrudRepository<BenMedHistory, Long> {
 
-	@Query(" SELECT illnessType, otherIllnessType, Date(yearofIllness), surgeryType, otherSurgeryType, "
+	@Query(" SELECT Date(createdDate), illnessType, otherIllnessType, Date(yearofIllness), surgeryType, otherSurgeryType, "
 			+ " Date(yearofSurgery)  FROM BenMedHistory "
-			+ " WHERE beneficiaryRegID = :benRegID AND (illnessType is not null OR surgeryType is not null ) ")
+			+ " WHERE beneficiaryRegID = :benRegID AND (illnessType is not null OR surgeryType is not null ) AND deleted = false order by createdDate DESC")
 	public ArrayList<Object[]> getBenPastHistory(@Param("benRegID") Long benRegID);
 	
 	

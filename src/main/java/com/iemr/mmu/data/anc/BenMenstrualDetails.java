@@ -1,5 +1,6 @@
 package com.iemr.mmu.data.anc;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -8,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
@@ -117,6 +119,12 @@ public class BenMenstrualDetails {
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
+	@Transient
+	private Date captureDate;
+
+	@Transient
+	private Date lmp_date;
+	
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
@@ -317,6 +325,18 @@ public class BenMenstrualDetails {
 		this.benMenstrualID = benMenstrualID;
 	}
 
+	public BenMenstrualDetails(Date createdDate, String regularity, String cycleLength, String bloodFlowDuration, 
+			String problemName, Date lMPDate) {
+		super();
+		this.captureDate = createdDate;
+		this.regularity = regularity;
+		this.cycleLength = cycleLength;
+		this.bloodFlowDuration = bloodFlowDuration;
+		this.problemName = problemName;
+		this.lmp_date = lMPDate;
+	}
+	
+	/*
 	public BenMenstrualDetails(Short menstrualCycleStatusID, String regularity, Short menstrualCyclelengthID,
 			String cycleLength, Short menstrualFlowDurationID, String bloodFlowDuration, Short menstrualProblemID,
 			String problemName, Timestamp lMPDate) {
@@ -330,7 +350,7 @@ public class BenMenstrualDetails {
 		this.menstrualProblemID = menstrualProblemID;
 		this.problemName = problemName;
 		this.lMPDate = lMPDate;
-	}
+	}*/
 
 	public BenMenstrualDetails(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			Short menstrualCycleStatusID, String regularity, Short menstrualCyclelengthID, String cycleLength,

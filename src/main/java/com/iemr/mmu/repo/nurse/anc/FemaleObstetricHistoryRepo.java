@@ -15,12 +15,11 @@ import com.iemr.mmu.data.anc.FemaleObstetricHistory;
 @Repository
 public interface FemaleObstetricHistoryRepo extends CrudRepository<FemaleObstetricHistory, Long>{
 
-	@Query("select pregOrder, pregComplicationID, pregComplicationType, otherPregComplication, pregDurationID, "
-			+ "durationType, deliveryTypeID, deliveryType, deliveryPlaceID, deliveryPlace, otherDeliveryPlace, deliveryComplicationID, "
-			+ "deliveryComplicationType, otherDeliveryComplication, pregOutcomeID, pregOutcome, postpartumComplicationID, "
-			+ " postpartumComplicationType, otherPostpartumCompType, postNatalComplicationID, postNatalComplication, otherPostNatalComplication,"
-			+ " congenitalAnomalies, newBornComplicationID, newBornComplication, otherNewBornComplication from "
-			+ "FemaleObstetricHistory a where a.beneficiaryRegID = :beneficiaryRegID")
+	@Query("select Date(createdDate), pregOrder, pregComplicationType, otherPregComplication, durationType, deliveryType, deliveryPlace, otherDeliveryPlace, "
+			+ " deliveryComplicationType, otherDeliveryComplication, pregOutcome, postpartumComplicationType, otherPostpartumCompType, "
+			+ " postNatalComplication, otherPostNatalComplication, congenitalAnomalies, newBornComplication, otherNewBornComplication from "
+			+ "FemaleObstetricHistory a where a.beneficiaryRegID = :beneficiaryRegID AND pregOrder is not null AND deleted = false "
+			+ "order by createdDate DESC")
 	public ArrayList<Object[]> getBenFemaleObstetricHistoryDetail(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	
 	@Query("select beneficiaryRegID, benVisitID, providerServiceMapID, pregOrder, totalNoOfPreg, pregComplicationID, pregComplicationType, otherPregComplication, pregDurationID, "

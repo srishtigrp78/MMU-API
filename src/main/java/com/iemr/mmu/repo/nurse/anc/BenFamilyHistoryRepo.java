@@ -15,8 +15,9 @@ import com.iemr.mmu.data.anc.BenFamilyHistory;
 @Repository
 public interface BenFamilyHistoryRepo extends CrudRepository<BenFamilyHistory, Long>{
 	
-	@Query("select familyMember, diseaseTypeID, diseaseType, otherDiseaseType, isGeneticDisorder, geneticDisorder, isConsanguineousMarrige "
-			+ "from BenFamilyHistory a where a.beneficiaryRegID = :beneficiaryRegID")
+	@Query("select Date(createdDate), familyMember, diseaseType, otherDiseaseType, isGeneticDisorder, geneticDisorder, isConsanguineousMarrige "
+			+ "from BenFamilyHistory a where a.beneficiaryRegID = :beneficiaryRegID AND familyMember is not null AND familyMember!='' AND deleted = false "
+			+ "order by createdDate DESC")
 	public ArrayList<Object[]> getBenFamilyHistoryDetail(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	
 	@Query(" SELECT beneficiaryRegID, benVisitID, providerServiceMapID, familyMember, diseaseTypeID, diseaseType, otherDiseaseType, "

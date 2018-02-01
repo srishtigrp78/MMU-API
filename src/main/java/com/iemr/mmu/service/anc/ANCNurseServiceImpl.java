@@ -1118,8 +1118,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		if (benPastHistoryDataArray != null && benPastHistoryDataArray.size() > 0) {
 			BenMedHistory benMedHistory;
 			for (Object[] obj : benPastHistoryDataArray) {
-				benMedHistory = new BenMedHistory((String) obj[0], (String) obj[1], (Date) obj[2], (String) obj[3],
-						(String) obj[4], (Date) obj[5]);
+				benMedHistory = new BenMedHistory((Date) obj[0], (String) obj[1], (String) obj[2], (Date) obj[3], (String) obj[4],
+						(String) obj[5], (Date) obj[6]);
 				benMedHistoryArrayList.add(benMedHistory);
 			}
 		}
@@ -1127,6 +1127,11 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		Map<String, String> columnMap = new HashMap<>();
 		List<Map<String, String>> columns = new ArrayList<Map<String, String>>();
 
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Date of Capture");
+		columnMap.put("keyName", "captureDate");
+		columns.add(columnMap);
+		
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Illness Type");
 		columnMap.put("keyName", "Illness_Type");
@@ -1173,6 +1178,11 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
 		Map<String, Object> column = new HashMap<String, Object>();
 
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "captureDate");
+		columns.add(column);
+		
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Comorbid Condition");
 		column.put("keyName", "comorbidCondition");
@@ -1192,8 +1202,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		if (null != bencomrbidityCondDetails) {
 			for (Object[] obj : bencomrbidityCondDetails) {
 
-				BencomrbidityCondDetails history = new BencomrbidityCondDetails((String) obj[0], (String) obj[1],
-						(Timestamp) obj[2]);
+				BencomrbidityCondDetails history = new BencomrbidityCondDetails((Date) obj[0], (String) obj[1], (String) obj[2],
+						(Timestamp) obj[3]);
 				bencomrbidityConds.add(history);
 			}
 
@@ -1214,6 +1224,12 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
 		Map<String, Object> column = new HashMap<String, Object>();
 
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "captureDate");
+		columns.add(column);
+		
+		column = new HashMap<>();
 		column.put("columnName", "Dietary Type");
 		column.put("keyName", "dietaryType");
 		columns.add(column);
@@ -1228,10 +1244,10 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		column.put("keyName", "tobaccoUseStatus");
 		columns.add(column);
 
-		column = new HashMap<String, Object>();
+/*		column = new HashMap<String, Object>();
 		column.put("columnName", "Tobacco Use Type ID");
 		column.put("keyName", "tobaccoUseTypeID");
-		columns.add(column);
+		columns.add(column);*/
 
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Tobacco Use Type");
@@ -1250,7 +1266,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Tobacco Use Duration");
-		column.put("keyName", "tobaccoUseDuration");
+		column.put("keyName", "tobacco_use_duration");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
@@ -1262,9 +1278,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		if (null != benPersonalHabits) {
 			for (Object[] obj : benPersonalHabits) {
 
-				BenPersonalHabit benPersonalHabit = new BenPersonalHabit((String) obj[0], (String) obj[1],
-						(String) obj[2], (String) obj[3], (String) obj[4], (String) obj[5], (Short) obj[6],
-						(Timestamp) obj[7], (Character) obj[8]);
+				BenPersonalHabit benPersonalHabit = new BenPersonalHabit((Date) obj[0], (String) obj[1], (String) obj[2],
+						(String) obj[3], (String) obj[4], (String) obj[5], (Short) obj[6], (Date) obj[7], (Character) obj[8]);
 
 				personalHabits.add(benPersonalHabit);
 			}
@@ -1285,6 +1300,12 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
 		Map<String, Object> column = new HashMap<String, Object>();
 
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "captureDate");
+		columns.add(column);
+		
+		column = new HashMap<>();
 		column.put("columnName", "Dietary Type");
 		column.put("keyName", "dietaryType");
 		columns.add(column);
@@ -1299,11 +1320,11 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		column.put("keyName", "alcoholIntakeStatus");
 		columns.add(column);
 
-		column = new HashMap<String, Object>();
+/*		column = new HashMap<String, Object>();
 		column.put("columnName", "Alcohol Type ID");
 		column.put("keyName", "alcoholTypeID");
 		columns.add(column);
-
+*/
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Alcohol Type");
 		column.put("keyName", "alcoholType");
@@ -1326,7 +1347,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Alcohol Duration");
-		column.put("keyName", "alcoholDuration");
+		column.put("keyName", "alcohol_use_duration");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
@@ -1337,9 +1358,9 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		ArrayList<BenPersonalHabit> personalHabits = new ArrayList<BenPersonalHabit>();
 		if (null != benPersonalHabits) {
 			for (Object[] obj : benPersonalHabits) {
-				BenPersonalHabit benPersonalHabit = new BenPersonalHabit((String) obj[0], (String) obj[1],
-						(String) obj[2], (String) obj[3], (String) obj[4], (String) obj[5], (String) obj[6],
-						(String) obj[7], (Timestamp) obj[8], (Character) obj[9]);
+				BenPersonalHabit benPersonalHabit = new BenPersonalHabit((Date) obj[0], (String) obj[1], (String) obj[2],
+						(String) obj[3], (String) obj[4], (String) obj[5], (String) obj[6],
+						(String) obj[7], (Date) obj[8], (Character) obj[9]);
 				personalHabits.add(benPersonalHabit);
 			}
 		}
@@ -1359,6 +1380,12 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
 		Map<String, Object> column = new HashMap<String, Object>();
 
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "captureDate");
+		columns.add(column);
+		
+		column = new HashMap<>();
 		column.put("columnName", "Allergy Status");
 		column.put("keyName", "allergyStatus");
 		columns.add(column);
@@ -1373,10 +1400,10 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		column.put("keyName", "allergenName");
 		columns.add(column);
 
-		column = new HashMap<String, Object>();
+		/*column = new HashMap<String, Object>();
 		column.put("columnName", "Allergic Reaction Type ID");
 		column.put("keyName", "allergicReactionTypeID");
-		columns.add(column);
+		columns.add(column);*/
 
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Allergic Reaction Type");
@@ -1396,8 +1423,9 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		ArrayList<BenAllergyHistory> personalHabits = new ArrayList<BenAllergyHistory>();
 		if (null != benPersonalHabits) {
 			for (Object[] obj : benPersonalHabits) {
-				BenAllergyHistory benPersonalHabit = new BenAllergyHistory((String) obj[0], (String) obj[1],
-						(String) obj[2], (String) obj[3], (String) obj[4], (String) obj[5], (String) obj[6]);
+				
+				BenAllergyHistory benPersonalHabit = new BenAllergyHistory((Date) obj[0], (String) obj[1], (String) obj[2],
+						(String) obj[3], (String) obj[4], (String) obj[5], (String) obj[6]);
 				personalHabits.add(benPersonalHabit);
 			}
 
@@ -1418,19 +1446,25 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
 		Map<String, Object> column = new HashMap<String, Object>();
 
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "captureDate");
+		columns.add(column);
+		
+		column = new HashMap<>();
 		column.put("columnName", "Current Medication");
 		column.put("keyName", "currentMedication");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Year");
-		column.put("keyName", "year");
+		column.put("keyName", "medication_year");
 		columns.add(column);
 
 		ArrayList<BenMedicationHistory> medicationHistory = new ArrayList<BenMedicationHistory>();
 		if (null != beMedicationHistory) {
 			for (Object[] obj : beMedicationHistory) {
-				BenMedicationHistory history = new BenMedicationHistory((String) obj[0], (Timestamp) obj[1]);
+				BenMedicationHistory history = new BenMedicationHistory((Date) obj[0], (String) obj[1], (Date) obj[2]);
 				medicationHistory.add(history);
 			}
 
@@ -1450,14 +1484,20 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
 		Map<String, Object> column = new HashMap<String, Object>();
 
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "captureDate");
+		columns.add(column);
+		
+		column = new HashMap<>();
 		column.put("columnName", "Family Member");
 		column.put("keyName", "familyMember");
 		columns.add(column);
 
-		column = new HashMap<String, Object>();
+		/*column = new HashMap<String, Object>();
 		column.put("columnName", "Disease Type ID");
 		column.put("keyName", "diseaseTypeID");
-		columns.add(column);
+		columns.add(column);*/
 
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Disease Type");
@@ -1487,7 +1527,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		ArrayList<BenFamilyHistory> familyHistory = new ArrayList<BenFamilyHistory>();
 		if (null != benFamilyHistory) {
 			for (Object[] obj : benFamilyHistory) {
-				BenFamilyHistory history = new BenFamilyHistory((String) obj[0], (Short) obj[1], (String) obj[2],
+				BenFamilyHistory history = new BenFamilyHistory((Date) obj[0], (String) obj[1], (String) obj[2],
 						(String) obj[3], (Boolean) obj[4], (String) obj[5], (Boolean) obj[6]);
 				familyHistory.add(history);
 			}
@@ -1508,28 +1548,19 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
 		Map<String, Object> column = new HashMap<String, Object>();
 
-		column.put("columnName", "Menstrual Cycle Status ID");
-		column.put("keyName", "menstrualCycleStatusID");
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "captureDate");
 		columns.add(column);
-
+		
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Regularity");
 		column.put("keyName", "regularity");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
-		column.put("columnName", "Menstrual Cycle Length ID");
-		column.put("keyName", "menstrualCyclelengthID");
-		columns.add(column);
-
-		column = new HashMap<String, Object>();
 		column.put("columnName", "Cycle Length");
 		column.put("keyName", "cycleLength");
-		columns.add(column);
-
-		column = new HashMap<String, Object>();
-		column.put("columnName", "Menstrual Flow Duration ID");
-		column.put("keyName", "menstrualFlowDurationID");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
@@ -1544,15 +1575,15 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 		column = new HashMap<String, Object>();
 		column.put("columnName", "LMPDate");
-		column.put("keyName", "lMPDate");
+		column.put("keyName", "lmp_date");
 		columns.add(column);
 
 		ArrayList<BenMenstrualDetails> menstrualDetails = new ArrayList<BenMenstrualDetails>();
 		if (null != benMenstrualDetails) {
 			for (Object[] obj : benMenstrualDetails) {
-				BenMenstrualDetails history = new BenMenstrualDetails((Short) obj[0], (String) obj[1], (Short) obj[2],
-						(String) obj[3], (Short) obj[4], (String) obj[5], (Short) obj[6], (String) obj[7],
-						(Timestamp) obj[8]);
+				
+				BenMenstrualDetails history = new BenMenstrualDetails((Date) obj[0], (String) obj[1], (String) obj[2], (String) obj[3], (String) obj[4],
+						(Date) obj[5]);
 				menstrualDetails.add(history);
 			}
 
@@ -1573,13 +1604,14 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
 		Map<String, Object> column = new HashMap<String, Object>();
 
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "captureDate");
+		columns.add(column);
+		
+		column = new HashMap<>();
 		column.put("columnName", "Preg Order");
 		column.put("keyName", "pregOrder");
-		columns.add(column);
-
-		column = new HashMap<String, Object>();
-		column.put("columnName", "Preg Complication ID");
-		column.put("keyName", "pregComplicationID");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
@@ -1593,28 +1625,13 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
-		column.put("columnName", "Preg Duration ID");
-		column.put("keyName", "pregDurationID");
-		columns.add(column);
-
-		column = new HashMap<String, Object>();
 		column.put("columnName", "Duration Type");
 		column.put("keyName", "durationType");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
-		column.put("columnName", "Delivery Type ID");
-		column.put("keyName", "deliveryTypeID");
-		columns.add(column);
-
-		column = new HashMap<String, Object>();
 		column.put("columnName", "Delivery Type");
 		column.put("keyName", "deliveryType");
-		columns.add(column);
-
-		column = new HashMap<String, Object>();
-		column.put("columnName", "Delivery Place ID");
-		column.put("keyName", "deliveryPlaceID");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
@@ -1628,11 +1645,6 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
-		column.put("columnName", "Delivery Complication ID");
-		column.put("keyName", "deliveryComplicationID");
-		columns.add(column);
-
-		column = new HashMap<String, Object>();
 		column.put("columnName", "Delivery Complication Type");
 		column.put("keyName", "deliveryComplicationType");
 		columns.add(column);
@@ -1643,18 +1655,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
-		column.put("columnName", "Preg Outcome ID");
-		column.put("keyName", "pregOutcomeID");
-		columns.add(column);
-
-		column = new HashMap<String, Object>();
 		column.put("columnName", "Preg Outcome");
 		column.put("keyName", "pregOutcome");
-		columns.add(column);
-
-		column = new HashMap<String, Object>();
-		column.put("columnName", "Postpartum Complication ID");
-		column.put("keyName", "postpartumComplicationID");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
@@ -1665,11 +1667,6 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Other Postpartum CompType");
 		column.put("keyName", "otherPostpartumCompType");
-		columns.add(column);
-
-		column = new HashMap<String, Object>();
-		column.put("columnName", "Post Natal Complication ID");
-		column.put("keyName", "postNatalComplicationID");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
@@ -1688,11 +1685,6 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
-		column.put("columnName", "New Born Complication ID");
-		column.put("keyName", "newBornComplicationID");
-		columns.add(column);
-
-		column = new HashMap<String, Object>();
 		column.put("columnName", "New Born Complication");
 		column.put("keyName", "newBornComplication");
 		columns.add(column);
@@ -1706,12 +1698,12 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		if (null != femaleObstetricHistory) {
 			for (Object[] obj : femaleObstetricHistory) {
 
-				FemaleObstetricHistory history = new FemaleObstetricHistory((Short) obj[0], (Short) obj[1],
-						(String) obj[2], (String) obj[3], (Short) obj[4], (String) obj[5], (Short) obj[6],
-						(String) obj[7], (Short) obj[8], (String) obj[9], (String) obj[10], (Short) obj[11],
-						(String) obj[12], (String) obj[13], (Short) obj[14], (String) obj[15], (Short) obj[16],
-						(String) obj[17], (String) obj[18], (Short) obj[19], (String) obj[20], (String) obj[21],
-						(String) obj[22], (Short) obj[23], (String) obj[24], (String) obj[25]);
+				FemaleObstetricHistory history = new FemaleObstetricHistory((Date) obj[0], (Short) obj[1], 
+						(String) obj[2], (String) obj[3],  (String) obj[4], 
+						(String) obj[5],  (String) obj[6], (String) obj[7], 
+						(String) obj[8], (String) obj[9],  (String) obj[10],
+						(String) obj[11], (String) obj[12],  (String) obj[13], (String) obj[14],
+						(String) obj[15],  (String) obj[16], (String) obj[17]);
 				femaleObstetricDetails.add(history);
 			}
 
@@ -1732,6 +1724,12 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
 		Map<String, Object> column = new HashMap<String, Object>();
 
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "captureDate");
+		columns.add(column);
+		
+		column = new HashMap<>();
 		column.put("columnName", "Default Receiving Age");
 		column.put("keyName", "defaultReceivingAge");
 		columns.add(column);
@@ -1741,7 +1739,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		column.put("keyName", "vaccineName");
 		columns.add(column);
 
-		column = new HashMap<String, Object>();
+		/** Later we will enable these two if needed**/
+	/*	column = new HashMap<String, Object>();
 		column.put("columnName", "Status");
 		column.put("keyName", "status");
 		columns.add(column);
@@ -1749,7 +1748,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Received Date");
 		column.put("keyName", "receivedDate");
-		columns.add(column);
+		columns.add(column);*/
 
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Actual Receiving Age");
@@ -1764,8 +1763,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		ArrayList<ChildOptionalVaccineDetail> childOptionalVaccineDetails = new ArrayList<ChildOptionalVaccineDetail>();
 		if (null != childOptionalVaccineDetail) {
 			for (Object[] obj : childOptionalVaccineDetail) {
-				ChildOptionalVaccineDetail history = new ChildOptionalVaccineDetail((String) obj[0], (String) obj[1],
-						(String) obj[2], (Timestamp) obj[3], (String) obj[4], (String) obj[5]);
+				ChildOptionalVaccineDetail history = new ChildOptionalVaccineDetail((Date) obj[0], (String) obj[1], (String) obj[2],
+						(String) obj[3], (Timestamp) obj[4], (String) obj[5], (String) obj[6]);
 				childOptionalVaccineDetails.add(history);
 			}
 		}
@@ -1784,6 +1783,12 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
 		Map<String, Object> column = new HashMap<String, Object>();
 
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "captureDate");
+		columns.add(column);
+		
+		column = new HashMap<>();
 		column.put("columnName", "Default Receiving Age");
 		column.put("keyName", "defaultReceivingAge");
 		columns.add(column);
@@ -1801,8 +1806,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		ArrayList<ChildVaccineDetail1> childVaccineDetails = new ArrayList<ChildVaccineDetail1>();
 		if (null != childVaccineDetail) {
 			for (Object[] obj : childVaccineDetail) {
-				ChildVaccineDetail1 history = new ChildVaccineDetail1((String) obj[0], (String) obj[1],
-						(Boolean) obj[2]);
+				ChildVaccineDetail1 history = new ChildVaccineDetail1((Date) obj[0], (String) obj[1], (String) obj[2],
+						(Boolean) obj[3]);
 				childVaccineDetails.add(history);
 			}
 		}

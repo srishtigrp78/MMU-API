@@ -1,5 +1,6 @@
 package com.iemr.mmu.data.anc;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -166,6 +167,15 @@ public class BenPersonalHabit {
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
+	
+	@Transient
+	private Date captureDate;
+	
+	@Transient
+	private Date tobacco_use_duration;
+	
+	@Transient
+	private Date alcohol_use_duration;
 	
 	public String getAllergyStatus() {
 		return allergyStatus;
@@ -523,34 +533,34 @@ public class BenPersonalHabit {
 		return personalHabitList;
 	}
 
-	public BenPersonalHabit(String dietaryType, String physicalActivityType, String tobaccoUseStatus,
-			String tobaccoUseTypeID, String tobaccoUseType, String otherTobaccoUseType, Short numberperDay,
-			Timestamp tobaccoUseDuration, Character riskySexualPracticesStatus) {
+	public BenPersonalHabit(Date createdDate, String dietaryType, String physicalActivityType, String tobaccoUseStatus,
+			String tobaccoUseType, String otherTobaccoUseType, Short numberperDay,
+			Date tobaccoUseDuration, Character riskySexualPracticesStatus) {
 		super();
+		this.captureDate = createdDate;
 		this.dietaryType = dietaryType;
 		this.physicalActivityType = physicalActivityType;
 		this.tobaccoUseStatus = tobaccoUseStatus;
-		this.tobaccoUseTypeID = tobaccoUseTypeID;
 		this.tobaccoUseType = tobaccoUseType;
 		this.otherTobaccoUseType = otherTobaccoUseType;
 		this.numberperDay = numberperDay;
-		this.tobaccoUseDuration = tobaccoUseDuration;
+		this.tobacco_use_duration = tobaccoUseDuration;
 		this.riskySexualPracticesStatus = riskySexualPracticesStatus;
 	}
 
-	public BenPersonalHabit(String dietaryType, String physicalActivityType, String alcoholIntakeStatus,
-			String alcoholTypeID, String alcoholType, String otherAlcoholType, String alcoholIntakeFrequency,
-			String avgAlcoholConsumption, Timestamp alcoholDuration, Character riskySexualPracticesStatus) {
+	public BenPersonalHabit(Date createdDate, String dietaryType, String physicalActivityType, String alcoholIntakeStatus,
+		    String alcoholType, String otherAlcoholType, String alcoholIntakeFrequency,
+			String avgAlcoholConsumption, Date alcoholDuration, Character riskySexualPracticesStatus) {
 		super();
+		this.captureDate = createdDate;
 		this.dietaryType = dietaryType;
 		this.physicalActivityType = physicalActivityType;
 		this.alcoholIntakeStatus = alcoholIntakeStatus;
-		this.alcoholTypeID = alcoholTypeID;
 		this.alcoholType = alcoholType;
 		this.otherAlcoholType = otherAlcoholType;
 		this.alcoholIntakeFrequency = alcoholIntakeFrequency;
 		this.avgAlcoholConsumption = avgAlcoholConsumption;
-		this.alcoholDuration = alcoholDuration;
+		this.alcohol_use_duration = alcoholDuration;
 		this.riskySexualPracticesStatus = riskySexualPracticesStatus;
 	}
 	

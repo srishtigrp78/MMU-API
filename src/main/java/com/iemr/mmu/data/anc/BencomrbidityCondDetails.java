@@ -1,5 +1,6 @@
 package com.iemr.mmu.data.anc;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Map;
@@ -110,6 +111,9 @@ public class BencomrbidityCondDetails {
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
+	
+	@Transient
+	private Date captureDate;
 	
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
@@ -331,9 +335,9 @@ public class BencomrbidityCondDetails {
 	}
 
 
-	public BencomrbidityCondDetails(String comorbidCondition,String otherComorbidCondition, Timestamp year) {
+	public BencomrbidityCondDetails(Date createdDate, String comorbidCondition,String otherComorbidCondition, Timestamp year) {
 		super();
-		
+		this.captureDate = createdDate;
 		this.comorbidCondition = comorbidCondition;
 		this.otherComorbidCondition = otherComorbidCondition;
 		this.year = year;

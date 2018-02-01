@@ -139,8 +139,12 @@ public class BenMedHistory {
 	@Transient
 	private String Other_Surgery_Type;
 
-	public BenMedHistory(String illnessType, String otherIllnessType, Date yearOfIllnessTmp, String surgeryType,
+	@Transient
+	private Date captureDate;
+	
+	public BenMedHistory(Date createdDate, String illnessType, String otherIllnessType, Date yearOfIllnessTmp, String surgeryType,
 			String otherSurgeryType, Date yearOfSurgeryTmp) {
+		this.captureDate = createdDate;
 		this.Illness_Type = illnessType;
 		this.Other_Illness_Type = otherIllnessType;
 		this.Year_Of_Illness = yearOfIllnessTmp;

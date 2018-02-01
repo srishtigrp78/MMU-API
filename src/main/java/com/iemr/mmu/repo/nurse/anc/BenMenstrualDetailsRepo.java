@@ -15,9 +15,9 @@ import com.iemr.mmu.data.anc.BenMenstrualDetails;
 @Repository
 public interface BenMenstrualDetailsRepo extends CrudRepository<BenMenstrualDetails, Integer>{
 	
-	@Query("select menstrualCycleStatusID, regularity, menstrualCyclelengthID, cycleLength, menstrualFlowDurationID, bloodFlowDuration, "
-			+ "menstrualProblemID, problemName, lMPDate "
-			+ "from BenMenstrualDetails a where a.beneficiaryRegID = :beneficiaryRegID")
+	@Query("select Date(createdDate), regularity, cycleLength, bloodFlowDuration, problemName, Date(lMPDate) "
+			+ "from BenMenstrualDetails a where a.beneficiaryRegID = :beneficiaryRegID AND menstrualCycleStatusID is not null AND deleted = false "
+			+ "order by createdDate DESC")
 	public ArrayList<Object[]> getBenMenstrualDetail(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	
 	@Query(" SELECT beneficiaryRegID, benVisitID, providerServiceMapID, menstrualCycleStatusID, regularity, menstrualCyclelengthID, "

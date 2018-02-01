@@ -1,5 +1,6 @@
 package com.iemr.mmu.data.anc;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -117,6 +118,9 @@ public class ChildVaccineDetail1 {
 	@Transient
 	@Expose
 	private List<String> vaccineNameList;
+	
+	@Transient
+	private Date captureDate;
 	
 	public List<String> getVaccineNameList() {
 		return vaccineNameList;
@@ -321,6 +325,14 @@ public class ChildVaccineDetail1 {
 
 	public ChildVaccineDetail1(String defaultReceivingAge, String vaccineName, Boolean status) {
 		super();
+		this.defaultReceivingAge = defaultReceivingAge;
+		this.vaccineName = vaccineName;
+		this.status = status;
+	}
+	
+	public ChildVaccineDetail1(Date createdDate, String defaultReceivingAge, String vaccineName, Boolean status) {
+		super();
+		this.captureDate = createdDate;
 		this.defaultReceivingAge = defaultReceivingAge;
 		this.vaccineName = vaccineName;
 		this.status = status;

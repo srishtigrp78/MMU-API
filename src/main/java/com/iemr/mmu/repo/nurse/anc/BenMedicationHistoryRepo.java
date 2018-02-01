@@ -16,7 +16,8 @@ import com.iemr.mmu.data.anc.BenMedicationHistory;
 @Repository
 public interface BenMedicationHistoryRepo extends CrudRepository<BenMedicationHistory, Long>{
 
-	@Query("select currentMedication, year from BenMedicationHistory a where a.beneficiaryRegID = :beneficiaryRegID")
+	@Query("select Date(createdDate), currentMedication, Date(year) from BenMedicationHistory a where a.beneficiaryRegID = :beneficiaryRegID"
+			+ " AND currentMedication is not null AND deleted = false order by createdDate DESC")
 		public ArrayList<Object[]> getBenMedicationHistoryDetail(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	
 		@Query(" SELECT beneficiaryRegID, benVisitID, providerServiceMapID, currentMedication, year, createdDate  FROM BenMedicationHistory "

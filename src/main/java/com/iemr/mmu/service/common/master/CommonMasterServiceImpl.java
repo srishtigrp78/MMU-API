@@ -86,8 +86,8 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 				break;
 				case 6 :{
 					// 6 : General OPD
-					//TODO: General OPD Master Data call
-					nurseMasterData = "No Master Data found for General OPD";
+					//TODO: General OPD Master Data call - tmprlly calling ANC master Data
+					nurseMasterData = ancMasterDataServiceImpl.getANCMasterDataForNurse();
 				}
 				break;
 				case 7 :{
@@ -140,8 +140,8 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 				break;
 				case 6 :{
 					// 6 : General OPD
-					//TODO: General OPD Master Data call
-					doctorMasterData = "No Master Data found for General OPD";
+					//TODO: General OPD Master Data call - tmprlly calling ANC master Data
+					doctorMasterData = ancMasterDataServiceImpl.getANCMasterDataForDoctor(providerServiceMapID);
 				}
 				break;
 				case 7 :{

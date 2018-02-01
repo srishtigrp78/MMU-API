@@ -1,5 +1,6 @@
 package com.iemr.mmu.data.anc;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -97,6 +98,12 @@ public class BenMedicationHistory {
 	@Expose
 	private String timePeriodUnit;
 
+	@Transient
+	private Date captureDate;
+	
+	@Transient
+	private Date medication_year;
+	
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
@@ -253,10 +260,11 @@ public class BenMedicationHistory {
 		this.reservedForChange = reservedForChange;
 	}
 
-	public BenMedicationHistory(String currentMedication, Timestamp year) {
+	public BenMedicationHistory(Date createdDate, String currentMedication, Date year) {
 		super();
+		this.captureDate = createdDate;
 		this.currentMedication = currentMedication;
-		this.year = year;
+		this.medication_year = year;
 	}
 
 	public BenMedicationHistory(String currentMedication, Integer timePeriodAgo, String timePeriodUnit) {

@@ -299,7 +299,7 @@ public class ANCFetchController {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
 				Long benRegID = obj.getLong("benRegID");
-				String s = ancServiceImpl.getANCImmunizationHistoryData(benRegID);
+				String s = ancServiceImpl.getANCMedicationHistoryData(benRegID);
 				response.setResponse(s);
 
 			} else {

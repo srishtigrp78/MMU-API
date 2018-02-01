@@ -1,5 +1,6 @@
 package com.iemr.mmu.data.anc;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -7,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
@@ -107,6 +109,9 @@ public class ChildOptionalVaccineDetail {
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
+	
+	@Transient
+	private Date captureDate;
 	
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
@@ -291,6 +296,18 @@ public class ChildOptionalVaccineDetail {
 	public ChildOptionalVaccineDetail(String defaultReceivingAge, String vaccineName, String status,
 			Timestamp receivedDate, String actualReceivingAge, String receivedFacilityName) {
 		super();
+		this.defaultReceivingAge = defaultReceivingAge;
+		this.vaccineName = vaccineName;
+		this.status = status;
+		this.receivedDate = receivedDate;
+		this.actualReceivingAge = actualReceivingAge;
+		this.receivedFacilityName = receivedFacilityName;
+	}
+	
+	public ChildOptionalVaccineDetail(Date createdDate, String defaultReceivingAge, String vaccineName, String status,
+			Timestamp receivedDate, String actualReceivingAge, String receivedFacilityName) {
+		super();
+		this.captureDate = createdDate;
 		this.defaultReceivingAge = defaultReceivingAge;
 		this.vaccineName = vaccineName;
 		this.status = status;
