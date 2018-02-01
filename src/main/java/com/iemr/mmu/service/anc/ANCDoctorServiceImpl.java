@@ -10,10 +10,8 @@ import org.springframework.stereotype.Service;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.ANCDiagnosis;
 import com.iemr.mmu.data.anc.WrapperAncFindings;
-import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
-import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.repo.nurse.anc.ANCDiagnosisRepo;
 import com.iemr.mmu.repo.quickConsultation.BenChiefComplaintRepo;
@@ -74,10 +72,15 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 		int i = 0;
 		BenClinicalObservations benClinicalObservationsRS = benClinicalObservationsRepo
 				.save(getBenClinicalObservations(wrapperAncFindings));
-		ArrayList<BenChiefComplaint> benChiefComplaintListRS = (ArrayList<BenChiefComplaint>) benChiefComplaintRepo
-				.save(getBenChiefComplaint(wrapperAncFindings));
-		if (benClinicalObservationsRS != null && benChiefComplaintListRS != null) {
+
+		ArrayList<BenChiefComplaint> tmpBenCHiefComplaints = getBenChiefComplaint(wrapperAncFindings);
+		if (tmpBenCHiefComplaints.size() > 0) {
+			ArrayList<BenChiefComplaint> benChiefComplaintListRS = (ArrayList<BenChiefComplaint>) benChiefComplaintRepo
+					.save(tmpBenCHiefComplaints);
+		}
+		if (benClinicalObservationsRS != null) {
 			i = 1;
+
 		}
 		return i;
 	}
@@ -108,6 +111,8 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 
 				if (complaintsDetails.containsKey("chiefComplaintID")) {
 					Double d = (Double) complaintsDetails.get("chiefComplaintID");
+					if (d == null)
+						continue;
 					benChiefComplaint.setChiefComplaintID(d.intValue());
 				}
 				if (complaintsDetails.containsKey("chiefComplaint"))
@@ -135,39 +140,38 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 		return ID;
 	}
 
-	/*public Long saveBenInvestigation(WrapperBenInvestigationANC wrapperBenInvestigationANC) {
-		Long r = null;
-
-		ArrayList<LabTestOrderDetail> LabTestOrderDetailList = new ArrayList<>();
-		ArrayList<LabTestOrderDetail> investigationList = wrapperBenInvestigationANC.getLaboratoryList();
-		if (investigationList != null && investigationList.size() > 0) {
-
-			for (LabTestOrderDetail testData : investigationList) {
-
-				testData.setPrescriptionID(wrapperBenInvestigationANC.getPrescriptionID());
-				testData.setBeneficiaryRegID(wrapperBenInvestigationANC.getBeneficiaryRegID());
-				testData.setBenVisitID(wrapperBenInvestigationANC.getBenVisitID());
-				testData.setProviderServiceMapID(wrapperBenInvestigationANC.getProviderServiceMapID());
-				testData.setCreatedBy(wrapperBenInvestigationANC.getCreatedBy());
-
-				LabTestOrderDetailList.add(testData);
-			}
-			ArrayList<LabTestOrderDetail> LabTestOrderDetailListRS = (ArrayList<LabTestOrderDetail>) labTestOrderDetailRepo
-					.save(LabTestOrderDetailList);
-
-			if (LabTestOrderDetailListRS.size() == investigationList.size()) {
-				r = new Long(1);
-			}
-
-		} else {
-			r = new Long(1);
-			;
-		}
-
-		return r;
-
-	}
-*/
+	/*
+	 * public Long saveBenInvestigation(WrapperBenInvestigationANC
+	 * wrapperBenInvestigationANC) { Long r = null;
+	 * 
+	 * ArrayList<LabTestOrderDetail> LabTestOrderDetailList = new ArrayList<>();
+	 * ArrayList<LabTestOrderDetail> investigationList =
+	 * wrapperBenInvestigationANC.getLaboratoryList(); if (investigationList !=
+	 * null && investigationList.size() > 0) {
+	 * 
+	 * for (LabTestOrderDetail testData : investigationList) {
+	 * 
+	 * testData.setPrescriptionID(wrapperBenInvestigationANC.getPrescriptionID()
+	 * ); testData.setBeneficiaryRegID(wrapperBenInvestigationANC.
+	 * getBeneficiaryRegID());
+	 * testData.setBenVisitID(wrapperBenInvestigationANC.getBenVisitID());
+	 * testData.setProviderServiceMapID(wrapperBenInvestigationANC.
+	 * getProviderServiceMapID());
+	 * testData.setCreatedBy(wrapperBenInvestigationANC.getCreatedBy());
+	 * 
+	 * LabTestOrderDetailList.add(testData); } ArrayList<LabTestOrderDetail>
+	 * LabTestOrderDetailListRS = (ArrayList<LabTestOrderDetail>)
+	 * labTestOrderDetailRepo .save(LabTestOrderDetailList);
+	 * 
+	 * if (LabTestOrderDetailListRS.size() == investigationList.size()) { r =
+	 * new Long(1); }
+	 * 
+	 * } else { r = new Long(1); ; }
+	 * 
+	 * return r;
+	 * 
+	 * }
+	 */
 	@Deprecated
 	public Integer saveBenANCPrescription(List<PrescribedDrugDetail> prescribedDrugDetailList) {
 		Integer r = 0;
