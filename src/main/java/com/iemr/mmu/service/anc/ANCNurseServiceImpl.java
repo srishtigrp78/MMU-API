@@ -1132,6 +1132,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return immunizationSuccessFlag;
 	}
 
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public String fetchBenPastMedicalHistory(Long benRegID) {
 		Map<String, Object> resMap = new HashMap<>();
@@ -1237,6 +1238,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	}
 
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public String fetchBenPersonalTobaccoHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> benPersonalHabits = (ArrayList<Object[]>) benPersonalHabitRepo
@@ -1313,6 +1315,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	}
 
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public String fetchBenPersonalAlcoholHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> benPersonalHabits = (ArrayList<Object[]>) benPersonalHabitRepo
@@ -1393,6 +1396,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	}
 
+
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public String fetchBenPersonalAllergyHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> benPersonalHabits = (ArrayList<Object[]>) benAllergyHistoryRepo
@@ -1459,6 +1464,9 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	}
 
+
+
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public String fetchBenPersonalMedicationHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> beMedicationHistory = benMedicationHistoryRepo
@@ -1498,6 +1506,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	}
 
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public String fetchBenPersonalFamilyHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> benFamilyHistory = benFamilyHistoryRepo.getBenFamilyHistoryDetail(beneficiaryRegID);
@@ -1562,6 +1571,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	}
 
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public String fetchBenMenstrualHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> benMenstrualDetails = benMenstrualDetailsRepo.getBenMenstrualDetail(beneficiaryRegID);
@@ -1617,6 +1627,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	}
 
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public String fetchBenPastObstetricHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> femaleObstetricHistory = femaleObstetricHistoryRepo

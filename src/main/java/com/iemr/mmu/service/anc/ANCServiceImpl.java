@@ -745,29 +745,23 @@ public class ANCServiceImpl implements ANCService {
 	}
 	/// ------- End of Fetch beneficiary all Medication history data --
 
-	// ------- Fetch beneficiary all Personal Tobacco history data
-	// ---------------
+	// ------- Fetch beneficiary all Personal Tobacco history data ---------------
 	public String getANCPersonalTobaccoHistoryData(Long beneficiaryRegID) {
 		return ancNurseServiceImpl.fetchBenPersonalTobaccoHistory(beneficiaryRegID);
 	}
-	/// ------- End of Fetch beneficiary all Personal Tobacco history data
-	/// ------
+	/// ------- End of Fetch beneficiary all Personal Tobacco history data------
 
-	// ------- Fetch beneficiary all Personal Alcohol history data
-	// ---------------
+	// ------- Fetch beneficiary all Personal Alcohol history data ---------------
 	public String getANCPersonalAlcoholHistoryData(Long beneficiaryRegID) {
 		return ancNurseServiceImpl.fetchBenPersonalAlcoholHistory(beneficiaryRegID);
 	}
-	/// ------- End of Fetch beneficiary all Personal Alcohol history data
-	/// ------
+	/// ------- End of Fetch beneficiary all Personal Alcohol history data ------
 
-	// ------- Fetch beneficiary all Personal Allergy history data
-	// ---------------
+	// ------- Fetch beneficiary all Personal Allergy history data ---------------
 	public String getANCPersonalAllergyHistoryData(Long beneficiaryRegID) {
 		return ancNurseServiceImpl.fetchBenPersonalAllergyHistory(beneficiaryRegID);
 	}
-	/// ------- End of Fetch beneficiary all Personal Allergy history data
-	/// ------
+	/// ------- End of Fetch beneficiary all Personal Allergy history data------
 
 	// ------- Fetch beneficiary all Family history data ---------------
 	public String getANCFamilyHistoryData(Long beneficiaryRegID) {

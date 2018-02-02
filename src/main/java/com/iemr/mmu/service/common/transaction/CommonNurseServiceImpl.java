@@ -1,11 +1,15 @@
 package com.iemr.mmu.service.common.transaction;
 
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
 import com.iemr.mmu.data.anc.BenAllergyHistory;
 import com.iemr.mmu.data.anc.BenFamilyHistory;
 import com.iemr.mmu.data.anc.BenMedHistory;
@@ -82,6 +86,11 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	private SysMusculoskeletalSystemExaminationRepo sysMusculoskeletalSystemExaminationRepo;
 	private SysGenitourinarySystemExaminationRepo sysGenitourinarySystemExaminationRepo;
 	private RegistrarRepoBenData registrarRepoBenData;
+	
+	@Autowired
+	public void setPhyGeneralExaminationRepo(PhyGeneralExaminationRepo phyGeneralExaminationRepo) {
+		this.phyGeneralExaminationRepo = phyGeneralExaminationRepo;
+	}
 	
 	@Autowired
 	public void setRegistrarRepoBenData(RegistrarRepoBenData registrarRepoBenData) {
@@ -530,4 +539,554 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		return r;
 	}
 	
+	public String fetchBenPastMedicalHistory(Long benRegID) {
+		Map<String, Object> resMap = new HashMap<>();
+		ArrayList<Object[]> benPastHistoryDataArray = benMedHistoryRepo.getBenPastHistory(benRegID);
+		ArrayList<BenMedHistory> benMedHistoryArrayList = new ArrayList<>();
+		if (benPastHistoryDataArray != null && benPastHistoryDataArray.size() > 0) {
+			BenMedHistory benMedHistory;
+			for (Object[] obj : benPastHistoryDataArray) {
+				benMedHistory = new BenMedHistory((Date) obj[0], (String) obj[1], (String) obj[2], (Date) obj[3], (String) obj[4],
+						(String) obj[5], (Date) obj[6]);
+				benMedHistoryArrayList.add(benMedHistory);
+			}
+		}
+
+		Map<String, String> columnMap = new HashMap<>();
+		List<Map<String, String>> columns = new ArrayList<Map<String, String>>();
+
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Date of Capture");
+		columnMap.put("keyName", "captureDate");
+		columns.add(columnMap);
+		
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Illness Type");
+		columnMap.put("keyName", "Illness_Type");
+		columns.add(columnMap);
+
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Other Illness Type");
+		columnMap.put("keyName", "Other_Illness_Type");
+		columns.add(columnMap);
+
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Year Of Illness");
+		columnMap.put("keyName", "Year_Of_Illness");
+		columns.add(columnMap);
+
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Surgery Type");
+		columnMap.put("keyName", "Surgery_Type");
+		columns.add(columnMap);
+
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Other Surgery Type");
+		columnMap.put("keyName", "Other_Surgery_Type");
+		columns.add(columnMap);
+
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "Year Of Surgery");
+		columnMap.put("keyName", "Year_Of_Surgery");
+		columns.add(columnMap);
+
+		resMap.put("columns", columns);
+		resMap.put("data", benMedHistoryArrayList);
+
+		return new Gson().toJson(resMap);
+
+	}
+	
+	public String fetchBenPersonalTobaccoHistory(Long beneficiaryRegID) {
+		ArrayList<Object[]> benPersonalHabits = (ArrayList<Object[]>) benPersonalHabitRepo
+				.getBenPersonalTobaccoHabitDetail(beneficiaryRegID);
+
+		Map<String, Object> response = new HashMap<String, Object>();
+		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
+		Map<String, Object> column = new HashMap<String, Object>();
+
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "captureDate");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Dietary Type");
+		column.put("keyName", "dietaryType");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Physical Activity Type");
+		column.put("keyName", "physicalActivityType");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Tobacco Use Status");
+		column.put("keyName", "tobaccoUseStatus");
+		columns.add(column);
+
+/*		column = new HashMap<String, Object>();
+		column.put("columnName", "Tobacco Use Type ID");
+		column.put("keyName", "tobaccoUseTypeID");
+		columns.add(column);*/
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Tobacco Use Type");
+		column.put("keyName", "tobaccoUseType");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Other Tobacco Use Type");
+		column.put("keyName", "otherTobaccoUseType");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Number Per Day");
+		column.put("keyName", "numberperDay");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Tobacco Use Start Date");
+		column.put("keyName", "tobacco_use_duration");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Risky Sexual Practices Status");
+		column.put("keyName", "riskySexualPracticeStatus");
+		columns.add(column);
+
+		ArrayList<BenPersonalHabit> personalHabits = new ArrayList<BenPersonalHabit>();
+		if (null != benPersonalHabits) {
+			for (Object[] obj : benPersonalHabits) {
+
+				BenPersonalHabit benPersonalHabit = new BenPersonalHabit((Date) obj[0], (String) obj[1], (String) obj[2],
+						(String) obj[3], (String) obj[4], (String) obj[5], (Short) obj[6], (Date) obj[7], (Character) obj[8]);
+
+				personalHabits.add(benPersonalHabit);
+			}
+		}
+
+		response.put("columns", columns);
+		response.put("data", personalHabits);
+		return new Gson().toJson(response);
+
+	}
+	
+	public String fetchBenPersonalAlcoholHistory(Long beneficiaryRegID) {
+		ArrayList<Object[]> benPersonalHabits = (ArrayList<Object[]>) benPersonalHabitRepo
+				.getBenPersonalAlcoholHabitDetail(beneficiaryRegID);
+
+		Map<String, Object> response = new HashMap<String, Object>();
+		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
+		Map<String, Object> column = new HashMap<String, Object>();
+
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "captureDate");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Dietary Type");
+		column.put("keyName", "dietaryType");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Physical Activity Type");
+		column.put("keyName", "physicalActivityType");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Alcohol Intake Status");
+		column.put("keyName", "alcoholIntakeStatus");
+		columns.add(column);
+
+/*		column = new HashMap<String, Object>();
+		column.put("columnName", "Alcohol Type ID");
+		column.put("keyName", "alcoholTypeID");
+		columns.add(column);
+*/
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Alcohol Type");
+		column.put("keyName", "alcoholType");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Other Alcohol Type");
+		column.put("keyName", "otherAlcoholType");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Alcohol Intake Frequency");
+		column.put("keyName", "alcoholIntakeFrequency");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Avg Alcohol Consumption");
+		column.put("keyName", "avgAlcoholConsumption");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Alcohol Use Started Date");
+		column.put("keyName", "alcohol_use_duration");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Risky Sexual Practices Status");
+		column.put("keyName", "riskySexualPracticeStatus");
+		columns.add(column);
+
+		ArrayList<BenPersonalHabit> personalHabits = new ArrayList<BenPersonalHabit>();
+		if (null != benPersonalHabits) {
+			for (Object[] obj : benPersonalHabits) {
+				BenPersonalHabit benPersonalHabit = new BenPersonalHabit((Date) obj[0], (String) obj[1], (String) obj[2],
+						(String) obj[3], (String) obj[4], (String) obj[5], (String) obj[6],
+						(String) obj[7], (Date) obj[8], (Character) obj[9]);
+				personalHabits.add(benPersonalHabit);
+			}
+		}
+
+		response.put("columns", columns);
+		response.put("data", personalHabits);
+		return new Gson().toJson(response);
+
+	}
+	
+	public String fetchBenPersonalAllergyHistory(Long beneficiaryRegID) {
+		ArrayList<Object[]> benPersonalHabits = (ArrayList<Object[]>) benAllergyHistoryRepo
+				.getBenPersonalAllergyDetail(beneficiaryRegID);
+
+		Map<String, Object> response = new HashMap<String, Object>();
+		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
+		Map<String, Object> column = new HashMap<String, Object>();
+
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "captureDate");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Allergy Status");
+		column.put("keyName", "allergyStatus");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Allergy Type");
+		column.put("keyName", "allergyType");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Allergy Name");
+		column.put("keyName", "allergenName");
+		columns.add(column);
+
+		/*column = new HashMap<String, Object>();
+		column.put("columnName", "Allergic Reaction Type ID");
+		column.put("keyName", "allergicReactionTypeID");
+		columns.add(column);*/
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Allergic Reaction Type");
+		column.put("keyName", "allergicReactionType");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Other Allergic Reaction");
+		column.put("keyName", "otherAllergicReaction");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Remarks");
+		column.put("keyName", "remarks");
+		columns.add(column);
+
+		ArrayList<BenAllergyHistory> personalHabits = new ArrayList<BenAllergyHistory>();
+		if (null != benPersonalHabits) {
+			for (Object[] obj : benPersonalHabits) {
+				
+				BenAllergyHistory benPersonalHabit = new BenAllergyHistory((Date) obj[0], (String) obj[1], (String) obj[2],
+						(String) obj[3], (String) obj[4], (String) obj[5], (String) obj[6]);
+				personalHabits.add(benPersonalHabit);
+			}
+
+		}
+
+		response.put("columns", columns);
+		response.put("data", personalHabits);
+		return new Gson().toJson(response);
+
+	}
+	
+	public String fetchBenPersonalMedicationHistory(Long beneficiaryRegID) {
+		ArrayList<Object[]> beMedicationHistory = benMedicationHistoryRepo
+				.getBenMedicationHistoryDetail(beneficiaryRegID);
+
+		Map<String, Object> response = new HashMap<String, Object>();
+		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
+		Map<String, Object> column = new HashMap<String, Object>();
+
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "captureDate");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Current Medication");
+		column.put("keyName", "currentMedication");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Date");
+		column.put("keyName", "medication_year");
+		columns.add(column);
+
+		ArrayList<BenMedicationHistory> medicationHistory = new ArrayList<BenMedicationHistory>();
+		if (null != beMedicationHistory) {
+			for (Object[] obj : beMedicationHistory) {
+				BenMedicationHistory history = new BenMedicationHistory((Date) obj[0], (String) obj[1], (Date) obj[2]);
+				medicationHistory.add(history);
+			}
+
+		}
+
+		response.put("columns", columns);
+		response.put("data", medicationHistory);
+		return new Gson().toJson(response);
+
+	}
+	
+	public String fetchBenPersonalFamilyHistory(Long beneficiaryRegID) {
+		ArrayList<Object[]> benFamilyHistory = benFamilyHistoryRepo.getBenFamilyHistoryDetail(beneficiaryRegID);
+
+		Map<String, Object> response = new HashMap<String, Object>();
+		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
+		Map<String, Object> column = new HashMap<String, Object>();
+
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "captureDate");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Family Member");
+		column.put("keyName", "familyMember");
+		columns.add(column);
+
+		/*column = new HashMap<String, Object>();
+		column.put("columnName", "Disease Type ID");
+		column.put("keyName", "diseaseTypeID");
+		columns.add(column);*/
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Disease Type");
+		column.put("keyName", "diseaseType");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Other Disease Type");
+		column.put("keyName", "otherDiseaseType");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Is Genetic Disorder");
+		column.put("keyName", "isGeneticDisorder");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Genetic Disorder");
+		column.put("keyName", "geneticDisorder");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Is Consanguineous Marrige");
+		column.put("keyName", "isConsanguineousMarrige");
+		columns.add(column);
+
+		ArrayList<BenFamilyHistory> familyHistory = new ArrayList<BenFamilyHistory>();
+		if (null != benFamilyHistory) {
+			for (Object[] obj : benFamilyHistory) {
+				BenFamilyHistory history = new BenFamilyHistory((Date) obj[0], (String) obj[1], (String) obj[2],
+						(String) obj[3], (Boolean) obj[4], (String) obj[5], (Boolean) obj[6]);
+				familyHistory.add(history);
+			}
+
+		}
+
+		response.put("columns", columns);
+		response.put("data", familyHistory);
+		return new Gson().toJson(response);
+
+	}
+	
+	public String fetchBenMenstrualHistory(Long beneficiaryRegID) {
+		ArrayList<Object[]> benMenstrualDetails = benMenstrualDetailsRepo.getBenMenstrualDetail(beneficiaryRegID);
+
+		Map<String, Object> response = new HashMap<String, Object>();
+		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
+		Map<String, Object> column = new HashMap<String, Object>();
+
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "captureDate");
+		columns.add(column);
+		
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Regularity");
+		column.put("keyName", "regularity");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Cycle Length");
+		column.put("keyName", "cycleLength");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Blood Flow Duration");
+		column.put("keyName", "bloodFlowDuration");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Problem Name");
+		column.put("keyName", "problemName");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "LMPDate");
+		column.put("keyName", "lmp_date");
+		columns.add(column);
+
+		ArrayList<BenMenstrualDetails> menstrualDetails = new ArrayList<BenMenstrualDetails>();
+		if (null != benMenstrualDetails) {
+			for (Object[] obj : benMenstrualDetails) {
+				
+				BenMenstrualDetails history = new BenMenstrualDetails((Date) obj[0], (String) obj[1], (String) obj[2], (String) obj[3], (String) obj[4],
+						(Date) obj[5]);
+				menstrualDetails.add(history);
+			}
+
+		}
+
+		response.put("columns", columns);
+		response.put("data", menstrualDetails);
+		return new Gson().toJson(response);
+
+	}
+	
+	public String fetchBenPastObstetricHistory(Long beneficiaryRegID) {
+		ArrayList<Object[]> femaleObstetricHistory = femaleObstetricHistoryRepo
+				.getBenFemaleObstetricHistoryDetail(beneficiaryRegID);
+
+		Map<String, Object> response = new HashMap<String, Object>();
+		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
+		Map<String, Object> column = new HashMap<String, Object>();
+
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "captureDate");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Preg Order");
+		column.put("keyName", "pregOrder");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Preg Complication Type");
+		column.put("keyName", "pregComplicationType");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Other Preg Complication");
+		column.put("keyName", "otherPregComplication");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Duration Type");
+		column.put("keyName", "durationType");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Delivery Type");
+		column.put("keyName", "deliveryType");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Delivery Place");
+		column.put("keyName", "deliveryPlace");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Other Delivery Place");
+		column.put("keyName", "otherDeliveryPlace");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Delivery Complication Type");
+		column.put("keyName", "deliveryComplicationType");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Other Delivery Complication");
+		column.put("keyName", "otherDeliveryComplication");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Preg Outcome");
+		column.put("keyName", "pregOutcome");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Postpartum Complication Type");
+		column.put("keyName", "postpartumComplicationType");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Other Postpartum CompType");
+		column.put("keyName", "otherPostpartumCompType");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Post Natal Complication");
+		column.put("keyName", "postNatalComplication");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Other Post Natal Complication");
+		column.put("keyName", "otherPostNatalComplication");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Congenital Anomalies");
+		column.put("keyName", "congenitalAnomalies");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "New Born Complication");
+		column.put("keyName", "newBornComplication");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Other New Born Complication");
+		column.put("keyName", "otherNewBornComplication");
+		columns.add(column);
+
+		ArrayList<FemaleObstetricHistory> femaleObstetricDetails = new ArrayList<FemaleObstetricHistory>();
+		if (null != femaleObstetricHistory) {
+			for (Object[] obj : femaleObstetricHistory) {
+
+				FemaleObstetricHistory history = new FemaleObstetricHistory((Date) obj[0], (Short) obj[1], 
+						(String) obj[2], (String) obj[3],  (String) obj[4], 
+						(String) obj[5],  (String) obj[6], (String) obj[7], 
+						(String) obj[8], (String) obj[9],  (String) obj[10],
+						(String) obj[11], (String) obj[12],  (String) obj[13], (String) obj[14],
+						(String) obj[15],  (String) obj[16], (String) obj[17]);
+				femaleObstetricDetails.add(history);
+			}
+
+		}
+
+		response.put("columns", columns);
+		response.put("data", femaleObstetricDetails);
+		return new Gson().toJson(response);
+
+	}
 }

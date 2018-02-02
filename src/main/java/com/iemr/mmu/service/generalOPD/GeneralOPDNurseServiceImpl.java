@@ -1,6 +1,7 @@
 package com.iemr.mmu.service.generalOPD;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.BenChildDevelopmentHistory;
@@ -10,6 +11,7 @@ import com.iemr.mmu.repo.nurse.anc.BenChildDevelopmentHistoryRepo;
 import com.iemr.mmu.repo.nurse.anc.ChildFeedingDetailsRepo;
 import com.iemr.mmu.repo.nurse.anc.PerinatalHistoryRepo;
 
+@Service
 public class GeneralOPDNurseServiceImpl implements GeneralOPDNurseService{
 	private BenChildDevelopmentHistoryRepo benChildDevelopmentHistoryRepo;
 	private ChildFeedingDetailsRepo childFeedingDetailsRepo;

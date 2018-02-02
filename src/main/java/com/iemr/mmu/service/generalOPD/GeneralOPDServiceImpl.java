@@ -51,6 +51,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		this.commonNurseServiceImpl = commonNurseServiceImpl;
 	}
 
+	/// --------------- start of saving nurse data ------------------------
 	@Override
 	public Long saveNurseData(JsonObject requestOBJ) throws Exception {
 		Long historySaveSuccessFlag = null;
@@ -72,21 +73,22 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				// call method to save examination data
 				examtnSaveSuccessFlag = saveBenExaminationDetails(requestOBJ.getAsJsonObject("examinationDetails"),
 						benVisitID);
-				
+
 				JsonObject tmpOBJ = requestOBJ.get("visitDetails").getAsJsonObject();
 				JsonObject tmpOBJ1 = tmpOBJ.get("visitDetails").getAsJsonObject();
 
-				int i = commonNurseServiceImpl.updateBeneficiaryStatus('N', tmpOBJ1.get("beneficiaryRegID").getAsLong());
-			}else{
+				int i = commonNurseServiceImpl.updateBeneficiaryStatus('N',
+						tmpOBJ1.get("beneficiaryRegID").getAsLong());
+			} else {
 				// Beneficiary Visit ID not generated.
 			}
 
-			if( (null != historySaveSuccessFlag && historySaveSuccessFlag > 0) 
-					&& (null != vitalSaveSuccessFlag && vitalSaveSuccessFlag > 0) 
-					&&(null != examtnSaveSuccessFlag && examtnSaveSuccessFlag > 0) ){
+			if ((null != historySaveSuccessFlag && historySaveSuccessFlag > 0)
+					&& (null != vitalSaveSuccessFlag && vitalSaveSuccessFlag > 0)
+					&& (null != examtnSaveSuccessFlag && examtnSaveSuccessFlag > 0)) {
 				saveSuccessFlag = historySaveSuccessFlag;
 			}
-		}else{
+		} else {
 			// Can't create benVisitID.
 		}
 		return saveSuccessFlag;
@@ -488,5 +490,53 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		return exmnSuccessFlag;
 
 	}
+	/// --------------- End of saving nurse data ------------------------
 
+	// ------- Fetch beneficiary all past history data ------------------
+	public String getPastHistoryData(Long beneficiaryRegID) {
+		return commonNurseServiceImpl.fetchBenPastMedicalHistory(beneficiaryRegID);
+	}
+	/// ------- End of Fetch beneficiary all past history data ----------
+
+	// ------- Fetch beneficiary all Personal Tobacco history data-----------
+	public String getPersonalTobaccoHistoryData(Long beneficiaryRegID) {
+		return commonNurseServiceImpl.fetchBenPersonalTobaccoHistory(beneficiaryRegID);
+	}
+	/// ------- End of Fetch beneficiary all Personal Tobacco history data------
+
+	// ------- Fetch beneficiary all Personal Alcohol history data -----------
+	public String getPersonalAlcoholHistoryData(Long beneficiaryRegID) {
+		return commonNurseServiceImpl.fetchBenPersonalAlcoholHistory(beneficiaryRegID);
+	}
+	/// ------- End of Fetch beneficiary all Personal Alcohol history data-----
+
+	// ------- Fetch beneficiary all Personal Allergy history data -----------
+	public String getPersonalAllergyHistoryData(Long beneficiaryRegID) {
+		return commonNurseServiceImpl.fetchBenPersonalAllergyHistory(beneficiaryRegID);
+	}
+	/// ------- End of Fetch beneficiary all Personal Allergy history data------
+
+	// ------- Fetch beneficiary all Medication history data -----------
+	public String getMedicationHistoryData(Long beneficiaryRegID) {
+		return commonNurseServiceImpl.fetchBenPersonalMedicationHistory(beneficiaryRegID);
+	}
+	/// ------- End of Fetch beneficiary all Medication history data --
+
+	// ------- Fetch beneficiary all Family history data ---------------
+	public String getFamilyHistoryData(Long beneficiaryRegID) {
+		return commonNurseServiceImpl.fetchBenPersonalFamilyHistory(beneficiaryRegID);
+	}
+	/// ------- End of Fetch beneficiary all Family history data ------
+
+	// ------- Fetch beneficiary all Menstrual history data -----------
+	public String getMenstrualHistoryData(Long beneficiaryRegID) {
+		return commonNurseServiceImpl.fetchBenMenstrualHistory(beneficiaryRegID);
+	}
+	/// ------- End of Fetch beneficiary all Menstrual history data --
+
+	// ------- Fetch beneficiary all past obstetric history data ---------------
+	public String getObstetricHistoryData(Long beneficiaryRegID) {
+		return commonNurseServiceImpl.fetchBenPastObstetricHistory(beneficiaryRegID);
+	}
+	/// ------- End of Fetch beneficiary all past obstetric history data ------
 }
