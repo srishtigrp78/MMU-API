@@ -115,6 +115,9 @@ public class BencomrbidityCondDetails {
 	@Transient
 	private Date captureDate;
 	
+	@Transient
+	private Date date;
+	
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
@@ -335,12 +338,12 @@ public class BencomrbidityCondDetails {
 	}
 
 
-	public BencomrbidityCondDetails(Date createdDate, String comorbidCondition,String otherComorbidCondition, Timestamp year) {
+	public BencomrbidityCondDetails(Date createdDate, String comorbidCondition,String otherComorbidCondition, Date year) {
 		super();
 		this.captureDate = createdDate;
 		this.comorbidCondition = comorbidCondition;
 		this.otherComorbidCondition = otherComorbidCondition;
-		this.year = year;
+		this.date = year;
 		
 	}
 	

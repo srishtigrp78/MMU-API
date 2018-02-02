@@ -15,7 +15,7 @@ import com.iemr.mmu.data.anc.BencomrbidityCondDetails;
 @Repository
 public interface BencomrbidityCondRepo extends CrudRepository<BencomrbidityCondDetails, Long> {
 
-	@Query("select Date(createdDate), comorbidCondition , otherComorbidCondition, year "
+	@Query("select Date(createdDate), comorbidCondition , otherComorbidCondition, Date(year) "
 			+ "from BencomrbidityCondDetails a where a.beneficiaryRegID = :beneficiaryRegID AND a.comorbidCondition is not null "
 			+ "AND a.isForHistory = true AND a.deleted = false ORDER BY a.createdDate DESC ")
 	public ArrayList<Object[]> getBencomrbidityCondDetails(@Param("beneficiaryRegID") Long beneficiaryRegID);

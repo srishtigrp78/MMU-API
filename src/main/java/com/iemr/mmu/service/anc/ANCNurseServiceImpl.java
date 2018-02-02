@@ -1194,8 +1194,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
-		column.put("columnName", "Year");
-		column.put("keyName", "year");
+		column.put("columnName", "Date");
+		column.put("keyName", "date");
 		columns.add(column);
 
 		ArrayList<BencomrbidityCondDetails> bencomrbidityConds = new ArrayList<BencomrbidityCondDetails>();
@@ -1203,7 +1203,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 			for (Object[] obj : bencomrbidityCondDetails) {
 
 				BencomrbidityCondDetails history = new BencomrbidityCondDetails((Date) obj[0], (String) obj[1], (String) obj[2],
-						(Timestamp) obj[3]);
+						(Date) obj[3]);
 				bencomrbidityConds.add(history);
 			}
 
@@ -1265,13 +1265,13 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
-		column.put("columnName", "Tobacco Use Duration");
+		column.put("columnName", "Tobacco Use Start Date");
 		column.put("keyName", "tobacco_use_duration");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Risky Sexual Practices Status");
-		column.put("keyName", "riskySexualPracticesStatus");
+		column.put("keyName", "riskySexualPracticeStatus");
 		columns.add(column);
 
 		ArrayList<BenPersonalHabit> personalHabits = new ArrayList<BenPersonalHabit>();
@@ -1346,13 +1346,13 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
-		column.put("columnName", "Alcohol Duration");
+		column.put("columnName", "Alcohol Use Started Date");
 		column.put("keyName", "alcohol_use_duration");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Risky Sexual Practices Status");
-		column.put("keyName", "riskySexualPracticesStatus");
+		column.put("keyName", "riskySexualPracticeStatus");
 		columns.add(column);
 
 		ArrayList<BenPersonalHabit> personalHabits = new ArrayList<BenPersonalHabit>();
@@ -1457,7 +1457,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
-		column.put("columnName", "Year");
+		column.put("columnName", "Date");
 		column.put("keyName", "medication_year");
 		columns.add(column);
 

@@ -177,6 +177,9 @@ public class BenPersonalHabit {
 	@Transient
 	private Date alcohol_use_duration;
 	
+	@Transient
+	private Boolean riskySexualPracticeStatus;
+	
 	public String getAllergyStatus() {
 		return allergyStatus;
 	}
@@ -545,7 +548,11 @@ public class BenPersonalHabit {
 		this.otherTobaccoUseType = otherTobaccoUseType;
 		this.numberperDay = numberperDay;
 		this.tobacco_use_duration = tobaccoUseDuration;
-		this.riskySexualPracticesStatus = riskySexualPracticesStatus;
+		if(riskySexualPracticesStatus=='0'){
+			this.riskySexualPracticeStatus = false;
+		}else{
+			this.riskySexualPracticeStatus = true;
+		}
 	}
 
 	public BenPersonalHabit(Date createdDate, String dietaryType, String physicalActivityType, String alcoholIntakeStatus,
@@ -561,7 +568,11 @@ public class BenPersonalHabit {
 		this.alcoholIntakeFrequency = alcoholIntakeFrequency;
 		this.avgAlcoholConsumption = avgAlcoholConsumption;
 		this.alcohol_use_duration = alcoholDuration;
-		this.riskySexualPracticesStatus = riskySexualPracticesStatus;
+		if(riskySexualPracticesStatus=='0'){
+			this.riskySexualPracticeStatus = false;
+		}else{
+			this.riskySexualPracticeStatus = true;
+		}
 	}
 	
 	public BenPersonalHabit(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, String dietaryType,
