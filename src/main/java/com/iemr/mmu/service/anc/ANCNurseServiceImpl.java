@@ -541,6 +541,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return ancWomenVaccineDetailList;
 	}
 
+	/* Method moved to common, Can remove from here later*/
 	public Long savePhyGeneralExamination(PhyGeneralExamination generalExamination) {
 		Long generalExaminationID = null;
 		String TypeOfDangerSigns = "";
@@ -558,6 +559,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return generalExaminationID;
 	}
 
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public Long savePhyHeadToToeExamination(PhyHeadToToeExamination headToToeExamination) {
 		Long examinationID = null;
@@ -569,6 +571,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return examinationID;
 	}
 
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public Long saveSysCardiovascularExamination(SysCardiovascularExamination cardiovascularExamination) {
 		Long examinationID = null;
@@ -580,6 +583,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return examinationID;
 	}
 
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public Long saveSysCentralNervousExamination(SysCentralNervousExamination centralNervousExamination) {
 		// TODO Auto-generated method stub
@@ -592,6 +596,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public Long saveSysGastrointestinalExamination(SysGastrointestinalExamination gastrointestinalExamination) {
 		Long examinationID = null;
@@ -638,6 +643,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public Long saveSysRespiratoryExamination(SysRespiratoryExamination respiratoryExamination) {
 		// TODO Auto-generated method stub
@@ -944,6 +950,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
+	/* Method moved to common, Can remove from here later*/
 	public Long saveBenANCPastHistory(BenMedHistory benMedHistory) {
 		Long pastHistorySuccessFlag = null;
 		ArrayList<BenMedHistory> benMedHistoryList = benMedHistory.getBenPastHistory();
@@ -954,6 +961,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return pastHistorySuccessFlag;
 	}
 
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public Long saveBenANCComorbidConditions(WrapperComorbidCondDetails wrapperComorbidCondDetails) {
 		Long comrbidSuccessFlag = null;
@@ -967,6 +975,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return comrbidSuccessFlag;
 	}
 
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public Long saveBenANCMedicationHistory(WrapperMedicationHistory wrapperMedicationHistory) {
 		Long medicationSuccessFlag = null;
@@ -980,6 +989,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return medicationSuccessFlag;
 	}
 
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public Integer saveBenANCMenstrualHistory(BenMenstrualDetails benMenstrualDetails) {
 		Integer menstrualHistorySuccessFlag = null;
@@ -991,6 +1001,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return menstrualHistorySuccessFlag;
 	}
 
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public Long saveFemaleObstetricHistory(WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory) {
 		Long obstetricSuccessFlag = null;
@@ -1005,6 +1016,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return obstetricSuccessFlag;
 	}
 
+	/*This method not required for ANC*/
+	@Deprecated
 	@Override
 	public Long savePerinatalHistory(PerinatalHistory perinatalHistory) {
 		Long perinatalSuccessFlag = null;
@@ -1016,6 +1029,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return perinatalSuccessFlag;
 	}
 
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public Long saveChildOptionalVaccineDetail(WrapperChildOptionalVaccineDetail wrapperChildVaccineDetail) {
 		Long childVaccineSuccessFlag = null;
@@ -1029,6 +1043,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return childVaccineSuccessFlag;
 	}
 
+	/* Not Required in ANC*/
+	@Deprecated
 	@Override
 	public Long saveChildDevelopmentHistory(BenChildDevelopmentHistory benChildDevelopmentHistory) {
 		Long developmentSuccessFlag = null;
@@ -1042,6 +1058,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return developmentSuccessFlag;
 	}
 
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public Integer saveANCPersonalHistory(BenPersonalHabit benPersonalHabit) {
 		Integer personalHistorySuccessFlag = null;
@@ -1054,6 +1071,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return personalHistorySuccessFlag;
 	}
 
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public Long saveANCAllergyHistory(BenAllergyHistory benAllergyHistory) {
 		Long allergyHistorySuccessFlag = null;
@@ -1066,6 +1084,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return allergyHistorySuccessFlag;
 	}
 
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public Long saveANCBenFamilyHistory(BenFamilyHistory benFamilyHistory) {
 		Long familyHistorySuccessFlag = null;
@@ -1087,6 +1106,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 	 * = null;
 	 */
 
+	/*This method not required for ANC*/
+	@Deprecated
 	@Override
 	public Long saveChildFeedingHistory(ChildFeedingDetails childFeedingDetails) {
 		Long feedingSuccessFlag = null;
@@ -1097,6 +1118,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return feedingSuccessFlag;
 	}
 
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public Long saveANCImmunizationHistory(WrapperImmunizationHistory wrapperImmunizationHistory) {
 		Long immunizationSuccessFlag = null;

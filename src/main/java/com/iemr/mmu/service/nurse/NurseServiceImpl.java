@@ -669,6 +669,7 @@ public class NurseServiceImpl implements NurseService {
 		return WrapperRegWorklist.getRegistrarWorkList(nurseWorkListData);
 	}
 
+	/*Moved to common services, Cn remove from here later*/
 	public Integer updateBeneficiaryStatus(Character c, Long benRegID) {
 		Integer i = registrarRepoBenData.updateBenFlowStatus(c, benRegID);
 		return i;
@@ -800,7 +801,7 @@ public class NurseServiceImpl implements NurseService {
 		return new Gson().toJson(resMap);
 	}
 
-	
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public Long saveBeneficiaryPhysicalAnthropometryDetails(BenAnthropometryDetail benAnthropometryDetail) {
 		BenAnthropometryDetail response = benAnthropometryRepo.save(benAnthropometryDetail);
@@ -809,7 +810,8 @@ public class NurseServiceImpl implements NurseService {
 		else
 			return null;
 	}
-
+	
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public Long saveBeneficiaryPhysicalVitalDetails(BenPhysicalVitalDetail benPhysicalVitalDetail) {
 		// ArrayList<Short> averageSystolicList = new ArrayList<>();
