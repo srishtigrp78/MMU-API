@@ -1,5 +1,6 @@
 package com.iemr.mmu.data.anc;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -7,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
@@ -107,6 +109,9 @@ public class ChildFeedingDetails {
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
+	
+	@Transient
+	private Date captureDate;
 	
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
@@ -287,5 +292,19 @@ public class ChildFeedingDetails {
 	public void setReservedForChange(String reservedForChange) {
 		this.reservedForChange = reservedForChange;
 	}
-	
+
+	public ChildFeedingDetails(Date createdDate, Long childID, Long benMotherID, String typeOfFeed, 
+			String compFeedStartAge,  Character noOfCompFeedPerDay,
+			Character foodIntoleranceStatus, String typeofFoodIntolerance) {
+		super();
+		this.captureDate = createdDate;
+		this.childID = childID;
+		this.benMotherID = benMotherID;
+		this.typeOfFeed = typeOfFeed;
+		this.compFeedStartAge = compFeedStartAge;
+		this.noOfCompFeedPerDay = noOfCompFeedPerDay;
+		this.foodIntoleranceStatus = foodIntoleranceStatus;
+		this.typeofFoodIntolerance = typeofFoodIntolerance;
+	}
+
 }

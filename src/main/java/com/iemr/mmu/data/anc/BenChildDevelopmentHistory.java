@@ -1,5 +1,6 @@
 package com.iemr.mmu.data.anc;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -109,6 +110,9 @@ public class BenChildDevelopmentHistory {
 	@Transient
 	private List<String> developmentProblems;
 
+	@Transient
+	private Date captureDate;
+	
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
@@ -416,6 +420,22 @@ public class BenChildDevelopmentHistory {
 		}
 		benChildDevelopmentHistory.setDevelopmentProblem(developmentProblem);
 		return benChildDevelopmentHistory;
+	}
+
+	public BenChildDevelopmentHistory(Date createdDate, String grossMotorMilestone, Boolean isGMMAttained, String fineMotorMilestone, 
+			Boolean isFMMAttained, String socialMilestone, Boolean isSMAttained, String languageMilestone, Boolean isLMAttained,
+			String developmentProblem) {
+		super();
+		this.captureDate = createdDate;
+		this.grossMotorMilestone = grossMotorMilestone;
+		this.isGMMAttained = isGMMAttained;
+		this.fineMotorMilestone = fineMotorMilestone;
+		this.isFMMAttained = isFMMAttained;
+		this.socialMilestone = socialMilestone;
+		this.isSMAttained = isSMAttained;
+		this.languageMilestone = languageMilestone;
+		this.isLMAttained = isLMAttained;
+		this.developmentProblem = developmentProblem;
 	}
 	
 }

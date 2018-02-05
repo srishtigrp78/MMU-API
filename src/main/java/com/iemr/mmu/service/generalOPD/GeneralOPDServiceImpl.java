@@ -538,5 +538,35 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	public String getObstetricHistoryData(Long beneficiaryRegID) {
 		return commonNurseServiceImpl.fetchBenPastObstetricHistory(beneficiaryRegID);
 	}
+
 	/// ------- End of Fetch beneficiary all past obstetric history data ------
+	// ------- Fetch beneficiary all Comorbid conditions history data----------
+	public String getComorbidHistoryData(Long beneficiaryRegID) {
+		return commonNurseServiceImpl.fetchBenComorbidityHistory(beneficiaryRegID);
+	}
+	/// -----End of Fetch beneficiary all Comorbid conditions history data ----
+
+	// ------- Fetch beneficiary all Child Vaccine history data ---------------
+	public String getChildVaccineHistoryData(Long beneficiaryRegID) {
+		return commonNurseServiceImpl.fetchBenOptionalVaccineHistory(beneficiaryRegID);
+	}
+	/// ------- End of Fetch beneficiary all Child Vaccine history data ------
+
+	// ------- Fetch beneficiary all Perinatal history data ---------------
+	public String getBenPerinatalHistoryData(Long beneficiaryRegID) {
+		return commonNurseServiceImpl.fetchBenPerinatalHistory(beneficiaryRegID);
+	}
+	/// ------- End of Fetch beneficiary all Perinatal history data ------
+
+	// ------- Fetch beneficiary all Feeding history data ---------------
+	public String getBenFeedingHistoryData(Long beneficiaryRegID) {
+		return commonNurseServiceImpl.fetchBenFeedingHistory(beneficiaryRegID);
+	}
+	/// ------- End of Fetch beneficiary all Feeding history data ------
+
+	// ------- Fetch beneficiary all Development history data ---------------
+	public String getBenDevelopmentHistoryData(Long beneficiaryRegID) {
+		return commonNurseServiceImpl.fetchBenDevelopmentHistory(beneficiaryRegID);
+	}
+	/// ------- End of Fetch beneficiary all Development history data ------
 }
