@@ -342,6 +342,7 @@ public class DoctorServiceImpl implements DoctorService {
 //		return cancerOralExamination;
 //	}
 
+	/* Method moved to common service, Can remove from here */
 	@Override
 	public String updateBenStatus(Long benVisitID, String c) {
 		Map<String, String> resMap = new HashMap<>();

@@ -62,12 +62,14 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 		this.benChiefComplaintRepo = benChiefComplaintRepo;
 	}
 
+	/* Method Moved to common service, Can remove from here*/
 	public Integer saveANCFindings(JsonObject obj) throws Exception {
 		WrapperAncFindings wrapperAncFindings = InputMapper.gson().fromJson(obj, WrapperAncFindings.class);
 		return saveAncDocFindings(wrapperAncFindings);
 
 	}
 
+	/* Method Moved to common service, Can remove from here*/
 	public Integer saveAncDocFindings(WrapperAncFindings wrapperAncFindings) {
 		int i = 0;
 		BenClinicalObservations benClinicalObservationsRS = benClinicalObservationsRepo
@@ -85,6 +87,7 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 		return i;
 	}
 
+	/* Method Moved to common service, Can remove from here*/
 	private BenClinicalObservations getBenClinicalObservations(WrapperAncFindings wrapperAncFindings) {
 		BenClinicalObservations benClinicalObservations = new BenClinicalObservations();
 		benClinicalObservations.setBeneficiaryRegID(wrapperAncFindings.getBeneficiaryRegID());
@@ -97,6 +100,7 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 		return benClinicalObservations;
 	}
 
+	/* Method Moved to common service, Can remove from here*/
 	private ArrayList<BenChiefComplaint> getBenChiefComplaint(WrapperAncFindings wrapperAncFindings) {
 		ArrayList<BenChiefComplaint> benChiefComplaintList = new ArrayList<>();
 		BenChiefComplaint benChiefComplaint;
@@ -130,6 +134,7 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 		return benChiefComplaintList;
 	}
 
+	/* Method Moved to common service, Can remove from here*/
 	public Long saveBenANCDiagnosis(JsonObject obj) throws IEMRException {
 		Long ID = null;
 		ANCDiagnosis ancDiagnosis = InputMapper.gson().fromJson(obj, ANCDiagnosis.class);
@@ -184,6 +189,7 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 		return r;
 	}
 
+	/* Method moved to common service, Can remove from here */
 	public String updateBenVisitStatusFlag(Long benVisitID, String c) {
 		return doctorServiceImpl.updateBenStatus(benVisitID, c);
 	}

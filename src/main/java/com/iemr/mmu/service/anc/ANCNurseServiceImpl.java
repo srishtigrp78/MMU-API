@@ -393,6 +393,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return prescriptionID;
 	}
 */
+	
+	/*Method moved to common service, Can remove this method*/
 	public Long savePrescriptionDetailsAndGetPrescriptionID(Long benRegID, Long benVisitID, Integer psmID,
 			String createdBy) {
 		PrescriptionDetail prescriptionDetail = new PrescriptionDetail();

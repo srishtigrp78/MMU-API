@@ -84,7 +84,7 @@ public class GeneralOPDCreateController {
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
-				Long genOPDRes = generalOPDServiceImpl.saveNurseData(jsnOBJ);
+				Long genOPDRes = generalOPDServiceImpl.saveDoctorData(jsnOBJ);
 				if (null != genOPDRes && genOPDRes > 0) {
 					response.setResponse("General OPD doctor Entered Details stored successfully.");
 				} else {

@@ -13,5 +13,7 @@ public interface GeneralOPDService {
 	Long saveBenExaminationDetails(JsonObject examinationDetailsOBJ, Long benVisitID) throws Exception;
 
 	Long saveBenVisitDetails(JsonObject visitDetailsOBJ) throws Exception;
+
+	Long saveDoctorData(JsonObject requestOBJ) throws Exception;
 	
 }

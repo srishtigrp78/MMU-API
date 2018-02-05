@@ -23,6 +23,7 @@ import com.iemr.mmu.data.anc.SysGastrointestinalExamination;
 import com.iemr.mmu.data.anc.SysGenitourinarySystemExamination;
 import com.iemr.mmu.data.anc.SysMusculoskeletalSystemExamination;
 import com.iemr.mmu.data.anc.SysRespiratoryExamination;
+import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.anc.WrapperChildOptionalVaccineDetail;
 import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
 import com.iemr.mmu.data.anc.WrapperFemaleObstetricHistory;
@@ -32,7 +33,11 @@ import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
+import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
+import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
+import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
+import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 /***
@@ -45,6 +50,18 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private GeneralOPDNurseServiceImpl generalOPDNurseServiceImpl;
+	private CommonDoctorServiceImpl commonDoctorServiceImpl;
+	private NurseServiceImpl nurseServiceImpl;
+	
+	@Autowired
+	public void setCommonDoctorServiceImpl(CommonDoctorServiceImpl commonDoctorServiceImpl) {
+		this.commonDoctorServiceImpl = commonDoctorServiceImpl;
+	}
+	
+	@Autowired
+	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
+		this.nurseServiceImpl = nurseServiceImpl;
+	}
 
 	@Autowired
 	public void setGeneralOPDNurseServiceImpl(GeneralOPDNurseServiceImpl generalOPDNurseServiceImpl) {
@@ -560,19 +577,112 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 	// ------- Fetch beneficiary all Perinatal history data ---------------
 	public String getBenPerinatalHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenPerinatalHistory(beneficiaryRegID);
+		return generalOPDNurseServiceImpl.fetchBenPerinatalHistory(beneficiaryRegID);
 	}
 	/// ------- End of Fetch beneficiary all Perinatal history data ------
 
 	// ------- Fetch beneficiary all Feeding history data ---------------
 	public String getBenFeedingHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenFeedingHistory(beneficiaryRegID);
+		return generalOPDNurseServiceImpl.fetchBenFeedingHistory(beneficiaryRegID);
 	}
 	/// ------- End of Fetch beneficiary all Feeding history data ------
 
 	// ------- Fetch beneficiary all Development history data ---------------
 	public String getBenDevelopmentHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenDevelopmentHistory(beneficiaryRegID);
+		return generalOPDNurseServiceImpl.fetchBenDevelopmentHistory(beneficiaryRegID);
 	}
 	/// ------- End of Fetch beneficiary all Development history data ------
+	
+	/// --------------- start of saving doctor data ------------------------
+	@Override
+	public Long saveDoctorData(JsonObject requestOBJ) throws Exception {
+		Long saveSuccessFlag = null;
+		Long prescriptionID = null;
+		Long investigationSuccessFlag = null;
+		Integer findingSuccessFlag = null;
+		Integer prescriptionSuccessFlag = null;
+
+		String createdBy = null;
+		Long bvID = null;
+
+		if (requestOBJ != null) {
+			if (requestOBJ.has("findings") && !requestOBJ.get("findings").isJsonNull()) {
+				findingSuccessFlag = commonDoctorServiceImpl.saveFindings(requestOBJ.get("findings").getAsJsonObject());
+
+			} else {
+			}
+			PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
+
+			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
+				JsonObject diagnosisObj = requestOBJ.getAsJsonObject("diagnosis");
+
+				prescriptionDetail = InputMapper.gson().fromJson(diagnosisObj, PrescriptionDetail.class);
+
+				if (diagnosisObj.has("provisionalDiagnosis")
+						&& !diagnosisObj.get("provisionalDiagnosis").isJsonNull()) {
+					prescriptionDetail.setDiagnosisProvided(diagnosisObj.get("provisionalDiagnosis").toString());
+				}
+				if (diagnosisObj.has("specialistAdvice") && !diagnosisObj.get("specialistAdvice").isJsonNull()) {
+					prescriptionDetail.setInstruction(diagnosisObj.get("specialistAdvice").toString());
+				}
+
+			} else {
+			}
+
+			// Save Prescription
+			prescriptionID = nurseServiceImpl.saveBenPrescription(prescriptionDetail);
+
+			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull()) {
+				WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
+						.fromJson(requestOBJ.get("investigation"), WrapperBenInvestigationANC.class);
+
+				if (wrapperBenInvestigationANC != null) {
+					createdBy = wrapperBenInvestigationANC.getCreatedBy();
+					bvID = wrapperBenInvestigationANC.getBenVisitID();
+
+					wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
+					investigationSuccessFlag = nurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
+				}
+			} else {
+			}
+			if (requestOBJ.has("prescription") && !requestOBJ.get("prescription").isJsonNull()) {
+				JsonObject tmpOBJ = requestOBJ.get("prescription").getAsJsonObject();
+				if (tmpOBJ.has("prescribedDrugs") && !tmpOBJ.get("prescribedDrugs").isJsonNull()) {
+					PrescribedDrugDetail[] prescribedDrugDetail = InputMapper.gson()
+							.fromJson(tmpOBJ.get("prescribedDrugs"), PrescribedDrugDetail[].class);
+
+					List<PrescribedDrugDetail> prescribedDrugDetailList = Arrays.asList(prescribedDrugDetail);
+
+					if (prescribedDrugDetailList.size() > 0) {
+						for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
+							tmpObj.setPrescriptionID(prescriptionID);
+							tmpObj.setCreatedBy(createdBy);
+
+						}
+						Integer r = nurseServiceImpl.saveBenPrescribedDrugsList(prescribedDrugDetailList);
+						if (r > 0 && r != null) {
+							prescriptionSuccessFlag = r;
+						}
+
+					} else {
+						prescriptionSuccessFlag = 1;
+					}
+				}
+			} else {
+			}
+
+			if ((findingSuccessFlag != null && findingSuccessFlag > 0) && (prescriptionID != null && prescriptionID > 0)
+					&& (investigationSuccessFlag != null && investigationSuccessFlag > 0)
+					&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)) {
+
+				String s = commonDoctorServiceImpl.updateBenVisitStatusFlag(bvID, "D");
+				if (s != null && s.length() > 0)
+					saveSuccessFlag = investigationSuccessFlag;
+			}
+		} else {
+			// request OBJ is null.
+		}
+		return saveSuccessFlag;
+	}
+	/// --------------- END of saving doctor data ------------------------
 }
