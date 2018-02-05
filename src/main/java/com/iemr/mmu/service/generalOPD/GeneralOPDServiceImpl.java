@@ -35,6 +35,12 @@ import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
+
+/***
+ * 
+ * @author NE298657
+ *
+ */
 @Service
 public class GeneralOPDServiceImpl implements GeneralOPDService {
 
@@ -539,4 +545,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		return commonNurseServiceImpl.fetchBenPastObstetricHistory(beneficiaryRegID);
 	}
 	/// ------- End of Fetch beneficiary all past obstetric history data ------
+	
+	
+	
 }

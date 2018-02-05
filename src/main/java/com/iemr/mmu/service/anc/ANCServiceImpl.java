@@ -745,19 +745,23 @@ public class ANCServiceImpl implements ANCService {
 	}
 	/// ------- End of Fetch beneficiary all Medication history data --
 
-	// ------- Fetch beneficiary all Personal Tobacco history data ---------------
+	// ------- Fetch beneficiary all Personal Tobacco history data
+	// ---------------
 	public String getANCPersonalTobaccoHistoryData(Long beneficiaryRegID) {
 		return ancNurseServiceImpl.fetchBenPersonalTobaccoHistory(beneficiaryRegID);
 	}
 	/// ------- End of Fetch beneficiary all Personal Tobacco history data------
 
-	// ------- Fetch beneficiary all Personal Alcohol history data ---------------
+	// ------- Fetch beneficiary all Personal Alcohol history data
+	// ---------------
 	public String getANCPersonalAlcoholHistoryData(Long beneficiaryRegID) {
 		return ancNurseServiceImpl.fetchBenPersonalAlcoholHistory(beneficiaryRegID);
 	}
-	/// ------- End of Fetch beneficiary all Personal Alcohol history data ------
+	/// ------- End of Fetch beneficiary all Personal Alcohol history data
+	/// ------
 
-	// ------- Fetch beneficiary all Personal Allergy history data ---------------
+	// ------- Fetch beneficiary all Personal Allergy history data
+	// ---------------
 	public String getANCPersonalAllergyHistoryData(Long beneficiaryRegID) {
 		return ancNurseServiceImpl.fetchBenPersonalAllergyHistory(beneficiaryRegID);
 	}
@@ -956,7 +960,7 @@ public class ANCServiceImpl implements ANCService {
 			WrapperImmunizationHistory wrapperImmunizationHistory = InputMapper.gson()
 					.fromJson(ancHistoryOBJ.get("immunizationHistory"), WrapperImmunizationHistory.class);
 			immunizationSuccessFlag = ancNurseServiceImpl.updateANCChildImmunizationDetail(wrapperImmunizationHistory);
-		}else{
+		} else {
 			immunizationSuccessFlag = 1;
 		}
 		// Update Other/Optional Vaccines History
@@ -1019,7 +1023,7 @@ public class ANCServiceImpl implements ANCService {
 
 		int genExmnSuccessFlag = 0;
 		int headToToeExmnSuccessFlag = 0;
-		int gastroIntsExmnSuccessFlag = 0;
+		//int gastroIntsExmnSuccessFlag = 0;
 		int cardiExmnSuccessFlag = 0;
 		int respiratoryExmnSuccessFlag = 0;
 		int centralNrvsExmnSuccessFlag = 0;
@@ -1043,13 +1047,21 @@ public class ANCServiceImpl implements ANCService {
 			headToToeExmnSuccessFlag = ancNurseServiceImpl.updatePhyHeadToToeExamination(headToToeExamination);
 		}
 		// Save Gastro Intestinal Examination Details
-		if (examinationDetailsOBJ != null && examinationDetailsOBJ.has("gastroIntestinalExamination")
-				&& !examinationDetailsOBJ.get("gastroIntestinalExamination").isJsonNull()) {
-			SysGastrointestinalExamination gastrointestinalExamination = InputMapper.gson().fromJson(
-					examinationDetailsOBJ.get("gastroIntestinalExamination"), SysGastrointestinalExamination.class);
-			gastroIntsExmnSuccessFlag = ancNurseServiceImpl
-					.updateSysGastrointestinalExamination(gastrointestinalExamination);
-		}
+		/**
+		 * Removed from anc. Only applicable for generalOPD. date: 05-02-2018
+		 */
+		// if (examinationDetailsOBJ != null &&
+		// examinationDetailsOBJ.has("gastroIntestinalExamination")
+		// &&
+		// !examinationDetailsOBJ.get("gastroIntestinalExamination").isJsonNull())
+		// {
+		// SysGastrointestinalExamination gastrointestinalExamination =
+		// InputMapper.gson().fromJson(
+		// examinationDetailsOBJ.get("gastroIntestinalExamination"),
+		// SysGastrointestinalExamination.class);
+		// gastroIntsExmnSuccessFlag = ancNurseServiceImpl
+		// .updateSysGastrointestinalExamination(gastrointestinalExamination);
+		// }
 		// Save Cardio Vascular Examination Details
 		if (examinationDetailsOBJ != null && examinationDetailsOBJ.has("cardioVascularExamination")
 				&& !examinationDetailsOBJ.get("cardioVascularExamination").isJsonNull()) {
@@ -1103,7 +1115,7 @@ public class ANCServiceImpl implements ANCService {
 			obstetricExmnSuccessFlag = ancNurseServiceImpl.updateSysObstetricExamination(sysObstetricExamination);
 		}
 
-		if (genExmnSuccessFlag > 0 && headToToeExmnSuccessFlag > 0 && gastroIntsExmnSuccessFlag > 0
+		if (genExmnSuccessFlag > 0 && headToToeExmnSuccessFlag > 0 
 				&& cardiExmnSuccessFlag > 0 && respiratoryExmnSuccessFlag > 0 && centralNrvsExmnSuccessFlag > 0
 				&& muskelstlExmnSuccessFlag > 0 && genitorinaryExmnSuccessFlag > 0 && obstetricExmnSuccessFlag > 0) {
 			exmnSuccessFlag = genExmnSuccessFlag;
