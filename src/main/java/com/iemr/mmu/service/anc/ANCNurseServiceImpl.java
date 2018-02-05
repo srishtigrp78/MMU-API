@@ -1192,6 +1192,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	}
 
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public String fetchBenComorbidityHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> bencomrbidityCondDetails = bencomrbidityCondRepo
@@ -1748,6 +1749,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	}
 
+	/* Method moved to common, Can remove from here later*/
 	@Override
 	public String fetchBenOptionalVaccineHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> childOptionalVaccineDetail = childOptionalVaccineDetailRepo

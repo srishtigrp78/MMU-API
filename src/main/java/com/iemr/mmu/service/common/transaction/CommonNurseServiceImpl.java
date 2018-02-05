@@ -1,6 +1,7 @@
 package com.iemr.mmu.service.common.transaction;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,15 +12,18 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.iemr.mmu.data.anc.BenAllergyHistory;
+import com.iemr.mmu.data.anc.BenChildDevelopmentHistory;
 import com.iemr.mmu.data.anc.BenFamilyHistory;
 import com.iemr.mmu.data.anc.BenMedHistory;
 import com.iemr.mmu.data.anc.BenMedicationHistory;
 import com.iemr.mmu.data.anc.BenMenstrualDetails;
 import com.iemr.mmu.data.anc.BenPersonalHabit;
 import com.iemr.mmu.data.anc.BencomrbidityCondDetails;
+import com.iemr.mmu.data.anc.ChildFeedingDetails;
 import com.iemr.mmu.data.anc.ChildOptionalVaccineDetail;
 import com.iemr.mmu.data.anc.ChildVaccineDetail1;
 import com.iemr.mmu.data.anc.FemaleObstetricHistory;
+import com.iemr.mmu.data.anc.PerinatalHistory;
 import com.iemr.mmu.data.anc.PhyGeneralExamination;
 import com.iemr.mmu.data.anc.PhyHeadToToeExamination;
 import com.iemr.mmu.data.anc.SysCardiovascularExamination;
@@ -41,15 +45,18 @@ import com.iemr.mmu.repo.nurse.BenAnthropometryRepo;
 import com.iemr.mmu.repo.nurse.BenPhysicalVitalRepo;
 import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
 import com.iemr.mmu.repo.nurse.anc.BenAllergyHistoryRepo;
+import com.iemr.mmu.repo.nurse.anc.BenChildDevelopmentHistoryRepo;
 import com.iemr.mmu.repo.nurse.anc.BenFamilyHistoryRepo;
 import com.iemr.mmu.repo.nurse.anc.BenMedHistoryRepo;
 import com.iemr.mmu.repo.nurse.anc.BenMedicationHistoryRepo;
 import com.iemr.mmu.repo.nurse.anc.BenMenstrualDetailsRepo;
 import com.iemr.mmu.repo.nurse.anc.BenPersonalHabitRepo;
 import com.iemr.mmu.repo.nurse.anc.BencomrbidityCondRepo;
+import com.iemr.mmu.repo.nurse.anc.ChildFeedingDetailsRepo;
 import com.iemr.mmu.repo.nurse.anc.ChildOptionalVaccineDetailRepo;
 import com.iemr.mmu.repo.nurse.anc.ChildVaccineDetail1Repo;
 import com.iemr.mmu.repo.nurse.anc.FemaleObstetricHistoryRepo;
+import com.iemr.mmu.repo.nurse.anc.PerinatalHistoryRepo;
 import com.iemr.mmu.repo.nurse.anc.PhyGeneralExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.PhyHeadToToeExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.SysCardiovascularExaminationRepo;
@@ -86,6 +93,24 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	private SysMusculoskeletalSystemExaminationRepo sysMusculoskeletalSystemExaminationRepo;
 	private SysGenitourinarySystemExaminationRepo sysGenitourinarySystemExaminationRepo;
 	private RegistrarRepoBenData registrarRepoBenData;
+	private PerinatalHistoryRepo perinatalHistoryRepo;
+	private ChildFeedingDetailsRepo childFeedingDetailsRepo;
+	private BenChildDevelopmentHistoryRepo benChildDevelopmentHistoryRepo;
+	
+	@Autowired
+	public void setBenChildDevelopmentHistoryRepo(BenChildDevelopmentHistoryRepo benChildDevelopmentHistoryRepo) {
+		this.benChildDevelopmentHistoryRepo = benChildDevelopmentHistoryRepo;
+	}
+	
+	@Autowired
+	public void setChildFeedingDetailsRepo(ChildFeedingDetailsRepo childFeedingDetailsRepo) {
+		this.childFeedingDetailsRepo = childFeedingDetailsRepo;
+	}
+	
+	@Autowired
+	public void setPerinatalHistoryRepo(PerinatalHistoryRepo perinatalHistoryRepo) {
+		this.perinatalHistoryRepo = perinatalHistoryRepo;
+	}
 	
 	@Autowired
 	public void setPhyGeneralExaminationRepo(PhyGeneralExaminationRepo phyGeneralExaminationRepo) {
@@ -538,6 +563,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		}
 		return r;
 	}
+	
 	
 	public String fetchBenPastMedicalHistory(Long benRegID) {
 		Map<String, Object> resMap = new HashMap<>();
@@ -1089,4 +1115,314 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		return new Gson().toJson(response);
 
 	}
+	
+	public String fetchBenComorbidityHistory(Long beneficiaryRegID) {
+		ArrayList<Object[]> bencomrbidityCondDetails = bencomrbidityCondRepo
+				.getBencomrbidityCondDetails(beneficiaryRegID);
+
+		Map<String, Object> response = new HashMap<String, Object>();
+		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
+		Map<String, Object> column = new HashMap<String, Object>();
+
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "captureDate");
+		columns.add(column);
+		
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Comorbid Condition");
+		column.put("keyName", "comorbidCondition");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Other Comorbid Condition");
+		column.put("keyName", "otherComorbidCondition");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Date");
+		column.put("keyName", "date");
+		columns.add(column);
+
+		ArrayList<BencomrbidityCondDetails> bencomrbidityConds = new ArrayList<BencomrbidityCondDetails>();
+		if (null != bencomrbidityCondDetails) {
+			for (Object[] obj : bencomrbidityCondDetails) {
+
+				BencomrbidityCondDetails history = new BencomrbidityCondDetails((Date) obj[0], (String) obj[1], (String) obj[2],
+						(Date) obj[3]);
+				bencomrbidityConds.add(history);
+			}
+
+		}
+
+		response.put("columns", columns);
+		response.put("data", bencomrbidityConds);
+		return new Gson().toJson(response);
+
+	}
+	
+	public String fetchBenOptionalVaccineHistory(Long beneficiaryRegID) {
+		ArrayList<Object[]> childOptionalVaccineDetail = childOptionalVaccineDetailRepo
+				.getBenOptionalVaccineDetail(beneficiaryRegID);
+
+		Map<String, Object> response = new HashMap<String, Object>();
+		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
+		Map<String, Object> column = new HashMap<String, Object>();
+
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "captureDate");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Default Receiving Age");
+		column.put("keyName", "defaultReceivingAge");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Vaccine Name");
+		column.put("keyName", "vaccineName");
+		columns.add(column);
+
+		/** Later we will enable these two if needed**/
+	/*	column = new HashMap<String, Object>();
+		column.put("columnName", "Status");
+		column.put("keyName", "status");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Received Date");
+		column.put("keyName", "receivedDate");
+		columns.add(column);*/
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Actual Receiving Age");
+		column.put("keyName", "actualReceivingAge");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Received Facility Name");
+		column.put("keyName", "receivedFacilityName");
+		columns.add(column);
+
+		ArrayList<ChildOptionalVaccineDetail> childOptionalVaccineDetails = new ArrayList<ChildOptionalVaccineDetail>();
+		if (null != childOptionalVaccineDetail) {
+			for (Object[] obj : childOptionalVaccineDetail) {
+				ChildOptionalVaccineDetail history = new ChildOptionalVaccineDetail((Date) obj[0], (String) obj[1], (String) obj[2],
+						(String) obj[3], (Timestamp) obj[4], (String) obj[5], (String) obj[6]);
+				childOptionalVaccineDetails.add(history);
+			}
+		}
+
+		response.put("columns", columns);
+		response.put("data", childOptionalVaccineDetails);
+		return new Gson().toJson(response);
+
+	}
+	
+	public String fetchBenPerinatalHistory(Long beneficiaryRegID) {
+		ArrayList<Object[]> perinatalHistoryDetail = perinatalHistoryRepo
+				.getBenPerinatalDetail(beneficiaryRegID);
+
+		Map<String, Object> response = new HashMap<String, Object>();
+		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
+		Map<String, Object> column = new HashMap<String, Object>();
+
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "captureDate");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Place Of Delivery");
+		column.put("keyName", "placeOfDelivery");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Other Place Of Delivery");
+		column.put("keyName", "otherPlaceOfDelivery");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Type Of Delivery");
+		column.put("keyName", "typeOfDelivery");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Complication At Birth");
+		column.put("keyName", "complicationAtBirth");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Other Complication At Birth");
+		column.put("keyName", "otherComplicationAtBirth");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Gestation");
+		column.put("keyName", "gestation");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Birth Weight(kg)");
+		column.put("keyName", "birthWeight_kg");
+		columns.add(column);
+		
+
+		ArrayList<PerinatalHistory> PerinatalHistoryDetails = new ArrayList<PerinatalHistory>();
+		if (null != perinatalHistoryDetail) {
+			for (Object[] obj : perinatalHistoryDetail) {
+				PerinatalHistory history = new PerinatalHistory((Date) obj[0], (String) obj[1], (String) obj[2],
+						(String) obj[3], (String) obj[4], (String) obj[5], (String) obj[6], (Double) obj[7]);
+				PerinatalHistoryDetails.add(history);
+			}
+		}
+
+		response.put("columns", columns);
+		response.put("data", PerinatalHistoryDetails);
+		return new Gson().toJson(response);
+
+	}
+	
+	public String fetchBenFeedingHistory(Long beneficiaryRegID) {
+		ArrayList<Object[]> feedingHistoryDetail = childFeedingDetailsRepo
+				.getBenFeedingHistoryDetail(beneficiaryRegID);
+
+		Map<String, Object> response = new HashMap<String, Object>();
+		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
+		Map<String, Object> column = new HashMap<String, Object>();
+
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "captureDate");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Child ID");
+		column.put("keyName", "childID");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Beneficiary Mother ID");
+		column.put("keyName", "benMotherID");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Type Of Feed");
+		column.put("keyName", "typeOfFeed");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Comp Feed Start Age");
+		column.put("keyName", "compFeedStartAge");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "NoOf Comp Feed Per Day");
+		column.put("keyName", "noOfCompFeedPerDay");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Food Intolerance Status");
+		column.put("keyName", "foodIntoleranceStatus");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Type of Food Intolerance");
+		column.put("keyName", "typeofFoodIntolerance");
+		columns.add(column);
+	
+		ArrayList<ChildFeedingDetails> feedingHistoryDetails = new ArrayList<ChildFeedingDetails>();
+		if (null != feedingHistoryDetail) {
+			for (Object[] obj : feedingHistoryDetail) {
+				ChildFeedingDetails history = new ChildFeedingDetails((Date) obj[0], (Long) obj[1], (Long) obj[2],
+						(String) obj[3], (String) obj[4], (Character) obj[5], (Character) obj[6], (String) obj[7]);
+				feedingHistoryDetails.add(history);
+			}
+		}
+
+		response.put("columns", columns);
+		response.put("data", feedingHistoryDetails);
+		return new Gson().toJson(response);
+
+	}
+	
+	
+	public String fetchBenDevelopmentHistory(Long beneficiaryRegID) {
+		ArrayList<Object[]> developmentHistoryDetail = benChildDevelopmentHistoryRepo
+				.getBenDevelopmentHistoryDetail(beneficiaryRegID);
+
+		Map<String, Object> response = new HashMap<String, Object>();
+		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
+		Map<String, Object> column = new HashMap<String, Object>();
+
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "captureDate");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Gross Motor Milestone");
+		column.put("keyName", "grossMotorMilestone");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Is GMM Attained");
+		column.put("keyName", "isGMMAttained");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Fine Motor Milestone");
+		column.put("keyName", "fineMotorMilestone");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Is FMM Attained");
+		column.put("keyName", "isFMMAttained");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Social Milestone");
+		column.put("keyName", "socialMilestone");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Is SM Attained");
+		column.put("keyName", "isSMAttained");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Language Milestone");
+		column.put("keyName", "languageMilestone");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Is LM Attained");
+		column.put("keyName", "isLMAttained");
+		columns.add(column);
+		
+		column = new HashMap<>();
+		column.put("columnName", "Development Problem");
+		column.put("keyName", "developmentProblem");
+		columns.add(column);
+
+	
+		ArrayList<BenChildDevelopmentHistory> developmentHistoryDetails = new ArrayList<BenChildDevelopmentHistory>();
+		if (null != developmentHistoryDetail) {
+			for (Object[] obj : developmentHistoryDetail) {
+				
+				BenChildDevelopmentHistory history = new BenChildDevelopmentHistory((Date) obj[0], (String) obj[1], 
+						(Boolean) obj[2], (String) obj[3], (Boolean) obj[4], (String) obj[5], (Boolean) obj[6], 
+						(String) obj[7], (Boolean) obj[8], (String) obj[9] );
+				developmentHistoryDetails.add(history);
+			}
+		}
+
+		response.put("columns", columns);
+		response.put("data", developmentHistoryDetails);
+		return new Gson().toJson(response);
+
+	}
+	
+	
 }

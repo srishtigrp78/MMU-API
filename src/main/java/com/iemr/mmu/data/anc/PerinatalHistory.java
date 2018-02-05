@@ -1,5 +1,6 @@
 package com.iemr.mmu.data.anc;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -7,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
@@ -118,6 +120,9 @@ public class PerinatalHistory {
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
+	
+	@Transient
+	private Date captureDate;
 	
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
@@ -321,6 +326,19 @@ public class PerinatalHistory {
 
 	public void setReservedForChange(String reservedForChange) {
 		this.reservedForChange = reservedForChange;
+	}
+
+	public PerinatalHistory(Date createdDate, String placeOfDelivery, String otherPlaceOfDelivery, String typeOfDelivery,  String complicationAtBirth,
+			String otherComplicationAtBirth, String gestation, Double birthWeight_kg) {
+		super();
+		this.captureDate = createdDate;
+		this.placeOfDelivery = placeOfDelivery;
+		this.otherPlaceOfDelivery = otherPlaceOfDelivery;
+		this.typeOfDelivery = typeOfDelivery;
+		this.complicationAtBirth = complicationAtBirth;
+		this.otherComplicationAtBirth = otherComplicationAtBirth;
+		this.gestation = gestation;
+		this.birthWeight_kg = birthWeight_kg;
 	}
 	
 }
