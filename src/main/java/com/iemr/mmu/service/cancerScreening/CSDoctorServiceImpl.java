@@ -8,7 +8,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.gson.Gson;
 import com.iemr.mmu.data.doctor.CancerAbdominalExamination;
 import com.iemr.mmu.data.doctor.CancerBreastExamination;
 import com.iemr.mmu.data.doctor.CancerDiagnosis;
@@ -211,8 +210,11 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 		List<String> refrredToAdditionalServiceList = cancerDiagnosis.getRefrredToAdditionalServiceList();
 		String refrredToAdditionalServiceData = "";
 		if (refrredToAdditionalServiceList != null && refrredToAdditionalServiceList.size() > 0) {
-			for (String refrredToAdditionalService : refrredToAdditionalServiceList) {
-				refrredToAdditionalServiceData += refrredToAdditionalService + ",";
+			for (int i = 0; i < refrredToAdditionalServiceList.size(); i++) {
+				if (i == (refrredToAdditionalServiceList.size() - 1))
+					refrredToAdditionalServiceData += refrredToAdditionalServiceList.get(i);
+				else
+					refrredToAdditionalServiceData += refrredToAdditionalServiceList.get(i) + ",";
 			}
 		}
 		cancerDiagnosis.setRefrredToAdditionalService(refrredToAdditionalServiceData);
@@ -290,7 +292,8 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 		return cancerOralExamination;
 	}
 
-	public ArrayList<WrapperCancerExamImgAnotasn> getCancerExaminationImageAnnotationCasesheet(Long benRegID, Long benVisitID) {
+	public ArrayList<WrapperCancerExamImgAnotasn> getCancerExaminationImageAnnotationCasesheet(Long benRegID,
+			Long benVisitID) {
 		ArrayList<WrapperCancerExamImgAnotasn> resList = new ArrayList<>();
 		// System.out.println("hello");
 		List<CancerExaminationImageAnnotation> cancerExaminationImageAnnotationList = cancerExaminationImageAnnotationRepo

@@ -545,6 +545,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	}
 
 	/// ------- End of Fetch beneficiary all past obstetric history data ------
+
 	// ------- Fetch beneficiary all Comorbid conditions history data----------
 	public String getComorbidHistoryData(Long beneficiaryRegID) {
 		return commonNurseServiceImpl.fetchBenComorbidityHistory(beneficiaryRegID);
