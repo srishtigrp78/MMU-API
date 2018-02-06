@@ -14,6 +14,7 @@ import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.BenChildDevelopmentHistory;
 import com.iemr.mmu.data.anc.ChildFeedingDetails;
 import com.iemr.mmu.data.anc.PerinatalHistory;
+import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
 import com.iemr.mmu.repo.nurse.anc.BenChildDevelopmentHistoryRepo;
 import com.iemr.mmu.repo.nurse.anc.ChildFeedingDetailsRepo;
 import com.iemr.mmu.repo.nurse.anc.PerinatalHistoryRepo;
@@ -274,5 +275,24 @@ public class GeneralOPDNurseServiceImpl implements GeneralOPDNurseService{
 
 	}
 
+	public BenChildDevelopmentHistory getDevelopmentHistory(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> benChildDevelopmentHistory = benChildDevelopmentHistoryRepo.getBenDevelopmentDetails(beneficiaryRegID,
+				benVisitID);
+		BenChildDevelopmentHistory developmentHistoryDetails = BenChildDevelopmentHistory.getBenChildDevelopmentDetails(benChildDevelopmentHistory);
+		return developmentHistoryDetails;
+	}
 	
+	public PerinatalHistory getPerinatalHistory(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> benPerinatalHistory = perinatalHistoryRepo.getBenPerinatalDetails(beneficiaryRegID,
+				benVisitID);
+		PerinatalHistory perinatalHistoryDetails = PerinatalHistory.getBenPerinatalDetails(benPerinatalHistory);
+		return perinatalHistoryDetails;
+	}
+	
+	public ChildFeedingDetails getFeedingHistory(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> benFeedingHistory = childFeedingDetailsRepo.getBenFeedingDetails(beneficiaryRegID,
+				benVisitID);
+		ChildFeedingDetails feedingHistoryDetails = ChildFeedingDetails.getBenFeedingDetails(benFeedingHistory);
+		return feedingHistoryDetails;
+	}
 }

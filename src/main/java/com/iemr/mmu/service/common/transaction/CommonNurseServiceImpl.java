@@ -1220,4 +1220,169 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 	}
 	
+	public String getBenChiefComplaints(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> resList = benChiefComplaintRepo.getBenChiefComplaints(beneficiaryRegID, benVisitID);
+		ArrayList<BenChiefComplaint> benChiefComplaints = BenChiefComplaint.getBenChiefComplaints(resList);
+		return new Gson().toJson(benChiefComplaints);
+	}
+	
+	public BenMedHistory getPastHistoryData(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> pastHistory = benMedHistoryRepo.getBenPastHistory(beneficiaryRegID, benVisitID);
+
+		BenMedHistory medHistory = new BenMedHistory();
+		BenMedHistory benMedHistory = medHistory.getBenPastHistory(pastHistory);
+		return benMedHistory;
+	}
+	
+	public WrapperComorbidCondDetails getComorbidityConditionsHistory(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> comrbidityConds = bencomrbidityCondRepo.getBencomrbidityCondDetails(beneficiaryRegID,
+				benVisitID);
+
+		WrapperComorbidCondDetails comrbidityCondDetails = WrapperComorbidCondDetails
+				.getComorbidityDetails(comrbidityConds);
+		return comrbidityCondDetails;
+	}
+	
+	public WrapperMedicationHistory getMedicationHistory(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> medicationHistory = benMedicationHistoryRepo.getBenMedicationHistoryDetail(beneficiaryRegID,
+				benVisitID);
+
+		WrapperMedicationHistory wrapperMedicationHistory = WrapperMedicationHistory
+				.getMedicationHistoryDetails(medicationHistory);
+		return wrapperMedicationHistory;
+	}
+
+	public BenPersonalHabit getPersonalHistory(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> personalDetails = benPersonalHabitRepo.getBenPersonalHabitDetail(beneficiaryRegID,
+				benVisitID);
+
+		ArrayList<Object[]> allergyDetails = benAllergyHistoryRepo.getBenPersonalAllergyDetail(beneficiaryRegID,
+				benVisitID);
+
+		BenPersonalHabit personalHabits = BenPersonalHabit.getPersonalDetails(personalDetails);
+		ArrayList<BenAllergyHistory> allergyList = BenAllergyHistory.getBenAllergicHistory(allergyDetails);
+		if (null != allergyList && allergyList.size() > 0) {
+			personalHabits.setAllergyStatus(allergyList.get(0).getAllergyStatus());
+			personalHabits.setAllergicList(allergyList);
+		}
+
+		return personalHabits;
+	}
+
+	public BenFamilyHistory getFamilyHistory(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> familyHistory = benFamilyHistoryRepo.getBenFamilyHistoryDetail(beneficiaryRegID,
+				benVisitID);
+		BenFamilyHistory familyHistoryDetails = BenFamilyHistory.getBenFamilyHistory(familyHistory);
+
+		return familyHistoryDetails;
+	}
+	
+	public BenMenstrualDetails getMenstrualHistory(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> menstrualHistory = benMenstrualDetailsRepo.getBenMenstrualDetail(beneficiaryRegID,
+				benVisitID);
+		BenMenstrualDetails menstrualHistoryDetails = BenMenstrualDetails.getBenMenstrualDetails(menstrualHistory);
+
+		return menstrualHistoryDetails;
+	}
+	
+	public WrapperFemaleObstetricHistory getFemaleObstetricHistory(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> femaleObstetricHistory = femaleObstetricHistoryRepo
+				.getBenFemaleObstetricHistoryDetail(beneficiaryRegID, benVisitID);
+		WrapperFemaleObstetricHistory femaleObstetricHistoryDetails = WrapperFemaleObstetricHistory
+				.getFemaleObstetricHistory(femaleObstetricHistory);
+
+		return femaleObstetricHistoryDetails;
+	}
+
+	public WrapperChildOptionalVaccineDetail getChildOptionalVaccineHistory(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> childOptionalVaccineDetail = childOptionalVaccineDetailRepo
+				.getBenOptionalVaccineDetail(beneficiaryRegID, benVisitID);
+		WrapperChildOptionalVaccineDetail childOptionalVaccineDetails = WrapperChildOptionalVaccineDetail
+				.getChildOptionalVaccineDetail(childOptionalVaccineDetail);
+
+		return childOptionalVaccineDetails;
+	}
+
+	public WrapperImmunizationHistory getImmunizationHistory(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> childVaccineDetail = childVaccineDetail1Repo.getBenChildVaccineDetails(beneficiaryRegID,
+				benVisitID);
+		WrapperImmunizationHistory childVaccineDetails = WrapperImmunizationHistory
+				.getChildVaccineDetail(childVaccineDetail);
+
+		return childVaccineDetails;
+	}
+	
+	public PhyGeneralExamination getGeneralExaminationData(Long benRegID, Long benVisitID) {
+		PhyGeneralExamination phyGeneralExaminationData = phyGeneralExaminationRepo
+				.getPhyGeneralExaminationData(benRegID, benVisitID);
+		if (null != phyGeneralExaminationData) {
+			String dSign = phyGeneralExaminationData.getTypeOfDangerSign();
+			if (dSign != null && dSign.length() > 0) {
+				String[] typeDangerSignArr = dSign.split(",");
+				if (typeDangerSignArr != null && typeDangerSignArr.length > 0) {
+					ArrayList<String> typeOfDangerSigns = new ArrayList<>();
+					for (String typeDangerSign : typeDangerSignArr) {
+						typeOfDangerSigns.add(typeDangerSign);
+					}
+					phyGeneralExaminationData.setTypeOfDangerSigns(typeOfDangerSigns);
+				}
+			} else {
+				ArrayList<String> typeOfDangerSignsTmp = new ArrayList<>();
+				phyGeneralExaminationData.setTypeOfDangerSigns(typeOfDangerSignsTmp);
+			}
+
+		}
+		return phyGeneralExaminationData;
+
+	}
+	
+	public PhyHeadToToeExamination getHeadToToeExaminationData(Long benRegID, Long benVisitID) {
+		PhyHeadToToeExamination phyHeadToToeExaminationData = phyHeadToToeExaminationRepo
+				.getPhyHeadToToeExaminationData(benRegID, benVisitID);
+
+		return phyHeadToToeExaminationData;
+
+	}
+	
+	public SysGastrointestinalExamination getSysGastrointestinalExamination(Long benRegID, Long benVisitID) {
+		SysGastrointestinalExamination sysGastrointestinalExaminationData = sysGastrointestinalExaminationRepo
+				.getSSysGastrointestinalExamination(benRegID, benVisitID);
+
+		return sysGastrointestinalExaminationData;
+	}
+	
+	public SysCardiovascularExamination getCardiovascularExamination(Long benRegID, Long benVisitID) {
+		SysCardiovascularExamination sysCardiovascularExaminationData = sysCardiovascularExaminationRepo
+				.getSysCardiovascularExaminationData(benRegID, benVisitID);
+
+		return sysCardiovascularExaminationData;
+	}
+	
+	public SysRespiratoryExamination getRespiratoryExamination(Long benRegID, Long benVisitID) {
+		SysRespiratoryExamination sysRespiratoryExaminationData = sysRespiratoryExaminationRepo
+				.getSysRespiratoryExaminationData(benRegID, benVisitID);
+
+		return sysRespiratoryExaminationData;
+	}
+	
+	public SysCentralNervousExamination getSysCentralNervousExamination(Long benRegID, Long benVisitID) {
+		SysCentralNervousExamination sysCentralNervousExaminationData = sysCentralNervousExaminationRepo
+				.getSysCentralNervousExaminationData(benRegID, benVisitID);
+
+		return sysCentralNervousExaminationData;
+	}
+	
+	public SysMusculoskeletalSystemExamination getMusculoskeletalExamination(Long benRegID, Long benVisitID) {
+		SysMusculoskeletalSystemExamination sysMusculoskeletalSystemExaminationData = sysMusculoskeletalSystemExaminationRepo
+				.getSysMusculoskeletalSystemExamination(benRegID, benVisitID);
+
+		return sysMusculoskeletalSystemExaminationData;
+	}
+	
+	public SysGenitourinarySystemExamination getGenitourinaryExamination(Long benRegID, Long benVisitID) {
+		SysGenitourinarySystemExamination sysGenitourinarySystemExaminationData = sysGenitourinarySystemExaminationRepo
+				.getSysGenitourinarySystemExaminationData(benRegID, benVisitID);
+
+		return sysGenitourinarySystemExaminationData;
+	}
 }

@@ -2,6 +2,8 @@ package com.iemr.mmu.data.anc;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -436,6 +438,48 @@ public class BenChildDevelopmentHistory {
 		this.languageMilestone = languageMilestone;
 		this.isLMAttained = isLMAttained;
 		this.developmentProblem = developmentProblem;
+	}
+
+	public BenChildDevelopmentHistory(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
+			String grossMotorMilestone, Boolean isGMMAttained, String fineMotorMilestone, Boolean isFMMAttained,
+			String socialMilestone, Boolean isSMAttained, String languageMilestone, Boolean isLMAttained,
+			String developmentProblem) {
+		super();
+		this.beneficiaryRegID = beneficiaryRegID;
+		this.benVisitID = benVisitID;
+		this.providerServiceMapID = providerServiceMapID;
+		this.grossMotorMilestone = grossMotorMilestone;
+		this.isGMMAttained = isGMMAttained;
+		this.fineMotorMilestone = fineMotorMilestone;
+		this.isFMMAttained = isFMMAttained;
+		this.socialMilestone = socialMilestone;
+		this.isSMAttained = isSMAttained;
+		this.languageMilestone = languageMilestone;
+		this.isLMAttained = isLMAttained;
+		this.developmentProblem = developmentProblem;
+	}
+	
+	public static BenChildDevelopmentHistory getBenChildDevelopmentDetails(ArrayList<Object[]> developmentHistoryDetails){
+		BenChildDevelopmentHistory developmentDetails = null;
+		if(null != developmentHistoryDetails && developmentHistoryDetails.size()>0){
+			for(Object[] obj:developmentHistoryDetails){
+				developmentDetails = new BenChildDevelopmentHistory((Long)obj[0], (Long)obj[1], (Integer)obj[2], (String)obj[3], (Boolean)obj[4], 
+						(String)obj[5], (Boolean)obj[6], (String)obj[7], (Boolean)obj[8], (String)obj[9], (Boolean)obj[10], (String)obj[11]);
+				
+				String grossMotorMilestones = developmentDetails.getGrossMotorMilestone();
+				developmentDetails.setGrossMotorMilestones(Arrays.asList(grossMotorMilestones.split(",")));
+				
+				String fineMotorMilestones = developmentDetails.getFineMotorMilestone();
+				developmentDetails.setFineMotorMilestones(Arrays.asList(fineMotorMilestones.split(",")));
+				
+				String socialMilestones = developmentDetails.getSocialMilestone();
+				developmentDetails.setSocialMilestones(Arrays.asList(socialMilestones.split(",")));
+				
+				String languageMilestones = developmentDetails.getLanguageMilestone();
+				developmentDetails.setLanguageMilestones(Arrays.asList(languageMilestones.split(",")));
+			}
+		}
+		return developmentDetails;
 	}
 	
 }

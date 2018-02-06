@@ -1,11 +1,14 @@
 package com.iemr.mmu.service.generalOPD;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.BenAllergyHistory;
 import com.iemr.mmu.data.anc.BenChildDevelopmentHistory;
@@ -685,4 +688,76 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		return saveSuccessFlag;
 	}
 	/// --------------- END of saving doctor data ------------------------
+	
+	/// --------------- Start of Fetching GeneralOPD Nurse Data ----------------
+	public String getBenVisitDetailsFrmNurseGOPD(Long benRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		BeneficiaryVisitDetail visitDetail = nurseServiceImpl.getCSVisitDetails(benRegID, benVisitID);
+		
+		resMap.put("GOPDNurseVisitDetail", new Gson().toJson(visitDetail));
+
+		resMap.put("BenChiefComplaints", commonNurseServiceImpl.getBenChiefComplaints(benRegID, benVisitID));
+
+		return resMap.toString();
+	}
+	
+	public String getBenHistoryDetails(Long benRegID, Long benVisitID) {
+		Map<String, Object> HistoryDetailsMap = new HashMap<String, Object>();
+
+		HistoryDetailsMap.put("PastHistory", commonNurseServiceImpl.getPastHistoryData(benRegID, benVisitID));
+		HistoryDetailsMap.put("ComorbidityConditions",
+				commonNurseServiceImpl.getComorbidityConditionsHistory(benRegID, benVisitID));
+		HistoryDetailsMap.put("MedicationHistory", commonNurseServiceImpl.getMedicationHistory(benRegID, benVisitID));
+		HistoryDetailsMap.put("PersonalHistory", commonNurseServiceImpl.getPersonalHistory(benRegID, benVisitID));
+		HistoryDetailsMap.put("FamilyHistory", commonNurseServiceImpl.getFamilyHistory(benRegID, benVisitID));
+		HistoryDetailsMap.put("MenstrualHistory", commonNurseServiceImpl.getMenstrualHistory(benRegID, benVisitID));
+		HistoryDetailsMap.put("FemaleObstetricHistory",
+				commonNurseServiceImpl.getFemaleObstetricHistory(benRegID, benVisitID));
+		HistoryDetailsMap.put("ImmunizationHistory", commonNurseServiceImpl.getImmunizationHistory(benRegID, benVisitID));
+		HistoryDetailsMap.put("childOptionalVaccineHistory",
+				commonNurseServiceImpl.getChildOptionalVaccineHistory(benRegID, benVisitID));
+		
+		HistoryDetailsMap.put("DevelopmentHistory", generalOPDNurseServiceImpl.getDevelopmentHistory(benRegID, benVisitID));
+		HistoryDetailsMap.put("PerinatalHistory", generalOPDNurseServiceImpl.getPerinatalHistory(benRegID, benVisitID));
+		HistoryDetailsMap.put("FeedingHistory", generalOPDNurseServiceImpl.getFeedingHistory(benRegID, benVisitID));
+
+		return new Gson().toJson(HistoryDetailsMap);
+	}
+
+	public String getBeneficiaryVitalDetails(Long beneficiaryRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("benAnthropometryDetail",
+				nurseServiceImpl.getBeneficiaryPhysicalAnthropometryDetails(beneficiaryRegID, benVisitID));
+		resMap.put("benPhysicalVitalDetail",
+				nurseServiceImpl.getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, benVisitID));
+
+		return resMap.toString();
+	}
+	
+	public String getExaminationDetailsData(Long benRegID, Long benVisitID) {
+		Map<String, Object> examinationDetailsMap = new HashMap<String, Object>();
+
+		examinationDetailsMap.put("generalExamination",
+				commonNurseServiceImpl.getGeneralExaminationData(benRegID, benVisitID));
+		examinationDetailsMap.put("headToToeExamination",
+				commonNurseServiceImpl.getHeadToToeExaminationData(benRegID, benVisitID));
+		examinationDetailsMap.put("gastrointestinalExamination",
+				commonNurseServiceImpl.getSysGastrointestinalExamination(benRegID, benVisitID));
+		examinationDetailsMap.put("cardiovascularExamination",
+				commonNurseServiceImpl.getCardiovascularExamination(benRegID, benVisitID));
+		examinationDetailsMap.put("respiratoryExamination",
+				commonNurseServiceImpl.getRespiratoryExamination(benRegID, benVisitID));
+		examinationDetailsMap.put("centralNervousExamination",
+				commonNurseServiceImpl.getSysCentralNervousExamination(benRegID, benVisitID));
+		examinationDetailsMap.put("musculoskeletalExamination",
+				commonNurseServiceImpl.getMusculoskeletalExamination(benRegID, benVisitID));
+		examinationDetailsMap.put("genitourinaryExamination",
+				commonNurseServiceImpl.getGenitourinaryExamination(benRegID, benVisitID));
+
+		return new Gson().toJson(examinationDetailsMap);
+	}
+	
+	/// --------------- END of Fetching GeneralOPD Nurse Data ----------------
 }

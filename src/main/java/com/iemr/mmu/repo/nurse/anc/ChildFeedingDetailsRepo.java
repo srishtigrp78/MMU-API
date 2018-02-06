@@ -19,4 +19,11 @@ public interface ChildFeedingDetailsRepo extends CrudRepository<ChildFeedingDeta
 			+ "compFeedStartAge is not null OR foodIntoleranceStatus is not null)"
 			+ "AND deleted = false ORDER BY createdDate DESC ")
 	public ArrayList<Object[]> getBenFeedingHistoryDetail(@Param("beneficiaryRegID") Long beneficiaryRegID);
+		
+	@Query("select beneficiaryRegID, benVisitID, providerServiceMapID, childID, benMotherID, typeOfFeed, compFeedStartAge, "
+			+ "noOfCompFeedPerDay, foodIntoleranceStatus, typeofFoodIntolerance "
+			+ "from ChildFeedingDetails a where a.beneficiaryRegID = :beneficiaryRegID and a.benVisitID = :benVisitID")
+	public ArrayList<Object[]> getBenFeedingDetails(@Param("beneficiaryRegID") Long beneficiaryRegID,
+			@Param("benVisitID") Long benVisitID);
+	
 }

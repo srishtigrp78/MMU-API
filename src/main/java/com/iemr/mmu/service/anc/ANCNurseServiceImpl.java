@@ -674,7 +674,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 		return new Gson().toJson(examinationDetailsMap);
 	}
-
+	
+	/*Moved to common service, Can remove from here*/
 	public PhyGeneralExamination getGeneralExaminationData(Long benRegID, Long benVisitID) {
 		PhyGeneralExamination phyGeneralExaminationData = phyGeneralExaminationRepo
 				.getPhyGeneralExaminationData(benRegID, benVisitID);
@@ -699,6 +700,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	}
 
+	/*Moved to common service, Can remove from here*/
 	public PhyHeadToToeExamination getHeadToToeExaminationData(Long benRegID, Long benVisitID) {
 		PhyHeadToToeExamination phyHeadToToeExaminationData = phyHeadToToeExaminationRepo
 				.getPhyHeadToToeExaminationData(benRegID, benVisitID);
@@ -707,6 +709,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	}
 
+	/*Moved to common service, Can remove from here*/
 	public SysGastrointestinalExamination getSysGastrointestinalExamination(Long benRegID, Long benVisitID) {
 		SysGastrointestinalExamination sysGastrointestinalExaminationData = sysGastrointestinalExaminationRepo
 				.getSSysGastrointestinalExamination(benRegID, benVisitID);
@@ -714,6 +717,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return sysGastrointestinalExaminationData;
 	}
 
+	/*Moved to common service, Can remove from here*/
 	public SysCardiovascularExamination getCardiovascularExamination(Long benRegID, Long benVisitID) {
 		SysCardiovascularExamination sysCardiovascularExaminationData = sysCardiovascularExaminationRepo
 				.getSysCardiovascularExaminationData(benRegID, benVisitID);
@@ -721,6 +725,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return sysCardiovascularExaminationData;
 	}
 
+	/*Moved to common service, Can remove from here*/
 	public SysRespiratoryExamination getRespiratoryExamination(Long benRegID, Long benVisitID) {
 		SysRespiratoryExamination sysRespiratoryExaminationData = sysRespiratoryExaminationRepo
 				.getSysRespiratoryExaminationData(benRegID, benVisitID);
@@ -728,6 +733,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return sysRespiratoryExaminationData;
 	}
 
+	/*Moved to common service, Can remove from here*/
 	public SysCentralNervousExamination getSysCentralNervousExamination(Long benRegID, Long benVisitID) {
 		SysCentralNervousExamination sysCentralNervousExaminationData = sysCentralNervousExaminationRepo
 				.getSysCentralNervousExaminationData(benRegID, benVisitID);
@@ -735,6 +741,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return sysCentralNervousExaminationData;
 	}
 
+	/*Moved to common service, Can remove from here*/
 	public SysMusculoskeletalSystemExamination getMusculoskeletalExamination(Long benRegID, Long benVisitID) {
 		SysMusculoskeletalSystemExamination sysMusculoskeletalSystemExaminationData = sysMusculoskeletalSystemExaminationRepo
 				.getSysMusculoskeletalSystemExamination(benRegID, benVisitID);
@@ -742,6 +749,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return sysMusculoskeletalSystemExaminationData;
 	}
 
+	/*Moved to common service, Can remove from here*/
 	public SysGenitourinarySystemExamination getGenitourinaryExamination(Long benRegID, Long benVisitID) {
 		SysGenitourinarySystemExamination sysGenitourinarySystemExaminationData = sysGenitourinarySystemExaminationRepo
 				.getSysGenitourinarySystemExaminationData(benRegID, benVisitID);
@@ -806,6 +814,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return new Gson().toJson(benAdherences);
 	}
 
+	/*Method moved to common service, Can remove from here*/
 	@Override
 	public String getBenChiefComplaints(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> resList = benChiefComplaintRepo.getBenChiefComplaints(beneficiaryRegID, benVisitID);
@@ -1873,6 +1882,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return new Gson().toJson(HistoryDetailsMap);
 	}
 
+	/*Method moved to common service, Can remove from here*/
 	public BenMedHistory getPastHistoryData(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> pastHistory = benMedHistoryRepo.getBenPastHistory(beneficiaryRegID, benVisitID);
 
@@ -1881,6 +1891,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return benMedHistory;
 	}
 
+	/*Method moved to common service, Can remove from here*/
 	public WrapperComorbidCondDetails getComorbidityConditionsHistory(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> comrbidityConds = bencomrbidityCondRepo.getBencomrbidityCondDetails(beneficiaryRegID,
 				benVisitID);
@@ -1889,7 +1900,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 				.getComorbidityDetails(comrbidityConds);
 		return comrbidityCondDetails;
 	}
-
+	
+	/*Method moved to common service, Can remove from here*/
 	public WrapperMedicationHistory getMedicationHistory(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> medicationHistory = benMedicationHistoryRepo.getBenMedicationHistoryDetail(beneficiaryRegID,
 				benVisitID);
@@ -1899,6 +1911,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return wrapperMedicationHistory;
 	}
 
+	/*Method moved to common service, Can remove from here*/
 	public BenPersonalHabit getPersonalHistory(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> personalDetails = benPersonalHabitRepo.getBenPersonalHabitDetail(beneficiaryRegID,
 				benVisitID);
@@ -1916,6 +1929,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return personalHabits;
 	}
 
+	/*Method moved to common service, Can remove from here*/
 	public BenFamilyHistory getFamilyHistory(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> familyHistory = benFamilyHistoryRepo.getBenFamilyHistoryDetail(beneficiaryRegID,
 				benVisitID);
@@ -1924,6 +1938,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return familyHistoryDetails;
 	}
 
+	/*Method moved to common service, Can remove from here*/
 	public BenMenstrualDetails getMenstrualHistory(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> menstrualHistory = benMenstrualDetailsRepo.getBenMenstrualDetail(beneficiaryRegID,
 				benVisitID);
@@ -1932,6 +1947,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return menstrualHistoryDetails;
 	}
 
+	/*Method moved to common service, Can remove from here*/
 	public WrapperFemaleObstetricHistory getFemaleObstetricHistory(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> femaleObstetricHistory = femaleObstetricHistoryRepo
 				.getBenFemaleObstetricHistoryDetail(beneficiaryRegID, benVisitID);
@@ -1941,6 +1957,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return femaleObstetricHistoryDetails;
 	}
 
+	/*Method moved to common service, Can remove from here*/
 	public WrapperChildOptionalVaccineDetail getChildOptionalVaccineHistory(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> childOptionalVaccineDetail = childOptionalVaccineDetailRepo
 				.getBenOptionalVaccineDetail(beneficiaryRegID, benVisitID);
@@ -1950,6 +1967,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return childOptionalVaccineDetails;
 	}
 
+	/*Method moved to common service, Can remove from here*/
 	public WrapperImmunizationHistory getImmunizationHistory(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> childVaccineDetail = childVaccineDetail1Repo.getBenChildVaccineDetails(beneficiaryRegID,
 				benVisitID);

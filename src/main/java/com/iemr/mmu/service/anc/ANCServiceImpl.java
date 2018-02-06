@@ -642,8 +642,10 @@ public class ANCServiceImpl implements ANCService {
 	@Override
 	public String getBenVisitDetailsFrmNurseANC(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
-
-		resMap.put("ANCNurseVisitDetail", nurseServiceImpl.getCSVisitDetails(benRegID, benVisitID));
+		
+		BeneficiaryVisitDetail visitDetail = nurseServiceImpl.getCSVisitDetails(benRegID, benVisitID);
+		
+		resMap.put("ANCNurseVisitDetail", new Gson().toJson(visitDetail));
 
 		resMap.put("BenAdherence", ancNurseServiceImpl.getBenAdherence(benRegID, benVisitID));
 
@@ -651,7 +653,7 @@ public class ANCServiceImpl implements ANCService {
 
 		resMap.put("LabTestOrders", ancNurseServiceImpl.getLabTestOrders(benRegID, benVisitID));
 
-		return resMap.toString();
+		return  resMap.toString();
 	}
 
 	@Override
@@ -684,6 +686,7 @@ public class ANCServiceImpl implements ANCService {
 
 		return new Gson().toJson(HistoryDetailsMap);
 	}
+
 
 	@Override
 	public String getBeneficiaryVitalDetails(Long beneficiaryRegID, Long benVisitID) {

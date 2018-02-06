@@ -2,6 +2,8 @@ package com.iemr.mmu.data.anc;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -339,6 +341,39 @@ public class PerinatalHistory {
 		this.otherComplicationAtBirth = otherComplicationAtBirth;
 		this.gestation = gestation;
 		this.birthWeight_kg = birthWeight_kg;
+	}
+
+	public PerinatalHistory(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
+			Short deliveryPlaceID, String placeOfDelivery, String otherPlaceOfDelivery, Short deliveryTypeID,
+			String typeOfDelivery, Short complicationAtBirthID, String complicationAtBirth,
+			String otherComplicationAtBirth, String gestation, Double birthWeight_kg) {
+		super();
+		this.beneficiaryRegID = beneficiaryRegID;
+		this.benVisitID = benVisitID;
+		this.providerServiceMapID = providerServiceMapID;
+		this.deliveryPlaceID = deliveryPlaceID;
+		this.placeOfDelivery = placeOfDelivery;
+		this.otherPlaceOfDelivery = otherPlaceOfDelivery;
+		this.deliveryTypeID = deliveryTypeID;
+		this.typeOfDelivery = typeOfDelivery;
+		this.complicationAtBirthID = complicationAtBirthID;
+		this.complicationAtBirth = complicationAtBirth;
+		this.otherComplicationAtBirth = otherComplicationAtBirth;
+		this.gestation = gestation;
+		this.birthWeight_kg = birthWeight_kg;
+	}
+	
+	public static PerinatalHistory getBenPerinatalDetails(ArrayList<Object[]> perinatalHistoryDetails){
+		PerinatalHistory perinatalDetails = null;
+		if(null != perinatalHistoryDetails && perinatalHistoryDetails.size()>0){
+			for(Object[] obj:perinatalHistoryDetails){
+				perinatalDetails = new PerinatalHistory((Long)obj[0], (Long)obj[1], (Integer)obj[2], (Short)obj[3], (String)obj[4], (String)obj[5],
+						(Short)obj[6], (String)obj[7], (Short)obj[8], (String)obj[9], (String)obj[10], (String)obj[11], (Double)obj[12]);
+				
+			
+			}
+		}
+		return perinatalDetails;
 	}
 	
 }

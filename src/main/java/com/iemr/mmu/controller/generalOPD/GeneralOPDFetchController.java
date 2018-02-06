@@ -4,6 +4,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -375,6 +376,119 @@ public class GeneralOPDFetchController {
 		} catch (Exception e) {
 			response.setError(e);
 			logger.error("Error in getBenDevelopmentHistory:" + e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary Visit details from Nurse General OPD", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenVisitDetailsFrmNurseGOPD" }, method = { RequestMethod.POST })
+	@Transactional(rollbackFor = Exception.class)
+	public String getBenVisitDetailsFrmNurseGOPD(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenVisitDetailsFrmNurseGOPD request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.length() > 1) {
+				Long benRegID = obj.getLong("benRegID");
+				Long benVisitID = obj.getLong("benVisitID");
+
+				String res = generalOPDServiceImpl.getBenVisitDetailsFrmNurseGOPD(benRegID, benVisitID);
+				response.setResponse(res);
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenDataFrmNurseScrnToDocScrnVisitDetails response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenDataFrmNurseScrnToDocScrnVisitDetails:" + e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary General OPD History details from Nurse to Doctor ", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenHistoryDetails" }, method = { RequestMethod.POST })
+
+	public String getBenHistoryDetails(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenHistoryDetails request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID") && obj.has("benVisitID")) {
+				Long benRegID = obj.getLong("benRegID");
+				Long benVisitID = obj.getLong("benVisitID");
+
+				String s = generalOPDServiceImpl.getBenHistoryDetails(benRegID, benVisitID);
+				response.setResponse(s);
+			} else {
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenHistoryDetails response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenHistoryDetails:" + e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary vital details from Nurse GeneralOPD", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenVitalDetailsFrmNurse" }, method = { RequestMethod.POST })
+	public String getBenVitalDetailsFrmNurse(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenVitalDetailsFrmNurse request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID") && obj.has("benVisitID")) {
+				Long benRegID = obj.getLong("benRegID");
+				Long benVisitID = obj.getLong("benVisitID");
+
+				String res = generalOPDServiceImpl.getBeneficiaryVitalDetails(benRegID, benVisitID);
+				response.setResponse(res);
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenVitalDetailsFrmNurse response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenVitalDetailsFrmNurse:" + e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary General OPD Examination details from Nurse to Doctor ", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenExaminationDetails" }, method = { RequestMethod.POST })
+
+	public String getBenExaminationDetails(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenExaminationDetails request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID") && obj.has("benVisitID")) {
+				Long benRegID = obj.getLong("benRegID");
+				Long benVisitID = obj.getLong("benVisitID");
+
+				String s = generalOPDServiceImpl.getExaminationDetailsData(benRegID, benVisitID);
+				response.setResponse(s);
+			} else {
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenExaminationDetails response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenExaminationDetails:" + e);
 		}
 		return response.toString();
 	}
