@@ -381,7 +381,7 @@ public class BenChildDevelopmentHistory {
 		String grossMotorMilestone = "";
 		if(null != grossMotorMilestones && grossMotorMilestones.size()>0){
 			for(String gmm :grossMotorMilestones){
-				grossMotorMilestone = gmm +",";
+				grossMotorMilestone += gmm +",";
 			}
 		}
 		benChildDevelopmentHistory.setGrossMotorMilestone(grossMotorMilestone);
@@ -390,7 +390,7 @@ public class BenChildDevelopmentHistory {
 		String fineMotorMilestone = "";
 		if(null != fineMotorMilestones && fineMotorMilestones.size()>0){
 			for(String fmm :fineMotorMilestones){
-				fineMotorMilestone = fmm +",";
+				fineMotorMilestone += fmm +",";
 			}
 		}
 		benChildDevelopmentHistory.setFineMotorMilestone(fineMotorMilestone);
@@ -399,7 +399,7 @@ public class BenChildDevelopmentHistory {
 		String socialMilestone = "";
 		if(null != socialMilestones && socialMilestones.size()>0){
 			for(String sm :socialMilestones){
-				socialMilestone = sm +",";
+				socialMilestone += sm +",";
 			}
 		}
 		benChildDevelopmentHistory.setSocialMilestone(socialMilestone);
@@ -408,7 +408,7 @@ public class BenChildDevelopmentHistory {
 		String languageMilestone = "";
 		if(null != languageMilestones && languageMilestones.size()>0){
 			for(String lm :languageMilestones){
-				languageMilestone = lm +",";
+				languageMilestone += lm +",";
 			}
 		}
 		benChildDevelopmentHistory.setLanguageMilestone(languageMilestone);
@@ -417,7 +417,7 @@ public class BenChildDevelopmentHistory {
 		String developmentProblem = "";
 		if(null != developmentProblems && developmentProblems.size()>0){
 			for(String dp :developmentProblems){
-				developmentProblem = dp +",";
+				developmentProblem += dp +",";
 			}
 		}
 		benChildDevelopmentHistory.setDevelopmentProblem(developmentProblem);

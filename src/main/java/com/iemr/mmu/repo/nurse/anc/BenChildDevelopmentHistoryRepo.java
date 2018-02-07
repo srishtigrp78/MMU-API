@@ -5,9 +5,11 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.iemr.mmu.data.anc.BenChildDevelopmentHistory;
 
@@ -25,5 +27,32 @@ public interface BenChildDevelopmentHistoryRepo extends CrudRepository<BenChildD
 
 	public ArrayList<Object[]> getBenDevelopmentDetails(@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("benVisitID") Long benVisitID);
+	
+	@Query("SELECT processed from BenChildDevelopmentHistory where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID AND deleted = false")
+	public String getDevelopmentHistoryStatus(@Param("benRegID") Long benRegID,
+			@Param("benVisitID") Long benVisitID);
 
+	@Transactional
+	@Modifying
+	@Query("update BenChildDevelopmentHistory set grossMotorMilestone=:grossMotorMilestone, isGMMAttained=:isGMMAttained, "
+			+ "fineMotorMilestone=:fineMotorMilestone, isFMMAttained=:isFMMAttained,"
+			+ " socialMilestone=:socialMilestone, isSMAttained=:isSMAttained, languageMilestone=:languageMilestone, "
+			+ "isLMAttained=:isLMAttained, developmentProblem=:developmentProblem, "
+			+ "  modifiedBy=:modifiedBy, processed=:processed where "
+			+ "beneficiaryRegID=:beneficiaryRegID AND benVisitID = :benVisitID")
+	public int updatePerinatalDetails(
+			@Param("grossMotorMilestone") String grossMotorMilestone,
+			@Param("isGMMAttained") Boolean isGMMAttained,
+			@Param("fineMotorMilestone") String fineMotorMilestone,
+			@Param("isFMMAttained") Boolean isFMMAttained,
+			@Param("socialMilestone") String socialMilestone,
+			@Param("isSMAttained") Boolean isSMAttained,
+			@Param("languageMilestone") String languageMilestone,
+			@Param("isLMAttained") Boolean isLMAttained,
+			@Param("developmentProblem") String developmentProblem,
+			@Param("modifiedBy") String modifiedBy,
+			@Param("processed") String processed,
+			@Param("beneficiaryRegID") Long beneficiaryRegID,
+			@Param("benVisitID") Long benVisitID);
+	
 }

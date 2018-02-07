@@ -165,7 +165,7 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 	 * 
 	 * @param requestObj
 	 * @return success or failure response
-	 * @objective Replace ANC History Data entered by Nurse with
+	 * @objective Replace ANC Vital Data entered by Nurse with
 	 *            the details entered by Doctor
 	 */
 

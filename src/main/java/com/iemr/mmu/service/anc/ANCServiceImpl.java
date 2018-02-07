@@ -536,7 +536,10 @@ public class ANCServiceImpl implements ANCService {
 
 		}
 		// Save Gastro Intestinal Examination Details
-		if (examinationDetailsOBJ != null && examinationDetailsOBJ.has("gastroIntestinalExamination")
+		/**
+		 * Removed from anc. Only applicable for generalOPD. date: 07-02-2018
+		 */
+		/*if (examinationDetailsOBJ != null && examinationDetailsOBJ.has("gastroIntestinalExamination")
 				&& !examinationDetailsOBJ.get("gastroIntestinalExamination").isJsonNull()) {
 			SysGastrointestinalExamination gastrointestinalExamination = InputMapper.gson().fromJson(
 					examinationDetailsOBJ.get("gastroIntestinalExamination"), SysGastrointestinalExamination.class);
@@ -546,7 +549,7 @@ public class ANCServiceImpl implements ANCService {
 						.saveSysGastrointestinalExamination(gastrointestinalExamination);
 
 			}
-		}
+		}*/
 		// Save Cardio Vascular Examination Details
 		if (examinationDetailsOBJ != null && examinationDetailsOBJ.has("cardioVascularExamination")
 				&& !examinationDetailsOBJ.get("cardioVascularExamination").isJsonNull()) {
@@ -708,8 +711,10 @@ public class ANCServiceImpl implements ANCService {
 				ancNurseServiceImpl.getGeneralExaminationData(benRegID, benVisitID));
 		examinationDetailsMap.put("headToToeExamination",
 				ancNurseServiceImpl.getHeadToToeExaminationData(benRegID, benVisitID));
-		examinationDetailsMap.put("gastrointestinalExamination",
-				ancNurseServiceImpl.getSysGastrointestinalExamination(benRegID, benVisitID));
+		
+		/* Only for General OPD, Can remove from here*/
+		/*examinationDetailsMap.put("gastrointestinalExamination",
+				ancNurseServiceImpl.getSysGastrointestinalExamination(benRegID, benVisitID));*/
 		examinationDetailsMap.put("cardiovascularExamination",
 				ancNurseServiceImpl.getCardiovascularExamination(benRegID, benVisitID));
 		examinationDetailsMap.put("respiratoryExamination",

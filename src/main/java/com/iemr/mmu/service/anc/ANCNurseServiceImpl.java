@@ -598,7 +598,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
-	/* Method moved to common, Can remove from here later*/
+	/* Only for General OPD, Can remove from here*/
 	@Override
 	public Long saveSysGastrointestinalExamination(SysGastrointestinalExamination gastrointestinalExamination) {
 		Long examinationID = null;
@@ -709,7 +709,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	}
 
-	/*Moved to common service, Can remove from here*/
+	/*Only for General OPD, Can remove from here*/
 	public SysGastrointestinalExamination getSysGastrointestinalExamination(Long benRegID, Long benVisitID) {
 		SysGastrointestinalExamination sysGastrointestinalExaminationData = sysGastrointestinalExaminationRepo
 				.getSSysGastrointestinalExamination(benRegID, benVisitID);
@@ -1998,6 +1998,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
+	/*Moved to common service, Can remove from here*/
 	@Override
 	public int updateBenChiefComplaints(List<BenChiefComplaint> benChiefComplaintList) {
 		int r = 0;
@@ -2133,6 +2134,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
+	/*Moved to common service, Can remove from here*/
 	@Override
 	public int updateBenAncPastHistoryDetails(BenMedHistory benMedHistory) throws ParseException {
 		Integer r = 0;
@@ -2151,6 +2153,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
+	/*Moved to common service, Can remove from here*/
 	@Override
 	public int updateBenANCComorbidConditions(WrapperComorbidCondDetails wrapperComorbidCondDetails) {
 		int r = 0;
@@ -2169,6 +2172,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
+	/*Moved to common service, Can remove from here*/
 	@Override
 	public int updateBenANCMedicationHistory(WrapperMedicationHistory wrapperMedicationHistory) {
 		Integer r = 0;
@@ -2187,6 +2191,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
+	/*Moved to common service, Can remove from here*/
 	@Override
 	public int updateBenANCPersonalHistory(BenPersonalHabit benPersonalHabit) {
 		Integer r = 0;
@@ -2203,6 +2208,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
+	/*Moved to common service, Can remove from here*/
 	@Override
 	public int updateBenANCAllergicHistory(BenAllergyHistory benAllergyHistory) {
 		Integer r = 0;
@@ -2218,7 +2224,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		}
 		return r;
 	}
-
+	
+	/*Moved to common service, Can remove from here*/
 	@Override
 	public int updateBenANCFamilyHistory(BenFamilyHistory benFamilyHistory) {
 		Integer r = 0;
@@ -2236,6 +2243,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
+	/*Moved to common service, Can remove from here*/
 	@Override
 	public int updateChildOptionalVaccineDetail(WrapperChildOptionalVaccineDetail wrapperChildOptionalVaccineDetail) {
 		Integer r = 0;
@@ -2350,6 +2358,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
+	/*Method moved to common  service, Can remove from here*/
 	public int updatePhyGeneralExamination(PhyGeneralExamination generalExamination) {
 		int response = 0;
 		String TypeOfDangerSigns = "";
@@ -2387,6 +2396,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return response;
 	}
 
+	/*Method moved to common  service, Can remove from here*/
 	@Override
 	public int updatePhyHeadToToeExamination(PhyHeadToToeExamination headToToeExamination) {
 		int response = 0;
@@ -2411,6 +2421,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return response;
 	}
 
+	/*Only for General OPD, Can remove from here*/
 	@Override
 	public int updateSysGastrointestinalExamination(SysGastrointestinalExamination gastrointestinalExamination) {
 		int response = 0;
@@ -2434,7 +2445,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		}
 		return response;
 	}
-
+	
+	/*Method moved to common  service, Can remove from here*/
 	@Override
 	public int updateSysCardiovascularExamination(SysCardiovascularExamination cardiovascular) {
 		int response = 0;
@@ -2454,6 +2466,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return response;
 	}
 
+	/*Method moved to common  service, Can remove from here*/
 	@Override
 	public int updateSysRespiratoryExamination(SysRespiratoryExamination respiratory) {
 		int r = 0;
@@ -2477,6 +2490,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
+	/*Method moved to common  service, Can remove from here*/
 	@Override
 	public int updateSysCentralNervousExamination(SysCentralNervousExamination centralNervous) {
 		int r = 0;
@@ -2499,6 +2513,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
+	/*Method moved to common  service, Can remove from here*/
 	@Override
 	public int updateSysMusculoskeletalSystemExamination(SysMusculoskeletalSystemExamination musculoskeletalSystem) {
 		int r = 0;
@@ -2521,6 +2536,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
+	/*Method moved to common  service, Can remove from here*/
 	@Override
 	public int updateSysGenitourinarySystemExamination(SysGenitourinarySystemExamination genitourinarySystem) {
 		int r = 0;
