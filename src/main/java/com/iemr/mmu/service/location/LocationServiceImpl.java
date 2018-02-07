@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.iemr.mmu.data.location.DistrictBlock;
 import com.iemr.mmu.data.location.Districts;
 import com.iemr.mmu.data.location.States;
+import com.iemr.mmu.data.location.V_GetLocDetailsFromSPidAndPSMid;
 import com.iemr.mmu.data.location.ZoneMaster;
 import com.iemr.mmu.data.login.MasterServicePoint;
 import com.iemr.mmu.data.login.ParkingPlace;
@@ -17,6 +18,7 @@ import com.iemr.mmu.repo.location.DistrictMasterRepo;
 import com.iemr.mmu.repo.location.ParkingPlaceMasterRepo;
 import com.iemr.mmu.repo.location.ServicePointMasterRepo;
 import com.iemr.mmu.repo.location.StateMasterRepo;
+import com.iemr.mmu.repo.location.V_GetLocDetailsFromSPidAndPSMidRepo;
 import com.iemr.mmu.repo.location.ZoneMasterRepo;
 
 @Service
@@ -28,6 +30,13 @@ public class LocationServiceImpl implements LocationService {
 	private DistrictBlockMasterRepo districtBlockMasterRepo;
 	private ParkingPlaceMasterRepo parkingPlaceMasterRepo;
 	private ServicePointMasterRepo servicePointMasterRepo;
+	private V_GetLocDetailsFromSPidAndPSMidRepo v_GetLocDetailsFromSPidAndPSMidRepo;
+
+	@Autowired
+	public void setV_GetLocDetailsFromSPidAndPSMidRepo(
+			V_GetLocDetailsFromSPidAndPSMidRepo v_GetLocDetailsFromSPidAndPSMidRepo) {
+		this.v_GetLocDetailsFromSPidAndPSMidRepo = v_GetLocDetailsFromSPidAndPSMidRepo;
+	}
 
 	@Autowired
 	public void setServicePointMasterRepo(ServicePointMasterRepo servicePointMasterRepo) {
@@ -134,5 +143,12 @@ public class LocationServiceImpl implements LocationService {
 			}
 		}
 		return new Gson().toJson(servicePointList);
+	}
+
+	public String getLocDetails(Integer a, Integer b, Integer c, Integer d) {
+		ArrayList<V_GetLocDetailsFromSPidAndPSMid> objList = v_GetLocDetailsFromSPidAndPSMidRepo
+				.findByServicepointidAndSpproviderservicemapidAndPpproviderservicemapidAndZdmproviderservicemapid(a, b,
+						c, d);
+		return null;
 	}
 }

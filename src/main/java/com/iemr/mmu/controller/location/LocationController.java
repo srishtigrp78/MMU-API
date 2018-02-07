@@ -1,10 +1,12 @@
 package com.iemr.mmu.controller.location;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -111,5 +113,31 @@ public class LocationController {
 			response.setError(5000, "No servicePoint Master Data Available !!!");
 		logger.info("servicePointMaster" + response.toString());
 		return response.toString();
+	}
+
+	/***
+	 * based on servicepoint id and provider service map id get other location
+	 * details.
+	 * 
+	 * @param comingRequest
+	 * @return
+	 */
+	@CrossOrigin()
+	@RequestMapping(value = "/getLocDetailsBasedOnSpIDAndPsmID", method = { RequestMethod.POST }, produces = {
+			"application/json" })
+	public String getLocDetailsBasedOnSpIDAndPsmID(@RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj != null && obj.has("spID") && obj.has("spPSMID") && obj.has("ppPSMID") && obj.has("zdmPSMID")) {
+				locationServiceImpl.getLocDetails((Integer) obj.get("spID"), (Integer) obj.get("spPSMID"),
+						(Integer) obj.get("ppPSMID"), (Integer) obj.get("zdmPSMID"));
+			} else {
+				response.setError(5000, "Invalid Input.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
