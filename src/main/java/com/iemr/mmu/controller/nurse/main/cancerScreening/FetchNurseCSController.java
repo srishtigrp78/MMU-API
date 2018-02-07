@@ -145,7 +145,7 @@ public class FetchNurseCSController {
 		return response.toString();
 	}
 
-	@CrossOrigin
+/*	@CrossOrigin
 	@ApiOperation(value = "Fetch Beneficiary Physical Vital Detail", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/get/vitalScreen/benPhysicalVitalDetail" }, method = { RequestMethod.POST })
 	public String getBenPhysicalVitalDetail(
@@ -178,7 +178,7 @@ public class FetchNurseCSController {
 			logger.error("Error in getBenPhysicalVitalDetail:" + e);
 		}
 		return response.toString();
-	}
+	}*/
 
 	@Deprecated
 	@CrossOrigin()

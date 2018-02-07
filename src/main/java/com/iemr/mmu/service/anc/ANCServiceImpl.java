@@ -536,7 +536,10 @@ public class ANCServiceImpl implements ANCService {
 
 		}
 		// Save Gastro Intestinal Examination Details
-		if (examinationDetailsOBJ != null && examinationDetailsOBJ.has("gastroIntestinalExamination")
+		/**
+		 * Removed from anc. Only applicable for generalOPD. date: 07-02-2018
+		 */
+		/*if (examinationDetailsOBJ != null && examinationDetailsOBJ.has("gastroIntestinalExamination")
 				&& !examinationDetailsOBJ.get("gastroIntestinalExamination").isJsonNull()) {
 			SysGastrointestinalExamination gastrointestinalExamination = InputMapper.gson().fromJson(
 					examinationDetailsOBJ.get("gastroIntestinalExamination"), SysGastrointestinalExamination.class);
@@ -546,7 +549,7 @@ public class ANCServiceImpl implements ANCService {
 						.saveSysGastrointestinalExamination(gastrointestinalExamination);
 
 			}
-		}
+		}*/
 		// Save Cardio Vascular Examination Details
 		if (examinationDetailsOBJ != null && examinationDetailsOBJ.has("cardioVascularExamination")
 				&& !examinationDetailsOBJ.get("cardioVascularExamination").isJsonNull()) {
@@ -642,8 +645,10 @@ public class ANCServiceImpl implements ANCService {
 	@Override
 	public String getBenVisitDetailsFrmNurseANC(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
-
-		resMap.put("ANCNurseVisitDetail", nurseServiceImpl.getCSVisitDetails(benRegID, benVisitID));
+		
+		BeneficiaryVisitDetail visitDetail = nurseServiceImpl.getCSVisitDetails(benRegID, benVisitID);
+		
+		resMap.put("ANCNurseVisitDetail", new Gson().toJson(visitDetail));
 
 		resMap.put("BenAdherence", ancNurseServiceImpl.getBenAdherence(benRegID, benVisitID));
 
@@ -651,7 +656,7 @@ public class ANCServiceImpl implements ANCService {
 
 		resMap.put("LabTestOrders", ancNurseServiceImpl.getLabTestOrders(benRegID, benVisitID));
 
-		return resMap.toString();
+		return  resMap.toString();
 	}
 
 	@Override
@@ -685,6 +690,7 @@ public class ANCServiceImpl implements ANCService {
 		return new Gson().toJson(HistoryDetailsMap);
 	}
 
+
 	@Override
 	public String getBeneficiaryVitalDetails(Long beneficiaryRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
@@ -705,8 +711,10 @@ public class ANCServiceImpl implements ANCService {
 				ancNurseServiceImpl.getGeneralExaminationData(benRegID, benVisitID));
 		examinationDetailsMap.put("headToToeExamination",
 				ancNurseServiceImpl.getHeadToToeExaminationData(benRegID, benVisitID));
-		examinationDetailsMap.put("gastrointestinalExamination",
-				ancNurseServiceImpl.getSysGastrointestinalExamination(benRegID, benVisitID));
+		
+		/* Only for General OPD, Can remove from here*/
+		/*examinationDetailsMap.put("gastrointestinalExamination",
+				ancNurseServiceImpl.getSysGastrointestinalExamination(benRegID, benVisitID));*/
 		examinationDetailsMap.put("cardiovascularExamination",
 				ancNurseServiceImpl.getCardiovascularExamination(benRegID, benVisitID));
 		examinationDetailsMap.put("respiratoryExamination",

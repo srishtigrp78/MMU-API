@@ -2,6 +2,7 @@ package com.iemr.mmu.data.anc;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -307,4 +308,30 @@ public class ChildFeedingDetails {
 		this.typeofFoodIntolerance = typeofFoodIntolerance;
 	}
 
+	public ChildFeedingDetails(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, Long childID,
+			Long benMotherID, String typeOfFeed, String compFeedStartAge, Character noOfCompFeedPerDay,
+			Character foodIntoleranceStatus, String typeofFoodIntolerance) {
+		super();
+		this.beneficiaryRegID = beneficiaryRegID;
+		this.benVisitID = benVisitID;
+		this.providerServiceMapID = providerServiceMapID;
+		this.childID = childID;
+		this.benMotherID = benMotherID;
+		this.typeOfFeed = typeOfFeed;
+		this.compFeedStartAge = compFeedStartAge;
+		this.noOfCompFeedPerDay = noOfCompFeedPerDay;
+		this.foodIntoleranceStatus = foodIntoleranceStatus;
+		this.typeofFoodIntolerance = typeofFoodIntolerance;
+	}
+	
+	public static ChildFeedingDetails getBenFeedingDetails(ArrayList<Object[]> feedingHistoryDetails){
+		ChildFeedingDetails feedingDetails = null;
+		if(null != feedingHistoryDetails && feedingHistoryDetails.size()>0){
+			for(Object[] obj:feedingHistoryDetails){
+				feedingDetails = new ChildFeedingDetails((Long)obj[0], (Long)obj[1], (Integer)obj[2], (Long)obj[3], 
+						(Long)obj[4], (String)obj[5], (String)obj[6], (Character)obj[7], (Character)obj[8], (String)obj[9]);
+			}
+		}
+		return feedingDetails;
+	}
 }
