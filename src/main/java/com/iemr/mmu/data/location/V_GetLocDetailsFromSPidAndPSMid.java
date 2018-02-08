@@ -81,18 +81,16 @@ public class V_GetLocDetailsFromSPidAndPSMid {
 		this.stateName = stateName;
 	}
 
-	public static ArrayList<V_GetLocDetailsFromSPidAndPSMid> getOtherLocDetails(ArrayList<Object[]> obj) {
-		ArrayList<V_GetLocDetailsFromSPidAndPSMid> resList = new ArrayList<>();
+	public static V_GetLocDetailsFromSPidAndPSMid getOtherLocDetails(ArrayList<Object[]> obj) {
 		V_GetLocDetailsFromSPidAndPSMid dataOBJ = null;
+
 		for (Object[] obj1 : obj) {
 			dataOBJ = new V_GetLocDetailsFromSPidAndPSMid((Integer) obj1[0], (String) obj1[1], (Integer) obj1[2],
 					(String) obj1[3], (Integer) obj1[4], (String) obj1[5], (Integer) obj1[6], (String) obj1[7],
 					(Integer) obj1[8], (String) obj1[9]);
-
-			resList.add(dataOBJ);
 		}
 
-		return resList;
+		return dataOBJ;
 	}
 
 	public Integer getServicepointid() {

@@ -156,15 +156,14 @@ public class LocationServiceImpl implements LocationService {
 		return new Gson().toJson(servicePointList);
 	}
 
-	public String getLocDetails(Integer spID, Integer spPSMID, Integer ppPSMID, Integer zdmPSMID) {
+	public String getLocDetails(Integer spID, Integer spPSMID) {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 		// other location details
 		ArrayList<Object[]> objList = v_GetLocDetailsFromSPidAndPSMidRepo
 				.findByServicepointidAndSpproviderservicemapidAndPpproviderservicemapidAndZdmproviderservicemapid(spID,
-						spPSMID, ppPSMID, zdmPSMID);
+						spPSMID, spPSMID, spPSMID);
 
-		ArrayList<V_GetLocDetailsFromSPidAndPSMid> locList = V_GetLocDetailsFromSPidAndPSMid
-				.getOtherLocDetails(objList);
+		V_GetLocDetailsFromSPidAndPSMid locOBJ = V_GetLocDetailsFromSPidAndPSMid.getOtherLocDetails(objList);
 
 		// state master
 		ArrayList<States> stateList = new ArrayList<>();
@@ -187,7 +186,7 @@ public class LocationServiceImpl implements LocationService {
 			}
 		}
 
-		resMap.put("otherLoc", locList);
+		resMap.put("otherLoc", locOBJ);
 		resMap.put("stateMaster", stateList);
 		resMap.put("villageMaster", villageList);
 
