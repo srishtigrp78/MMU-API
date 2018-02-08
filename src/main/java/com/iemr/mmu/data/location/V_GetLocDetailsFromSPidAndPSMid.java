@@ -1,9 +1,10 @@
 package com.iemr.mmu.data.location;
 
+import java.util.ArrayList;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -12,8 +13,9 @@ import com.google.gson.annotations.Expose;
 @Entity
 @Table(name = "v_get_prkngplc_blok_dist_zone_state")
 public class V_GetLocDetailsFromSPidAndPSMid {
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue
 	private Long ID;
 
 	@Expose
@@ -62,13 +64,11 @@ public class V_GetLocDetailsFromSPidAndPSMid {
 	public V_GetLocDetailsFromSPidAndPSMid() {
 	}
 
-	public V_GetLocDetailsFromSPidAndPSMid(long iD, Integer servicepointid, Integer parkingPlaceID,
-			String parkingPlaceName, Integer blockID, String blockName, Integer districtID, String districtName,
-			Integer zoneID, String zoneName, Integer stateID, String stateName, Integer spproviderservicemapid,
-			Integer ppproviderservicemapid, Integer zdmproviderservicemapid) {
+	public V_GetLocDetailsFromSPidAndPSMid(Integer parkingPlaceID, String parkingPlaceName, Integer blockID,
+			String blockName, Integer districtID, String districtName, Integer zoneID, String zoneName, Integer stateID,
+			String stateName) {
 		super();
-		ID = iD;
-		this.servicepointid = servicepointid;
+
 		this.parkingPlaceID = parkingPlaceID;
 		this.parkingPlaceName = parkingPlaceName;
 		this.blockID = blockID;
@@ -79,17 +79,20 @@ public class V_GetLocDetailsFromSPidAndPSMid {
 		this.zoneName = zoneName;
 		this.stateID = stateID;
 		this.stateName = stateName;
-		this.spproviderservicemapid = spproviderservicemapid;
-		this.ppproviderservicemapid = ppproviderservicemapid;
-		this.zdmproviderservicemapid = zdmproviderservicemapid;
 	}
 
-	public long getID() {
-		return ID;
-	}
+	public static ArrayList<V_GetLocDetailsFromSPidAndPSMid> getOtherLocDetails(ArrayList<Object[]> obj) {
+		ArrayList<V_GetLocDetailsFromSPidAndPSMid> resList = new ArrayList<>();
+		V_GetLocDetailsFromSPidAndPSMid dataOBJ = null;
+		for (Object[] obj1 : obj) {
+			dataOBJ = new V_GetLocDetailsFromSPidAndPSMid((Integer) obj1[0], (String) obj1[1], (Integer) obj1[2],
+					(String) obj1[3], (Integer) obj1[4], (String) obj1[5], (Integer) obj1[6], (String) obj1[7],
+					(Integer) obj1[8], (String) obj1[9]);
 
-	public void setID(long iD) {
-		ID = iD;
+			resList.add(dataOBJ);
+		}
+
+		return resList;
 	}
 
 	public Integer getServicepointid() {

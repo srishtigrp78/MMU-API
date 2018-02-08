@@ -130,14 +130,17 @@ public class LocationController {
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj != null && obj.has("spID") && obj.has("spPSMID") && obj.has("ppPSMID") && obj.has("zdmPSMID")) {
-				locationServiceImpl.getLocDetails((Integer) obj.get("spID"), (Integer) obj.get("spPSMID"),
-						(Integer) obj.get("ppPSMID"), (Integer) obj.get("zdmPSMID"));
+				String s = locationServiceImpl.getLocDetails(obj.getInt("spID"), obj.getInt("spPSMID"),
+						obj.getInt("ppPSMID"), obj.getInt("zdmPSMID"));
+
+				response.setResponse(s);
 			} else {
 				response.setError(5000, "Invalid Input.");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			response.setError(e);
 		}
-		return null;
+		return response.toString();
 	}
 }

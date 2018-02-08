@@ -1,6 +1,9 @@
 package com.iemr.mmu.service.location;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +16,7 @@ import com.iemr.mmu.data.location.V_GetLocDetailsFromSPidAndPSMid;
 import com.iemr.mmu.data.location.ZoneMaster;
 import com.iemr.mmu.data.login.MasterServicePoint;
 import com.iemr.mmu.data.login.ParkingPlace;
+import com.iemr.mmu.data.login.ServicePointVillageMapping;
 import com.iemr.mmu.repo.location.DistrictBlockMasterRepo;
 import com.iemr.mmu.repo.location.DistrictMasterRepo;
 import com.iemr.mmu.repo.location.ParkingPlaceMasterRepo;
@@ -20,6 +24,7 @@ import com.iemr.mmu.repo.location.ServicePointMasterRepo;
 import com.iemr.mmu.repo.location.StateMasterRepo;
 import com.iemr.mmu.repo.location.V_GetLocDetailsFromSPidAndPSMidRepo;
 import com.iemr.mmu.repo.location.ZoneMasterRepo;
+import com.iemr.mmu.repo.login.ServicePointVillageMappingRepo;
 
 @Service
 public class LocationServiceImpl implements LocationService {
@@ -31,6 +36,12 @@ public class LocationServiceImpl implements LocationService {
 	private ParkingPlaceMasterRepo parkingPlaceMasterRepo;
 	private ServicePointMasterRepo servicePointMasterRepo;
 	private V_GetLocDetailsFromSPidAndPSMidRepo v_GetLocDetailsFromSPidAndPSMidRepo;
+	private ServicePointVillageMappingRepo servicePointVillageMappingRepo;
+
+	@Autowired
+	public void setServicePointVillageMappingRepo(ServicePointVillageMappingRepo servicePointVillageMappingRepo) {
+		this.servicePointVillageMappingRepo = servicePointVillageMappingRepo;
+	}
 
 	@Autowired
 	public void setV_GetLocDetailsFromSPidAndPSMidRepo(
@@ -145,10 +156,41 @@ public class LocationServiceImpl implements LocationService {
 		return new Gson().toJson(servicePointList);
 	}
 
-	public String getLocDetails(Integer a, Integer b, Integer c, Integer d) {
-		ArrayList<V_GetLocDetailsFromSPidAndPSMid> objList = v_GetLocDetailsFromSPidAndPSMidRepo
-				.findByServicepointidAndSpproviderservicemapidAndPpproviderservicemapidAndZdmproviderservicemapid(a, b,
-						c, d);
-		return null;
+	public String getLocDetails(Integer spID, Integer spPSMID, Integer ppPSMID, Integer zdmPSMID) {
+		Map<String, Object> resMap = new HashMap<String, Object>();
+		// other location details
+		ArrayList<Object[]> objList = v_GetLocDetailsFromSPidAndPSMidRepo
+				.findByServicepointidAndSpproviderservicemapidAndPpproviderservicemapidAndZdmproviderservicemapid(spID,
+						spPSMID, ppPSMID, zdmPSMID);
+
+		ArrayList<V_GetLocDetailsFromSPidAndPSMid> locList = V_GetLocDetailsFromSPidAndPSMid
+				.getOtherLocDetails(objList);
+
+		// state master
+		ArrayList<States> stateList = new ArrayList<>();
+		ArrayList<Object[]> stateMasterList = stateMasterRepo.getStateMaster();
+		if (stateMasterList != null && stateMasterList.size() > 0) {
+			for (Object[] objArr : stateMasterList) {
+				States states = new States((Integer) objArr[0], (String) objArr[1]);
+				stateList.add(states);
+			}
+		}
+		// village masters from service point
+		List<Object[]> servicePointVillageList = servicePointVillageMappingRepo.getServicePointVillages(spID);
+
+		ArrayList<ServicePointVillageMapping> villageList = new ArrayList<ServicePointVillageMapping>();
+		if (servicePointVillageList.size() > 0) {
+			ServicePointVillageMapping VillageMap;
+			for (Object[] obj : servicePointVillageList) {
+				VillageMap = new ServicePointVillageMapping((Integer) obj[0], (String) obj[1]);
+				villageList.add(VillageMap);
+			}
+		}
+
+		resMap.put("otherLoc", locList);
+		resMap.put("stateMaster", stateList);
+		resMap.put("villageMaster", villageList);
+
+		return new Gson().toJson(resMap);
 	}
 }
