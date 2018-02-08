@@ -1,11 +1,14 @@
 package com.iemr.mmu.service.quickConsultation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
@@ -141,20 +144,21 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		ArrayList<PrescribedDrugDetail> prescriptionDetails = PrescribedDrugDetail
 				.getBenPrescribedDrugDetailList(caseSheet, prescriptionID);
 
-/*		List<PrescribedDrugDetail> prescribedDrugs = (List<PrescribedDrugDetail>) prescribedDrugDetailRepo
-				.save(prescriptionDetails);
+		/*
+		 * List<PrescribedDrugDetail> prescribedDrugs =
+		 * (List<PrescribedDrugDetail>) prescribedDrugDetailRepo
+		 * .save(prescriptionDetails);
+		 * 
+		 * if (null != prescribedDrugs && prescribedDrugs.size() > 0) { for
+		 * (PrescribedDrugDetail prescribedDrug : prescribedDrugs) { return
+		 * prescribedDrug.getPrescribedDrugID(); } }
+		 */
 
-		if (null != prescribedDrugs && prescribedDrugs.size() > 0) {
-			for (PrescribedDrugDetail prescribedDrug : prescribedDrugs) {
-				return prescribedDrug.getPrescribedDrugID();
-			}
-		}*/
-		
 		Integer r = nurseServiceImpl.saveBenPrescribedDrugsList(prescriptionDetails);
 		if (r > 0 && r != null) {
 			prescribedDrugSuccessFlag = new Long(r);
 		}
-		
+
 		return prescribedDrugSuccessFlag;
 	}
 
@@ -249,4 +253,29 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		return returnOBJ;
 	}
 
+	// ------- Start Fetch (Nurse data to Doctor screen) ----------------
+	public String getBenDataFrmNurseToDocVisitDetailsScreen(Long benRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+		BeneficiaryVisitDetail benVisitDetailsOBJ = nurseServiceImpl.getCSVisitDetails(benRegID, benVisitID);
+
+		if (null != benVisitDetailsOBJ) {
+
+			resMap.put("benVisitDetails", benVisitDetailsOBJ);
+		}
+
+		return new Gson().toJson(resMap);
+	}
+	
+	public String getBeneficiaryVitalDetails(Long beneficiaryRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("benAnthropometryDetail",
+				nurseServiceImpl.getBeneficiaryPhysicalAnthropometryDetails(beneficiaryRegID, benVisitID));
+		resMap.put("benPhysicalVitalDetail",
+				nurseServiceImpl.getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, benVisitID));
+
+		return resMap.toString();
+	}
+
+	// ------- END of Fetch (Nurse data to Doctor screen) ----------------
 }

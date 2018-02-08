@@ -36,13 +36,17 @@ public interface BenPersonalHabitRepo extends CrudRepository<BenPersonalHabit, I
 	@Query(" SELECT beneficiaryRegID, benVisitID, providerServiceMapID, dietaryType, physicalActivityType, tobaccoUseStatus, tobaccoUseTypeID, "
 			+ "tobaccoUseType, otherTobaccoUseType, numberperDay, tobaccoUseDuration, alcoholIntakeStatus, alcoholTypeID, "
 			+ "alcoholType, otherAlcoholType, alcoholIntakeFrequency, avgAlcoholConsumption, alcoholDuration, riskySexualPracticesStatus, createdDate  "
-			+ "FROM BenPersonalHabit WHERE beneficiaryRegID = :benRegID AND benVisitID = :benVisitID ")
+			+ "FROM BenPersonalHabit WHERE beneficiaryRegID = :benRegID AND benVisitID = :benVisitID AND deleted = false")
 	public ArrayList<Object[]> getBenPersonalHabitDetail(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 
 	@Modifying
 	@Transactional
-	@Query(" Delete from BenPersonalHabit WHERE beneficiaryRegID = :benRegID and benVisitID = :benVisitID")
-	public int deleteExistingBenPersonalHistory(@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
+	@Query(" Update BenPersonalHabit set deleted=true, processed=:processed WHERE benPersonalHabitID = :benPersonalHabitID")
+	public int deleteExistingBenPersonalHistory(@Param("benPersonalHabitID") Integer benPersonalHabitID, @Param("processed") String processed);
+	
+	@Query("SELECT benPersonalHabitID, processed from BenPersonalHabit where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID AND deleted=false")
+	public ArrayList<Object[]> getBenPersonalHistoryStatus(@Param("benRegID") Long benRegID,
+			@Param("benVisitID") Long benVisitID);
 
 }

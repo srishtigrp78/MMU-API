@@ -27,15 +27,20 @@ public interface FemaleObstetricHistoryRepo extends CrudRepository<FemaleObstetr
 			+ "deliveryComplicationType, otherDeliveryComplication, pregOutcomeID, pregOutcome, postpartumComplicationID, "
 			+ " postpartumComplicationType, otherPostpartumCompType, postNatalComplicationID, postNatalComplication, otherPostNatalComplication,"
 			+ " congenitalAnomalies, newBornComplicationID, newBornComplication, otherNewBornComplication from "
-			+ "FemaleObstetricHistory a where a.beneficiaryRegID = :beneficiaryRegID and a.benVisitID = :benVisitID")
+			+ "FemaleObstetricHistory a where a.beneficiaryRegID = :beneficiaryRegID and a.benVisitID = :benVisitID AND deleted = false")
 	public ArrayList<Object[]> getBenFemaleObstetricHistoryDetail(@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("benVisitID") Long benVisitID);
 
 	
 	@Modifying
 	@Transactional
-	@Query(" Delete from FemaleObstetricHistory WHERE beneficiaryRegID = :beneficiaryRegID and benVisitID = :benVisitID")
-		public int deleteExistingObstetricHistory(@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("benVisitID") Long benVisitID);
+	@Query(" Update FemaleObstetricHistory  set deleted=true, processed=:processed WHERE obstetricHistoryID = :obstetricHistoryID")
+		public int deleteExistingObstetricHistory(@Param("obstetricHistoryID") Long obstetricHistoryID, @Param("processed") String processed);
 
+	@Query("SELECT obstetricHistoryID, processed from FemaleObstetricHistory where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID AND deleted=false")
+	public ArrayList<Object[]> getBenObstetricHistoryStatus(@Param("benRegID") Long benRegID,
+			@Param("benVisitID") Long benVisitID);
+	
+	
 	@Transactional
 	@Modifying
 	@Query("update FemaleObstetricHistory set pregOrder=:pregOrder, pregComplicationID=:pregComplicationID, pregComplicationType=:pregComplicationType, otherPregComplication=:otherPregComplication,"

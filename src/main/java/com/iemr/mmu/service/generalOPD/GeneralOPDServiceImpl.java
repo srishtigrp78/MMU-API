@@ -970,7 +970,6 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		int centralNrvsExmnSuccessFlag = 0;
 		int muskelstlExmnSuccessFlag = 0;
 		int genitorinaryExmnSuccessFlag = 0;
-		int obstetricExmnSuccessFlag = 0;
 
 		// Save General Examination Details
 		if (examinationDetailsOBJ != null && examinationDetailsOBJ.has("generalExamination")
@@ -1044,7 +1043,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 		if (genExmnSuccessFlag > 0 && headToToeExmnSuccessFlag > 0 && cardiExmnSuccessFlag > 0
 				&& respiratoryExmnSuccessFlag > 0 && centralNrvsExmnSuccessFlag > 0 && muskelstlExmnSuccessFlag > 0
-				&& genitorinaryExmnSuccessFlag > 0 && obstetricExmnSuccessFlag > 0) {
+				&& genitorinaryExmnSuccessFlag > 0 && gastroIntsExmnSuccessFlag > 0) {
 			exmnSuccessFlag = genExmnSuccessFlag;
 		}
 		return exmnSuccessFlag;

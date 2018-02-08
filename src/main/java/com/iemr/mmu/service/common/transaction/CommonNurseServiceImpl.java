@@ -1406,11 +1406,24 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	
 	public int updateBenPastHistoryDetails(BenMedHistory benMedHistory) throws ParseException {
 		Integer r = 0;
+		int delRes = 0;
 		if (null != benMedHistory) {
 			// Delete Existing past History of beneficiary before inserting
 			// updated history
-			benMedHistoryRepo.deleteExistingBenMedHistory(benMedHistory.getBeneficiaryRegID(),
-					benMedHistory.getBenVisitID());
+			ArrayList<Object[]> benMedHistoryStatuses = benMedHistoryRepo
+					.getBenMedHistoryStatus(benMedHistory.getBeneficiaryRegID(), benMedHistory.getBenVisitID());
+			
+			
+			for (Object[] obj : benMedHistoryStatuses) {
+				String processed = (String) obj[1];
+				if (null != processed && !"N".equals(processed)) {
+					processed = "U";
+				}else{
+					processed = "N";
+				}
+				delRes = benMedHistoryRepo.deleteExistingBenMedHistory((Long) obj[0], processed);
+				
+			}
 
 			ArrayList<BenMedHistory> benMedHistoryList = benMedHistory.getBenPastHistory();
 			ArrayList<BenMedHistory> res = (ArrayList<BenMedHistory>) benMedHistoryRepo.save(benMedHistoryList);
@@ -1423,9 +1436,22 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	
 	public int updateBenComorbidConditions(WrapperComorbidCondDetails wrapperComorbidCondDetails) {
 		int r = 0;
+		int delRes = 0;
 		if (null != wrapperComorbidCondDetails) {
-			bencomrbidityCondRepo.deleteExistingBenComrbidityCondDetails(
+			
+			ArrayList<Object[]> benComorbidCondHistoryStatuses = bencomrbidityCondRepo.getBenComrbidityCondHistoryStatus(
 					wrapperComorbidCondDetails.getBeneficiaryRegID(), wrapperComorbidCondDetails.getBenVisitID());
+			
+			for (Object[] obj : benComorbidCondHistoryStatuses) {
+				String processed = (String) obj[1];
+				if (null != processed && !"N".equals(processed)) {
+					processed = "U";
+				}else{
+					processed = "N";
+				}
+				delRes = bencomrbidityCondRepo.deleteExistingBenComrbidityCondDetails((Long) obj[0], processed);
+				
+			}
 
 			ArrayList<BencomrbidityCondDetails> bencomrbidityCondDetailsList = wrapperComorbidCondDetails
 					.getComrbidityConds();
@@ -1440,10 +1466,24 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	
 	public int updateBenMedicationHistory(WrapperMedicationHistory wrapperMedicationHistory) {
 		Integer r = 0;
+		int delRes = 0;
 		if (null != wrapperMedicationHistory) {
-			benMedicationHistoryRepo.deleteExistingBenMedicationHistory(wrapperMedicationHistory.getBeneficiaryRegID(),
+			
+			ArrayList<Object[]> benMedicationHistoryStatuses = benMedicationHistoryRepo.getBenMedicationHistoryStatus(
+					wrapperMedicationHistory.getBeneficiaryRegID(),
 					wrapperMedicationHistory.getBenVisitID());
-
+			
+			for (Object[] obj : benMedicationHistoryStatuses) {
+				String processed = (String) obj[1];
+				if (null != processed && !"N".equals(processed)) {
+					processed = "U";
+				}else{
+					processed = "N";
+				}
+				delRes = benMedicationHistoryRepo.deleteExistingBenMedicationHistory((Long) obj[0], processed);
+				
+			}
+			
 			ArrayList<BenMedicationHistory> benMedicationHistoryList = wrapperMedicationHistory
 					.getBenMedicationHistoryDetails();
 			ArrayList<BenMedicationHistory> res = (ArrayList<BenMedicationHistory>) benMedicationHistoryRepo
@@ -1457,9 +1497,22 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	
 	public int updateBenPersonalHistory(BenPersonalHabit benPersonalHabit) {
 		Integer r = 0;
+		int delRes = 0;
 		if (null != benPersonalHabit) {
-			benPersonalHabitRepo.deleteExistingBenPersonalHistory(benPersonalHabit.getBeneficiaryRegID(),
+			
+			ArrayList<Object[]> benPersonalHistoryStatuses = benPersonalHabitRepo.getBenPersonalHistoryStatus(benPersonalHabit.getBeneficiaryRegID(),
 					benPersonalHabit.getBenVisitID());
+			
+			for (Object[] obj : benPersonalHistoryStatuses) {
+				String processed = (String) obj[1];
+				if (null != processed && !"N".equals(processed)) {
+					processed = "U";
+				}else{
+					processed = "N";
+				}
+				delRes = benPersonalHabitRepo.deleteExistingBenPersonalHistory((Integer) obj[0], processed);
+				
+			}
 
 			ArrayList<BenPersonalHabit> personalHabits = benPersonalHabit.getPersonalHistory();
 			ArrayList<BenPersonalHabit> res = (ArrayList<BenPersonalHabit>) benPersonalHabitRepo.save(personalHabits);
@@ -1472,9 +1525,21 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	
 	public int updateBenAllergicHistory(BenAllergyHistory benAllergyHistory) {
 		Integer r = 0;
+		int delRes = 0;
 		if (null != benAllergyHistory) {
-			benAllergyHistoryRepo.deleteExistingBenAllergyHistory(benAllergyHistory.getBeneficiaryRegID(),
+			
+			ArrayList<Object[]> benAllergyHistoryStatuses = benAllergyHistoryRepo.getBenAllergyHistoryStatus(benAllergyHistory.getBeneficiaryRegID(),
 					benAllergyHistory.getBenVisitID());
+			
+			for (Object[] obj : benAllergyHistoryStatuses) {
+				String processed = (String) obj[1];
+				if (null != processed && !"N".equals(processed)) {
+					processed = "U";
+				}else{
+					processed = "N";
+				}
+				delRes = benAllergyHistoryRepo.deleteExistingBenAllergyHistory((Long) obj[0], processed);
+			}
 
 			ArrayList<BenAllergyHistory> allergyList = benAllergyHistory.getBenAllergicHistory();
 			ArrayList<BenAllergyHistory> res = (ArrayList<BenAllergyHistory>) benAllergyHistoryRepo.save(allergyList);
@@ -1487,10 +1552,22 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	
 	public int updateBenFamilyHistory(BenFamilyHistory benFamilyHistory) {
 		Integer r = 0;
+		int delRes = 0;
 		if (null != benFamilyHistory) {
-			benFamilyHistoryRepo.deleteExistingBenFamilyHistory(benFamilyHistory.getBeneficiaryRegID(),
+			
+			ArrayList<Object[]> benFamilyHistoryStatuses = benFamilyHistoryRepo.getBenFamilyHistoryStatus(benFamilyHistory.getBeneficiaryRegID(),
 					benFamilyHistory.getBenVisitID());
-
+			
+			for (Object[] obj : benFamilyHistoryStatuses) {
+				String processed = (String) obj[1];
+				if (null != processed && !"N".equals(processed)) {
+					processed = "U";
+				}else{
+					processed = "N";
+				}
+				delRes = benFamilyHistoryRepo.deleteExistingBenFamilyHistory((Long) obj[0], processed);
+			}
+			
 			ArrayList<BenFamilyHistory> familyHistoryList = benFamilyHistory.getBenFamilyHistory();
 			ArrayList<BenFamilyHistory> res = (ArrayList<BenFamilyHistory>) benFamilyHistoryRepo
 					.save(familyHistoryList);
@@ -1524,10 +1601,21 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	
 	public int updatePastObstetricHistory(WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory) {
 		Integer r = 0;
+		int delRes = 0;
 		if (null != wrapperFemaleObstetricHistory) {
-			femaleObstetricHistoryRepo.deleteExistingObstetricHistory(
+			ArrayList<Object[]> benObstetricHistoryStatuses = femaleObstetricHistoryRepo.getBenObstetricHistoryStatus(
 					wrapperFemaleObstetricHistory.getBeneficiaryRegID(), wrapperFemaleObstetricHistory.getBenVisitID());
-
+			
+			for (Object[] obj : benObstetricHistoryStatuses) {
+				String processed = (String) obj[1];
+				if (null != processed && !"N".equals(processed)) {
+					processed = "U";
+				}else{
+					processed = "N";
+				}
+				delRes = femaleObstetricHistoryRepo.deleteExistingObstetricHistory((Long) obj[0], processed);
+			}
+			
 			ArrayList<FemaleObstetricHistory> femaleObstetricHistoryDetails = wrapperFemaleObstetricHistory
 					.getFemaleObstetricHistoryDetails();
 			ArrayList<FemaleObstetricHistory> res = (ArrayList<FemaleObstetricHistory>) femaleObstetricHistoryRepo
@@ -1541,11 +1629,23 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	
 	public int updateChildOptionalVaccineDetail(WrapperChildOptionalVaccineDetail wrapperChildOptionalVaccineDetail) {
 		Integer r = 0;
+		int delRes = 0;
 		if (null != wrapperChildOptionalVaccineDetail) {
-			childOptionalVaccineDetailRepo.deleteExistingChildOptionalVaccineDetail(
+			
+			ArrayList<Object[]> benChildOptionalVaccineHistoryStatuses = childOptionalVaccineDetailRepo.getBenChildOptionalVaccineHistoryStatus(
 					wrapperChildOptionalVaccineDetail.getBeneficiaryRegID(),
 					wrapperChildOptionalVaccineDetail.getBenVisitID());
-
+			
+			for (Object[] obj : benChildOptionalVaccineHistoryStatuses) {
+				String processed = (String) obj[1];
+				if (null != processed && !"N".equals(processed)) {
+					processed = "U";
+				}else{
+					processed = "N";
+				}
+				delRes = childOptionalVaccineDetailRepo.deleteExistingChildOptionalVaccineDetail((Long) obj[0], processed);
+			}
+			
 			ArrayList<ChildOptionalVaccineDetail> childOptionalVaccineDetails = wrapperChildOptionalVaccineDetail
 					.getChildOptionalVaccineDetails();
 			ArrayList<ChildOptionalVaccineDetail> res = (ArrayList<ChildOptionalVaccineDetail>) childOptionalVaccineDetailRepo
@@ -1691,7 +1791,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			r = sysMusculoskeletalSystemExaminationRepo.updateSysMusculoskeletalSystemExamination(
 					musculoskeletalSystem.getJoint_TypeOfJoint(), musculoskeletalSystem.getJoint_Laterality(),
 					musculoskeletalSystem.getJoint_Abnormality(), musculoskeletalSystem.getUpperLimb_Laterality(),
-					musculoskeletalSystem.getUpperLimb_Laterality(), musculoskeletalSystem.getLowerLimb_Laterality(),
+					musculoskeletalSystem.getUpperLimb_Abnormality(), musculoskeletalSystem.getLowerLimb_Laterality(),
 					musculoskeletalSystem.getLowerLimb_Abnormality(), musculoskeletalSystem.getChestWall(),
 					musculoskeletalSystem.getSpine(), musculoskeletalSystem.getModifiedBy(), processed,
 					musculoskeletalSystem.getBeneficiaryRegID(), musculoskeletalSystem.getBenVisitID());

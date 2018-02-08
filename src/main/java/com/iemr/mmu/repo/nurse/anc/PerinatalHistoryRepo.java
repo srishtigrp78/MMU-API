@@ -20,7 +20,7 @@ public interface PerinatalHistoryRepo extends CrudRepository<PerinatalHistory, L
 	
 	@Query("select beneficiaryRegID, benVisitID, providerServiceMapID, deliveryPlaceID, placeOfDelivery, otherPlaceOfDelivery, deliveryTypeID, "
 			+ "typeOfDelivery, complicationAtBirthID, complicationAtBirth, otherComplicationAtBirth, gestation, birthWeight_kg "
-			+ "from PerinatalHistory a where a.beneficiaryRegID = :beneficiaryRegID and a.benVisitID = :benVisitID")
+			+ "from PerinatalHistory a where a.beneficiaryRegID = :beneficiaryRegID and a.benVisitID = :benVisitID AND deleted = false")
 	public ArrayList<Object[]> getBenPerinatalDetails(@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("benVisitID") Long benVisitID);
 	

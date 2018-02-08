@@ -477,6 +477,9 @@ public class BenChildDevelopmentHistory {
 				
 				String languageMilestones = developmentDetails.getLanguageMilestone();
 				developmentDetails.setLanguageMilestones(Arrays.asList(languageMilestones.split(",")));
+				
+				String developmentProblems = developmentDetails.getDevelopmentProblem();
+				developmentDetails.setDevelopmentProblems(Arrays.asList(developmentProblems.split(",")));
 			}
 		}
 		return developmentDetails;

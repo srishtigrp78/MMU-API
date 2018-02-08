@@ -477,37 +477,38 @@ public class BenMedHistory {
 						(Timestamp) obj1[11]);
 
 				Map<String, Object> illness = new HashMap<String, Object>();
+				Map<String, Object> timePeriod = null;
+				if(null != benMedHistory.getIllnessTypeID() && benMedHistory.getIllnessTypeID()>0){
+					illness.put("illnessTypeID", benMedHistory.getIllnessTypeID());
+					illness.put("illnessType", benMedHistory.getIllnessType());
+					illness.put("otherIllnessType", benMedHistory.getOtherIllnessType());
+	
+					timePeriod = Utility.convertTimeToWords(benMedHistory.getYearofIllness(),
+							benMedHistory.getCreatedDate());
+	
+					illness.put("timePeriodAgo", timePeriod.get("timePeriodAgo"));
+					illness.put("timePeriodUnit", timePeriod.get("timePeriodUnit"));
+					pastIllness.add(illness);
+				}
 
-				illness.put("illnessTypeID", benMedHistory.getIllnessTypeID());
-				illness.put("illnessType", benMedHistory.getIllnessType());
-				illness.put("otherIllnessType", benMedHistory.getOtherIllnessType());
-
-				Map<String, Object> timePeriod = Utility.convertTimeToWords(benMedHistory.getYearofIllness(),
-						benMedHistory.getCreatedDate());
-
-				illness.put("timePeriodAgo", timePeriod.get("timePeriodAgo"));
-				illness.put("timePeriodUnit", timePeriod.get("timePeriodUnit"));
-				pastIllness.add(illness);
-
-				benHistory.setPastIllness(pastIllness);
-
-				Map<String, Object> surgery = new HashMap<String, Object>();
-
-				surgery.put("surgeryID", benMedHistory.getSurgeryID());
-				surgery.put("surgeryType", benMedHistory.getSurgeryType());
-				surgery.put("otherSurgeryType", benMedHistory.getOtherSurgeryType());
-
-				timePeriod = Utility.convertTimeToWords(benMedHistory.getYearofSurgery(),
-						benMedHistory.getCreatedDate());
-
-				surgery.put("timePeriodAgo", timePeriod.get("timePeriodAgo"));
-				surgery.put("timePeriodUnit", timePeriod.get("timePeriodUnit"));
-
-				pastSurgery.add(surgery);
-
-				benHistory.setPastSurgery(pastSurgery);
-
+				if(null != benMedHistory.getSurgeryID() && benMedHistory.getSurgeryID()>0){
+					Map<String, Object> surgery = new HashMap<String, Object>();
+	
+					surgery.put("surgeryID", benMedHistory.getSurgeryID());
+					surgery.put("surgeryType", benMedHistory.getSurgeryType());
+					surgery.put("otherSurgeryType", benMedHistory.getOtherSurgeryType());
+	
+					timePeriod = Utility.convertTimeToWords(benMedHistory.getYearofSurgery(),
+							benMedHistory.getCreatedDate());
+	
+					surgery.put("timePeriodAgo", timePeriod.get("timePeriodAgo"));
+					surgery.put("timePeriodUnit", timePeriod.get("timePeriodUnit"));
+	
+					pastSurgery.add(surgery);
+				}
 			}
+				benHistory.setPastIllness(pastIllness);
+				benHistory.setPastSurgery(pastSurgery);
 		}
 		return benHistory;
 
