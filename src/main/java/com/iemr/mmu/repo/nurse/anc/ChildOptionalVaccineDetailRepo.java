@@ -23,12 +23,16 @@ public interface ChildOptionalVaccineDetailRepo extends CrudRepository<ChildOpti
 	
 	
 	@Query("select beneficiaryRegID, benVisitID, providerServiceMapID, defaultReceivingAge, vaccineName, status, receivedDate, actualReceivingAge, "
-			+ "receivedFacilityName from ChildOptionalVaccineDetail a where a.beneficiaryRegID = :beneficiaryRegID and a.benVisitID = :benVisitID")
+			+ "receivedFacilityName from ChildOptionalVaccineDetail a where a.beneficiaryRegID = :beneficiaryRegID and a.benVisitID = :benVisitID AND deleted = false")
 	public ArrayList<Object[]> getBenOptionalVaccineDetail(@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("benVisitID") Long benVisitID);
 	
 	@Modifying
 	@Transactional
-	@Query(" Delete from ChildOptionalVaccineDetail WHERE beneficiaryRegID = :benRegID and benVisitID = :benVisitID")
-		public int deleteExistingChildOptionalVaccineDetail(@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
+	@Query(" Update ChildOptionalVaccineDetail set deleted=true, processed=:processed WHERE ID = :ID")
+		public int deleteExistingChildOptionalVaccineDetail(@Param("ID") Long ID, @Param("processed") String processed);
+	
+	@Query("SELECT ID, processed from ChildOptionalVaccineDetail where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID AND deleted=false")
+	public ArrayList<Object[]> getBenChildOptionalVaccineHistoryStatus(@Param("benRegID") Long benRegID,
+			@Param("benVisitID") Long benVisitID);
 	
 }

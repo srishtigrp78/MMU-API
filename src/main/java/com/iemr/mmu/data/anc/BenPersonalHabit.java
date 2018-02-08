@@ -481,56 +481,67 @@ public class BenPersonalHabit {
 			maxPersonalHistorySize = alcoholList.size();
 		}
 		ArrayList<BenPersonalHabit> personalHabitList=new ArrayList<BenPersonalHabit>();
-		for(int i=0;i<maxPersonalHistorySize ; i++){
+		if(maxPersonalHistorySize>0){
+			for(int i=0;i<maxPersonalHistorySize ; i++){
+				BenPersonalHabit benPersonalHabit = new BenPersonalHabit();
+				
+				benPersonalHabit.setBeneficiaryRegID(beneficiaryRegID);
+				benPersonalHabit.setBenVisitID(benVisitID);
+				benPersonalHabit.setProviderServiceMapID(providerServiceMapID);
+				benPersonalHabit.setCreatedBy(createdBy);
+				benPersonalHabit.setDietaryType(dietaryType);
+				benPersonalHabit.setPhysicalActivityType(physicalActivityType);
+				benPersonalHabit.setRiskySexualPracticesStatus(riskySexualPracticesStatus);
+				benPersonalHabit.setTobaccoUseStatus(tobaccoUseStatus);
+				benPersonalHabit.setAlcoholIntakeStatus(alcoholIntakeStatus);
+				
+				
+				String timePeriodUnit = "";
+				Integer timePeriodAgo = 0;
+				
+				if(null !=tobaccoList && tobaccoList.size()>i){
+					Map<String, String> tobaccoInfo=(Map<String, String>) tobaccoList.get(i);
+					benPersonalHabit.setTobaccoUseTypeID(tobaccoInfo.get("tobaccoUseTypeID"));
+					benPersonalHabit.setTobaccoUseType(tobaccoInfo.get("tobaccoUseType"));
+					benPersonalHabit.setOtherTobaccoUseType(tobaccoInfo.get("OtherTobaccoUseType"));
+					
+					if(null != tobaccoInfo.get("numberperDay")){
+						benPersonalHabit.setNumberperDay(new Short(tobaccoInfo.get("numberperDay")));
+					}
+					timePeriodUnit = (String) tobaccoInfo.get("durationUnit");
+	
+					if(null != tobaccoInfo.get("duration")){
+						timePeriodAgo =  Integer.parseInt(tobaccoInfo.get("duration").toString());
+					}
+					benPersonalHabit.setTobaccoUseDuration(Utility.convertToDateFormat(timePeriodUnit, timePeriodAgo));
+				}
+				
+				if(null != alcoholList && alcoholList.size()>i){
+					Map<String, String> alcoholInfo=(Map<String, String>) alcoholList.get(i);
+					
+					benPersonalHabit.setAlcoholTypeID(alcoholInfo.get("alcoholTypeID"));
+					benPersonalHabit.setAlcoholType(alcoholInfo.get("typeOfAlcohol"));
+					benPersonalHabit.setOtherAlcoholType(alcoholInfo.get("otherAlcoholType"));
+					benPersonalHabit.setAlcoholIntakeFrequency(alcoholInfo.get("alcoholIntakeFrequency"));
+					benPersonalHabit.setAvgAlcoholConsumption(alcoholInfo.get("avgAlcoholConsumption"));
+					
+					String durationUnit = (String) alcoholInfo.get("durationUnit");
+					Integer duration = 0;
+					if(null != alcoholInfo.get("duration")){
+						duration =  Integer.parseInt(alcoholInfo.get("duration").toString());
+					}
+					benPersonalHabit.setAlcoholDuration(Utility.convertToDateFormat(timePeriodUnit, timePeriodAgo));
+				}
+				personalHabitList.add(benPersonalHabit);
+			}
+		}else{
 			BenPersonalHabit benPersonalHabit = new BenPersonalHabit();
 			
 			benPersonalHabit.setBeneficiaryRegID(beneficiaryRegID);
 			benPersonalHabit.setBenVisitID(benVisitID);
 			benPersonalHabit.setProviderServiceMapID(providerServiceMapID);
 			benPersonalHabit.setCreatedBy(createdBy);
-			benPersonalHabit.setDietaryType(dietaryType);
-			benPersonalHabit.setPhysicalActivityType(physicalActivityType);
-			benPersonalHabit.setRiskySexualPracticesStatus(riskySexualPracticesStatus);
-			benPersonalHabit.setTobaccoUseStatus(tobaccoUseStatus);
-			benPersonalHabit.setAlcoholIntakeStatus(alcoholIntakeStatus);
 			
-			
-			String timePeriodUnit = "";
-			Integer timePeriodAgo = 0;
-			
-			if(null !=tobaccoList && tobaccoList.size()>i){
-				Map<String, String> tobaccoInfo=(Map<String, String>) tobaccoList.get(i);
-				benPersonalHabit.setTobaccoUseTypeID(tobaccoInfo.get("tobaccoUseTypeID"));
-				benPersonalHabit.setTobaccoUseType(tobaccoInfo.get("tobaccoUseType"));
-				benPersonalHabit.setOtherTobaccoUseType(tobaccoInfo.get("OtherTobaccoUseType"));
-				
-				if(null != tobaccoInfo.get("numberperDay")){
-					benPersonalHabit.setNumberperDay(new Short(tobaccoInfo.get("numberperDay")));
-				}
-				timePeriodUnit = (String) tobaccoInfo.get("durationUnit");
-
-				if(null != tobaccoInfo.get("duration")){
-					timePeriodAgo =  Integer.parseInt(tobaccoInfo.get("duration").toString());
-				}
-				benPersonalHabit.setTobaccoUseDuration(Utility.convertToDateFormat(timePeriodUnit, timePeriodAgo));
-			}
-			
-			if(null != alcoholList && alcoholList.size()>i){
-				Map<String, String> alcoholInfo=(Map<String, String>) alcoholList.get(i);
-				
-				benPersonalHabit.setAlcoholTypeID(alcoholInfo.get("alcoholTypeID"));
-				benPersonalHabit.setAlcoholType(alcoholInfo.get("typeOfAlcohol"));
-				benPersonalHabit.setOtherAlcoholType(alcoholInfo.get("otherAlcoholType"));
-				benPersonalHabit.setAlcoholIntakeFrequency(alcoholInfo.get("alcoholIntakeFrequency"));
-				benPersonalHabit.setAvgAlcoholConsumption(alcoholInfo.get("avgAlcoholConsumption"));
-				
-				String durationUnit = (String) alcoholInfo.get("durationUnit");
-				Integer duration = 0;
-				if(null != alcoholInfo.get("duration")){
-					duration =  Integer.parseInt(alcoholInfo.get("duration").toString());
-				}
-				benPersonalHabit.setAlcoholDuration(Utility.convertToDateFormat(timePeriodUnit, timePeriodAgo));
-			}
 			personalHabitList.add(benPersonalHabit);
 		}
 		return personalHabitList;
@@ -623,37 +634,42 @@ public class BenPersonalHabit {
 				BenPersonalHabit personalHabits = new BenPersonalHabit((String)obj[6], (String)obj[7], (String)obj[8], (Short)obj[9], (Timestamp)obj[10],
 						(String)obj[12], (String)obj[13], (String)obj[14], (String)obj[15], (String)obj[16], (Timestamp)obj[17], (Timestamp)obj[19]);
 				
-				Map<String, String> tobaccoInfo = new HashMap<String, String>();
-				tobaccoInfo.put("tobaccoUseTypeID", personalHabits.getTobaccoUseTypeID());
-				tobaccoInfo.put("tobaccoUseType", personalHabits.getTobaccoUseType());
-				tobaccoInfo.put("otherTobaccoUseType", personalHabits.getOtherTobaccoUseType());
-				if(null != personalHabits.getNumberperDay()){
-					tobaccoInfo.put("numberperDay", personalHabits.getNumberperDay().toString());
+				Map<String, Object> timePeriod = null;
+				Integer timePeriodAgo = null;
+				if(null != personalHabits.getTobaccoUseTypeID()){
+					Map<String, String> tobaccoInfo = new HashMap<String, String>();
+					tobaccoInfo.put("tobaccoUseTypeID", personalHabits.getTobaccoUseTypeID());
+					tobaccoInfo.put("tobaccoUseType", personalHabits.getTobaccoUseType());
+					tobaccoInfo.put("otherTobaccoUseType", personalHabits.getOtherTobaccoUseType());
+					if(null != personalHabits.getNumberperDay()){
+						tobaccoInfo.put("numberperDay", personalHabits.getNumberperDay().toString());
+					}
+					
+					timePeriod = Utility.convertTimeToWords(personalHabits.getTobaccoUseDuration(), personalHabits.getCreatedDate());
+					timePeriodAgo = Integer.parseInt(timePeriod.get("timePeriodAgo").toString());
+					
+					tobaccoInfo.put("duration", timePeriodAgo.toString());
+					tobaccoInfo.put("durationUnit", timePeriod.get("timePeriodUnit").toString());
+					
+					tobaccoList.add(tobaccoInfo);
 				}
-				
-				Map<String, Object> timePeriod = Utility.convertTimeToWords(personalHabits.getTobaccoUseDuration(), personalHabits.getCreatedDate());
-				Integer timePeriodAgo = Integer.parseInt(timePeriod.get("timePeriodAgo").toString());
-				
-				tobaccoInfo.put("duration", timePeriodAgo.toString());
-				tobaccoInfo.put("durationUnit", timePeriod.get("timePeriodUnit").toString());
-				
-				tobaccoList.add(tobaccoInfo);
-				
-				Map<String, String> alcoholInfo = new HashMap<String, String>();
-				alcoholInfo.put("alcoholTypeID", personalHabits.getAlcoholTypeID());
-				alcoholInfo.put("alcoholType", personalHabits.getAlcoholType());
-				alcoholInfo.put("otherAlcoholType", personalHabits.getOtherAlcoholType());
-				alcoholInfo.put("alcoholIntakeFrequency", personalHabits.getAlcoholIntakeFrequency());
-				alcoholInfo.put("avgAlcoholConsumption", personalHabits.getAvgAlcoholConsumption());
-				
-				timePeriod = Utility.convertTimeToWords(personalHabits.getAlcoholDuration(), personalHabits.getCreatedDate());
-				timePeriodAgo = Integer.parseInt(timePeriod.get("timePeriodAgo").toString());
-				
-				
-				alcoholInfo.put("duration", timePeriodAgo.toString());
-				alcoholInfo.put("durationUnit", timePeriod.get("timePeriodUnit").toString());
-				
-				alcoholList.add(alcoholInfo);
+				if(null != personalHabits.getAlcoholTypeID()){
+					Map<String, String> alcoholInfo = new HashMap<String, String>();
+					alcoholInfo.put("alcoholTypeID", personalHabits.getAlcoholTypeID());
+					alcoholInfo.put("alcoholType", personalHabits.getAlcoholType());
+					alcoholInfo.put("otherAlcoholType", personalHabits.getOtherAlcoholType());
+					alcoholInfo.put("alcoholIntakeFrequency", personalHabits.getAlcoholIntakeFrequency());
+					alcoholInfo.put("avgAlcoholConsumption", personalHabits.getAvgAlcoholConsumption());
+					
+					timePeriod = Utility.convertTimeToWords(personalHabits.getAlcoholDuration(), personalHabits.getCreatedDate());
+					timePeriodAgo = Integer.parseInt(timePeriod.get("timePeriodAgo").toString());
+					
+					
+					alcoholInfo.put("duration", timePeriodAgo.toString());
+					alcoholInfo.put("durationUnit", timePeriod.get("timePeriodUnit").toString());
+					
+					alcoholList.add(alcoholInfo);
+				}
 			}
 			personalDetails.setTobaccoList(tobaccoList);
 			personalDetails.setAlcoholList(alcoholList);

@@ -24,7 +24,7 @@ public interface ChildFeedingDetailsRepo extends CrudRepository<ChildFeedingDeta
 		
 	@Query("select beneficiaryRegID, benVisitID, providerServiceMapID, childID, benMotherID, typeOfFeed, compFeedStartAge, "
 			+ "noOfCompFeedPerDay, foodIntoleranceStatus, typeofFoodIntolerance "
-			+ "from ChildFeedingDetails a where a.beneficiaryRegID = :beneficiaryRegID and a.benVisitID = :benVisitID")
+			+ "from ChildFeedingDetails a where a.beneficiaryRegID = :beneficiaryRegID and a.benVisitID = :benVisitID AND deleted = false")
 	public ArrayList<Object[]> getBenFeedingDetails(@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("benVisitID") Long benVisitID);
 	
