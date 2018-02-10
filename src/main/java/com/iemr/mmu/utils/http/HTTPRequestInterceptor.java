@@ -73,8 +73,6 @@ public class HTTPRequestInterceptor extends HandlerInterceptorAdapter {
 
 				response.setContentLength(output.toString().length());
 				response.setHeader("Access-Control-Allow-Origin", "*");
-
-				response.setContentLength(output.toString().length());
 				status = false;
 			}
 		}

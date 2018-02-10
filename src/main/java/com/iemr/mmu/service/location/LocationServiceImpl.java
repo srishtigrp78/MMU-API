@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.iemr.mmu.data.location.DistrictBlock;
+import com.iemr.mmu.data.location.DistrictBranchMapping;
 import com.iemr.mmu.data.location.Districts;
 import com.iemr.mmu.data.location.States;
 import com.iemr.mmu.data.location.V_GetLocDetailsFromSPidAndPSMid;
@@ -18,6 +19,7 @@ import com.iemr.mmu.data.login.MasterServicePoint;
 import com.iemr.mmu.data.login.ParkingPlace;
 import com.iemr.mmu.data.login.ServicePointVillageMapping;
 import com.iemr.mmu.repo.location.DistrictBlockMasterRepo;
+import com.iemr.mmu.repo.location.DistrictBranchMasterRepo;
 import com.iemr.mmu.repo.location.DistrictMasterRepo;
 import com.iemr.mmu.repo.location.ParkingPlaceMasterRepo;
 import com.iemr.mmu.repo.location.ServicePointMasterRepo;
@@ -37,6 +39,12 @@ public class LocationServiceImpl implements LocationService {
 	private ServicePointMasterRepo servicePointMasterRepo;
 	private V_GetLocDetailsFromSPidAndPSMidRepo v_GetLocDetailsFromSPidAndPSMidRepo;
 	private ServicePointVillageMappingRepo servicePointVillageMappingRepo;
+	private DistrictBranchMasterRepo districtBranchMasterRepo;
+
+	@Autowired
+	public void setDistrictBranchMasterRepo(DistrictBranchMasterRepo districtBranchMasterRepo) {
+		this.districtBranchMasterRepo = districtBranchMasterRepo;
+	}
 
 	@Autowired
 	public void setServicePointVillageMappingRepo(ServicePointVillageMappingRepo servicePointVillageMappingRepo) {
@@ -154,6 +162,11 @@ public class LocationServiceImpl implements LocationService {
 			}
 		}
 		return new Gson().toJson(servicePointList);
+	}
+
+	public String getVillageMasterFromBlockID(Integer distBlockID) {
+		ArrayList<Object[]> resList = districtBranchMasterRepo.findByBlockID(distBlockID);
+		return DistrictBranchMapping.getVillageList(resList);
 	}
 
 	public String getLocDetails(Integer spID, Integer spPSMID) {

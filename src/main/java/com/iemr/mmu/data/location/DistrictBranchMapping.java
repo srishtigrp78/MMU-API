@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.location;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.iemr.mmu.utils.mapper.OutputMapper;
 
@@ -61,6 +63,17 @@ public class DistrictBranchMapping {
 	public DistrictBranchMapping(Integer DistrictBranchID, String VillageName) {
 		this.districtBranchID = DistrictBranchID;
 		this.villageName = VillageName;
+	}
+
+	public static String getVillageList(ArrayList<Object[]> resList) {
+		DistrictBranchMapping villOBJ = null;
+		ArrayList<DistrictBranchMapping> villList = new ArrayList<>();
+		for (Object[] obj : resList) {
+			villOBJ = new DistrictBranchMapping((Integer) obj[0], (String) obj[1]);
+			villList.add(villOBJ);
+		}
+		return new Gson().toJson(villList);
+
 	}
 
 	public DistrictBranchMapping(Integer DistrictBranchID, String VillageName, String PanchayatName, String Habitat,

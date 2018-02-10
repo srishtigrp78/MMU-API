@@ -61,7 +61,7 @@ public class LocationController {
 		return response.toString();
 	}
 
-	@ApiOperation(value = "District master for beneficiary", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "District master from stateID", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/get/districtMaster/{stateID}", method = RequestMethod.GET)
 	public String getDistrictMaster(@PathVariable("stateID") Integer stateID) {
 		logger.info("get District master ...");
@@ -70,12 +70,12 @@ public class LocationController {
 		if (s != null)
 			response.setResponse(s);
 		else
-			response.setError(5000, "No District Master Data Available !!!");
+			response.setError(5000, "No District Master Data Available for stateID : " + stateID);
 		logger.info("districtMaster" + response.toString());
 		return response.toString();
 	}
 
-	@ApiOperation(value = "District Block master for beneficiary", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "District Block mast", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/get/districtBlockMaster/{districtID}", method = RequestMethod.GET)
 	public String getDistrictBlockMaster(@PathVariable("districtID") Integer districtID) {
 		logger.info("get District Block master districtID ..." + districtID);
@@ -84,8 +84,22 @@ public class LocationController {
 		if (s != null)
 			response.setResponse(s);
 		else
-			response.setError(5000, "No District Block Master Data Available !!!");
+			response.setError(5000, "No District Block Master Data Available for districtID : " + districtID);
 		logger.info("districtBlockMaster" + response.toString());
+		return response.toString();
+	}
+
+	@ApiOperation(value = "Village master from block id", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/get/villageMasterFromBlockID/{blockID}", method = RequestMethod.GET)
+	public String getVillageMaster(@PathVariable("blockID") Integer blockID) {
+		logger.info("get District Block master districtID ..." + blockID);
+		response = new OutputResponse();
+		String s = locationServiceImpl.getVillageMasterFromBlockID(blockID);
+		if (s != null)
+			response.setResponse(s);
+		else
+			response.setError(5000, "No District Block Master Data Available for blockID : " + blockID);
+		logger.info("village master" + response.toString());
 		return response.toString();
 	}
 
