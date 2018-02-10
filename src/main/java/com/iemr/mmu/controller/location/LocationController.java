@@ -31,6 +31,7 @@ public class LocationController {
 		this.locationServiceImpl = locationServiceImpl;
 	}
 
+	@Deprecated
 	@ApiOperation(value = "State master for beneficiary", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/get/stateMaster", method = RequestMethod.GET)
 	public String getStateMaster() {
@@ -45,6 +46,7 @@ public class LocationController {
 		return response.toString();
 	}
 
+	@Deprecated
 	@ApiOperation(value = "Zone master for beneficiary", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/get/zoneMaster/{providerServiceMapID}/", method = RequestMethod.GET)
 	public String getZoneMaster(@PathVariable("providerServiceMapID") Integer providerServiceMapID) {
@@ -87,6 +89,7 @@ public class LocationController {
 		return response.toString();
 	}
 
+	@Deprecated
 	@ApiOperation(value = "Parking Place master for beneficiary", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/get/parkingPlaceMaster/{providerServiceMapID}", method = RequestMethod.GET)
 	public String getParkingPlaceMaster(@PathVariable("providerServiceMapID") Integer providerServiceMapID) {
@@ -101,6 +104,7 @@ public class LocationController {
 		return response.toString();
 	}
 
+	@Deprecated
 	@ApiOperation(value = "Service Point master for beneficiary", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/get/servicePointMaster/{parkingPlaceID}", method = RequestMethod.GET)
 	public String getServicePointMaster(@PathVariable("parkingPlaceID") Integer parkingPlaceID) {
