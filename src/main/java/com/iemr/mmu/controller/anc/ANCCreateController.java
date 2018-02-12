@@ -46,7 +46,6 @@ public class ANCCreateController {
 	@CrossOrigin
 	@ApiOperation(value = "Save ANC nurse data..", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
-	@Transactional(rollbackFor = Exception.class)
 	public String saveBenANCNurseData(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		try {
@@ -79,7 +78,6 @@ public class ANCCreateController {
 	@CrossOrigin
 	@ApiOperation(value = "Save ANC doctor data..", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/doctorData" }, method = { RequestMethod.POST })
-	@Transactional(rollbackFor = Exception.class)
 	public String saveBenANCDoctorData(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		try {

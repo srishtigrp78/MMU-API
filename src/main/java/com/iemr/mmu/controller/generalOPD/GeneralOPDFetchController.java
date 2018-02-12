@@ -300,6 +300,34 @@ public class GeneralOPDFetchController {
 	}
 	
 	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary Child Vaccine(Immunization) Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenChildVaccineHistory" }, method = { RequestMethod.POST })
+	public String getBenImmunizationHistory(
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenImmunizationHistory request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID")) {
+				Long benRegID = obj.getLong("benRegID");
+				String s = generalOPDServiceImpl.getImmunizationHistoryData(benRegID);
+				response.setResponse(s);
+
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenImmunizationHistory response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenImmunizationHistory:" + e);
+		}
+		return response.toString();
+	}
+
+	
+	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Perinatal History Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenPerinatalHistory" }, method = { RequestMethod.POST })
 	public String getBenPerinatalHistory(

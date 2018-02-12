@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -25,7 +26,6 @@ import com.iemr.mmu.data.anc.SysCentralNervousExamination;
 import com.iemr.mmu.data.anc.SysGastrointestinalExamination;
 import com.iemr.mmu.data.anc.SysGenitourinarySystemExamination;
 import com.iemr.mmu.data.anc.SysMusculoskeletalSystemExamination;
-import com.iemr.mmu.data.anc.SysObstetricExamination;
 import com.iemr.mmu.data.anc.SysRespiratoryExamination;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.anc.WrapperChildOptionalVaccineDetail;
@@ -79,6 +79,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 	/// --------------- start of saving nurse data ------------------------
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public Long saveNurseData(JsonObject requestOBJ) throws Exception {
 		Long historySaveSuccessFlag = null;
 		Long vitalSaveSuccessFlag = null;
@@ -579,6 +580,12 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	}
 	/// ------- End of Fetch beneficiary all Child Vaccine history data ------
 
+	// ------- Fetch beneficiary all Immunization history data ---------------
+	public String getImmunizationHistoryData(Long beneficiaryRegID) {
+		return commonNurseServiceImpl.fetchBenImmunizationHistory(beneficiaryRegID);
+	}
+	/// ------- End of Fetch beneficiary all Immunization history data ------
+
 	// ------- Fetch beneficiary all Perinatal history data ---------------
 	public String getBenPerinatalHistoryData(Long beneficiaryRegID) {
 		return generalOPDNurseServiceImpl.fetchBenPerinatalHistory(beneficiaryRegID);
@@ -599,6 +606,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 	/// --------------- start of saving doctor data ------------------------
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public Long saveDoctorData(JsonObject requestOBJ) throws Exception {
 		Long saveSuccessFlag = null;
 		Long prescriptionID = null;
@@ -765,6 +773,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	/// --------------- END of Fetching GeneralOPD Nurse Data ----------------
 
 	/// --------------- start of updating GeneralOPD Nurse Data ----------------
+	@Transactional(rollbackFor = Exception.class)
 	public int UpdateVisitDetails(JsonObject jsnOBJ) throws Exception {
 
 		int chiefCompltUpdateRes = 0;
@@ -790,6 +799,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	 * @return success or failure flag for General OPD History updating by
 	 *         Doctor
 	 */
+	@Transactional(rollbackFor = Exception.class)
 	public int updateBenHistoryDetails(JsonObject historyOBJ) throws Exception {
 		int pastHistorySuccessFlag = 0;
 		int comrbidSuccessFlag = 0;
@@ -803,6 +813,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		int childFeedingSuccessFlag = 0;
 		int perinatalHistorySuccessFlag = 0;
 		int developmentHistorySuccessFlag = 0;
+		int immunizationSuccessFlag = 0;
 
 		// Update Past History
 		if (historyOBJ != null && historyOBJ.has("pastHistory") && !historyOBJ.get("pastHistory").isJsonNull()) {
@@ -866,6 +877,14 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 			obstetricSuccessFlag = commonNurseServiceImpl.updatePastObstetricHistory(wrapperFemaleObstetricHistory);
 		}
+		if (historyOBJ != null && historyOBJ.has("immunizationHistory")
+				&& !historyOBJ.get("immunizationHistory").isJsonNull()) {
+			WrapperImmunizationHistory wrapperImmunizationHistory = InputMapper.gson()
+					.fromJson(historyOBJ.get("immunizationHistory"), WrapperImmunizationHistory.class);
+			immunizationSuccessFlag = commonNurseServiceImpl.updateChildImmunizationDetail(wrapperImmunizationHistory);
+		} else {
+			immunizationSuccessFlag = 1;
+		}
 
 		// Update Other/Optional Vaccines History
 		if (historyOBJ != null && historyOBJ.has("childVaccineDetails")
@@ -879,10 +898,9 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		}
 
 		// Update ChildFeeding History
-		if (historyOBJ != null && historyOBJ.has("feedingHistory")
-				&& !historyOBJ.get("feedingHistory").isJsonNull()) {
-			ChildFeedingDetails childFeedingDetails = InputMapper.gson()
-					.fromJson(historyOBJ.get("feedingHistory"), ChildFeedingDetails.class);
+		if (historyOBJ != null && historyOBJ.has("feedingHistory") && !historyOBJ.get("feedingHistory").isJsonNull()) {
+			ChildFeedingDetails childFeedingDetails = InputMapper.gson().fromJson(historyOBJ.get("feedingHistory"),
+					ChildFeedingDetails.class);
 
 			if (null != childFeedingDetails) {
 				childFeedingSuccessFlag = generalOPDNurseServiceImpl.updateChildFeedingHistory(childFeedingDetails);
@@ -893,8 +911,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		// Update Perinatal History
 		if (historyOBJ != null && historyOBJ.has("perinatalHistroy")
 				&& !historyOBJ.get("perinatalHistroy").isJsonNull()) {
-			PerinatalHistory perinatalHistory = InputMapper.gson()
-					.fromJson(historyOBJ.get("perinatalHistroy"), PerinatalHistory.class);
+			PerinatalHistory perinatalHistory = InputMapper.gson().fromJson(historyOBJ.get("perinatalHistroy"),
+					PerinatalHistory.class);
 
 			if (null != perinatalHistory) {
 				perinatalHistorySuccessFlag = generalOPDNurseServiceImpl.updatePerinatalHistory(perinatalHistory);
@@ -914,12 +932,13 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 			}
 
 		}
-		
+
 		int historyUpdateSuccessFlag = 0;
 
 		if (pastHistorySuccessFlag > 0 && comrbidSuccessFlag > 0 && medicationSuccessFlag > 0
 				&& allergyHistorySuccessFlag > 0 && familyHistorySuccessFlag > 0 && obstetricSuccessFlag > 0
-				&& childVaccineSuccessFlag > 0 && personalHistorySuccessFlag > 0 && menstrualHistorySuccessFlag > 0) {
+				&& childVaccineSuccessFlag > 0 && personalHistorySuccessFlag > 0 && menstrualHistorySuccessFlag > 0
+				&& immunizationSuccessFlag > 0) {
 
 			historyUpdateSuccessFlag = pastHistorySuccessFlag;
 		}
@@ -931,6 +950,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	 * @param requestOBJ
 	 * @return success or failure flag for vitals data updating
 	 */
+	@Transactional(rollbackFor = Exception.class)
 	public int updateBenVitalDetails(JsonObject vitalDetailsOBJ) throws Exception {
 		int vitalSuccessFlag = 0;
 		int anthropometrySuccessFlag = 0;
@@ -958,6 +978,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	 * @param requestOBJ
 	 * @return success or failure flag for Examinationm data updating
 	 */
+	@Transactional(rollbackFor = Exception.class)
 	public int updateBenExaminationDetails(JsonObject examinationDetailsOBJ) throws Exception {
 
 		int exmnSuccessFlag = 0;

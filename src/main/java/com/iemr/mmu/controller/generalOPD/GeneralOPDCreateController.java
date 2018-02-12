@@ -40,7 +40,6 @@ public class GeneralOPDCreateController {
 	@CrossOrigin
 	@ApiOperation(value = "Save General OPD nurse data..", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
-	@Transactional(rollbackFor = Exception.class)
 	public String saveBenGenOPDNurseData(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		try {
@@ -72,7 +71,6 @@ public class GeneralOPDCreateController {
 	@CrossOrigin
 	@ApiOperation(value = "Save General OPD doctor data..", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/doctorData" }, method = { RequestMethod.POST })
-	@Transactional(rollbackFor = Exception.class)
 	public String saveBenGenOPDDoctorData(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		try {

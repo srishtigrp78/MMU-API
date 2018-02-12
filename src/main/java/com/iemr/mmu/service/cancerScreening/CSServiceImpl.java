@@ -26,6 +26,7 @@ import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
+import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.doctor.DoctorServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.service.registrar.RegistrarServiceImpl;
@@ -40,6 +41,12 @@ public class CSServiceImpl implements CSService {
 	private RegistrarServiceImpl registrarServiceImpl;
 	private CSOncologistServiceImpl csOncologistServiceImpl;
 	private DoctorServiceImpl doctorServiceImpl;
+	private CommonNurseServiceImpl commonNurseServiceImpl;
+
+	@Autowired
+	public void setCommonNurseServiceImpl(CommonNurseServiceImpl commonNurseServiceImpl) {
+		this.commonNurseServiceImpl = commonNurseServiceImpl;
+	}
 
 	@Autowired
 	public void setDoctorServiceImpl(DoctorServiceImpl doctorServiceImpl) {
@@ -120,7 +127,10 @@ public class CSServiceImpl implements CSService {
 	public Long saveBenVisitDetails(JsonObject requestOBJ) throws Exception {
 		BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(requestOBJ.get("visitDetails"),
 				BeneficiaryVisitDetail.class);
-		Long benVisitID = nurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
+
+		Long benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
+		// Long benVisitID =
+		// nurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
 		return benVisitID;
 	}
 
@@ -569,7 +579,7 @@ public class CSServiceImpl implements CSService {
 				e.printStackTrace();
 			}
 
-			 caseSheetData = getBenDataForCaseSheet(benRegID, benVisitID);
+			caseSheetData = getBenDataForCaseSheet(benRegID, benVisitID);
 
 		} else {
 

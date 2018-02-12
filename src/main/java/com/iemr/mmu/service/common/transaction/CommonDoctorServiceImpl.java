@@ -1,5 +1,12 @@
 package com.iemr.mmu.service.common.transaction;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.ANCDiagnosis;
@@ -15,13 +22,6 @@ import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 /***
  * 
  * @author NE298657
@@ -35,32 +35,32 @@ public class CommonDoctorServiceImpl {
 	private ANCDiagnosisRepo ancDiagnosisRepo;
 	private NurseServiceImpl nurseServiceImpl;
 	private BenVisitDetailRepo benVisitDetailRepo;
-	
+
 	@Autowired
 	public void setBenVisitDetailRepo(BenVisitDetailRepo benVisitDetailRepo) {
 		this.benVisitDetailRepo = benVisitDetailRepo;
 	}
-	
+
 	@Autowired
 	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
 		this.nurseServiceImpl = nurseServiceImpl;
 	}
-	
+
 	@Autowired
 	public void setAncDiagnosisRepo(ANCDiagnosisRepo ancDiagnosisRepo) {
 		this.ancDiagnosisRepo = ancDiagnosisRepo;
 	}
-	
+
 	@Autowired
 	public void setBenChiefComplaintRepo(BenChiefComplaintRepo benChiefComplaintRepo) {
 		this.benChiefComplaintRepo = benChiefComplaintRepo;
 	}
-	
+
 	@Autowired
 	public void setBenClinicalObservationsRepo(BenClinicalObservationsRepo benClinicalObservationsRepo) {
 		this.benClinicalObservationsRepo = benClinicalObservationsRepo;
 	}
-	
+
 	public Integer saveFindings(JsonObject obj) throws Exception {
 		WrapperAncFindings wrapperAncFindings = InputMapper.gson().fromJson(obj, WrapperAncFindings.class);
 		return saveDocFindings(wrapperAncFindings);
@@ -128,7 +128,9 @@ public class CommonDoctorServiceImpl {
 		}
 		return benChiefComplaintList;
 	}
-	
+
+	// for now using from ancDoctorService only, because not there in Gen-OPD
+	@Deprecated
 	public Long saveBenDiagnosis(JsonObject obj) throws IEMRException {
 		Long ID = null;
 		ANCDiagnosis ancDiagnosis = InputMapper.gson().fromJson(obj, ANCDiagnosis.class);
@@ -138,7 +140,7 @@ public class CommonDoctorServiceImpl {
 		}
 		return ID;
 	}
-	
+
 	public Long savePrescriptionDetailsAndGetPrescriptionID(Long benRegID, Long benVisitID, Integer psmID,
 			String createdBy) {
 		PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
@@ -150,11 +152,11 @@ public class CommonDoctorServiceImpl {
 		Long prescriptionID = nurseServiceImpl.saveBenPrescription(prescriptionDetail);
 		return prescriptionID;
 	}
-	
+
 	public String updateBenVisitStatusFlag(Long benVisitID, String c) {
 		return updateBenStatus(benVisitID, c);
 	}
-	
+
 	public String updateBenStatus(Long benVisitID, String c) {
 		Map<String, String> resMap = new HashMap<>();
 		Integer i = benVisitDetailRepo.updateBenFlowStatus(c, benVisitID);

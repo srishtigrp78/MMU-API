@@ -382,19 +382,27 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
-	/*public Long savePrescriptionDetailsAndGetPrescriptionID(WrapperBenInvestigationANC wrapperBenInvestigationANC) {
-		PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
-		prescriptionDetail.setBeneficiaryRegID(wrapperBenInvestigationANC.getBeneficiaryRegID());
-		prescriptionDetail.setBenVisitID(wrapperBenInvestigationANC.getBenVisitID());
-		prescriptionDetail.setProviderServiceMapID(wrapperBenInvestigationANC.getProviderServiceMapID());
-		prescriptionDetail.setCreatedBy(wrapperBenInvestigationANC.getCreatedBy());
+	/*
+	 * public Long
+	 * savePrescriptionDetailsAndGetPrescriptionID(WrapperBenInvestigationANC
+	 * wrapperBenInvestigationANC) { PrescriptionDetail prescriptionDetail = new
+	 * PrescriptionDetail();
+	 * prescriptionDetail.setBeneficiaryRegID(wrapperBenInvestigationANC.
+	 * getBeneficiaryRegID());
+	 * prescriptionDetail.setBenVisitID(wrapperBenInvestigationANC.getBenVisitID
+	 * ());
+	 * prescriptionDetail.setProviderServiceMapID(wrapperBenInvestigationANC.
+	 * getProviderServiceMapID());
+	 * prescriptionDetail.setCreatedBy(wrapperBenInvestigationANC.getCreatedBy()
+	 * );
+	 * 
+	 * Long prescriptionID =
+	 * quickConsultationServiceImpl.saveBenPrescriptionForANC(prescriptionDetail
+	 * ); return prescriptionID; }
+	 */
 
-		Long prescriptionID = quickConsultationServiceImpl.saveBenPrescriptionForANC(prescriptionDetail);
-		return prescriptionID;
-	}
-*/
-	
-	/*Method moved to common service, Can remove this method*/
+	/* Method moved to common doctor service, Can remove this method */
+	@Deprecated
 	public Long savePrescriptionDetailsAndGetPrescriptionID(Long benRegID, Long benVisitID, Integer psmID,
 			String createdBy) {
 		PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
@@ -406,7 +414,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		Long prescriptionID = nurseServiceImpl.saveBenPrescription(prescriptionDetail);
 		return prescriptionID;
 	}
-	
+
 	@Deprecated
 	@Override
 	public Long saveBenInvestigation(WrapperBenInvestigationANC wrapperBenInvestigationANC) {
@@ -543,7 +551,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return ancWomenVaccineDetailList;
 	}
 
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
 	public Long savePhyGeneralExamination(PhyGeneralExamination generalExamination) {
 		Long generalExaminationID = null;
 		String TypeOfDangerSigns = "";
@@ -561,7 +569,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return generalExaminationID;
 	}
 
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
 	@Override
 	public Long savePhyHeadToToeExamination(PhyHeadToToeExamination headToToeExamination) {
 		Long examinationID = null;
@@ -573,7 +581,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return examinationID;
 	}
 
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
 	@Override
 	public Long saveSysCardiovascularExamination(SysCardiovascularExamination cardiovascularExamination) {
 		Long examinationID = null;
@@ -585,7 +593,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return examinationID;
 	}
 
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
 	@Override
 	public Long saveSysCentralNervousExamination(SysCentralNervousExamination centralNervousExamination) {
 		// TODO Auto-generated method stub
@@ -598,7 +606,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
-	/* Only for General OPD, Can remove from here*/
+	/* Only for General OPD, Can remove from here */
 	@Override
 	public Long saveSysGastrointestinalExamination(SysGastrointestinalExamination gastrointestinalExamination) {
 		Long examinationID = null;
@@ -645,7 +653,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
 	@Override
 	public Long saveSysRespiratoryExamination(SysRespiratoryExamination respiratoryExamination) {
 		// TODO Auto-generated method stub
@@ -674,8 +682,9 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 		return new Gson().toJson(examinationDetailsMap);
 	}
-	
-	/*Moved to common service, Can remove from here*/
+
+	/* Moved to common service, Can remove from here */
+	@Deprecated
 	public PhyGeneralExamination getGeneralExaminationData(Long benRegID, Long benVisitID) {
 		PhyGeneralExamination phyGeneralExaminationData = phyGeneralExaminationRepo
 				.getPhyGeneralExaminationData(benRegID, benVisitID);
@@ -700,7 +709,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	}
 
-	/*Moved to common service, Can remove from here*/
+	/* Moved to common service, Can remove from here */
+	@Deprecated
 	public PhyHeadToToeExamination getHeadToToeExaminationData(Long benRegID, Long benVisitID) {
 		PhyHeadToToeExamination phyHeadToToeExaminationData = phyHeadToToeExaminationRepo
 				.getPhyHeadToToeExaminationData(benRegID, benVisitID);
@@ -709,7 +719,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	}
 
-	/*Only for General OPD, Can remove from here*/
+	/* Only for General OPD, Can remove from here */
+	@Deprecated
 	public SysGastrointestinalExamination getSysGastrointestinalExamination(Long benRegID, Long benVisitID) {
 		SysGastrointestinalExamination sysGastrointestinalExaminationData = sysGastrointestinalExaminationRepo
 				.getSSysGastrointestinalExamination(benRegID, benVisitID);
@@ -717,7 +728,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return sysGastrointestinalExaminationData;
 	}
 
-	/*Moved to common service, Can remove from here*/
+	/* Moved to common service, Can remove from here */
+	@Deprecated
 	public SysCardiovascularExamination getCardiovascularExamination(Long benRegID, Long benVisitID) {
 		SysCardiovascularExamination sysCardiovascularExaminationData = sysCardiovascularExaminationRepo
 				.getSysCardiovascularExaminationData(benRegID, benVisitID);
@@ -725,7 +737,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return sysCardiovascularExaminationData;
 	}
 
-	/*Moved to common service, Can remove from here*/
+	/* Moved to common service, Can remove from here */
+	@Deprecated
 	public SysRespiratoryExamination getRespiratoryExamination(Long benRegID, Long benVisitID) {
 		SysRespiratoryExamination sysRespiratoryExaminationData = sysRespiratoryExaminationRepo
 				.getSysRespiratoryExaminationData(benRegID, benVisitID);
@@ -733,7 +746,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return sysRespiratoryExaminationData;
 	}
 
-	/*Moved to common service, Can remove from here*/
+	/* Moved to common service, Can remove from here */
+	@Deprecated
 	public SysCentralNervousExamination getSysCentralNervousExamination(Long benRegID, Long benVisitID) {
 		SysCentralNervousExamination sysCentralNervousExaminationData = sysCentralNervousExaminationRepo
 				.getSysCentralNervousExaminationData(benRegID, benVisitID);
@@ -741,7 +755,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return sysCentralNervousExaminationData;
 	}
 
-	/*Moved to common service, Can remove from here*/
+	/* Moved to common service, Can remove from here */
+	@Deprecated
 	public SysMusculoskeletalSystemExamination getMusculoskeletalExamination(Long benRegID, Long benVisitID) {
 		SysMusculoskeletalSystemExamination sysMusculoskeletalSystemExaminationData = sysMusculoskeletalSystemExaminationRepo
 				.getSysMusculoskeletalSystemExamination(benRegID, benVisitID);
@@ -749,7 +764,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return sysMusculoskeletalSystemExaminationData;
 	}
 
-	/*Moved to common service, Can remove from here*/
+	/* Moved to common service, Can remove from here */
+	@Deprecated
 	public SysGenitourinarySystemExamination getGenitourinaryExamination(Long benRegID, Long benVisitID) {
 		SysGenitourinarySystemExamination sysGenitourinarySystemExaminationData = sysGenitourinarySystemExaminationRepo
 				.getSysGenitourinarySystemExaminationData(benRegID, benVisitID);
@@ -814,7 +830,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return new Gson().toJson(benAdherences);
 	}
 
-	/*Method moved to common service, Can remove from here*/
+	/* Method moved to common service, Can remove from here */
+	@Deprecated
 	@Override
 	public String getBenChiefComplaints(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> resList = benChiefComplaintRepo.getBenChiefComplaints(beneficiaryRegID, benVisitID);
@@ -961,7 +978,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
 	public Long saveBenANCPastHistory(BenMedHistory benMedHistory) {
 		Long pastHistorySuccessFlag = null;
 		ArrayList<BenMedHistory> benMedHistoryList = benMedHistory.getBenPastHistory();
@@ -972,7 +989,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return pastHistorySuccessFlag;
 	}
 
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
 	@Override
 	public Long saveBenANCComorbidConditions(WrapperComorbidCondDetails wrapperComorbidCondDetails) {
 		Long comrbidSuccessFlag = null;
@@ -986,7 +1003,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return comrbidSuccessFlag;
 	}
 
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
 	@Override
 	public Long saveBenANCMedicationHistory(WrapperMedicationHistory wrapperMedicationHistory) {
 		Long medicationSuccessFlag = null;
@@ -1000,7 +1017,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return medicationSuccessFlag;
 	}
 
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
 	@Override
 	public Integer saveBenANCMenstrualHistory(BenMenstrualDetails benMenstrualDetails) {
 		Integer menstrualHistorySuccessFlag = null;
@@ -1012,7 +1029,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return menstrualHistorySuccessFlag;
 	}
 
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
 	@Override
 	public Long saveFemaleObstetricHistory(WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory) {
 		Long obstetricSuccessFlag = null;
@@ -1027,7 +1044,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return obstetricSuccessFlag;
 	}
 
-	/*This method not required for ANC*/
+	/* This method not required for ANC */
 	@Deprecated
 	@Override
 	public Long savePerinatalHistory(PerinatalHistory perinatalHistory) {
@@ -1040,7 +1057,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return perinatalSuccessFlag;
 	}
 
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
 	@Override
 	public Long saveChildOptionalVaccineDetail(WrapperChildOptionalVaccineDetail wrapperChildVaccineDetail) {
 		Long childVaccineSuccessFlag = null;
@@ -1054,7 +1071,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return childVaccineSuccessFlag;
 	}
 
-	/* Not Required in ANC*/
+	/* Not Required in ANC */
 	@Deprecated
 	@Override
 	public Long saveChildDevelopmentHistory(BenChildDevelopmentHistory benChildDevelopmentHistory) {
@@ -1069,7 +1086,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return developmentSuccessFlag;
 	}
 
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
 	@Override
 	public Integer saveANCPersonalHistory(BenPersonalHabit benPersonalHabit) {
 		Integer personalHistorySuccessFlag = null;
@@ -1082,7 +1099,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return personalHistorySuccessFlag;
 	}
 
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
 	@Override
 	public Long saveANCAllergyHistory(BenAllergyHistory benAllergyHistory) {
 		Long allergyHistorySuccessFlag = null;
@@ -1095,7 +1112,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return allergyHistorySuccessFlag;
 	}
 
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
 	@Override
 	public Long saveANCBenFamilyHistory(BenFamilyHistory benFamilyHistory) {
 		Long familyHistorySuccessFlag = null;
@@ -1117,7 +1134,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 	 * = null;
 	 */
 
-	/*This method not required for ANC*/
+	/* This method not required for ANC */
 	@Deprecated
 	@Override
 	public Long saveChildFeedingHistory(ChildFeedingDetails childFeedingDetails) {
@@ -1129,7 +1146,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return feedingSuccessFlag;
 	}
 
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
 	@Override
 	public Long saveANCImmunizationHistory(WrapperImmunizationHistory wrapperImmunizationHistory) {
 		Long immunizationSuccessFlag = null;
@@ -1143,7 +1160,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return immunizationSuccessFlag;
 	}
 
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
+	@Deprecated
 	@Override
 	public String fetchBenPastMedicalHistory(Long benRegID) {
 		Map<String, Object> resMap = new HashMap<>();
@@ -1152,8 +1170,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		if (benPastHistoryDataArray != null && benPastHistoryDataArray.size() > 0) {
 			BenMedHistory benMedHistory;
 			for (Object[] obj : benPastHistoryDataArray) {
-				benMedHistory = new BenMedHistory((Date) obj[0], (String) obj[1], (String) obj[2], (Date) obj[3], (String) obj[4],
-						(String) obj[5], (Date) obj[6]);
+				benMedHistory = new BenMedHistory((Date) obj[0], (String) obj[1], (String) obj[2], (Date) obj[3],
+						(String) obj[4], (String) obj[5], (Date) obj[6]);
 				benMedHistoryArrayList.add(benMedHistory);
 			}
 		}
@@ -1165,7 +1183,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		columnMap.put("columnName", "Date of Capture");
 		columnMap.put("keyName", "captureDate");
 		columns.add(columnMap);
-		
+
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Illness Type");
 		columnMap.put("keyName", "Illness_Type");
@@ -1203,7 +1221,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	}
 
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
+	@Deprecated
 	@Override
 	public String fetchBenComorbidityHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> bencomrbidityCondDetails = bencomrbidityCondRepo
@@ -1217,7 +1236,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		column.put("columnName", "Date of Capture");
 		column.put("keyName", "captureDate");
 		columns.add(column);
-		
+
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Comorbid Condition");
 		column.put("keyName", "comorbidCondition");
@@ -1237,8 +1256,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		if (null != bencomrbidityCondDetails) {
 			for (Object[] obj : bencomrbidityCondDetails) {
 
-				BencomrbidityCondDetails history = new BencomrbidityCondDetails((Date) obj[0], (String) obj[1], (String) obj[2],
-						(Date) obj[3]);
+				BencomrbidityCondDetails history = new BencomrbidityCondDetails((Date) obj[0], (String) obj[1],
+						(String) obj[2], (Date) obj[3]);
 				bencomrbidityConds.add(history);
 			}
 
@@ -1250,7 +1269,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	}
 
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
+	@Deprecated
 	@Override
 	public String fetchBenPersonalTobaccoHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> benPersonalHabits = (ArrayList<Object[]>) benPersonalHabitRepo
@@ -1264,7 +1284,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		column.put("columnName", "Date of Capture");
 		column.put("keyName", "captureDate");
 		columns.add(column);
-		
+
 		column = new HashMap<>();
 		column.put("columnName", "Dietary Type");
 		column.put("keyName", "dietaryType");
@@ -1280,10 +1300,11 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		column.put("keyName", "tobaccoUseStatus");
 		columns.add(column);
 
-/*		column = new HashMap<String, Object>();
-		column.put("columnName", "Tobacco Use Type ID");
-		column.put("keyName", "tobaccoUseTypeID");
-		columns.add(column);*/
+		/*
+		 * column = new HashMap<String, Object>(); column.put("columnName",
+		 * "Tobacco Use Type ID"); column.put("keyName", "tobaccoUseTypeID");
+		 * columns.add(column);
+		 */
 
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Tobacco Use Type");
@@ -1314,8 +1335,9 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		if (null != benPersonalHabits) {
 			for (Object[] obj : benPersonalHabits) {
 
-				BenPersonalHabit benPersonalHabit = new BenPersonalHabit((Date) obj[0], (String) obj[1], (String) obj[2],
-						(String) obj[3], (String) obj[4], (String) obj[5], (Short) obj[6], (Date) obj[7], (Character) obj[8]);
+				BenPersonalHabit benPersonalHabit = new BenPersonalHabit((Date) obj[0], (String) obj[1],
+						(String) obj[2], (String) obj[3], (String) obj[4], (String) obj[5], (Short) obj[6],
+						(Date) obj[7], (Character) obj[8]);
 
 				personalHabits.add(benPersonalHabit);
 			}
@@ -1327,7 +1349,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	}
 
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
+	@Deprecated
 	@Override
 	public String fetchBenPersonalAlcoholHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> benPersonalHabits = (ArrayList<Object[]>) benPersonalHabitRepo
@@ -1341,7 +1364,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		column.put("columnName", "Date of Capture");
 		column.put("keyName", "captureDate");
 		columns.add(column);
-		
+
 		column = new HashMap<>();
 		column.put("columnName", "Dietary Type");
 		column.put("keyName", "dietaryType");
@@ -1357,11 +1380,11 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		column.put("keyName", "alcoholIntakeStatus");
 		columns.add(column);
 
-/*		column = new HashMap<String, Object>();
-		column.put("columnName", "Alcohol Type ID");
-		column.put("keyName", "alcoholTypeID");
-		columns.add(column);
-*/
+		/*
+		 * column = new HashMap<String, Object>(); column.put("columnName",
+		 * "Alcohol Type ID"); column.put("keyName", "alcoholTypeID");
+		 * columns.add(column);
+		 */
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Alcohol Type");
 		column.put("keyName", "alcoholType");
@@ -1395,8 +1418,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		ArrayList<BenPersonalHabit> personalHabits = new ArrayList<BenPersonalHabit>();
 		if (null != benPersonalHabits) {
 			for (Object[] obj : benPersonalHabits) {
-				BenPersonalHabit benPersonalHabit = new BenPersonalHabit((Date) obj[0], (String) obj[1], (String) obj[2],
-						(String) obj[3], (String) obj[4], (String) obj[5], (String) obj[6],
+				BenPersonalHabit benPersonalHabit = new BenPersonalHabit((Date) obj[0], (String) obj[1],
+						(String) obj[2], (String) obj[3], (String) obj[4], (String) obj[5], (String) obj[6],
 						(String) obj[7], (Date) obj[8], (Character) obj[9]);
 				personalHabits.add(benPersonalHabit);
 			}
@@ -1408,8 +1431,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	}
 
-
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
+	@Deprecated
 	@Override
 	public String fetchBenPersonalAllergyHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> benPersonalHabits = (ArrayList<Object[]>) benAllergyHistoryRepo
@@ -1423,7 +1446,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		column.put("columnName", "Date of Capture");
 		column.put("keyName", "captureDate");
 		columns.add(column);
-		
+
 		column = new HashMap<>();
 		column.put("columnName", "Allergy Status");
 		column.put("keyName", "allergyStatus");
@@ -1439,10 +1462,11 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		column.put("keyName", "allergenName");
 		columns.add(column);
 
-		/*column = new HashMap<String, Object>();
-		column.put("columnName", "Allergic Reaction Type ID");
-		column.put("keyName", "allergicReactionTypeID");
-		columns.add(column);*/
+		/*
+		 * column = new HashMap<String, Object>(); column.put("columnName",
+		 * "Allergic Reaction Type ID"); column.put("keyName",
+		 * "allergicReactionTypeID"); columns.add(column);
+		 */
 
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Allergic Reaction Type");
@@ -1462,9 +1486,9 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		ArrayList<BenAllergyHistory> personalHabits = new ArrayList<BenAllergyHistory>();
 		if (null != benPersonalHabits) {
 			for (Object[] obj : benPersonalHabits) {
-				
-				BenAllergyHistory benPersonalHabit = new BenAllergyHistory((Date) obj[0], (String) obj[1], (String) obj[2],
-						(String) obj[3], (String) obj[4], (String) obj[5], (String) obj[6]);
+
+				BenAllergyHistory benPersonalHabit = new BenAllergyHistory((Date) obj[0], (String) obj[1],
+						(String) obj[2], (String) obj[3], (String) obj[4], (String) obj[5], (String) obj[6]);
 				personalHabits.add(benPersonalHabit);
 			}
 
@@ -1476,9 +1500,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	}
 
-
-
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
+	@Deprecated
 	@Override
 	public String fetchBenPersonalMedicationHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> beMedicationHistory = benMedicationHistoryRepo
@@ -1492,7 +1515,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		column.put("columnName", "Date of Capture");
 		column.put("keyName", "captureDate");
 		columns.add(column);
-		
+
 		column = new HashMap<>();
 		column.put("columnName", "Current Medication");
 		column.put("keyName", "currentMedication");
@@ -1518,7 +1541,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	}
 
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
+	@Deprecated
 	@Override
 	public String fetchBenPersonalFamilyHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> benFamilyHistory = benFamilyHistoryRepo.getBenFamilyHistoryDetail(beneficiaryRegID);
@@ -1531,16 +1555,17 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		column.put("columnName", "Date of Capture");
 		column.put("keyName", "captureDate");
 		columns.add(column);
-		
+
 		column = new HashMap<>();
 		column.put("columnName", "Family Member");
 		column.put("keyName", "familyMember");
 		columns.add(column);
 
-		/*column = new HashMap<String, Object>();
-		column.put("columnName", "Disease Type ID");
-		column.put("keyName", "diseaseTypeID");
-		columns.add(column);*/
+		/*
+		 * column = new HashMap<String, Object>(); column.put("columnName",
+		 * "Disease Type ID"); column.put("keyName", "diseaseTypeID");
+		 * columns.add(column);
+		 */
 
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Disease Type");
@@ -1583,7 +1608,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	}
 
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
+	@Deprecated
 	@Override
 	public String fetchBenMenstrualHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> benMenstrualDetails = benMenstrualDetailsRepo.getBenMenstrualDetail(beneficiaryRegID);
@@ -1596,7 +1622,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		column.put("columnName", "Date of Capture");
 		column.put("keyName", "captureDate");
 		columns.add(column);
-		
+
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Regularity");
 		column.put("keyName", "regularity");
@@ -1625,9 +1651,9 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		ArrayList<BenMenstrualDetails> menstrualDetails = new ArrayList<BenMenstrualDetails>();
 		if (null != benMenstrualDetails) {
 			for (Object[] obj : benMenstrualDetails) {
-				
-				BenMenstrualDetails history = new BenMenstrualDetails((Date) obj[0], (String) obj[1], (String) obj[2], (String) obj[3], (String) obj[4],
-						(Date) obj[5]);
+
+				BenMenstrualDetails history = new BenMenstrualDetails((Date) obj[0], (String) obj[1], (String) obj[2],
+						(String) obj[3], (String) obj[4], (Date) obj[5]);
 				menstrualDetails.add(history);
 			}
 
@@ -1639,7 +1665,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	}
 
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
+	@Deprecated
 	@Override
 	public String fetchBenPastObstetricHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> femaleObstetricHistory = femaleObstetricHistoryRepo
@@ -1653,7 +1680,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		column.put("columnName", "Date of Capture");
 		column.put("keyName", "captureDate");
 		columns.add(column);
-		
+
 		column = new HashMap<>();
 		column.put("columnName", "Preg Order");
 		column.put("keyName", "pregOrder");
@@ -1743,12 +1770,11 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		if (null != femaleObstetricHistory) {
 			for (Object[] obj : femaleObstetricHistory) {
 
-				FemaleObstetricHistory history = new FemaleObstetricHistory((Date) obj[0], (Short) obj[1], 
-						(String) obj[2], (String) obj[3],  (String) obj[4], 
-						(String) obj[5],  (String) obj[6], (String) obj[7], 
-						(String) obj[8], (String) obj[9],  (String) obj[10],
-						(String) obj[11], (String) obj[12],  (String) obj[13], (String) obj[14],
-						(String) obj[15],  (String) obj[16], (String) obj[17]);
+				FemaleObstetricHistory history = new FemaleObstetricHistory((Date) obj[0], (Short) obj[1],
+						(String) obj[2], (String) obj[3], (String) obj[4], (String) obj[5], (String) obj[6],
+						(String) obj[7], (String) obj[8], (String) obj[9], (String) obj[10], (String) obj[11],
+						(String) obj[12], (String) obj[13], (String) obj[14], (String) obj[15], (String) obj[16],
+						(String) obj[17]);
 				femaleObstetricDetails.add(history);
 			}
 
@@ -1760,7 +1786,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	}
 
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
+	@Deprecated
 	@Override
 	public String fetchBenOptionalVaccineHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> childOptionalVaccineDetail = childOptionalVaccineDetailRepo
@@ -1774,7 +1801,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		column.put("columnName", "Date of Capture");
 		column.put("keyName", "captureDate");
 		columns.add(column);
-		
+
 		column = new HashMap<>();
 		column.put("columnName", "Default Receiving Age");
 		column.put("keyName", "defaultReceivingAge");
@@ -1785,16 +1812,15 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		column.put("keyName", "vaccineName");
 		columns.add(column);
 
-		/** Later we will enable these two if needed**/
-	/*	column = new HashMap<String, Object>();
-		column.put("columnName", "Status");
-		column.put("keyName", "status");
-		columns.add(column);
-
-		column = new HashMap<String, Object>();
-		column.put("columnName", "Received Date");
-		column.put("keyName", "receivedDate");
-		columns.add(column);*/
+		/** Later we will enable these two if needed **/
+		/*
+		 * column = new HashMap<String, Object>(); column.put("columnName",
+		 * "Status"); column.put("keyName", "status"); columns.add(column);
+		 * 
+		 * column = new HashMap<String, Object>(); column.put("columnName",
+		 * "Received Date"); column.put("keyName", "receivedDate");
+		 * columns.add(column);
+		 */
 
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Actual Receiving Age");
@@ -1809,8 +1835,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		ArrayList<ChildOptionalVaccineDetail> childOptionalVaccineDetails = new ArrayList<ChildOptionalVaccineDetail>();
 		if (null != childOptionalVaccineDetail) {
 			for (Object[] obj : childOptionalVaccineDetail) {
-				ChildOptionalVaccineDetail history = new ChildOptionalVaccineDetail((Date) obj[0], (String) obj[1], (String) obj[2],
-						(String) obj[3], (Timestamp) obj[4], (String) obj[5], (String) obj[6]);
+				ChildOptionalVaccineDetail history = new ChildOptionalVaccineDetail((Date) obj[0], (String) obj[1],
+						(String) obj[2], (String) obj[3], (Timestamp) obj[4], (String) obj[5], (String) obj[6]);
 				childOptionalVaccineDetails.add(history);
 			}
 		}
@@ -1821,6 +1847,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	}
 
+	/* Method moved to common, Can remove from here later */
+	@Deprecated
 	@Override
 	public String fetchBenImmunizationHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> childVaccineDetail = childVaccineDetail1Repo.getBenChildVaccineDetails(beneficiaryRegID);
@@ -1833,7 +1861,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		column.put("columnName", "Date of Capture");
 		column.put("keyName", "captureDate");
 		columns.add(column);
-		
+
 		column = new HashMap<>();
 		column.put("columnName", "Default Receiving Age");
 		column.put("keyName", "defaultReceivingAge");
@@ -1882,7 +1910,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return new Gson().toJson(HistoryDetailsMap);
 	}
 
-	/*Method moved to common service, Can remove from here*/
+	/* Method moved to common service, Can remove from here */
+	@Deprecated
 	public BenMedHistory getPastHistoryData(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> pastHistory = benMedHistoryRepo.getBenPastHistory(beneficiaryRegID, benVisitID);
 
@@ -1891,7 +1920,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return benMedHistory;
 	}
 
-	/*Method moved to common service, Can remove from here*/
+	/* Method moved to common service, Can remove from here */
+	@Deprecated
 	public WrapperComorbidCondDetails getComorbidityConditionsHistory(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> comrbidityConds = bencomrbidityCondRepo.getBencomrbidityCondDetails(beneficiaryRegID,
 				benVisitID);
@@ -1900,8 +1930,9 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 				.getComorbidityDetails(comrbidityConds);
 		return comrbidityCondDetails;
 	}
-	
-	/*Method moved to common service, Can remove from here*/
+
+	/* Method moved to common service, Can remove from here */
+	@Deprecated
 	public WrapperMedicationHistory getMedicationHistory(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> medicationHistory = benMedicationHistoryRepo.getBenMedicationHistoryDetail(beneficiaryRegID,
 				benVisitID);
@@ -1911,7 +1942,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return wrapperMedicationHistory;
 	}
 
-	/*Method moved to common service, Can remove from here*/
+	/* Method moved to common service, Can remove from here */
+	@Deprecated
 	public BenPersonalHabit getPersonalHistory(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> personalDetails = benPersonalHabitRepo.getBenPersonalHabitDetail(beneficiaryRegID,
 				benVisitID);
@@ -1929,7 +1961,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return personalHabits;
 	}
 
-	/*Method moved to common service, Can remove from here*/
+	/* Method moved to common service, Can remove from here */
+	@Deprecated
 	public BenFamilyHistory getFamilyHistory(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> familyHistory = benFamilyHistoryRepo.getBenFamilyHistoryDetail(beneficiaryRegID,
 				benVisitID);
@@ -1938,7 +1971,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return familyHistoryDetails;
 	}
 
-	/*Method moved to common service, Can remove from here*/
+	/* Method moved to common service, Can remove from here */
+	@Deprecated
 	public BenMenstrualDetails getMenstrualHistory(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> menstrualHistory = benMenstrualDetailsRepo.getBenMenstrualDetail(beneficiaryRegID,
 				benVisitID);
@@ -1947,7 +1981,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return menstrualHistoryDetails;
 	}
 
-	/*Method moved to common service, Can remove from here*/
+	/* Method moved to common service, Can remove from here */
+	@Deprecated
 	public WrapperFemaleObstetricHistory getFemaleObstetricHistory(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> femaleObstetricHistory = femaleObstetricHistoryRepo
 				.getBenFemaleObstetricHistoryDetail(beneficiaryRegID, benVisitID);
@@ -1957,7 +1992,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return femaleObstetricHistoryDetails;
 	}
 
-	/*Method moved to common service, Can remove from here*/
+	/* Method moved to common service, Can remove from here */
+	@Deprecated
 	public WrapperChildOptionalVaccineDetail getChildOptionalVaccineHistory(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> childOptionalVaccineDetail = childOptionalVaccineDetailRepo
 				.getBenOptionalVaccineDetail(beneficiaryRegID, benVisitID);
@@ -1967,7 +2003,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return childOptionalVaccineDetails;
 	}
 
-	/*Method moved to common service, Can remove from here*/
+	/* Method moved to common service, Can remove from here */
+	@Deprecated
 	public WrapperImmunizationHistory getImmunizationHistory(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> childVaccineDetail = childVaccineDetail1Repo.getBenChildVaccineDetails(beneficiaryRegID,
 				benVisitID);
@@ -1984,7 +2021,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 				benAdherence.getBenVisitID(), benAdherence.getID());
 		if (null != processed && !"N".equals(processed)) {
 			processed = "U";
-		}else{
+		} else {
 			processed = "N";
 		}
 		r = benAdherenceRepo.updateBenAdherence(benAdherence.getToDrugs(), benAdherence.getDrugReason(),
@@ -1998,7 +2035,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
-	/*Moved to common service, Can remove from here*/
+	/* Moved to common service, Can remove from here */
 	@Override
 	public int updateBenChiefComplaints(List<BenChiefComplaint> benChiefComplaintList) {
 		int r = 0;
@@ -2069,7 +2106,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 				ancCareDetailsOBJ.getBenVisitID());
 		if (null != processed && !"N".equals(processed)) {
 			processed = "U";
-		}else{
+		} else {
 			processed = "N";
 		}
 
@@ -2120,7 +2157,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 				processed = womenVaccineStatuses.get(ancWomenVaccineDetail.getVaccineName());
 				if (null != processed && !processed.equals("N")) {
 					processed = "U";
-				}else{
+				} else {
 					processed = "N";
 				}
 
@@ -2134,7 +2171,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
-	/*Moved to common service, Can remove from here*/
+	/* Moved to common service, Can remove from here */
+	@Deprecated
 	@Override
 	public int updateBenAncPastHistoryDetails(BenMedHistory benMedHistory) throws ParseException {
 		Integer r = 0;
@@ -2144,17 +2182,16 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 			// updated history
 			ArrayList<Object[]> benMedHistoryStatuses = benMedHistoryRepo
 					.getBenMedHistoryStatus(benMedHistory.getBeneficiaryRegID(), benMedHistory.getBenVisitID());
-			
-			
+
 			for (Object[] obj : benMedHistoryStatuses) {
 				String processed = (String) obj[1];
 				if (null != processed && !"N".equals(processed)) {
 					processed = "U";
-				}else{
+				} else {
 					processed = "N";
 				}
 				delRes = benMedHistoryRepo.deleteExistingBenMedHistory((Long) obj[0], processed);
-				
+
 			}
 
 			ArrayList<BenMedHistory> benMedHistoryList = benMedHistory.getBenPastHistory();
@@ -2166,25 +2203,27 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
-	/*Moved to common service, Can remove from here*/
+	/* Moved to common service, Can remove from here */
+	@Deprecated
 	@Override
 	public int updateBenANCComorbidConditions(WrapperComorbidCondDetails wrapperComorbidCondDetails) {
 		int r = 0;
 		int delRes = 0;
 		if (null != wrapperComorbidCondDetails) {
-			
-			ArrayList<Object[]> benComorbidCondHistoryStatuses = bencomrbidityCondRepo.getBenComrbidityCondHistoryStatus(
-					wrapperComorbidCondDetails.getBeneficiaryRegID(), wrapperComorbidCondDetails.getBenVisitID());
-			
+
+			ArrayList<Object[]> benComorbidCondHistoryStatuses = bencomrbidityCondRepo
+					.getBenComrbidityCondHistoryStatus(wrapperComorbidCondDetails.getBeneficiaryRegID(),
+							wrapperComorbidCondDetails.getBenVisitID());
+
 			for (Object[] obj : benComorbidCondHistoryStatuses) {
 				String processed = (String) obj[1];
 				if (null != processed && !"N".equals(processed)) {
 					processed = "U";
-				}else{
+				} else {
 					processed = "N";
 				}
 				delRes = bencomrbidityCondRepo.deleteExistingBenComrbidityCondDetails((Long) obj[0], processed);
-				
+
 			}
 
 			ArrayList<BencomrbidityCondDetails> bencomrbidityCondDetailsList = wrapperComorbidCondDetails
@@ -2198,28 +2237,28 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
-	/*Moved to common service, Can remove from here*/
+	/* Moved to common service, Can remove from here */
+	@Deprecated
 	@Override
 	public int updateBenANCMedicationHistory(WrapperMedicationHistory wrapperMedicationHistory) {
 		Integer r = 0;
 		int delRes = 0;
 		if (null != wrapperMedicationHistory) {
-			
+
 			ArrayList<Object[]> benMedicationHistoryStatuses = benMedicationHistoryRepo.getBenMedicationHistoryStatus(
-					wrapperMedicationHistory.getBeneficiaryRegID(),
-					wrapperMedicationHistory.getBenVisitID());
-			
+					wrapperMedicationHistory.getBeneficiaryRegID(), wrapperMedicationHistory.getBenVisitID());
+
 			for (Object[] obj : benMedicationHistoryStatuses) {
 				String processed = (String) obj[1];
 				if (null != processed && !"N".equals(processed)) {
 					processed = "U";
-				}else{
+				} else {
 					processed = "N";
 				}
 				delRes = benMedicationHistoryRepo.deleteExistingBenMedicationHistory((Long) obj[0], processed);
-				
+
 			}
-			
+
 			ArrayList<BenMedicationHistory> benMedicationHistoryList = wrapperMedicationHistory
 					.getBenMedicationHistoryDetails();
 			ArrayList<BenMedicationHistory> res = (ArrayList<BenMedicationHistory>) benMedicationHistoryRepo
@@ -2231,25 +2270,26 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
-	/*Moved to common service, Can remove from here*/
+	/* Moved to common service, Can remove from here */
+	@Deprecated
 	@Override
 	public int updateBenANCPersonalHistory(BenPersonalHabit benPersonalHabit) {
 		Integer r = 0;
 		int delRes = 0;
 		if (null != benPersonalHabit) {
-			
-			ArrayList<Object[]> benPersonalHistoryStatuses = benPersonalHabitRepo.getBenPersonalHistoryStatus(benPersonalHabit.getBeneficiaryRegID(),
-					benPersonalHabit.getBenVisitID());
-			
+
+			ArrayList<Object[]> benPersonalHistoryStatuses = benPersonalHabitRepo.getBenPersonalHistoryStatus(
+					benPersonalHabit.getBeneficiaryRegID(), benPersonalHabit.getBenVisitID());
+
 			for (Object[] obj : benPersonalHistoryStatuses) {
 				String processed = (String) obj[1];
 				if (null != processed && !"N".equals(processed)) {
 					processed = "U";
-				}else{
+				} else {
 					processed = "N";
 				}
 				delRes = benPersonalHabitRepo.deleteExistingBenPersonalHistory((Integer) obj[0], processed);
-				
+
 			}
 
 			ArrayList<BenPersonalHabit> personalHabits = benPersonalHabit.getPersonalHistory();
@@ -2261,21 +2301,22 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
-	/*Moved to common service, Can remove from here*/
+	/* Moved to common service, Can remove from here */
+	@Deprecated
 	@Override
 	public int updateBenANCAllergicHistory(BenAllergyHistory benAllergyHistory) {
 		Integer r = 0;
 		int delRes = 0;
 		if (null != benAllergyHistory) {
-			
-			ArrayList<Object[]> benAllergyHistoryStatuses = benAllergyHistoryRepo.getBenAllergyHistoryStatus(benAllergyHistory.getBeneficiaryRegID(),
-					benAllergyHistory.getBenVisitID());
-			
+
+			ArrayList<Object[]> benAllergyHistoryStatuses = benAllergyHistoryRepo.getBenAllergyHistoryStatus(
+					benAllergyHistory.getBeneficiaryRegID(), benAllergyHistory.getBenVisitID());
+
 			for (Object[] obj : benAllergyHistoryStatuses) {
 				String processed = (String) obj[1];
 				if (null != processed && !"N".equals(processed)) {
 					processed = "U";
-				}else{
+				} else {
 					processed = "N";
 				}
 				delRes = benAllergyHistoryRepo.deleteExistingBenAllergyHistory((Long) obj[0], processed);
@@ -2289,27 +2330,28 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		}
 		return r;
 	}
-	
-	/*Moved to common service, Can remove from here*/
+
+	/* Moved to common service, Can remove from here */
+	@Deprecated
 	@Override
 	public int updateBenANCFamilyHistory(BenFamilyHistory benFamilyHistory) {
 		Integer r = 0;
 		int delRes = 0;
 		if (null != benFamilyHistory) {
-			
-			ArrayList<Object[]> benFamilyHistoryStatuses = benFamilyHistoryRepo.getBenFamilyHistoryStatus(benFamilyHistory.getBeneficiaryRegID(),
-					benFamilyHistory.getBenVisitID());
-			
+
+			ArrayList<Object[]> benFamilyHistoryStatuses = benFamilyHistoryRepo.getBenFamilyHistoryStatus(
+					benFamilyHistory.getBeneficiaryRegID(), benFamilyHistory.getBenVisitID());
+
 			for (Object[] obj : benFamilyHistoryStatuses) {
 				String processed = (String) obj[1];
 				if (null != processed && !"N".equals(processed)) {
 					processed = "U";
-				}else{
+				} else {
 					processed = "N";
 				}
 				delRes = benFamilyHistoryRepo.deleteExistingBenFamilyHistory((Long) obj[0], processed);
 			}
-			
+
 			ArrayList<BenFamilyHistory> familyHistoryList = benFamilyHistory.getBenFamilyHistory();
 			ArrayList<BenFamilyHistory> res = (ArrayList<BenFamilyHistory>) benFamilyHistoryRepo
 					.save(familyHistoryList);
@@ -2320,27 +2362,29 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
-	/*Moved to common service, Can remove from here*/
+	/* Moved to common service, Can remove from here */
+	@Deprecated
 	@Override
 	public int updateChildOptionalVaccineDetail(WrapperChildOptionalVaccineDetail wrapperChildOptionalVaccineDetail) {
 		Integer r = 0;
 		int delRes = 0;
 		if (null != wrapperChildOptionalVaccineDetail) {
-			
-			ArrayList<Object[]> benChildOptionalVaccineHistoryStatuses = childOptionalVaccineDetailRepo.getBenChildOptionalVaccineHistoryStatus(
-					wrapperChildOptionalVaccineDetail.getBeneficiaryRegID(),
-					wrapperChildOptionalVaccineDetail.getBenVisitID());
-			
+
+			ArrayList<Object[]> benChildOptionalVaccineHistoryStatuses = childOptionalVaccineDetailRepo
+					.getBenChildOptionalVaccineHistoryStatus(wrapperChildOptionalVaccineDetail.getBeneficiaryRegID(),
+							wrapperChildOptionalVaccineDetail.getBenVisitID());
+
 			for (Object[] obj : benChildOptionalVaccineHistoryStatuses) {
 				String processed = (String) obj[1];
 				if (null != processed && !"N".equals(processed)) {
 					processed = "U";
-				}else{
+				} else {
 					processed = "N";
 				}
-				delRes = childOptionalVaccineDetailRepo.deleteExistingChildOptionalVaccineDetail((Long) obj[0], processed);
+				delRes = childOptionalVaccineDetailRepo.deleteExistingChildOptionalVaccineDetail((Long) obj[0],
+						processed);
 			}
-			
+
 			ArrayList<ChildOptionalVaccineDetail> childOptionalVaccineDetails = wrapperChildOptionalVaccineDetail
 					.getChildOptionalVaccineDetails();
 			ArrayList<ChildOptionalVaccineDetail> res = (ArrayList<ChildOptionalVaccineDetail>) childOptionalVaccineDetailRepo
@@ -2352,6 +2396,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
+	/* Moved to common service, Can remove from here */
+	@Deprecated
 	@Override
 	public int updateANCChildImmunizationDetail(WrapperImmunizationHistory wrapperImmunizationHistory) {
 		Integer r = 0;
@@ -2376,13 +2422,66 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 						.get(childVaccineDetail.getDefaultReceivingAge() + "-" + childVaccineDetail.getVaccineName());
 				if (null != processed && !processed.equals("N")) {
 					processed = "U";
-				}else{
+				} else {
 					processed = "N";
 				}
 				r = childVaccineDetail1Repo.updateChildANCImmunization(childVaccineDetail.getStatus(),
 						childVaccineDetail.getModifiedBy(), processed, childVaccineDetail.getBeneficiaryRegID(),
 						childVaccineDetail.getBenVisitID(), childVaccineDetail.getDefaultReceivingAge(),
 						childVaccineDetail.getVaccineName());
+			}
+		}
+		return r;
+	}
+
+	/* Moved to common service, Can remove from here */
+	@Deprecated
+	@Override
+	public int updateANCMenstrualHistory(BenMenstrualDetails benMenstrualDetails) {
+		int response = 0;
+		if (null != benMenstrualDetails) {
+			String processed = benMenstrualDetailsRepo.getBenMenstrualDetailStatus(
+					benMenstrualDetails.getBeneficiaryRegID(), benMenstrualDetails.getBenVisitID());
+			if (null != processed && !"N".equals(processed)) {
+				processed = "U";
+			} else {
+				processed = "N";
+			}
+			response = benMenstrualDetailsRepo.updateMenstrualDetails(benMenstrualDetails.getMenstrualCycleStatusID(),
+					benMenstrualDetails.getRegularity(), benMenstrualDetails.getMenstrualCyclelengthID(),
+					benMenstrualDetails.getCycleLength(), benMenstrualDetails.getMenstrualFlowDurationID(),
+					benMenstrualDetails.getBloodFlowDuration(), benMenstrualDetails.getMenstrualProblemID(),
+					benMenstrualDetails.getProblemName(), benMenstrualDetails.getlMPDate(),
+					benMenstrualDetails.getModifiedBy(), processed, benMenstrualDetails.getBeneficiaryRegID(),
+					benMenstrualDetails.getBenVisitID());
+		}
+		return response;
+	}
+
+	@Override
+	public int updateANCPastObstetricHistory(WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory) {
+		Integer r = 0;
+		int delRes = 0;
+		if (null != wrapperFemaleObstetricHistory) {
+			ArrayList<Object[]> benObstetricHistoryStatuses = femaleObstetricHistoryRepo.getBenObstetricHistoryStatus(
+					wrapperFemaleObstetricHistory.getBeneficiaryRegID(), wrapperFemaleObstetricHistory.getBenVisitID());
+
+			for (Object[] obj : benObstetricHistoryStatuses) {
+				String processed = (String) obj[1];
+				if (null != processed && processed != "N") {
+					processed = "U";
+				} else {
+					processed = "N";
+				}
+				delRes = femaleObstetricHistoryRepo.deleteExistingObstetricHistory((Long) obj[0], processed);
+			}
+
+			ArrayList<FemaleObstetricHistory> femaleObstetricHistoryDetails = wrapperFemaleObstetricHistory
+					.getFemaleObstetricHistoryDetails();
+			ArrayList<FemaleObstetricHistory> res = (ArrayList<FemaleObstetricHistory>) femaleObstetricHistoryRepo
+					.save(femaleObstetricHistoryDetails);
+			if (null != res && res.size() > 0) {
+				r = 1;
 			}
 		}
 		return r;
@@ -2398,7 +2497,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 					anthropometryDetail.getBenVisitID());
 			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
-			}else{
+			} else {
 				processed = "N";
 			}
 
@@ -2424,7 +2523,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 					physicalVitalDetail.getBenVisitID());
 			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
-			}else{
+			} else {
 				processed = "N";
 			}
 
@@ -2447,7 +2546,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
-	/*Method moved to common  service, Can remove from here*/
+	/* Method moved to common service, Can remove from here */
 	public int updatePhyGeneralExamination(PhyGeneralExamination generalExamination) {
 		int response = 0;
 		String TypeOfDangerSigns = "";
@@ -2458,7 +2557,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 					generalExamination.getBeneficiaryRegID(), generalExamination.getBenVisitID());
 			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
-			}else{
+			} else {
 				processed = "N";
 			}
 
@@ -2485,7 +2584,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return response;
 	}
 
-	/*Method moved to common  service, Can remove from here*/
+	/* Method moved to common service, Can remove from here */
 	@Override
 	public int updatePhyHeadToToeExamination(PhyHeadToToeExamination headToToeExamination) {
 		int response = 0;
@@ -2494,7 +2593,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 					headToToeExamination.getBeneficiaryRegID(), headToToeExamination.getBenVisitID());
 			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
-			}else{
+			} else {
 				processed = "N";
 			}
 			response = phyHeadToToeExaminationRepo.updatePhyHeadToToeExamination(
@@ -2510,7 +2609,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return response;
 	}
 
-	/*Only for General OPD, Can remove from here*/
+	/* Only for General OPD, Can remove from here */
 	@Override
 	public int updateSysGastrointestinalExamination(SysGastrointestinalExamination gastrointestinalExamination) {
 		int response = 0;
@@ -2519,7 +2618,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 					gastrointestinalExamination.getBeneficiaryRegID(), gastrointestinalExamination.getBenVisitID());
 			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
-			}else{
+			} else {
 				processed = "N";
 			}
 			response = sysGastrointestinalExaminationRepo.updateSysGastrointestinalExamination(
@@ -2534,8 +2633,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		}
 		return response;
 	}
-	
-	/*Method moved to common  service, Can remove from here*/
+
+	/* Method moved to common service, Can remove from here */
 	@Override
 	public int updateSysCardiovascularExamination(SysCardiovascularExamination cardiovascular) {
 		int response = 0;
@@ -2555,7 +2654,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return response;
 	}
 
-	/*Method moved to common  service, Can remove from here*/
+	/* Method moved to common service, Can remove from here */
 	@Override
 	public int updateSysRespiratoryExamination(SysRespiratoryExamination respiratory) {
 		int r = 0;
@@ -2564,7 +2663,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 					.getBenRespiratoryExaminationStatus(respiratory.getBeneficiaryRegID(), respiratory.getBenVisitID());
 			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
-			}else{
+			} else {
 				processed = "N";
 			}
 			r = sysRespiratoryExaminationRepo.updateSysRespiratoryExamination(respiratory.getTrachea(),
@@ -2579,7 +2678,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
-	/*Method moved to common  service, Can remove from here*/
+	/* Method moved to common service, Can remove from here */
 	@Override
 	public int updateSysCentralNervousExamination(SysCentralNervousExamination centralNervous) {
 		int r = 0;
@@ -2588,7 +2687,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 					centralNervous.getBeneficiaryRegID(), centralNervous.getBenVisitID());
 			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
-			}else{
+			} else {
 				processed = "N";
 			}
 			r = sysCentralNervousExaminationRepo.updateSysCentralNervousExamination(centralNervous.getHandedness(),
@@ -2602,7 +2701,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
-	/*Method moved to common  service, Can remove from here*/
+	/* Method moved to common service, Can remove from here */
 	@Override
 	public int updateSysMusculoskeletalSystemExamination(SysMusculoskeletalSystemExamination musculoskeletalSystem) {
 		int r = 0;
@@ -2611,7 +2710,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 					musculoskeletalSystem.getBeneficiaryRegID(), musculoskeletalSystem.getBenVisitID());
 			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
-			}else{
+			} else {
 				processed = "N";
 			}
 			r = sysMusculoskeletalSystemExaminationRepo.updateSysMusculoskeletalSystemExamination(
@@ -2625,7 +2724,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
-	/*Method moved to common  service, Can remove from here*/
+	/* Method moved to common service, Can remove from here */
 	@Override
 	public int updateSysGenitourinarySystemExamination(SysGenitourinarySystemExamination genitourinarySystem) {
 		int r = 0;
@@ -2634,7 +2733,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 					genitourinarySystem.getBeneficiaryRegID(), genitourinarySystem.getBenVisitID());
 			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
-			}else{
+			} else {
 				processed = "N";
 			}
 			r = sysGenitourinarySystemExaminationRepo.updateSysGenitourinarySystemExamination(
@@ -2653,7 +2752,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 					obstetricExamination.getBeneficiaryRegID(), obstetricExamination.getBenVisitID());
 			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
-			}else{
+			} else {
 				processed = "N";
 			}
 			r = sysObstetricExaminationRepo.updateSysObstetricExamination(obstetricExamination.getFundalHeight(),
@@ -2667,54 +2766,4 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
-	@Override
-	public int updateANCMenstrualHistory(BenMenstrualDetails benMenstrualDetails) {
-		int response = 0;
-		if (null != benMenstrualDetails) {
-			String processed = benMenstrualDetailsRepo.getBenMenstrualDetailStatus(
-					benMenstrualDetails.getBeneficiaryRegID(), benMenstrualDetails.getBenVisitID());
-			if (null != processed && !"N".equals(processed)) {
-				processed = "U";
-			}else{
-				processed = "N";
-			}
-			response = benMenstrualDetailsRepo.updateMenstrualDetails(benMenstrualDetails.getMenstrualCycleStatusID(),
-					benMenstrualDetails.getRegularity(), benMenstrualDetails.getMenstrualCyclelengthID(),
-					benMenstrualDetails.getCycleLength(), benMenstrualDetails.getMenstrualFlowDurationID(),
-					benMenstrualDetails.getBloodFlowDuration(), benMenstrualDetails.getMenstrualProblemID(),
-					benMenstrualDetails.getProblemName(), benMenstrualDetails.getlMPDate(),
-					benMenstrualDetails.getModifiedBy(), processed, benMenstrualDetails.getBeneficiaryRegID(),
-					benMenstrualDetails.getBenVisitID());
-		}
-		return response;
-	}
-
-	@Override
-	public int updateANCPastObstetricHistory(WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory) {
-		Integer r = 0;
-		int delRes = 0;
-		if (null != wrapperFemaleObstetricHistory) {
-			ArrayList<Object[]> benObstetricHistoryStatuses = femaleObstetricHistoryRepo.getBenObstetricHistoryStatus(
-					wrapperFemaleObstetricHistory.getBeneficiaryRegID(), wrapperFemaleObstetricHistory.getBenVisitID());
-			
-			for (Object[] obj : benObstetricHistoryStatuses) {
-				String processed = (String) obj[1];
-				if (null != processed && processed != "N") {
-					processed = "U";
-				}else{
-					processed = "N";
-				}
-				delRes = femaleObstetricHistoryRepo.deleteExistingObstetricHistory((Long) obj[0], processed);
-			}
-
-			ArrayList<FemaleObstetricHistory> femaleObstetricHistoryDetails = wrapperFemaleObstetricHistory
-					.getFemaleObstetricHistoryDetails();
-			ArrayList<FemaleObstetricHistory> res = (ArrayList<FemaleObstetricHistory>) femaleObstetricHistoryRepo
-					.save(femaleObstetricHistoryDetails);
-			if (null != res && res.size() > 0) {
-				r = 1;
-			}
-		}
-		return r;
-	}
 }
