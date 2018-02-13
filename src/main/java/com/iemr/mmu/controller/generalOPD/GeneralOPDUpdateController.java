@@ -21,6 +21,11 @@ import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 
+/***
+ * 
+ * @author NE298657
+ *
+ */
 @RestController
 @CrossOrigin
 @RequestMapping(value = "/generalOPD", headers = "Authorization")
@@ -34,11 +39,11 @@ public class GeneralOPDUpdateController {
 	public void setGeneralOPDServiceImpl(GeneralOPDServiceImpl generalOPDServiceImpl) {
 		this.generalOPDServiceImpl = generalOPDServiceImpl;
 	}
-	
+
 	@CrossOrigin
 	@ApiOperation(value = "update General OPD Visit screen Nurse Data in Doctor screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/visitDetailsScreen" }, method = { RequestMethod.POST })
-	public String updateVisitNurse( @RequestBody String requestObj) {
+	public String updateVisitNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("updateVisitNurse request:" + requestObj);
@@ -65,19 +70,19 @@ public class GeneralOPDUpdateController {
 
 		return response.toString();
 	}
-	
+
 	/**
 	 * 
 	 * @param requestObj
 	 * @return success or failure response
-	 * @objective Replace General OPD History Data entered by Nurse with
-	 *            the details entered by Doctor
+	 * @objective Replace General OPD History Data entered by Nurse with the
+	 *            details entered by Doctor
 	 */
 
 	@CrossOrigin
 	@ApiOperation(value = "update History Data in Doctor screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/historyScreen" }, method = { RequestMethod.POST })
-	public String updateHistoryNurse( @RequestBody String requestObj) {
+	public String updateHistoryNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("updateHistoryNurse request:" + requestObj);
@@ -104,19 +109,19 @@ public class GeneralOPDUpdateController {
 
 		return response.toString();
 	}
-	
+
 	/**
 	 * 
 	 * @param requestObj
 	 * @return success or failure response
-	 * @objective Replace General OPD Vital Data entered by Nurse with
-	 *            the details entered by Doctor
+	 * @objective Replace General OPD Vital Data entered by Nurse with the
+	 *            details entered by Doctor
 	 */
 
 	@CrossOrigin
 	@ApiOperation(value = "update General OPD Vital Data in Doctor screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/vitalScreen" }, method = { RequestMethod.POST })
-	public String updateVitalNurse( @RequestBody String requestObj) {
+	public String updateVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("updateVitalNurse request:" + requestObj);
@@ -143,19 +148,19 @@ public class GeneralOPDUpdateController {
 
 		return response.toString();
 	}
-	
+
 	/**
 	 * 
 	 * @param requestObj
 	 * @return success or failure response
-	 * @objective Replace General OPD History Data entered by Nurse with
-	 *            the details entered by Doctor
+	 * @objective Replace General OPD History Data entered by Nurse with the
+	 *            details entered by Doctor
 	 */
 
 	@CrossOrigin
 	@ApiOperation(value = "update General OPD Examination Data in Doctor screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/examinationScreen" }, method = { RequestMethod.POST })
-	public String updateGeneralOPDExaminationNurse( @RequestBody String requestObj) {
+	public String updateGeneralOPDExaminationNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("updateGeneralOPDExaminationNurse request:" + requestObj);

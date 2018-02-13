@@ -17,6 +17,11 @@ import com.iemr.mmu.utils.response.OutputResponse;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
+/***
+ * 
+ * @author NE298657
+ *
+ */
 @RestController
 @CrossOrigin
 @RequestMapping(value = "/generalOPD", headers = "Authorization")
@@ -29,7 +34,7 @@ public class GeneralOPDFetchController {
 	public void setGeneralOPDServiceImpl(GeneralOPDServiceImpl generalOPDServiceImpl) {
 		this.generalOPDServiceImpl = generalOPDServiceImpl;
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Past History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenPastHistory" }, method = { RequestMethod.POST })
@@ -55,12 +60,11 @@ public class GeneralOPDFetchController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Tobacco History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenTobaccoHistory" }, method = { RequestMethod.POST })
-	public String getBenTobaccoHistory(
-			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenTobaccoHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("getBenTobaccoHistory request:" + comingRequest);
@@ -82,12 +86,11 @@ public class GeneralOPDFetchController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Alcohol History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenAlcoholHistory" }, method = { RequestMethod.POST })
-	public String getBenAlcoholHistory(
-			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenAlcoholHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("getBenAlcoholHistory request:" + comingRequest);
@@ -109,12 +112,11 @@ public class GeneralOPDFetchController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Allergy History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenAllergyHistory" }, method = { RequestMethod.POST })
-	public String getBenAllergyHistory(
-			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenAllergyHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("getBenAllergyHistory request:" + comingRequest);
@@ -136,7 +138,7 @@ public class GeneralOPDFetchController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Medication History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenMedicationHistory" }, method = { RequestMethod.POST })
@@ -163,12 +165,11 @@ public class GeneralOPDFetchController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Family History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenFamilyHistory" }, method = { RequestMethod.POST })
-	public String getBenFamilyHistory(
-			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenFamilyHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("getBenFamilyHistory request:" + comingRequest);
@@ -190,7 +191,7 @@ public class GeneralOPDFetchController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Menstrual History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenMenstrualHistory" }, method = { RequestMethod.POST })
@@ -217,7 +218,7 @@ public class GeneralOPDFetchController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary past Obstetric History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenPastObstetricHistory" }, method = { RequestMethod.POST })
@@ -244,7 +245,7 @@ public class GeneralOPDFetchController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Comorbidity Condition Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenComorbidityConditionHistory" }, method = { RequestMethod.POST })
@@ -271,7 +272,7 @@ public class GeneralOPDFetchController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Optional Vaccine Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenOptionalVaccineHistory" }, method = { RequestMethod.POST })
@@ -298,7 +299,7 @@ public class GeneralOPDFetchController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Child Vaccine(Immunization) Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenChildVaccineHistory" }, method = { RequestMethod.POST })
@@ -326,7 +327,6 @@ public class GeneralOPDFetchController {
 		return response.toString();
 	}
 
-	
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Perinatal History Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenPerinatalHistory" }, method = { RequestMethod.POST })
@@ -353,12 +353,11 @@ public class GeneralOPDFetchController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Child Feeding History Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenFeedingHistory" }, method = { RequestMethod.POST })
-	public String getBenFeedingHistory(
-			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenFeedingHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("getBenFeedingHistory request:" + comingRequest);
@@ -380,7 +379,7 @@ public class GeneralOPDFetchController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Child Development History Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenDevelopmentHistory" }, method = { RequestMethod.POST })
@@ -407,7 +406,7 @@ public class GeneralOPDFetchController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Visit details from Nurse General OPD", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenVisitDetailsFrmNurseGOPD" }, method = { RequestMethod.POST })
@@ -436,7 +435,7 @@ public class GeneralOPDFetchController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary General OPD History details from Nurse to Doctor ", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenHistoryDetails" }, method = { RequestMethod.POST })
@@ -464,7 +463,7 @@ public class GeneralOPDFetchController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary vital details from Nurse GeneralOPD", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenVitalDetailsFrmNurse" }, method = { RequestMethod.POST })
@@ -492,7 +491,7 @@ public class GeneralOPDFetchController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary General OPD Examination details from Nurse to Doctor ", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenExaminationDetails" }, method = { RequestMethod.POST })

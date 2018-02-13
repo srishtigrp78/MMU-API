@@ -91,15 +91,18 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 			if (benVisitID != null && benVisitID > 0) {
 				// call method to save History data
-				historySaveSuccessFlag = saveBenGeneralOPDHistoryDetails(requestOBJ.getAsJsonObject("historyDetails"),
-						benVisitID);
+				if (requestOBJ.has("historyDetails") && !requestOBJ.get("historyDetails").isJsonNull())
+					historySaveSuccessFlag = saveBenGeneralOPDHistoryDetails(
+							requestOBJ.getAsJsonObject("historyDetails"), benVisitID);
 
 				// call method to save vital data
-				vitalSaveSuccessFlag = saveBenVitalDetails(requestOBJ.getAsJsonObject("vitalDetails"), benVisitID);
+				if (requestOBJ.has("vitalDetails") && !requestOBJ.get("vitalDetails").isJsonNull())
+					vitalSaveSuccessFlag = saveBenVitalDetails(requestOBJ.getAsJsonObject("vitalDetails"), benVisitID);
 
 				// call method to save examination data
-				examtnSaveSuccessFlag = saveBenExaminationDetails(requestOBJ.getAsJsonObject("examinationDetails"),
-						benVisitID);
+				if (requestOBJ.has("examinationDetails") && !requestOBJ.get("examinationDetails").isJsonNull())
+					examtnSaveSuccessFlag = saveBenExaminationDetails(requestOBJ.getAsJsonObject("examinationDetails"),
+							benVisitID);
 
 				JsonObject tmpOBJ = requestOBJ.get("visitDetails").getAsJsonObject();
 				JsonObject tmpOBJ1 = tmpOBJ.get("visitDetails").getAsJsonObject();
@@ -176,6 +179,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				pastHistorySuccessFlag = commonNurseServiceImpl.saveBenPastHistory(benMedHistory);
 			}
 
+		} else {
+			pastHistorySuccessFlag = new Long(1);
 		}
 
 		// Save Comorbidity/concurrent Conditions
@@ -187,6 +192,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				wrapperComorbidCondDetails.setBenVisitID(benVisitID);
 				comrbidSuccessFlag = commonNurseServiceImpl.saveBenComorbidConditions(wrapperComorbidCondDetails);
 			}
+		} else {
+			comrbidSuccessFlag = new Long(1);
 		}
 
 		// Save Medication History
@@ -199,6 +206,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				medicationSuccessFlag = commonNurseServiceImpl.saveBenMedicationHistory(wrapperMedicationHistory);
 			}
 
+		} else {
+			medicationSuccessFlag = new Long(1);
 		}
 
 		// Save Past Obstetric History
@@ -228,6 +237,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				menstrualHistorySuccessFlag = commonNurseServiceImpl.saveBenMenstrualHistory(menstrualDetails);
 			}
 
+		} else {
+			menstrualHistorySuccessFlag = 1;
 		}
 
 		// Save Family History
@@ -239,6 +250,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				benFamilyHistory.setBenVisitID(benVisitID);
 				familyHistorySuccessFlag = commonNurseServiceImpl.saveBenFamilyHistory(benFamilyHistory);
 			}
+		} else {
+			familyHistorySuccessFlag = new Long(1);
 		}
 
 		// Save Personal History
@@ -259,6 +272,9 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				allergyHistorySuccessFlag = commonNurseServiceImpl.saveAllergyHistory(benAllergyHistory);
 			}
 
+		} else {
+			personalHistorySuccessFlag = 1;
+			allergyHistorySuccessFlag = new Long(1);
 		}
 
 		// Save Other/Optional Vaccines History
@@ -307,6 +323,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 						.saveChildDevelopmentHistory(benChildDevelopmentHistory);
 			}
 
+		} else {
+			developmentHistorySuccessFlag = new Long(1);
 		}
 
 		// Save Feeding History
@@ -321,6 +339,9 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 			}
 
 		}
+		{
+			childFeedingSuccessFlag = new Long(1);
+		}
 
 		// Save Perinatal Histroy
 		if (generalOPDHistoryOBJ != null && generalOPDHistoryOBJ.has("perinatalHistroy")
@@ -333,6 +354,9 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				perinatalHistorySuccessFlag = generalOPDNurseServiceImpl.savePerinatalHistory(perinatalHistory);
 			}
 
+		}
+		{
+			perinatalHistorySuccessFlag = new Long(1);
 		}
 
 		Long historySaveSucccessFlag = null;
@@ -383,6 +407,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					&& phyVitalSuccessFlag > 0) {
 				vitalSuccessFlag = anthropometrySuccessFlag;
 			}
+		} else {
+			vitalSuccessFlag = new Long(1);
 		}
 
 		return vitalSuccessFlag;
@@ -410,6 +436,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				genExmnSuccessFlag = commonNurseServiceImpl.savePhyGeneralExamination(generalExamination);
 			}
 
+		} else {
+			genExmnSuccessFlag = new Long(1);
 		}
 
 		// Save Head to toe Examination Details
@@ -422,6 +450,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				headToToeExmnSuccessFlag = commonNurseServiceImpl.savePhyHeadToToeExamination(headToToeExamination);
 			}
 
+		} else {
+			headToToeExmnSuccessFlag = new Long(1);
 		}
 
 		// Save Gastro Intestinal Examination Details
@@ -435,6 +465,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 						.saveSysGastrointestinalExamination(gastrointestinalExamination);
 
 			}
+		} else {
+			gastroIntsExmnSuccessFlag = new Long(1);
 		}
 
 		// Save cardioVascular Examination Details
@@ -448,6 +480,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 						.saveSysCardiovascularExamination(cardiovascularExamination);
 
 			}
+		} else {
+			cardiExmnSuccessFlag = new Long(1);
 		}
 
 		// Save Respiratory Examination Details
@@ -460,6 +494,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				respiratoryExmnSuccessFlag = commonNurseServiceImpl
 						.saveSysRespiratoryExamination(sysRespiratoryExamination);
 			}
+		} else {
+			respiratoryExmnSuccessFlag = new Long(1);
 		}
 
 		// Save Central Nervous System Examination Details
@@ -472,6 +508,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				centralNrvsExmnSuccessFlag = commonNurseServiceImpl
 						.saveSysCentralNervousExamination(sysCentralNervousExamination);
 			}
+		} else {
+			centralNrvsExmnSuccessFlag = new Long(1);
 		}
 
 		// Save Musculoskeletal System Examination Details
@@ -486,6 +524,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 						.saveSysMusculoskeletalSystemExamination(sysMusculoskeletalSystemExamination);
 
 			}
+		} else {
+			muskelstlExmnSuccessFlag = new Long(1);
 		}
 
 		// Save Genito Urinary System Examination Details
@@ -500,6 +540,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 						.saveSysGenitourinarySystemExamination(sysGenitourinarySystemExamination);
 
 			}
+		} else {
+			genitorinaryExmnSuccessFlag = new Long(1);
 		}
 
 		Long exmnSuccessFlag = null;
@@ -622,7 +664,11 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				findingSuccessFlag = commonDoctorServiceImpl.saveFindings(requestOBJ.get("findings").getAsJsonObject());
 
 			} else {
+				findingSuccessFlag = 1;
 			}
+
+			// please this part of code later Neeraj *****
+
 			PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
 
 			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
@@ -656,7 +702,9 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					investigationSuccessFlag = nurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
 				}
 			} else {
+				investigationSuccessFlag = new Long(1);
 			}
+
 			if (requestOBJ.has("prescription") && !requestOBJ.get("prescription").isJsonNull()) {
 				JsonObject tmpOBJ = requestOBJ.get("prescription").getAsJsonObject();
 				if (tmpOBJ.has("prescribedDrugs") && !tmpOBJ.get("prescribedDrugs").isJsonNull()) {
@@ -682,6 +730,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				}
 			} else {
 			}
+
+			// END of please this part of code later Neeraj *****
 
 			if ((findingSuccessFlag != null && findingSuccessFlag > 0) && (prescriptionID != null && prescriptionID > 0)
 					&& (investigationSuccessFlag != null && investigationSuccessFlag > 0)
@@ -821,6 +871,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					BenMedHistory.class);
 			pastHistorySuccessFlag = commonNurseServiceImpl.updateBenPastHistoryDetails(benMedHistory);
 
+		} else {
+			pastHistorySuccessFlag = 1;
 		}
 
 		// Update Comorbidity/concurrent Conditions
@@ -829,6 +881,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 			WrapperComorbidCondDetails wrapperComorbidCondDetails = InputMapper.gson()
 					.fromJson(historyOBJ.get("comorbidConditions"), WrapperComorbidCondDetails.class);
 			comrbidSuccessFlag = commonNurseServiceImpl.updateBenComorbidConditions(wrapperComorbidCondDetails);
+		} else {
+			comrbidSuccessFlag = 1;
 		}
 
 		// Update Medication History
@@ -837,6 +891,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 			WrapperMedicationHistory wrapperMedicationHistory = InputMapper.gson()
 					.fromJson(historyOBJ.get("medicationHistory"), WrapperMedicationHistory.class);
 			medicationSuccessFlag = commonNurseServiceImpl.updateBenMedicationHistory(wrapperMedicationHistory);
+		} else {
+			medicationSuccessFlag = 1;
 		}
 		// Update Personal History
 		if (historyOBJ != null && historyOBJ.has("personalHistory")
@@ -852,6 +908,9 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					BenAllergyHistory.class);
 			allergyHistorySuccessFlag = commonNurseServiceImpl.updateBenAllergicHistory(benAllergyHistory);
 
+		} else {
+			allergyHistorySuccessFlag = 1;
+			personalHistorySuccessFlag = 1;
 		}
 
 		// Update Family History
@@ -859,6 +918,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 			BenFamilyHistory benFamilyHistory = InputMapper.gson().fromJson(historyOBJ.get("familyHistory"),
 					BenFamilyHistory.class);
 			familyHistorySuccessFlag = commonNurseServiceImpl.updateBenFamilyHistory(benFamilyHistory);
+		} else {
+			familyHistorySuccessFlag = 1;
 		}
 
 		// Update Menstrual History
@@ -867,6 +928,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 			BenMenstrualDetails menstrualDetails = InputMapper.gson().fromJson(historyOBJ.get("menstrualHistory"),
 					BenMenstrualDetails.class);
 			menstrualHistorySuccessFlag = commonNurseServiceImpl.updateMenstrualHistory(menstrualDetails);
+		} else {
+			menstrualHistorySuccessFlag = 1;
 		}
 
 		// Update Past Obstetric History
@@ -876,7 +939,10 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					.fromJson(historyOBJ.get("femaleObstetricHistory"), WrapperFemaleObstetricHistory.class);
 
 			obstetricSuccessFlag = commonNurseServiceImpl.updatePastObstetricHistory(wrapperFemaleObstetricHistory);
+		} else {
+			obstetricSuccessFlag = 1;
 		}
+
 		if (historyOBJ != null && historyOBJ.has("immunizationHistory")
 				&& !historyOBJ.get("immunizationHistory").isJsonNull()) {
 			WrapperImmunizationHistory wrapperImmunizationHistory = InputMapper.gson()
@@ -906,6 +972,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				childFeedingSuccessFlag = generalOPDNurseServiceImpl.updateChildFeedingHistory(childFeedingDetails);
 			}
 
+		} else {
+			childFeedingSuccessFlag = 1;
 		}
 
 		// Update Perinatal History
@@ -918,6 +986,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				perinatalHistorySuccessFlag = generalOPDNurseServiceImpl.updatePerinatalHistory(perinatalHistory);
 			}
 
+		} else {
+			perinatalHistorySuccessFlag = 1;
 		}
 
 		// Update Development History
@@ -931,6 +1001,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 						.updateChildDevelopmentHistory(benChildDevelopmentHistory);
 			}
 
+		} else {
+			developmentHistorySuccessFlag = 1;
 		}
 
 		int historyUpdateSuccessFlag = 0;
@@ -938,7 +1010,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		if (pastHistorySuccessFlag > 0 && comrbidSuccessFlag > 0 && medicationSuccessFlag > 0
 				&& allergyHistorySuccessFlag > 0 && familyHistorySuccessFlag > 0 && obstetricSuccessFlag > 0
 				&& childVaccineSuccessFlag > 0 && personalHistorySuccessFlag > 0 && menstrualHistorySuccessFlag > 0
-				&& immunizationSuccessFlag > 0) {
+				&& immunizationSuccessFlag > 0 && childFeedingSuccessFlag > 0 && perinatalHistorySuccessFlag > 0
+				&& developmentHistorySuccessFlag > 0) {
 
 			historyUpdateSuccessFlag = pastHistorySuccessFlag;
 		}
@@ -968,6 +1041,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 			if (anthropometrySuccessFlag > 0 && phyVitalSuccessFlag > 0) {
 				vitalSuccessFlag = anthropometrySuccessFlag;
 			}
+		} else {
+			vitalSuccessFlag = 1;
 		}
 
 		return vitalSuccessFlag;
@@ -998,6 +1073,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 			PhyGeneralExamination generalExamination = InputMapper.gson()
 					.fromJson(examinationDetailsOBJ.get("generalExamination"), PhyGeneralExamination.class);
 			genExmnSuccessFlag = commonNurseServiceImpl.updatePhyGeneralExamination(generalExamination);
+		} else {
+			genExmnSuccessFlag = 1;
 		}
 
 		// Save Head to toe Examination Details
@@ -1006,6 +1083,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 			PhyHeadToToeExamination headToToeExamination = InputMapper.gson()
 					.fromJson(examinationDetailsOBJ.get("headToToeExamination"), PhyHeadToToeExamination.class);
 			headToToeExmnSuccessFlag = commonNurseServiceImpl.updatePhyHeadToToeExamination(headToToeExamination);
+		} else {
+			headToToeExmnSuccessFlag = 1;
 		}
 		// Save Gastro Intestinal Examination Details
 
@@ -1015,6 +1094,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					examinationDetailsOBJ.get("gastroIntestinalExamination"), SysGastrointestinalExamination.class);
 			gastroIntsExmnSuccessFlag = generalOPDNurseServiceImpl
 					.updateSysGastrointestinalExamination(gastrointestinalExamination);
+		} else {
+			gastroIntsExmnSuccessFlag = 1;
 		}
 		// Save Cardio Vascular Examination Details
 		if (examinationDetailsOBJ != null && examinationDetailsOBJ.has("cardioVascularExamination")
@@ -1022,6 +1103,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 			SysCardiovascularExamination cardiovascularExamination = InputMapper.gson().fromJson(
 					examinationDetailsOBJ.get("cardioVascularExamination"), SysCardiovascularExamination.class);
 			cardiExmnSuccessFlag = commonNurseServiceImpl.updateSysCardiovascularExamination(cardiovascularExamination);
+		} else {
+			cardiExmnSuccessFlag = 1;
 		}
 
 		// Save Respiratory Examination Details
@@ -1031,6 +1114,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					examinationDetailsOBJ.get("respiratorySystemExamination"), SysRespiratoryExamination.class);
 			respiratoryExmnSuccessFlag = commonNurseServiceImpl
 					.updateSysRespiratoryExamination(sysRespiratoryExamination);
+		} else {
+			respiratoryExmnSuccessFlag = 1;
 		}
 
 		// Save Central Nervous Examination Details
@@ -1040,6 +1125,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					examinationDetailsOBJ.get("centralNervousSystemExamination"), SysCentralNervousExamination.class);
 			centralNrvsExmnSuccessFlag = commonNurseServiceImpl
 					.updateSysCentralNervousExamination(sysCentralNervousExamination);
+		} else {
+			centralNrvsExmnSuccessFlag = 1;
 		}
 
 		// Save Muskeloskeletal Examination Details
@@ -1050,6 +1137,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					SysMusculoskeletalSystemExamination.class);
 			muskelstlExmnSuccessFlag = commonNurseServiceImpl
 					.updateSysMusculoskeletalSystemExamination(sysMusculoskeletalSystemExamination);
+		} else {
+			muskelstlExmnSuccessFlag = 1;
 		}
 
 		// Save Genito Urinary Examination Details
@@ -1060,6 +1149,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					SysGenitourinarySystemExamination.class);
 			genitorinaryExmnSuccessFlag = commonNurseServiceImpl
 					.updateSysGenitourinarySystemExamination(sysGenitourinarySystemExamination);
+		} else {
+			genitorinaryExmnSuccessFlag = 1;
 		}
 
 		if (genExmnSuccessFlag > 0 && headToToeExmnSuccessFlag > 0 && cardiExmnSuccessFlag > 0
