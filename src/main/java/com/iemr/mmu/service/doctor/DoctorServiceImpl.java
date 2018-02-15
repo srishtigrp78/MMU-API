@@ -256,6 +256,7 @@ public class DoctorServiceImpl implements DoctorService {
 			return null;
 	}
 
+	@Deprecated
 	public String getDocWorkList() {
 		List<Object[]> docWorkListData = docWorkListRepo.getDocWorkList();
 		// System.out.println("hello");
@@ -342,6 +343,7 @@ public class DoctorServiceImpl implements DoctorService {
 //		return cancerOralExamination;
 //	}
 
+	@Deprecated
 	/* Method moved to common service, Can remove from here */
 	@Override
 	public String updateBenStatus(Long benVisitID, String c) {
@@ -360,6 +362,7 @@ public class DoctorServiceImpl implements DoctorService {
 		this.tempMasterDrugRepo = tempMasterDrugRepo;
 	}
 
+	@Deprecated
 	@Override
 	public String getQuickConsultMasterData() {
 		Map<String, Object> resMap = new HashMap<>();

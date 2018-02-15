@@ -101,7 +101,7 @@ public class ANCCreateController {
 			}
 
 		} catch (Exception e) {
-			logger.error("Exception occurs in ANC nurse data saving :" + e);
+			logger.error("Exception occurs in ANC doctor data saving :" + e);
 			response.setError(e);
 		}
 		return response.toString();

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.BenAllergyHistory;
 import com.iemr.mmu.data.anc.BenFamilyHistory;
 import com.iemr.mmu.data.anc.BenMedHistory;
@@ -30,6 +31,7 @@ import com.iemr.mmu.data.anc.SysGastrointestinalExamination;
 import com.iemr.mmu.data.anc.SysGenitourinarySystemExamination;
 import com.iemr.mmu.data.anc.SysMusculoskeletalSystemExamination;
 import com.iemr.mmu.data.anc.SysRespiratoryExamination;
+import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.anc.WrapperChildOptionalVaccineDetail;
 import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
 import com.iemr.mmu.data.anc.WrapperFemaleObstetricHistory;
@@ -39,6 +41,10 @@ import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
+import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
+import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
+import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
+import com.iemr.mmu.data.registrar.WrapperRegWorklist;
 import com.iemr.mmu.repo.nurse.BenAnthropometryRepo;
 import com.iemr.mmu.repo.nurse.BenPhysicalVitalRepo;
 import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
@@ -64,7 +70,12 @@ import com.iemr.mmu.repo.nurse.anc.SysGenitourinarySystemExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.SysMusculoskeletalSystemExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.SysRespiratoryExaminationRepo;
 import com.iemr.mmu.repo.quickConsultation.BenChiefComplaintRepo;
+import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
+import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
+import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
+import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
+import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
 public class CommonNurseServiceImpl implements CommonNurseService {
@@ -91,23 +102,29 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	private SysMusculoskeletalSystemExaminationRepo sysMusculoskeletalSystemExaminationRepo;
 	private SysGenitourinarySystemExaminationRepo sysGenitourinarySystemExaminationRepo;
 	private RegistrarRepoBenData registrarRepoBenData;
-	private PerinatalHistoryRepo perinatalHistoryRepo;
-	private ChildFeedingDetailsRepo childFeedingDetailsRepo;
-	private BenChildDevelopmentHistoryRepo benChildDevelopmentHistoryRepo;
-
+	private PrescriptionDetailRepo prescriptionDetailRepo;
+	private LabTestOrderDetailRepo labTestOrderDetailRepo;
+	private PrescribedDrugDetailRepo prescribedDrugDetailRepo;
+	private ReistrarRepoBenSearch reistrarRepoBenSearch;
+	
 	@Autowired
-	public void setBenChildDevelopmentHistoryRepo(BenChildDevelopmentHistoryRepo benChildDevelopmentHistoryRepo) {
-		this.benChildDevelopmentHistoryRepo = benChildDevelopmentHistoryRepo;
+	public void setReistrarRepoBenSearch(ReistrarRepoBenSearch reistrarRepoBenSearch) {
+		this.reistrarRepoBenSearch = reistrarRepoBenSearch;
 	}
-
+	
 	@Autowired
-	public void setChildFeedingDetailsRepo(ChildFeedingDetailsRepo childFeedingDetailsRepo) {
-		this.childFeedingDetailsRepo = childFeedingDetailsRepo;
+	public void setPrescribedDrugDetailRepo(PrescribedDrugDetailRepo prescribedDrugDetailRepo) {
+		this.prescribedDrugDetailRepo = prescribedDrugDetailRepo;
 	}
-
+	
 	@Autowired
-	public void setPerinatalHistoryRepo(PerinatalHistoryRepo perinatalHistoryRepo) {
-		this.perinatalHistoryRepo = perinatalHistoryRepo;
+	public void setLabTestOrderDetailRepo(LabTestOrderDetailRepo labTestOrderDetailRepo) {
+		this.labTestOrderDetailRepo = labTestOrderDetailRepo;
+	}
+	
+	@Autowired
+	public void setPrescriptionDetailRepo(PrescriptionDetailRepo prescriptionDetailRepo) {
+		this.prescriptionDetailRepo = prescriptionDetailRepo;
 	}
 
 	@Autowired
@@ -263,6 +280,46 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 	}
 
+	public int updateBeneficiaryVisitDetails(BeneficiaryVisitDetail beneficiaryVisitDetail) {
+		int response = 0;
+		try {
+			response = benVisitDetailRepo.updateBeneficiaryVisitDetail(beneficiaryVisitDetail.getVisitReasonID(),
+					beneficiaryVisitDetail.getVisitReason(), beneficiaryVisitDetail.getVisitCategoryID(),
+					beneficiaryVisitDetail.getVisitCategory(), beneficiaryVisitDetail.getPregnancyStatus(),
+					beneficiaryVisitDetail.getrCHID(), beneficiaryVisitDetail.getHealthFacilityType(),
+					beneficiaryVisitDetail.getHealthFacilityLocation(), beneficiaryVisitDetail.getModifiedBy(),
+					beneficiaryVisitDetail.getBenVisitID());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+		return response;
+
+	}
+	
+	public BeneficiaryVisitDetail getCSVisitDetails(Long benRegID, Long benVisitID) {
+		BeneficiaryVisitDetail benVisitDetailsOBJ = benVisitDetailRepo.getVisitDetails(benRegID, benVisitID);
+
+		BeneficiaryVisitDetail benVisitDetailsOBJ1 = null;
+		if (null != benVisitDetailsOBJ) {
+			benVisitDetailsOBJ1 = new BeneficiaryVisitDetail(benVisitDetailsOBJ.getBenVisitID(),
+					benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitDetailsOBJ.getProviderServiceMapID(),
+					benVisitDetailsOBJ.getVisitDateTime(), benVisitDetailsOBJ.getVisitNo(),
+					benVisitDetailsOBJ.getVisitReasonID(), benVisitDetailsOBJ.getVisitReason(),
+					benVisitDetailsOBJ.getVisitCategoryID(), benVisitDetailsOBJ.getVisitCategory(),
+					benVisitDetailsOBJ.getPregnancyStatus(), benVisitDetailsOBJ.getrCHID(),
+					benVisitDetailsOBJ.getHealthFacilityType(), benVisitDetailsOBJ.getHealthFacilityLocation(),
+					benVisitDetailsOBJ.getReportFilePath(), benVisitDetailsOBJ.getDeleted(),
+					benVisitDetailsOBJ.getProcessed(), benVisitDetailsOBJ.getCreatedBy(),
+					benVisitDetailsOBJ.getCreatedDate(), benVisitDetailsOBJ.getModifiedBy(),
+					benVisitDetailsOBJ.getLastModDate());
+
+		}
+
+		return benVisitDetailsOBJ1;
+	}
+	
 	public int saveBenChiefComplaints(List<BenChiefComplaint> benChiefComplaintList) {
 		int r = 0;
 		List<BenChiefComplaint> benChiefComplaintResultList = (List<BenChiefComplaint>) benChiefComplaintRepo
@@ -472,6 +529,92 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			return null;
 	}
 
+	public String getBeneficiaryPhysicalAnthropometryDetails(Long beneficiaryRegID, Long benVisitID) {
+		BenAnthropometryDetail benAnthropometryDetail = benAnthropometryRepo.getBenAnthropometryDetail(beneficiaryRegID,
+				benVisitID);
+		return new Gson().toJson(benAnthropometryDetail);
+	}
+
+	public String getBeneficiaryPhysicalVitalDetails(Long beneficiaryRegID, Long benVisitID) {
+		BenPhysicalVitalDetail benPhysicalVitalDetail = benPhysicalVitalRepo.getBenPhysicalVitalDetail(beneficiaryRegID,
+				benVisitID);
+		return new Gson().toJson(benPhysicalVitalDetail);
+	}
+	
+	public int updateANCAnthropometryDetails(BenAnthropometryDetail anthropometryDetail) {
+		Integer r = 0;
+		if(null != anthropometryDetail){
+			
+			String processed = benAnthropometryRepo.getBenAnthropometryStatus(anthropometryDetail.getBeneficiaryRegID(), 
+					anthropometryDetail.getBenVisitID());
+			if(null!= processed && !processed.equals("N")){
+				processed = "U";
+			}else{
+				processed = "N";
+			}
+			
+//			anthropometryDetail.setModifiedBy(anthropometryDetail.getCreatedBy());
+			r = benAnthropometryRepo.updateANCCareDetails(
+					anthropometryDetail.getWeight_Kg(), 
+					anthropometryDetail.getHeight_cm(), 
+					anthropometryDetail.getbMI(),
+					anthropometryDetail.getHeadCircumference_cm(), 
+					anthropometryDetail.getMidUpperArmCircumference_MUAC_cm(), 
+					anthropometryDetail.getHipCircumference_cm(), 
+					anthropometryDetail.getWaistCircumference_cm(), 
+					anthropometryDetail.getWaistHipRatio(), 
+					anthropometryDetail.getModifiedBy(), 
+					processed,
+					anthropometryDetail.getBeneficiaryRegID(), 
+					anthropometryDetail.getBenVisitID());
+		}
+		return r;
+	}
+
+	public int updateANCPhysicalVitalDetails(BenPhysicalVitalDetail physicalVitalDetail) {
+		Integer r = 0;
+		if(null != physicalVitalDetail) {
+			
+			String processed = benPhysicalVitalRepo.getBenPhysicalVitalStatus(physicalVitalDetail.getBeneficiaryRegID(), 
+					physicalVitalDetail.getBenVisitID());
+			if(null != processed && !processed.equals("N")){
+				processed = "U";
+			}else{
+				processed = "N";
+			}
+			
+			physicalVitalDetail.setAverageSystolicBP(physicalVitalDetail.getSystolicBP_1stReading());
+			physicalVitalDetail.setAverageDiastolicBP(physicalVitalDetail.getDiastolicBP_1stReading());
+			r = benPhysicalVitalRepo.updatePhysicalVitalDetails(
+					physicalVitalDetail.getTemperature(), 
+					physicalVitalDetail.getPulseRate(), 
+					physicalVitalDetail.getRespiratoryRate(), 
+					physicalVitalDetail.getSystolicBP_1stReading(), 
+					physicalVitalDetail.getDiastolicBP_1stReading(), 
+					physicalVitalDetail.getSystolicBP_2ndReading(),
+					physicalVitalDetail.getDiastolicBP_2ndReading(),
+					physicalVitalDetail.getSystolicBP_3rdReading(),
+					physicalVitalDetail.getDiastolicBP_3rdReading(),
+					physicalVitalDetail.getAverageSystolicBP(),
+					physicalVitalDetail.getAverageDiastolicBP(),
+					physicalVitalDetail.getBloodPressureStatusID(),
+					physicalVitalDetail.getBloodPressureStatus(),
+					physicalVitalDetail.getBloodGlucose_Fasting(),
+					physicalVitalDetail.getBloodGlucose_Random(),
+					physicalVitalDetail.getBloodGlucose_2hr_PP(),
+					physicalVitalDetail.getBloodGlucose_NotSpecified(),
+					physicalVitalDetail.getDiabeticStatusID(),
+					physicalVitalDetail.getDiabeticStatus(),
+					physicalVitalDetail.getCapillaryRefillTime(), 
+					physicalVitalDetail.getModifiedBy(), 
+					processed,
+					physicalVitalDetail.getBeneficiaryRegID(),
+					physicalVitalDetail.getBenVisitID());
+			
+		}
+		return r;
+	}
+	
 	public Long savePhyGeneralExamination(PhyGeneralExamination generalExamination) {
 		Long generalExaminationID = null;
 		String TypeOfDangerSigns = "";
@@ -1889,6 +2032,114 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					genitourinarySystem.getBeneficiaryRegID(), genitourinarySystem.getBenVisitID());
 		}
 		return r;
+	}
+
+	public Long savePrescriptionDetailsAndGetPrescriptionID(Long benRegID, Long benVisitID, Integer psmID,
+			String createdBy) {
+		PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
+		prescriptionDetail.setBeneficiaryRegID(benRegID);
+		prescriptionDetail.setBenVisitID(benVisitID);
+		prescriptionDetail.setProviderServiceMapID(psmID);
+		prescriptionDetail.setCreatedBy(createdBy);
+
+		Long prescriptionID = saveBenPrescription(prescriptionDetail);
+		return prescriptionID;
+	}
+	
+	public Long saveBeneficiaryPrescription(JsonObject caseSheet) throws Exception {
+
+		PrescriptionDetail prescriptionDetail = InputMapper.gson().fromJson(caseSheet, PrescriptionDetail.class);
+
+		return saveBenPrescription(prescriptionDetail);
+	}
+	
+	public Long saveBenPrescription(PrescriptionDetail prescription) {
+		Long r = null;
+		PrescriptionDetail prescriptionRS = prescriptionDetailRepo.save(prescription);
+		if (prescriptionRS != null && prescriptionRS.getPrescriptionID() > 0) {
+			r = prescriptionRS.getPrescriptionID();
+		}
+		return r;
+	}
+	
+	public Long saveBeneficiaryLabTestOrderDetails(JsonObject caseSheet, Long prescriptionID) {
+
+		ArrayList<LabTestOrderDetail> labTestOrderDetails = LabTestOrderDetail.getLabTestOrderDetailList(caseSheet,
+				prescriptionID);
+
+		List<LabTestOrderDetail> labTestOrders = (List<LabTestOrderDetail>) labTestOrderDetailRepo
+				.save(labTestOrderDetails);
+
+		if (null != labTestOrders && labTestOrders.size() >= 0) {
+			for (LabTestOrderDetail labTestOrder : labTestOrders) {
+				return labTestOrder.getLabTestOrderID();
+			}
+		}
+
+		return null;
+	}
+
+	public Integer saveBenPrescribedDrugsList(List<PrescribedDrugDetail> prescribedDrugDetailList) {
+		Integer r = 0;
+		List<PrescribedDrugDetail> prescribedDrugDetailListRS = (List<PrescribedDrugDetail>) prescribedDrugDetailRepo
+				.save(prescribedDrugDetailList);
+		if (prescribedDrugDetailList.size() > 0 && prescribedDrugDetailListRS != null
+				&& prescribedDrugDetailListRS.size() > 0) {
+			r = prescribedDrugDetailListRS.size();
+		}
+		return r;
+	}
+	
+	public Long saveBenInvestigation(WrapperBenInvestigationANC wrapperBenInvestigationANC) {
+		Long r = null;
+
+		ArrayList<LabTestOrderDetail> LabTestOrderDetailList = new ArrayList<>();
+		ArrayList<LabTestOrderDetail> investigationList = wrapperBenInvestigationANC.getLaboratoryList();
+		if (investigationList != null && investigationList.size() > 0) {
+
+			for (LabTestOrderDetail testData : investigationList) {
+
+				testData.setPrescriptionID(wrapperBenInvestigationANC.getPrescriptionID());
+				testData.setBeneficiaryRegID(wrapperBenInvestigationANC.getBeneficiaryRegID());
+				testData.setBenVisitID(wrapperBenInvestigationANC.getBenVisitID());
+				testData.setProviderServiceMapID(wrapperBenInvestigationANC.getProviderServiceMapID());
+				testData.setCreatedBy(wrapperBenInvestigationANC.getCreatedBy());
+
+				LabTestOrderDetailList.add(testData);
+			}
+			ArrayList<LabTestOrderDetail> LabTestOrderDetailListRS = (ArrayList<LabTestOrderDetail>) labTestOrderDetailRepo
+					.save(LabTestOrderDetailList);
+
+			if (LabTestOrderDetailListRS.size() == investigationList.size()) {
+				r = new Long(1);
+			}
+
+		} else {
+			r = new Long(1);
+			;
+		}
+
+		return r;
+
+	}
+	
+	public String updateBenVisitStatusFlag(Long benVisitID, String c) {
+		return updateBenStatus(benVisitID, c);
+	}
+
+	public String updateBenStatus(Long benVisitID, String c) {
+		Map<String, String> resMap = new HashMap<>();
+		Integer i = benVisitDetailRepo.updateBenFlowStatus(c, benVisitID);
+		if (i != null && i > 0) {
+			resMap.put("status", "Updated Successfully");
+		}
+		return new Gson().toJson(resMap);
+	}
+	
+	public String getNurseWorkList() {
+		List<Object[]> nurseWorkListData = reistrarRepoBenSearch.getNurseWorkList();
+		// System.out.println("hello");
+		return WrapperRegWorklist.getRegistrarWorkList(nurseWorkListData);
 	}
 
 }

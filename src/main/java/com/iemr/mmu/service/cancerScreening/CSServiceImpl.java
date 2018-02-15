@@ -101,7 +101,7 @@ public class CSServiceImpl implements CSService {
 				if ((historySaveSuccessFlag != null && historySaveSuccessFlag > 0)
 						&& (vitalSaveSuccessFlag != null && vitalSaveSuccessFlag > 0)) {
 
-					Integer i = nurseServiceImpl.updateBeneficiaryStatus('N', getBenRegID(requestOBJ));
+					Integer i = commonNurseServiceImpl.updateBeneficiaryStatus('N', getBenRegID(requestOBJ));
 					nurseDataSuccessFlag = historySaveSuccessFlag;
 				}
 
@@ -317,7 +317,7 @@ public class CSServiceImpl implements CSService {
 	// ------- Fetch (Nurse data to Doctor screen) ----------------
 	public String getBenDataFrmNurseToDocVisitDetailsScreen(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
-		BeneficiaryVisitDetail benVisitDetailsOBJ = nurseServiceImpl.getCSVisitDetails(benRegID, benVisitID);
+		BeneficiaryVisitDetail benVisitDetailsOBJ = commonNurseServiceImpl.getCSVisitDetails(benRegID, benVisitID);
 
 		if (null != benVisitDetailsOBJ) {
 

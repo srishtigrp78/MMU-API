@@ -55,16 +55,10 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private GeneralOPDNurseServiceImpl generalOPDNurseServiceImpl;
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
-	private NurseServiceImpl nurseServiceImpl;
 
 	@Autowired
 	public void setCommonDoctorServiceImpl(CommonDoctorServiceImpl commonDoctorServiceImpl) {
 		this.commonDoctorServiceImpl = commonDoctorServiceImpl;
-	}
-
-	@Autowired
-	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
-		this.nurseServiceImpl = nurseServiceImpl;
 	}
 
 	@Autowired
@@ -688,7 +682,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 			}
 
 			// Save Prescription
-			prescriptionID = nurseServiceImpl.saveBenPrescription(prescriptionDetail);
+			prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
 
 			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull()) {
 				WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
@@ -699,7 +693,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					bvID = wrapperBenInvestigationANC.getBenVisitID();
 
 					wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
-					investigationSuccessFlag = nurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
+					investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
 				}
 			} else {
 				investigationSuccessFlag = new Long(1);
@@ -719,7 +713,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 							tmpObj.setCreatedBy(createdBy);
 
 						}
-						Integer r = nurseServiceImpl.saveBenPrescribedDrugsList(prescribedDrugDetailList);
+						Integer r = commonNurseServiceImpl.saveBenPrescribedDrugsList(prescribedDrugDetailList);
 						if (r > 0 && r != null) {
 							prescriptionSuccessFlag = r;
 						}
@@ -737,7 +731,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					&& (investigationSuccessFlag != null && investigationSuccessFlag > 0)
 					&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)) {
 
-				String s = commonDoctorServiceImpl.updateBenVisitStatusFlag(bvID, "D");
+				String s = commonNurseServiceImpl.updateBenVisitStatusFlag(bvID, "D");
 				if (s != null && s.length() > 0)
 					saveSuccessFlag = investigationSuccessFlag;
 			}
@@ -752,7 +746,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	public String getBenVisitDetailsFrmNurseGOPD(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
 
-		BeneficiaryVisitDetail visitDetail = nurseServiceImpl.getCSVisitDetails(benRegID, benVisitID);
+		BeneficiaryVisitDetail visitDetail = commonNurseServiceImpl.getCSVisitDetails(benRegID, benVisitID);
 
 		resMap.put("GOPDNurseVisitDetail", new Gson().toJson(visitDetail));
 
@@ -790,9 +784,9 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		Map<String, Object> resMap = new HashMap<>();
 
 		resMap.put("benAnthropometryDetail",
-				nurseServiceImpl.getBeneficiaryPhysicalAnthropometryDetails(beneficiaryRegID, benVisitID));
+				commonNurseServiceImpl.getBeneficiaryPhysicalAnthropometryDetails(beneficiaryRegID, benVisitID));
 		resMap.put("benPhysicalVitalDetail",
-				nurseServiceImpl.getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, benVisitID));
+				commonNurseServiceImpl.getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, benVisitID));
 
 		return resMap.toString();
 	}
@@ -1035,8 +1029,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 			BenPhysicalVitalDetail benPhysicalVitalDetail = InputMapper.gson().fromJson(vitalDetailsOBJ,
 					BenPhysicalVitalDetail.class);
 
-			anthropometrySuccessFlag = nurseServiceImpl.updateANCAnthropometryDetails(benAnthropometryDetail);
-			phyVitalSuccessFlag = nurseServiceImpl.updateANCPhysicalVitalDetails(benPhysicalVitalDetail);
+			anthropometrySuccessFlag = commonNurseServiceImpl.updateANCAnthropometryDetails(benAnthropometryDetail);
+			phyVitalSuccessFlag = commonNurseServiceImpl.updateANCPhysicalVitalDetails(benPhysicalVitalDetail);
 
 			if (anthropometrySuccessFlag > 0 && phyVitalSuccessFlag > 0) {
 				vitalSuccessFlag = anthropometrySuccessFlag;

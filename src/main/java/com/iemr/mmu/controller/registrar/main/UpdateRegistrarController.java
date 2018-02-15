@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.registrar.WrapperBeneficiaryRegistration;
 import com.iemr.mmu.service.common.master.RegistrarServiceMasterDataImpl;
+import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.service.registrar.RegistrarServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
@@ -29,7 +30,7 @@ public class UpdateRegistrarController {
 	private InputMapper inputMapper = new InputMapper();
 	private RegistrarServiceImpl registrarServiceImpl;
 	private RegistrarServiceMasterDataImpl registrarServiceMasterDataImpl;
-	private NurseServiceImpl nurseServiceImpl;
+	private CommonNurseServiceImpl commonNurseServiceImpl;
 
 	@Autowired
 	public void setRegistrarServiceImpl(RegistrarServiceImpl registrarServiceImpl) {
@@ -42,10 +43,9 @@ public class UpdateRegistrarController {
 	}
 
 	@Autowired
-	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
-		this.nurseServiceImpl = nurseServiceImpl;
+	public void setCommonNurseServiceImpl(CommonNurseServiceImpl commonNurseServiceImpl) {
+		this.commonNurseServiceImpl = commonNurseServiceImpl;
 	}
-
 	// Registrar Beneficiary Registration API .....
 	@CrossOrigin()
 	@ApiOperation(value = "Update Registered Beneficiary Data", consumes = "application/json", produces = "application/json")
@@ -89,7 +89,7 @@ public class UpdateRegistrarController {
 
 					if (benRegID >= 0 && benDemoUpdateRes >= 0 && benPhonMapUpdateRes >= 0
 							&& benbenDemoOtherUpdateRes >= 0 && benImageUpdateRes >= 0) {
-						Integer i = nurseServiceImpl.updateBeneficiaryStatus('R', benRegID);
+						Integer i = commonNurseServiceImpl.updateBeneficiaryStatus('R', benRegID);
 						response.setResponse("Beneficiary Details updated successfully!!!");
 
 					} else {

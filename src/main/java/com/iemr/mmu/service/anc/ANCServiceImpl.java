@@ -108,7 +108,7 @@ public class ANCServiceImpl implements ANCService {
 				JsonObject tmpOBJ = requestOBJ.get("visitDetails").getAsJsonObject();
 				JsonObject tmpOBJ1 = tmpOBJ.get("visitDetails").getAsJsonObject();
 
-				i = nurseServiceImpl.updateBeneficiaryStatus('N', tmpOBJ1.get("beneficiaryRegID").getAsLong());
+				i = commonNurseServiceImpl.updateBeneficiaryStatus('N', tmpOBJ1.get("beneficiaryRegID").getAsLong());
 			} else {
 				// Error in visit details saving or it is null
 			}
@@ -155,7 +155,7 @@ public class ANCServiceImpl implements ANCService {
 						.fromJson(requestOBJ.get("investigation"), WrapperBenInvestigationANC.class);
 
 				if (wrapperBenInvestigationANC != null) {
-					prescriptionID = commonDoctorServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
+					prescriptionID = commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
 							wrapperBenInvestigationANC.getBeneficiaryRegID(),
 							wrapperBenInvestigationANC.getBenVisitID(),
 							wrapperBenInvestigationANC.getProviderServiceMapID(),
@@ -165,7 +165,7 @@ public class ANCServiceImpl implements ANCService {
 					bvID = wrapperBenInvestigationANC.getBenVisitID();
 
 					wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
-					investigationSuccessFlag = nurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
+					investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
 				}
 			} else {
 			}
@@ -183,7 +183,7 @@ public class ANCServiceImpl implements ANCService {
 							tmpObj.setCreatedBy(createdBy);
 
 						}
-						Integer r = nurseServiceImpl.saveBenPrescribedDrugsList(prescribedDrugDetailList);
+						Integer r = commonNurseServiceImpl.saveBenPrescribedDrugsList(prescribedDrugDetailList);
 						if (r > 0 && r != null) {
 							prescriptionSuccessFlag = r;
 						}
@@ -261,7 +261,7 @@ public class ANCServiceImpl implements ANCService {
 						// wrapperBenInvestigationANC.getProviderServiceMapID(),
 						// wrapperBenInvestigationANC.getCreatedBy());
 
-						Long prescriptionID = commonDoctorServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
+						Long prescriptionID = commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
 								wrapperBenInvestigationANC.getBeneficiaryRegID(),
 								wrapperBenInvestigationANC.getBenVisitID(),
 								wrapperBenInvestigationANC.getProviderServiceMapID(),
@@ -270,7 +270,7 @@ public class ANCServiceImpl implements ANCService {
 						//
 						wrapperBenInvestigationANC.setBenVisitID(benVisitID);
 						wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
-						Long investigationSuccessFlag = nurseServiceImpl
+						Long investigationSuccessFlag = commonNurseServiceImpl
 								.saveBenInvestigation(wrapperBenInvestigationANC);
 						if (investigationSuccessFlag != null && investigationSuccessFlag > 0) {
 							// Investigation data saved successfully.
@@ -530,12 +530,12 @@ public class ANCServiceImpl implements ANCService {
 
 			if (null != benAnthropometryDetail) {
 				benAnthropometryDetail.setBenVisitID(benVisitID);
-				anthropometrySuccessFlag = nurseServiceImpl
+				anthropometrySuccessFlag = commonNurseServiceImpl
 						.saveBeneficiaryPhysicalAnthropometryDetails(benAnthropometryDetail);
 			}
 			if (null != benPhysicalVitalDetail) {
 				benPhysicalVitalDetail.setBenVisitID(benVisitID);
-				phyVitalSuccessFlag = nurseServiceImpl.saveBeneficiaryPhysicalVitalDetails(benPhysicalVitalDetail);
+				phyVitalSuccessFlag = commonNurseServiceImpl.saveBeneficiaryPhysicalVitalDetails(benPhysicalVitalDetail);
 			}
 
 			if (anthropometrySuccessFlag != null && anthropometrySuccessFlag > 0 && phyVitalSuccessFlag != null
@@ -719,7 +719,7 @@ public class ANCServiceImpl implements ANCService {
 	public String getBenVisitDetailsFrmNurseANC(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
 
-		BeneficiaryVisitDetail visitDetail = nurseServiceImpl.getCSVisitDetails(benRegID, benVisitID);
+		BeneficiaryVisitDetail visitDetail = commonNurseServiceImpl.getCSVisitDetails(benRegID, benVisitID);
 
 		resMap.put("ANCNurseVisitDetail", new Gson().toJson(visitDetail));
 
@@ -771,9 +771,9 @@ public class ANCServiceImpl implements ANCService {
 		Map<String, Object> resMap = new HashMap<>();
 
 		resMap.put("benAnthropometryDetail",
-				nurseServiceImpl.getBeneficiaryPhysicalAnthropometryDetails(beneficiaryRegID, benVisitID));
+				commonNurseServiceImpl.getBeneficiaryPhysicalAnthropometryDetails(beneficiaryRegID, benVisitID));
 		resMap.put("benPhysicalVitalDetail",
-				nurseServiceImpl.getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, benVisitID));
+				commonNurseServiceImpl.getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, benVisitID));
 
 		return resMap.toString();
 	}
@@ -1092,8 +1092,8 @@ public class ANCServiceImpl implements ANCService {
 			BenPhysicalVitalDetail benPhysicalVitalDetail = InputMapper.gson().fromJson(vitalDetailsOBJ,
 					BenPhysicalVitalDetail.class);
 
-			anthropometrySuccessFlag = nurseServiceImpl.updateANCAnthropometryDetails(benAnthropometryDetail);
-			phyVitalSuccessFlag = nurseServiceImpl.updateANCPhysicalVitalDetails(benPhysicalVitalDetail);
+			anthropometrySuccessFlag = commonNurseServiceImpl.updateANCAnthropometryDetails(benAnthropometryDetail);
+			phyVitalSuccessFlag = commonNurseServiceImpl.updateANCPhysicalVitalDetails(benPhysicalVitalDetail);
 
 			if (anthropometrySuccessFlag > 0 && phyVitalSuccessFlag > 0) {
 				vitalSuccessFlag = anthropometrySuccessFlag;

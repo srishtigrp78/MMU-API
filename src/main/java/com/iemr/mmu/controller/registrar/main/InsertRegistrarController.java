@@ -13,6 +13,7 @@ import com.google.gson.JsonObject;
 import com.iemr.mmu.data.registrar.BeneficiaryData;
 import com.iemr.mmu.data.registrar.WrapperBeneficiaryRegistration;
 import com.iemr.mmu.service.common.master.RegistrarServiceMasterDataImpl;
+import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.service.registrar.RegistrarServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
@@ -30,7 +31,7 @@ public class InsertRegistrarController {
 	private InputMapper inputMapper = new InputMapper();
 	private RegistrarServiceImpl registrarServiceImpl;
 	private RegistrarServiceMasterDataImpl registrarServiceMasterDataImpl;
-	private NurseServiceImpl nurseServiceImpl;
+	private CommonNurseServiceImpl commonNurseServiceImpl;
 
 	@Autowired
 	public void setRegistrarServiceImpl(RegistrarServiceImpl registrarServiceImpl) {
@@ -43,8 +44,8 @@ public class InsertRegistrarController {
 	}
 
 	@Autowired
-	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
-		this.nurseServiceImpl = nurseServiceImpl;
+	public void setCommonNurseServiceImpl(CommonNurseServiceImpl commonNurseServiceImpl) {
+		this.commonNurseServiceImpl = commonNurseServiceImpl;
 	}
 
 	// Registrar Beneficiary Registration API .....
@@ -89,7 +90,7 @@ public class InsertRegistrarController {
 					Long benImageID = registrarServiceImpl.createBeneficiaryImage(benD, benRegID);
 
 					if (benRegID > 0 && benDemoID > 0 && benPhonMapID > 0 && benbenDemoOtherID > 0 && benImageID > 0) {
-						Integer i = nurseServiceImpl.updateBeneficiaryStatus('R', benRegID);
+						Integer i = commonNurseServiceImpl.updateBeneficiaryStatus('R', benRegID);
 						if (benData.getBeneficiaryID() != null) {
 							response.setResponse(benData.getBeneficiaryID());
 						} else {

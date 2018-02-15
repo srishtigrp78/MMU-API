@@ -2,6 +2,7 @@ package com.iemr.mmu.service.common.transaction;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import com.iemr.mmu.data.anc.WrapperAncFindings;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
+import com.iemr.mmu.data.registrar.WrapperRegWorklist;
+import com.iemr.mmu.repo.doctor.DocWorkListRepo;
 import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
 import com.iemr.mmu.repo.nurse.anc.ANCDiagnosisRepo;
 import com.iemr.mmu.repo.quickConsultation.BenChiefComplaintRepo;
@@ -35,7 +38,13 @@ public class CommonDoctorServiceImpl {
 	private ANCDiagnosisRepo ancDiagnosisRepo;
 	private NurseServiceImpl nurseServiceImpl;
 	private BenVisitDetailRepo benVisitDetailRepo;
+	private DocWorkListRepo docWorkListRepo;
 
+	@Autowired
+	public void setDocWorkListRepo(DocWorkListRepo docWorkListRepo) {
+		this.docWorkListRepo = docWorkListRepo;
+	}
+	
 	@Autowired
 	public void setBenVisitDetailRepo(BenVisitDetailRepo benVisitDetailRepo) {
 		this.benVisitDetailRepo = benVisitDetailRepo;
@@ -141,6 +150,8 @@ public class CommonDoctorServiceImpl {
 		return ID;
 	}
 
+	/* Moved to common Nurse Services*/
+	@Deprecated
 	public Long savePrescriptionDetailsAndGetPrescriptionID(Long benRegID, Long benVisitID, Integer psmID,
 			String createdBy) {
 		PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
@@ -153,10 +164,12 @@ public class CommonDoctorServiceImpl {
 		return prescriptionID;
 	}
 
+	@Deprecated
 	public String updateBenVisitStatusFlag(Long benVisitID, String c) {
 		return updateBenStatus(benVisitID, c);
 	}
 
+	@Deprecated
 	public String updateBenStatus(Long benVisitID, String c) {
 		Map<String, String> resMap = new HashMap<>();
 		Integer i = benVisitDetailRepo.updateBenFlowStatus(c, benVisitID);
@@ -164,5 +177,11 @@ public class CommonDoctorServiceImpl {
 			resMap.put("status", "Updated Successfully");
 		}
 		return new Gson().toJson(resMap);
+	}
+	
+	public String getDocWorkList() {
+		List<Object[]> docWorkListData = docWorkListRepo.getDocWorkList();
+		// System.out.println("hello");
+		return WrapperRegWorklist.getDocWorkListData(docWorkListData);
 	}
 }

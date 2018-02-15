@@ -26,7 +26,7 @@ import com.iemr.mmu.repo.quickConsultation.ExternalTestOrderRepo;
 import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
-import com.iemr.mmu.service.doctor.DoctorServiceImpl;
+import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
@@ -39,17 +39,17 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	private LabTestOrderDetailRepo labTestOrderDetailRepo;
 	private ExternalTestOrderRepo externalTestOrderRepo;
 	private NurseServiceImpl nurseServiceImpl;
-	private DoctorServiceImpl doctorServiceImpl;
 	private BenVisitDetailRepo benVisitDetailRepo;
+	private CommonNurseServiceImpl commonNurseServiceImpl;
 
+	@Autowired
+	public void setCommonNurseServiceImpl(CommonNurseServiceImpl commonNurseServiceImpl) {
+		this.commonNurseServiceImpl = commonNurseServiceImpl;
+	}
+	
 	@Autowired
 	public void setBeneficiaryVisitDetail(BenVisitDetailRepo benVisitDetailRepo) {
 		this.benVisitDetailRepo = benVisitDetailRepo;
-	}
-
-	@Autowired
-	public void setDoctorServiceImpl(DoctorServiceImpl doctorServiceImpl) {
-		this.doctorServiceImpl = doctorServiceImpl;
 	}
 
 	@Autowired
@@ -154,7 +154,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		 * prescribedDrug.getPrescribedDrugID(); } }
 		 */
 
-		Integer r = nurseServiceImpl.saveBenPrescribedDrugsList(prescriptionDetails);
+		Integer r = commonNurseServiceImpl.saveBenPrescribedDrugsList(prescriptionDetails);
 		if (r > 0 && r != null) {
 			prescribedDrugSuccessFlag = new Long(r);
 		}
@@ -198,21 +198,21 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		Integer returnOBJ = 0;
 		BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(jsnOBJ.get("visitDetails"),
 				BeneficiaryVisitDetail.class);
-		Long benVisitID = nurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
+		Long benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
 
 		if (benVisitID != null && benVisitID > 0) {
 			BenAnthropometryDetail benAnthropometryDetail = InputMapper.gson().fromJson(jsnOBJ.get("vitalsDetails"),
 					BenAnthropometryDetail.class);
 			benAnthropometryDetail.setBenVisitID(benVisitID);
-			Long benAnthropometryID = nurseServiceImpl
+			Long benAnthropometryID = commonNurseServiceImpl
 					.saveBeneficiaryPhysicalAnthropometryDetails(benAnthropometryDetail);
 			BenPhysicalVitalDetail benPhysicalVitalDetail = InputMapper.gson().fromJson(jsnOBJ.get("vitalsDetails"),
 					BenPhysicalVitalDetail.class);
 			benPhysicalVitalDetail.setBenVisitID(benVisitID);
-			Long benPhysicalVitalID = nurseServiceImpl.saveBeneficiaryPhysicalVitalDetails(benPhysicalVitalDetail);
+			Long benPhysicalVitalID = commonNurseServiceImpl.saveBeneficiaryPhysicalVitalDetails(benPhysicalVitalDetail);
 			if (benAnthropometryID != null && benAnthropometryID > 0 && benPhysicalVitalID != null
 					&& benPhysicalVitalID > 0) {
-				Integer i = nurseServiceImpl.updateBeneficiaryStatus('N', benVisitDetailsOBJ.getBeneficiaryRegID());
+				Integer i = commonNurseServiceImpl.updateBeneficiaryStatus('N', benVisitDetailsOBJ.getBeneficiaryRegID());
 				returnOBJ = 1;
 
 			} else {
@@ -229,7 +229,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		Integer returnOBJ = 0;
 		Long benChiefComplaintID = saveBeneficiaryChiefComplaint(quickConsultDoctorOBJ);
 		Long clinicalObservationID = saveBeneficiaryClinicalObservations(quickConsultDoctorOBJ);
-		Long prescriptionID = nurseServiceImpl.saveBeneficiaryPrescription(quickConsultDoctorOBJ);
+		Long prescriptionID = commonNurseServiceImpl.saveBeneficiaryPrescription(quickConsultDoctorOBJ);
 
 		Long prescribedDrugID = null;
 		Long labTestOrderID = null;
@@ -238,7 +238,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 
 			prescribedDrugID = saveBeneficiaryPrescribedDrugDetail(quickConsultDoctorOBJ, prescriptionID);
 
-			labTestOrderID = nurseServiceImpl.saveBeneficiaryLabTestOrderDetails(quickConsultDoctorOBJ, prescriptionID);
+			labTestOrderID = commonNurseServiceImpl.saveBeneficiaryLabTestOrderDetails(quickConsultDoctorOBJ, prescriptionID);
 
 		}
 		if ((null != benChiefComplaintID && benChiefComplaintID > 0)
@@ -256,7 +256,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	// ------- Start Fetch (Nurse data to Doctor screen) ----------------
 	public String getBenDataFrmNurseToDocVisitDetailsScreen(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
-		BeneficiaryVisitDetail benVisitDetailsOBJ = nurseServiceImpl.getCSVisitDetails(benRegID, benVisitID);
+		BeneficiaryVisitDetail benVisitDetailsOBJ = commonNurseServiceImpl.getCSVisitDetails(benRegID, benVisitID);
 
 		if (null != benVisitDetailsOBJ) {
 
@@ -270,9 +270,9 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		Map<String, Object> resMap = new HashMap<>();
 
 		resMap.put("benAnthropometryDetail",
-				nurseServiceImpl.getBeneficiaryPhysicalAnthropometryDetails(beneficiaryRegID, benVisitID));
+				commonNurseServiceImpl.getBeneficiaryPhysicalAnthropometryDetails(beneficiaryRegID, benVisitID));
 		resMap.put("benPhysicalVitalDetail",
-				nurseServiceImpl.getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, benVisitID));
+				commonNurseServiceImpl.getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, benVisitID));
 
 		return resMap.toString();
 	}

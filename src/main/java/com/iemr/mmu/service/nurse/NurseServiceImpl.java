@@ -203,6 +203,7 @@ public class NurseServiceImpl implements NurseService {
 		return returnOBJ;
 	}
 
+	@Deprecated
 	public Long saveBeneficiaryVisitDetails(BeneficiaryVisitDetail beneficiaryVisitDetail) {
 		BeneficiaryVisitDetail response = null;
 
@@ -311,6 +312,7 @@ public class NurseServiceImpl implements NurseService {
 			return null;
 	}
 
+	@Deprecated
 	public String getNurseMasterData() {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 		ArrayList<Object[]> DiseaseTypes = cancerDiseaseMasterRepo.getCancerDiseaseMaster();
@@ -353,6 +355,7 @@ public class NurseServiceImpl implements NurseService {
 
 	}
 
+	@Deprecated
 	@Override
 	public int updateBeneficiaryVisitDetails(BeneficiaryVisitDetail beneficiaryVisitDetail) {
 		int response = 0;
@@ -568,6 +571,7 @@ public class NurseServiceImpl implements NurseService {
 		return response;
 	}
 
+	@Deprecated
 	public BeneficiaryVisitDetail getCSVisitDetails(Long benRegID, Long benVisitID) {
 		BeneficiaryVisitDetail benVisitDetailsOBJ = benVisitDetailRepo.getVisitDetails(benRegID, benVisitID);
 
@@ -663,12 +667,14 @@ public class NurseServiceImpl implements NurseService {
 		return benCancerVitalDetail;
 	}
 
+	@Deprecated
 	public String getNurseWorkList() {
 		List<Object[]> nurseWorkListData = reistrarRepoBenSearch.getNurseWorkList();
 		// System.out.println("hello");
 		return WrapperRegWorklist.getRegistrarWorkList(nurseWorkListData);
 	}
 
+	@Deprecated
 	/*Moved to common services, Cn remove from here later*/
 	public Integer updateBeneficiaryStatus(Character c, Long benRegID) {
 		Integer i = registrarRepoBenData.updateBenFlowStatus(c, benRegID);
@@ -802,6 +808,7 @@ public class NurseServiceImpl implements NurseService {
 	}
 
 	/* Method moved to common, Can remove from here later*/
+	@Deprecated
 	@Override
 	public Long saveBeneficiaryPhysicalAnthropometryDetails(BenAnthropometryDetail benAnthropometryDetail) {
 		BenAnthropometryDetail response = benAnthropometryRepo.save(benAnthropometryDetail);
@@ -812,6 +819,7 @@ public class NurseServiceImpl implements NurseService {
 	}
 	
 	/* Method moved to common, Can remove from here later*/
+	@Deprecated
 	@Override
 	public Long saveBeneficiaryPhysicalVitalDetails(BenPhysicalVitalDetail benPhysicalVitalDetail) {
 		// ArrayList<Short> averageSystolicList = new ArrayList<>();
@@ -889,12 +897,14 @@ public class NurseServiceImpl implements NurseService {
 			return null;
 	}
 
+	@Deprecated
 	public String getBeneficiaryPhysicalAnthropometryDetails(Long beneficiaryRegID, Long benVisitID) {
 		BenAnthropometryDetail benAnthropometryDetail = benAnthropometryRepo.getBenAnthropometryDetail(beneficiaryRegID,
 				benVisitID);
 		return new Gson().toJson(benAnthropometryDetail);
 	}
 
+	@Deprecated
 	public String getBeneficiaryPhysicalVitalDetails(Long beneficiaryRegID, Long benVisitID) {
 		BenPhysicalVitalDetail benPhysicalVitalDetail = benPhysicalVitalRepo.getBenPhysicalVitalDetail(beneficiaryRegID,
 				benVisitID);
@@ -1243,6 +1253,7 @@ public class NurseServiceImpl implements NurseService {
 		return new Gson().toJson(resMap);
 	}
 
+	@Deprecated
 	@Override
 	public int updateANCAnthropometryDetails(BenAnthropometryDetail anthropometryDetail) {
 		Integer r = 0;
@@ -1274,6 +1285,7 @@ public class NurseServiceImpl implements NurseService {
 		return r;
 	}
 
+	@Deprecated
 	@Override
 	public int updateANCPhysicalVitalDetails(BenPhysicalVitalDetail physicalVitalDetail) {
 		Integer r = 0;
@@ -1329,6 +1341,9 @@ public class NurseServiceImpl implements NurseService {
 	 * 
 	 * temp code
 	 */
+	//common functions for ANC, QC and NCD
+	// Below methods moved to common Nurse service, Can remove from here
+	@Deprecated
 	public Long savePrescriptionDetailsAndGetPrescriptionID(Long benRegID, Long benVisitID, Integer psmID,
 			String createdBy) {
 		PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
@@ -1341,10 +1356,7 @@ public class NurseServiceImpl implements NurseService {
 		return prescriptionID;
 	}
 	
-	
-	
-	//common functions for ANC, QC and NCD
-	
+	@Deprecated
 	@Override
 	public Long saveBeneficiaryPrescription(JsonObject caseSheet) throws Exception {
 
@@ -1353,6 +1365,7 @@ public class NurseServiceImpl implements NurseService {
 		return saveBenPrescription(prescriptionDetail);
 	}
 	
+	@Deprecated
 	public Long saveBenPrescription(PrescriptionDetail prescription) {
 		Long r = null;
 		PrescriptionDetail prescriptionRS = prescriptionDetailRepo.save(prescription);
@@ -1362,6 +1375,7 @@ public class NurseServiceImpl implements NurseService {
 		return r;
 	}
 	
+	@Deprecated
 	@Override
 	public Long saveBeneficiaryLabTestOrderDetails(JsonObject caseSheet, Long prescriptionID) {
 
@@ -1380,6 +1394,7 @@ public class NurseServiceImpl implements NurseService {
 		return null;
 	}
 
+	@Deprecated
 	public Integer saveBenPrescribedDrugsList(List<PrescribedDrugDetail> prescribedDrugDetailList) {
 		Integer r = 0;
 		List<PrescribedDrugDetail> prescribedDrugDetailListRS = (List<PrescribedDrugDetail>) prescribedDrugDetailRepo
@@ -1391,6 +1406,7 @@ public class NurseServiceImpl implements NurseService {
 		return r;
 	}
 	
+	@Deprecated
 	@Override
 	public Long saveBenInvestigation(WrapperBenInvestigationANC wrapperBenInvestigationANC) {
 		Long r = null;

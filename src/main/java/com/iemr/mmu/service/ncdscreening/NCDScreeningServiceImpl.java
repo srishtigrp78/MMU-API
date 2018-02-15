@@ -13,7 +13,7 @@ import com.iemr.mmu.data.ncdScreening.NCDScreening;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
-import com.iemr.mmu.service.anc.ANCNurseServiceImpl;
+import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
@@ -23,16 +23,16 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 
 	private NCDScreeningNurseServiceImpl ncdScreeningNurseServiceImpl;
 	private NurseServiceImpl nurseServiceImpl;
-	private ANCNurseServiceImpl ancNurseServiceImpl;
+	private CommonNurseServiceImpl commonNurseServiceImpl;
 
+	@Autowired
+	public void setCommonNurseServiceImpl(CommonNurseServiceImpl commonNurseServiceImpl) {
+		this.commonNurseServiceImpl = commonNurseServiceImpl;
+	}
+	
 	@Autowired
 	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
 		this.nurseServiceImpl = nurseServiceImpl;
-	}
-
-	@Autowired
-	public void setAncServiceImpl(ANCNurseServiceImpl ancNurseServiceImpl) {
-		this.ancNurseServiceImpl = ancNurseServiceImpl;
 	}
 
 	@Autowired
@@ -57,7 +57,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 
 			NCDScreening ncdScreening = InputMapper.gson().fromJson(ncdScreeningDetails, NCDScreening.class);
 
-			Long visitID = nurseServiceImpl.saveBeneficiaryVisitDetails(beneficiaryVisitDetail);
+			Long visitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(beneficiaryVisitDetail);
 
 			if (null != visitID) {
 
@@ -68,18 +68,18 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 					saveNCDScreeningDetails = ncdScreeningNurseServiceImpl.saveNCDScreeningDetails(ncdScreening);
 				}
 
-				Long prescriptionID = nurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
+				Long prescriptionID = commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
 						ncdScreening.getBeneficiaryRegID(), ncdScreening.getBenVisitID(),
 						ncdScreening.getProviderServiceMapID(), ncdScreening.getCreatedBy());
 
 				if (prescriptionID != null && prescriptionID > 0) {
 
-					labTestOrderID = nurseServiceImpl.saveBeneficiaryLabTestOrderDetails(jsonObject, prescriptionID);
+					labTestOrderID = commonNurseServiceImpl.saveBeneficiaryLabTestOrderDetails(jsonObject, prescriptionID);
 
 				}
 
 				if (null != vitalSuccessFlag && null != saveNCDScreeningDetails) {
-					updateStatus = nurseServiceImpl.updateBeneficiaryStatus('N',
+					updateStatus = commonNurseServiceImpl.updateBeneficiaryStatus('N',
 							beneficiaryVisitDetail.getBeneficiaryRegID());
 					result = 1;
 				}
@@ -113,12 +113,12 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		Long saveAnthropometryDetail = null;
 		if (null != anthropometryDetail) {
 			anthropometryDetail.setBenVisitID(benVisitID);
-			saveAnthropometryDetail = nurseServiceImpl.saveBeneficiaryPhysicalAnthropometryDetails(anthropometryDetail);
+			saveAnthropometryDetail = commonNurseServiceImpl.saveBeneficiaryPhysicalAnthropometryDetails(anthropometryDetail);
 		}
 		Long savePhysicalVitalDetails = null;
 		if (null != physicalVitalDetail) {
 			physicalVitalDetail.setBenVisitID(benVisitID);
-			savePhysicalVitalDetails = nurseServiceImpl.saveBeneficiaryPhysicalVitalDetails(physicalVitalDetail);
+			savePhysicalVitalDetails = commonNurseServiceImpl.saveBeneficiaryPhysicalVitalDetails(physicalVitalDetail);
 		}
 
 		if ((null != saveAnthropometryDetail && saveAnthropometryDetail > 0)
@@ -142,8 +142,8 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		Integer result = null;
 
 		Integer updateNCDScreeningDetails = ncdScreeningNurseServiceImpl.updateNCDScreeningDetails(ncdScreening);
-		Integer updateANCAnthropometryDetails = ancNurseServiceImpl.updateANCAnthropometryDetails(anthropometryDetail);
-		Integer updateANCPhysicalVitalDetails = ancNurseServiceImpl.updateANCPhysicalVitalDetails(physicalVitalDetail);
+		Integer updateANCAnthropometryDetails = commonNurseServiceImpl.updateANCAnthropometryDetails(anthropometryDetail);
+		Integer updateANCPhysicalVitalDetails = commonNurseServiceImpl.updateANCPhysicalVitalDetails(physicalVitalDetail);
 
 		if (null != updateANCAnthropometryDetails && null != updateANCPhysicalVitalDetails
 				&& null != updateNCDScreeningDetails)
@@ -158,9 +158,9 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 	@Override
 	public String getNCDScreeningDetails(Long beneficiaryRegID, Long benVisitID) {
 		String ncdScreeningDetails = ncdScreeningNurseServiceImpl.getNCDScreeningDetails(beneficiaryRegID, benVisitID);
-		String anthropometryDetails = nurseServiceImpl.getBeneficiaryPhysicalAnthropometryDetails(beneficiaryRegID,
+		String anthropometryDetails = commonNurseServiceImpl.getBeneficiaryPhysicalAnthropometryDetails(beneficiaryRegID,
 				benVisitID);
-		String vitalDetails = nurseServiceImpl.getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, benVisitID);
+		String vitalDetails = commonNurseServiceImpl.getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, benVisitID);
 
 		Map<String, Object> res = new HashMap<String, Object>();
 
