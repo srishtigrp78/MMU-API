@@ -366,5 +366,16 @@ public class BencomrbidityCondDetails {
 		this.timePeriodAgo = timePeriodAgo;
 		this.timePeriodUnit = timePeriodUnit;
 	}
+
+
+	public void setID(Long iD) {
+		ID = iD;
+	}
+
+
+	public BencomrbidityCondDetails() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
 }

@@ -323,5 +323,9 @@ public class SysGastrointestinalExamination {
 	public void setReservedForChange(String reservedForChange) {
 		this.reservedForChange = reservedForChange;
 	}
+
+	public void setID(Long iD) {
+		ID = iD;
+	}
 	
 }

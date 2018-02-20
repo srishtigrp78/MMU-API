@@ -421,5 +421,9 @@ public class BenFamilyHistory {
 		}
 		return benfamilyHistory;
 	}
+
+	public void setID(Long iD) {
+		ID = iD;
+	}
 	
 }

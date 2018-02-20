@@ -446,4 +446,10 @@ public class BenAllergyHistory {
 		}
 		return benAllergyHistoryList;
 	}
+
+	public void setID(Long iD) {
+		ID = iD;
+	}
+	
+	
 }

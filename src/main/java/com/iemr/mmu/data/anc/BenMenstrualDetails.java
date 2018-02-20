@@ -382,5 +382,10 @@ public class BenMenstrualDetails {
 		}
 		return menstrualDetails;
 	}
+
+	public BenMenstrualDetails() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
 }

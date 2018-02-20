@@ -484,5 +484,14 @@ public class BenChildDevelopmentHistory {
 		}
 		return developmentDetails;
 	}
+
+	public void setID(Long iD) {
+		ID = iD;
+	}
+
+	public BenChildDevelopmentHistory() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
 }

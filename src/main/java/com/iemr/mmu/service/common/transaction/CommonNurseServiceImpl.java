@@ -700,7 +700,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		SysGenitourinarySystemExamination sysGenitourinarySystemExaminationRS = sysGenitourinarySystemExaminationRepo
 				.save(genitourinarySystemExamination);
 		if (null != sysGenitourinarySystemExaminationRS) {
-			r = genitourinarySystemExamination.getID();
+			r = sysGenitourinarySystemExaminationRS.getID();
 		}
 		return r;
 	}

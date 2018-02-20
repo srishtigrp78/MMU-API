@@ -342,4 +342,9 @@ public class ChildVaccineDetail1 {
 		super();
 		this.defaultReceivingAge = defaultReceivingAge;
 	}
+
+	public void setID(Long iD) {
+		ID = iD;
+	}
+	
 }
