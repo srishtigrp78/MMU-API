@@ -600,4 +600,8 @@ public class FemaleObstetricHistory {
 		this.otherNewBornComplication = otherNewBornComplication;
 	}
 
+	public void setObstetricHistoryID(Long obstetricHistoryID) {
+		this.obstetricHistoryID = obstetricHistoryID;
+	}
+
 }

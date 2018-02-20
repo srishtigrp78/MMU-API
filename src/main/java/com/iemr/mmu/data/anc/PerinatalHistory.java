@@ -375,5 +375,14 @@ public class PerinatalHistory {
 		}
 		return perinatalDetails;
 	}
+
+	public void setID(Long iD) {
+		ID = iD;
+	}
+
+	public PerinatalHistory() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
 }

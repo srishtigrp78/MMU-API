@@ -334,4 +334,15 @@ public class ChildFeedingDetails {
 		}
 		return feedingDetails;
 	}
+
+	public void setID(Long iD) {
+		ID = iD;
+	}
+
+	public ChildFeedingDetails() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	
 }

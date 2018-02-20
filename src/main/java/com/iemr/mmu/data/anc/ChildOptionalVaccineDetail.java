@@ -320,5 +320,9 @@ public class ChildOptionalVaccineDetail {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
+	public void setID(Long iD) {
+		ID = iD;
+	}
 	
 }

@@ -514,4 +514,8 @@ public class BenMedHistory {
 
 	}
 
+	public void setBenMedHistoryID(Long benMedHistoryID) {
+		this.benMedHistoryID = benMedHistoryID;
+	}
+
 }

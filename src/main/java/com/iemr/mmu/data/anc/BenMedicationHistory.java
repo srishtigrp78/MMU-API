@@ -273,5 +273,14 @@ public class BenMedicationHistory {
 		this.timePeriodAgo = timePeriodAgo;
 		this.timePeriodUnit = timePeriodUnit;
 	}
+
+	public void setID(Long iD) {
+		ID = iD;
+	}
+
+	public BenMedicationHistory() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
 }
