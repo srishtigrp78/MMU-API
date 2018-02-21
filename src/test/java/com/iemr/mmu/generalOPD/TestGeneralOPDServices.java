@@ -6,6 +6,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,6 +116,8 @@ public class TestGeneralOPDServices {
 	
 	private static RegistrarRepoBenData registrarRepoBenData = mock(RegistrarRepoBenData.class);
 
+	static Long beneficiaryRegID = null;
+	static Long benVisitID = null;
 	static String requestObjPve = "";
 	static JsonObject jsnOBJPve;
 	static String requestObjNve = "";
@@ -153,7 +157,8 @@ public class TestGeneralOPDServices {
 		
 		commonNurseServiceImpl.setRegistrarRepoBenData(registrarRepoBenData);
 		
-		
+		beneficiaryRegID = 7469L;
+		benVisitID = 131L;
 		requestObjPve = "{\"visitDetails\":{ \"visitDetails\":{ \"beneficiaryRegID\":\"7469\", \"providerServiceMapID\":\"1320\", \"visitNo\":null, \"visitReason\":\"FollowUp\", \"visitCategory\":\"General OPD\", \"pregnancyStatus\":null, \"rCHID\":null, \"healthFacilityType\":null, \"healthFacilityLocation\":null, \"reportFilePath\":null, \"createdBy\":\"891\" }, \"chiefComplaints\":[ { \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"chiefComplaint\":null, \"chiefComplaintID\":null, \"duration\":null, \"unitOfDuration\":null, \"description\":null, \"createdBy\":\"891\" } ] }, \"vitalDetails\":{ \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"weight_Kg\":null, \"height_cm\":null, \"waistCircumference_cm\":null, \"hipCircumference_cm\":null, \"bMI\":null, \"waistHipRatio\":null, \"temperature\":null, \"pulseRate\":null, \"systolicBP_1stReading\":null, \"diastolicBP_1stReading\":null, \"bloodGlucose_Fasting\":null, \"bloodGlucose_Random\":null, \"bloodGlucose_2hr_PP\":null, \"respiratoryRate\":null, \"createdBy\":\"891\" }, \"historyDetails\":{ \"pastHistory\":{ \"pastIllness\":[ { \"illnessTypeID\":null, \"illnessType\":null, \"otherIllnessType\":null, \"timePeriodAgo\":null, \"timePeriodUnit\":null } ], \"pastSurgery\":[ { \"surgeryID\":null, \"surgeryType\":null, \"otherSurgeryType\":null, \"timePeriodAgo\":null, \"timePeriodUnit\":null } ], \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"comorbidConditions\":{ \"comorbidityConcurrentConditionsList\":[ { \"comorbidConditions\":null, \"otherComorbidCondition\":null, \"timePeriodAgo\":null, \"timePeriodUnit\":null, \"isForHistory\":null } ], \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"medicationHistory\":{ \"medicationHistoryList\":[ { \"currentMedication\":null, \"timePeriodAgo\":null, \"timePeriodUnit\":null } ], \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"femaleObstetricHistory\":{ \"totalNoOfPreg\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\", \"femaleObstetricHistoryList\":[ ] }, \"menstrualHistory\":{ \"menstrualCycleStatus\":null, \"menstrualCycleStatusID\":null, \"regularity\":null, \"cycleLength\":null, \"menstrualCyclelengthID\":null, \"menstrualFlowDurationID\":null, \"bloodFlowDuration\":null, \"menstrualProblemID\":null, \"problemName\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"familyHistory\":{ \"familyDiseaseList\":[ { \"diseaseTypeID\":null, \"diseaseType\":null, \"otherDiseaseType\":null, \"familyMembers\":null } ], \"isGeneticDisorder\":null, \"geneticDisorder\":null, \"isConsanguineousMarrige\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"personalHistory\":{ \"dietaryType\":null, \"physicalActivityType\":null, \"riskySexualPracticesStatus\":0, \"tobaccoUseStatus\":null, \"alcoholIntakeStatus\":null, \"allergyStatus\":null, \"tobaccoList\":[ ], \"alcoholList\":[ ], \"allergicList\":[ ], \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"childVaccineDetails\":{ \"childOptionalVaccineList\":[ { \"vaccineName\":null, \"otherVaccineName\":null, \"actualReceivingAge\":null, \"receivedFacilityName\":null } ], \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"immunizationHistory\":{ \"immunizationList\":[ { \"defaultReceivingAge\":\"At Birth\", \"vaccines\":[ { \"vaccine\":\"BCG\", \"status\":false }, { \"vaccine\":\"HBV-0\", \"status\":false }, { \"vaccine\":\"OPV-0\", \"status\":false } ] }, { \"defaultReceivingAge\":\"6 Weeks\", \"vaccines\":[ { \"vaccine\":\"IPV-1\", \"status\":false }, { \"vaccine\":\"OPV\", \"status\":false }, { \"vaccine\":\"Pentavalent-1\", \"status\":false }, { \"vaccine\":\"Rota Vaccine-1\", \"status\":false } ] }, { \"defaultReceivingAge\":\"10 Weeks\", \"vaccines\":[ { \"vaccine\":\"IPV-2\", \"status\":false }, { \"vaccine\":\"OPV\", \"status\":false }, { \"vaccine\":\"Pentavalent-2\", \"status\":false }, { \"vaccine\":\"Rota Vaccine-2\", \"status\":false } ] }, { \"defaultReceivingAge\":\"14 Weeks\", \"vaccines\":[ { \"vaccine\":\"IPV-3 \", \"status\":false }, { \"vaccine\":\"OPV\", \"status\":false }, { \"vaccine\":\"Pentavalent-3\", \"status\":false }, { \"vaccine\":\"Rota Vaccine-3\", \"status\":false } ] }, { \"defaultReceivingAge\":\"9 Months\", \"vaccines\":[ { \"vaccine\":\"JE Vaccine\", \"status\":false }, { \"vaccine\":\"Measles Vaccine/MR\", \"status\":false }, { \"vaccine\":\"Vitamin A\", \"status\":false } ] }, { \"defaultReceivingAge\":\"16-24 Months\", \"vaccines\":[ { \"vaccine\":\"DPT-B 1\", \"status\":false }, { \"vaccine\":\"Measles/MR Vaccine\", \"status\":false }, { \"vaccine\":\"OPV\", \"status\":false } ] }, { \"defaultReceivingAge\":\"5 Years\", \"vaccines\":[ { \"vaccine\":\"\", \"status\":false } ] }, { \"defaultReceivingAge\":\"10 Years\", \"vaccines\":[ { \"vaccine\":\"TT\", \"status\":false } ] }, { \"defaultReceivingAge\":\"16 Years\", \"vaccines\":[ { \"vaccine\":\"TT\", \"status\":false } ] } ], \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"developmentHistory\":{ \"grossMotorMilestones\":null, \"fineMotorMilestones\":null, \"socialMilestones\":null, \"languageMilestones\":null, \"developmentalProblems\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"feedingHistory\":{ \"typeOfFeed\":null, \"compFeedStartAge\":null, \"noOfCompFeedPerDay\":null, \"foodIntoleranceStatus\":0, \"typeofFoodIntolerance\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"perinatalHistroy\":{ \"deliveryPlaceID\":null, \"placeOfDelivery\":null, \"otherPlaceOfDelivery\":null, \"deliveryTypeID\":null, \"typeOfDelivery\":null, \"complicationAtBirthID\":null, \"complicationAtBirth\":null, \"otherComplicationAtBirth\":null, \"gestation\":null, \"birthWeight_kg\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" } }, \"examinationDetails\":{ \"generalExamination\":{ \"consciousness\":null, \"coherence\":null, \"cooperation\":null, \"comfortness\":null, \"builtAndAppearance\":null, \"gait\":null, \"dangerSigns\":null, \"typeOfDangerSigns\":null, \"pallor\":null, \"jaundice\":null, \"cyanosis\":null, \"clubbing\":null, \"lymphadenopathy\":null, \"lymphnodesInvolved\":null, \"typeOfLymphadenopathy\":null, \"edema\":null, \"extentOfEdema\":null, \"edemaType\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"headToToeExamination\":{ \"headtoToeExam\":null, \"head\":null, \"eyes\":null, \"ears\":null, \"nose\":null, \"oralCavity\":null, \"throat\":null, \"breastAndNipples\":null, \"trunk\":null, \"upperLimbs\":null, \"lowerLimbs\":null, \"skin\":null, \"hair\":null, \"nails\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"gastroIntestinalExamination\":{ \"inspection\":null, \"palpation_AbdomenTexture\":null, \"palpation_Liver\":null, \"palpation_Spleen\":null, \"palpation_Tenderness\":null, \"palpation_LocationOfTenderness\":null, \"percussion\":null, \"auscultation\":null, \"analRegion\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"cardioVascularExamination\":{ \"jugularVenousPulse_JVP\":null, \"apexbeatLocation\":null, \"apexbeatType\":null, \"firstHeartSound_S1\":null, \"secondHeartSound_S2\":null, \"additionalHeartSounds\":null, \"murmurs\":null, \"pericardialRub\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"respiratorySystemExamination\":{ \"trachea\":null, \"inspection\":null, \"signsOfRespiratoryDistress\":null, \"palpation\":null, \"auscultation_Stridor\":null, \"auscultation_BreathSounds\":null, \"auscultation_Crepitations\":null, \"auscultation_Wheezing\":null, \"auscultation_PleuralRub\":null, \"auscultation_ConductedSounds\":null, \"percussion\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"centralNervousSystemExamination\":{ \"handedness\":null, \"cranialNervesExamination\":null, \"motorSystem\":null, \"sensorySystem\":null, \"autonomicSystem\":null, \"cerebellarSigns\":null, \"signsOfMeningealIrritation\":null, \"skull\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"musculoskeletalSystemExamination\":{ \"joint_TypeOfJoint\":null, \"joint_Laterality\":null, \"joint_Abnormality\":null, \"upperLimb_Laterality\":null, \"upperLimb_Abnormality\":null, \"lowerLimb_Laterality\":null, \"lowerLimb_Abnormality\":null, \"chestWall\":null, \"spine\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"genitoUrinarySystemExamination\":{ \"renalAngle\":null, \"suprapubicRegion\":null, \"externalGenitalia\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" } } }";
 		requestObjNve = "{\"visitDetails\":{ \"visitetails\":{ \"beneficiaryRegID\":\"7469\", \"providerServiceMapID\":\"1320\", \"visitNo\":null, \"visitReason\":\"FollowUp\", \"visitCategory\":\"General OPD\", \"pregnancyStatus\":null, \"rCHID\":null, \"healthFacilityType\":null, \"healthFacilityLocation\":null, \"reportFilePath\":null, \"createdBy\":\"891\" }, \"chiefComplaints\":[ { \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"chiefComplaint\":null, \"chiefComplaintID\":null, \"duration\":null, \"unitOfDuration\":null, \"description\":null, \"createdBy\":\"891\" } ] }, \"vitalDetails\":{ \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"weight_Kg\":null, \"height_cm\":null, \"waistCircumference_cm\":null, \"hipCircumference_cm\":null, \"bMI\":null, \"waistHipRatio\":null, \"temperature\":null, \"pulseRate\":null, \"systolicBP_1stReading\":null, \"diastolicBP_1stReading\":null, \"bloodGlucose_Fasting\":null, \"bloodGlucose_Random\":null, \"bloodGlucose_2hr_PP\":null, \"respiratoryRate\":null, \"createdBy\":\"891\" }, \"historyDetails\":{ \"pastHistory\":{ \"pastIllness\":[ { \"illnessTypeID\":null, \"illnessType\":null, \"otherIllnessType\":null, \"timePeriodAgo\":null, \"timePeriodUnit\":null } ], \"pastSurgery\":[ { \"surgeryID\":null, \"surgeryType\":null, \"otherSurgeryType\":null, \"timePeriodAgo\":null, \"timePeriodUnit\":null } ], \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"comorbidConditions\":{ \"comorbidityConcurrentConditionsList\":[ { \"comorbidConditions\":null, \"otherComorbidCondition\":null, \"timePeriodAgo\":null, \"timePeriodUnit\":null, \"isForHistory\":null } ], \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"medicationHistory\":{ \"medicationHistoryList\":[ { \"currentMedication\":null, \"timePeriodAgo\":null, \"timePeriodUnit\":null } ], \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"femaleObstetricHistory\":{ \"totalNoOfPreg\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\", \"femaleObstetricHistoryList\":[ ] }, \"menstrualHistory\":{ \"menstrualCycleStatus\":null, \"menstrualCycleStatusID\":null, \"regularity\":null, \"cycleLength\":null, \"menstrualCyclelengthID\":null, \"menstrualFlowDurationID\":null, \"bloodFlowDuration\":null, \"menstrualProblemID\":null, \"problemName\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"familyHistory\":{ \"familyDiseaseList\":[ { \"diseaseTypeID\":null, \"diseaseType\":null, \"otherDiseaseType\":null, \"familyMembers\":null } ], \"isGeneticDisorder\":null, \"geneticDisorder\":null, \"isConsanguineousMarrige\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"personalHistory\":{ \"dietaryType\":null, \"physicalActivityType\":null, \"riskySexualPracticesStatus\":0, \"tobaccoUseStatus\":null, \"alcoholIntakeStatus\":null, \"allergyStatus\":null, \"tobaccoList\":[ ], \"alcoholList\":[ ], \"allergicList\":[ ], \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"childVaccineDetails\":{ \"childOptionalVaccineList\":[ { \"vaccineName\":null, \"otherVaccineName\":null, \"actualReceivingAge\":null, \"receivedFacilityName\":null } ], \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"immunizationHistory\":{ \"immunizationList\":[ { \"defaultReceivingAge\":\"At Birth\", \"vaccines\":[ { \"vaccine\":\"BCG\", \"status\":false }, { \"vaccine\":\"HBV-0\", \"status\":false }, { \"vaccine\":\"OPV-0\", \"status\":false } ] }, { \"defaultReceivingAge\":\"6 Weeks\", \"vaccines\":[ { \"vaccine\":\"IPV-1\", \"status\":false }, { \"vaccine\":\"OPV\", \"status\":false }, { \"vaccine\":\"Pentavalent-1\", \"status\":false }, { \"vaccine\":\"Rota Vaccine-1\", \"status\":false } ] }, { \"defaultReceivingAge\":\"10 Weeks\", \"vaccines\":[ { \"vaccine\":\"IPV-2\", \"status\":false }, { \"vaccine\":\"OPV\", \"status\":false }, { \"vaccine\":\"Pentavalent-2\", \"status\":false }, { \"vaccine\":\"Rota Vaccine-2\", \"status\":false } ] }, { \"defaultReceivingAge\":\"14 Weeks\", \"vaccines\":[ { \"vaccine\":\"IPV-3 \", \"status\":false }, { \"vaccine\":\"OPV\", \"status\":false }, { \"vaccine\":\"Pentavalent-3\", \"status\":false }, { \"vaccine\":\"Rota Vaccine-3\", \"status\":false } ] }, { \"defaultReceivingAge\":\"9 Months\", \"vaccines\":[ { \"vaccine\":\"JE Vaccine\", \"status\":false }, { \"vaccine\":\"Measles Vaccine/MR\", \"status\":false }, { \"vaccine\":\"Vitamin A\", \"status\":false } ] }, { \"defaultReceivingAge\":\"16-24 Months\", \"vaccines\":[ { \"vaccine\":\"DPT-B 1\", \"status\":false }, { \"vaccine\":\"Measles/MR Vaccine\", \"status\":false }, { \"vaccine\":\"OPV\", \"status\":false } ] }, { \"defaultReceivingAge\":\"5 Years\", \"vaccines\":[ { \"vaccine\":\"\", \"status\":false } ] }, { \"defaultReceivingAge\":\"10 Years\", \"vaccines\":[ { \"vaccine\":\"TT\", \"status\":false } ] }, { \"defaultReceivingAge\":\"16 Years\", \"vaccines\":[ { \"vaccine\":\"TT\", \"status\":false } ] } ], \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"developmentHistory\":{ \"grossMotorMilestones\":null, \"fineMotorMilestones\":null, \"socialMilestones\":null, \"languageMilestones\":null, \"developmentalProblems\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"feedingHistory\":{ \"typeOfFeed\":null, \"compFeedStartAge\":null, \"noOfCompFeedPerDay\":null, \"foodIntoleranceStatus\":0, \"typeofFoodIntolerance\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"perinatalHistroy\":{ \"deliveryPlaceID\":null, \"placeOfDelivery\":null, \"otherPlaceOfDelivery\":null, \"deliveryTypeID\":null, \"typeOfDelivery\":null, \"complicationAtBirthID\":null, \"complicationAtBirth\":null, \"otherComplicationAtBirth\":null, \"gestation\":null, \"birthWeight_kg\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" } }, \"examinationDetails\":{ \"generalExamination\":{ \"consciousness\":null, \"coherence\":null, \"cooperation\":null, \"comfortness\":null, \"builtAndAppearance\":null, \"gait\":null, \"dangerSigns\":null, \"typeOfDangerSigns\":null, \"pallor\":null, \"jaundice\":null, \"cyanosis\":null, \"clubbing\":null, \"lymphadenopathy\":null, \"lymphnodesInvolved\":null, \"typeOfLymphadenopathy\":null, \"edema\":null, \"extentOfEdema\":null, \"edemaType\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"headToToeExamination\":{ \"headtoToeExam\":null, \"head\":null, \"eyes\":null, \"ears\":null, \"nose\":null, \"oralCavity\":null, \"throat\":null, \"breastAndNipples\":null, \"trunk\":null, \"upperLimbs\":null, \"lowerLimbs\":null, \"skin\":null, \"hair\":null, \"nails\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"gastroIntestinalExamination\":{ \"inspection\":null, \"palpation_AbdomenTexture\":null, \"palpation_Liver\":null, \"palpation_Spleen\":null, \"palpation_Tenderness\":null, \"palpation_LocationOfTenderness\":null, \"percussion\":null, \"auscultation\":null, \"analRegion\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"cardioVascularExamination\":{ \"jugularVenousPulse_JVP\":null, \"apexbeatLocation\":null, \"apexbeatType\":null, \"firstHeartSound_S1\":null, \"secondHeartSound_S2\":null, \"additionalHeartSounds\":null, \"murmurs\":null, \"pericardialRub\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"respiratorySystemExamination\":{ \"trachea\":null, \"inspection\":null, \"signsOfRespiratoryDistress\":null, \"palpation\":null, \"auscultation_Stridor\":null, \"auscultation_BreathSounds\":null, \"auscultation_Crepitations\":null, \"auscultation_Wheezing\":null, \"auscultation_PleuralRub\":null, \"auscultation_ConductedSounds\":null, \"percussion\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"centralNervousSystemExamination\":{ \"handedness\":null, \"cranialNervesExamination\":null, \"motorSystem\":null, \"sensorySystem\":null, \"autonomicSystem\":null, \"cerebellarSigns\":null, \"signsOfMeningealIrritation\":null, \"skull\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"musculoskeletalSystemExamination\":{ \"joint_TypeOfJoint\":null, \"joint_Laterality\":null, \"joint_Abnormality\":null, \"upperLimb_Laterality\":null, \"upperLimb_Abnormality\":null, \"lowerLimb_Laterality\":null, \"lowerLimb_Abnormality\":null, \"chestWall\":null, \"spine\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"genitoUrinarySystemExamination\":{ \"renalAngle\":null, \"suprapubicRegion\":null, \"externalGenitalia\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" } } }"; 
 		
@@ -168,7 +173,7 @@ public class TestGeneralOPDServices {
 		jsnOBJNve = jsnElmntNve.getAsJsonObject();
 		
 		try {
-			when(registrarRepoBenData.updateBenFlowStatus('N', 7469L)).thenReturn(1);
+			when(registrarRepoBenData.updateBenFlowStatus('N', beneficiaryRegID)).thenReturn(1);
 			/*Mocking Visit Details Repo's*/
 			//when(commonNurseServiceImpl.saveBeneficiaryVisitDetails(isA(BeneficiaryVisitDetail.class))).thenReturn(1L);
 			
@@ -351,6 +356,67 @@ public class TestGeneralOPDServices {
 			sysGenitourinarySystemExamination.setID(1L);
 			when(sysGenitourinarySystemExaminationRepoMock.save(isA(SysGenitourinarySystemExamination.class))).thenReturn(sysGenitourinarySystemExamination);
 			
+			
+			/*Fetch API mocks*/
+				/*SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
+				Object[] obj= {new Date(sdf.parse("2018-02-16").getTime()), "Cataract", null, new Date(sdf.parse("2018-02-15").getTime()), 
+						"Cesarean Section/LSCS", null, new Date(sdf.parse("2018-02-09").getTime())};
+				
+				ArrayList<Object[]> pastHistryRes = new  ArrayList<Object[]>();
+				pastHistryRes.add(obj);
+				when(benMedHistoryRepoMock.getBenPastHistory(beneficiaryRegID)).thenReturn(pastHistryRes);*/
+			ArrayList<Object[]> pastHistryRes = new  ArrayList<Object[]>();
+			when(benMedHistoryRepoMock.getBenPastHistory(beneficiaryRegID)).thenReturn(pastHistryRes);
+			
+			BeneficiaryVisitDetail bvd = spy(BeneficiaryVisitDetail.class);
+			when(benVisitDetailRepoMock.getVisitDetails(beneficiaryRegID, benVisitID)).thenReturn(bvd);
+			 
+			ArrayList<Object[]> getGOPDRes = new  ArrayList<Object[]>();
+			when(benChiefComplaintRepoMock.getBenChiefComplaints(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
+			
+			
+			when(benMedHistoryRepoMock.getBenPastHistory(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
+			when(bencomrbidityCondRepoMock.getBencomrbidityCondDetails(beneficiaryRegID,	benVisitID)).thenReturn(getGOPDRes);
+			when(benMedicationHistoryRepoMock.getBenMedicationHistoryDetail(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
+
+			when(benPersonalHabitRepoMock.getBenPersonalHabitDetail(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
+
+			when(benAllergyHistoryRepoMock.getBenPersonalAllergyDetail(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
+
+			when(benFamilyHistoryRepoMock.getBenFamilyHistoryDetail(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
+
+			when(benMenstrualDetailsRepoMock.getBenMenstrualDetail(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
+
+			when(femaleObstetricHistoryRepoMock.getBenFemaleObstetricHistoryDetail(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
+
+			when(childOptionalVaccineDetailRepoMock.getBenOptionalVaccineDetail(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
+
+			when(childVaccineDetail1RepoMock.getBenChildVaccineDetails(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
+
+			when(benChildDevelopmentHistoryRepoMock.getBenDevelopmentDetails(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
+
+			when(perinatalHistoryRepoMock.getBenPerinatalDetails(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
+
+			when(childFeedingDetailsRepoMock.getBenFeedingDetails(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
+			
+			BenAnthropometryDetail bav =new BenAnthropometryDetail();
+			when(benAnthropometryRepoMock.getBenAnthropometryDetail(beneficiaryRegID, benVisitID)).thenReturn(bav);
+			
+			BenPhysicalVitalDetail bpv = new BenPhysicalVitalDetail();
+			when(benPhysicalVitalRepoMock.getBenPhysicalVitalDetail(beneficiaryRegID, benVisitID)).thenReturn(bpv);
+			
+			when(phyGeneralExaminationRepoMock.getPhyGeneralExaminationData(beneficiaryRegID, benVisitID)).thenReturn(new PhyGeneralExamination());
+			when(phyHeadToToeExaminationRepoMock.getPhyHeadToToeExaminationData(beneficiaryRegID, benVisitID)).thenReturn(new PhyHeadToToeExamination());
+			when(sysGastrointestinalExaminationRepoMock.getSSysGastrointestinalExamination(beneficiaryRegID, benVisitID)).thenReturn(new SysGastrointestinalExamination());
+			when(sysCardiovascularExaminationRepoMock.getSysCardiovascularExaminationData(beneficiaryRegID, benVisitID)).thenReturn(new SysCardiovascularExamination());
+			
+			when(sysRespiratoryExaminationRepoMock.getSysRespiratoryExaminationData(beneficiaryRegID, benVisitID)).thenReturn(new SysRespiratoryExamination());
+			when(sysCentralNervousExaminationRepoMock.getSysCentralNervousExaminationData(beneficiaryRegID, benVisitID)).thenReturn(new SysCentralNervousExamination());
+			
+			when(sysMusculoskeletalSystemExaminationRepoMock.getSysMusculoskeletalSystemExamination(beneficiaryRegID, benVisitID)).thenReturn(new SysMusculoskeletalSystemExamination());
+			
+			when(sysGenitourinarySystemExaminationRepoMock.getSysGenitourinarySystemExaminationData(beneficiaryRegID, benVisitID)).thenReturn(new SysGenitourinarySystemExamination());
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -387,4 +453,105 @@ public class TestGeneralOPDServices {
 		
 		//assertEquals(1, response);
 	}
+	
+	@Test
+	public void getPastHistoryDataPveTest() {
+		//String expectedRes = "{\"data\":[{\"Year_Of_Illness\":\"Feb 15, 2018\",\"Year_Of_Surgery\":\"Feb 9, 2018\",\"Illness_Type\":\"Cataract\",\"Surgery_Type\":\"Cesarean Section/LSCS\",\"captureDate\":\"Feb 16, 2018\"}],\"columns\":[{\"keyName\":\"captureDate\",\"columnName\":\"Date of Capture\"},{\"keyName\":\"Illness_Type\",\"columnName\":\"Illness Type\"},{\"keyName\":\"Other_Illness_Type\",\"columnName\":\"Other Illness Type\"},{\"keyName\":\"Year_Of_Illness\",\"columnName\":\"Year Of Illness\"},{\"keyName\":\"Surgery_Type\",\"columnName\":\"Surgery Type\"},{\"keyName\":\"Other_Surgery_Type\",\"columnName\":\"Other Surgery Type\"},{\"keyName\":\"Year_Of_Surgery\",\"columnName\":\"Year Of Surgery\"}]}";
+		String expectedRes = "{\"data\":[],\"columns\":[{\"keyName\":\"captureDate\",\"columnName\":\"Date of Capture\"},{\"keyName\":\"Illness_Type\",\"columnName\":\"Illness Type\"},{\"keyName\":\"Other_Illness_Type\",\"columnName\":\"Other Illness Type\"},{\"keyName\":\"Year_Of_Illness\",\"columnName\":\"Year Of Illness\"},{\"keyName\":\"Surgery_Type\",\"columnName\":\"Surgery Type\"},{\"keyName\":\"Other_Surgery_Type\",\"columnName\":\"Other Surgery Type\"},{\"keyName\":\"Year_Of_Surgery\",\"columnName\":\"Year Of Surgery\"}]}";
+		
+		String response = null;
+		try {
+			response = generalOPDServiceImpl.getPastHistoryData(beneficiaryRegID);
+			System.out.println("response "+response);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(expectedRes);
+		
+		//assertEquals(1, response);
+	}
+	
+	@Test
+	public void getPastHistoryDataNveTest() {
+		String expectedRes = "{\"data\":[],\"columns\":[{\"keyName\":\"captureDate\",\"columnName\":\"Date of Capture\"},{\"keyName\":\"Illness_Type\",\"columnName\":\"Illness Type\"},{\"keyName\":\"Other_Illness_Type\",\"columnName\":\"Other Illness Type\"},{\"keyName\":\"Year_Of_Illness\",\"columnName\":\"Year Of Illness\"},{\"keyName\":\"Surgery_Type\",\"columnName\":\"Surgery Type\"},{\"keyName\":\"Other_Surgery_Type\",\"columnName\":\"Other Surgery Type\"},{\"keyName\":\"Year_Of_Surgery\",\"columnName\":\"Year Of Surgery\"}]}";
+		
+		String response = null;
+		try {
+			response = generalOPDServiceImpl.getPastHistoryData(123L);
+			System.out.println("response "+response);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(expectedRes);
+		
+	}
+	
+	@Test
+	public void getBenVisitDetailsPveTest(){
+		String expectedRes = "{GOPDNurseVisitDetail={}, BenChiefComplaints=[]}";
+		
+		String response = null;
+		try {
+			response = generalOPDServiceImpl.getBenVisitDetailsFrmNurseGOPD(beneficiaryRegID, benVisitID);
+			System.out.println("response getBenVisitDetailsPveTest "+response);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(expectedRes);
+	}
+	
+	@Test
+	public void getBenHistoryDetailsPveTest(){
+		String expectedRes = "{\"childOptionalVaccineHistory\":{\"childOptionalVaccineList\":[]},\"ComorbidityConditions\":{\"comorbidityConcurrentConditionsList\":[]},\"ImmunizationHistory\":{\"immunizationList\":[]},\"MedicationHistory\":{\"medicationHistoryList\":[]},\"FemaleObstetricHistory\":{\"femaleObstetricHistoryList\":[]}}";
+		
+		String response = null;
+		try {
+			response = generalOPDServiceImpl.getBenHistoryDetails(beneficiaryRegID, benVisitID);
+			System.out.println("response getBenHistoryDetailsPveTest "+response);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(expectedRes);
+	}
+	
+	@Test
+	public void getBeneficiaryVitalDetailsPveTest(){
+		String expectedRes = "{benAnthropometryDetail={}, benPhysicalVitalDetail={}}";
+		
+		String response = null;
+		try {
+			response = generalOPDServiceImpl.getBeneficiaryVitalDetails(beneficiaryRegID, benVisitID);
+			System.out.println("response getBeneficiaryVitalDetailsPveTest "+response);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(expectedRes);
+	}
+	
+	@Test
+	public void getExaminationDetailsPveTest(){
+		String expectedRes = "{\"gastrointestinalExamination\":{},\"generalExamination\":{\"typeOfDangerSigns\":[]},\"headToToeExamination\":{},\"cardiovascularExamination\":{},\"centralNervousExamination\":{},\"respiratoryExamination\":{},\"musculoskeletalExamination\":{},\"genitourinaryExamination\":{}}";
+		
+		String response = null;
+		try {
+			response = generalOPDServiceImpl.getExaminationDetailsData(beneficiaryRegID, benVisitID);
+			System.out.println("response getExaminationDetailsPveTest "+response);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(expectedRes);
+	}
+	
 }
