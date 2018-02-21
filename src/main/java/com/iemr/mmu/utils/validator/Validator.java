@@ -17,6 +17,7 @@ public class Validator {
 	// private static SessionObject session;
 
 	private SessionObject session;
+	private static Boolean enableIPValidation = false;
 
 	@Autowired(required = true)
 	@Required
@@ -68,13 +69,23 @@ public class Validator {
 		return session.getSessionObject(key);
 	}
 
-	public void checkKeyExists(String loginKey, String ipAddress) throws IEMRException {
-		try {
-			JSONObject sessionObj = new JSONObject(session.getSessionObject(loginKey));
-			if (!sessionObj.getString("loginIPAddress").equals(ipAddress)) {
-				throw new Exception();
+	public void checkKeyExists(String loginKey, String ipAddress) throws IEMRException
+	{
+		try
+		{
+			String sessionString = session.getSessionObject(loginKey);
+			JSONObject sessionObj = new JSONObject(sessionString);
+			if (enableIPValidation)
+			{
+				if (!sessionObj.getString("loginIPAddress").equals(ipAddress))
+				{
+					logger.error(
+							"Logged in IP : " + sessionObj.getString("loginIPAddress") + "\tRequest IP : " + ipAddress);
+					throw new Exception();
+				} 
 			}
-		} catch (Exception e) {
+		} catch (Exception e)
+		{
 			throw new IEMRException("Invalid login key or session is expired");
 		}
 	}

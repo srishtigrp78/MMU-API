@@ -46,12 +46,15 @@ public class HTTPRequestInterceptor extends HandlerInterceptorAdapter {
 				String requestAPI = requestURIParts[requestURIParts.length - 1];
 				switch (requestAPI) {
 				case "userAuthenticate":
+				case "superUserAuthenticate":
 				case "userAuthenticateNew":
 				case "userAuthenticateV1":
 				case "forgetPassword":
 				case "setForgetPassword":
 				case "changePassword":
 				case "saveUserSecurityQuesAns":
+				case "doAgentLogout":
+				case "userLogout":
 				case "swagger-ui.html":
 				case "ui":
 				case "swagger-resources":
@@ -62,7 +65,12 @@ public class HTTPRequestInterceptor extends HandlerInterceptorAdapter {
 					status = false;
 					break;
 				default:
-					validator.checkKeyExists(authorization, request.getRemoteAddr());
+					String remoteAddress = request.getHeader("X-FORWARDED-FOR");
+					if (remoteAddress == null || remoteAddress.trim().length() == 0)
+					{
+						remoteAddress = request.getRemoteAddr();
+					}
+					validator.checkKeyExists(authorization, remoteAddress);
 					break;
 				}
 			} catch (Exception e) {
