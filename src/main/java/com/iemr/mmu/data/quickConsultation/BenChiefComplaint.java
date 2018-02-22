@@ -307,6 +307,12 @@ public class BenChiefComplaint {
 	}
 
 
+	public void setBenChiefComplaintID(Long benChiefComplaintID)
+	{
+		this.benChiefComplaintID = benChiefComplaintID;
+	}
+
+
 	public static ArrayList<BenChiefComplaint> getBenChiefComplaintList(JsonObject emrgCasesheet) {
 		ArrayList<BenChiefComplaint> resArray = new ArrayList<>();
 		BenChiefComplaint benChiefComplaint = null;

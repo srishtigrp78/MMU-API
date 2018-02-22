@@ -19,6 +19,7 @@ import org.mockito.Matchers;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.iemr.mmu.common.TestCommonServices;
 import com.iemr.mmu.data.anc.BenAllergyHistory;
 import com.iemr.mmu.data.anc.BenChildDevelopmentHistory;
 import com.iemr.mmu.data.anc.BenFamilyHistory;
@@ -74,363 +75,120 @@ import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.generalOPD.GeneralOPDNurseServiceImpl;
 import com.iemr.mmu.service.generalOPD.GeneralOPDServiceImpl;
 
-public class TestGeneralOPDServices {
+public class TestGeneralOPDServices
+{
 
 	@InjectMocks
 	private static GeneralOPDServiceImpl generalOPDServiceImpl = spy(GeneralOPDServiceImpl.class);
 	private static GeneralOPDNurseServiceImpl generalOPDNurseServiceImpl = spy(GeneralOPDNurseServiceImpl.class);
-	private static CommonNurseServiceImpl commonNurseServiceImpl = spy(CommonNurseServiceImpl.class);
-	
-	private static BenVisitDetailRepo benVisitDetailRepoMock = mock(BenVisitDetailRepo.class);
-	private static BenChiefComplaintRepo benChiefComplaintRepoMock = mock(BenChiefComplaintRepo.class);
-	private static BenMedHistoryRepo benMedHistoryRepoMock = mock(BenMedHistoryRepo.class);
-	private static BencomrbidityCondRepo bencomrbidityCondRepoMock = mock(BencomrbidityCondRepo.class);
-	private static BenMedicationHistoryRepo benMedicationHistoryRepoMock = mock(BenMedicationHistoryRepo.class);
-	private static FemaleObstetricHistoryRepo femaleObstetricHistoryRepoMock = mock(FemaleObstetricHistoryRepo.class);
-	private static BenMenstrualDetailsRepo benMenstrualDetailsRepoMock = mock(BenMenstrualDetailsRepo.class);
-	private static BenFamilyHistoryRepo benFamilyHistoryRepoMock = mock(BenFamilyHistoryRepo.class);
-	private static BenPersonalHabitRepo benPersonalHabitRepoMock = mock(BenPersonalHabitRepo.class);
-	private static BenAllergyHistoryRepo benAllergyHistoryRepoMock = mock(BenAllergyHistoryRepo.class);
-	private static ChildOptionalVaccineDetailRepo childOptionalVaccineDetailRepoMock = mock(
-			ChildOptionalVaccineDetailRepo.class);
-	private static ChildVaccineDetail1Repo childVaccineDetail1RepoMock = mock(ChildVaccineDetail1Repo.class);
-	private static BenChildDevelopmentHistoryRepo benChildDevelopmentHistoryRepoMock =mock(BenChildDevelopmentHistoryRepo.class);
+
+	private static BenChildDevelopmentHistoryRepo benChildDevelopmentHistoryRepoMock = mock(BenChildDevelopmentHistoryRepo.class);
 	private static ChildFeedingDetailsRepo childFeedingDetailsRepoMock = mock(ChildFeedingDetailsRepo.class);
 	private static PerinatalHistoryRepo perinatalHistoryRepoMock = mock(PerinatalHistoryRepo.class);
-	
-	private static BenAnthropometryRepo benAnthropometryRepoMock = mock(BenAnthropometryRepo.class);
-	private static BenPhysicalVitalRepo benPhysicalVitalRepoMock = mock(BenPhysicalVitalRepo.class);
-	private static PhyGeneralExaminationRepo phyGeneralExaminationRepoMock = mock(PhyGeneralExaminationRepo.class);
-	private static PhyHeadToToeExaminationRepo phyHeadToToeExaminationRepoMock = mock(PhyHeadToToeExaminationRepo.class);
-	private static SysCardiovascularExaminationRepo sysCardiovascularExaminationRepoMock = mock(
-			SysCardiovascularExaminationRepo.class);
-	private static SysRespiratoryExaminationRepo sysRespiratoryExaminationRepoMock = mock(SysRespiratoryExaminationRepo.class);
-	private static SysCentralNervousExaminationRepo sysCentralNervousExaminationRepoMock = mock(
-			SysCentralNervousExaminationRepo.class);
-	private static SysMusculoskeletalSystemExaminationRepo sysMusculoskeletalSystemExaminationRepoMock = mock(
-			SysMusculoskeletalSystemExaminationRepo.class);
-	private static SysGenitourinarySystemExaminationRepo sysGenitourinarySystemExaminationRepoMock = mock(
-			SysGenitourinarySystemExaminationRepo.class);
-	private static SysGastrointestinalExaminationRepo sysGastrointestinalExaminationRepoMock = mock(
-			SysGastrointestinalExaminationRepo.class);
-	
-	private static RegistrarRepoBenData registrarRepoBenData = mock(RegistrarRepoBenData.class);
+	private static SysGastrointestinalExaminationRepo sysGastrointestinalExaminationRepoMock = mock(SysGastrointestinalExaminationRepo.class);
 
-	static Long beneficiaryRegID = null;
-	static Long benVisitID = null;
-	static String requestObjPve = "";
-	static JsonObject jsnOBJPve;
-	static String requestObjNve = "";
-	static JsonObject jsnOBJNve;
+	public static String feedingHistoryDataPveRes = "";
+	public static String perinatalHistoryDataPveRes = "";
+	public static String developmentHistoryDataPveRes = "";
 
 	@BeforeClass
-	public static void initializeParams() {
-		generalOPDServiceImpl.setCommonNurseServiceImpl(commonNurseServiceImpl);
+	public static void initializeParams()
+	{
+
+		TestCommonServices.initializeParams();
+
+		generalOPDServiceImpl.setCommonNurseServiceImpl(TestCommonServices.commonNurseServiceImpl);
 		generalOPDServiceImpl.setGeneralOPDNurseServiceImpl(generalOPDNurseServiceImpl);
-		
-		commonNurseServiceImpl.setBenVisitDetailRepo(benVisitDetailRepoMock);
-		commonNurseServiceImpl.setBenChiefComplaintRepo(benChiefComplaintRepoMock);
-		commonNurseServiceImpl.setBenMedHistoryRepo(benMedHistoryRepoMock);
-		commonNurseServiceImpl.setBencomrbidityCondRepo(bencomrbidityCondRepoMock);
-		commonNurseServiceImpl.setBenMedicationHistoryRepo(benMedicationHistoryRepoMock);
-		commonNurseServiceImpl.setFemaleObstetricHistoryRepo(femaleObstetricHistoryRepoMock);
-		commonNurseServiceImpl.setBenMenstrualDetailsRepo(benMenstrualDetailsRepoMock);
-		commonNurseServiceImpl.setBenFamilyHistoryRepo(benFamilyHistoryRepoMock);
-		commonNurseServiceImpl.setBenPersonalHabitRepo(benPersonalHabitRepoMock);
-		commonNurseServiceImpl.setBenAllergyHistoryRepo(benAllergyHistoryRepoMock);
-		commonNurseServiceImpl.setChildOptionalVaccineDetailRepo(childOptionalVaccineDetailRepoMock);
-		commonNurseServiceImpl.setChildVaccineDetail1Repo(childVaccineDetail1RepoMock);
-		commonNurseServiceImpl.setBenAnthropometryRepo(benAnthropometryRepoMock);
-		commonNurseServiceImpl.setBenPhysicalVitalRepo(benPhysicalVitalRepoMock);
-		commonNurseServiceImpl.setPhyGeneralExaminationRepo(phyGeneralExaminationRepoMock);
-		commonNurseServiceImpl.setPhyHeadToToeExaminationRepo(phyHeadToToeExaminationRepoMock);
-		commonNurseServiceImpl.setSysGastrointestinalExaminationRepo(sysGastrointestinalExaminationRepoMock);
-		commonNurseServiceImpl.setSysCardiovascularExaminationRepo(sysCardiovascularExaminationRepoMock);
-		commonNurseServiceImpl.setSysRespiratoryExaminationRepo(sysRespiratoryExaminationRepoMock);
-		commonNurseServiceImpl.setSysCentralNervousExaminationRepo(sysCentralNervousExaminationRepoMock);
-		commonNurseServiceImpl.setSysMusculoskeletalSystemExaminationRepo(sysMusculoskeletalSystemExaminationRepoMock);
-		commonNurseServiceImpl.setSysGenitourinarySystemExaminationRepo(sysGenitourinarySystemExaminationRepoMock);
+
 		generalOPDNurseServiceImpl.setBenChildDevelopmentHistoryRepo(benChildDevelopmentHistoryRepoMock);
 		generalOPDNurseServiceImpl.setChildFeedingDetailsRepo(childFeedingDetailsRepoMock);
 		generalOPDNurseServiceImpl.setPerinatalHistoryRepo(perinatalHistoryRepoMock);
 		generalOPDNurseServiceImpl.setSysGastrointestinalExaminationRepo(sysGastrointestinalExaminationRepoMock);
-		
-		commonNurseServiceImpl.setRegistrarRepoBenData(registrarRepoBenData);
-		
-		beneficiaryRegID = 7469L;
-		benVisitID = 131L;
-		requestObjPve = "{\"visitDetails\":{ \"visitDetails\":{ \"beneficiaryRegID\":\"7469\", \"providerServiceMapID\":\"1320\", \"visitNo\":null, \"visitReason\":\"FollowUp\", \"visitCategory\":\"General OPD\", \"pregnancyStatus\":null, \"rCHID\":null, \"healthFacilityType\":null, \"healthFacilityLocation\":null, \"reportFilePath\":null, \"createdBy\":\"891\" }, \"chiefComplaints\":[ { \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"chiefComplaint\":null, \"chiefComplaintID\":null, \"duration\":null, \"unitOfDuration\":null, \"description\":null, \"createdBy\":\"891\" } ] }, \"vitalDetails\":{ \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"weight_Kg\":null, \"height_cm\":null, \"waistCircumference_cm\":null, \"hipCircumference_cm\":null, \"bMI\":null, \"waistHipRatio\":null, \"temperature\":null, \"pulseRate\":null, \"systolicBP_1stReading\":null, \"diastolicBP_1stReading\":null, \"bloodGlucose_Fasting\":null, \"bloodGlucose_Random\":null, \"bloodGlucose_2hr_PP\":null, \"respiratoryRate\":null, \"createdBy\":\"891\" }, \"historyDetails\":{ \"pastHistory\":{ \"pastIllness\":[ { \"illnessTypeID\":null, \"illnessType\":null, \"otherIllnessType\":null, \"timePeriodAgo\":null, \"timePeriodUnit\":null } ], \"pastSurgery\":[ { \"surgeryID\":null, \"surgeryType\":null, \"otherSurgeryType\":null, \"timePeriodAgo\":null, \"timePeriodUnit\":null } ], \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"comorbidConditions\":{ \"comorbidityConcurrentConditionsList\":[ { \"comorbidConditions\":null, \"otherComorbidCondition\":null, \"timePeriodAgo\":null, \"timePeriodUnit\":null, \"isForHistory\":null } ], \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"medicationHistory\":{ \"medicationHistoryList\":[ { \"currentMedication\":null, \"timePeriodAgo\":null, \"timePeriodUnit\":null } ], \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"femaleObstetricHistory\":{ \"totalNoOfPreg\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\", \"femaleObstetricHistoryList\":[ ] }, \"menstrualHistory\":{ \"menstrualCycleStatus\":null, \"menstrualCycleStatusID\":null, \"regularity\":null, \"cycleLength\":null, \"menstrualCyclelengthID\":null, \"menstrualFlowDurationID\":null, \"bloodFlowDuration\":null, \"menstrualProblemID\":null, \"problemName\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"familyHistory\":{ \"familyDiseaseList\":[ { \"diseaseTypeID\":null, \"diseaseType\":null, \"otherDiseaseType\":null, \"familyMembers\":null } ], \"isGeneticDisorder\":null, \"geneticDisorder\":null, \"isConsanguineousMarrige\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"personalHistory\":{ \"dietaryType\":null, \"physicalActivityType\":null, \"riskySexualPracticesStatus\":0, \"tobaccoUseStatus\":null, \"alcoholIntakeStatus\":null, \"allergyStatus\":null, \"tobaccoList\":[ ], \"alcoholList\":[ ], \"allergicList\":[ ], \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"childVaccineDetails\":{ \"childOptionalVaccineList\":[ { \"vaccineName\":null, \"otherVaccineName\":null, \"actualReceivingAge\":null, \"receivedFacilityName\":null } ], \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"immunizationHistory\":{ \"immunizationList\":[ { \"defaultReceivingAge\":\"At Birth\", \"vaccines\":[ { \"vaccine\":\"BCG\", \"status\":false }, { \"vaccine\":\"HBV-0\", \"status\":false }, { \"vaccine\":\"OPV-0\", \"status\":false } ] }, { \"defaultReceivingAge\":\"6 Weeks\", \"vaccines\":[ { \"vaccine\":\"IPV-1\", \"status\":false }, { \"vaccine\":\"OPV\", \"status\":false }, { \"vaccine\":\"Pentavalent-1\", \"status\":false }, { \"vaccine\":\"Rota Vaccine-1\", \"status\":false } ] }, { \"defaultReceivingAge\":\"10 Weeks\", \"vaccines\":[ { \"vaccine\":\"IPV-2\", \"status\":false }, { \"vaccine\":\"OPV\", \"status\":false }, { \"vaccine\":\"Pentavalent-2\", \"status\":false }, { \"vaccine\":\"Rota Vaccine-2\", \"status\":false } ] }, { \"defaultReceivingAge\":\"14 Weeks\", \"vaccines\":[ { \"vaccine\":\"IPV-3 \", \"status\":false }, { \"vaccine\":\"OPV\", \"status\":false }, { \"vaccine\":\"Pentavalent-3\", \"status\":false }, { \"vaccine\":\"Rota Vaccine-3\", \"status\":false } ] }, { \"defaultReceivingAge\":\"9 Months\", \"vaccines\":[ { \"vaccine\":\"JE Vaccine\", \"status\":false }, { \"vaccine\":\"Measles Vaccine/MR\", \"status\":false }, { \"vaccine\":\"Vitamin A\", \"status\":false } ] }, { \"defaultReceivingAge\":\"16-24 Months\", \"vaccines\":[ { \"vaccine\":\"DPT-B 1\", \"status\":false }, { \"vaccine\":\"Measles/MR Vaccine\", \"status\":false }, { \"vaccine\":\"OPV\", \"status\":false } ] }, { \"defaultReceivingAge\":\"5 Years\", \"vaccines\":[ { \"vaccine\":\"\", \"status\":false } ] }, { \"defaultReceivingAge\":\"10 Years\", \"vaccines\":[ { \"vaccine\":\"TT\", \"status\":false } ] }, { \"defaultReceivingAge\":\"16 Years\", \"vaccines\":[ { \"vaccine\":\"TT\", \"status\":false } ] } ], \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"developmentHistory\":{ \"grossMotorMilestones\":null, \"fineMotorMilestones\":null, \"socialMilestones\":null, \"languageMilestones\":null, \"developmentalProblems\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"feedingHistory\":{ \"typeOfFeed\":null, \"compFeedStartAge\":null, \"noOfCompFeedPerDay\":null, \"foodIntoleranceStatus\":0, \"typeofFoodIntolerance\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"perinatalHistroy\":{ \"deliveryPlaceID\":null, \"placeOfDelivery\":null, \"otherPlaceOfDelivery\":null, \"deliveryTypeID\":null, \"typeOfDelivery\":null, \"complicationAtBirthID\":null, \"complicationAtBirth\":null, \"otherComplicationAtBirth\":null, \"gestation\":null, \"birthWeight_kg\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" } }, \"examinationDetails\":{ \"generalExamination\":{ \"consciousness\":null, \"coherence\":null, \"cooperation\":null, \"comfortness\":null, \"builtAndAppearance\":null, \"gait\":null, \"dangerSigns\":null, \"typeOfDangerSigns\":null, \"pallor\":null, \"jaundice\":null, \"cyanosis\":null, \"clubbing\":null, \"lymphadenopathy\":null, \"lymphnodesInvolved\":null, \"typeOfLymphadenopathy\":null, \"edema\":null, \"extentOfEdema\":null, \"edemaType\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"headToToeExamination\":{ \"headtoToeExam\":null, \"head\":null, \"eyes\":null, \"ears\":null, \"nose\":null, \"oralCavity\":null, \"throat\":null, \"breastAndNipples\":null, \"trunk\":null, \"upperLimbs\":null, \"lowerLimbs\":null, \"skin\":null, \"hair\":null, \"nails\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"gastroIntestinalExamination\":{ \"inspection\":null, \"palpation_AbdomenTexture\":null, \"palpation_Liver\":null, \"palpation_Spleen\":null, \"palpation_Tenderness\":null, \"palpation_LocationOfTenderness\":null, \"percussion\":null, \"auscultation\":null, \"analRegion\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"cardioVascularExamination\":{ \"jugularVenousPulse_JVP\":null, \"apexbeatLocation\":null, \"apexbeatType\":null, \"firstHeartSound_S1\":null, \"secondHeartSound_S2\":null, \"additionalHeartSounds\":null, \"murmurs\":null, \"pericardialRub\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"respiratorySystemExamination\":{ \"trachea\":null, \"inspection\":null, \"signsOfRespiratoryDistress\":null, \"palpation\":null, \"auscultation_Stridor\":null, \"auscultation_BreathSounds\":null, \"auscultation_Crepitations\":null, \"auscultation_Wheezing\":null, \"auscultation_PleuralRub\":null, \"auscultation_ConductedSounds\":null, \"percussion\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"centralNervousSystemExamination\":{ \"handedness\":null, \"cranialNervesExamination\":null, \"motorSystem\":null, \"sensorySystem\":null, \"autonomicSystem\":null, \"cerebellarSigns\":null, \"signsOfMeningealIrritation\":null, \"skull\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"musculoskeletalSystemExamination\":{ \"joint_TypeOfJoint\":null, \"joint_Laterality\":null, \"joint_Abnormality\":null, \"upperLimb_Laterality\":null, \"upperLimb_Abnormality\":null, \"lowerLimb_Laterality\":null, \"lowerLimb_Abnormality\":null, \"chestWall\":null, \"spine\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"genitoUrinarySystemExamination\":{ \"renalAngle\":null, \"suprapubicRegion\":null, \"externalGenitalia\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" } } }";
-		requestObjNve = "{\"visitDetails\":{ \"visitetails\":{ \"beneficiaryRegID\":\"7469\", \"providerServiceMapID\":\"1320\", \"visitNo\":null, \"visitReason\":\"FollowUp\", \"visitCategory\":\"General OPD\", \"pregnancyStatus\":null, \"rCHID\":null, \"healthFacilityType\":null, \"healthFacilityLocation\":null, \"reportFilePath\":null, \"createdBy\":\"891\" }, \"chiefComplaints\":[ { \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"chiefComplaint\":null, \"chiefComplaintID\":null, \"duration\":null, \"unitOfDuration\":null, \"description\":null, \"createdBy\":\"891\" } ] }, \"vitalDetails\":{ \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"weight_Kg\":null, \"height_cm\":null, \"waistCircumference_cm\":null, \"hipCircumference_cm\":null, \"bMI\":null, \"waistHipRatio\":null, \"temperature\":null, \"pulseRate\":null, \"systolicBP_1stReading\":null, \"diastolicBP_1stReading\":null, \"bloodGlucose_Fasting\":null, \"bloodGlucose_Random\":null, \"bloodGlucose_2hr_PP\":null, \"respiratoryRate\":null, \"createdBy\":\"891\" }, \"historyDetails\":{ \"pastHistory\":{ \"pastIllness\":[ { \"illnessTypeID\":null, \"illnessType\":null, \"otherIllnessType\":null, \"timePeriodAgo\":null, \"timePeriodUnit\":null } ], \"pastSurgery\":[ { \"surgeryID\":null, \"surgeryType\":null, \"otherSurgeryType\":null, \"timePeriodAgo\":null, \"timePeriodUnit\":null } ], \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"comorbidConditions\":{ \"comorbidityConcurrentConditionsList\":[ { \"comorbidConditions\":null, \"otherComorbidCondition\":null, \"timePeriodAgo\":null, \"timePeriodUnit\":null, \"isForHistory\":null } ], \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"medicationHistory\":{ \"medicationHistoryList\":[ { \"currentMedication\":null, \"timePeriodAgo\":null, \"timePeriodUnit\":null } ], \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"femaleObstetricHistory\":{ \"totalNoOfPreg\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\", \"femaleObstetricHistoryList\":[ ] }, \"menstrualHistory\":{ \"menstrualCycleStatus\":null, \"menstrualCycleStatusID\":null, \"regularity\":null, \"cycleLength\":null, \"menstrualCyclelengthID\":null, \"menstrualFlowDurationID\":null, \"bloodFlowDuration\":null, \"menstrualProblemID\":null, \"problemName\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"familyHistory\":{ \"familyDiseaseList\":[ { \"diseaseTypeID\":null, \"diseaseType\":null, \"otherDiseaseType\":null, \"familyMembers\":null } ], \"isGeneticDisorder\":null, \"geneticDisorder\":null, \"isConsanguineousMarrige\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"personalHistory\":{ \"dietaryType\":null, \"physicalActivityType\":null, \"riskySexualPracticesStatus\":0, \"tobaccoUseStatus\":null, \"alcoholIntakeStatus\":null, \"allergyStatus\":null, \"tobaccoList\":[ ], \"alcoholList\":[ ], \"allergicList\":[ ], \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"childVaccineDetails\":{ \"childOptionalVaccineList\":[ { \"vaccineName\":null, \"otherVaccineName\":null, \"actualReceivingAge\":null, \"receivedFacilityName\":null } ], \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"immunizationHistory\":{ \"immunizationList\":[ { \"defaultReceivingAge\":\"At Birth\", \"vaccines\":[ { \"vaccine\":\"BCG\", \"status\":false }, { \"vaccine\":\"HBV-0\", \"status\":false }, { \"vaccine\":\"OPV-0\", \"status\":false } ] }, { \"defaultReceivingAge\":\"6 Weeks\", \"vaccines\":[ { \"vaccine\":\"IPV-1\", \"status\":false }, { \"vaccine\":\"OPV\", \"status\":false }, { \"vaccine\":\"Pentavalent-1\", \"status\":false }, { \"vaccine\":\"Rota Vaccine-1\", \"status\":false } ] }, { \"defaultReceivingAge\":\"10 Weeks\", \"vaccines\":[ { \"vaccine\":\"IPV-2\", \"status\":false }, { \"vaccine\":\"OPV\", \"status\":false }, { \"vaccine\":\"Pentavalent-2\", \"status\":false }, { \"vaccine\":\"Rota Vaccine-2\", \"status\":false } ] }, { \"defaultReceivingAge\":\"14 Weeks\", \"vaccines\":[ { \"vaccine\":\"IPV-3 \", \"status\":false }, { \"vaccine\":\"OPV\", \"status\":false }, { \"vaccine\":\"Pentavalent-3\", \"status\":false }, { \"vaccine\":\"Rota Vaccine-3\", \"status\":false } ] }, { \"defaultReceivingAge\":\"9 Months\", \"vaccines\":[ { \"vaccine\":\"JE Vaccine\", \"status\":false }, { \"vaccine\":\"Measles Vaccine/MR\", \"status\":false }, { \"vaccine\":\"Vitamin A\", \"status\":false } ] }, { \"defaultReceivingAge\":\"16-24 Months\", \"vaccines\":[ { \"vaccine\":\"DPT-B 1\", \"status\":false }, { \"vaccine\":\"Measles/MR Vaccine\", \"status\":false }, { \"vaccine\":\"OPV\", \"status\":false } ] }, { \"defaultReceivingAge\":\"5 Years\", \"vaccines\":[ { \"vaccine\":\"\", \"status\":false } ] }, { \"defaultReceivingAge\":\"10 Years\", \"vaccines\":[ { \"vaccine\":\"TT\", \"status\":false } ] }, { \"defaultReceivingAge\":\"16 Years\", \"vaccines\":[ { \"vaccine\":\"TT\", \"status\":false } ] } ], \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"developmentHistory\":{ \"grossMotorMilestones\":null, \"fineMotorMilestones\":null, \"socialMilestones\":null, \"languageMilestones\":null, \"developmentalProblems\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"feedingHistory\":{ \"typeOfFeed\":null, \"compFeedStartAge\":null, \"noOfCompFeedPerDay\":null, \"foodIntoleranceStatus\":0, \"typeofFoodIntolerance\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"perinatalHistroy\":{ \"deliveryPlaceID\":null, \"placeOfDelivery\":null, \"otherPlaceOfDelivery\":null, \"deliveryTypeID\":null, \"typeOfDelivery\":null, \"complicationAtBirthID\":null, \"complicationAtBirth\":null, \"otherComplicationAtBirth\":null, \"gestation\":null, \"birthWeight_kg\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" } }, \"examinationDetails\":{ \"generalExamination\":{ \"consciousness\":null, \"coherence\":null, \"cooperation\":null, \"comfortness\":null, \"builtAndAppearance\":null, \"gait\":null, \"dangerSigns\":null, \"typeOfDangerSigns\":null, \"pallor\":null, \"jaundice\":null, \"cyanosis\":null, \"clubbing\":null, \"lymphadenopathy\":null, \"lymphnodesInvolved\":null, \"typeOfLymphadenopathy\":null, \"edema\":null, \"extentOfEdema\":null, \"edemaType\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"headToToeExamination\":{ \"headtoToeExam\":null, \"head\":null, \"eyes\":null, \"ears\":null, \"nose\":null, \"oralCavity\":null, \"throat\":null, \"breastAndNipples\":null, \"trunk\":null, \"upperLimbs\":null, \"lowerLimbs\":null, \"skin\":null, \"hair\":null, \"nails\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"gastroIntestinalExamination\":{ \"inspection\":null, \"palpation_AbdomenTexture\":null, \"palpation_Liver\":null, \"palpation_Spleen\":null, \"palpation_Tenderness\":null, \"palpation_LocationOfTenderness\":null, \"percussion\":null, \"auscultation\":null, \"analRegion\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"cardioVascularExamination\":{ \"jugularVenousPulse_JVP\":null, \"apexbeatLocation\":null, \"apexbeatType\":null, \"firstHeartSound_S1\":null, \"secondHeartSound_S2\":null, \"additionalHeartSounds\":null, \"murmurs\":null, \"pericardialRub\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"respiratorySystemExamination\":{ \"trachea\":null, \"inspection\":null, \"signsOfRespiratoryDistress\":null, \"palpation\":null, \"auscultation_Stridor\":null, \"auscultation_BreathSounds\":null, \"auscultation_Crepitations\":null, \"auscultation_Wheezing\":null, \"auscultation_PleuralRub\":null, \"auscultation_ConductedSounds\":null, \"percussion\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"centralNervousSystemExamination\":{ \"handedness\":null, \"cranialNervesExamination\":null, \"motorSystem\":null, \"sensorySystem\":null, \"autonomicSystem\":null, \"cerebellarSigns\":null, \"signsOfMeningealIrritation\":null, \"skull\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"musculoskeletalSystemExamination\":{ \"joint_TypeOfJoint\":null, \"joint_Laterality\":null, \"joint_Abnormality\":null, \"upperLimb_Laterality\":null, \"upperLimb_Abnormality\":null, \"lowerLimb_Laterality\":null, \"lowerLimb_Abnormality\":null, \"chestWall\":null, \"spine\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" }, \"genitoUrinarySystemExamination\":{ \"renalAngle\":null, \"suprapubicRegion\":null, \"externalGenitalia\":null, \"beneficiaryRegID\":\"7469\", \"benVisitID\":null, \"providerServiceMapID\":\"1320\", \"createdBy\":\"891\" } } }"; 
-		
-		jsnOBJPve = new JsonObject();
-		JsonParser jsnParser = new JsonParser();
-		JsonElement jsnElmnt = jsnParser.parse(requestObjPve);
-		jsnOBJPve = jsnElmnt.getAsJsonObject();
-		
-		
-		jsnOBJNve = new JsonObject();
-		JsonElement jsnElmntNve = jsnParser.parse(requestObjNve);
-		jsnOBJNve = jsnElmntNve.getAsJsonObject();
-		
-		try {
-			when(registrarRepoBenData.updateBenFlowStatus('N', beneficiaryRegID)).thenReturn(1);
-			/*Mocking Visit Details Repo's*/
-			//when(commonNurseServiceImpl.saveBeneficiaryVisitDetails(isA(BeneficiaryVisitDetail.class))).thenReturn(1L);
-			
-			BeneficiaryVisitDetail beneficiaryVisitDetail = spy(BeneficiaryVisitDetail.class);
-			beneficiaryVisitDetail.setBenVisitID(1L);
-			when(benVisitDetailRepoMock.save(isA(BeneficiaryVisitDetail.class))).thenReturn(beneficiaryVisitDetail);
-			
-			/*BenChiefComplaint benChiefComplaint = new BenChiefComplaint();
-			benChiefComplaint.setBenChiefComplaintID(1L);
-			List<BenChiefComplaint> res = new ArrayList<BenChiefComplaint>();
-			res.add(benChiefComplaint);*/
-			when(benChiefComplaintRepoMock.save(isA(BenChiefComplaint.class))).thenReturn(mock(BenChiefComplaint.class));
-			
-			/*Mocking History Repo's*/
-			BenMedHistory benMedHistory = spy(BenMedHistory.class);
-			benMedHistory.setBenMedHistoryID(1L);
-			List<BenMedHistory> res = new ArrayList<BenMedHistory>();
-			res.add(benMedHistory);
-			when(benMedHistoryRepoMock.save(Matchers.anyListOf(BenMedHistory.class))).thenReturn(res);
-			
-			BencomrbidityCondDetails bencomrbidityCondDetails = spy(BencomrbidityCondDetails.class);
-			bencomrbidityCondDetails.setID(1L);
-			List<BencomrbidityCondDetails> comorbidRes =  new ArrayList<BencomrbidityCondDetails>();
-			comorbidRes.add(bencomrbidityCondDetails);
-			when(bencomrbidityCondRepoMock.save(Matchers.anyListOf(BencomrbidityCondDetails.class))).thenReturn(comorbidRes);
-			
-			BenMedicationHistory benMedicationHistory = spy(BenMedicationHistory.class);
-			benMedicationHistory.setID(1L);
-			List<BenMedicationHistory> medRes =  new ArrayList<BenMedicationHistory>();
-			medRes.add(benMedicationHistory);
-			when(benMedicationHistoryRepoMock.save(Matchers.anyListOf(BenMedicationHistory.class))).thenReturn(medRes);
-			
-			FemaleObstetricHistory femaleObstetricHistory = spy(FemaleObstetricHistory.class);
-			femaleObstetricHistory.setObstetricHistoryID(1L);
-			List<FemaleObstetricHistory> femaleObsRes =  new ArrayList<FemaleObstetricHistory>();
-			femaleObsRes.add(femaleObstetricHistory);
-			when(femaleObstetricHistoryRepoMock.save(Matchers.anyListOf(FemaleObstetricHistory.class))).thenReturn(femaleObsRes);
-			
-			BenMenstrualDetails benMenstrualDetails=spy(BenMenstrualDetails.class);
-			benMenstrualDetails.setBenMenstrualID(1);
-			when(benMenstrualDetailsRepoMock.save(isA(BenMenstrualDetails.class))).thenReturn(benMenstrualDetails);
-			
-			BenFamilyHistory benFamilyHistory = spy(BenFamilyHistory.class);
-			benFamilyHistory.setID(1L);
-			List<BenFamilyHistory> familyRes =  new ArrayList<BenFamilyHistory>();
-			familyRes.add(benFamilyHistory);
-			when(benFamilyHistoryRepoMock.save(Matchers.anyListOf(BenFamilyHistory.class))).thenReturn(familyRes);
-			
-			BenPersonalHabit benPersonalHabit = spy(BenPersonalHabit.class);
-			benPersonalHabit.setBenPersonalHabitID(1);
-			List<BenPersonalHabit> habitRes =  new ArrayList<BenPersonalHabit>();
-			habitRes.add(benPersonalHabit);
-			when(benPersonalHabitRepoMock.save(Matchers.anyListOf(BenPersonalHabit.class))).thenReturn(habitRes);
-			
-			BenAllergyHistory benAllergyHistory = spy(BenAllergyHistory.class);
-			benAllergyHistory.setID(1L);
-			List<BenAllergyHistory> allergyRes =  new ArrayList<BenAllergyHistory>();
-			allergyRes.add(benAllergyHistory);
-			when(benAllergyHistoryRepoMock.save(Matchers.anyListOf(BenAllergyHistory.class))).thenReturn(allergyRes);
-			
-			ChildOptionalVaccineDetail optionalVaccineDetail = spy(ChildOptionalVaccineDetail.class);
-			optionalVaccineDetail.setID(1L);
-			List<ChildOptionalVaccineDetail> vaccineRes =  new ArrayList<ChildOptionalVaccineDetail>();
-			vaccineRes.add(optionalVaccineDetail);
-			when(childOptionalVaccineDetailRepoMock.save(Matchers.anyListOf(ChildOptionalVaccineDetail.class))).thenReturn(vaccineRes);
-			
-			ChildVaccineDetail1 childVaccineDetail1 = spy(ChildVaccineDetail1.class);
-			childVaccineDetail1.setID(1L);
-			List<ChildVaccineDetail1> childVaccineRes =  new ArrayList<ChildVaccineDetail1>();
-			childVaccineRes.add(childVaccineDetail1);
-			when(childVaccineDetail1RepoMock.save(Matchers.anyListOf(ChildVaccineDetail1.class))).thenReturn(childVaccineRes);
-			
-			BenChildDevelopmentHistory dvmtHsry= spy(BenChildDevelopmentHistory.class);
+
+		feedingHistoryDataPveRes =
+				"{\"data\":[],\"columns\":[{\"keyName\":\"captureDate\",\"columnName\":\"Date of Capture\"},{\"keyName\":\"childID\",\"columnName\":\"Child ID\"},{\"keyName\":\"benMotherID\",\"columnName\":\"Beneficiary Mother ID\"},{\"keyName\":\"typeOfFeed\",\"columnName\":\"Type Of Feed\"},{\"keyName\":\"compFeedStartAge\",\"columnName\":\"Comp Feed Start Age\"},{\"keyName\":\"noOfCompFeedPerDay\",\"columnName\":\"NoOf Comp Feed Per Day\"},{\"keyName\":\"foodIntoleranceStatus\",\"columnName\":\"Food Intolerance Status\"},{\"keyName\":\"typeofFoodIntolerance\",\"columnName\":\"Type of Food Intolerance\"}]}";
+		perinatalHistoryDataPveRes =
+				"{\"data\":[],\"columns\":[{\"keyName\":\"captureDate\",\"columnName\":\"Date of Capture\"},{\"keyName\":\"placeOfDelivery\",\"columnName\":\"Place Of Delivery\"},{\"keyName\":\"otherPlaceOfDelivery\",\"columnName\":\"Other Place Of Delivery\"},{\"keyName\":\"typeOfDelivery\",\"columnName\":\"Type Of Delivery\"},{\"keyName\":\"complicationAtBirth\",\"columnName\":\"Complication At Birth\"},{\"keyName\":\"otherComplicationAtBirth\",\"columnName\":\"Other Complication At Birth\"},{\"keyName\":\"gestation\",\"columnName\":\"Gestation\"},{\"keyName\":\"birthWeight_kg\",\"columnName\":\"Birth Weight(kg)\"}]}";
+		developmentHistoryDataPveRes =
+				"{\"data\":[],\"columns\":[{\"keyName\":\"captureDate\",\"columnName\":\"Date of Capture\"},{\"keyName\":\"grossMotorMilestone\",\"columnName\":\"Gross Motor Milestone\"},{\"keyName\":\"isGMMAttained\",\"columnName\":\"Is GMM Attained\"},{\"keyName\":\"fineMotorMilestone\",\"columnName\":\"Fine Motor Milestone\"},{\"keyName\":\"isFMMAttained\",\"columnName\":\"Is FMM Attained\"},{\"keyName\":\"socialMilestone\",\"columnName\":\"Social Milestone\"},{\"keyName\":\"isSMAttained\",\"columnName\":\"Is SM Attained\"},{\"keyName\":\"languageMilestone\",\"columnName\":\"Language Milestone\"},{\"keyName\":\"isLMAttained\",\"columnName\":\"Is LM Attained\"},{\"keyName\":\"developmentProblem\",\"columnName\":\"Development Problem\"}]}";
+
+		try
+		{
+
+			// Mocking Save Repo's
+			BenChildDevelopmentHistory dvmtHsry = spy(BenChildDevelopmentHistory.class);
 			dvmtHsry.setID(1L);
 			when(benChildDevelopmentHistoryRepoMock.save(isA(BenChildDevelopmentHistory.class))).thenReturn(dvmtHsry);
-			
-			ChildFeedingDetails feedingHistry= spy(ChildFeedingDetails.class);
+
+			ChildFeedingDetails feedingHistry = spy(ChildFeedingDetails.class);
 			feedingHistry.setID(1L);
 			when(childFeedingDetailsRepoMock.save(isA(ChildFeedingDetails.class))).thenReturn(feedingHistry);
-			
+
 			PerinatalHistory perinatalHistry = spy(PerinatalHistory.class);
 			perinatalHistry.setID(1L);
 			when(perinatalHistoryRepoMock.save(isA(PerinatalHistory.class))).thenReturn(perinatalHistry);
-			
-			/*if (jsnOBJPve != null && jsnOBJPve.has("visitDetails") && !jsnOBJPve.get("visitDetails").isJsonNull()) {
-				JsonObject visitDetailsOBJ = jsnOBJPve.getAsJsonObject("visitDetails");
-				if (visitDetailsOBJ != null && visitDetailsOBJ.has("visitDetails")
-						&& !visitDetailsOBJ.get("visitDetails").isJsonNull()) {
-					// Save Beneficiary visit details
-					BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(visitDetailsOBJ.get("visitDetails"),
-							BeneficiaryVisitDetail.class);
-					
-					when(commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ)).thenReturn(1L);
-				}
-			}
-			BenChiefComplaint benChiefComplaint = mock(BenChiefComplaint.class);
-			List benChiefComplaintList = new ArrayList<BenChiefComplaint>();
-			benChiefComplaintList.add(benChiefComplaint);
-			when(commonNurseServiceImpl.saveBenChiefComplaints(benChiefComplaintList)).thenReturn(1);
-			
-			Mocking for HistoryDetails Internal Methods
-			BenMedHistory benMedHistory = mock(BenMedHistory.class);
-			when(commonNurseServiceImpl.saveBenPastHistory(benMedHistory)).thenReturn(1L);
-			
-			WrapperComorbidCondDetails wrapperComorbidCondDetails = mock(WrapperComorbidCondDetails.class);
-			when(commonNurseServiceImpl.saveBenComorbidConditions(wrapperComorbidCondDetails)).thenReturn(1L);
-			
-			WrapperMedicationHistory wrapperMedicationHistory = mock(WrapperMedicationHistory.class);
-			when(commonNurseServiceImpl.saveBenMedicationHistory(wrapperMedicationHistory)).thenReturn(1L);
-			
-			WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory =  mock(WrapperFemaleObstetricHistory.class);
-			when(commonNurseServiceImpl.saveFemaleObstetricHistory(wrapperFemaleObstetricHistory)).thenReturn(1L);
-			
-			BenMenstrualDetails menstrualDetails = mock(BenMenstrualDetails.class);
-			when(commonNurseServiceImpl.saveBenMenstrualHistory(menstrualDetails)).thenReturn(1);
-			
-			BenFamilyHistory benFamilyHistory = mock(BenFamilyHistory.class); 
-			when(commonNurseServiceImpl.saveBenFamilyHistory(benFamilyHistory)).thenReturn(1L);
-			
-			BenPersonalHabit personalHabit =  mock(BenPersonalHabit.class);
-			when(commonNurseServiceImpl.savePersonalHistory(personalHabit)).thenReturn(1);
-			
-			BenAllergyHistory benAllergyHistory =  mock(BenAllergyHistory.class);
-			when(commonNurseServiceImpl.saveAllergyHistory(benAllergyHistory)).thenReturn(1L);
-			
-			WrapperChildOptionalVaccineDetail wrapperChildVaccineDetail = mock(WrapperChildOptionalVaccineDetail.class);
-			when(commonNurseServiceImpl.saveChildOptionalVaccineDetail(wrapperChildVaccineDetail)).thenReturn(1L);
-			
-			WrapperImmunizationHistory wrapperImmunizationHistory =  mock(WrapperImmunizationHistory.class);
-			when(commonNurseServiceImpl.saveImmunizationHistory(wrapperImmunizationHistory)).thenReturn(1L);
-			
-			BenChildDevelopmentHistory benChildDevelopmentHistory =  mock(BenChildDevelopmentHistory.class);
-			when(generalOPDNurseServiceImplMock.saveChildDevelopmentHistory(benChildDevelopmentHistory)).thenReturn(1L);
-			
-			ChildFeedingDetails childFeedingDetails =  mock(ChildFeedingDetails.class);
-			when(generalOPDNurseServiceImplMock.saveChildFeedingHistory(childFeedingDetails)).thenReturn(1L);
-			
-			PerinatalHistory perinatalHistory =  mock(PerinatalHistory.class);
-			when(generalOPDNurseServiceImplMock.savePerinatalHistory(perinatalHistory)).thenReturn(1L);*/
-			
-			/*Mocking Vital Repo's*/
-			BenAnthropometryDetail benAnthropometryDetail = spy(BenAnthropometryDetail.class);
-			benAnthropometryDetail.setID(1L);
-			when(benAnthropometryRepoMock.save(isA(BenAnthropometryDetail.class))).thenReturn(benAnthropometryDetail);
-			
-			BenPhysicalVitalDetail benPhysicalVitalDetail = spy(BenPhysicalVitalDetail.class);
-			benPhysicalVitalDetail.setID(1L);
-			when(benPhysicalVitalRepoMock.save(isA(BenPhysicalVitalDetail.class))).thenReturn(benPhysicalVitalDetail);
-			
-			/*Mocking Examination Repo's*/
-			PhyGeneralExamination phyGeneralExamination = spy(PhyGeneralExamination.class);
-			phyGeneralExamination.setID(1L);
-			when(phyGeneralExaminationRepoMock.save(isA(PhyGeneralExamination.class))).thenReturn(phyGeneralExamination);
-			
-			PhyHeadToToeExamination phyHeadToToeExamination = spy(PhyHeadToToeExamination.class);
-			phyHeadToToeExamination.setID(1L);
-			when(phyHeadToToeExaminationRepoMock.save(isA(PhyHeadToToeExamination.class))).thenReturn(phyHeadToToeExamination);
-			
+
 			SysGastrointestinalExamination sysGastrointestinalExamination = spy(SysGastrointestinalExamination.class);
 			sysGastrointestinalExamination.setID(1L);
 			when(sysGastrointestinalExaminationRepoMock.save(isA(SysGastrointestinalExamination.class))).thenReturn(sysGastrointestinalExamination);
+
+			/* Mocking get History Repo's */
+			ArrayList<Object[]> getGOPDRes = new ArrayList<Object[]>();
+			when(perinatalHistoryRepoMock.getBenPerinatalDetail(TestCommonServices.beneficiaryRegID)).thenReturn(getGOPDRes);
+			when(childFeedingDetailsRepoMock.getBenFeedingHistoryDetail(TestCommonServices.beneficiaryRegID)).thenReturn(getGOPDRes);
+			when(benChildDevelopmentHistoryRepoMock.getBenDevelopmentHistoryDetail(TestCommonServices.beneficiaryRegID)).thenReturn(getGOPDRes);
+
+			/* Mocking get Current Visit Repo's */
+
+			when(benChildDevelopmentHistoryRepoMock.getBenDevelopmentDetails(TestCommonServices.beneficiaryRegID, TestCommonServices.benVisitID))
+					.thenReturn(getGOPDRes);
+
+			when(perinatalHistoryRepoMock.getBenPerinatalDetails(TestCommonServices.beneficiaryRegID, TestCommonServices.benVisitID))
+					.thenReturn(getGOPDRes);
+
+			when(childFeedingDetailsRepoMock.getBenFeedingDetails(TestCommonServices.beneficiaryRegID, TestCommonServices.benVisitID))
+					.thenReturn(getGOPDRes);
+
+			when(
+					sysGastrointestinalExaminationRepoMock
+							.getSSysGastrointestinalExamination(TestCommonServices.beneficiaryRegID, TestCommonServices.benVisitID))
+									.thenReturn(new SysGastrointestinalExamination());
 			
-			SysCardiovascularExamination sysCardiovascularExamination = spy(SysCardiovascularExamination.class);
-			sysCardiovascularExamination.setID(1L);
-			when(sysCardiovascularExaminationRepoMock.save(isA(SysCardiovascularExamination.class))).thenReturn(sysCardiovascularExamination);
-			
-			SysRespiratoryExamination sysRespiratoryExamination = spy(SysRespiratoryExamination.class);
-			sysRespiratoryExamination.setID(1L);
-			when(sysRespiratoryExaminationRepoMock.save(isA(SysRespiratoryExamination.class))).thenReturn(sysRespiratoryExamination);
-			
-			SysCentralNervousExamination sysCentralNervousExamination = spy(SysCentralNervousExamination.class);
-			sysCentralNervousExamination.setID(1L);
-			when(sysCentralNervousExaminationRepoMock.save(isA(SysCentralNervousExamination.class))).thenReturn(sysCentralNervousExamination);
-			
-			SysMusculoskeletalSystemExamination sysMusculoskeletalSystemExamination = spy(SysMusculoskeletalSystemExamination.class);
-			sysMusculoskeletalSystemExamination.setID(1L);
-			when(sysMusculoskeletalSystemExaminationRepoMock.save(isA(SysMusculoskeletalSystemExamination.class))).thenReturn(sysMusculoskeletalSystemExamination);
-			
-			SysGenitourinarySystemExamination  sysGenitourinarySystemExamination = spy(SysGenitourinarySystemExamination.class);
-			sysGenitourinarySystemExamination.setID(1L);
-			when(sysGenitourinarySystemExaminationRepoMock.save(isA(SysGenitourinarySystemExamination.class))).thenReturn(sysGenitourinarySystemExamination);
-			
-			
-			/*Fetch API mocks*/
-				/*SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
-				Object[] obj= {new Date(sdf.parse("2018-02-16").getTime()), "Cataract", null, new Date(sdf.parse("2018-02-15").getTime()), 
-						"Cesarean Section/LSCS", null, new Date(sdf.parse("2018-02-09").getTime())};
-				
-				ArrayList<Object[]> pastHistryRes = new  ArrayList<Object[]>();
-				pastHistryRes.add(obj);
-				when(benMedHistoryRepoMock.getBenPastHistory(beneficiaryRegID)).thenReturn(pastHistryRes);*/
-			ArrayList<Object[]> pastHistryRes = new  ArrayList<Object[]>();
-			when(benMedHistoryRepoMock.getBenPastHistory(beneficiaryRegID)).thenReturn(pastHistryRes);
-			
-			BeneficiaryVisitDetail bvd = spy(BeneficiaryVisitDetail.class);
-			when(benVisitDetailRepoMock.getVisitDetails(beneficiaryRegID, benVisitID)).thenReturn(bvd);
+			when(childFeedingDetailsRepoMock.updateFeedingDetails( Matchers.anyLong(), Matchers.anyLong(), Matchers.anyString(), Matchers.anyString(), 
+					Matchers.anyChar(), Matchers.anyChar(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), 
+					Matchers.anyLong(), Matchers.anyLong())).thenReturn(1);
 			 
-			ArrayList<Object[]> getGOPDRes = new  ArrayList<Object[]>();
-			when(benChiefComplaintRepoMock.getBenChiefComplaints(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
-			
-			
-			when(benMedHistoryRepoMock.getBenPastHistory(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
-			when(bencomrbidityCondRepoMock.getBencomrbidityCondDetails(beneficiaryRegID,	benVisitID)).thenReturn(getGOPDRes);
-			when(benMedicationHistoryRepoMock.getBenMedicationHistoryDetail(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
+			when(perinatalHistoryRepoMock.updatePerinatalDetails(Matchers.anyShort(), Matchers.anyString(), Matchers.anyString(), Matchers.anyShort(), 
+					Matchers.anyString(), Matchers.anyShort(), Matchers.anyString(),Matchers.anyString(), Matchers.anyString(), Matchers.anyDouble(), 
+					Matchers.anyString(), Matchers.anyString(), Matchers.anyLong(), Matchers.anyLong())).thenReturn(1);
+			 
+					
+			when(benChildDevelopmentHistoryRepoMock.updatePerinatalDetails( Matchers.anyString(), Matchers.anyBoolean(), Matchers.anyString(), 
+					Matchers.anyBoolean(), Matchers.anyString(), Matchers.anyBoolean(), Matchers.anyString(), Matchers.anyBoolean(), Matchers.anyString(), 
+					Matchers.anyString(),  Matchers.anyString(), Matchers.anyLong(), Matchers.anyLong())).thenReturn(1);
+			 
+			when(sysGastrointestinalExaminationRepoMock.updateSysGastrointestinalExamination(Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), 
+					Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), 
+					Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyLong(), Matchers.anyLong())).thenReturn(1);
 
-			when(benPersonalHabitRepoMock.getBenPersonalHabitDetail(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
-
-			when(benAllergyHistoryRepoMock.getBenPersonalAllergyDetail(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
-
-			when(benFamilyHistoryRepoMock.getBenFamilyHistoryDetail(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
-
-			when(benMenstrualDetailsRepoMock.getBenMenstrualDetail(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
-
-			when(femaleObstetricHistoryRepoMock.getBenFemaleObstetricHistoryDetail(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
-
-			when(childOptionalVaccineDetailRepoMock.getBenOptionalVaccineDetail(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
-
-			when(childVaccineDetail1RepoMock.getBenChildVaccineDetails(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
-
-			when(benChildDevelopmentHistoryRepoMock.getBenDevelopmentDetails(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
-
-			when(perinatalHistoryRepoMock.getBenPerinatalDetails(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
-
-			when(childFeedingDetailsRepoMock.getBenFeedingDetails(beneficiaryRegID, benVisitID)).thenReturn(getGOPDRes);
-			
-			BenAnthropometryDetail bav =new BenAnthropometryDetail();
-			when(benAnthropometryRepoMock.getBenAnthropometryDetail(beneficiaryRegID, benVisitID)).thenReturn(bav);
-			
-			BenPhysicalVitalDetail bpv = new BenPhysicalVitalDetail();
-			when(benPhysicalVitalRepoMock.getBenPhysicalVitalDetail(beneficiaryRegID, benVisitID)).thenReturn(bpv);
-			
-			when(phyGeneralExaminationRepoMock.getPhyGeneralExaminationData(beneficiaryRegID, benVisitID)).thenReturn(new PhyGeneralExamination());
-			when(phyHeadToToeExaminationRepoMock.getPhyHeadToToeExaminationData(beneficiaryRegID, benVisitID)).thenReturn(new PhyHeadToToeExamination());
-			when(sysGastrointestinalExaminationRepoMock.getSSysGastrointestinalExamination(beneficiaryRegID, benVisitID)).thenReturn(new SysGastrointestinalExamination());
-			when(sysCardiovascularExaminationRepoMock.getSysCardiovascularExaminationData(beneficiaryRegID, benVisitID)).thenReturn(new SysCardiovascularExamination());
-			
-			when(sysRespiratoryExaminationRepoMock.getSysRespiratoryExaminationData(beneficiaryRegID, benVisitID)).thenReturn(new SysRespiratoryExamination());
-			when(sysCentralNervousExaminationRepoMock.getSysCentralNervousExaminationData(beneficiaryRegID, benVisitID)).thenReturn(new SysCentralNervousExamination());
-			
-			when(sysMusculoskeletalSystemExaminationRepoMock.getSysMusculoskeletalSystemExamination(beneficiaryRegID, benVisitID)).thenReturn(new SysMusculoskeletalSystemExamination());
-			
-			when(sysGenitourinarySystemExaminationRepoMock.getSysGenitourinarySystemExaminationData(beneficiaryRegID, benVisitID)).thenReturn(new SysGenitourinarySystemExamination());
-			
-		} catch (Exception e) {
+		} catch (Exception e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	@Test
-	public void saveGOPDNurseDataPveTest() {
+	public void saveGOPDNurseDataPveTest()
+	{
 
 		Long response = null;
-		try {
-			response = generalOPDServiceImpl.saveNurseData(jsnOBJPve);
-			
-		} catch (Exception e) {
+		try
+		{
+			response = generalOPDServiceImpl.saveNurseData(TestCommonServices.jsnOBJPve);
+
+		} catch (Exception e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -439,119 +197,547 @@ public class TestGeneralOPDServices {
 	}
 
 	@Test
-	public void saveGOPDNurseDataNveTest() {
+	public void saveGOPDNurseDataNveTest()
+	{
 
 		Long response = null;
-		try {
-			response = generalOPDServiceImpl.saveNurseData(jsnOBJNve);
-		} catch (Exception e) {
+		try
+		{
+			response = generalOPDServiceImpl.saveNurseData(TestCommonServices.jsnOBJNve);
+
+		} catch (Exception e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		assertThat(response).isEqualTo(null);
-		
-		//assertEquals(1, response);
+
+		// assertEquals(1, response);
 	}
-	
+
 	@Test
-	public void getPastHistoryDataPveTest() {
-		//String expectedRes = "{\"data\":[{\"Year_Of_Illness\":\"Feb 15, 2018\",\"Year_Of_Surgery\":\"Feb 9, 2018\",\"Illness_Type\":\"Cataract\",\"Surgery_Type\":\"Cesarean Section/LSCS\",\"captureDate\":\"Feb 16, 2018\"}],\"columns\":[{\"keyName\":\"captureDate\",\"columnName\":\"Date of Capture\"},{\"keyName\":\"Illness_Type\",\"columnName\":\"Illness Type\"},{\"keyName\":\"Other_Illness_Type\",\"columnName\":\"Other Illness Type\"},{\"keyName\":\"Year_Of_Illness\",\"columnName\":\"Year Of Illness\"},{\"keyName\":\"Surgery_Type\",\"columnName\":\"Surgery Type\"},{\"keyName\":\"Other_Surgery_Type\",\"columnName\":\"Other Surgery Type\"},{\"keyName\":\"Year_Of_Surgery\",\"columnName\":\"Year Of Surgery\"}]}";
-		String expectedRes = "{\"data\":[],\"columns\":[{\"keyName\":\"captureDate\",\"columnName\":\"Date of Capture\"},{\"keyName\":\"Illness_Type\",\"columnName\":\"Illness Type\"},{\"keyName\":\"Other_Illness_Type\",\"columnName\":\"Other Illness Type\"},{\"keyName\":\"Year_Of_Illness\",\"columnName\":\"Year Of Illness\"},{\"keyName\":\"Surgery_Type\",\"columnName\":\"Surgery Type\"},{\"keyName\":\"Other_Surgery_Type\",\"columnName\":\"Other Surgery Type\"},{\"keyName\":\"Year_Of_Surgery\",\"columnName\":\"Year Of Surgery\"}]}";
-		
+	public void getPastHistoryDataPveTest()
+	{
+		// String expectedRes = "{\"data\":[{\"Year_Of_Illness\":\"Feb 15, 2018\",\"Year_Of_Surgery\":\"Feb 9,
+		// 2018\",\"Illness_Type\":\"Cataract\",\"Surgery_Type\":\"Cesarean Section/LSCS\",\"captureDate\":\"Feb 16,
+		// 2018\"}],\"columns\":[{\"keyName\":\"captureDate\",\"columnName\":\"Date of
+		// Capture\"},{\"keyName\":\"Illness_Type\",\"columnName\":\"Illness
+		// Type\"},{\"keyName\":\"Other_Illness_Type\",\"columnName\":\"Other Illness
+		// Type\"},{\"keyName\":\"Year_Of_Illness\",\"columnName\":\"Year Of
+		// Illness\"},{\"keyName\":\"Surgery_Type\",\"columnName\":\"Surgery
+		// Type\"},{\"keyName\":\"Other_Surgery_Type\",\"columnName\":\"Other Surgery
+		// Type\"},{\"keyName\":\"Year_Of_Surgery\",\"columnName\":\"Year Of Surgery\"}]}";
+
 		String response = null;
-		try {
-			response = generalOPDServiceImpl.getPastHistoryData(beneficiaryRegID);
-			System.out.println("response "+response);
-		} catch (Exception e) {
+		try
+		{
+			response = generalOPDServiceImpl.getPastHistoryData(TestCommonServices.beneficiaryRegID);
+		} catch (Exception e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		assertThat(response).isEqualTo(expectedRes);
-		
-		//assertEquals(1, response);
+		assertThat(response).isEqualTo(TestCommonServices.pastHistoryDataPveRes);
+
+		// assertEquals(1, response);
 	}
-	
+
 	@Test
-	public void getPastHistoryDataNveTest() {
-		String expectedRes = "{\"data\":[],\"columns\":[{\"keyName\":\"captureDate\",\"columnName\":\"Date of Capture\"},{\"keyName\":\"Illness_Type\",\"columnName\":\"Illness Type\"},{\"keyName\":\"Other_Illness_Type\",\"columnName\":\"Other Illness Type\"},{\"keyName\":\"Year_Of_Illness\",\"columnName\":\"Year Of Illness\"},{\"keyName\":\"Surgery_Type\",\"columnName\":\"Surgery Type\"},{\"keyName\":\"Other_Surgery_Type\",\"columnName\":\"Other Surgery Type\"},{\"keyName\":\"Year_Of_Surgery\",\"columnName\":\"Year Of Surgery\"}]}";
-		
+	public void getPastHistoryDataNveTest()
+	{
+
 		String response = null;
-		try {
+		try
+		{
 			response = generalOPDServiceImpl.getPastHistoryData(123L);
-			System.out.println("response "+response);
-		} catch (Exception e) {
+			System.out.println("response " + response);
+		} catch (Exception e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		assertThat(response).isEqualTo(expectedRes);
-		
+		assertThat(response).isEqualTo(TestCommonServices.pastHistoryDataNveRes);
+
+	}
+
+	@Test
+	public void getPersonalTobaccoHistoryDataPveTest()
+	{
+
+		String response = null;
+		try
+		{
+			response = generalOPDServiceImpl.getPersonalTobaccoHistoryData(TestCommonServices.beneficiaryRegID);
+
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(TestCommonServices.tobaccoHistoryDataPveRes);
+
+		// assertEquals(1, response);
+	}
+
+	@Test
+	public void getPersonalAlcoholHistoryDataPveTest()
+	{
+		// String expectedRes = {"data":[],"columns":[{"keyName":"captureDate","columnName":"Date of
+		// Capture"},{"keyName":"dietaryType","columnName":"Dietary
+		// Type"},{"keyName":"physicalActivityType","columnName":"Physical Activity
+		// Type"},{"keyName":"alcoholIntakeStatus","columnName":"Alcohol Intake
+		// Status"},{"keyName":"alcoholType","columnName":"Alcohol
+		// Type"},{"keyName":"otherAlcoholType","columnName":"Other Alcohol
+		// Type"},{"keyName":"alcoholIntakeFrequency","columnName":"Alcohol Intake
+		// Frequency"},{"keyName":"avgAlcoholConsumption","columnName":"Avg Alcohol
+		// Consumption"},{"keyName":"alcohol_use_duration","columnName":"Alcohol Use Started
+		// Date"},{"keyName":"riskySexualPracticeStatus","columnName":"Risky Sexual Practices Status"}]}
+
+		String response = null;
+		try
+		{
+			response = generalOPDServiceImpl.getPersonalAlcoholHistoryData(TestCommonServices.beneficiaryRegID);
+
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(TestCommonServices.alcoholHistoryDataPveRes);
+
+		// assertEquals(1, response);
+	}
+
+	@Test
+	public void getPersonalAllergyHistoryDataPveTest()
+	{
+		// String expectedRes = {"data":[],"columns":[{"keyName":"captureDate","columnName":"Date of
+		// Capture"},{"keyName":"allergyStatus","columnName":"Allergy
+		// Status"},{"keyName":"allergyType","columnName":"Allergy
+		// Type"},{"keyName":"allergenName","columnName":"Allergy
+		// Name"},{"keyName":"allergicReactionType","columnName":"Allergic Reaction
+		// Type"},{"keyName":"otherAllergicReaction","columnName":"Other Allergic
+		// Reaction"},{"keyName":"remarks","columnName":"Remarks"}]}
+
+		String response = null;
+		try
+		{
+			response = generalOPDServiceImpl.getPersonalAllergyHistoryData(TestCommonServices.beneficiaryRegID);
+
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(TestCommonServices.allergyHistoryDataPveRes);
+
+		// assertEquals(1, response);
+	}
+
+	@Test
+	public void getMedicationHistoryDataPveTest()
+	{
+		// String expectedRes = {"data":[],"columns":[{"keyName":"captureDate","columnName":"Date of
+		// Capture"},{"keyName":"currentMedication","columnName":"Current
+		// Medication"},{"keyName":"medication_year","columnName":"Date"}]}
+
+		String response = null;
+		try
+		{
+			response = generalOPDServiceImpl.getMedicationHistoryData(TestCommonServices.beneficiaryRegID);
+
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(TestCommonServices.medicationHistoryDataPveRes);
+
+		// assertEquals(1, response);
+	}
+
+	@Test
+	public void getFamilyHistoryDataPveTest()
+	{
+		// String expectedRes = {"data":[],"columns":[{"keyName":"captureDate","columnName":"Date of
+		// Capture"},{"keyName":"familyMember","columnName":"Family
+		// Member"},{"keyName":"diseaseType","columnName":"Disease
+		// Type"},{"keyName":"otherDiseaseType","columnName":"Other Disease
+		// Type"},{"keyName":"isGeneticDisorder","columnName":"Is Genetic
+		// Disorder"},{"keyName":"geneticDisorder","columnName":"Genetic
+		// Disorder"},{"keyName":"isConsanguineousMarrige","columnName":"Is Consanguineous Marrige"}]}
+
+		String response = null;
+		try
+		{
+			response = generalOPDServiceImpl.getFamilyHistoryData(TestCommonServices.beneficiaryRegID);
+
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(TestCommonServices.familyHistoryDataPveRes);
+
+		// assertEquals(1, response);
+	}
+
+	@Test
+	public void getMenstrualHistoryDataPveTest()
+	{
+		// String expectedRes = {"data":[],"columns":[{"keyName":"captureDate","columnName":"Date of
+		// Capture"},{"keyName":"regularity","columnName":"Regularity"},{"keyName":"cycleLength","columnName":"Cycle
+		// Length"},{"keyName":"bloodFlowDuration","columnName":"Blood Flow
+		// Duration"},{"keyName":"problemName","columnName":"Problem
+		// Name"},{"keyName":"lmp_date","columnName":"LMPDate"}]}
+
+		String response = null;
+		try
+		{
+			response = generalOPDServiceImpl.getMenstrualHistoryData(TestCommonServices.beneficiaryRegID);
+
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(TestCommonServices.menstrualHistoryDataPveRes);
+
+		// assertEquals(1, response);
+	}
+
+	@Test
+	public void getObstetricHistoryDataPveTest()
+	{
+		// String expectedRes = {"data":[],"columns":[{"keyName":"captureDate","columnName":"Date of
+		// Capture"},{"keyName":"pregOrder","columnName":"Preg
+		// Order"},{"keyName":"pregComplicationType","columnName":"Preg Complication
+		// Type"},{"keyName":"otherPregComplication","columnName":"Other Preg
+		// Complication"},{"keyName":"durationType","columnName":"Duration
+		// Type"},{"keyName":"deliveryType","columnName":"Delivery
+		// Type"},{"keyName":"deliveryPlace","columnName":"Delivery
+		// Place"},{"keyName":"otherDeliveryPlace","columnName":"Other Delivery
+		// Place"},{"keyName":"deliveryComplicationType","columnName":"Delivery Complication
+		// Type"},{"keyName":"otherDeliveryComplication","columnName":"Other Delivery
+		// Complication"},{"keyName":"pregOutcome","columnName":"Preg
+		// Outcome"},{"keyName":"postpartumComplicationType","columnName":"Postpartum Complication
+		// Type"},{"keyName":"otherPostpartumCompType","columnName":"Other Postpartum
+		// CompType"},{"keyName":"postNatalComplication","columnName":"Post Natal
+		// Complication"},{"keyName":"otherPostNatalComplication","columnName":"Other Post Natal
+		// Complication"},{"keyName":"congenitalAnomalies","columnName":"Congenital
+		// Anomalies"},{"keyName":"newBornComplication","columnName":"New Born
+		// Complication"},{"keyName":"otherNewBornComplication","columnName":"Other New Born Complication"}]}
+
+		String response = null;
+		try
+		{
+			response = generalOPDServiceImpl.getObstetricHistoryData(TestCommonServices.beneficiaryRegID);
+
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(TestCommonServices.obstetricHistoryDataPveRes);
+
+		// assertEquals(1, response);
+	}
+
+	@Test
+	public void getComorbidHistoryDataPveTest()
+	{
+		// String expectedRes = {"data":[],"columns":[{"keyName":"captureDate","columnName":"Date of
+		// Capture"},{"keyName":"comorbidCondition","columnName":"Comorbid
+		// Condition"},{"keyName":"otherComorbidCondition","columnName":"Other Comorbid
+		// Condition"},{"keyName":"date","columnName":"Date"}]}
+
+		String response = null;
+		try
+		{
+			response = generalOPDServiceImpl.getComorbidHistoryData(TestCommonServices.beneficiaryRegID);
+
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(TestCommonServices.comorbidHistoryDataPveRes);
+
+		// assertEquals(1, response);
+	}
+
+	@Test
+	public void getChildVaccineHistoryDataPveTest()
+	{
+		// String expectedRes = {"data":[],"columns":[{"keyName":"captureDate","columnName":"Date of
+		// Capture"},{"keyName":"comorbidCondition","columnName":"Comorbid
+		// Condition"},{"keyName":"otherComorbidCondition","columnName":"Other Comorbid
+		// Condition"},{"keyName":"date","columnName":"Date"}]}
+
+		String response = null;
+		try
+		{
+			response = generalOPDServiceImpl.getChildVaccineHistoryData(TestCommonServices.beneficiaryRegID);
+
+			System.out.println("getChildVaccineHistoryData " + response);
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(TestCommonServices.childVaccineHistoryDataPveRes);
+
+		// assertEquals(1, response);
+	}
+
+	@Test
+	public void getImmunizationHistoryDataPveTest()
+	{
+		// String expectedRes = {"data":[],"columns":[{"keyName":"captureDate","columnName":"Date of
+		// Capture"},{"keyName":"comorbidCondition","columnName":"Comorbid
+		// Condition"},{"keyName":"otherComorbidCondition","columnName":"Other Comorbid
+		// Condition"},{"keyName":"date","columnName":"Date"}]}
+
+		String response = null;
+		try
+		{
+			response = generalOPDServiceImpl.getImmunizationHistoryData(TestCommonServices.beneficiaryRegID);
+
+			System.out.println("getImmunizationHistoryData " + response);
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(TestCommonServices.immunizationHistoryDataPveRes);
+
+		// assertEquals(1, response);
+	}
+
+	@Test
+	public void getBenPerinatalHistoryDataPveTest()
+	{
+		// String expectedRes = {"data":[],"columns":[{"keyName":"captureDate","columnName":"Date of
+		// Capture"},{"keyName":"comorbidCondition","columnName":"Comorbid
+		// Condition"},{"keyName":"otherComorbidCondition","columnName":"Other Comorbid
+		// Condition"},{"keyName":"date","columnName":"Date"}]}
+
+		String response = null;
+		try
+		{
+			response = generalOPDServiceImpl.getBenPerinatalHistoryData(TestCommonServices.beneficiaryRegID);
+
+			System.out.println("getBenPerinatalHistoryData " + response);
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(perinatalHistoryDataPveRes);
+
+		// assertEquals(1, response);
+	}
+
+	@Test
+	public void getBenFeedingHistoryDataPveTest()
+	{
+		// String expectedRes = {"data":[],"columns":[{"keyName":"captureDate","columnName":"Date of
+		// Capture"},{"keyName":"comorbidCondition","columnName":"Comorbid
+		// Condition"},{"keyName":"otherComorbidCondition","columnName":"Other Comorbid
+		// Condition"},{"keyName":"date","columnName":"Date"}]}
+
+		String response = null;
+		try
+		{
+			response = generalOPDServiceImpl.getBenFeedingHistoryData(TestCommonServices.beneficiaryRegID);
+
+			System.out.println("getBenFeedingHistoryData " + response);
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(feedingHistoryDataPveRes);
+
+		// assertEquals(1, response);
+	}
+
+	@Test
+	public void getBenDevelopmentHistoryDataPveTest()
+	{
+		// String expectedRes = {"data":[],"columns":[{"keyName":"captureDate","columnName":"Date of
+		// Capture"},{"keyName":"comorbidCondition","columnName":"Comorbid
+		// Condition"},{"keyName":"otherComorbidCondition","columnName":"Other Comorbid
+		// Condition"},{"keyName":"date","columnName":"Date"}]}
+
+		String response = null;
+		try
+		{
+			response = generalOPDServiceImpl.getBenDevelopmentHistoryData(TestCommonServices.beneficiaryRegID);
+
+			System.out.println("getBenDevelopmentHistoryData " + response);
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(developmentHistoryDataPveRes);
+
+		// assertEquals(1, response);
+	}
+
+	@Test
+	public void getBenVisitDetailsPveTest()
+	{
+
+		String response = null;
+		try
+		{
+			response = generalOPDServiceImpl.getBenVisitDetailsFrmNurseGOPD(TestCommonServices.beneficiaryRegID, TestCommonServices.benVisitID);
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(TestCommonServices.visitDetailsPveRes);
+	}
+
+	@Test
+	public void getBenHistoryDetailsPveTest()
+	{
+
+		String response = null;
+		try
+		{
+			response = generalOPDServiceImpl.getBenHistoryDetails(TestCommonServices.beneficiaryRegID, TestCommonServices.benVisitID);
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(TestCommonServices.historyDetailsPveRes);
+	}
+
+	@Test
+	public void getBeneficiaryVitalDetailsPveTest()
+	{
+
+		String response = null;
+		try
+		{
+			response = generalOPDServiceImpl.getBeneficiaryVitalDetails(TestCommonServices.beneficiaryRegID, TestCommonServices.benVisitID);
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(TestCommonServices.vitalDetailsPveRes);
+	}
+
+	@Test
+	public void getExaminationDetailsPveTest()
+	{
+
+		String response = null;
+		try
+		{
+			response = generalOPDServiceImpl.getExaminationDetailsData(TestCommonServices.beneficiaryRegID, TestCommonServices.benVisitID);
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(TestCommonServices.examinationDetailsPveRes);
+	}
+
+	// Update Test Cases
+	/*@Test
+	public void UpdateVisitDetailsPveTest()
+	{
+
+		int response = 0;
+		try
+		{
+			response = generalOPDServiceImpl.UpdateVisitDetails(TestCommonServices.jsnOBJPve);
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(1);
+	}*/
+	
+	@Test
+	public void updateBenHistoryDetailsPveTest()
+	{
+
+		int response = 0;
+		try
+		{
+			response = generalOPDServiceImpl.updateBenHistoryDetails(TestCommonServices.updateHstryJsnPve);
+			
+			System.out.println("response ---"+response);
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(1);
 	}
 	
 	@Test
-	public void getBenVisitDetailsPveTest(){
-		String expectedRes = "{GOPDNurseVisitDetail={}, BenChiefComplaints=[]}";
-		
-		String response = null;
-		try {
-			response = generalOPDServiceImpl.getBenVisitDetailsFrmNurseGOPD(beneficiaryRegID, benVisitID);
-			System.out.println("response getBenVisitDetailsPveTest "+response);
-		} catch (Exception e) {
+	public void updateBenVitalDetailsPveTest()
+	{
+
+		int response = 0;
+		try
+		{
+			response = generalOPDServiceImpl.updateBenVitalDetails(TestCommonServices.updateVitalJsnPve);
+		} catch (Exception e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		assertThat(response).isEqualTo(expectedRes);
+		assertThat(response).isEqualTo(1);
 	}
 	
 	@Test
-	public void getBenHistoryDetailsPveTest(){
-		String expectedRes = "{\"childOptionalVaccineHistory\":{\"childOptionalVaccineList\":[]},\"ComorbidityConditions\":{\"comorbidityConcurrentConditionsList\":[]},\"ImmunizationHistory\":{\"immunizationList\":[]},\"MedicationHistory\":{\"medicationHistoryList\":[]},\"FemaleObstetricHistory\":{\"femaleObstetricHistoryList\":[]}}";
-		
-		String response = null;
-		try {
-			response = generalOPDServiceImpl.getBenHistoryDetails(beneficiaryRegID, benVisitID);
-			System.out.println("response getBenHistoryDetailsPveTest "+response);
-		} catch (Exception e) {
+	public void updateBenExaminationDetailsPveTest()
+	{
+
+		int response = 0;
+		try
+		{
+			response = generalOPDServiceImpl.updateBenExaminationDetails(TestCommonServices.updateExaminationJsnPve);
+		} catch (Exception e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		assertThat(response).isEqualTo(expectedRes);
+		assertThat(response).isEqualTo(1);
 	}
-	
-	@Test
-	public void getBeneficiaryVitalDetailsPveTest(){
-		String expectedRes = "{benAnthropometryDetail={}, benPhysicalVitalDetail={}}";
-		
-		String response = null;
-		try {
-			response = generalOPDServiceImpl.getBeneficiaryVitalDetails(beneficiaryRegID, benVisitID);
-			System.out.println("response getBeneficiaryVitalDetailsPveTest "+response);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		assertThat(response).isEqualTo(expectedRes);
-	}
-	
-	@Test
-	public void getExaminationDetailsPveTest(){
-		String expectedRes = "{\"gastrointestinalExamination\":{},\"generalExamination\":{\"typeOfDangerSigns\":[]},\"headToToeExamination\":{},\"cardiovascularExamination\":{},\"centralNervousExamination\":{},\"respiratoryExamination\":{},\"musculoskeletalExamination\":{},\"genitourinaryExamination\":{}}";
-		
-		String response = null;
-		try {
-			response = generalOPDServiceImpl.getExaminationDetailsData(beneficiaryRegID, benVisitID);
-			System.out.println("response getExaminationDetailsPveTest "+response);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		assertThat(response).isEqualTo(expectedRes);
-	}
-	
 }

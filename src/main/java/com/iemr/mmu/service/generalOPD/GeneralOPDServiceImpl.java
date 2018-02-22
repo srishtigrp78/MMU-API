@@ -455,7 +455,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					examinationDetailsOBJ.get("gastroIntestinalExamination"), SysGastrointestinalExamination.class);
 			if (null != gastrointestinalExamination) {
 				gastrointestinalExamination.setBenVisitID(benVisitID);
-				gastroIntsExmnSuccessFlag = commonNurseServiceImpl
+				gastroIntsExmnSuccessFlag = generalOPDNurseServiceImpl
 						.saveSysGastrointestinalExamination(gastrointestinalExamination);
 
 			}
@@ -799,7 +799,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		examinationDetailsMap.put("headToToeExamination",
 				commonNurseServiceImpl.getHeadToToeExaminationData(benRegID, benVisitID));
 		examinationDetailsMap.put("gastrointestinalExamination",
-				commonNurseServiceImpl.getSysGastrointestinalExamination(benRegID, benVisitID));
+				generalOPDNurseServiceImpl.getSysGastrointestinalExamination(benRegID, benVisitID));
 		examinationDetailsMap.put("cardiovascularExamination",
 				commonNurseServiceImpl.getCardiovascularExamination(benRegID, benVisitID));
 		examinationDetailsMap.put("respiratoryExamination",

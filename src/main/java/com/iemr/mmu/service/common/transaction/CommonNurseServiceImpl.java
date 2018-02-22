@@ -642,6 +642,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		return examinationID;
 	}
 
+	@Deprecated
 	public Long saveSysGastrointestinalExamination(SysGastrointestinalExamination gastrointestinalExamination) {
 		Long examinationID = null;
 		SysGastrointestinalExamination response = sysGastrointestinalExaminationRepo.save(gastrointestinalExamination);
@@ -1528,6 +1529,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 	}
 
+	@Deprecated
 	public SysGastrointestinalExamination getSysGastrointestinalExamination(Long benRegID, Long benVisitID) {
 		SysGastrointestinalExamination sysGastrointestinalExaminationData = sysGastrointestinalExaminationRepo
 				.getSSysGastrointestinalExamination(benRegID, benVisitID);
@@ -1939,7 +1941,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		if (null != cardiovascular) {
 			String processed = sysCardiovascularExaminationRepo.getBenCardiovascularExaminationStatus(
 					cardiovascular.getBeneficiaryRegID(), cardiovascular.getBenVisitID());
-			if (!processed.equals("N")) {
+			if (null != processed && !processed.equals("N")) {
 				processed = "U";
 			}
 			response = sysCardiovascularExaminationRepo.updateSysCardiovascularExamination(
