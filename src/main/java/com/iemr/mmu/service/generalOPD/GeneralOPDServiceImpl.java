@@ -939,9 +939,15 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 		if (historyOBJ != null && historyOBJ.has("immunizationHistory")
 				&& !historyOBJ.get("immunizationHistory").isJsonNull()) {
-			WrapperImmunizationHistory wrapperImmunizationHistory = InputMapper.gson()
-					.fromJson(historyOBJ.get("immunizationHistory"), WrapperImmunizationHistory.class);
-			immunizationSuccessFlag = commonNurseServiceImpl.updateChildImmunizationDetail(wrapperImmunizationHistory);
+			
+			JsonObject immunizationHistory = historyOBJ.getAsJsonObject("immunizationHistory");
+			if(immunizationHistory.get("immunizationList")!=null && immunizationHistory.getAsJsonArray("immunizationList").size()>0){
+				WrapperImmunizationHistory wrapperImmunizationHistory = InputMapper.gson()
+						.fromJson(historyOBJ.get("immunizationHistory"), WrapperImmunizationHistory.class);
+				immunizationSuccessFlag = commonNurseServiceImpl.updateChildImmunizationDetail(wrapperImmunizationHistory);
+			}else{
+				immunizationSuccessFlag = 1;
+			}
 		} else {
 			immunizationSuccessFlag = 1;
 		}

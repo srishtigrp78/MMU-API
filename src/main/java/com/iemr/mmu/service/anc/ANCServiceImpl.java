@@ -1046,12 +1046,20 @@ public class ANCServiceImpl implements ANCService {
 		// Update Immunization History
 		if (ancHistoryOBJ != null && ancHistoryOBJ.has("immunizationHistory")
 				&& !ancHistoryOBJ.get("immunizationHistory").isJsonNull()) {
-			WrapperImmunizationHistory wrapperImmunizationHistory = InputMapper.gson()
-					.fromJson(ancHistoryOBJ.get("immunizationHistory"), WrapperImmunizationHistory.class);
-			immunizationSuccessFlag = commonNurseServiceImpl.updateChildImmunizationDetail(wrapperImmunizationHistory);
+			
+			JsonObject immunizationHistory = ancHistoryOBJ.getAsJsonObject("immunizationHistory");
+			if(immunizationHistory.get("immunizationList")!=null && immunizationHistory.getAsJsonArray("immunizationList").size()>0){
+				WrapperImmunizationHistory wrapperImmunizationHistory = InputMapper.gson()
+						.fromJson(ancHistoryOBJ.get("immunizationHistory"), WrapperImmunizationHistory.class);
+				immunizationSuccessFlag = commonNurseServiceImpl.updateChildImmunizationDetail(wrapperImmunizationHistory);
+			}else{
+				immunizationSuccessFlag = 1;
+			}
 		} else {
 			immunizationSuccessFlag = 1;
 		}
+		
+		
 		// Update Other/Optional Vaccines History
 		if (ancHistoryOBJ != null && ancHistoryOBJ.has("childVaccineDetails")
 				&& !ancHistoryOBJ.get("childVaccineDetails").isJsonNull()) {

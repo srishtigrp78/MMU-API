@@ -71,6 +71,7 @@ import com.iemr.mmu.repo.nurse.anc.SysMusculoskeletalSystemExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.SysRespiratoryExaminationRepo;
 import com.iemr.mmu.repo.quickConsultation.BenChiefComplaintRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
+import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.generalOPD.GeneralOPDNurseServiceImpl;
 import com.iemr.mmu.service.generalOPD.GeneralOPDServiceImpl;
@@ -87,6 +88,7 @@ public class TestGeneralOPDServices
 	private static PerinatalHistoryRepo perinatalHistoryRepoMock = mock(PerinatalHistoryRepo.class);
 	private static SysGastrointestinalExaminationRepo sysGastrointestinalExaminationRepoMock = mock(SysGastrointestinalExaminationRepo.class);
 
+	
 	public static String feedingHistoryDataPveRes = "";
 	public static String perinatalHistoryDataPveRes = "";
 	public static String developmentHistoryDataPveRes = "";
@@ -98,6 +100,7 @@ public class TestGeneralOPDServices
 		TestCommonServices.initializeParams();
 
 		generalOPDServiceImpl.setCommonNurseServiceImpl(TestCommonServices.commonNurseServiceImpl);
+		generalOPDServiceImpl.setCommonDoctorServiceImpl(TestCommonServices.commonDoctorServiceImpl);
 		generalOPDServiceImpl.setGeneralOPDNurseServiceImpl(generalOPDNurseServiceImpl);
 
 		generalOPDNurseServiceImpl.setBenChildDevelopmentHistoryRepo(benChildDevelopmentHistoryRepoMock);
@@ -216,6 +219,25 @@ public class TestGeneralOPDServices
 		// assertEquals(1, response);
 	}
 
+	@Test
+	public void saveGOPDDoctorDataPveTest()
+	{
+
+		Long response = null;
+		try
+		{
+			response = generalOPDServiceImpl.saveDoctorData(TestCommonServices.doctorSaveJsnPve);
+
+			System.out.println("response "+response);
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertThat(response).isEqualTo(1);
+	}
+	
 	@Test
 	public void getPastHistoryDataPveTest()
 	{
@@ -697,7 +719,7 @@ public class TestGeneralOPDServices
 		{
 			response = generalOPDServiceImpl.updateBenHistoryDetails(TestCommonServices.updateHstryJsnPve);
 			
-			System.out.println("response ---"+response);
+			System.out.println("updateBenHistoryDetailsPveTest ---"+response);
 		} catch (Exception e)
 		{
 			// TODO Auto-generated catch block

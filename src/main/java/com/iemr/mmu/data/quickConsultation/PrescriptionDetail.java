@@ -254,5 +254,10 @@ public class PrescriptionDetail {
 	public void setReservedForChange(String reservedForChange) {
 		this.reservedForChange = reservedForChange;
 	}
+
+	public void setPrescriptionID(Long prescriptionID)
+	{
+		this.prescriptionID = prescriptionID;
+	}
 	
 }
