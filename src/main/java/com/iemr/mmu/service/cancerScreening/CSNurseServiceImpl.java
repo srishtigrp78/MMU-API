@@ -12,12 +12,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.iemr.mmu.data.doctor.CancerAbdominalExamination;
+import com.iemr.mmu.data.doctor.CancerBreastExamination;
+import com.iemr.mmu.data.doctor.CancerExaminationImageAnnotation;
+import com.iemr.mmu.data.doctor.CancerGynecologicalExamination;
+import com.iemr.mmu.data.doctor.CancerLymphNodeDetails;
+import com.iemr.mmu.data.doctor.CancerOralExamination;
+import com.iemr.mmu.data.doctor.CancerSignAndSymptoms;
+import com.iemr.mmu.data.doctor.WrapperCancerExamImgAnotasn;
 import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
 import com.iemr.mmu.data.nurse.BenFamilyCancerHistory;
 import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
+import com.iemr.mmu.repo.doctor.CancerAbdominalExaminationRepo;
+import com.iemr.mmu.repo.doctor.CancerBreastExaminationRepo;
+import com.iemr.mmu.repo.doctor.CancerExaminationImageAnnotationRepo;
+import com.iemr.mmu.repo.doctor.CancerGynecologicalExaminationRepo;
+import com.iemr.mmu.repo.doctor.CancerLymphNodeExaminationRepo;
+import com.iemr.mmu.repo.doctor.CancerOralExaminationRepo;
+import com.iemr.mmu.repo.doctor.CancerSignAndSymptomsRepo;
 import com.iemr.mmu.repo.nurse.BenCancerVitalDetailRepo;
 import com.iemr.mmu.repo.nurse.BenFamilyCancerHistoryRepo;
 import com.iemr.mmu.repo.nurse.BenObstetricCancerHistoryRepo;
@@ -33,6 +48,56 @@ public class CSNurseServiceImpl implements CSNurseService {
 	private BenObstetricCancerHistoryRepo benObstetricCancerHistoryRepo;
 	private BenCancerVitalDetailRepo benCancerVitalDetailRepo;
 	private BenVisitDetailRepo benVisitDetailRepo;
+	
+	private CancerAbdominalExaminationRepo cancerAbdominalExaminationRepo;
+	private CancerBreastExaminationRepo cancerBreastExaminationRepo;
+	private CancerGynecologicalExaminationRepo cancerGynecologicalExaminationRepo;
+	private CancerSignAndSymptomsRepo cancerSignAndSymptomsRepo;
+	private CancerLymphNodeExaminationRepo cancerLymphNodeExaminationRepo;
+	private CancerOralExaminationRepo cancerOralExaminationRepo;
+	private CancerExaminationImageAnnotationRepo cancerExaminationImageAnnotationRepo;
+	
+	@Autowired
+	public void setCancerExaminationImageAnnotationRepo(CancerExaminationImageAnnotationRepo cancerExaminationImageAnnotationRepo)
+	{
+		this.cancerExaminationImageAnnotationRepo = cancerExaminationImageAnnotationRepo;
+	}
+	
+	@Autowired
+	public void setCancerOralExaminationRepo(CancerOralExaminationRepo cancerOralExaminationRepo)
+	{
+		this.cancerOralExaminationRepo = cancerOralExaminationRepo;
+	}
+	
+	@Autowired
+	public void setCancerLymphNodeExaminationRepo(CancerLymphNodeExaminationRepo cancerLymphNodeExaminationRepo)
+	{
+		this.cancerLymphNodeExaminationRepo = cancerLymphNodeExaminationRepo;
+	}
+	
+	@Autowired
+	public void setCancerSignAndSymptomsRepo(CancerSignAndSymptomsRepo cancerSignAndSymptomsRepo)
+	{
+		this.cancerSignAndSymptomsRepo = cancerSignAndSymptomsRepo;
+	}
+	
+	@Autowired
+	public void setCancerGynecologicalExaminationRepo(CancerGynecologicalExaminationRepo cancerGynecologicalExaminationRepo)
+	{
+		this.cancerGynecologicalExaminationRepo = cancerGynecologicalExaminationRepo;
+	}
+	
+	@Autowired
+	public void setCancerBreastExaminationRepo(CancerBreastExaminationRepo cancerBreastExaminationRepo)
+	{
+		this.cancerBreastExaminationRepo = cancerBreastExaminationRepo;
+	}
+	
+	@Autowired
+	public void setCancerAbdominalExaminationRepo(CancerAbdominalExaminationRepo cancerAbdominalExaminationRepo)
+	{
+		this.cancerAbdominalExaminationRepo = cancerAbdominalExaminationRepo;
+	}
 
 	@Autowired
 	public void setBenPersonalCancerHistoryRepo(BenPersonalCancerHistoryRepo benPersonalCancerHistoryRepo) {
@@ -420,7 +485,103 @@ public class CSNurseServiceImpl implements CSNurseService {
 				benVisitID);
 		return benCancerVitalDetail;
 	}
+	
+	public CancerAbdominalExamination getBenCancerAbdominalExaminationData(Long benRegID, Long benVisitID) {
+		CancerAbdominalExamination cancerAbdominalExamination = cancerAbdominalExaminationRepo
+				.getBenCancerAbdominalExaminationDetails(benRegID, benVisitID);
+		return cancerAbdominalExamination;
+	}
 
+	public CancerBreastExamination getBenCancerBreastExaminationData(Long benRegID, Long benVisitID) {
+		CancerBreastExamination cancerBreastExamination = cancerBreastExaminationRepo
+				.getBenCancerBreastExaminationDetails(benRegID, benVisitID);
+		return cancerBreastExamination;
+	}
+	
+	public CancerGynecologicalExamination getBenCancerGynecologicalExaminationData(Long benRegID, Long benVisitID) {
+		CancerGynecologicalExamination cancerGynecologicalExamination = cancerGynecologicalExaminationRepo
+				.getBenCancerGynecologicalExaminationDetails(benRegID, benVisitID);
+		return cancerGynecologicalExamination;
+	}
+
+	public CancerSignAndSymptoms getBenCancerSignAndSymptomsData(Long benRegID, Long benVisitID) {
+		CancerSignAndSymptoms cancerSignAndSymptoms = cancerSignAndSymptomsRepo
+				.getBenCancerSignAndSymptomsDetails(benRegID, benVisitID);
+		return cancerSignAndSymptoms;
+	}
+
+	public List<CancerLymphNodeDetails> getBenCancerLymphNodeDetailsData(Long benRegID, Long benVisitID) {
+		List<CancerLymphNodeDetails> cancerLymphNodeDetails = cancerLymphNodeExaminationRepo
+				.getBenCancerLymphNodeDetails(benRegID, benVisitID);
+		return cancerLymphNodeDetails;
+	}
+
+	public CancerOralExamination getBenCancerOralExaminationData(Long benRegID, Long benVisitID) {
+		CancerOralExamination cancerOralExamination = cancerOralExaminationRepo
+				.getBenCancerOralExaminationDetails(benRegID, benVisitID);
+		return cancerOralExamination;
+	}
+
+	public ArrayList<WrapperCancerExamImgAnotasn> getCancerExaminationImageAnnotationCasesheet(Long benRegID,
+			Long benVisitID) {
+		ArrayList<WrapperCancerExamImgAnotasn> resList = new ArrayList<>();
+		// System.out.println("hello");
+		List<CancerExaminationImageAnnotation> cancerExaminationImageAnnotationList = cancerExaminationImageAnnotationRepo
+				.getCancerExaminationImageAnnotationList(benRegID, benVisitID);
+
+		if (cancerExaminationImageAnnotationList.size() > 0) {
+			int a = 0;
+			int b = 0;
+
+			ArrayList<Map<String, Object>> markerList = null;
+			Map<String, Object> markerMap;
+
+			WrapperCancerExamImgAnotasn wrapperCancerExamImgAnotasnOBJ = null;
+
+			for (CancerExaminationImageAnnotation obj : cancerExaminationImageAnnotationList) {
+				markerMap = new HashMap<String, Object>();
+				b = obj.getCancerImageID();
+				if (a != b) {
+					wrapperCancerExamImgAnotasnOBJ = new WrapperCancerExamImgAnotasn();
+					wrapperCancerExamImgAnotasnOBJ.setBeneficiaryRegID(benRegID);
+					wrapperCancerExamImgAnotasnOBJ.setVisitID(benVisitID);
+					wrapperCancerExamImgAnotasnOBJ.setProviderServiceMapID(obj.getProviderServiceMapID());
+					wrapperCancerExamImgAnotasnOBJ.setCreatedBy(obj.getCreatedBy());
+					wrapperCancerExamImgAnotasnOBJ.setImageID(obj.getCancerImageID());
+
+					markerList = new ArrayList<>();
+					markerMap.put("xCord", obj.getxCoordinate());
+					markerMap.put("yCord", obj.getyCoordinate());
+					markerMap.put("description", obj.getPointDesc());
+					markerMap.put("point", obj.getPoint());
+
+					markerList.add(markerMap);
+
+					wrapperCancerExamImgAnotasnOBJ.setMarkers(markerList);
+
+					resList.add(wrapperCancerExamImgAnotasnOBJ);
+
+				} else {
+					markerMap.put("xCord", obj.getxCoordinate());
+					markerMap.put("yCord", obj.getyCoordinate());
+					markerMap.put("description", obj.getPointDesc());
+					markerMap.put("point", obj.getPoint());
+
+					markerList.add(markerMap);
+					wrapperCancerExamImgAnotasnOBJ.setMarkers(markerList);
+				}
+
+				a = b;
+
+			}
+
+		} else {
+
+		}
+		// System.out.println("hello");
+		return resList;
+	}
+	
 	public Map<String, Object> getBenNurseDataForCaseSheet(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
 
@@ -435,6 +596,18 @@ public class CSNurseServiceImpl implements CSNurseService {
 		resMap.put("benPersonalDietHistory", getBenPersonalCancerDietHistoryData(benRegID, benVisitID));
 
 		resMap.put("currentVitals", getBenCancerVitalDetailData(benRegID, benVisitID));
+		
+		resMap.put("abdominalExamination", getBenCancerAbdominalExaminationData(benRegID, benVisitID));
+
+		resMap.put("breastExamination", getBenCancerBreastExaminationData(benRegID, benVisitID));
+		
+		resMap.put("gynecologicalExamination", getBenCancerGynecologicalExaminationData(benRegID, benVisitID));
+
+		resMap.put("signsAndSymptoms", getBenCancerSignAndSymptomsData(benRegID, benVisitID));
+
+		resMap.put("BenCancerLymphNodeDetails", getBenCancerLymphNodeDetailsData(benRegID, benVisitID));
+
+		resMap.put("oralExamination", getBenCancerOralExaminationData(benRegID, benVisitID));
 
 		return resMap;
 	}
@@ -806,4 +979,170 @@ public class CSNurseServiceImpl implements CSNurseService {
 		return new Gson().toJson(resMap);
 	}
 
+	public int updateSignAndSymptomsExaminationDetails(CancerSignAndSymptoms cancerSignAndSymptoms) {
+		int response = 0;
+
+		String processed = cancerSignAndSymptomsRepo.getCancerSignAndSymptomsStatus(
+				cancerSignAndSymptoms.getBeneficiaryRegID(), cancerSignAndSymptoms.getBenVisitID());
+		if (null != processed && processed != "N") {
+			processed = "U";
+		}else{
+			processed = "N";
+		}
+		try {
+
+			response = cancerSignAndSymptomsRepo.updateCancerSignAndSymptoms(cancerSignAndSymptoms.getProviderServiceMapID(), 
+					cancerSignAndSymptoms.getShortnessOfBreath(), cancerSignAndSymptoms.getCoughGTE2Weeks(), 
+					cancerSignAndSymptoms.getBloodInSputum(), cancerSignAndSymptoms.getDifficultyInOpeningMouth(), 
+					cancerSignAndSymptoms.getNonHealingUlcerOrPatchOrGrowth(), cancerSignAndSymptoms.getChangeInTheToneOfVoice(), 
+					cancerSignAndSymptoms.getLumpInTheBreast(), cancerSignAndSymptoms.getBloodStainedDischargeFromNipple(), 
+					cancerSignAndSymptoms.getChangeInShapeAndSizeOfBreasts(), cancerSignAndSymptoms.getVaginalBleedingBetweenPeriods(), 
+					cancerSignAndSymptoms.getVaginalBleedingAfterMenopause(), cancerSignAndSymptoms.getVaginalBleedingAfterIntercourse(), 
+					cancerSignAndSymptoms.getFoulSmellingVaginalDischarge(), cancerSignAndSymptoms.getBreastEnlargement(), 
+					cancerSignAndSymptoms.getLymphNode_Enlarged(), cancerSignAndSymptoms.getBriefHistory(), 
+					cancerSignAndSymptoms.getModifiedBy(), cancerSignAndSymptoms.getBeneficiaryRegID(), 
+					cancerSignAndSymptoms.getBenVisitID(), processed);
+					
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+		return response;
+
+	}
+	
+	public int updateLymphNodeExaminationDetails(List<CancerLymphNodeDetails> cancerLymphNodeDetails) {
+		
+		int response = 0;
+		int delRes = 0;
+		try {
+			if (cancerLymphNodeDetails.size() > 0) {
+
+				ArrayList<Object[]> lymphNodeDetailsStatuses = cancerLymphNodeExaminationRepo.getCancerLymphNodeDetailsStatus(
+						cancerLymphNodeDetails.get(0).getBeneficiaryRegID(),
+						cancerLymphNodeDetails.get(0).getBenVisitID());
+
+				for (Object[] obj : lymphNodeDetailsStatuses) {
+					String processed = (String) obj[1];
+					if (null != processed && processed != "N") {
+						processed = "U";
+					}else{
+						processed = "N";
+					}
+					delRes = cancerLymphNodeExaminationRepo.deleteExistingLymphNodeDetails((Long) obj[0], processed);
+				}
+
+			}
+			if (delRes > 0) {
+				
+				if (cancerLymphNodeDetails.size() > 0) {
+					ArrayList<CancerLymphNodeDetails> cancerLymphNodes = (ArrayList<CancerLymphNodeDetails>) cancerLymphNodeExaminationRepo
+							.save(cancerLymphNodeDetails);
+					if (cancerLymphNodes.size() > 0) {
+						response = cancerLymphNodes.size();
+					}
+				} else {
+					response = 0;
+				}
+			} else {
+				response = 0;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+		return response;
+	}
+	
+	public int updateCancerOralDetails(CancerOralExamination cancerOralExamination) {
+		int response = 0;
+
+		String processed = cancerOralExaminationRepo.getCancerOralExaminationStatus(
+				cancerOralExamination.getBeneficiaryRegID(), cancerOralExamination.getBenVisitID());
+		if (null != processed && processed != "N") {
+			processed = "U";
+		}else{
+			processed = "N";
+		}
+		try {
+
+			response = cancerOralExaminationRepo.updateCancerSignAndSymptoms(cancerOralExamination.getProviderServiceMapID(), 
+					cancerOralExamination.getLimitedMouthOpening(), cancerOralExamination.getPremalignantLesions(), 
+					cancerOralExamination.getPreMalignantLesionType(), cancerOralExamination.getProlongedIrritation(), 
+					cancerOralExamination.getChronicBurningSensation(), cancerOralExamination.getObservation(), 
+					cancerOralExamination.getModifiedBy(), cancerOralExamination.getBeneficiaryRegID(), 
+					cancerOralExamination.getBenVisitID(), processed);
+					
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+		return response;
+
+	}
+	
+	public int updateCancerBreastDetails(CancerBreastExamination cancerBreastExamination) {
+		int response = 0;
+
+		String processed = cancerBreastExaminationRepo.getCancerBreastExaminationStatus(
+				cancerBreastExamination.getBeneficiaryRegID(), cancerBreastExamination.getBenVisitID());
+		if (null != processed && processed != "N") {
+			processed = "U";
+		}else{
+			processed = "N";
+		}
+		try {
+
+			response = cancerBreastExaminationRepo.updateCancerBreastExaminatio(cancerBreastExamination.getProviderServiceMapID(), 
+					cancerBreastExamination.getEverBreastFed(), cancerBreastExamination.getBreastFeedingDurationGTE6months(), 
+					cancerBreastExamination.getBreastsAppear_Normal(), cancerBreastExamination.getRashOnBreast(), 
+					cancerBreastExamination.getDimplingSkinOnBreast(), cancerBreastExamination.getDischargeFromNipple(), 
+					cancerBreastExamination.getPeaudOrange(), cancerBreastExamination.getLumpInBreast(), 
+					cancerBreastExamination.getLumpSize(), cancerBreastExamination.getLumpShape(), 
+					cancerBreastExamination.getLumpTexture(), cancerBreastExamination.getReferredToMammogram(), 
+					cancerBreastExamination.getMamogramReport(), cancerBreastExamination.getModifiedBy(), 
+					cancerBreastExamination.getBeneficiaryRegID(), cancerBreastExamination.getBenVisitID(), processed);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+		return response;
+
+	}
+	
+	public int updateCancerAbdominalExaminationDetails(CancerAbdominalExamination cancerAbdominalExamination) {
+		int response = 0;
+
+		String processed = cancerAbdominalExaminationRepo.getCancerAbdominalExaminationStatus(
+				cancerAbdominalExamination.getBeneficiaryRegID(), cancerAbdominalExamination.getBenVisitID());
+		if (null != processed && processed != "N") {
+			processed = "U";
+		}else{
+			processed = "N";
+		}
+		try {
+
+			response = cancerAbdominalExaminationRepo.updateCancerAbdominalExamination(cancerAbdominalExamination.getProviderServiceMapID(),
+					cancerAbdominalExamination.getAbdominalInspection_Normal(), cancerAbdominalExamination.getLiver(), 
+					cancerAbdominalExamination.getAscites_Present(), cancerAbdominalExamination.getAnyOtherMass_Present(), 
+					cancerAbdominalExamination.getLymphNodes_Enlarged(), cancerAbdominalExamination.getLymphNode_Inguinal_Left(), 
+					cancerAbdominalExamination.getLymphNode_Inguinal_Right(), cancerAbdominalExamination.getLymphNode_ExternalIliac_Left(), 
+					cancerAbdominalExamination.getLymphNode_ExternalIliac_Right(), cancerAbdominalExamination.getLymphNode_ParaAortic_Left(), 
+					cancerAbdominalExamination.getLymphNode_ParaAortic_Right(), cancerAbdominalExamination.getObservation(), 
+					cancerAbdominalExamination.getModifiedBy(), cancerAbdominalExamination.getBeneficiaryRegID(), 
+					cancerAbdominalExamination.getBenVisitID(), processed);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+		return response;
+
+	}
+	
+	
 }

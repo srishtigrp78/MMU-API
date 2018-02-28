@@ -80,6 +80,14 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 	}
 
 	@Override
+	public Long saveCancerSignAndSymptomsData(CancerSignAndSymptoms cancerSignAndSymptoms, Long benVisitID) {
+		cancerSignAndSymptoms.setBenVisitID(benVisitID);
+		Long response = saveCancerSignAndSymptomsData(cancerSignAndSymptoms);
+		
+		return response;
+	}
+	
+	@Override
 	public Long saveCancerSignAndSymptomsData(CancerSignAndSymptoms cancerSignAndSymptoms) {
 		CancerSignAndSymptoms response = cancerSignAndSymptomsRepo.save(cancerSignAndSymptoms);
 		if (response != null)
@@ -88,6 +96,25 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 			return null;
 	}
 
+	public Long saveLymphNodeDetails(List<CancerLymphNodeDetails> cancerLymphNodeDetails, Long benVisitID) {
+		Long responseData = null;
+		for(CancerLymphNodeDetails cancerLymphNodeDetail: cancerLymphNodeDetails){
+			cancerLymphNodeDetail.setBenVisitID(benVisitID);
+		}
+		
+		List<CancerLymphNodeDetails> response = (List<CancerLymphNodeDetails>) cancerLymphNodeExaminationRepo
+				.save(cancerLymphNodeDetails);
+		if (null != response && response.size() > 0) {
+			for (CancerLymphNodeDetails obj : response) {
+				if (obj.getID() > 0)
+					responseData = obj.getID();
+				break;
+			}
+		}
+		return responseData;
+	}
+	
+	@Deprecated
 	@Override
 	public Long saveLymphNodeDetails(List<CancerLymphNodeDetails> cancerLymphNodeDetails) {
 		Long responseData = null;
@@ -158,6 +185,21 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 			return null;
 	}
 
+	public Long saveDocExaminationImageAnnotation(List<WrapperCancerExamImgAnotasn> wrapperCancerExamImgAnotasnList, Long benVisitID) {
+		// System.out.println("hello");
+		Long x = null;
+		for(WrapperCancerExamImgAnotasn wrapperCancerExamImgAnotasn: wrapperCancerExamImgAnotasnList){
+			wrapperCancerExamImgAnotasn.setVisitID(benVisitID);
+		}
+		List<CancerExaminationImageAnnotation> objList = (List<CancerExaminationImageAnnotation>) cancerExaminationImageAnnotationRepo
+				.save(getCancerExaminationImageAnnotationList(wrapperCancerExamImgAnotasnList));
+		if (objList != null && objList.size() > 0) {
+			x = (long) objList.size();
+		}
+		return x;
+	}
+	
+	@Deprecated
 	@Override
 	public Long saveDocExaminationImageAnnotation(List<WrapperCancerExamImgAnotasn> wrapperCancerExamImgAnotasnList) {
 		// System.out.println("hello");
@@ -225,33 +267,38 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 			return null;
 	}
 
+	//Commented few stamts in below method bcz Those screens moved to nurse ServiceImpl
 	public Map<String, Object> getBenDoctorEnteredDataForCaseSheet(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
 
 		// System.out.println("getBenDoctorEnteredDataForCaseSheet");
-		resMap.put("abdominalExamination", getBenCancerAbdominalExaminationData(benRegID, benVisitID));
+		/*resMap.put("abdominalExamination", getBenCancerAbdominalExaminationData(benRegID, benVisitID));
 
-		resMap.put("breastExamination", getBenCancerBreastExaminationData(benRegID, benVisitID));
+		resMap.put("breastExamination", getBenCancerBreastExaminationData(benRegID, benVisitID));*/
 
 		resMap.put("diagnosis", getBenCancerDiagnosisData(benRegID, benVisitID));
 
-		resMap.put("gynecologicalExamination", getBenCancerGynecologicalExaminationData(benRegID, benVisitID));
+		/*resMap.put("gynecologicalExamination", getBenCancerGynecologicalExaminationData(benRegID, benVisitID));
 
 		resMap.put("signsAndSymptoms", getBenCancerSignAndSymptomsData(benRegID, benVisitID));
 
 		resMap.put("BenCancerLymphNodeDetails", getBenCancerLymphNodeDetailsData(benRegID, benVisitID));
 
-		resMap.put("oralExamination", getBenCancerOralExaminationData(benRegID, benVisitID));
+		resMap.put("oralExamination", getBenCancerOralExaminationData(benRegID, benVisitID));*/
 
 		return resMap;
 	}
 
+	/*Moved to CSNurseServiceImpl*/
+	@Deprecated
 	private CancerAbdominalExamination getBenCancerAbdominalExaminationData(Long benRegID, Long benVisitID) {
 		CancerAbdominalExamination cancerAbdominalExamination = cancerAbdominalExaminationRepo
 				.getBenCancerAbdominalExaminationDetails(benRegID, benVisitID);
 		return cancerAbdominalExamination;
 	}
-
+	
+	/*Moved to CSNurseServiceImpl*/
+	@Deprecated
 	private CancerBreastExamination getBenCancerBreastExaminationData(Long benRegID, Long benVisitID) {
 		CancerBreastExamination cancerBreastExamination = cancerBreastExaminationRepo
 				.getBenCancerBreastExaminationDetails(benRegID, benVisitID);
@@ -268,30 +315,37 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 		return cancerDiagnosis;
 	}
 
+	/*Moved to CSNurseServiceImpl*/
+	@Deprecated
 	private CancerGynecologicalExamination getBenCancerGynecologicalExaminationData(Long benRegID, Long benVisitID) {
 		CancerGynecologicalExamination cancerGynecologicalExamination = cancerGynecologicalExaminationRepo
 				.getBenCancerGynecologicalExaminationDetails(benRegID, benVisitID);
 		return cancerGynecologicalExamination;
 	}
-
+	/*Moved to CSNurseServiceImpl*/
+	@Deprecated
 	private CancerSignAndSymptoms getBenCancerSignAndSymptomsData(Long benRegID, Long benVisitID) {
 		CancerSignAndSymptoms cancerSignAndSymptoms = cancerSignAndSymptomsRepo
 				.getBenCancerSignAndSymptomsDetails(benRegID, benVisitID);
 		return cancerSignAndSymptoms;
 	}
-
+	/*Moved to CSNurseServiceImpl*/
+	@Deprecated
 	private List<CancerLymphNodeDetails> getBenCancerLymphNodeDetailsData(Long benRegID, Long benVisitID) {
 		List<CancerLymphNodeDetails> cancerLymphNodeDetails = cancerLymphNodeExaminationRepo
 				.getBenCancerLymphNodeDetails(benRegID, benVisitID);
 		return cancerLymphNodeDetails;
 	}
-
+	/*Moved to CSNurseServiceImpl*/
+	@Deprecated
 	private CancerOralExamination getBenCancerOralExaminationData(Long benRegID, Long benVisitID) {
 		CancerOralExamination cancerOralExamination = cancerOralExaminationRepo
 				.getBenCancerOralExaminationDetails(benRegID, benVisitID);
 		return cancerOralExamination;
 	}
 
+	/*Moved to CSNurseServiceImpl*/
+	@Deprecated
 	public ArrayList<WrapperCancerExamImgAnotasn> getCancerExaminationImageAnnotationCasesheet(Long benRegID,
 			Long benVisitID) {
 		ArrayList<WrapperCancerExamImgAnotasn> resList = new ArrayList<>();

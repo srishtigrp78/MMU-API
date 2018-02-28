@@ -123,6 +123,32 @@ public class CancerScreeningFetchController {
 	}
 
 	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary Examination details from Nurse screen", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenDataFrmNurseToDocExaminationScreen" }, method = { RequestMethod.POST })
+	public String getBenDataFrmNurseScrnToDocScrnExamination(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+		logger.info("getBenDataFrmNurseScrnToDocScrnExamination request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.length() > 1) {
+				Long benRegID = obj.getLong("benRegID");
+				Long benVisitID = obj.getLong("benVisitID");
+
+				String s = cSServiceImpl.getBenDataFrmNurseToDocExaminationScreen(benRegID, benVisitID);
+				response.setResponse(s);
+			} else {
+
+			}
+			logger.info("getBenDataFrmNurseScrnToDocScrnExamination response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenDataFrmNurseScrnToDocScrnExamination:" + e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary data for case sheet", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBeneficiaryDataEnteredByNurseAndDoctor" }, method = { RequestMethod.POST })
 	public String getBenDataForCaseSheet(

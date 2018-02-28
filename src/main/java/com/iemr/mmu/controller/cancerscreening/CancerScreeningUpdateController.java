@@ -142,6 +142,35 @@ public class CancerScreeningUpdateController {
 	}
 	
 	@CrossOrigin
+	@ApiOperation(value = "update Ben Examination Detail", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/examinationScreen" }, method = { RequestMethod.POST })
+	public String upodateBenExaminationDetail(@RequestBody String requestObj) {
+
+		OutputResponse response = new OutputResponse();
+		logger.info("upodateBenExaminationDetail request:" + requestObj);
+
+		JsonObject jsnOBJ = new JsonObject();
+		JsonParser jsnParser = new JsonParser();
+		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		jsnOBJ = jsnElmnt.getAsJsonObject();
+		
+		try {
+			int responseObj = cSServiceImpl.updateBenExaminationDetail(jsnOBJ);
+			if (responseObj > 0) {
+				response.setResponse("Beneficiary Examination Details updated Successfully");
+			} else {
+				response.setError(500, "Failed to update Beneficiary Examination Details");
+			}
+			logger.info("upodateBenExaminationDetail response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in upodateBenExaminationDetail:" + e);
+		}
+
+		return response.toString();
+	}
+	
+	@CrossOrigin
 	@ApiOperation(value = "update Cancer Diagnosis Details By Oncologist", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/examinationScreen/diagnosis" }, method = { RequestMethod.POST })
 	public String updateCancerDiagnosisDetailsByOncologist(

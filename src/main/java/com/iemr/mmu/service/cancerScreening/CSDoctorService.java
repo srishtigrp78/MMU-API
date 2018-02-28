@@ -29,4 +29,6 @@ public interface CSDoctorService {
 
 	public Long saveCancerDiagnosisData(CancerDiagnosis cancerDiagnosis);
 
+	public Long saveCancerSignAndSymptomsData(CancerSignAndSymptoms cancerSignAndSymptoms, Long benVisitID);
+
 }
