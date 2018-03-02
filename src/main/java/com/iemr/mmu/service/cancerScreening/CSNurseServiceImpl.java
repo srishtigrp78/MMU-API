@@ -159,6 +159,15 @@ public class CSNurseServiceImpl implements CSNurseService {
 
 	@Override
 	public Long saveBenPersonalCancerHistory(BenPersonalCancerHistory benPersonalCancerHistory) {
+		benPersonalCancerHistory = getBenPersonalHistoryOBJ(benPersonalCancerHistory);
+		BenPersonalCancerHistory response = benPersonalCancerHistoryRepo.save(benPersonalCancerHistory);
+		if (response != null)
+			return response.getID();
+		else
+			return null;
+	}
+
+	public BenPersonalCancerHistory getBenPersonalHistoryOBJ(BenPersonalCancerHistory benPersonalCancerHistory) {
 		List<String> typeOfTobaccoProductUseList = benPersonalCancerHistory.getTypeOfTobaccoProductList();
 		String typeOfTobaccoProductUseConcat = "";
 		if (typeOfTobaccoProductUseList != null && typeOfTobaccoProductUseList.size() > 0) {
@@ -167,15 +176,20 @@ public class CSNurseServiceImpl implements CSNurseService {
 			}
 		}
 		benPersonalCancerHistory.setTypeOfTobaccoProduct(typeOfTobaccoProductUseConcat);
-		BenPersonalCancerHistory response = benPersonalCancerHistoryRepo.save(benPersonalCancerHistory);
+		return benPersonalCancerHistory;
+	}
+	
+	@Override
+	public Long saveBenPersonalCancerDietHistory(BenPersonalCancerDietHistory benPersonalCancerDietHistory) {
+		benPersonalCancerDietHistory = getBenPersonalCancerDietOBJ(benPersonalCancerDietHistory);
+		BenPersonalCancerDietHistory response = benPersonalCancerDietHistoryRepo.save(benPersonalCancerDietHistory);
 		if (response != null)
 			return response.getID();
 		else
 			return null;
 	}
-
-	@Override
-	public Long saveBenPersonalCancerDietHistory(BenPersonalCancerDietHistory benPersonalCancerDietHistory) {
+	
+	public BenPersonalCancerDietHistory getBenPersonalCancerDietOBJ(BenPersonalCancerDietHistory benPersonalCancerDietHistory) {
 		List<String> personalOilConsumedList = benPersonalCancerDietHistory.getTypeOfOilConsumedList();
 		String oilConsumedData = "";
 		if (personalOilConsumedList != null && personalOilConsumedList.size() > 0) {
@@ -184,11 +198,8 @@ public class CSNurseServiceImpl implements CSNurseService {
 			}
 		}
 		benPersonalCancerDietHistory.setTypeOfOilConsumed(oilConsumedData);
-		BenPersonalCancerDietHistory response = benPersonalCancerDietHistoryRepo.save(benPersonalCancerDietHistory);
-		if (response != null)
-			return response.getID();
-		else
-			return null;
+		
+		return benPersonalCancerDietHistory;
 	}
 
 	@Override
@@ -269,31 +280,28 @@ public class CSNurseServiceImpl implements CSNurseService {
 	@Override
 	public int updateBenObstetricCancerHistory(BenObstetricCancerHistory benObstetricCancerHistory) {
 		int response = 0;
-
+		int recordsAvailable = 0;
 		Character processed = benObstetricCancerHistoryRepo.getObstetricCancerHistoryStatus(
 				benObstetricCancerHistory.getBeneficiaryRegID(), benObstetricCancerHistory.getBenVisitID());
+		if(null != processed){
+			recordsAvailable = 1;
+		}
 		if (null != processed && processed != 'N') {
 			processed = 'U';
 		}else{
 			processed = 'N';
 		}
 		try {
-
-			response = benObstetricCancerHistoryRepo.updateBenObstetricCancerHistory(
-					benObstetricCancerHistory.getProviderServiceMapID(), benObstetricCancerHistory.getPregnancyStatus(),
-					benObstetricCancerHistory.getIsUrinePregTest(), benObstetricCancerHistory.getPregnant_No(),
-					benObstetricCancerHistory.getNoOfLivingChild(), benObstetricCancerHistory.getIsAbortion(),
-					benObstetricCancerHistory.getIsOralContraceptiveUsed(),
-					benObstetricCancerHistory.getIsHormoneReplacementTherapy(),
-					benObstetricCancerHistory.getMenarche_Age(), benObstetricCancerHistory.getIsMenstrualCycleRegular(),
-					benObstetricCancerHistory.getMenstrualCycleLength(),
-					benObstetricCancerHistory.getMenstrualFlowDuration(),
-					benObstetricCancerHistory.getMenstrualFlowType(), benObstetricCancerHistory.getIsDysmenorrhea(),
-					benObstetricCancerHistory.getIsInterMenstrualBleeding(),
-					benObstetricCancerHistory.getMenopauseAge(), benObstetricCancerHistory.getIsPostMenopauseBleeding(),
-					benObstetricCancerHistory.getIsFoulSmellingDischarge(), benObstetricCancerHistory.getModifiedBy(),
-					benObstetricCancerHistory.getBeneficiaryRegID(), benObstetricCancerHistory.getBenVisitID(),
-					processed);
+			benObstetricCancerHistory.setProcessed(processed);
+			if(recordsAvailable == 1){
+				response = updateBenObstetricHistory(benObstetricCancerHistory);
+			}else{
+				benObstetricCancerHistory.setCreatedBy(benObstetricCancerHistory.getModifiedBy());
+				Long saveRes = saveBenObstetricCancerHistory(benObstetricCancerHistory);
+				if(null != saveRes && saveRes > 0){
+					response = 1;
+				}
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -302,13 +310,33 @@ public class CSNurseServiceImpl implements CSNurseService {
 		return response;
 
 	}
-
+	public int updateBenObstetricHistory(BenObstetricCancerHistory benObstetricCancerHistory) {
+		int response = benObstetricCancerHistoryRepo.updateBenObstetricCancerHistory(
+				benObstetricCancerHistory.getProviderServiceMapID(), benObstetricCancerHistory.getPregnancyStatus(),
+				benObstetricCancerHistory.getIsUrinePregTest(), benObstetricCancerHistory.getPregnant_No(),
+				benObstetricCancerHistory.getNoOfLivingChild(), benObstetricCancerHistory.getIsAbortion(),
+				benObstetricCancerHistory.getIsOralContraceptiveUsed(),
+				benObstetricCancerHistory.getIsHormoneReplacementTherapy(),
+				benObstetricCancerHistory.getMenarche_Age(), benObstetricCancerHistory.getIsMenstrualCycleRegular(),
+				benObstetricCancerHistory.getMenstrualCycleLength(),
+				benObstetricCancerHistory.getMenstrualFlowDuration(),
+				benObstetricCancerHistory.getMenstrualFlowType(), benObstetricCancerHistory.getIsDysmenorrhea(),
+				benObstetricCancerHistory.getIsInterMenstrualBleeding(),
+				benObstetricCancerHistory.getMenopauseAge(), benObstetricCancerHistory.getIsPostMenopauseBleeding(),
+				benObstetricCancerHistory.getIsFoulSmellingDischarge(), benObstetricCancerHistory.getModifiedBy(),
+				benObstetricCancerHistory.getBeneficiaryRegID(), benObstetricCancerHistory.getBenVisitID(),
+				benObstetricCancerHistory.getProcessed());
+		return response;
+	}
 	@Override
 	public int updateBenPersonalCancerHistory(BenPersonalCancerHistory benPersonalCancerHistory) {
 		int response = 0;
-
+		int recordsAvailable = 0;
 		Character processed = benPersonalCancerHistoryRepo.getPersonalCancerHistoryStatus(
 				benPersonalCancerHistory.getBeneficiaryRegID(), benPersonalCancerHistory.getBenVisitID());
+		if(null != processed){
+			recordsAvailable = 1;
+		}
 		if (null != processed && processed != 'N') {
 			processed = 'U';
 		}else{
@@ -316,25 +344,16 @@ public class CSNurseServiceImpl implements CSNurseService {
 		}
 
 		try {
-
-			List<String> typeOfTobaccoProductList = benPersonalCancerHistory.getTypeOfTobaccoProductList();
-			if (null != typeOfTobaccoProductList && !typeOfTobaccoProductList.isEmpty()) {
-				String typeOfTobaccoProductData = "";
-				for (String typeOfTobaccoProduct : typeOfTobaccoProductList) {
-					typeOfTobaccoProductData += typeOfTobaccoProduct + ",";
+			benPersonalCancerHistory.setProcessed(processed);
+			if(recordsAvailable == 1){
+				response = updateBenPersonalHistory(benPersonalCancerHistory);
+			}else{
+				benPersonalCancerHistory.setCreatedBy(benPersonalCancerHistory.getModifiedBy());
+				Long saveRes = saveBenPersonalCancerHistory(benPersonalCancerHistory);
+				if(null != saveRes && saveRes > 0){
+					response = 1;
 				}
-				benPersonalCancerHistory.setTypeOfTobaccoProduct(typeOfTobaccoProductData);
 			}
-			response = benPersonalCancerHistoryRepo.updateBenPersonalCancerHistory(
-					benPersonalCancerHistory.getProviderServiceMapID(), benPersonalCancerHistory.getTobaccoUse(),
-					benPersonalCancerHistory.getStartAge_year(), benPersonalCancerHistory.getEndAge_year(),
-					benPersonalCancerHistory.getTypeOfTobaccoProduct(), benPersonalCancerHistory.getQuantityPerDay(),
-					benPersonalCancerHistory.getIsFilteredCigaerette(),
-					benPersonalCancerHistory.getIsCigaretteExposure(), benPersonalCancerHistory.getIsBetelNutChewing(),
-					benPersonalCancerHistory.getDurationOfBetelQuid(), benPersonalCancerHistory.getAlcoholUse(),
-					benPersonalCancerHistory.getSsAlcoholUsed(), benPersonalCancerHistory.getFrequencyOfAlcoholUsed(),
-					benPersonalCancerHistory.getModifiedBy(), benPersonalCancerHistory.getBeneficiaryRegID(),
-					benPersonalCancerHistory.getBenVisitID(), processed);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -344,12 +363,30 @@ public class CSNurseServiceImpl implements CSNurseService {
 
 	}
 
+	public int updateBenPersonalHistory(BenPersonalCancerHistory benPersonalCancerHistory) {
+		benPersonalCancerHistory = getBenPersonalHistoryOBJ(benPersonalCancerHistory);
+		int response = benPersonalCancerHistoryRepo.updateBenPersonalCancerHistory(
+				benPersonalCancerHistory.getProviderServiceMapID(), benPersonalCancerHistory.getTobaccoUse(),
+				benPersonalCancerHistory.getStartAge_year(), benPersonalCancerHistory.getEndAge_year(),
+				benPersonalCancerHistory.getTypeOfTobaccoProduct(), benPersonalCancerHistory.getQuantityPerDay(),
+				benPersonalCancerHistory.getIsFilteredCigaerette(),
+				benPersonalCancerHistory.getIsCigaretteExposure(), benPersonalCancerHistory.getIsBetelNutChewing(),
+				benPersonalCancerHistory.getDurationOfBetelQuid(), benPersonalCancerHistory.getAlcoholUse(),
+				benPersonalCancerHistory.getSsAlcoholUsed(), benPersonalCancerHistory.getFrequencyOfAlcoholUsed(),
+				benPersonalCancerHistory.getModifiedBy(), benPersonalCancerHistory.getBeneficiaryRegID(),
+				benPersonalCancerHistory.getBenVisitID(), benPersonalCancerHistory.getProcessed());
+		return response;
+	}
+	
 	@Override
 	public int updateBenPersonalCancerDietHistory(BenPersonalCancerDietHistory benPersonalCancerDietHistory) {
 		int response = 0;
-
+		int recordsAvailable = 0;
 		Character processed = benPersonalCancerDietHistoryRepo.getPersonalCancerDietHistoryStatus(
 				benPersonalCancerDietHistory.getBeneficiaryRegID(), benPersonalCancerDietHistory.getBenVisitID());
+		if(null != processed){
+			recordsAvailable = 1;
+		}
 		if (null != processed && processed != 'N') {
 			processed = 'U';
 		}else{
@@ -357,28 +394,16 @@ public class CSNurseServiceImpl implements CSNurseService {
 		}
 
 		try {
-			List<String> typeOfOilConsumedList = benPersonalCancerDietHistory.getTypeOfOilConsumedList();
-			if (null != typeOfOilConsumedList && !typeOfOilConsumedList.isEmpty()) {
-				String typeOfOilConsumedData = "";
-				for (String typeOfOilConsumed : typeOfOilConsumedList) {
-					typeOfOilConsumedData += typeOfOilConsumed + ",";
+			benPersonalCancerDietHistory.setProcessed(processed);
+			if(recordsAvailable == 1){
+				response = updateBenPersonalDietHistory(benPersonalCancerDietHistory);
+			}else{
+				benPersonalCancerDietHistory.setCreatedBy(benPersonalCancerDietHistory.getModifiedBy());
+				Long saveRes = saveBenPersonalCancerDietHistory(benPersonalCancerDietHistory);
+				if(null != saveRes && saveRes > 0){
+					response = 1;
 				}
-				benPersonalCancerDietHistory.setTypeOfOilConsumed(typeOfOilConsumedData);
 			}
-
-			response = benPersonalCancerDietHistoryRepo.updateBenPersonalCancerDietHistory(
-					benPersonalCancerDietHistory.getProviderServiceMapID(), benPersonalCancerDietHistory.getDietType(),
-					benPersonalCancerDietHistory.getFruitConsumptionDays(),
-					benPersonalCancerDietHistory.getFruitQuantityPerDay(),
-					benPersonalCancerDietHistory.getVegetableConsumptionDays(),
-					benPersonalCancerDietHistory.getVegetableQuantityPerDay(),
-					benPersonalCancerDietHistory.getIntakeOfOutsidePreparedMeal(),
-					benPersonalCancerDietHistory.getTypeOfOilConsumed(),
-					benPersonalCancerDietHistory.getPhysicalActivityType(),
-					benPersonalCancerDietHistory.getSsRadiationExposure(),
-					benPersonalCancerDietHistory.getIsThyroidDisorder(), benPersonalCancerDietHistory.getModifiedBy(),
-					benPersonalCancerDietHistory.getBeneficiaryRegID(), benPersonalCancerDietHistory.getBenVisitID(),
-					processed);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -388,6 +413,24 @@ public class CSNurseServiceImpl implements CSNurseService {
 
 	}
 
+	public int updateBenPersonalDietHistory(BenPersonalCancerDietHistory benPersonalCancerDietHistory) {
+		benPersonalCancerDietHistory = getBenPersonalCancerDietOBJ(benPersonalCancerDietHistory);
+
+		int response = benPersonalCancerDietHistoryRepo.updateBenPersonalCancerDietHistory(
+				benPersonalCancerDietHistory.getProviderServiceMapID(), benPersonalCancerDietHistory.getDietType(),
+				benPersonalCancerDietHistory.getFruitConsumptionDays(),
+				benPersonalCancerDietHistory.getFruitQuantityPerDay(),
+				benPersonalCancerDietHistory.getVegetableConsumptionDays(),
+				benPersonalCancerDietHistory.getVegetableQuantityPerDay(),
+				benPersonalCancerDietHistory.getIntakeOfOutsidePreparedMeal(),
+				benPersonalCancerDietHistory.getTypeOfOilConsumed(),
+				benPersonalCancerDietHistory.getPhysicalActivityType(),
+				benPersonalCancerDietHistory.getSsRadiationExposure(),
+				benPersonalCancerDietHistory.getIsThyroidDisorder(), benPersonalCancerDietHistory.getModifiedBy(),
+				benPersonalCancerDietHistory.getBeneficiaryRegID(), benPersonalCancerDietHistory.getBenVisitID(),
+				benPersonalCancerDietHistory.getProcessed());
+		return response;
+	}
 	@Override
 	public int updateBenVitalDetail(BenCancerVitalDetail benCancerVitalDetail) {
 		Character processed = benCancerVitalDetailRepo.getCancerVitalStatus(benCancerVitalDetail.getBeneficiaryRegID(),
@@ -464,16 +507,16 @@ public class CSNurseServiceImpl implements CSNurseService {
 		BenPersonalCancerDietHistory benPersonalCancerDietHistory = benPersonalCancerDietHistoryRepo
 				.getBenPersonaDietHistory(benRegID, benVisitID);
 
-		String s = benPersonalCancerDietHistory.getTypeOfOilConsumed();
-		List<String> oilConsumedList = new ArrayList<>();
-		if (s != null) {
-			String[] arr = s.split(",");
-			for (int i = 0; i < arr.length; i++) {
-				oilConsumedList.add(arr[i]);
-			}
-			benPersonalCancerDietHistory.setTypeOfOilConsumedList(oilConsumedList);
-
-		} else {
+		if(null != benPersonalCancerDietHistory){
+			String s = benPersonalCancerDietHistory.getTypeOfOilConsumed();
+			List<String> oilConsumedList = new ArrayList<>();
+			if (s != null) {
+				String[] arr = s.split(",");
+				for (int i = 0; i < arr.length; i++) {
+					oilConsumedList.add(arr[i]);
+				}
+			} 
+			
 			benPersonalCancerDietHistory.setTypeOfOilConsumedList(oilConsumedList);
 		}
 		return benPersonalCancerDietHistory;
