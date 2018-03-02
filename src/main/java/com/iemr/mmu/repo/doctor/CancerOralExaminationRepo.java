@@ -31,7 +31,7 @@ public interface CancerOralExaminationRepo extends CrudRepository<CancerOralExam
 			+ "prolongedIrritation=:prolongedIrritation, chronicBurningSensation=:chronicBurningSensation, "
 			+ "observation =:observation, modifiedBy=:modifiedBy, processed=:processed where "
 			+ " beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
-	public int updateCancerSignAndSymptoms(@Param("providerServiceMapID") Integer providerServiceMapID,
+	public int updateCancerOralExaminationDetails(@Param("providerServiceMapID") Integer providerServiceMapID,
 			@Param("limitedMouthOpening") String limitedMouthOpening, 
 			@Param("premalignantLesions") Boolean premalignantLesions,
 			@Param("preMalignantLesionType") String preMalignantLesionType, 

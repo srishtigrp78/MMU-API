@@ -31,7 +31,7 @@ public interface CancerLymphNodeExaminationRepo extends CrudRepository<CancerLym
 	@Query("update CancerLymphNodeDetails set deleted=true, processed=:processed WHERE ID = :ID")
 	public int deleteExistingLymphNodeDetails(@Param("ID") Long ID, @Param("processed") String processed);
 	
-	@Transactional
+	/*@Transactional
 	@Modifying
 	@Query("update CancerLymphNodeDetails set providerServiceMapID=:providerServiceMapID, lymphNodeName=:lymphNodeName, "
 			+ "mobility_Left=:mobility_Left, size_Left=:size_Left, mobility_Right=:mobility_Right, "
@@ -45,5 +45,5 @@ public interface CancerLymphNodeExaminationRepo extends CrudRepository<CancerLym
 			@Param("size_Right") String size_Right, 
 			@Param("modifiedBy") String modifiedBy,
 			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID,
-			@Param("processed") String processed);
+			@Param("processed") String processed);*/
 }

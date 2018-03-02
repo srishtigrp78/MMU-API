@@ -87,6 +87,7 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 		return response;
 	}
 	
+	@Deprecated
 	@Override
 	public Long saveCancerSignAndSymptomsData(CancerSignAndSymptoms cancerSignAndSymptoms) {
 		CancerSignAndSymptoms response = cancerSignAndSymptomsRepo.save(cancerSignAndSymptoms);
@@ -96,24 +97,6 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 			return null;
 	}
 
-	public Long saveLymphNodeDetails(List<CancerLymphNodeDetails> cancerLymphNodeDetails, Long benVisitID) {
-		Long responseData = null;
-		for(CancerLymphNodeDetails cancerLymphNodeDetail: cancerLymphNodeDetails){
-			cancerLymphNodeDetail.setBenVisitID(benVisitID);
-		}
-		
-		List<CancerLymphNodeDetails> response = (List<CancerLymphNodeDetails>) cancerLymphNodeExaminationRepo
-				.save(cancerLymphNodeDetails);
-		if (null != response && response.size() > 0) {
-			for (CancerLymphNodeDetails obj : response) {
-				if (obj.getID() > 0)
-					responseData = obj.getID();
-				break;
-			}
-		}
-		return responseData;
-	}
-	
 	@Deprecated
 	@Override
 	public Long saveLymphNodeDetails(List<CancerLymphNodeDetails> cancerLymphNodeDetails) {
@@ -129,7 +112,8 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 		}
 		return responseData;
 	}
-
+	
+	@Deprecated
 	@Override
 	public Long saveCancerOralExaminationData(CancerOralExamination cancerOralExamination) {
 		List<String> preMalignantLesionTypeList = cancerOralExamination.getPreMalignantLesionTypeList();
@@ -147,7 +131,8 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 		else
 			return null;
 	}
-
+	
+	@Deprecated
 	@Override
 	public Long saveCancerBreastExaminationData(CancerBreastExamination cancerBreastExamination) {
 		CancerBreastExamination response = cancerBreastExaminationRepo.save(cancerBreastExamination);
@@ -156,7 +141,8 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 		else
 			return null;
 	}
-
+	
+	@Deprecated
 	@Override
 	public Long saveCancerAbdominalExaminationData(CancerAbdominalExamination cancerAbdominalExamination) {
 		CancerAbdominalExamination response = cancerAbdominalExaminationRepo.save(cancerAbdominalExamination);
@@ -165,7 +151,8 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 		else
 			return null;
 	}
-
+	
+	@Deprecated
 	@Override
 	public Long saveCancerGynecologicalExaminationData(CancerGynecologicalExamination cancerGynecologicalExamination) {
 		List<String> typeOfLesionList = cancerGynecologicalExamination.getTypeOfLesionList();
@@ -184,7 +171,8 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 		else
 			return null;
 	}
-
+	
+	@Deprecated
 	public Long saveDocExaminationImageAnnotation(List<WrapperCancerExamImgAnotasn> wrapperCancerExamImgAnotasnList, Long benVisitID) {
 		// System.out.println("hello");
 		Long x = null;
@@ -211,8 +199,9 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 		}
 		return x;
 	}
-
-	private List<CancerExaminationImageAnnotation> getCancerExaminationImageAnnotationList(
+	
+	@Deprecated
+	public List<CancerExaminationImageAnnotation> getCancerExaminationImageAnnotationList(
 			List<WrapperCancerExamImgAnotasn> wrapperCancerExamImgAnotasnList) {
 		List<CancerExaminationImageAnnotation> objList = new ArrayList<>();
 

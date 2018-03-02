@@ -979,37 +979,195 @@ public class CSNurseServiceImpl implements CSNurseService {
 		return new Gson().toJson(resMap);
 	}
 
+	public Long saveLymphNodeDetails(List<CancerLymphNodeDetails> cancerLymphNodeDetails, Long benVisitID) {
+		Long responseData = null;
+		for(CancerLymphNodeDetails cancerLymphNodeDetail: cancerLymphNodeDetails){
+			cancerLymphNodeDetail.setBenVisitID(benVisitID);
+		}
+		
+		List<CancerLymphNodeDetails> response = (List<CancerLymphNodeDetails>) cancerLymphNodeExaminationRepo
+				.save(cancerLymphNodeDetails);
+		if (null != response && response.size() > 0) {
+			for (CancerLymphNodeDetails obj : response) {
+				if (obj.getID() > 0)
+					responseData = obj.getID();
+				break;
+			}
+		}
+		return responseData;
+	}
+	
+	public Long saveCancerSignAndSymptomsData(CancerSignAndSymptoms cancerSignAndSymptoms, Long benVisitID) {
+		cancerSignAndSymptoms.setBenVisitID(benVisitID);
+		Long response = saveCancerSignAndSymptomsData(cancerSignAndSymptoms);
+		
+		return response;
+	}
+	
+	public Long saveCancerSignAndSymptomsData(CancerSignAndSymptoms cancerSignAndSymptoms) {
+		CancerSignAndSymptoms response = cancerSignAndSymptomsRepo.save(cancerSignAndSymptoms);
+		if (response != null)
+			return response.getID();
+		else
+			return null;
+	}
+
+	public Long saveCancerOralExaminationData(CancerOralExamination cancerOralExamination) {
+		
+		cancerOralExamination = getCancerOralExaminationDetails(cancerOralExamination);
+
+		CancerOralExamination response = cancerOralExaminationRepo.save(cancerOralExamination);
+		if (response != null)
+			return response.getID();
+		else
+			return null;
+	}
+	
+	public CancerOralExamination getCancerOralExaminationDetails(CancerOralExamination cancerOralExamination){
+		
+		List<String> preMalignantLesionTypeList = cancerOralExamination.getPreMalignantLesionTypeList();
+		String preMalignantLesionTypeData = "";
+		if (preMalignantLesionTypeList != null && preMalignantLesionTypeList.size() > 0) {
+			for (String preMalignantLesionType : cancerOralExamination.getPreMalignantLesionTypeList()) {
+				preMalignantLesionTypeData += preMalignantLesionType + ",";
+			}
+		}
+		cancerOralExamination.setPreMalignantLesionType(preMalignantLesionTypeData);
+		return cancerOralExamination;
+	}
+	public Long saveCancerBreastExaminationData(CancerBreastExamination cancerBreastExamination) {
+		CancerBreastExamination response = cancerBreastExaminationRepo.save(cancerBreastExamination);
+		if (response != null)
+			return response.getID();
+		else
+			return null;
+	}
+
+	public Long saveCancerAbdominalExaminationData(CancerAbdominalExamination cancerAbdominalExamination) {
+		CancerAbdominalExamination response = cancerAbdominalExaminationRepo.save(cancerAbdominalExamination);
+		if (response != null)
+			return response.getID();
+		else
+			return null;
+	}
+
+	public Long saveCancerGynecologicalExaminationData(CancerGynecologicalExamination cancerGynecologicalExamination) {
+		
+		cancerGynecologicalExamination = getCancerGynecologicalExamination(cancerGynecologicalExamination);
+		CancerGynecologicalExamination response = cancerGynecologicalExaminationRepo
+				.save(cancerGynecologicalExamination);
+		if (response != null)
+			return response.getID();
+		else
+			return null;
+	}
+	
+	private CancerGynecologicalExamination getCancerGynecologicalExamination(CancerGynecologicalExamination cancerGynecologicalExamination){
+		List<String> typeOfLesionList = cancerGynecologicalExamination.getTypeOfLesionList();
+		String typeOfLesionData = "";
+		if (typeOfLesionList != null && typeOfLesionList.size() > 0) {
+			for (String typeOfLesion : typeOfLesionList) {
+				typeOfLesionData += typeOfLesion + ",";
+			}
+		}
+		cancerGynecologicalExamination.setTypeOfLesion(typeOfLesionData);
+		return cancerGynecologicalExamination;
+	}
+	
+	public Long saveDocExaminationImageAnnotation(List<WrapperCancerExamImgAnotasn> wrapperCancerExamImgAnotasnList, Long benVisitID) {
+		// System.out.println("hello");
+		Long x = null;
+		for(WrapperCancerExamImgAnotasn wrapperCancerExamImgAnotasn: wrapperCancerExamImgAnotasnList){
+			wrapperCancerExamImgAnotasn.setVisitID(benVisitID);
+		}
+		List<CancerExaminationImageAnnotation> objList = (List<CancerExaminationImageAnnotation>) cancerExaminationImageAnnotationRepo
+				.save(getCancerExaminationImageAnnotationList(wrapperCancerExamImgAnotasnList));
+		if (objList != null && objList.size() > 0) {
+			x = (long) objList.size();
+		}
+		return x;
+	}
+	
+	public List<CancerExaminationImageAnnotation> getCancerExaminationImageAnnotationList(
+			List<WrapperCancerExamImgAnotasn> wrapperCancerExamImgAnotasnList) {
+		List<CancerExaminationImageAnnotation> objList = new ArrayList<>();
+
+		if (wrapperCancerExamImgAnotasnList.size() > 0) {
+			for (WrapperCancerExamImgAnotasn obj : wrapperCancerExamImgAnotasnList) {
+				if (obj != null) {
+					ArrayList<Map<String, Object>> markersList = obj.getMarkers();
+					if (markersList != null && markersList.size() > 0) {
+						for (Map<String, Object> marker : markersList) {
+							CancerExaminationImageAnnotation cancerExaminationImageAnnotation = new CancerExaminationImageAnnotation();
+							cancerExaminationImageAnnotation.setBeneficiaryRegID(obj.getBeneficiaryRegID());
+							cancerExaminationImageAnnotation.setBenVisitID(obj.getVisitID());
+							cancerExaminationImageAnnotation.setProviderServiceMapID(obj.getProviderServiceMapID());
+							cancerExaminationImageAnnotation.setCreatedBy(obj.getCreatedBy());
+							cancerExaminationImageAnnotation.setCancerImageID(obj.getImageID());
+							Double a = (Double) marker.get("xCord");
+							cancerExaminationImageAnnotation.setxCoordinate(a.intValue());
+							Double b = (Double) marker.get("yCord");
+							cancerExaminationImageAnnotation.setyCoordinate(b.intValue());
+							Double c = (Double) marker.get("point");
+							cancerExaminationImageAnnotation.setPoint(c.intValue());
+							cancerExaminationImageAnnotation.setPointDesc((String) marker.get("description"));
+
+							objList.add(cancerExaminationImageAnnotation);
+						}
+					}
+				}
+			}
+		}
+
+		return objList;
+	}
+	
 	public int updateSignAndSymptomsExaminationDetails(CancerSignAndSymptoms cancerSignAndSymptoms) {
 		int response = 0;
-
+		int recordsAvailable = 0;
 		String processed = cancerSignAndSymptomsRepo.getCancerSignAndSymptomsStatus(
 				cancerSignAndSymptoms.getBeneficiaryRegID(), cancerSignAndSymptoms.getBenVisitID());
+		if(null != processed){
+			recordsAvailable = 1;
+		}
 		if (null != processed && processed != "N") {
 			processed = "U";
+			
 		}else{
-			processed = "N";
 		}
 		try {
-
-			response = cancerSignAndSymptomsRepo.updateCancerSignAndSymptoms(cancerSignAndSymptoms.getProviderServiceMapID(), 
-					cancerSignAndSymptoms.getShortnessOfBreath(), cancerSignAndSymptoms.getCoughGTE2Weeks(), 
-					cancerSignAndSymptoms.getBloodInSputum(), cancerSignAndSymptoms.getDifficultyInOpeningMouth(), 
-					cancerSignAndSymptoms.getNonHealingUlcerOrPatchOrGrowth(), cancerSignAndSymptoms.getChangeInTheToneOfVoice(), 
-					cancerSignAndSymptoms.getLumpInTheBreast(), cancerSignAndSymptoms.getBloodStainedDischargeFromNipple(), 
-					cancerSignAndSymptoms.getChangeInShapeAndSizeOfBreasts(), cancerSignAndSymptoms.getVaginalBleedingBetweenPeriods(), 
-					cancerSignAndSymptoms.getVaginalBleedingAfterMenopause(), cancerSignAndSymptoms.getVaginalBleedingAfterIntercourse(), 
-					cancerSignAndSymptoms.getFoulSmellingVaginalDischarge(), cancerSignAndSymptoms.getBreastEnlargement(), 
-					cancerSignAndSymptoms.getLymphNode_Enlarged(), cancerSignAndSymptoms.getBriefHistory(), 
-					cancerSignAndSymptoms.getModifiedBy(), cancerSignAndSymptoms.getBeneficiaryRegID(), 
-					cancerSignAndSymptoms.getBenVisitID(), processed);
+			cancerSignAndSymptoms.setProcessed(processed);
+			if(recordsAvailable==1){
+				response = updateSignAndSymptomsExamination(cancerSignAndSymptoms);
+			}else{
+				cancerSignAndSymptoms.setCreatedBy(cancerSignAndSymptoms.getModifiedBy());
+				Long saveRes = saveCancerSignAndSymptomsData(cancerSignAndSymptoms);
+				if(null != saveRes && saveRes > 0){
+					response = 1;
+				}
+			}
 					
-
 		} catch (Exception e) {
 			e.printStackTrace();
 
 		}
 		return response;
 
+	}
+	
+	public int updateSignAndSymptomsExamination(CancerSignAndSymptoms cancerSignAndSymptoms) {
+		int response = cancerSignAndSymptomsRepo.updateCancerSignAndSymptoms(cancerSignAndSymptoms.getProviderServiceMapID(), 
+				cancerSignAndSymptoms.getShortnessOfBreath(), cancerSignAndSymptoms.getCoughGTE2Weeks(), 
+				cancerSignAndSymptoms.getBloodInSputum(), cancerSignAndSymptoms.getDifficultyInOpeningMouth(), 
+				cancerSignAndSymptoms.getNonHealingUlcerOrPatchOrGrowth(), cancerSignAndSymptoms.getChangeInTheToneOfVoice(), 
+				cancerSignAndSymptoms.getLumpInTheBreast(), cancerSignAndSymptoms.getBloodStainedDischargeFromNipple(), 
+				cancerSignAndSymptoms.getChangeInShapeAndSizeOfBreasts(), cancerSignAndSymptoms.getVaginalBleedingBetweenPeriods(), 
+				cancerSignAndSymptoms.getVaginalBleedingAfterMenopause(), cancerSignAndSymptoms.getVaginalBleedingAfterIntercourse(), 
+				cancerSignAndSymptoms.getFoulSmellingVaginalDischarge(), cancerSignAndSymptoms.getBreastEnlargement(), 
+				cancerSignAndSymptoms.getLymphNode_Enlarged(), cancerSignAndSymptoms.getBriefHistory(), 
+				cancerSignAndSymptoms.getModifiedBy(), cancerSignAndSymptoms.getBeneficiaryRegID(), 
+				cancerSignAndSymptoms.getBenVisitID(), cancerSignAndSymptoms.getProcessed());
+		return response;
 	}
 	
 	public int updateLymphNodeExaminationDetails(List<CancerLymphNodeDetails> cancerLymphNodeDetails) {
@@ -1058,53 +1216,118 @@ public class CSNurseServiceImpl implements CSNurseService {
 	
 	public int updateCancerOralDetails(CancerOralExamination cancerOralExamination) {
 		int response = 0;
-
+		int recordsAvailable = 0;
 		String processed = cancerOralExaminationRepo.getCancerOralExaminationStatus(
 				cancerOralExamination.getBeneficiaryRegID(), cancerOralExamination.getBenVisitID());
+		if(null!=processed){
+			recordsAvailable = 1;
+		}
+		
 		if (null != processed && processed != "N") {
 			processed = "U";
 		}else{
 			processed = "N";
 		}
 		try {
-
-			response = cancerOralExaminationRepo.updateCancerSignAndSymptoms(cancerOralExamination.getProviderServiceMapID(), 
-					cancerOralExamination.getLimitedMouthOpening(), cancerOralExamination.getPremalignantLesions(), 
-					cancerOralExamination.getPreMalignantLesionType(), cancerOralExamination.getProlongedIrritation(), 
-					cancerOralExamination.getChronicBurningSensation(), cancerOralExamination.getObservation(), 
-					cancerOralExamination.getModifiedBy(), cancerOralExamination.getBeneficiaryRegID(), 
-					cancerOralExamination.getBenVisitID(), processed);
+			cancerOralExamination.setProcessed(processed);
+			if(recordsAvailable==1){
+				response = updateCancerOralExamination(cancerOralExamination);
+			}else{
+				cancerOralExamination.setCreatedBy(cancerOralExamination.getModifiedBy());
+				Long saveRes = saveCancerOralExaminationData(cancerOralExamination);
+				if(null != saveRes && saveRes > 0){
+					response = 1;
+				}
+			}
 					
-
 		} catch (Exception e) {
 			e.printStackTrace();
 
 		}
 		return response;
 
+	}
+	
+	public int updateCancerOralExamination(CancerOralExamination cancerOralExamination) {
+		cancerOralExamination = getCancerOralExaminationDetails(cancerOralExamination);
+		
+		int response = cancerOralExaminationRepo.updateCancerOralExaminationDetails(cancerOralExamination.getProviderServiceMapID(), 
+				cancerOralExamination.getLimitedMouthOpening(), cancerOralExamination.getPremalignantLesions(), 
+				cancerOralExamination.getPreMalignantLesionType(), cancerOralExamination.getProlongedIrritation(), 
+				cancerOralExamination.getChronicBurningSensation(), cancerOralExamination.getObservation(), 
+				cancerOralExamination.getModifiedBy(), cancerOralExamination.getBeneficiaryRegID(), 
+				cancerOralExamination.getBenVisitID(), cancerOralExamination.getProcessed());
+		return response;
 	}
 	
 	public int updateCancerBreastDetails(CancerBreastExamination cancerBreastExamination) {
 		int response = 0;
-
+		int recordsAvailable = 0;
 		String processed = cancerBreastExaminationRepo.getCancerBreastExaminationStatus(
 				cancerBreastExamination.getBeneficiaryRegID(), cancerBreastExamination.getBenVisitID());
+		if(null != processed){
+			recordsAvailable = 1;
+		}
 		if (null != processed && processed != "N") {
 			processed = "U";
 		}else{
 			processed = "N";
 		}
 		try {
+			cancerBreastExamination.setProcessed(processed);
+			if(recordsAvailable == 1){
+				response = updateCancerBreastExamination(cancerBreastExamination);
+			}else{
+				cancerBreastExamination.setCreatedBy(cancerBreastExamination.getModifiedBy());
+				Long saveRes = saveCancerBreastExaminationData(cancerBreastExamination);
+				if(null != saveRes && saveRes > 0){
+					response = 1;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 
-			response = cancerBreastExaminationRepo.updateCancerBreastExaminatio(cancerBreastExamination.getProviderServiceMapID(), 
-					cancerBreastExamination.getEverBreastFed(), cancerBreastExamination.getBreastFeedingDurationGTE6months(), 
-					cancerBreastExamination.getBreastsAppear_Normal(), cancerBreastExamination.getRashOnBreast(), 
-					cancerBreastExamination.getDimplingSkinOnBreast(), cancerBreastExamination.getDischargeFromNipple(), 
-					cancerBreastExamination.getPeaudOrange(), cancerBreastExamination.getLumpInBreast(), 
-					cancerBreastExamination.getLumpSize(), cancerBreastExamination.getLumpShape(), 
-					cancerBreastExamination.getLumpTexture(), cancerBreastExamination.getReferredToMammogram(), 
-					cancerBreastExamination.getMamogramReport(), cancerBreastExamination.getModifiedBy(), 
-					cancerBreastExamination.getBeneficiaryRegID(), cancerBreastExamination.getBenVisitID(), processed);
+		}
+		return response;
+
+	}
+	public int updateCancerBreastExamination(CancerBreastExamination cancerBreastExamination) {
+		int response = cancerBreastExaminationRepo.updateCancerBreastExaminatio(cancerBreastExamination.getProviderServiceMapID(), 
+				cancerBreastExamination.getEverBreastFed(), cancerBreastExamination.getBreastFeedingDurationGTE6months(), 
+				cancerBreastExamination.getBreastsAppear_Normal(), cancerBreastExamination.getRashOnBreast(), 
+				cancerBreastExamination.getDimplingSkinOnBreast(), cancerBreastExamination.getDischargeFromNipple(), 
+				cancerBreastExamination.getPeaudOrange(), cancerBreastExamination.getLumpInBreast(), 
+				cancerBreastExamination.getLumpSize(), cancerBreastExamination.getLumpShape(), 
+				cancerBreastExamination.getLumpTexture(), cancerBreastExamination.getReferredToMammogram(), 
+				cancerBreastExamination.getMamogramReport(), cancerBreastExamination.getModifiedBy(), 
+				cancerBreastExamination.getBeneficiaryRegID(), cancerBreastExamination.getBenVisitID(), cancerBreastExamination.getProcessed());
+		return response;
+	}
+	
+	public int updateCancerAbdominalExaminationDetails(CancerAbdominalExamination cancerAbdominalExamination) {
+		int response = 0;
+		int recordsAvailable = 0;
+		String processed = cancerAbdominalExaminationRepo.getCancerAbdominalExaminationStatus(
+				cancerAbdominalExamination.getBeneficiaryRegID(), cancerAbdominalExamination.getBenVisitID());
+		if(null != processed){
+			recordsAvailable = 1;
+		}
+		if (null != processed && processed != "N") {
+			processed = "U";
+		}else{
+			processed = "N";
+		}
+		try {
+			cancerAbdominalExamination.setProcessed(processed);
+			if(recordsAvailable == 1){
+				response = updateCancerAbdominalExamination(cancerAbdominalExamination);
+			}else{
+				cancerAbdominalExamination.setCreatedBy(cancerAbdominalExamination.getModifiedBy());
+				Long saveRes = saveCancerAbdominalExaminationData(cancerAbdominalExamination);
+				if(null != saveRes && saveRes > 0){
+					response = 1;
+				}
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1114,27 +1337,44 @@ public class CSNurseServiceImpl implements CSNurseService {
 
 	}
 	
-	public int updateCancerAbdominalExaminationDetails(CancerAbdominalExamination cancerAbdominalExamination) {
+	public int updateCancerAbdominalExamination(CancerAbdominalExamination cancerAbdominalExamination) {
+		int response = cancerAbdominalExaminationRepo.updateCancerAbdominalExamination(cancerAbdominalExamination.getProviderServiceMapID(),
+				cancerAbdominalExamination.getAbdominalInspection_Normal(), cancerAbdominalExamination.getLiver(), 
+				cancerAbdominalExamination.getAscites_Present(), cancerAbdominalExamination.getAnyOtherMass_Present(), 
+				cancerAbdominalExamination.getLymphNodes_Enlarged(), cancerAbdominalExamination.getLymphNode_Inguinal_Left(), 
+				cancerAbdominalExamination.getLymphNode_Inguinal_Right(), cancerAbdominalExamination.getLymphNode_ExternalIliac_Left(), 
+				cancerAbdominalExamination.getLymphNode_ExternalIliac_Right(), cancerAbdominalExamination.getLymphNode_ParaAortic_Left(), 
+				cancerAbdominalExamination.getLymphNode_ParaAortic_Right(), cancerAbdominalExamination.getObservation(), 
+				cancerAbdominalExamination.getModifiedBy(), cancerAbdominalExamination.getBeneficiaryRegID(), 
+				cancerAbdominalExamination.getBenVisitID(), cancerAbdominalExamination.getProcessed());
+		return response;
+	}
+	
+	public int updateCancerGynecologicalExaminationDetails(CancerGynecologicalExamination cancerGynecologicalExamination) {
 		int response = 0;
-
-		String processed = cancerAbdominalExaminationRepo.getCancerAbdominalExaminationStatus(
-				cancerAbdominalExamination.getBeneficiaryRegID(), cancerAbdominalExamination.getBenVisitID());
+		int recordsAvailable = 0;
+		String processed = cancerGynecologicalExaminationRepo.getCancerGynecologicalExaminationStatus(
+				cancerGynecologicalExamination.getBeneficiaryRegID(), cancerGynecologicalExamination.getBenVisitID());
+		if(null != processed){
+			recordsAvailable = 1;
+		}
 		if (null != processed && processed != "N") {
 			processed = "U";
 		}else{
 			processed = "N";
 		}
 		try {
-
-			response = cancerAbdominalExaminationRepo.updateCancerAbdominalExamination(cancerAbdominalExamination.getProviderServiceMapID(),
-					cancerAbdominalExamination.getAbdominalInspection_Normal(), cancerAbdominalExamination.getLiver(), 
-					cancerAbdominalExamination.getAscites_Present(), cancerAbdominalExamination.getAnyOtherMass_Present(), 
-					cancerAbdominalExamination.getLymphNodes_Enlarged(), cancerAbdominalExamination.getLymphNode_Inguinal_Left(), 
-					cancerAbdominalExamination.getLymphNode_Inguinal_Right(), cancerAbdominalExamination.getLymphNode_ExternalIliac_Left(), 
-					cancerAbdominalExamination.getLymphNode_ExternalIliac_Right(), cancerAbdominalExamination.getLymphNode_ParaAortic_Left(), 
-					cancerAbdominalExamination.getLymphNode_ParaAortic_Right(), cancerAbdominalExamination.getObservation(), 
-					cancerAbdominalExamination.getModifiedBy(), cancerAbdominalExamination.getBeneficiaryRegID(), 
-					cancerAbdominalExamination.getBenVisitID(), processed);
+			cancerGynecologicalExamination.setProcessed(processed);
+			if(recordsAvailable == 1){
+				response = updateCancerGynecologicalExamination(cancerGynecologicalExamination);
+			}else{
+				cancerGynecologicalExamination.setCreatedBy(cancerGynecologicalExamination.getModifiedBy());
+				Long saveRes = saveCancerGynecologicalExaminationData(cancerGynecologicalExamination);
+				if(null != saveRes && saveRes > 0){
+					response = 1;
+				}
+			}
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1142,6 +1382,65 @@ public class CSNurseServiceImpl implements CSNurseService {
 		}
 		return response;
 
+	}
+	
+	public int updateCancerGynecologicalExamination(CancerGynecologicalExamination cancerGynecologicalExamination) {
+		cancerGynecologicalExamination = getCancerGynecologicalExamination(cancerGynecologicalExamination);
+		
+		int response = cancerGynecologicalExaminationRepo.updateCancerGynecologicalExamination(
+				cancerGynecologicalExamination.getProviderServiceMapID(), cancerGynecologicalExamination.getAppearanceOfCervix(), 
+				cancerGynecologicalExamination.getTypeOfLesion(), cancerGynecologicalExamination.getVulvalInvolvement(), 
+				cancerGynecologicalExamination.getVaginalInvolvement(), cancerGynecologicalExamination.getUterus_Normal(), 
+				cancerGynecologicalExamination.getSufferedFromRTIOrSTI(), cancerGynecologicalExamination.getrTIOrSTIDetail(), 
+				cancerGynecologicalExamination.getFilePath(), cancerGynecologicalExamination.getExperiencedPostCoitalBleeding(), 
+				cancerGynecologicalExamination.getObservation(), cancerGynecologicalExamination.getModifiedBy(), 
+				cancerGynecologicalExamination.getBeneficiaryRegID(), cancerGynecologicalExamination.getBenVisitID(), cancerGynecologicalExamination.getProcessed());
+		return response;
+	}
+	
+	public int updateCancerExamImgAnotasnDetails(List<CancerExaminationImageAnnotation> cancerExaminationImageAnnotationList) {
+		
+		int response = 0;
+		int delRes = 0;
+		try {
+			if (cancerExaminationImageAnnotationList.size() > 0) {
+
+				ArrayList<Object[]> cancerExaminationImageAnnotationStatuses = cancerExaminationImageAnnotationRepo.
+						getCancerExaminationImageAnnotationDetailsStatus(
+						cancerExaminationImageAnnotationList.get(0).getBeneficiaryRegID(),
+						cancerExaminationImageAnnotationList.get(0).getBenVisitID());
+
+				for (Object[] obj : cancerExaminationImageAnnotationStatuses) {
+					String processed = (String) obj[1];
+					if (null != processed && processed != "N") {
+						processed = "U";
+					}else{
+						processed = "N";
+					}
+					delRes = cancerExaminationImageAnnotationRepo.deleteExistingImageAnnotationDetails((Long) obj[0], processed);
+				}
+
+			}
+			if (delRes > 0) {
+				
+				if (cancerExaminationImageAnnotationList.size() > 0) {
+					ArrayList<CancerExaminationImageAnnotation> cancerImageAnnotations = (ArrayList<CancerExaminationImageAnnotation>) cancerExaminationImageAnnotationRepo
+							.save(cancerExaminationImageAnnotationList);
+					if (cancerImageAnnotations.size() > 0) {
+						response = cancerImageAnnotations.size();
+					}
+				} else {
+					response = 0;
+				}
+			} else {
+				response = 0;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+		return response;
 	}
 	
 	
