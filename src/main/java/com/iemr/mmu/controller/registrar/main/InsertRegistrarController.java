@@ -82,6 +82,7 @@ public class InsertRegistrarController {
 				response.setError(0, "Invalid input data");
 			} else {
 				BeneficiaryData benData = registrarServiceImpl.createBeneficiary(benD);
+
 				if (benData != null) {
 					Long benRegID = benData.getBeneficiaryRegID();
 					Long benDemoID = registrarServiceImpl.createBeneficiaryDemographic(benD, benRegID);
@@ -102,7 +103,17 @@ public class InsertRegistrarController {
 							// i_beneficiary, i_bendemographics and
 							// m_benphonemap
 							// roll-back
-							response.setResponse("Registration Done. Beneficiary ID is : " + benRegID);
+
+						// 1.1	response.setResponse("Registration Done. Beneficiary ID is : " + benRegID); 
+							//Temp code
+							Long r = registrarServiceImpl.updateBenFlowStatusFlag(benData,
+									benD.get("phoneNo").getAsString());
+							
+							if (r != null && r > 0) {
+								response.setResponse("Registration Done. Beneficiary ID is : " + benRegID);
+							} else {
+							}
+							//end of Temp code[replace by 1.1] 
 						}
 					} else {
 						// i_beneficiary, i_bendemographics and m_benphonemap

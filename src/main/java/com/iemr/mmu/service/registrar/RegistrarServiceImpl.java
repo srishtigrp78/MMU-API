@@ -643,13 +643,13 @@ public class RegistrarServiceImpl implements RegistrarService {
 		return benDetails;
 	}
 
-	public Long updateBenFlowStatusFlag(Long benRegID, String createdBy) {
+	public Long updateBenFlowStatusFlag(BeneficiaryData benData, String phoneNo) {
 
-		Long x = commonBenStatusFlowServiceImpl.updateBenFlowStatusFlagMain("registrar", benRegID, null, null, null,
-				null, null, (short) 1, (short) 0, (short) 0, (short) 0, (short) 0, (short) 0, (short) 0, createdBy,
-				null);
+		Long x = commonBenStatusFlowServiceImpl.updateBenFlowStatusFlagMain("registrar", benData.getBeneficiaryRegID(), null, null, null,
+				null, null, (short) 1, (short) 0, (short) 0, (short) 0, (short) 0, (short) 0, (short) 0, benData.getCreatedBy(),
+				null, benData, phoneNo );
 
-		return null;
+		return x;
 	}
 
 }

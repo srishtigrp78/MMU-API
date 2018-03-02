@@ -49,18 +49,15 @@ import com.iemr.mmu.repo.nurse.BenAnthropometryRepo;
 import com.iemr.mmu.repo.nurse.BenPhysicalVitalRepo;
 import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
 import com.iemr.mmu.repo.nurse.anc.BenAllergyHistoryRepo;
-import com.iemr.mmu.repo.nurse.anc.BenChildDevelopmentHistoryRepo;
 import com.iemr.mmu.repo.nurse.anc.BenFamilyHistoryRepo;
 import com.iemr.mmu.repo.nurse.anc.BenMedHistoryRepo;
 import com.iemr.mmu.repo.nurse.anc.BenMedicationHistoryRepo;
 import com.iemr.mmu.repo.nurse.anc.BenMenstrualDetailsRepo;
 import com.iemr.mmu.repo.nurse.anc.BenPersonalHabitRepo;
 import com.iemr.mmu.repo.nurse.anc.BencomrbidityCondRepo;
-import com.iemr.mmu.repo.nurse.anc.ChildFeedingDetailsRepo;
 import com.iemr.mmu.repo.nurse.anc.ChildOptionalVaccineDetailRepo;
 import com.iemr.mmu.repo.nurse.anc.ChildVaccineDetail1Repo;
 import com.iemr.mmu.repo.nurse.anc.FemaleObstetricHistoryRepo;
-import com.iemr.mmu.repo.nurse.anc.PerinatalHistoryRepo;
 import com.iemr.mmu.repo.nurse.anc.PhyGeneralExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.PhyHeadToToeExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.SysCardiovascularExaminationRepo;
@@ -106,22 +103,22 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	private LabTestOrderDetailRepo labTestOrderDetailRepo;
 	private PrescribedDrugDetailRepo prescribedDrugDetailRepo;
 	private ReistrarRepoBenSearch reistrarRepoBenSearch;
-	
+
 	@Autowired
 	public void setReistrarRepoBenSearch(ReistrarRepoBenSearch reistrarRepoBenSearch) {
 		this.reistrarRepoBenSearch = reistrarRepoBenSearch;
 	}
-	
+
 	@Autowired
 	public void setPrescribedDrugDetailRepo(PrescribedDrugDetailRepo prescribedDrugDetailRepo) {
 		this.prescribedDrugDetailRepo = prescribedDrugDetailRepo;
 	}
-	
+
 	@Autowired
 	public void setLabTestOrderDetailRepo(LabTestOrderDetailRepo labTestOrderDetailRepo) {
 		this.labTestOrderDetailRepo = labTestOrderDetailRepo;
 	}
-	
+
 	@Autowired
 	public void setPrescriptionDetailRepo(PrescriptionDetailRepo prescriptionDetailRepo) {
 		this.prescriptionDetailRepo = prescriptionDetailRepo;
@@ -280,6 +277,23 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 	}
 
+	/**
+	 * Neeraj have created this for getting visit count of patient
+	 * 
+	 * @return
+	 */
+	public Short getBenVisitCount(Long benRegID) {
+		Short benVisitCount = benVisitDetailRepo.getVisitCountForBeneficiary(benRegID);
+
+		if (benVisitCount != null && benVisitCount >= 0) {
+			benVisitCount = (short) (benVisitCount + 1);
+		} else {
+			benVisitCount = 1;
+		}
+
+		return benVisitCount;
+	}
+
 	public int updateBeneficiaryVisitDetails(BeneficiaryVisitDetail beneficiaryVisitDetail) {
 		int response = 0;
 		try {
@@ -297,7 +311,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		return response;
 
 	}
-	
+
 	public BeneficiaryVisitDetail getCSVisitDetails(Long benRegID, Long benVisitID) {
 		BeneficiaryVisitDetail benVisitDetailsOBJ = benVisitDetailRepo.getVisitDetails(benRegID, benVisitID);
 
@@ -319,7 +333,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		return benVisitDetailsOBJ1;
 	}
-	
+
 	public int saveBenChiefComplaints(List<BenChiefComplaint> benChiefComplaintList) {
 		int r = 0;
 		List<BenChiefComplaint> benChiefComplaintResultList = (List<BenChiefComplaint>) benChiefComplaintRepo
@@ -540,81 +554,62 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 				benVisitID);
 		return new Gson().toJson(benPhysicalVitalDetail);
 	}
-	
+
 	public int updateANCAnthropometryDetails(BenAnthropometryDetail anthropometryDetail) {
 		Integer r = 0;
-		if(null != anthropometryDetail){
-			
-			String processed = benAnthropometryRepo.getBenAnthropometryStatus(anthropometryDetail.getBeneficiaryRegID(), 
+		if (null != anthropometryDetail) {
+
+			String processed = benAnthropometryRepo.getBenAnthropometryStatus(anthropometryDetail.getBeneficiaryRegID(),
 					anthropometryDetail.getBenVisitID());
-			if(null!= processed && !processed.equals("N")){
+			if (null != processed && !processed.equals("N")) {
 				processed = "U";
-			}else{
+			} else {
 				processed = "N";
 			}
-			
-//			anthropometryDetail.setModifiedBy(anthropometryDetail.getCreatedBy());
-			r = benAnthropometryRepo.updateANCCareDetails(
-					anthropometryDetail.getWeight_Kg(), 
-					anthropometryDetail.getHeight_cm(), 
-					anthropometryDetail.getbMI(),
-					anthropometryDetail.getHeadCircumference_cm(), 
-					anthropometryDetail.getMidUpperArmCircumference_MUAC_cm(), 
-					anthropometryDetail.getHipCircumference_cm(), 
-					anthropometryDetail.getWaistCircumference_cm(), 
-					anthropometryDetail.getWaistHipRatio(), 
-					anthropometryDetail.getModifiedBy(), 
-					processed,
-					anthropometryDetail.getBeneficiaryRegID(), 
-					anthropometryDetail.getBenVisitID());
+
+			// anthropometryDetail.setModifiedBy(anthropometryDetail.getCreatedBy());
+			r = benAnthropometryRepo.updateANCCareDetails(anthropometryDetail.getWeight_Kg(),
+					anthropometryDetail.getHeight_cm(), anthropometryDetail.getbMI(),
+					anthropometryDetail.getHeadCircumference_cm(),
+					anthropometryDetail.getMidUpperArmCircumference_MUAC_cm(),
+					anthropometryDetail.getHipCircumference_cm(), anthropometryDetail.getWaistCircumference_cm(),
+					anthropometryDetail.getWaistHipRatio(), anthropometryDetail.getModifiedBy(), processed,
+					anthropometryDetail.getBeneficiaryRegID(), anthropometryDetail.getBenVisitID());
 		}
 		return r;
 	}
 
 	public int updateANCPhysicalVitalDetails(BenPhysicalVitalDetail physicalVitalDetail) {
 		Integer r = 0;
-		if(null != physicalVitalDetail) {
-			
-			String processed = benPhysicalVitalRepo.getBenPhysicalVitalStatus(physicalVitalDetail.getBeneficiaryRegID(), 
+		if (null != physicalVitalDetail) {
+
+			String processed = benPhysicalVitalRepo.getBenPhysicalVitalStatus(physicalVitalDetail.getBeneficiaryRegID(),
 					physicalVitalDetail.getBenVisitID());
-			if(null != processed && !processed.equals("N")){
+			if (null != processed && !processed.equals("N")) {
 				processed = "U";
-			}else{
+			} else {
 				processed = "N";
 			}
-			
+
 			physicalVitalDetail.setAverageSystolicBP(physicalVitalDetail.getSystolicBP_1stReading());
 			physicalVitalDetail.setAverageDiastolicBP(physicalVitalDetail.getDiastolicBP_1stReading());
-			r = benPhysicalVitalRepo.updatePhysicalVitalDetails(
-					physicalVitalDetail.getTemperature(), 
-					physicalVitalDetail.getPulseRate(), 
-					physicalVitalDetail.getRespiratoryRate(), 
-					physicalVitalDetail.getSystolicBP_1stReading(), 
-					physicalVitalDetail.getDiastolicBP_1stReading(), 
-					physicalVitalDetail.getSystolicBP_2ndReading(),
-					physicalVitalDetail.getDiastolicBP_2ndReading(),
-					physicalVitalDetail.getSystolicBP_3rdReading(),
-					physicalVitalDetail.getDiastolicBP_3rdReading(),
-					physicalVitalDetail.getAverageSystolicBP(),
-					physicalVitalDetail.getAverageDiastolicBP(),
-					physicalVitalDetail.getBloodPressureStatusID(),
-					physicalVitalDetail.getBloodPressureStatus(),
-					physicalVitalDetail.getBloodGlucose_Fasting(),
-					physicalVitalDetail.getBloodGlucose_Random(),
-					physicalVitalDetail.getBloodGlucose_2hr_PP(),
-					physicalVitalDetail.getBloodGlucose_NotSpecified(),
-					physicalVitalDetail.getDiabeticStatusID(),
-					physicalVitalDetail.getDiabeticStatus(),
-					physicalVitalDetail.getCapillaryRefillTime(), 
-					physicalVitalDetail.getModifiedBy(), 
-					processed,
-					physicalVitalDetail.getBeneficiaryRegID(),
-					physicalVitalDetail.getBenVisitID());
-			
+			r = benPhysicalVitalRepo.updatePhysicalVitalDetails(physicalVitalDetail.getTemperature(),
+					physicalVitalDetail.getPulseRate(), physicalVitalDetail.getRespiratoryRate(),
+					physicalVitalDetail.getSystolicBP_1stReading(), physicalVitalDetail.getDiastolicBP_1stReading(),
+					physicalVitalDetail.getSystolicBP_2ndReading(), physicalVitalDetail.getDiastolicBP_2ndReading(),
+					physicalVitalDetail.getSystolicBP_3rdReading(), physicalVitalDetail.getDiastolicBP_3rdReading(),
+					physicalVitalDetail.getAverageSystolicBP(), physicalVitalDetail.getAverageDiastolicBP(),
+					physicalVitalDetail.getBloodPressureStatusID(), physicalVitalDetail.getBloodPressureStatus(),
+					physicalVitalDetail.getBloodGlucose_Fasting(), physicalVitalDetail.getBloodGlucose_Random(),
+					physicalVitalDetail.getBloodGlucose_2hr_PP(), physicalVitalDetail.getBloodGlucose_NotSpecified(),
+					physicalVitalDetail.getDiabeticStatusID(), physicalVitalDetail.getDiabeticStatus(),
+					physicalVitalDetail.getCapillaryRefillTime(), physicalVitalDetail.getModifiedBy(), processed,
+					physicalVitalDetail.getBeneficiaryRegID(), physicalVitalDetail.getBenVisitID());
+
 		}
 		return r;
 	}
-	
+
 	public Long savePhyGeneralExamination(PhyGeneralExamination generalExamination) {
 		Long generalExaminationID = null;
 		String TypeOfDangerSigns = "";
@@ -2047,14 +2042,14 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		Long prescriptionID = saveBenPrescription(prescriptionDetail);
 		return prescriptionID;
 	}
-	
+
 	public Long saveBeneficiaryPrescription(JsonObject caseSheet) throws Exception {
 
 		PrescriptionDetail prescriptionDetail = InputMapper.gson().fromJson(caseSheet, PrescriptionDetail.class);
 
 		return saveBenPrescription(prescriptionDetail);
 	}
-	
+
 	public Long saveBenPrescription(PrescriptionDetail prescription) {
 		Long r = null;
 		PrescriptionDetail prescriptionRS = prescriptionDetailRepo.save(prescription);
@@ -2063,7 +2058,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		}
 		return r;
 	}
-	
+
 	public Long saveBeneficiaryLabTestOrderDetails(JsonObject caseSheet, Long prescriptionID) {
 
 		ArrayList<LabTestOrderDetail> labTestOrderDetails = LabTestOrderDetail.getLabTestOrderDetailList(caseSheet,
@@ -2091,7 +2086,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		}
 		return r;
 	}
-	
+
 	public Long saveBenInvestigation(WrapperBenInvestigationANC wrapperBenInvestigationANC) {
 		Long r = null;
 
@@ -2124,7 +2119,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		return r;
 
 	}
-	
+
 	public String updateBenVisitStatusFlag(Long benVisitID, String c) {
 		return updateBenStatus(benVisitID, c);
 	}
@@ -2137,7 +2132,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		}
 		return new Gson().toJson(resMap);
 	}
-	
+
 	public String getNurseWorkList() {
 		List<Object[]> nurseWorkListData = reistrarRepoBenSearch.getNurseWorkList();
 		// System.out.println("hello");

@@ -323,12 +323,11 @@ public class CSServiceImpl implements CSService {
 		int abdominalExmnSuccessFlag = 0;
 		int gynecologicalExmnSuccessFlag = 0;
 		int imgCoordinatesSuccessFlag = 0;
-		
 
 		if (null != jsnOBJ && jsnOBJ.has("signsDetails") && !jsnOBJ.get("signsDetails").isJsonNull()) {
-						
+
 			JsonObject signsDetailsOBJ = jsnOBJ.getAsJsonObject("signsDetails");
-			
+
 			WrapperCancerSymptoms wrapperCancerSymptoms = InputMapper.gson().fromJson(signsDetailsOBJ,
 					WrapperCancerSymptoms.class);
 
@@ -345,9 +344,10 @@ public class CSServiceImpl implements CSService {
 				// signsDetails not available..
 				signSympSuccessFlag = 1;
 			}
-			
+
 			if (null != wrapperCancerSymptoms.getCancerLymphNodeDetails()) {
-				int ID = cSNurseServiceImpl.updateLymphNodeExaminationDetails(wrapperCancerSymptoms.getCancerLymphNodeDetails());
+				int ID = cSNurseServiceImpl
+						.updateLymphNodeExaminationDetails(wrapperCancerSymptoms.getCancerLymphNodeDetails());
 				if (ID > 0) {
 					// LymphNode Details stored successfully..
 					lymphNodeSuccessFlag = ID;
@@ -358,17 +358,17 @@ public class CSServiceImpl implements CSService {
 				// lymphNode not available..
 				lymphNodeSuccessFlag = 1;
 			}
-		}else{
+		} else {
 			signSympSuccessFlag = 1;
 			lymphNodeSuccessFlag = 1;
 		}
 
 		if (jsnOBJ != null && jsnOBJ.has("oralDetails") && !jsnOBJ.get("oralDetails").isJsonNull()) {
-			
+
 			CancerOralExamination cancerOralExamination = InputMapper.gson().fromJson(jsnOBJ.get("oralDetails"),
 					CancerOralExamination.class);
 			int ID = cSNurseServiceImpl.updateCancerOralDetails(cancerOralExamination);
-			if (ID >0) {
+			if (ID > 0) {
 				// oralDetails stored successfully...
 				oralDetailsSuccessFlag = ID;
 			} else {
@@ -379,11 +379,11 @@ public class CSServiceImpl implements CSService {
 			// oralDetails not available..
 			oralDetailsSuccessFlag = 1;
 		}
-		
+
 		if (jsnOBJ != null && jsnOBJ.has("breastDetails") && !jsnOBJ.get("breastDetails").isJsonNull()) {
-			
-			CancerBreastExamination cancerBreastExamination = InputMapper.gson()
-					.fromJson(jsnOBJ.get("breastDetails"), CancerBreastExamination.class);
+
+			CancerBreastExamination cancerBreastExamination = InputMapper.gson().fromJson(jsnOBJ.get("breastDetails"),
+					CancerBreastExamination.class);
 			int ID = cSNurseServiceImpl.updateCancerBreastDetails(cancerBreastExamination);
 			if (ID > 0) {
 				// breastDetails stored successfully...
@@ -396,14 +396,13 @@ public class CSServiceImpl implements CSService {
 			// breastDetails not available..
 			breastExmnSuccessFlag = 1;
 		}
-		
-		if (jsnOBJ != null && jsnOBJ.has("abdominalDetails")
-				&& !jsnOBJ.get("abdominalDetails").isJsonNull()) {
+
+		if (jsnOBJ != null && jsnOBJ.has("abdominalDetails") && !jsnOBJ.get("abdominalDetails").isJsonNull()) {
 
 			CancerAbdominalExamination cancerAbdominalExamination = InputMapper.gson()
 					.fromJson(jsnOBJ.get("abdominalDetails"), CancerAbdominalExamination.class);
 			int ID = cSNurseServiceImpl.updateCancerAbdominalExaminationDetails(cancerAbdominalExamination);
-			if ( ID > 0) {
+			if (ID > 0) {
 				// abdominalDetails stored successfully...
 				abdominalExmnSuccessFlag = ID;
 			} else {
@@ -415,12 +414,11 @@ public class CSServiceImpl implements CSService {
 			abdominalExmnSuccessFlag = 1;
 		}
 
-		if (jsnOBJ != null && jsnOBJ.has("gynecologicalDetails")
-				&& !jsnOBJ.get("gynecologicalDetails").isJsonNull()) {
+		if (jsnOBJ != null && jsnOBJ.has("gynecologicalDetails") && !jsnOBJ.get("gynecologicalDetails").isJsonNull()) {
 
 			CancerGynecologicalExamination cancerGynecologicalExamination = InputMapper.gson()
 					.fromJson(jsnOBJ.get("gynecologicalDetails"), CancerGynecologicalExamination.class);
-			
+
 			int ID = cSNurseServiceImpl.updateCancerGynecologicalExaminationDetails(cancerGynecologicalExamination);
 			if (ID > 0) {
 				// gynecologicalDetails stored successfully...
@@ -433,14 +431,12 @@ public class CSServiceImpl implements CSService {
 			// gynecologicalDetails not available..
 			gynecologicalExmnSuccessFlag = 1;
 		}
-		
-		
-		if (jsnOBJ != null && jsnOBJ.has("imageCoordinates")
-				&& !jsnOBJ.get("imageCoordinates").isJsonNull()) {
+
+		if (jsnOBJ != null && jsnOBJ.has("imageCoordinates") && !jsnOBJ.get("imageCoordinates").isJsonNull()) {
 
 			WrapperCancerExamImgAnotasn[] wrapperCancerExamImgAnotasn = InputMapper.gson()
 					.fromJson(jsnOBJ.get("imageCoordinates"), WrapperCancerExamImgAnotasn[].class);
-			
+
 			List<WrapperCancerExamImgAnotasn> wrapperCancerExamImgAnotasnList = Arrays
 					.asList(wrapperCancerExamImgAnotasn);
 			if (null != wrapperCancerExamImgAnotasnList && wrapperCancerExamImgAnotasnList.size() > 0) {
@@ -457,9 +453,10 @@ public class CSServiceImpl implements CSService {
 			// imageCoordinates not available..
 			imgCoordinatesSuccessFlag = 1;
 		}
-		
-		if (signSympSuccessFlag > 0 && lymphNodeSuccessFlag > 0 && oralDetailsSuccessFlag > 0 && breastExmnSuccessFlag > 0
-				&& abdominalExmnSuccessFlag > 0 && gynecologicalExmnSuccessFlag > 0 && imgCoordinatesSuccessFlag > 0) {
+
+		if (signSympSuccessFlag > 0 && lymphNodeSuccessFlag > 0 && oralDetailsSuccessFlag > 0
+				&& breastExmnSuccessFlag > 0 && abdominalExmnSuccessFlag > 0 && gynecologicalExmnSuccessFlag > 0
+				&& imgCoordinatesSuccessFlag > 0) {
 			examinationUpdateRes = 1;
 		} else {
 			// TODO Rollback the succeeded transactions
@@ -467,7 +464,7 @@ public class CSServiceImpl implements CSService {
 
 		return examinationUpdateRes;
 	}
-	
+
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public int updateBenVitalDetail(BenCancerVitalDetail benCancerVitalDetail) {
@@ -512,29 +509,32 @@ public class CSServiceImpl implements CSService {
 		resMap.put("benVitalDetails", cSNurseServiceImpl.getBenCancerVitalDetailData(benRegID, benVisitID));
 		return new Gson().toJson(resMap);
 	}
-	
-	
+
 	public String getBenDataFrmNurseToDocExaminationScreen(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
-		//TODO
-		
-		resMap.put("abdominalExamination", cSNurseServiceImpl.getBenCancerAbdominalExaminationData(benRegID, benVisitID));
+		// TODO
+
+		resMap.put("abdominalExamination",
+				cSNurseServiceImpl.getBenCancerAbdominalExaminationData(benRegID, benVisitID));
 
 		resMap.put("breastExamination", cSNurseServiceImpl.getBenCancerBreastExaminationData(benRegID, benVisitID));
-		
-		resMap.put("gynecologicalExamination", cSNurseServiceImpl.getBenCancerGynecologicalExaminationData(benRegID, benVisitID));
+
+		resMap.put("gynecologicalExamination",
+				cSNurseServiceImpl.getBenCancerGynecologicalExaminationData(benRegID, benVisitID));
 
 		resMap.put("signsAndSymptoms", cSNurseServiceImpl.getBenCancerSignAndSymptomsData(benRegID, benVisitID));
 
-		resMap.put("BenCancerLymphNodeDetails", cSNurseServiceImpl.getBenCancerLymphNodeDetailsData(benRegID, benVisitID));
+		resMap.put("BenCancerLymphNodeDetails",
+				cSNurseServiceImpl.getBenCancerLymphNodeDetailsData(benRegID, benVisitID));
 
 		resMap.put("oralExamination", cSNurseServiceImpl.getBenCancerOralExaminationData(benRegID, benVisitID));
-		
-		resMap.put("imageCoordinates", cSNurseServiceImpl.getCancerExaminationImageAnnotationCasesheet(benRegID, benVisitID));
-		
+
+		resMap.put("imageCoordinates",
+				cSNurseServiceImpl.getCancerExaminationImageAnnotationCasesheet(benRegID, benVisitID));
+
 		return new Gson().toJson(resMap);
 	}
-	
+
 	/// -------End of Fetch (Nurse data to Doctor screen) -------
 
 	// -------Create/save (Doctor)---------------------------
@@ -542,18 +542,23 @@ public class CSServiceImpl implements CSService {
 	public Long saveCancerScreeningDoctorData(JsonObject requestOBJ) throws Exception {
 		Long docDataSuccessFlag = null;
 		if (requestOBJ != null) {
-			//Examination page moved to Nurse screen, So commenting : On 26-02-18 by Navya
-			//Long examinationSuccessFlag = saveBenExaminationDetails(requestOBJ);
+			// Examination page moved to Nurse screen, So commenting : On
+			// 26-02-18 by Navya
+			// Long examinationSuccessFlag =
+			// saveBenExaminationDetails(requestOBJ);
 
 			Long diagnosisSuccessFlag = saveBenDiagnosisDetails(requestOBJ);
 
-			/*if ((examinationSuccessFlag != null && examinationSuccessFlag > 0)
-					&& (diagnosisSuccessFlag != null && diagnosisSuccessFlag > 0)) {
-
-				String s = commonNurseServiceImpl.updateBenStatus(getBenVisitID(requestOBJ), "D");
-				if (s != null && s.length() > 0)
-					docDataSuccessFlag = examinationSuccessFlag;
-			}*/
+			/*
+			 * if ((examinationSuccessFlag != null && examinationSuccessFlag >
+			 * 0) && (diagnosisSuccessFlag != null && diagnosisSuccessFlag > 0))
+			 * {
+			 * 
+			 * String s =
+			 * commonNurseServiceImpl.updateBenStatus(getBenVisitID(requestOBJ),
+			 * "D"); if (s != null && s.length() > 0) docDataSuccessFlag =
+			 * examinationSuccessFlag; }
+			 */
 			if (diagnosisSuccessFlag != null && diagnosisSuccessFlag > 0) {
 
 				String s = commonNurseServiceImpl.updateBenStatus(getBenVisitID(requestOBJ), "D");
@@ -585,7 +590,8 @@ public class CSServiceImpl implements CSService {
 	 * @param requestOBJ
 	 * @return success or failure flag for Examination data saving
 	 */
-	//Examination page moved to Nurse screen, So passing visitId when calling from saveNurseData: On 26-02-18 by Navya
+	// Examination page moved to Nurse screen, So passing visitId when calling
+	// from saveNurseData: On 26-02-18 by Navya
 	public Long saveBenExaminationDetails(JsonObject requestOBJ, Long benVisitID) throws Exception {
 		Long signSympSuccessFlag = null;
 		Long lymphNodeSuccessFlag = null;
@@ -594,19 +600,21 @@ public class CSServiceImpl implements CSService {
 		Long abdominalExmnSuccessFlag = null;
 		Long gynecologicalExmnSuccessFlag = null;
 		Long imgCoordinatesSuccessFlag = null;
-		
-		if (requestOBJ != null && requestOBJ.has("examinationDetails") && !requestOBJ.get("examinationDetails").isJsonNull()) {
+
+		if (requestOBJ != null && requestOBJ.has("examinationDetails")
+				&& !requestOBJ.get("examinationDetails").isJsonNull()) {
 			JsonObject examinationOBJ = requestOBJ.getAsJsonObject("examinationDetails");
-			if (examinationOBJ != null && examinationOBJ.has("signsDetails") && !examinationOBJ.get("signsDetails").isJsonNull()) {
-	
+			if (examinationOBJ != null && examinationOBJ.has("signsDetails")
+					&& !examinationOBJ.get("signsDetails").isJsonNull()) {
+
 				JsonObject signsDetailsOBJ = examinationOBJ.getAsJsonObject("signsDetails");
-	
+
 				WrapperCancerSymptoms wrapperCancerSymptoms = InputMapper.gson().fromJson(signsDetailsOBJ,
 						WrapperCancerSymptoms.class);
-	
+
 				if (null != wrapperCancerSymptoms.getCancerSignAndSymptoms()) {
-					Long ID = cSNurseServiceImpl
-							.saveCancerSignAndSymptomsData(wrapperCancerSymptoms.getCancerSignAndSymptoms(), benVisitID);
+					Long ID = cSNurseServiceImpl.saveCancerSignAndSymptomsData(
+							wrapperCancerSymptoms.getCancerSignAndSymptoms(), benVisitID);
 					if (ID > 0 && ID != null) {
 						// SignAndSymptoms Details stored successfully..
 						signSympSuccessFlag = ID;
@@ -616,26 +624,29 @@ public class CSServiceImpl implements CSService {
 				} else {
 					// signsDetails not available..
 				}
-	
+
 				if (null != wrapperCancerSymptoms.getCancerLymphNodeDetails()) {
-					Long ID = cSNurseServiceImpl.saveLymphNodeDetails(wrapperCancerSymptoms.getCancerLymphNodeDetails(), benVisitID);
+					Long ID = cSNurseServiceImpl.saveLymphNodeDetails(wrapperCancerSymptoms.getCancerLymphNodeDetails(),
+							benVisitID);
 					if (ID > 0 && ID != null) {
 						// LymphNode Details stored successfully..
 						lymphNodeSuccessFlag = ID;
 					} else {
-	
+
 					} // Failed to store LymphNode Details..
 				} else {
 					// lymphNode not available..
 				}
-			}else{
+			} else {
 				signSympSuccessFlag = new Long(1);
+				lymphNodeSuccessFlag = new Long(1);
 			}
 
-			if (examinationOBJ != null && examinationOBJ.has("oralDetails") && !examinationOBJ.get("oralDetails").isJsonNull()) {
-	
-				CancerOralExamination cancerOralExamination = InputMapper.gson().fromJson(examinationOBJ.get("oralDetails"),
-						CancerOralExamination.class);
+			if (examinationOBJ != null && examinationOBJ.has("oralDetails")
+					&& !examinationOBJ.get("oralDetails").isJsonNull()) {
+
+				CancerOralExamination cancerOralExamination = InputMapper.gson()
+						.fromJson(examinationOBJ.get("oralDetails"), CancerOralExamination.class);
 				cancerOralExamination.setBenVisitID(benVisitID);
 				Long ID = cSNurseServiceImpl.saveCancerOralExaminationData(cancerOralExamination);
 				if (ID != null && ID > 0) {
@@ -644,14 +655,15 @@ public class CSServiceImpl implements CSService {
 				} else {
 					// Failed to store oralDetails..
 				}
-	
+
 			} else {
 				// oralDetails not available..
 				oralDetailsSuccessFlag = new Long(1);
 			}
 
-			if (examinationOBJ != null && examinationOBJ.has("breastDetails") && !examinationOBJ.get("breastDetails").isJsonNull()) {
-	
+			if (examinationOBJ != null && examinationOBJ.has("breastDetails")
+					&& !examinationOBJ.get("breastDetails").isJsonNull()) {
+
 				CancerBreastExamination cancerBreastExamination = InputMapper.gson()
 						.fromJson(examinationOBJ.get("breastDetails"), CancerBreastExamination.class);
 				cancerBreastExamination.setBenVisitID(benVisitID);
@@ -662,7 +674,7 @@ public class CSServiceImpl implements CSService {
 				} else {
 					// Failed to store breastDetails..
 				}
-	
+
 			} else {
 				// breastDetails not available..
 				breastExmnSuccessFlag = new Long(1);
@@ -670,7 +682,7 @@ public class CSServiceImpl implements CSService {
 
 			if (examinationOBJ != null && examinationOBJ.has("abdominalDetails")
 					&& !examinationOBJ.get("abdominalDetails").isJsonNull()) {
-	
+
 				CancerAbdominalExamination cancerAbdominalExamination = InputMapper.gson()
 						.fromJson(examinationOBJ.get("abdominalDetails"), CancerAbdominalExamination.class);
 				cancerAbdominalExamination.setBenVisitID(benVisitID);
@@ -681,7 +693,7 @@ public class CSServiceImpl implements CSService {
 				} else {
 					// Failed to store abdominalDetails..
 				}
-	
+
 			} else {
 				// abdominalDetails not available..
 				abdominalExmnSuccessFlag = new Long(1);
@@ -689,7 +701,7 @@ public class CSServiceImpl implements CSService {
 
 			if (examinationOBJ != null && examinationOBJ.has("gynecologicalDetails")
 					&& !examinationOBJ.get("gynecologicalDetails").isJsonNull()) {
-	
+
 				CancerGynecologicalExamination cancerGynecologicalExamination = InputMapper.gson()
 						.fromJson(examinationOBJ.get("gynecologicalDetails"), CancerGynecologicalExamination.class);
 				cancerGynecologicalExamination.setBenVisitID(benVisitID);
@@ -700,7 +712,7 @@ public class CSServiceImpl implements CSService {
 				} else {
 					// Failed to store gynecologicalDetails..
 				}
-	
+
 			} else {
 				// gynecologicalDetails not available..
 				gynecologicalExmnSuccessFlag = new Long(1);
@@ -708,14 +720,15 @@ public class CSServiceImpl implements CSService {
 
 			if (examinationOBJ != null && examinationOBJ.has("imageCoordinates")
 					&& !examinationOBJ.get("imageCoordinates").isJsonNull()) {
-	
+
 				WrapperCancerExamImgAnotasn[] wrapperCancerExamImgAnotasn = InputMapper.gson()
 						.fromJson(examinationOBJ.get("imageCoordinates"), WrapperCancerExamImgAnotasn[].class);
-				
+
 				List<WrapperCancerExamImgAnotasn> wrapperCancerExamImgAnotasnList = Arrays
 						.asList(wrapperCancerExamImgAnotasn);
 				if (null != wrapperCancerExamImgAnotasnList && wrapperCancerExamImgAnotasnList.size() > 0) {
-					Long r = cSNurseServiceImpl.saveDocExaminationImageAnnotation(wrapperCancerExamImgAnotasnList, benVisitID);
+					Long r = cSNurseServiceImpl.saveDocExaminationImageAnnotation(wrapperCancerExamImgAnotasnList,
+							benVisitID);
 					if (r != null && r > 0) {
 						// imageCoordinates stored successfully...
 						imgCoordinatesSuccessFlag = r;

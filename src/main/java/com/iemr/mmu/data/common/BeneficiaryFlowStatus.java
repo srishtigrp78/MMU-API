@@ -41,7 +41,7 @@ public class BeneficiaryFlowStatus {
 	private String visit_category;
 	@Expose
 	@Column(name = "visit_no")
-	private Integer visit_no;
+	private Short visit_no;
 	@Expose
 	@Column(name = "nurse_flag")
 	private Short nurse_flag;
@@ -76,11 +76,43 @@ public class BeneficiaryFlowStatus {
 	@Column(name = "modified_date", insertable = false)
 	private Timestamp modified_date;
 
+	@Expose
+	@Column(name = "ben_name")
+	private String ben_name;
+	@Expose
+	@Column(name = "ben_age")
+	private String ben_age;
+	@Expose
+	@Column(name = "ben_dob")
+	private Timestamp ben_dob;
+	@Expose
+	@Column(name = "ben_gender")
+	private String ben_gender;
+	@Expose
+	@Column(name = "ben_phone_no")
+	private String ben_phone_no;
+	@Expose
+	@Column(name = "ben_age_val")
+	private Integer ben_age_val;
+	@Expose
+	@Column(name = "father_name")
+	private String father_name;
+	@Expose
+	@Column(name = "spouse_name")
+	private String spouse_name;
+	@Expose
+	@Column(name = "ben_gender_val")
+	private Short ben_gender_val;
+
+	public BeneficiaryFlowStatus() {
+	}
+
 	public BeneficiaryFlowStatus(Long ben_flow_id, Long beneficiary_reg_id, Long beneficiary_visit_id,
-			Long beneficiary_visit_code, String visit_reason, String visit_category, Integer visit_no, Short nurse_flag,
+			Long beneficiary_visit_code, String visit_reason, String visit_category, Short visit_no, Short nurse_flag,
 			Short doctor_flag, Short pharmacist_flag, Short lab_technician_flag, Short radiologist_flag,
 			Short oncologist_flag, Short specialist_flag, String created_by, Timestamp created_date, String modified_by,
-			Timestamp modified_date) {
+			Timestamp modified_date, String ben_name, String ben_age, Timestamp ben_dob, String ben_gender,
+			String ben_phone_no, Integer ben_age_val, String father_name, String spouse_name, Short ben_gender_val) {
 		super();
 		this.ben_flow_id = ben_flow_id;
 		this.beneficiary_reg_id = beneficiary_reg_id;
@@ -100,6 +132,23 @@ public class BeneficiaryFlowStatus {
 		this.created_date = created_date;
 		this.modified_by = modified_by;
 		this.modified_date = modified_date;
+		this.ben_name = ben_name;
+		this.ben_age = ben_age;
+		this.ben_dob = ben_dob;
+		this.ben_gender = ben_gender;
+		this.ben_phone_no = ben_phone_no;
+		this.ben_age_val = ben_age_val;
+		this.father_name = father_name;
+		this.spouse_name = spouse_name;
+		this.ben_gender_val = ben_gender_val;
+	}
+
+	public Short getBen_gender_val() {
+		return ben_gender_val;
+	}
+
+	public void setBen_gender_val(Short ben_gender_val) {
+		this.ben_gender_val = ben_gender_val;
 	}
 
 	public Long getBen_flow_id() {
@@ -150,11 +199,11 @@ public class BeneficiaryFlowStatus {
 		this.visit_category = visit_category;
 	}
 
-	public Integer getVisit_no() {
+	public Short getVisit_no() {
 		return visit_no;
 	}
 
-	public void setVisit_no(Integer visit_no) {
+	public void setVisit_no(Short visit_no) {
 		this.visit_no = visit_no;
 	}
 
@@ -244,6 +293,70 @@ public class BeneficiaryFlowStatus {
 
 	public void setModified_date(Timestamp modified_date) {
 		this.modified_date = modified_date;
+	}
+
+	public String getBen_name() {
+		return ben_name;
+	}
+
+	public void setBen_name(String ben_name) {
+		this.ben_name = ben_name;
+	}
+
+	public String getBen_age() {
+		return ben_age;
+	}
+
+	public void setBen_age(String ben_age) {
+		this.ben_age = ben_age;
+	}
+
+	public Timestamp getBen_dob() {
+		return ben_dob;
+	}
+
+	public void setBen_dob(Timestamp ben_dob) {
+		this.ben_dob = ben_dob;
+	}
+
+	public String getBen_gender() {
+		return ben_gender;
+	}
+
+	public void setBen_gender(String ben_gender) {
+		this.ben_gender = ben_gender;
+	}
+
+	public String getBen_phone_no() {
+		return ben_phone_no;
+	}
+
+	public void setBen_phone_no(String ben_phone_no) {
+		this.ben_phone_no = ben_phone_no;
+	}
+
+	public Integer getBen_age_val() {
+		return ben_age_val;
+	}
+
+	public void setBen_age_val(Integer ben_age_val) {
+		this.ben_age_val = ben_age_val;
+	}
+
+	public String getFather_name() {
+		return father_name;
+	}
+
+	public void setFather_name(String father_name) {
+		this.father_name = father_name;
+	}
+
+	public String getSpouse_name() {
+		return spouse_name;
+	}
+
+	public void setSpouse_name(String spouse_name) {
+		this.spouse_name = spouse_name;
 	}
 
 }
