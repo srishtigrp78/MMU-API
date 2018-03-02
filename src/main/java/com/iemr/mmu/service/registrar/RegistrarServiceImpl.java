@@ -33,7 +33,13 @@ import com.iemr.mmu.repo.registrar.RegistrarRepoBenGovIdMapping;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenPhoneMapData;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBeneficiaryDetails;
 import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
+import com.iemr.mmu.service.common.transaction.CommonBenStatusFlowServiceImpl;
 
+/***
+ * 
+ * @author NE298657
+ *
+ */
 @Service
 public class RegistrarServiceImpl implements RegistrarService {
 	private RegistrarRepoBenData registrarRepoBenData;
@@ -44,6 +50,12 @@ public class RegistrarServiceImpl implements RegistrarService {
 	private BeneficiaryDemographicAdditionalRepo beneficiaryDemographicAdditionalRepo;
 	private RegistrarRepoBeneficiaryDetails registrarRepoBeneficiaryDetails;
 	private BeneficiaryImageRepo beneficiaryImageRepo;
+	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
+
+	@Autowired
+	public void setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl) {
+		this.commonBenStatusFlowServiceImpl = commonBenStatusFlowServiceImpl;
+	}
 
 	@Autowired
 	public void setBeneficiaryImageRepo(BeneficiaryImageRepo beneficiaryImageRepo) {
@@ -607,7 +619,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 
 	public BeneficiaryData getBeneficiaryPersonalDetails(Long benRegID) {
 		List<Objects[]> beneficiaryDemographicData = registrarRepoBenDemoData.getBeneficiaryDemographicData(benRegID);
-		
+
 		List<Object[]> benDetailsList = registrarRepoBenData.getBenDetailsByRegID(benRegID);
 		BeneficiaryData benDetails = BeneficiaryData.getBeneficiaryPersonalData(benDetailsList).get(0);
 		if (benDetails != null) {
@@ -630,5 +642,14 @@ public class RegistrarServiceImpl implements RegistrarService {
 		}
 		return benDetails;
 	}
-	
+
+	public Long updateBenFlowStatusFlag(Long benRegID, String createdBy) {
+
+		Long x = commonBenStatusFlowServiceImpl.updateBenFlowStatusFlagMain("registrar", benRegID, null, null, null,
+				null, null, (short) 1, (short) 0, (short) 0, (short) 0, (short) 0, (short) 0, (short) 0, createdBy,
+				null);
+
+		return null;
+	}
+
 }

@@ -14,13 +14,18 @@ import com.iemr.mmu.data.registrar.BeneficiaryData;
 import com.iemr.mmu.data.registrar.WrapperBeneficiaryRegistration;
 import com.iemr.mmu.service.common.master.RegistrarServiceMasterDataImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
-import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.service.registrar.RegistrarServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+
+/***
+ * 
+ * @author NE298657
+ *
+ */
 
 @CrossOrigin
 @RestController
@@ -74,7 +79,7 @@ public class InsertRegistrarController {
 			JsonObject benD = wrapperBeneficiaryRegistrationOBJ.getBenD();
 
 			if (benD == null || benD.isJsonNull()) {
-				response.setError(0, "Data Not Sufficient...");
+				response.setError(0, "Invalid input data");
 			} else {
 				BeneficiaryData benData = registrarServiceImpl.createBeneficiary(benD);
 				if (benData != null) {
