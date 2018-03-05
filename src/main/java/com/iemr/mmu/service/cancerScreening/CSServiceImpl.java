@@ -357,7 +357,8 @@ public class CSServiceImpl implements CSService {
 				signSympSuccessFlag = 1;
 			}
 
-			if (null != wrapperCancerSymptoms.getCancerLymphNodeDetails()) {
+			if (null != wrapperCancerSymptoms.getCancerLymphNodeDetails()
+					&& wrapperCancerSymptoms.getCancerLymphNodeDetails().size() > 0) {
 				int ID = cSNurseServiceImpl
 						.updateLymphNodeExaminationDetails(wrapperCancerSymptoms.getCancerLymphNodeDetails());
 				if (ID > 0) {
