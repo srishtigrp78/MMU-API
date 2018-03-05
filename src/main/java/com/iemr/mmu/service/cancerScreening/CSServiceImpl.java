@@ -282,10 +282,13 @@ public class CSServiceImpl implements CSService {
 		if (null != jsnOBJ && jsnOBJ.has("familyHistory") && !jsnOBJ.get("familyHistory").isJsonNull()) {
 			BenFamilyCancerHistory[] benFamilyCancerHistoryArray = InputMapper.gson()
 					.fromJson(jsnOBJ.get("familyHistory"), BenFamilyCancerHistory[].class);
-
 			List<BenFamilyCancerHistory> benFamilyCancerHistoryList = Arrays.asList(benFamilyCancerHistoryArray);
 
-			familyCURes = cSNurseServiceImpl.updateBeneficiaryFamilyCancerHistory(benFamilyCancerHistoryList);
+			if (benFamilyCancerHistoryList != null && benFamilyCancerHistoryList.size() > 0) {
+				familyCURes = cSNurseServiceImpl.updateBeneficiaryFamilyCancerHistory(benFamilyCancerHistoryList);
+			} else {
+				familyCURes = 1;
+			}
 		} else {
 			familyCURes = 1;
 		}

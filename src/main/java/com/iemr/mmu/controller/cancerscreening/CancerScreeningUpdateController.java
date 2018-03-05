@@ -86,9 +86,7 @@ public class CancerScreeningUpdateController {
 		try {
 			int result = cSServiceImpl.UpdateCSHistoryNurseData(jsnOBJ);
 			if (result > 0) {
-				Map<String, Integer> resMap = new HashMap<String, Integer>();
-				resMap.put("result", result);
-				response.setResponse(new Gson().toJson(resMap));
+				response.setResponse("Beneficiary history data updated successfully.");
 			} else {
 				response.setError(500, "Failed to update CS History Nurse Data");
 			}
