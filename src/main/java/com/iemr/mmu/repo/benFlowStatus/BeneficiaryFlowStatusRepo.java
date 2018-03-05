@@ -1,9 +1,9 @@
-package com.iemr.mmu.repo.common;
+package com.iemr.mmu.repo.benFlowStatus;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.iemr.mmu.data.common.BeneficiaryFlowStatus;
+import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 
 /***
  * 

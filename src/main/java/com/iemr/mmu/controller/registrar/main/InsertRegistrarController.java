@@ -104,16 +104,19 @@ public class InsertRegistrarController {
 							// m_benphonemap
 							// roll-back
 
-						// 1.1	response.setResponse("Registration Done. Beneficiary ID is : " + benRegID); 
-							//Temp code
-							Long r = registrarServiceImpl.updateBenFlowStatusFlag(benData,
-									benD.get("phoneNo").getAsString());
-							
-							if (r != null && r > 0) {
-								response.setResponse("Registration Done. Beneficiary ID is : " + benRegID);
-							} else {
-							}
-							//end of Temp code[replace by 1.1] 
+							// 1.1
+							response.setResponse("Registration Done. Beneficiary ID is : " + benRegID);
+							// Temp code
+							// Long r =
+							// registrarServiceImpl.updateBenFlowStatusFlag(benData,
+							// benD.get("phoneNo").getAsString());
+							//
+							// if (r != null && r > 0) {
+							// response.setResponse("Registration Done.
+							// Beneficiary ID is : " + benRegID);
+							// } else {
+							// }
+							// end of Temp code[replace by 1.1]
 						}
 					} else {
 						// i_beneficiary, i_bendemographics and m_benphonemap

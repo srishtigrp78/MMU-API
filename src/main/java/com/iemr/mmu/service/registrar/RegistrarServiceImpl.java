@@ -33,7 +33,7 @@ import com.iemr.mmu.repo.registrar.RegistrarRepoBenGovIdMapping;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenPhoneMapData;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBeneficiaryDetails;
 import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
-import com.iemr.mmu.service.common.transaction.CommonBenStatusFlowServiceImpl;
+import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 
 /***
  * 
@@ -643,11 +643,12 @@ public class RegistrarServiceImpl implements RegistrarService {
 		return benDetails;
 	}
 
+	@Deprecated
 	public Long updateBenFlowStatusFlag(BeneficiaryData benData, String phoneNo) {
 
-		Long x = commonBenStatusFlowServiceImpl.updateBenFlowStatusFlagMain("registrar", benData.getBeneficiaryRegID(), null, null, null,
-				null, null, (short) 1, (short) 0, (short) 0, (short) 0, (short) 0, (short) 0, (short) 0, benData.getCreatedBy(),
-				null, benData, phoneNo );
+		Long x = commonBenStatusFlowServiceImpl.updateBenFlowStatusFlagMain("registrar", 1,
+				benData.getBeneficiaryRegID(), null, null, null, null, null, (short) 1, (short) 0, (short) 0, (short) 0,
+				(short) 0, (short) 0, (short) 0, benData.getCreatedBy(), null, benData, phoneNo);
 
 		return x;
 	}

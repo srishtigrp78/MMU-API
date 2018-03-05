@@ -1,4 +1,4 @@
-package com.iemr.mmu.service.common.transaction;
+package com.iemr.mmu.service.benFlowStatus;
 
 public interface CommonBenStatusFlowService {
 

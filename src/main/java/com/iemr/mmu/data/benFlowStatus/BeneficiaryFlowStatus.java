@@ -1,4 +1,4 @@
-package com.iemr.mmu.data.common;
+package com.iemr.mmu.data.benFlowStatus;
 
 import java.sql.Timestamp;
 

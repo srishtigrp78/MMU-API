@@ -1,4 +1,4 @@
-package com.iemr.mmu.service.common.transaction;
+package com.iemr.mmu.service.benFlowStatus;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -6,9 +6,10 @@ import java.time.Period;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.iemr.mmu.data.common.BeneficiaryFlowStatus;
+import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.registrar.BeneficiaryData;
-import com.iemr.mmu.repo.common.BeneficiaryFlowStatusRepo;
+import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
+import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 
 /***
  * 
@@ -30,13 +31,16 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 		this.beneficiaryFlowStatusRepo = beneficiaryFlowStatusRepo;
 	}
 
-	public Long updateBenFlowStatusFlagMain(String role, Long benRegID, Long benVisitID, Long benVisitCode,
-			String visitReason, String visitCategory, Integer visitNo, Short nurseFlag, Short doctorFlag,
-			Short pharmaFlag, Short labFlow, Short radiologistFlag, Short oncologistFlag, Short specialistFlag,
-			String createdBy, String modifiedBy, BeneficiaryData benData, String phoneNo) {
+	public Long updateBenFlowStatusFlagMain(String role, Integer operation, Long benRegID, Long benVisitID,
+			Long benVisitCode, String visitReason, String visitCategory, Integer visitNo, Short nurseFlag,
+			Short doctorFlag, Short pharmaFlag, Short labFlow, Short radiologistFlag, Short oncologistFlag,
+			Short specialistFlag, String createdBy, String modifiedBy, BeneficiaryData benData, String phoneNo) {
 		Long returnOBJ = null;
 		if (role.equalsIgnoreCase("registrar")) {
-			returnOBJ = updateFlagAfterRegistration(benData, phoneNo);
+			if (operation != null && operation == 1) {
+				returnOBJ = updateFlagAfterRegistration(benData, phoneNo);
+			} else if (operation != null && operation == 2) {
+			}
 		}
 		return returnOBJ;
 	}
@@ -99,5 +103,10 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 			return bfsRS.getBen_flow_id();
 		else
 			return null;
+	}
+
+	private BeneficiaryFlowStatus getBeneficiaryFlowStatusOBJForRegistrarRegister(BeneficiaryData benData,
+			String phoneNo) {
+		return null;
 	}
 }
