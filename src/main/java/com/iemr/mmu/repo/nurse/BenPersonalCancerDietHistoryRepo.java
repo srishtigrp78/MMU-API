@@ -36,7 +36,7 @@ public interface BenPersonalCancerDietHistoryRepo extends CrudRepository<BenPers
 			@Param("ssRadiationExposure") Boolean ssRadiationExposure,
 			@Param("isThyroidDisorder") Boolean isThyroidDisorder, @Param("modifiedBy") String modifiedBy,
 			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID,
-			@Param("processed") Character processed);
+			@Param("processed") String processed);
 
 	// @Query("SELECT bpdh from BenPersonalCancerDietHistory bpdh WHERE
 	// bpdh.beneficiaryRegID = :benRegID AND bpdh.benVisitID = :benVisitID"
@@ -54,7 +54,7 @@ public interface BenPersonalCancerDietHistoryRepo extends CrudRepository<BenPers
 	public ArrayList<Object[]> getBenPersonaDietHistory(@Param("benRegID") Long benRegID);
 
 	@Query("SELECT processed from BenPersonalCancerDietHistory where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
-	public Character getPersonalCancerDietHistoryStatus(@Param("benRegID") Long benRegID,
+	public String getPersonalCancerDietHistoryStatus(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 
 }

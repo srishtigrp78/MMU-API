@@ -47,7 +47,7 @@ public class CancerExaminationImageAnnotation {
 	private Boolean deleted;
 	@Expose
 	@Column(name = "Processed", insertable = false)
-	private Boolean processed;
+	private String processed;
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
@@ -90,7 +90,7 @@ public class CancerExaminationImageAnnotation {
 
 	public CancerExaminationImageAnnotation(Long iD, Long beneficiaryRegID, Long benVisitID,
 			Integer providerServiceMapID, Integer cancerImageID, Integer xCoordinate, Integer yCoordinate,
-			Integer point, String pointDesc, Boolean deleted, Boolean processed, String createdBy,
+			Integer point, String pointDesc, Boolean deleted, String processed, String createdBy,
 			Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
 		super();
 		ID = iD;
@@ -190,11 +190,11 @@ public class CancerExaminationImageAnnotation {
 		this.deleted = deleted;
 	}
 
-	public Boolean getProcessed() {
+	public String getProcessed() {
 		return processed;
 	}
 
-	public void setProcessed(Boolean processed) {
+	public void setProcessed(String processed) {
 		this.processed = processed;
 	}
 

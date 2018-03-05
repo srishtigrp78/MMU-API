@@ -107,6 +107,13 @@ public class CSServiceImpl implements CSService {
 						&& (vitalSaveSuccessFlag != null && vitalSaveSuccessFlag > 0)) {
 
 					Integer i = commonNurseServiceImpl.updateBeneficiaryStatus('N', getBenRegID(requestOBJ));
+
+					if (requestOBJ != null && requestOBJ.has("sendToDoctorWorklist")
+							&& !requestOBJ.get("sendToDoctorWorklist").isJsonNull()) {
+						if (requestOBJ.get("sendToDoctorWorklist").getAsBoolean() == false) {
+							String s = commonNurseServiceImpl.updateBenStatus(benVisitID, "Z");
+						}
+					}
 					nurseDataSuccessFlag = historySaveSuccessFlag;
 				}
 
@@ -360,10 +367,8 @@ public class CSServiceImpl implements CSService {
 				signSympSuccessFlag = 1;
 			}
 
-			if (null != wrapperCancerSymptoms.getCancerLymphNodeDetails()
-					&& wrapperCancerSymptoms.getCancerLymphNodeDetails().size() > 0) {
-				int ID = cSNurseServiceImpl
-						.updateLymphNodeExaminationDetails(wrapperCancerSymptoms.getCancerLymphNodeDetails());
+			if (null != wrapperCancerSymptoms.getCancerLymphNodeDetails()) {
+				int ID = cSNurseServiceImpl.updateLymphNodeExaminationDetails(wrapperCancerSymptoms);
 				if (ID > 0) {
 					// LymphNode Details stored successfully..
 					lymphNodeSuccessFlag = ID;
@@ -457,7 +462,7 @@ public class CSServiceImpl implements CSService {
 
 			List<WrapperCancerExamImgAnotasn> wrapperCancerExamImgAnotasnList = Arrays
 					.asList(wrapperCancerExamImgAnotasn);
-			if (null != wrapperCancerExamImgAnotasnList && wrapperCancerExamImgAnotasnList.size() > 0) {
+			if (null != wrapperCancerExamImgAnotasnList) {
 				int r = cSNurseServiceImpl.updateCancerExamImgAnotasnDetails(
 						cSNurseServiceImpl.getCancerExaminationImageAnnotationList(wrapperCancerExamImgAnotasnList));
 				if (r > 0) {

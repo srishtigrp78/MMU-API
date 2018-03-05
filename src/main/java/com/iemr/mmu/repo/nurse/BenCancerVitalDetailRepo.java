@@ -37,7 +37,7 @@ public interface BenCancerVitalDetailRepo extends CrudRepository<BenCancerVitalD
 			@Param("diastolicBP_3rdReading") Short diastolicBP_3rdReading, @Param("hbA1C") Short hbA1C,
 			@Param("hemoglobin") Short hemoglobin, @Param("modifiedBy") String modifiedBy,
 			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID,
-			@Param("processed") Character processed);
+			@Param("processed") String processed);
 
 	@Query(" SELECT bvd from BenCancerVitalDetail bvd WHERE bvd.beneficiaryRegID = :benRegID AND bvd.benVisitID = :benVisitID AND bvd.deleted = false ")
 	public BenCancerVitalDetail getBenCancerVitalDetail(@Param("benRegID") Long benRegID,
@@ -50,6 +50,6 @@ public interface BenCancerVitalDetailRepo extends CrudRepository<BenCancerVitalD
 			@Param("benVisitID") Long benVisitID, @Param("createdDate") Date createdDate);
 
 	@Query("SELECT processed from BenCancerVitalDetail where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
-	public Character getCancerVitalStatus(@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
+	public String getCancerVitalStatus(@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
 
 }

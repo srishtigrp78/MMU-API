@@ -66,7 +66,7 @@ public class BenPersonalCancerDietHistory {
 	private Boolean deleted;
 	@Expose
 	@Column(name = "Processed", insertable = false)
-	private Character processed;
+	private String processed;
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
@@ -115,7 +115,7 @@ public class BenPersonalCancerDietHistory {
 			String dietType, Integer fruitConsumptionDays, Integer fruitQuantityPerDay,
 			Integer vegetableConsumptionDays, Integer vegetableQuantityPerDay, Integer intakeOfOutsidePreparedMeal,
 			String typeOfOilConsumed, String physicalActivityType, Boolean ssRadiationExposure,
-			Boolean isThyroidDisorder, Boolean deleted, Character processed, String createdBy, Timestamp createdDate,
+			Boolean isThyroidDisorder, Boolean deleted, String processed, String createdBy, Timestamp createdDate,
 			String modifiedBy, Timestamp lastModDate, List<String> typeOfOilConsumedList) {
 		super();
 		ID = iD;
@@ -282,11 +282,11 @@ public class BenPersonalCancerDietHistory {
 		this.deleted = deleted;
 	}
 
-	public Character getProcessed() {
+	public String getProcessed() {
 		return processed;
 	}
 
-	public void setProcessed(Character processed) {
+	public void setProcessed(String processed) {
 		this.processed = processed;
 	}
 

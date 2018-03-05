@@ -38,7 +38,7 @@ public interface BenFamilyCancerHistoryRepo extends CrudRepository<BenFamilyCanc
 	@Modifying
 	@Transactional
 	@Query("update BenFamilyCancerHistory set deleted=true, processed=:processed WHERE ID = :ID")
-	public int deleteExistingFamilyRecord(@Param("ID") Long ID, @Param("processed") Character processed);
+	public int deleteExistingFamilyRecord(@Param("ID") Long ID, @Param("processed") String processed);
 
 	@Query(" SELECT cancerDiseaseType, familyMember, Date(createdDate) FROM BenFamilyCancerHistory "
 			+ " WHERE beneficiaryRegID = :benRegID AND cancerDiseaseType IS NOT NULL "

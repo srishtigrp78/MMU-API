@@ -68,24 +68,24 @@ public class NurseServiceImpl implements NurseService {
 	private BenAnthropometryRepo benAnthropometryRepo;
 	private BenPhysicalVitalRepo benPhysicalVitalRepo;
 	private LabTestOrderDetailRepo labTestOrderDetailRepo;
-	private PrescriptionDetailRepo prescriptionDetailRepo; 
+	private PrescriptionDetailRepo prescriptionDetailRepo;
 	private PrescribedDrugDetailRepo prescribedDrugDetailRepo;
-	
+
 	@Autowired
 	public void setPrescribedDrugDetailRepo(PrescribedDrugDetailRepo prescribedDrugDetailRepo) {
 		this.prescribedDrugDetailRepo = prescribedDrugDetailRepo;
 	}
-	
+
 	@Autowired
 	public void setLabTestOrderDetailRepo(LabTestOrderDetailRepo labTestOrderDetailRepo) {
 		this.labTestOrderDetailRepo = labTestOrderDetailRepo;
 	}
-	
+
 	@Autowired
 	public void setPrescriptionDetailRepo(PrescriptionDetailRepo prescriptionDetailRepo) {
 		this.prescriptionDetailRepo = prescriptionDetailRepo;
 	}
-	
+
 	@Autowired
 	public void setRegistrarRepoBenData(RegistrarRepoBenData registrarRepoBenData) {
 		this.registrarRepoBenData = registrarRepoBenData;
@@ -388,9 +388,9 @@ public class NurseServiceImpl implements NurseService {
 								benFamilyCancerHistoryList.get(0).getBenVisitID());
 
 				for (Object[] obj : benFamilyCancerHistoryStatuses) {
-					Character processed = (Character) obj[1];
-					if (null != processed && processed != 'N') {
-						processed = 'U';
+					String processed = (String) obj[1];
+					if (null != processed && !processed.equalsIgnoreCase("N")) {
+						processed = "U";
 					}
 					delRes = benFamilyCancerHistoryRepo.deleteExistingFamilyRecord((Long) obj[0], processed);
 				}
@@ -436,10 +436,10 @@ public class NurseServiceImpl implements NurseService {
 	public int updateBenObstetricCancerHistory(BenObstetricCancerHistory benObstetricCancerHistory) {
 		int response = 0;
 
-		Character processed = benObstetricCancerHistoryRepo.getObstetricCancerHistoryStatus(
+		String processed = benObstetricCancerHistoryRepo.getObstetricCancerHistoryStatus(
 				benObstetricCancerHistory.getBeneficiaryRegID(), benObstetricCancerHistory.getBenVisitID());
-		if (null != processed && processed != 'N') {
-			processed = 'U';
+		if (null != processed && !processed.equalsIgnoreCase("N")) {
+			processed = "U";
 		}
 		try {
 
@@ -472,10 +472,10 @@ public class NurseServiceImpl implements NurseService {
 	public int updateBenPersonalCancerHistory(BenPersonalCancerHistory benPersonalCancerHistory) {
 		int response = 0;
 
-		Character processed = benPersonalCancerHistoryRepo.getPersonalCancerHistoryStatus(
+		String processed = benPersonalCancerHistoryRepo.getPersonalCancerHistoryStatus(
 				benPersonalCancerHistory.getBeneficiaryRegID(), benPersonalCancerHistory.getBenVisitID());
-		if (null != processed && processed != 'N') {
-			processed = 'U';
+		if (null != processed && !processed.equalsIgnoreCase("N")) {
+			processed = "U";
 		}
 
 		try {
@@ -512,10 +512,10 @@ public class NurseServiceImpl implements NurseService {
 	public int updateBenPersonalCancerDietHistory(BenPersonalCancerDietHistory benPersonalCancerDietHistory) {
 		int response = 0;
 
-		Character processed = benPersonalCancerDietHistoryRepo.getPersonalCancerDietHistoryStatus(
+		String processed = benPersonalCancerDietHistoryRepo.getPersonalCancerDietHistoryStatus(
 				benPersonalCancerDietHistory.getBeneficiaryRegID(), benPersonalCancerDietHistory.getBenVisitID());
-		if (null != processed && processed != 'N') {
-			processed = 'U';
+		if (null != processed && !processed.equalsIgnoreCase("N")) {
+			processed = "U";
 		}
 
 		try {
@@ -553,10 +553,10 @@ public class NurseServiceImpl implements NurseService {
 	@Deprecated
 	@Override
 	public int updateBenVitalDetail(BenCancerVitalDetail benCancerVitalDetail) {
-		Character processed = benCancerVitalDetailRepo.getCancerVitalStatus(benCancerVitalDetail.getBeneficiaryRegID(),
+		String processed = benCancerVitalDetailRepo.getCancerVitalStatus(benCancerVitalDetail.getBeneficiaryRegID(),
 				benCancerVitalDetail.getBenVisitID());
-		if (null != processed && processed != 'N') {
-			processed = 'U';
+		if (null != processed && !processed.equalsIgnoreCase("N")) {
+			processed = "U";
 		}
 		int response = benCancerVitalDetailRepo.updateBenCancerVitalDetail(
 				benCancerVitalDetail.getProviderServiceMapID(), benCancerVitalDetail.getWeight_Kg(),
@@ -675,7 +675,7 @@ public class NurseServiceImpl implements NurseService {
 	}
 
 	@Deprecated
-	/*Moved to common services, Cn remove from here later*/
+	/* Moved to common services, Cn remove from here later */
 	public Integer updateBeneficiaryStatus(Character c, Long benRegID) {
 		Integer i = registrarRepoBenData.updateBenFlowStatus(c, benRegID);
 		return i;
@@ -807,7 +807,7 @@ public class NurseServiceImpl implements NurseService {
 		return new Gson().toJson(resMap);
 	}
 
-	/* Method moved to common, Can remove from here later*/
+	/* Method moved to common, Can remove from here later */
 	@Deprecated
 	@Override
 	public Long saveBeneficiaryPhysicalAnthropometryDetails(BenAnthropometryDetail benAnthropometryDetail) {
@@ -817,8 +817,8 @@ public class NurseServiceImpl implements NurseService {
 		else
 			return null;
 	}
-	
-	/* Method moved to common, Can remove from here later*/
+
+	/* Method moved to common, Can remove from here later */
 	@Deprecated
 	@Override
 	public Long saveBeneficiaryPhysicalVitalDetails(BenPhysicalVitalDetail benPhysicalVitalDetail) {
@@ -1257,30 +1257,24 @@ public class NurseServiceImpl implements NurseService {
 	@Override
 	public int updateANCAnthropometryDetails(BenAnthropometryDetail anthropometryDetail) {
 		Integer r = 0;
-		if(null != anthropometryDetail){
-			
-			String processed = benAnthropometryRepo.getBenAnthropometryStatus(anthropometryDetail.getBeneficiaryRegID(), 
+		if (null != anthropometryDetail) {
+
+			String processed = benAnthropometryRepo.getBenAnthropometryStatus(anthropometryDetail.getBeneficiaryRegID(),
 					anthropometryDetail.getBenVisitID());
-			if(null!= processed && !processed.equals("N")){
+			if (null != processed && !processed.equals("N")) {
 				processed = "U";
-			}else{
+			} else {
 				processed = "N";
 			}
-			
-//			anthropometryDetail.setModifiedBy(anthropometryDetail.getCreatedBy());
-			r = benAnthropometryRepo.updateANCCareDetails(
-					anthropometryDetail.getWeight_Kg(), 
-					anthropometryDetail.getHeight_cm(), 
-					anthropometryDetail.getbMI(),
-					anthropometryDetail.getHeadCircumference_cm(), 
-					anthropometryDetail.getMidUpperArmCircumference_MUAC_cm(), 
-					anthropometryDetail.getHipCircumference_cm(), 
-					anthropometryDetail.getWaistCircumference_cm(), 
-					anthropometryDetail.getWaistHipRatio(), 
-					anthropometryDetail.getModifiedBy(), 
-					processed,
-					anthropometryDetail.getBeneficiaryRegID(), 
-					anthropometryDetail.getBenVisitID());
+
+			// anthropometryDetail.setModifiedBy(anthropometryDetail.getCreatedBy());
+			r = benAnthropometryRepo.updateANCCareDetails(anthropometryDetail.getWeight_Kg(),
+					anthropometryDetail.getHeight_cm(), anthropometryDetail.getbMI(),
+					anthropometryDetail.getHeadCircumference_cm(),
+					anthropometryDetail.getMidUpperArmCircumference_MUAC_cm(),
+					anthropometryDetail.getHipCircumference_cm(), anthropometryDetail.getWaistCircumference_cm(),
+					anthropometryDetail.getWaistHipRatio(), anthropometryDetail.getModifiedBy(), processed,
+					anthropometryDetail.getBeneficiaryRegID(), anthropometryDetail.getBenVisitID());
 		}
 		return r;
 	}
@@ -1289,48 +1283,35 @@ public class NurseServiceImpl implements NurseService {
 	@Override
 	public int updateANCPhysicalVitalDetails(BenPhysicalVitalDetail physicalVitalDetail) {
 		Integer r = 0;
-		if(null != physicalVitalDetail) {
-			
-			String processed = benPhysicalVitalRepo.getBenPhysicalVitalStatus(physicalVitalDetail.getBeneficiaryRegID(), 
+		if (null != physicalVitalDetail) {
+
+			String processed = benPhysicalVitalRepo.getBenPhysicalVitalStatus(physicalVitalDetail.getBeneficiaryRegID(),
 					physicalVitalDetail.getBenVisitID());
-			if(null != processed && !processed.equals("N")){
+			if (null != processed && !processed.equals("N")) {
 				processed = "U";
-			}else{
+			} else {
 				processed = "N";
 			}
-			
+
 			physicalVitalDetail.setAverageSystolicBP(physicalVitalDetail.getSystolicBP_1stReading());
 			physicalVitalDetail.setAverageDiastolicBP(physicalVitalDetail.getDiastolicBP_1stReading());
-			r = benPhysicalVitalRepo.updatePhysicalVitalDetails(
-					physicalVitalDetail.getTemperature(), 
-					physicalVitalDetail.getPulseRate(), 
-					physicalVitalDetail.getRespiratoryRate(), 
-					physicalVitalDetail.getSystolicBP_1stReading(), 
-					physicalVitalDetail.getDiastolicBP_1stReading(), 
-					physicalVitalDetail.getSystolicBP_2ndReading(),
-					physicalVitalDetail.getDiastolicBP_2ndReading(),
-					physicalVitalDetail.getSystolicBP_3rdReading(),
-					physicalVitalDetail.getDiastolicBP_3rdReading(),
-					physicalVitalDetail.getAverageSystolicBP(),
-					physicalVitalDetail.getAverageDiastolicBP(),
-					physicalVitalDetail.getBloodPressureStatusID(),
-					physicalVitalDetail.getBloodPressureStatus(),
-					physicalVitalDetail.getBloodGlucose_Fasting(),
-					physicalVitalDetail.getBloodGlucose_Random(),
-					physicalVitalDetail.getBloodGlucose_2hr_PP(),
-					physicalVitalDetail.getBloodGlucose_NotSpecified(),
-					physicalVitalDetail.getDiabeticStatusID(),
-					physicalVitalDetail.getDiabeticStatus(),
-					physicalVitalDetail.getCapillaryRefillTime(), 
-					physicalVitalDetail.getModifiedBy(), 
-					processed,
-					physicalVitalDetail.getBeneficiaryRegID(),
-					physicalVitalDetail.getBenVisitID());
-			
+			r = benPhysicalVitalRepo.updatePhysicalVitalDetails(physicalVitalDetail.getTemperature(),
+					physicalVitalDetail.getPulseRate(), physicalVitalDetail.getRespiratoryRate(),
+					physicalVitalDetail.getSystolicBP_1stReading(), physicalVitalDetail.getDiastolicBP_1stReading(),
+					physicalVitalDetail.getSystolicBP_2ndReading(), physicalVitalDetail.getDiastolicBP_2ndReading(),
+					physicalVitalDetail.getSystolicBP_3rdReading(), physicalVitalDetail.getDiastolicBP_3rdReading(),
+					physicalVitalDetail.getAverageSystolicBP(), physicalVitalDetail.getAverageDiastolicBP(),
+					physicalVitalDetail.getBloodPressureStatusID(), physicalVitalDetail.getBloodPressureStatus(),
+					physicalVitalDetail.getBloodGlucose_Fasting(), physicalVitalDetail.getBloodGlucose_Random(),
+					physicalVitalDetail.getBloodGlucose_2hr_PP(), physicalVitalDetail.getBloodGlucose_NotSpecified(),
+					physicalVitalDetail.getDiabeticStatusID(), physicalVitalDetail.getDiabeticStatus(),
+					physicalVitalDetail.getCapillaryRefillTime(), physicalVitalDetail.getModifiedBy(), processed,
+					physicalVitalDetail.getBeneficiaryRegID(), physicalVitalDetail.getBenVisitID());
+
 		}
 		return r;
 	}
-	
+
 	/**
 	 * 
 	 * @param benRegID
@@ -1339,9 +1320,9 @@ public class NurseServiceImpl implements NurseService {
 	 * @param createdBy
 	 * @return
 	 * 
-	 * temp code
+	 * 		temp code
 	 */
-	//common functions for ANC, QC and NCD
+	// common functions for ANC, QC and NCD
 	// Below methods moved to common Nurse service, Can remove from here
 	@Deprecated
 	public Long savePrescriptionDetailsAndGetPrescriptionID(Long benRegID, Long benVisitID, Integer psmID,
@@ -1355,7 +1336,7 @@ public class NurseServiceImpl implements NurseService {
 		Long prescriptionID = saveBenPrescription(prescriptionDetail);
 		return prescriptionID;
 	}
-	
+
 	@Deprecated
 	@Override
 	public Long saveBeneficiaryPrescription(JsonObject caseSheet) throws Exception {
@@ -1364,7 +1345,7 @@ public class NurseServiceImpl implements NurseService {
 
 		return saveBenPrescription(prescriptionDetail);
 	}
-	
+
 	@Deprecated
 	public Long saveBenPrescription(PrescriptionDetail prescription) {
 		Long r = null;
@@ -1374,7 +1355,7 @@ public class NurseServiceImpl implements NurseService {
 		}
 		return r;
 	}
-	
+
 	@Deprecated
 	@Override
 	public Long saveBeneficiaryLabTestOrderDetails(JsonObject caseSheet, Long prescriptionID) {
@@ -1405,7 +1386,7 @@ public class NurseServiceImpl implements NurseService {
 		}
 		return r;
 	}
-	
+
 	@Deprecated
 	@Override
 	public Long saveBenInvestigation(WrapperBenInvestigationANC wrapperBenInvestigationANC) {
@@ -1441,5 +1422,4 @@ public class NurseServiceImpl implements NurseService {
 
 	}
 
-	
 }

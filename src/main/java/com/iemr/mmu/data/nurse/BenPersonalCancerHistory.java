@@ -72,7 +72,7 @@ public class BenPersonalCancerHistory {
 	private Boolean deleted;
 	@Expose
 	@Column(name = "Processed", insertable = false)
-	private Character processed;
+	private String processed;
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
@@ -89,27 +89,27 @@ public class BenPersonalCancerHistory {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	@Transient
 	@JsonIgnore
 	private List<String> typeOfTobaccoProductList;
@@ -121,8 +121,8 @@ public class BenPersonalCancerHistory {
 			String tobaccoUse, Integer startAge_year, Integer endAge_year, String typeOfTobaccoProduct,
 			Integer quantityPerDay, Boolean isFilteredCigaerette, Boolean isCigaretteExposure,
 			Boolean isBetelNutChewing, Integer durationOfBetelQuid, String alcoholUse, Boolean ssAlcoholUsed,
-			String frequencyOfAlcoholUsed, Boolean deleted, Character processed, String createdBy,
-			Timestamp createdDate, String modifiedBy, Timestamp lastModDate, List<String> typeOfTobaccoProductList) {
+			String frequencyOfAlcoholUsed, Boolean deleted, String processed, String createdBy, Timestamp createdDate,
+			String modifiedBy, Timestamp lastModDate, List<String> typeOfTobaccoProductList) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -148,11 +148,10 @@ public class BenPersonalCancerHistory {
 		this.lastModDate = lastModDate;
 		this.typeOfTobaccoProductList = typeOfTobaccoProductList;
 	}
-	
-	
+
 	@Transient
 	private Date captureDate;
-	
+
 	public BenPersonalCancerHistory(String tobaccoUse, Integer startAge_year, Integer endAge_year,
 			String typeOfTobaccoProduct, Integer quantityPerDay, Boolean isFilteredCigaerette,
 			Boolean isCigaretteExposure, Boolean isBetelNutChewing, Integer durationOfBetelQuid, String alcoholUse,
@@ -309,11 +308,11 @@ public class BenPersonalCancerHistory {
 		this.deleted = deleted;
 	}
 
-	public Character getProcessed() {
+	public String getProcessed() {
 		return processed;
 	}
 
-	public void setProcessed(Character processed) {
+	public void setProcessed(String processed) {
 		this.processed = processed;
 	}
 

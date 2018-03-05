@@ -39,7 +39,7 @@ public interface BenObstetricCancerHistoryRepo extends CrudRepository<BenObstetr
 			@Param("isPostMenopauseBleeding") Boolean isPostMenopauseBleeding,
 			@Param("isFoulSmellingDischarge") Boolean isFoulSmellingDischarge, @Param("modifiedBy") String modifiedBy,
 			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID,
-			@Param("processed") Character processed);
+			@Param("processed") String processed);
 
 	@Query("SELECT boh from BenObstetricCancerHistory boh WHERE boh.beneficiaryRegID = :benRegID AND boh.benVisitID = :benVisitID AND boh.deleted = false ")
 	public BenObstetricCancerHistory getBenObstetricCancerHistory(@Param("benRegID") Long benRegID,
@@ -69,6 +69,6 @@ public interface BenObstetricCancerHistoryRepo extends CrudRepository<BenObstetr
 	public ArrayList<Object[]> getBenObstetricCancerHistoryData(@Param("benRegID") Long benRegID);
 
 	@Query("SELECT processed from BenObstetricCancerHistory where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
-	public Character getObstetricCancerHistoryStatus(@Param("benRegID") Long benRegID,
+	public String getObstetricCancerHistoryStatus(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 }

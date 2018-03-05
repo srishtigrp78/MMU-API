@@ -91,7 +91,7 @@ public class BenCancerVitalDetail {
 	private Boolean deleted;
 	@Expose
 	@Column(name = "Processed", insertable = false, updatable = true)
-	private Character processed;
+	private String processed;
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
@@ -108,27 +108,27 @@ public class BenCancerVitalDetail {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	public BenCancerVitalDetail() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -139,7 +139,7 @@ public class BenCancerVitalDetail {
 			Short bloodGlucose_Random, Short bloodGlucose_2HrPostPrandial, Short systolicBP_1stReading,
 			Short diastolicBP_1stReading, Short systolicBP_2ndReading, Short diastolicBP_2ndReading,
 			Short systolicBP_3rdReading, Short diastolicBP_3rdReading, Short hbA1C, Short hemoglobin, Boolean deleted,
-			Character processed, String createdBy, Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
+			String processed, String createdBy, Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -319,11 +319,11 @@ public class BenCancerVitalDetail {
 		this.deleted = deleted;
 	}
 
-	public Character getProcessed() {
+	public String getProcessed() {
 		return processed;
 	}
 
-	public void setProcessed(Character processed) {
+	public void setProcessed(String processed) {
 		this.processed = processed;
 	}
 

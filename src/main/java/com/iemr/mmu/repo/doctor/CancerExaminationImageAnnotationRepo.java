@@ -16,14 +16,15 @@ import com.iemr.mmu.data.doctor.CancerExaminationImageAnnotation;
 public interface CancerExaminationImageAnnotationRepo extends CrudRepository<CancerExaminationImageAnnotation, Long> {
 
 	@Query(" SELECT t FROM CancerExaminationImageAnnotation t  "
-			+ "  WHERE t.beneficiaryRegID =:benRegID AND t.benVisitID =:benVisitID ORDER BY t.cancerImageID  ")
+			+ "  WHERE t.beneficiaryRegID =:benRegID AND t.benVisitID =:benVisitID AND deleted = false ORDER BY t.cancerImageID  ")
 	public List<CancerExaminationImageAnnotation> getCancerExaminationImageAnnotationList(
 			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
-	
-	@Query("SELECT ID, processed from CancerExaminationImageAnnotation where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
-	public  ArrayList<Object[]> getCancerExaminationImageAnnotationDetailsStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
-	
+
+	@Query("SELECT ID, processed from CancerExaminationImageAnnotation where beneficiaryRegID=:benRegID "
+			+ "  AND benVisitID = :benVisitID AND deleted = false AND cancerImageID IN (:imgIDList)")
+	public ArrayList<Object[]> getCancerExaminationImageAnnotationDetailsStatus(@Param("benRegID") Long benRegID,
+			@Param("benVisitID") Long benVisitID, @Param("imgIDList") List<Integer> imgIDList);
+
 	@Modifying
 	@Transactional
 	@Query("update CancerExaminationImageAnnotation set deleted=true, processed=:processed WHERE ID = :ID")

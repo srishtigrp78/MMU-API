@@ -20,6 +20,7 @@ import com.iemr.mmu.data.doctor.CancerLymphNodeDetails;
 import com.iemr.mmu.data.doctor.CancerOralExamination;
 import com.iemr.mmu.data.doctor.CancerSignAndSymptoms;
 import com.iemr.mmu.data.doctor.WrapperCancerExamImgAnotasn;
+import com.iemr.mmu.data.doctor.WrapperCancerSymptoms;
 import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
 import com.iemr.mmu.data.nurse.BenFamilyCancerHistory;
 import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
@@ -229,11 +230,11 @@ public class CSNurseServiceImpl implements CSNurseService {
 
 			if (benFamilyCancerHistoryStatuses != null && benFamilyCancerHistoryStatuses.size() > 0) {
 				for (Object[] obj : benFamilyCancerHistoryStatuses) {
-					Character processed = (Character) obj[1];
-					if (null != processed && processed != 'N') {
-						processed = 'U';
+					String processed = (String) obj[1];
+					if (null != processed && !processed.equalsIgnoreCase("N")) {
+						processed = "U";
 					} else {
-						processed = 'N';
+						processed = "N";
 					}
 					delRes = benFamilyCancerHistoryRepo.deleteExistingFamilyRecord((Long) obj[0], processed);
 				}
@@ -242,25 +243,24 @@ public class CSNurseServiceImpl implements CSNurseService {
 			}
 
 			// }
-			// ArrayList<BenFamilyCancerHistory> newbenFamilyCancerHistoryList =
-			// new ArrayList<BenFamilyCancerHistory>();
+			ArrayList<BenFamilyCancerHistory> newbenFamilyCancerHistoryList = new ArrayList<BenFamilyCancerHistory>();
 			if (delRes > 0) {
 				for (BenFamilyCancerHistory benFamilyCancerHistory : benFamilyCancerHistoryList) {
 					List<String> familyMenberList = benFamilyCancerHistory.getFamilyMemberList();
-					if (null != familyMenberList && !familyMenberList.isEmpty()) {
+					if (null != familyMenberList && !familyMenberList.isEmpty() && familyMenberList.size() > 0) {
 						String familyMemberData = "";
 						for (String familyMember : familyMenberList) {
 							familyMemberData += familyMember + ",";
 						}
 						benFamilyCancerHistory.setFamilyMember(familyMemberData);
 						benFamilyCancerHistory.setCreatedBy(benFamilyCancerHistory.getModifiedBy());
-						// newbenFamilyCancerHistoryList.add(benFamilyCancerHistory);
+						newbenFamilyCancerHistoryList.add(benFamilyCancerHistory);
 					}
 
 				}
-				if (benFamilyCancerHistoryList.size() > 0) {
+				if (newbenFamilyCancerHistoryList.size() > 0) {
 					ArrayList<BenFamilyCancerHistory> benFamilyCancerHistories = (ArrayList<BenFamilyCancerHistory>) benFamilyCancerHistoryRepo
-							.save(benFamilyCancerHistoryList);
+							.save(newbenFamilyCancerHistoryList);
 					if (benFamilyCancerHistories.size() > 0) {
 						response = benFamilyCancerHistories.size();
 					}
@@ -283,15 +283,15 @@ public class CSNurseServiceImpl implements CSNurseService {
 	public int updateBenObstetricCancerHistory(BenObstetricCancerHistory benObstetricCancerHistory) {
 		int response = 0;
 		int recordsAvailable = 0;
-		Character processed = benObstetricCancerHistoryRepo.getObstetricCancerHistoryStatus(
+		String processed = benObstetricCancerHistoryRepo.getObstetricCancerHistoryStatus(
 				benObstetricCancerHistory.getBeneficiaryRegID(), benObstetricCancerHistory.getBenVisitID());
 		if (null != processed) {
 			recordsAvailable = 1;
 		}
-		if (null != processed && processed != 'N') {
-			processed = 'U';
+		if (null != processed && !processed.equalsIgnoreCase("N")) {
+			processed = "U";
 		} else {
-			processed = 'N';
+			processed = "N";
 		}
 		try {
 			benObstetricCancerHistory.setProcessed(processed);
@@ -335,15 +335,15 @@ public class CSNurseServiceImpl implements CSNurseService {
 	public int updateBenPersonalCancerHistory(BenPersonalCancerHistory benPersonalCancerHistory) {
 		int response = 0;
 		int recordsAvailable = 0;
-		Character processed = benPersonalCancerHistoryRepo.getPersonalCancerHistoryStatus(
+		String processed = benPersonalCancerHistoryRepo.getPersonalCancerHistoryStatus(
 				benPersonalCancerHistory.getBeneficiaryRegID(), benPersonalCancerHistory.getBenVisitID());
 		if (null != processed) {
 			recordsAvailable = 1;
 		}
-		if (null != processed && processed != 'N') {
-			processed = 'U';
+		if (null != processed && !processed.equalsIgnoreCase("N")) {
+			processed = "U";
 		} else {
-			processed = 'N';
+			processed = "N";
 		}
 
 		try {
@@ -385,15 +385,15 @@ public class CSNurseServiceImpl implements CSNurseService {
 	public int updateBenPersonalCancerDietHistory(BenPersonalCancerDietHistory benPersonalCancerDietHistory) {
 		int response = 0;
 		int recordsAvailable = 0;
-		Character processed = benPersonalCancerDietHistoryRepo.getPersonalCancerDietHistoryStatus(
+		String processed = benPersonalCancerDietHistoryRepo.getPersonalCancerDietHistoryStatus(
 				benPersonalCancerDietHistory.getBeneficiaryRegID(), benPersonalCancerDietHistory.getBenVisitID());
 		if (null != processed) {
 			recordsAvailable = 1;
 		}
-		if (null != processed && processed != 'N') {
-			processed = 'U';
+		if (null != processed && !processed.equalsIgnoreCase("N")) {
+			processed = "U";
 		} else {
-			processed = 'N';
+			processed = "N";
 		}
 
 		try {
@@ -439,15 +439,15 @@ public class CSNurseServiceImpl implements CSNurseService {
 	public int updateBenVitalDetail(BenCancerVitalDetail benCancerVitalDetail) {
 		int response = 0;
 		int i = 0;
-		Character processed = benCancerVitalDetailRepo.getCancerVitalStatus(benCancerVitalDetail.getBeneficiaryRegID(),
+		String processed = benCancerVitalDetailRepo.getCancerVitalStatus(benCancerVitalDetail.getBeneficiaryRegID(),
 				benCancerVitalDetail.getBenVisitID());
 		if (processed != null) {
 			i = 1;
 		}
-		if (null != processed && processed != 'N') {
-			processed = 'U';
+		if (null != processed && !processed.equalsIgnoreCase("N")) {
+			processed = "U";
 		} else {
-			processed = 'N';
+			processed = "N";
 		}
 		if (i > 0) {
 			response = benCancerVitalDetailRepo.updateBenCancerVitalDetail(
@@ -1194,7 +1194,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 		if (null != processed) {
 			recordsAvailable = 1;
 		}
-		if (null != processed && processed != "N") {
+		if (null != processed && !processed.equalsIgnoreCase("N")) {
 			processed = "U";
 
 		} else {
@@ -1239,29 +1239,34 @@ public class CSNurseServiceImpl implements CSNurseService {
 		return response;
 	}
 
-	public int updateLymphNodeExaminationDetails(List<CancerLymphNodeDetails> cancerLymphNodeDetails) {
+	public int updateLymphNodeExaminationDetails(WrapperCancerSymptoms wrapperOBJ) {
 
 		int response = 0;
 		int delRes = 0;
 		try {
 			// if (cancerLymphNodeDetails.size() > 0) {
+			List<CancerLymphNodeDetails> cancerLymphNodeDetails = wrapperOBJ.getCancerLymphNodeDetails();
+			List<String> lymphNodeNameList = new ArrayList<>();
 
-			ArrayList<Object[]> lymphNodeDetailsStatuses = cancerLymphNodeExaminationRepo
-					.getCancerLymphNodeDetailsStatus(cancerLymphNodeDetails.get(0).getBeneficiaryRegID(),
-							cancerLymphNodeDetails.get(0).getBenVisitID());
+			if (wrapperOBJ.getCancerSignAndSymptoms().getLymphNode_Enlarged() != null
+					&& wrapperOBJ.getCancerSignAndSymptoms().getLymphNode_Enlarged() == false) {
 
-			if (lymphNodeDetailsStatuses != null && lymphNodeDetailsStatuses.size() > 0) {
-				for (Object[] obj : lymphNodeDetailsStatuses) {
-					String processed = (String) obj[1];
-					if (null != processed && processed != "N") {
-						processed = "U";
-					} else {
-						processed = "N";
-					}
-					delRes = cancerLymphNodeExaminationRepo.deleteExistingLymphNodeDetails((Long) obj[0], processed);
-				}
+				delRes = deleteLymphNode(wrapperOBJ);
+
 			} else {
-				delRes = 1;
+				for (CancerLymphNodeDetails objTMP : cancerLymphNodeDetails) {
+					if (lymphNodeNameList.contains(objTMP.getLymphNodeName())) {
+
+					} else {
+						lymphNodeNameList.add(objTMP.getLymphNodeName());
+					}
+				}
+
+				if (lymphNodeNameList.size() > 0) {
+					delRes = deleteLymphNodeWithNameList(wrapperOBJ, lymphNodeNameList);
+				} else {
+					delRes = 1;
+				}
 			}
 
 			// }
@@ -1274,7 +1279,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 						response = cancerLymphNodes.size();
 					}
 				} else {
-					response = 0;
+					response = 1;
 				}
 			} else {
 				response = 0;
@@ -1287,6 +1292,52 @@ public class CSNurseServiceImpl implements CSNurseService {
 		return response;
 	}
 
+	private int deleteLymphNode(WrapperCancerSymptoms wrapperOBJ) {
+		int delRes = 0;
+
+		ArrayList<Object[]> lymphNodeDetailsStatuses = cancerLymphNodeExaminationRepo.getCancerLymphNodeDetailsStatus(
+				wrapperOBJ.getCancerSignAndSymptoms().getBeneficiaryRegID(),
+				wrapperOBJ.getCancerSignAndSymptoms().getBenVisitID());
+
+		if (lymphNodeDetailsStatuses != null && lymphNodeDetailsStatuses.size() > 0) {
+			for (Object[] obj : lymphNodeDetailsStatuses) {
+				String processed = (String) obj[1];
+				if (null != processed && !processed.equalsIgnoreCase("N")) {
+					processed = "U";
+				} else {
+					processed = "N";
+				}
+				delRes = cancerLymphNodeExaminationRepo.deleteExistingLymphNodeDetails((Long) obj[0], processed);
+			}
+		} else {
+			delRes = 1;
+		}
+		return delRes;
+	}
+
+	private int deleteLymphNodeWithNameList(WrapperCancerSymptoms wrapperOBJ, List<String> lymphNodeNameList) {
+		int delRes = 0;
+		ArrayList<Object[]> lymphNodeDetailsStatuses = cancerLymphNodeExaminationRepo
+				.getCancerLymphNodeDetailsStatusForLymphnodeNameList(
+						wrapperOBJ.getCancerSignAndSymptoms().getBeneficiaryRegID(),
+						wrapperOBJ.getCancerSignAndSymptoms().getBenVisitID(), lymphNodeNameList);
+
+		if (lymphNodeDetailsStatuses != null && lymphNodeDetailsStatuses.size() > 0) {
+			for (Object[] obj : lymphNodeDetailsStatuses) {
+				String processed = (String) obj[1];
+				if (null != processed && !processed.equalsIgnoreCase("N")) {
+					processed = "U";
+				} else {
+					processed = "N";
+				}
+				delRes = cancerLymphNodeExaminationRepo.deleteExistingLymphNodeDetails((Long) obj[0], processed);
+			}
+		} else {
+			delRes = 1;
+		}
+		return delRes;
+	}
+
 	public int updateCancerOralDetails(CancerOralExamination cancerOralExamination) {
 		int response = 0;
 		int recordsAvailable = 0;
@@ -1296,7 +1347,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 			recordsAvailable = 1;
 		}
 
-		if (null != processed && processed != "N") {
+		if (null != processed && !processed.equalsIgnoreCase("N")) {
 			processed = "U";
 		} else {
 			processed = "N";
@@ -1342,7 +1393,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 		if (null != processed) {
 			recordsAvailable = 1;
 		}
-		if (null != processed && processed != "N") {
+		if (null != processed && !processed.equalsIgnoreCase("N")) {
 			processed = "U";
 		} else {
 			processed = "N";
@@ -1389,7 +1440,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 		if (null != processed) {
 			recordsAvailable = 1;
 		}
-		if (null != processed && processed != "N") {
+		if (null != processed && !processed.equalsIgnoreCase("N")) {
 			processed = "U";
 		} else {
 			processed = "N";
@@ -1440,7 +1491,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 		if (null != processed) {
 			recordsAvailable = 1;
 		}
-		if (null != processed && processed != "N") {
+		if (null != processed && !processed.equalsIgnoreCase("N")) {
 			processed = "U";
 		} else {
 			processed = "N";
@@ -1489,16 +1540,28 @@ public class CSNurseServiceImpl implements CSNurseService {
 		int response = 0;
 		int delRes = 0;
 		try {
-			if (cancerExaminationImageAnnotationList.size() > 0) {
 
-				ArrayList<Object[]> cancerExaminationImageAnnotationStatuses = cancerExaminationImageAnnotationRepo
+			List<Integer> imgIDList = new ArrayList<>();
+			for (CancerExaminationImageAnnotation tmpOBJ : cancerExaminationImageAnnotationList) {
+				if (imgIDList.contains(tmpOBJ.getCancerImageID())) {
+				} else {
+					imgIDList.add(tmpOBJ.getCancerImageID());
+				}
+			}
+
+			ArrayList<Object[]> cancerExaminationImageAnnotationStatuses = null;
+			if (imgIDList.size() > 0) {
+				cancerExaminationImageAnnotationStatuses = cancerExaminationImageAnnotationRepo
 						.getCancerExaminationImageAnnotationDetailsStatus(
 								cancerExaminationImageAnnotationList.get(0).getBeneficiaryRegID(),
-								cancerExaminationImageAnnotationList.get(0).getBenVisitID());
+								cancerExaminationImageAnnotationList.get(0).getBenVisitID(), imgIDList);
+			}
 
+			if (cancerExaminationImageAnnotationStatuses != null
+					&& cancerExaminationImageAnnotationStatuses.size() > 0) {
 				for (Object[] obj : cancerExaminationImageAnnotationStatuses) {
 					String processed = (String) obj[1];
-					if (null != processed && processed != "N") {
+					if (null != processed && !processed.equalsIgnoreCase("N")) {
 						processed = "U";
 					} else {
 						processed = "N";
@@ -1506,18 +1569,23 @@ public class CSNurseServiceImpl implements CSNurseService {
 					delRes = cancerExaminationImageAnnotationRepo.deleteExistingImageAnnotationDetails((Long) obj[0],
 							processed);
 				}
-
+			} else {
+				delRes = 1;
 			}
+
 			if (delRes > 0) {
 
 				if (cancerExaminationImageAnnotationList.size() > 0) {
+					for (CancerExaminationImageAnnotation obj : cancerExaminationImageAnnotationList) {
+						obj.setModifiedBy(obj.getCreatedBy());
+					}
 					ArrayList<CancerExaminationImageAnnotation> cancerImageAnnotations = (ArrayList<CancerExaminationImageAnnotation>) cancerExaminationImageAnnotationRepo
 							.save(cancerExaminationImageAnnotationList);
 					if (cancerImageAnnotations.size() > 0) {
 						response = cancerImageAnnotations.size();
 					}
 				} else {
-					response = 0;
+					response = 1;
 				}
 			} else {
 				response = 0;

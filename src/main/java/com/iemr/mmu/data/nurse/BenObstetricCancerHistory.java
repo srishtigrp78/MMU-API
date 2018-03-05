@@ -85,7 +85,7 @@ public class BenObstetricCancerHistory {
 	private Boolean deleted;
 	@Expose
 	@Column(name = "Processed", insertable = false)
-	private Character processed;
+	private String processed;
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
@@ -163,7 +163,7 @@ public class BenObstetricCancerHistory {
 			Integer menarche_Age, Boolean isMenstrualCycleRegular, Integer menstrualCycleLength,
 			Integer menstrualFlowDuration, String menstrualFlowType, Boolean isDysmenorrhea,
 			Boolean isInterMenstrualBleeding, Integer menopauseAge, Boolean isPostMenopauseBleeding,
-			Boolean isFoulSmellingDischarge, Boolean deleted, Character processed, String createdBy,
+			Boolean isFoulSmellingDischarge, Boolean deleted, String processed, String createdBy,
 			Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
 		super();
 		this.ID = iD;
@@ -371,11 +371,11 @@ public class BenObstetricCancerHistory {
 		this.deleted = deleted;
 	}
 
-	public Character getProcessed() {
+	public String getProcessed() {
 		return processed;
 	}
 
-	public void setProcessed(Character processed) {
+	public void setProcessed(String processed) {
 		this.processed = processed;
 	}
 
