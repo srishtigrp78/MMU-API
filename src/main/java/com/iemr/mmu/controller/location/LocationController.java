@@ -31,7 +31,6 @@ public class LocationController {
 		this.locationServiceImpl = locationServiceImpl;
 	}
 
-	@Deprecated
 	@ApiOperation(value = "State master for beneficiary", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/get/stateMaster", method = RequestMethod.GET)
 	public String getStateMaster() {
