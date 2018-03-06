@@ -1178,6 +1178,12 @@ public class CSNurseServiceImpl implements CSNurseService {
 
 							objList.add(cancerExaminationImageAnnotation);
 						}
+					} else {
+						CancerExaminationImageAnnotation cancerExaminationImageAnnotation = new CancerExaminationImageAnnotation();
+						cancerExaminationImageAnnotation.setCancerImageID(obj.getImageID());
+						cancerExaminationImageAnnotation.setBeneficiaryRegID(obj.getBeneficiaryRegID());
+						cancerExaminationImageAnnotation.setBenVisitID(obj.getVisitID());
+						objList.add(cancerExaminationImageAnnotation);
 					}
 				}
 			}
@@ -1246,6 +1252,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 		try {
 			// if (cancerLymphNodeDetails.size() > 0) {
 			List<CancerLymphNodeDetails> cancerLymphNodeDetails = wrapperOBJ.getCancerLymphNodeDetails();
+			List<CancerLymphNodeDetails> cancerLymphNodeDetailsFinal = new ArrayList<>();
 			List<String> lymphNodeNameList = new ArrayList<>();
 
 			if (wrapperOBJ.getCancerSignAndSymptoms().getLymphNode_Enlarged() != null
@@ -1271,10 +1278,16 @@ public class CSNurseServiceImpl implements CSNurseService {
 
 			// }
 			if (delRes > 0) {
+				for (CancerLymphNodeDetails o : cancerLymphNodeDetails) {
+					if (o.getMobility_Left() != null || o.getMobility_Right() != null || o.getSize_Left() != null
+							|| o.getSize_Right() != null) {
+						cancerLymphNodeDetailsFinal.add(o);
+					}
+				}
 
-				if (cancerLymphNodeDetails.size() > 0) {
+				if (cancerLymphNodeDetailsFinal.size() > 0) {
 					ArrayList<CancerLymphNodeDetails> cancerLymphNodes = (ArrayList<CancerLymphNodeDetails>) cancerLymphNodeExaminationRepo
-							.save(cancerLymphNodeDetails);
+							.save(cancerLymphNodeDetailsFinal);
 					if (cancerLymphNodes.size() > 0) {
 						response = cancerLymphNodes.size();
 					}
@@ -1575,14 +1588,20 @@ public class CSNurseServiceImpl implements CSNurseService {
 
 			if (delRes > 0) {
 
+				ArrayList<CancerExaminationImageAnnotation> cancerImageAnnotationsFinal = new ArrayList<>();
+
 				if (cancerExaminationImageAnnotationList.size() > 0) {
 					for (CancerExaminationImageAnnotation obj : cancerExaminationImageAnnotationList) {
-						obj.setModifiedBy(obj.getCreatedBy());
+						if (obj.getxCoordinate() != null && obj.getyCoordinate() != null
+								&& obj.getCreatedBy() != null) {
+							obj.setModifiedBy(obj.getCreatedBy());
+							cancerImageAnnotationsFinal.add(obj);
+						}
 					}
 					ArrayList<CancerExaminationImageAnnotation> cancerImageAnnotations = (ArrayList<CancerExaminationImageAnnotation>) cancerExaminationImageAnnotationRepo
-							.save(cancerExaminationImageAnnotationList);
-					if (cancerImageAnnotations.size() > 0) {
-						response = cancerImageAnnotations.size();
+							.save(cancerImageAnnotationsFinal);
+					if (cancerImageAnnotations.size() == cancerImageAnnotationsFinal.size()) {
+						response = 1;
 					}
 				} else {
 					response = 1;
