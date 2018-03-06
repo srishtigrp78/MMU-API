@@ -66,8 +66,7 @@ public class HTTPRequestInterceptor extends HandlerInterceptorAdapter {
 					break;
 				default:
 					String remoteAddress = request.getHeader("X-FORWARDED-FOR");
-					if (remoteAddress == null || remoteAddress.trim().length() == 0)
-					{
+					if (remoteAddress == null || remoteAddress.trim().length() == 0) {
 						remoteAddress = request.getRemoteAddr();
 					}
 					validator.checkKeyExists(authorization, remoteAddress);
@@ -76,11 +75,12 @@ public class HTTPRequestInterceptor extends HandlerInterceptorAdapter {
 			} catch (Exception e) {
 				OutputResponse output = new OutputResponse();
 				output.setError(e);
-				response.getOutputStream().print(output.toString());
 				response.setContentType(MediaType.APPLICATION_JSON);
 
 				response.setContentLength(output.toString().length());
 				response.setHeader("Access-Control-Allow-Origin", "*");
+				response.getOutputStream().print(output.toString());
+
 				status = false;
 			}
 		}
