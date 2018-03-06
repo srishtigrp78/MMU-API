@@ -38,6 +38,7 @@ public class FetchDoctorCSController {
 		this.doctorMasterDataServiceImpl = doctorMasterDataServiceImpl;
 	}
 
+	@Deprecated
 	@CrossOrigin()
 	@ApiOperation(value = "provides doctor worklist", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getDocWorklist" }, method = { RequestMethod.GET })

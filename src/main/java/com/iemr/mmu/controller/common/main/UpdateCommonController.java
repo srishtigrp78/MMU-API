@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
+import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
@@ -19,16 +21,17 @@ import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/registrar", headers = "Authorization")
+@RequestMapping(value = "/common", headers = "Authorization")
 /** Objective: Performs updating Beneficiary status flag */
 public class UpdateCommonController {
 	private Logger logger = LoggerFactory.getLogger(UpdateCommonController.class);
 	private InputMapper inputMapper = new InputMapper();
-	private NurseServiceImpl nurseServiceImpl;
+	private CommonNurseServiceImpl commonNurseServiceImpl;
 
 	@Autowired
-	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
-		this.nurseServiceImpl = nurseServiceImpl;
+	public void setCommonNurseServiceImpl(CommonNurseServiceImpl commonNurseServiceImpl)
+	{
+		this.commonNurseServiceImpl = commonNurseServiceImpl;
 	}
 
 	@CrossOrigin
@@ -45,7 +48,7 @@ public class UpdateCommonController {
 			if (obj.has("beneficiaryRegID")) {
 				if (obj.getLong("beneficiaryRegID") > 0) {
 
-					Integer i = nurseServiceImpl.updateBeneficiaryStatus('R', obj.getLong("beneficiaryRegID"));
+					Integer i = commonNurseServiceImpl.updateBeneficiaryStatus('R', obj.getLong("beneficiaryRegID"));
 					if (i != null && i > 0) {
 						response.setResponse("Beneficiary Successfully Submitted to Nurse Work-List.");
 					} else {

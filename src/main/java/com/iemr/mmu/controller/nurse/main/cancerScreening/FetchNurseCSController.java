@@ -50,6 +50,7 @@ public class FetchNurseCSController {
 	 * Fething beneficiary data filled by Nurse for Doctor screen...
 	 */
 
+	@Deprecated
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Visit details from Nurse screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenDataFrmNurseToDocVisitDetailsScreen" }, method = { RequestMethod.POST })
@@ -76,6 +77,7 @@ public class FetchNurseCSController {
 		return response.toString();
 	}
 
+	@Deprecated
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Cancer History details from Nurse screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenDataFrmNurseToDocHistoryScreen" }, method = { RequestMethod.POST })
@@ -103,6 +105,7 @@ public class FetchNurseCSController {
 		return response.toString();
 	}
 
+	@Deprecated
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Vital details from Nurse screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenDataFrmNurseToDocVitalScreen" }, method = { RequestMethod.POST })
@@ -129,6 +132,7 @@ public class FetchNurseCSController {
 		return response.toString();
 	}
 
+	@Deprecated
 	@CrossOrigin()
 	@ApiOperation(value = "Get Nurse worklist", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getNurseWorklist" }, method = { RequestMethod.GET })
