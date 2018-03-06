@@ -43,7 +43,7 @@ public class BenFamilyCancerHistory {
 	private Boolean deleted;
 	@Expose
 	@Column(name = "Processed", insertable = false, updatable = false)
-	private Character processed;
+	private String processed;
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
@@ -60,27 +60,27 @@ public class BenFamilyCancerHistory {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	@JsonIgnore
 	@Transient
 	private List<String> familyMemberList;
@@ -98,7 +98,7 @@ public class BenFamilyCancerHistory {
 	}
 
 	public BenFamilyCancerHistory(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
-			String cancerDiseaseType, String familyMember, Boolean deleted, Character processed, String createdBy,
+			String cancerDiseaseType, String familyMember, Boolean deleted, String processed, String createdBy,
 			Timestamp createdDate, String modifiedBy, Timestamp lastModDate, List<String> familyMemberList) {
 		super();
 		ID = iD;
@@ -172,11 +172,11 @@ public class BenFamilyCancerHistory {
 		this.deleted = deleted;
 	}
 
-	public Character getProcessed() {
+	public String getProcessed() {
 		return processed;
 	}
 
-	public void setProcessed(Character processed) {
+	public void setProcessed(String processed) {
 		this.processed = processed;
 	}
 
