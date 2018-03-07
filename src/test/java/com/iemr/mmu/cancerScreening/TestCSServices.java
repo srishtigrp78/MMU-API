@@ -47,8 +47,10 @@ import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 import com.iemr.mmu.service.cancerScreening.CSDoctorServiceImpl;
 import com.iemr.mmu.service.cancerScreening.CSNurseServiceImpl;
+import com.iemr.mmu.service.cancerScreening.CSOncologistServiceImpl;
 import com.iemr.mmu.service.cancerScreening.CSServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
+import com.iemr.mmu.utils.mapper.InputMapper;
 
 public class TestCSServices
 {
@@ -56,6 +58,7 @@ public class TestCSServices
 	private static CSNurseServiceImpl cSNurseServiceImpl = spy(CSNurseServiceImpl.class);
 	private static CommonNurseServiceImpl commonNurseServiceImpl = spy(CommonNurseServiceImpl.class);
 	private static CSDoctorServiceImpl cSDoctorServiceImpl = spy(CSDoctorServiceImpl.class);
+	private static CSOncologistServiceImpl csOncologistServiceImpl = spy(CSOncologistServiceImpl.class);
 	
 	private static BenVisitDetailRepo benVisitDetailRepoMock = mock(BenVisitDetailRepo.class);
 	private static BenFamilyCancerHistoryRepo benFamilyCancerHistoryRepoMock = mock(BenFamilyCancerHistoryRepo.class);
@@ -74,7 +77,14 @@ public class TestCSServices
 	private static CancerDiagnosisRepo cancerDiagnosisRepoMock = mock(CancerDiagnosisRepo.class);
 	
 	static String nurseObjPve;
-	public static JsonObject jsnOBJPve;
+	static String doctorObjPve;
+	public static JsonObject nurseJsnOBJPve;
+	public static JsonObject doctorJsnOBJPve;
+	public static String updateHstryObjPve;
+	public static JsonObject updateHstryJsnObjPve;
+	static String updateVitalObjPve;
+	static String updateExmnObjPve;
+	static JsonObject updateExmnJsnObjPve;
 	
 	@BeforeClass
 	public static void initializeParams(){
@@ -82,6 +92,7 @@ public class TestCSServices
 		cSServiceImpl.setCommonNurseServiceImpl(commonNurseServiceImpl);
 		cSServiceImpl.setcSNurseServiceImpl(cSNurseServiceImpl);
 		cSServiceImpl.setcSDoctorServiceImpl(cSDoctorServiceImpl);
+		cSServiceImpl.setCsOncologistServiceImpl(csOncologistServiceImpl);
 		
 		commonNurseServiceImpl.setBenVisitDetailRepo(benVisitDetailRepoMock);
 		commonNurseServiceImpl.setRegistrarRepoBenData(registrarRepoBenDataMock);
@@ -101,14 +112,30 @@ public class TestCSServices
 		cSNurseServiceImpl.setBenCancerVitalDetailRepo(benCancerVitalDetailRepoMock);
 		cSDoctorServiceImpl.setCancerDiagnosisRepo(cancerDiagnosisRepoMock);
 		
+		csOncologistServiceImpl.setCancerDiagnosisRepo(cancerDiagnosisRepoMock);
 		nurseObjPve = "{\"visitDetails\": { \"beneficiaryRegID\": \"7506\", \"providerServiceMapID\": \"1320\", \"visitNo\": null, \"visitReason\": \"Screening\", \"visitCategory\": \"Cancer Screening\", \"pregnancyStatus\": \"Yes\", \"rCHID\": \"7777\", \"healthFacilityType\": null, \"healthFacilityLocation\": null, \"reportFilePath\": null, \"createdBy\": \"888\" }, \"vitalsDetails\": { \"beneficiaryRegID\": \"7506\", \"benVisitID\": null, \"providerServiceMapID\": \"1320\", \"weight_Kg\": \"64\", \"height_cm\": \"166\", \"waistCircumference_cm\": \"56\", \"systolicBP_1stReading\": \"120\", \"diastolicBP_1stReading\": \"65\", \"systolicBP_2ndReading\": \"113\", \"diastolicBP_2ndReading\": \"73\", \"systolicBP_3rdReading\": \"123\", \"diastolicBP_3rdReading\": \"66\", \"hbA1C\": \"4\", \"hemoglobin\": \"14\", \"bloodGlucose_Fasting\": \"123\", \"bloodGlucose_Random\": \"143\", \"bloodGlucose_2HrPostPrandial\": \"145\", \"createdBy\": \"888\" }, \"examinationDetails\": { \"signsDetails\": { \"cancerSignAndSymptoms\": { \"shortnessOfBreath\": null, \"coughgt2Weeks\": true, \"bloodInSputum\": true, \"difficultyInOpeningMouth\": true, \"nonHealingUlcerOrPatchOrGrowth\": null, \"changeInTheToneOfVoice\": null, \"lumpInTheBreast\": null, \"bloodStainedDischargeFromNipple\": null, \"changeInShapeAndSizeOfBreasts\": null, \"vaginalBleedingBetweenPeriods\": null, \"vaginalBleedingAfterMenopause\": null, \"vaginalBleedingAfterIntercourse\": null, \"foulSmellingVaginalDischarge\": null, \"lymphNode_Enlarged\": true, \"breastEnlargement\": null, \"observation\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry\", \"beneficiaryRegID\": \"7506\", \"providerServiceMapID\": \"1320\", \"createdBy\": \"888\" }, \"cancerLymphNodeDetails\": [ { \"lymphNodeName\": \" Sub Mandibular\", \"size_Left\": \"3-6 cm\", \"mobility_Left\": true, \"size_Right\": \"3-6 cm\", \"mobility_Right\": true, \"beneficiaryRegID\": \"7506\", \"providerServiceMapID\": \"1320\", \"createdBy\": \"888\" } ] }, \"oralDetails\": { \"limitedMouthOpening\": \"+\", \"premalignantLesions\": true, \"preMalignantLesionTypeList\": [ \"Sub muscus fibrosis\" ], \"prolongedIrritation\": null, \"chronicBurningSensation\": null, \"observation\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry\", \"beneficiaryRegID\": \"7506\", \"providerServiceMapID\": \"1320\", \"createdBy\": \"888\" }, \"breastDetails\": { \"everBreastFed\": true, \"breastFeedingDurationGTE6months\": true, \"breastsAppear_Normal\": true, \"rashOnBreast\": null, \"dimplingSkinOnBreast\": true, \"dischargeFromNipple\": null, \"peaudOrange\": null, \"lumpInBreast\": null, \"lumpSize\": null, \"lumpShape\": null, \"lumpTexture\": null, \"referredToMammogram\": null, \"beneficiaryRegID\": \"7506\", \"providerServiceMapID\": \"1320\", \"createdBy\": \"888\" }, \"abdominalDetails\": { \"abdominalInspection_Normal\": true, \"liver\": \"Not palpable\", \"ascites_Present\": true, \"anyOtherMass_Present\": true, \"lymphNodes_Enlarged\": null, \"lymphNode_Inguinal_Left\": null, \"lymphNode_Inguinal_Right\": null, \"lymphNode_ExternalIliac_Left\": null, \"lymphNode_ExternalIliac_Right\": null, \"lymphNode_ParaAortic_Left\": null, \"lymphNode_ParaAortic_Right\": null, \"observation\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry\", \"beneficiaryRegID\": \"7506\", \"providerServiceMapID\": \"1320\", \"createdBy\": \"888\" }, \"gynecologicalDetails\": { \"appearanceOfCervix\": null, \"typeOfLesionList\": null, \"vulvalInvolvement\": null, \"vaginalInvolvement\": true, \"uterus_Normal\": true, \"sufferedFromRTIOrSTI\": null, \"rTIOrSTIDetail\": null, \"filePath\": null, \"experiencedPostCoitalBleeding\": null, \"observation\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry\", \"beneficiaryRegID\": \"7506\", \"providerServiceMapID\": \"1320\", \"createdBy\": \"888\" }, \"imageCoordinates\": [ { \"beneficiaryRegID\": \"7506\", \"visitID\": null, \"createdBy\": \"888\", \"imageID\": 3, \"providerServiceMapID\": \"1320\", \"markers\": [ { \"xCord\": 97, \"yCord\": 174, \"description\": \"one\", \"point\": 1 } ] }, { \"beneficiaryRegID\": \"7506\", \"visitID\": null, \"createdBy\": \"888\", \"imageID\": 1, \"providerServiceMapID\": \"1320\", \"markers\": [ { \"xCord\": 146, \"yCord\": 184, \"description\": \"three\", \"point\": 1 } ] }, { \"beneficiaryRegID\": \"7506\", \"visitID\": null, \"createdBy\": \"888\", \"imageID\": 4, \"providerServiceMapID\": \"1320\", \"markers\": [ { \"xCord\": 102, \"yCord\": 154, \"description\": \"four\", \"point\": 1 } ] }, { \"beneficiaryRegID\": \"7506\", \"visitID\": null, \"createdBy\": \"888\", \"imageID\": 2, \"providerServiceMapID\": \"1320\", \"markers\": [ { \"xCord\": 171, \"yCord\": 156, \"description\": \"two\", \"point\": 1 } ] } ] }, \"historyDetails\": { \"familyHistory\": { \"diseases\": [ { \"beneficiaryRegID\": \"7506\", \"benVisitID\": null, \"providerServiceMapID\": \"1320\", \"cancerDiseaseType\": \"Breast Cancer\", \"otherDiseaseType\": null, \"familyMemberList\": [ \"Aunt\", \"Brother\" ], \"createdBy\": \"888\" }, { \"beneficiaryRegID\": \"7506\", \"benVisitID\": null, \"providerServiceMapID\": \"1320\", \"cancerDiseaseType\": \"lorem ipsum\", \"otherDiseaseType\": \"lorem ipsum\", \"familyMemberList\": [ \"Grand Father\" ], \"createdBy\": \"888\" } ], \"beneficiaryRegID\": \"7506\", \"providerServiceMapID\": \"1320\", \"createdBy\": \"888\" }, \"personalHistory\": { \"beneficiaryRegID\": \"7506\", \"benVisitID\": null, \"providerServiceMapID\": \"1320\", \"tobaccoUse\": \"Used in Past\", \"startAge_year\": \"23\", \"endAge_year\": \"24\", \"typeOfTobaccoProductList\": [ \"Beedi\", \"Chewing\", \"Cigarettes\" ], \"quantityPerDay\": \"2\", \"isFilteredCigaerette\": true, \"isCigaretteExposure\": false, \"isBetelNutChewing\": true, \"durationOfBetelQuid\": \"12\", \"alcoholUse\": \"Currently Using\", \"ssAlcoholUsed\": true, \"frequencyOfAlcoholUsed\": \"1-4 days/week\", \"dietType\": \"Eggetarian\", \"otherDiet\": null, \"intakeOfOutsidePreparedMeal\": \"2\", \"fruitConsumptionDays\": \"2\", \"fruitQuantityPerDay\": \"2\", \"vegetableConsumptionDays\": \"2\", \"vegetableQuantityPerDay\": \"2\", \"typeOfOilConsumedList\": [ \"Coconut Oil\", \"Corn Oil\" ], \"otherOilType\": null, \"physicalActivityType\": \"Light Activity\", \"ssRadiationExposure\": false, \"isThyroidDisorder\": false, \"createdBy\": \"888\" }, \"pastObstetricHistory\": { \"beneficiaryRegID\": \"7506\", \"benVisitID\": null, \"providerServiceMapID\": \"1320\", \"pregnancyStatus\": \"Yes\", \"isUrinePregTest\": null, \"pregnant_No\": \"1\", \"noOfLivingChild\": \"1\", \"isAbortion\": false, \"isOralContraceptiveUsed\": false, \"isHormoneReplacementTherapy\": false, \"menarche_Age\": \"13\", \"isMenstrualCycleRegular\": true, \"menstrualCycleLength\": \"28\", \"menstrualFlowDuration\": \"3\", \"menstrualFlowType\": \"Little\", \"isDysmenorrhea\": false, \"isInterMenstrualBleeding\": false, \"menopauseAge\": null, \"isPostMenopauseBleeding\": null, \"createdBy\": \"888\" } } }";
+		doctorObjPve = "{\"diagnosis\": { \"referredToInstituteID\": null, \"refrredToAdditionalServiceList\": [ 3, 1, 5 ], \"provisionalDiagnosisPrimaryDoctor\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry. \", \"remarks\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry. \", \"beneficiaryRegID\": \"7506\", \"providerServiceMapID\": \"1320\", \"benVisitID\": \"937\", \"createdBy\": \"888\" } }";
+		updateHstryObjPve = "{ \"familyHistory\": [ { \"beneficiaryRegID\": \"7416\", \"benVisitID\": \"992\", \"providerServiceMapID\": \"1320\", \"cancerDiseaseType\": \"Breast Cancer\", \"otherDiseaseType\": null, \"familyMemberList\": [ \"Aunt\", \"Brother\" ], \"createdBy\": null, \"modifiedBy\": \"890\" }, { \"beneficiaryRegID\": \"7416\", \"benVisitID\": \"992\", \"providerServiceMapID\": \"1320\", \"cancerDiseaseType\": \"Diabetes Mellitus\", \"otherDiseaseType\": null, \"familyMemberList\": [ \"Brother\", \"Daughter\" ], \"createdBy\": null, \"modifiedBy\": \"890\" } ], \"personalHistory\": { \"beneficiaryRegID\": \"7416\", \"benVisitID\": \"992\", \"providerServiceMapID\": \"1320\", \"tobaccoUse\": \"Currently Using\", \"startAge_year\": \"15\", \"endAge_year\": null, \"typeOfTobaccoProductList\": null, \"quantityPerDay\": null, \"isFilteredCigaerette\": null, \"isCigaretteExposure\": true, \"isBetelNutChewing\": false, \"durationOfBetelQuid\": null, \"alcoholUse\": null, \"ssAlcoholUsed\": null, \"frequencyOfAlcoholUsed\": null, \"dietType\": null, \"otherDiet\": null, \"intakeOfOutsidePreparedMeal\": null, \"fruitConsumptionDays\": null, \"fruitQuantityPerDay\": null, \"vegetableConsumptionDays\": null, \"vegetableQuantityPerDay\": null, \"typeOfOilConsumedList\": null, \"otherOilType\": null, \"physicalActivityType\": null, \"ssRadiationExposure\": null, \"isThyroidDisorder\": null, \"createdBy\": null, \"modifiedBy\": \"890\" }, \"pastObstetricHistory\": { \"beneficiaryRegID\": \"7506\", \"benVisitID\": null, \"providerServiceMapID\": \"1320\", \"pregnancyStatus\": \"Yes\", \"isUrinePregTest\": null, \"pregnant_No\": \"1\", \"noOfLivingChild\": \"1\", \"isAbortion\": false, \"isOralContraceptiveUsed\": false, \"isHormoneReplacementTherapy\": false, \"menarche_Age\": \"13\", \"isMenstrualCycleRegular\": true, \"menstrualCycleLength\": \"28\", \"menstrualFlowDuration\": \"3\", \"menstrualFlowType\": \"Little\", \"isDysmenorrhea\": false, \"isInterMenstrualBleeding\": false, \"menopauseAge\": null, \"isPostMenopauseBleeding\": null, \"createdBy\": \"888\" } }";
 		
-		jsnOBJPve = new JsonObject();
+		updateVitalObjPve = "{ \"beneficiaryRegID\": \"7416\", \"benVisitID\": \"992\", \"providerServiceMapID\": \"1320\", \"weight_Kg\": \"64\", \"height_cm\": 166, \"waistCircumference_cm\": null, \"systolicBP_1stReading\": null, \"diastolicBP_1stReading\": null, \"systolicBP_2ndReading\": null, \"diastolicBP_2ndReading\": null, \"systolicBP_3rdReading\": null, \"diastolicBP_3rdReading\": null, \"hbA1C\": null, \"hemoglobin\": null, \"bloodGlucose_Fasting\": null, \"bloodGlucose_Random\": null, \"bloodGlucose_2HrPostPrandial\": null, \"createdBy\": \"888\", \"modifiedBy\": \"890\" }";
+		updateExmnObjPve  =	"{ \"signsDetails\": { \"cancerSignAndSymptoms\": { \"shortnessOfBreath\": true, \"coughgt2Weeks\": null, \"bloodInSputum\": false, \"difficultyInOpeningMouth\": null, \"nonHealingUlcerOrPatchOrGrowth\": null, \"changeInTheToneOfVoice\": null, \"lumpInTheBreast\": null, \"bloodStainedDischargeFromNipple\": null, \"changeInShapeAndSizeOfBreasts\": null, \"vaginalBleedingBetweenPeriods\": null, \"vaginalBleedingAfterMenopause\": null, \"vaginalBleedingAfterIntercourse\": null, \"foulSmellingVaginalDischarge\": null, \"lymphNode_Enlarged\": true, \"breastEnlargement\": null, \"observation\": null, \"beneficiaryRegID\": \"7416\", \"benVisitID\": \"992\", \"providerServiceMapID\": \"1320\", \"modifiedBy\": \"890\" }, \"cancerLymphNodeDetails\": [ { \"lymphNodeName\": \" Sub Mental\", \"size_Left\": null, \"mobility_Left\": null, \"size_Right\": null, \"mobility_Right\": null, \"beneficiaryRegID\": \"7416\", \"benVisitID\": \"992\", \"providerServiceMapID\": \"1320\", \"modifiedBy\": \"890\", \"createdBy\": \"890\" }, { \"lymphNodeName\": \" Sub Mandibular\", \"size_Left\": null, \"mobility_Left\": null, \"size_Right\": null, \"mobility_Right\": null, \"beneficiaryRegID\": \"7416\", \"benVisitID\": \"992\", \"providerServiceMapID\": \"1320\", \"modifiedBy\": \"890\", \"createdBy\": \"890\" }, { \"lymphNodeName\": \" Sub deep cervical\", \"size_Left\": null, \"mobility_Left\": null, \"size_Right\": null, \"mobility_Right\": null, \"beneficiaryRegID\": \"7416\", \"benVisitID\": \"992\", \"providerServiceMapID\": \"1320\", \"modifiedBy\": \"890\", \"createdBy\": \"890\" }, { \"lymphNodeName\": \" Jugulo-digastric\", \"size_Left\": null, \"mobility_Left\": true, \"size_Right\": null, \"mobility_Right\": false, \"beneficiaryRegID\": \"7416\", \"benVisitID\": \"992\", \"providerServiceMapID\": \"1320\", \"modifiedBy\": \"890\", \"createdBy\": \"890\" }, { \"lymphNodeName\": \" Mid cervical\", \"size_Left\": null, \"mobility_Left\": false, \"size_Right\": null, \"mobility_Right\": true, \"beneficiaryRegID\": \"7416\", \"benVisitID\": \"992\", \"providerServiceMapID\": \"1320\", \"modifiedBy\": \"890\", \"createdBy\": \"890\" }, { \"lymphNodeName\": \" Interior cervical\", \"size_Left\": null, \"mobility_Left\": null, \"size_Right\": null, \"mobility_Right\": null, \"beneficiaryRegID\": \"7416\", \"benVisitID\": \"992\", \"providerServiceMapID\": \"1320\", \"modifiedBy\": \"890\", \"createdBy\": \"890\" }, { \"lymphNodeName\": \" Supra clavicular\", \"size_Left\": null, \"mobility_Left\": null, \"size_Right\": null, \"mobility_Right\": null, \"beneficiaryRegID\": \"7416\", \"benVisitID\": \"992\", \"providerServiceMapID\": \"1320\", \"modifiedBy\": \"890\", \"createdBy\": \"890\" }, { \"lymphNodeName\": \" Posterior Triangle\", \"size_Left\": null, \"mobility_Left\": null, \"size_Right\": null, \"mobility_Right\": null, \"beneficiaryRegID\": \"7416\", \"benVisitID\": \"992\", \"providerServiceMapID\": \"1320\", \"modifiedBy\": \"890\", \"createdBy\": \"890\" }, { \"lymphNodeName\": \" Axillary Lymph Nodes\", \"size_Left\": null, \"mobility_Left\": null, \"size_Right\": null, \"mobility_Right\": null, \"beneficiaryRegID\": \"7416\", \"benVisitID\": \"992\", \"providerServiceMapID\": \"1320\", \"modifiedBy\": \"890\", \"createdBy\": \"890\" } ] }, \"oralDetails\": { \"limitedMouthOpening\": \"none\", \"premalignantLesions\": true, \"preMalignantLesionTypeList\": [ \"Leukoplakia\" ], \"prolongedIrritation\": false, \"chronicBurningSensation\": null, \"observation\": \"frettrter\", \"beneficiaryRegID\": \"7416\", \"benVisitID\": \"992\", \"providerServiceMapID\": \"1320\", \"modifiedBy\": \"890\" }, \"abdominalDetails\": { \"abdominalInspection_Normal\": true, \"liver\": null, \"ascites_Present\": true, \"anyOtherMass_Present\": false, \"lymphNodes_Enlarged\": false, \"lymphNode_Inguinal_Left\": null, \"lymphNode_Inguinal_Right\": null, \"lymphNode_ExternalIliac_Left\": null, \"lymphNode_ExternalIliac_Right\": null, \"lymphNode_ParaAortic_Left\": null, \"lymphNode_ParaAortic_Right\": null, \"observation\": \"rtretrte\", \"beneficiaryRegID\": \"7416\", \"benVisitID\": \"992\", \"providerServiceMapID\": \"1320\", \"modifiedBy\": \"890\" } }";
+		nurseJsnOBJPve = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
 		JsonElement jsnElmnt = jsnParser.parse(nurseObjPve);
-		jsnOBJPve = jsnElmnt.getAsJsonObject();
+		nurseJsnOBJPve = jsnElmnt.getAsJsonObject();
 		
-
+		doctorJsnOBJPve = new JsonObject();
+		jsnElmnt = jsnParser.parse(doctorObjPve);
+		doctorJsnOBJPve = jsnElmnt.getAsJsonObject();
+		
+		updateHstryJsnObjPve = new JsonObject();
+		jsnElmnt = jsnParser.parse(updateHstryObjPve);
+		updateHstryJsnObjPve = jsnElmnt.getAsJsonObject();
+		
+		updateExmnJsnObjPve =new JsonObject();
+		jsnElmnt = jsnParser.parse(updateExmnObjPve);
+		updateExmnJsnObjPve = jsnElmnt.getAsJsonObject();
+		
 		BeneficiaryVisitDetail beneficiaryVisitDetail = spy(BeneficiaryVisitDetail.class);
 		beneficiaryVisitDetail.setBenVisitID(1L);
 		when(benVisitDetailRepoMock.save(isA(BeneficiaryVisitDetail.class))).thenReturn(beneficiaryVisitDetail);
@@ -176,6 +203,98 @@ public class TestCSServices
 		
 		when(benVisitDetailRepoMock.updateBenFlowStatus("D", 131L)).thenReturn(1);
 		
+		//Mcoking update calls
+		when(benFamilyCancerHistoryRepoMock.deleteExistingFamilyRecord(1L, "N")).thenReturn(1);
+		
+		when(benObstetricCancerHistoryRepoMock.getObstetricCancerHistoryStatus(
+				Matchers.anyLong(), Matchers.anyLong())).thenReturn("N");
+		
+		//Integer, String, Boolean, String, Integer, Boolean, Boolean, Boolean, Integer, Boolean, Integer, Integer, String, Boolean, Boolean, Integer, Boolean, Boolean, String, Long, Long, String
+		
+		
+		
+		when(benObstetricCancerHistoryRepoMock.updateBenObstetricCancerHistory(Matchers.any(), Matchers.anyString(), Matchers.any(), Matchers.anyString(), 
+				Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(),  Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), 
+				Matchers.anyString(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.anyString(), 
+				Matchers.anyLong(), Matchers.anyLong(), Matchers.anyString())).thenReturn(1);
+		
+		
+		when(benPersonalCancerHistoryRepoMock.getPersonalCancerHistoryStatus(Matchers.anyLong(), Matchers.anyLong())).thenReturn("N");
+		
+		when(benPersonalCancerHistoryRepoMock.updateBenPersonalCancerHistory(Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(),
+				Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), 
+				Matchers.any(), Matchers.any())).thenReturn(1);
+		 
+		 
+		when(benPersonalCancerDietHistoryRepoMock.getPersonalCancerDietHistoryStatus(Matchers.anyLong(), Matchers.anyLong())).thenReturn("N");
+		 
+		when(benPersonalCancerDietHistoryRepoMock.updateBenPersonalCancerDietHistory(Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(),
+				Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), 
+				Matchers.any(), Matchers.any())).thenReturn(1);
+		
+		when(benCancerVitalDetailRepoMock.updateBenCancerVitalDetail(Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), 
+				Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), 
+				Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any())).thenReturn(1);
+		
+		
+		
+		when(cancerSignAndSymptomsRepoMock.getCancerSignAndSymptomsStatus(
+				Matchers.any(), Matchers.any())).thenReturn("N");
+		
+		
+		when(cancerSignAndSymptomsRepoMock.updateCancerSignAndSymptoms(Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), 
+				Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), 
+				Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), 
+				Matchers.any())).thenReturn(1);
+		
+		
+		when(cancerLymphNodeExaminationRepoMock.deleteExistingLymphNodeDetails(Matchers.any(), Matchers.any())).thenReturn(1);
+		
+		when(cancerOralExaminationRepoMock.getCancerOralExaminationStatus(
+				Matchers.any(), Matchers.any())).thenReturn("N");
+		
+		
+		when(cancerOralExaminationRepoMock.updateCancerOralExaminationDetails(Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), 
+				Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any())).thenReturn(1);
+		
+		when(cancerBreastExaminationRepoMock.getCancerBreastExaminationStatus(
+				Matchers.any(), Matchers.any())).thenReturn("N");
+		
+		when(cancerBreastExaminationRepoMock.updateCancerBreastExaminatio(Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), 
+				Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(),Matchers.any(), 
+				Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any())).thenReturn(1);
+		
+		when(cancerBreastExaminationRepoMock.getCancerBreastExaminationStatus(
+				Matchers.any(), Matchers.any())).thenReturn("N");
+		
+		when(cancerBreastExaminationRepoMock.updateCancerBreastExaminatio(Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), 
+				Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(),Matchers.any(), 
+				Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any())).thenReturn(1);
+		
+		when(cancerAbdominalExaminationRepoMock.getCancerAbdominalExaminationStatus(
+				Matchers.any(), Matchers.any())).thenReturn("N");
+		
+		when(cancerAbdominalExaminationRepoMock.updateCancerAbdominalExamination(Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), 
+				Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(),Matchers.any(), 
+				Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any())).thenReturn(1);
+		
+		when(cancerGynecologicalExaminationRepoMock.getCancerGynecologicalExaminationStatus(
+				Matchers.any(), Matchers.any())).thenReturn("N");
+		
+		when(cancerGynecologicalExaminationRepoMock.updateCancerGynecologicalExamination(Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), 
+				Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(),Matchers.any(), 
+				Matchers.any(), Matchers.any(), Matchers.any())).thenReturn(1);
+		
+		ArrayList list = new ArrayList<Object[]>();
+		Object[] objs= {1, "N"};
+		list.add(objs);
+		when(cancerExaminationImageAnnotationRepoMock
+		.getCancerExaminationImageAnnotationDetailsStatus(
+				Matchers.any(), Matchers.any(), Matchers.anyList())).thenReturn(list);
+		
+		when(cancerExaminationImageAnnotationRepoMock.deleteExistingImageAnnotationDetails(Matchers.any(), Matchers.any())).thenReturn(1);
+		
+		when(cancerDiagnosisRepoMock.updateDetailsByOncologist(Matchers.any(), Matchers.any(),Matchers.any(), Matchers.any())).thenReturn(1);
 	}
 	
 	@Test
@@ -184,7 +303,7 @@ public class TestCSServices
 		Long response = null;
 		try
 		{
-			response = cSServiceImpl.saveCancerScreeningNurseData(jsnOBJPve);
+			response = cSServiceImpl.saveCancerScreeningNurseData(nurseJsnOBJPve);
 			
 		} catch (Exception e)
 		{
@@ -201,7 +320,7 @@ public class TestCSServices
 		Long response = null;
 		try
 		{
-			response = cSServiceImpl.saveCancerScreeningDoctorData(jsnOBJPve);
+			response = cSServiceImpl.saveCancerScreeningDoctorData(doctorJsnOBJPve);
 			
 			
 		} catch (Exception e)
@@ -212,4 +331,77 @@ public class TestCSServices
 		
 		assertThat(response).isEqualTo(1);
 	}
+	
+	@Test
+	public void  UpdateCSHistoryNurseDataPveTest(){
+		
+		int response = 0;
+		try
+		{
+			response = cSServiceImpl.UpdateCSHistoryNurseData(updateHstryJsnObjPve);
+			
+			
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		assertThat(response).isEqualTo(1);
+	}
+	
+	@Test
+	public void  updateBenVitalDetailPveTest(){
+		
+		int response = 0;
+		try
+		{
+			BenCancerVitalDetail benCancerVitalDetail = InputMapper.gson().fromJson(updateVitalObjPve,
+					BenCancerVitalDetail.class);
+			response = cSServiceImpl.updateBenVitalDetail(benCancerVitalDetail);
+			
+			
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		assertThat(response).isEqualTo(1);
+	}
+	
+	@Test
+	public void  updateBenExaminationDetailPveTest(){
+		
+		int response = 0;
+		try
+		{
+			response = cSServiceImpl.updateBenExaminationDetail(updateExmnJsnObjPve);
+			
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		assertThat(response).isEqualTo(1);
+	}
+	@Test
+	public void  updateCancerDiagnosisDetailsByOncologistPveTest(){
+		
+		int response = 0;
+		try
+		{
+			CancerDiagnosis cancerDiagnosis = InputMapper.gson().fromJson(updateExmnJsnObjPve, CancerDiagnosis.class);
+			response = cSServiceImpl.updateCancerDiagnosisDetailsByOncologist(cancerDiagnosis);
+			
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		assertThat(response).isEqualTo(1);
+	}
+	
 }

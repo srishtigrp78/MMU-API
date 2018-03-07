@@ -13,6 +13,9 @@ import org.junit.Test;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.controller.cancerscreening.CancerScreeningCreateController;
 import com.iemr.mmu.controller.cancerscreening.CancerScreeningFetchController;
+import com.iemr.mmu.controller.cancerscreening.CancerScreeningUpdateController;
+import com.iemr.mmu.data.doctor.CancerDiagnosis;
+import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
 import com.iemr.mmu.service.cancerScreening.CSServiceImpl;
 
 public class TestCSController
@@ -20,6 +23,8 @@ public class TestCSController
 
 	private static CancerScreeningCreateController createController = spy(CancerScreeningCreateController.class);
 	private static CancerScreeningFetchController fetchController = spy(CancerScreeningFetchController.class);
+	private static CancerScreeningUpdateController updateController = spy(CancerScreeningUpdateController.class);
+	
 	private static CSServiceImpl cSServiceImplMock = mock(CSServiceImpl.class);
 	
 	static String nurseObjPve = "";
@@ -27,6 +32,9 @@ public class TestCSController
 	static String fetchObjPve = "";
 	static String fetchHstryObjPve = "";
 	static String fetchHstryObjNve = "";
+	
+	static String updateHstryObjPve;
+	static String updateVitalObjPve;
 	
 	@BeforeClass
 	public static void initializeParams(){
@@ -37,8 +45,12 @@ public class TestCSController
 		fetchHstryObjPve = "{\"benRegID\":\"7506\"}";
 		fetchHstryObjNve = "{}";
 		
+		updateHstryObjPve = "{ \"historyDetails\": { \"familyHistory\": { \"diseases\": [ { \"beneficiaryRegID\": \"7506\", \"benVisitID\": null, \"providerServiceMapID\": \"1320\", \"cancerDiseaseType\": \"Breast Cancer\", \"otherDiseaseType\": null, \"familyMemberList\": [ \"Aunt\", \"Brother\" ], \"createdBy\": \"888\" }, { \"beneficiaryRegID\": \"7506\", \"benVisitID\": null, \"providerServiceMapID\": \"1320\", \"cancerDiseaseType\": \"lorem ipsum\", \"otherDiseaseType\": \"lorem ipsum\", \"familyMemberList\": [ \"Grand Father\" ], \"createdBy\": \"888\" } ], \"beneficiaryRegID\": \"7506\", \"providerServiceMapID\": \"1320\", \"createdBy\": \"888\" }, \"personalHistory\": { \"beneficiaryRegID\": \"7506\", \"benVisitID\": null, \"providerServiceMapID\": \"1320\", \"tobaccoUse\": \"Used in Past\", \"startAge_year\": \"23\", \"endAge_year\": \"24\", \"typeOfTobaccoProductList\": [ \"Beedi\", \"Chewing\", \"Cigarettes\" ], \"quantityPerDay\": \"2\", \"isFilteredCigaerette\": true, \"isCigaretteExposure\": false, \"isBetelNutChewing\": true, \"durationOfBetelQuid\": \"12\", \"alcoholUse\": \"Currently Using\", \"ssAlcoholUsed\": true, \"frequencyOfAlcoholUsed\": \"1-4 days/week\", \"dietType\": \"Eggetarian\", \"otherDiet\": null, \"intakeOfOutsidePreparedMeal\": \"2\", \"fruitConsumptionDays\": \"2\", \"fruitQuantityPerDay\": \"2\", \"vegetableConsumptionDays\": \"2\", \"vegetableQuantityPerDay\": \"2\", \"typeOfOilConsumedList\": [ \"Coconut Oil\", \"Corn Oil\" ], \"otherOilType\": null, \"physicalActivityType\": \"Light Activity\", \"ssRadiationExposure\": false, \"isThyroidDisorder\": false, \"createdBy\": \"888\" }, \"pastObstetricHistory\": { \"beneficiaryRegID\": \"7506\", \"benVisitID\": null, \"providerServiceMapID\": \"1320\", \"pregnancyStatus\": \"Yes\", \"isUrinePregTest\": null, \"pregnant_No\": \"1\", \"noOfLivingChild\": \"1\", \"isAbortion\": false, \"isOralContraceptiveUsed\": false, \"isHormoneReplacementTherapy\": false, \"menarche_Age\": \"13\", \"isMenstrualCycleRegular\": true, \"menstrualCycleLength\": \"28\", \"menstrualFlowDuration\": \"3\", \"menstrualFlowType\": \"Little\", \"isDysmenorrhea\": false, \"isInterMenstrualBleeding\": false, \"menopauseAge\": null, \"isPostMenopauseBleeding\": null, \"createdBy\": \"888\" } } }";
+		updateVitalObjPve = "{ \"vitalsDetails\": { \"beneficiaryRegID\": \"7506\", \"benVisitID\": null, \"providerServiceMapID\": \"1320\", \"weight_Kg\": \"64\", \"height_cm\": \"166\", \"waistCircumference_cm\": \"56\", \"systolicBP_1stReading\": \"120\", \"diastolicBP_1stReading\": \"65\", \"systolicBP_2ndReading\": \"113\", \"diastolicBP_2ndReading\": \"73\", \"systolicBP_3rdReading\": \"123\", \"diastolicBP_3rdReading\": \"66\", \"hbA1C\": \"4\", \"hemoglobin\": \"14\", \"bloodGlucose_Fasting\": \"123\", \"bloodGlucose_Random\": \"143\", \"bloodGlucose_2HrPostPrandial\": \"145\", \"createdBy\": \"888\" } }";
+		
 		createController.setCancerScreeningServiceImpl(cSServiceImplMock);
 		fetchController.setCancerScreeningServiceImpl(cSServiceImplMock);
+		updateController.setCancerScreeningServiceImpl(cSServiceImplMock);
 		try
 		{
 			when(cSServiceImplMock.saveCancerScreeningNurseData(isA(JsonObject.class))).thenReturn(1L);
@@ -62,6 +74,14 @@ public class TestCSController
 			when(cSServiceImplMock.getBenPersonalDietHistoryData(7506L)).thenReturn("");
 			
 			when(cSServiceImplMock.getBenObstetricHistoryData(7506L)).thenReturn("");
+			
+			when(cSServiceImplMock.UpdateCSHistoryNurseData(isA(JsonObject.class))).thenReturn(1);
+			
+			when(cSServiceImplMock.updateBenVitalDetail(isA(BenCancerVitalDetail.class))).thenReturn(1);
+			
+			when(cSServiceImplMock.updateBenExaminationDetail(isA(JsonObject.class))).thenReturn(1);
+			
+			when(cSServiceImplMock.updateCancerDiagnosisDetailsByOncologist(isA(CancerDiagnosis.class))).thenReturn(1);
 		} catch (Exception e)
 		{
 			// TODO Auto-generated catch block
@@ -185,6 +205,46 @@ public class TestCSController
 		
 		assertTrue("",
 				response.equals("{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+	}
+	
+	@Test
+	public void  updateCSHistoryNursePveTest(){
+		
+		String response = updateController.updateCSHistoryNurse(updateHstryObjPve);
+		
+		System.out.println(response);
+		assertTrue("",
+				response.equals("{\"data\":{\"response\":\"Beneficiary history data updated successfully.\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+	}
+	
+	@Test
+	public void  upodateBenVitalDetailPveTest(){
+		
+		String response = updateController.upodateBenVitalDetail(updateVitalObjPve);
+		
+		System.out.println(response);
+		assertTrue("",
+				response.equals("{\"data\":{\"response\":\"Beneficiary Vital Details updated Successfully\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+	}
+	
+	@Test
+	public void upodateBenExaminationDetailPveTest(){
+		
+		String response = updateController.upodateBenExaminationDetail(updateVitalObjPve);
+		
+		System.out.println(response);
+		assertTrue("",
+				response.equals("{\"data\":{\"response\":\"Beneficiary Examination Details updated Successfully\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+	}
+	
+	@Test
+	public void updateCancerDiagnosisDetailsByOncologistPveTest(){
+		
+		String response = updateController.updateCancerDiagnosisDetailsByOncologist(updateVitalObjPve);
+		
+		System.out.println(response);
+		assertTrue("",
+				response.equals("{\"data\":{\"response\":\"Cancer Diagnosis Details updated By Oncologist Successfully\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
 	}
 	
 }
