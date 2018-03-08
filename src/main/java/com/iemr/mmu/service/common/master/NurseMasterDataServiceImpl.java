@@ -96,7 +96,7 @@ public class NurseMasterDataServiceImpl implements NurseMasterDataService {
 			e.printStackTrace();
 		}
 
-		System.out.println(new Gson().toJson(resMap));
+		//System.out.println(new Gson().toJson(resMap));
 		return new Gson().toJson(resMap);
 
 	}

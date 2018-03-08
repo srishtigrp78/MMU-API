@@ -1,5 +1,7 @@
 package com.iemr.mmu.repo.doctor;
 
+import java.util.ArrayList;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -15,6 +17,10 @@ public interface CancerDiagnosisRepo extends CrudRepository<CancerDiagnosis, Lon
 	@Query(" SELECT c from CancerDiagnosis c  WHERE c.beneficiaryRegID = :benRegID AND c.benVisitID = :benVisitID "
 			+ " AND c.deleted = false")
 	public CancerDiagnosis getBenCancerDiagnosisDetails(@Param("benRegID") Long benRegID,
+			@Param("benVisitID") Long benVisitID);
+
+	@Query(" SELECT ID, processed  from CancerDiagnosis c  WHERE c.beneficiaryRegID = :benRegID AND c.benVisitID = :benVisitID ")
+	public ArrayList<Object[]> checkDiagonosisDataAvailableForBen(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 
 	@Transactional

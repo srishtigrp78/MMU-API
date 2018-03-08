@@ -20,7 +20,7 @@ public class RadiologistServiceImpl implements RadiologistService {
 	@Override
 	public String getRadiologistWorkList() {
 		List<Object[]> docWorkListData = docWorkListRepo.getRadiologistWorkList();
-		System.out.println("hello");
+		//System.out.println("hello");
 		return WrapperRegWorklist.getDocWorkListData(docWorkListData);
 	}
 }

@@ -106,7 +106,7 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 		ArrayList<Object[]> qm = qualificationMasterRepo.getQualificationMaster();
 		ArrayList<Object[]> rm = religionMasterRepo.getReligionMaster();
 
-		System.out.println("hello....");
+	//	System.out.println("hello....");
 		try {
 			resMap.put("communityMaster", CommunityMaster.getCommunityMasterData(cm));
 			resMap.put("genderMaster", GenderMaster.getGenderMasterData(gm));
@@ -122,8 +122,8 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 			e.printStackTrace();
 		}
 
-		System.out.println("helloo");
-		System.out.println(new Gson().toJson(resMap));
+		//System.out.println("helloo");
+		//System.out.println(new Gson().toJson(resMap));
 		return new Gson().toJson(resMap);
 
 	}

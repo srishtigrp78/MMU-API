@@ -53,14 +53,14 @@ public class InsertDoctorAncController {
 				WrapperAncFindings wrapperAncFindings = InputMapper.gson().fromJson(requestObj,
 						WrapperAncFindings.class);
 
-				System.out.println("hii");
+			//	System.out.println("hii");
 				Integer rd = ancServiceImpl.saveAncDocFindings(wrapperAncFindings);
 				if (rd != null && rd > 0) {
 					response.setResponse("findings successfully saved.");
 				} else {
 					response.setError(5000, "Something went wrong");
 				}
-				System.out.println("hii");
+				//System.out.println("hii");
 			} else {
 				response.setError(5000, "Data is not sufficient !!!");
 			}

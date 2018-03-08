@@ -877,10 +877,10 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		int i = 0;
 		BenClinicalObservations benClinicalObservationsRS = benClinicalObservationsRepo
 				.save(getBenClinicalObservations(wrapperAncFindings));
-		System.out.println("hii");
+		//System.out.println("hii");
 		ArrayList<BenChiefComplaint> benChiefComplaintListRS = (ArrayList<BenChiefComplaint>) benChiefComplaintRepo
 				.save(getBenChiefComplaint(wrapperAncFindings));
-		System.out.println("hii");
+		//System.out.println("hii");
 		if (benClinicalObservationsRS != null && benChiefComplaintListRS != null) {
 			i = 1;
 		}

@@ -76,7 +76,7 @@ public class WrapperRegWorklist {
 					int d = p.getDays();
 					int m = p.getMonths();
 					int y = p.getYears();
-					System.out.println("helloo...");
+					//System.out.println("helloo...");
 
 					if (y > 0) {
 						wrapperRegWorklist.age = y + " years - " + m + " months";
@@ -88,7 +88,7 @@ public class WrapperRegWorklist {
 						}
 					}
 
-					System.out.println("helloo");
+					//System.out.println("helloo");
 				}
 				wrapperRegWorklist.genderID = (Short) obj[4];
 				wrapperRegWorklist.genderName = (String) obj[5];
@@ -104,19 +104,22 @@ public class WrapperRegWorklist {
 				wrapperRegWorklist.visitDate = (String) obj[14];
 
 				if (obj[8].toString().equals("N")) {
-					System.out.println("ifff");
+				//	System.out.println("ifff");
 					wrapperRegWorklist.statusMessage = "Pending For Consultation";
 				} else {
-					System.out.println("else");
+					//System.out.println("else");
 					if (obj[8].toString().equals("D")) {
 						//System.out.println(" again ifff");
 						wrapperRegWorklist.statusMessage = "Consultation Done";
 					}
+					else{
+						wrapperRegWorklist.statusMessage = "Visit closed by Nurse";
+					}
 				}
 				resArray.add(wrapperRegWorklist);
-				System.out.println("helloooo");
+			//	System.out.println("helloooo");
 
-				System.out.println(new Gson().toJson(resArray));
+			//	System.out.println(new Gson().toJson(resArray));
 			}
 		}
 		return new Gson().toJson(resArray);
@@ -152,7 +155,7 @@ public class WrapperRegWorklist {
 					int d = p.getDays();
 					int m = p.getMonths();
 					int y = p.getYears();
-					System.out.println("helloo...");
+					//System.out.println("helloo...");
 
 					if (y > 0) {
 						wrapperRegWorklist.age = y + " years - " + m + " months";
@@ -164,7 +167,7 @@ public class WrapperRegWorklist {
 						}
 					}
 
-					System.out.println("helloo");
+				//	System.out.println("helloo");
 				}
 				wrapperRegWorklist.genderID = (Short) obj[4];
 				wrapperRegWorklist.genderName = (String) obj[5];
@@ -173,7 +176,7 @@ public class WrapperRegWorklist {
 				wrapperRegWorklist.villageName = (String) obj[10];
 				wrapperRegWorklist.phoneNo = (String) obj[11];
 				resArray.add(wrapperRegWorklist);
-				System.out.println("helloooo");
+				//System.out.println("helloooo");
 			}
 		}
 		return new Gson().toJson(resArray);

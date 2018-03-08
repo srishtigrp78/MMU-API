@@ -261,7 +261,7 @@ public class UpdateNurseANCController {
 			@ApiParam(value = "{\"medicationHistoryList\":[{\"currentMedication\": \"String\","
 					+ "\"timePeriodAgo\":\"Integer\", \"timePeriodUnit\":\"String\"}], \"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", "
 					+ "\"providerServiceMapID\":\"Integer\", \"createdBy\":\"String\"}") @RequestBody String requestObj) {
-		System.out.println("updateANCBenMedicationHistory ................");
+	//	System.out.println("updateANCBenMedicationHistory ................");
 		OutputResponse response = new OutputResponse();
 		logger.info("updateANCBenMedicationHistory request:" + requestObj);
 		try {

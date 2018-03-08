@@ -18,7 +18,7 @@ public class WrapperAncImmunization {
 	private String dateReceivedForTT_3;
 	private String facilityNameOfTT_3;
 	private String modifiedBy;
-	
+
 	public WrapperAncImmunization() {
 	}
 
@@ -145,7 +145,7 @@ public class WrapperAncImmunization {
 	public void setFacilityNameOfTT_3(String facilityNameOfTT_3) {
 		this.facilityNameOfTT_3 = facilityNameOfTT_3;
 	}
-	
+
 	public Long gettT1ID() {
 		return tT1ID;
 	}
