@@ -14,8 +14,14 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 	private DoctorMasterDataServiceImpl doctorMasterDataServiceImpl;
 	private RegistrarServiceMasterDataImpl registrarServiceMasterDataImpl;
 	private NCDScreeningMasterServiceImpl ncdScreeningServiceImpl;
+	private QCMasterDataServiceImpl qCMasterDataServiceImpl;
 
-
+	@Autowired
+	public void setqCMasterDataServiceImpl(QCMasterDataServiceImpl qCMasterDataServiceImpl)
+	{
+		this.qCMasterDataServiceImpl = qCMasterDataServiceImpl;
+	}
+	
 	@Autowired
 	public void setRegistrarServiceMasterDataImpl(RegistrarServiceMasterDataImpl registrarServiceMasterDataImpl) {
 		this.registrarServiceMasterDataImpl = registrarServiceMasterDataImpl;
@@ -146,7 +152,7 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 				break;
 				case 7 :{
 					// 7 : General OPD (QC)
-					doctorMasterData =  doctorServiceImpl.getQuickConsultMasterData();
+					doctorMasterData =  qCMasterDataServiceImpl.getQuickConsultMasterData();
 				}
 				break;
 				default :{
