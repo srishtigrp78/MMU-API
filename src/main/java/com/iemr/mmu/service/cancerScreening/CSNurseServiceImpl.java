@@ -127,6 +127,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 
 	@Override
 	public int saveBenFamilyCancerHistory(List<BenFamilyCancerHistory> benFamilyCancerHistoryList) {
+		List<BenFamilyCancerHistory> benFamilyCancerHistoryListFinal = new ArrayList<>();
 		for (BenFamilyCancerHistory benFamilyCancerHistoryOBJ : benFamilyCancerHistoryList) {
 			List<String> familyMenberList = benFamilyCancerHistoryOBJ.getFamilyMemberList();
 			String familyMemberData = "";
@@ -141,14 +142,17 @@ public class CSNurseServiceImpl implements CSNurseService {
 
 					i++;
 				}
+				benFamilyCancerHistoryOBJ.setFamilyMember(familyMemberData);
+				benFamilyCancerHistoryListFinal.add(benFamilyCancerHistoryOBJ);
 			}
-			benFamilyCancerHistoryOBJ.setFamilyMember(familyMemberData);
+			
 			// System.out.println("hello...");
 		}
+
 		int responseData = 0;
 		List<BenFamilyCancerHistory> response = (List<BenFamilyCancerHistory>) benFamilyCancerHistoryRepo
-				.save(benFamilyCancerHistoryList);
-		if (benFamilyCancerHistoryList.size() == response.size())
+				.save(benFamilyCancerHistoryListFinal);
+		if (benFamilyCancerHistoryListFinal.size() == response.size())
 			responseData = 1;
 		return responseData;
 	}
