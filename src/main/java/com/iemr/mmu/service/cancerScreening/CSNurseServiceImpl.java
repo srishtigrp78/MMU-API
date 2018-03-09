@@ -145,7 +145,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 				benFamilyCancerHistoryOBJ.setFamilyMember(familyMemberData);
 				benFamilyCancerHistoryListFinal.add(benFamilyCancerHistoryOBJ);
 			}
-			
+
 			// System.out.println("hello...");
 		}
 
@@ -1183,11 +1183,14 @@ public class CSNurseServiceImpl implements CSNurseService {
 							objList.add(cancerExaminationImageAnnotation);
 						}
 					} else {
-						CancerExaminationImageAnnotation cancerExaminationImageAnnotation = new CancerExaminationImageAnnotation();
-						cancerExaminationImageAnnotation.setCancerImageID(obj.getImageID());
-						cancerExaminationImageAnnotation.setBeneficiaryRegID(obj.getBeneficiaryRegID());
-						cancerExaminationImageAnnotation.setBenVisitID(obj.getVisitID());
-						objList.add(cancerExaminationImageAnnotation);
+						// CancerExaminationImageAnnotation
+						// cancerExaminationImageAnnotation = new
+						// CancerExaminationImageAnnotation();
+						// cancerExaminationImageAnnotation.setCancerImageID(obj.getImageID());
+						// cancerExaminationImageAnnotation.setBeneficiaryRegID(obj.getBeneficiaryRegID());
+						// cancerExaminationImageAnnotation.setBenVisitID(obj.getVisitID());
+						// cancerExaminationImageAnnotation.setCreatedBy(obj.getCreatedBy());
+						// objList.add(cancerExaminationImageAnnotation);
 					}
 				}
 			}
