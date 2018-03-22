@@ -15,7 +15,14 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 	private RegistrarServiceMasterDataImpl registrarServiceMasterDataImpl;
 	private NCDScreeningMasterServiceImpl ncdScreeningServiceImpl;
 	private QCMasterDataServiceImpl qCMasterDataServiceImpl;
+	private NCDCareMasterDataServiceImpl ncdCareMasterDataServiceImpl;
 
+	@Autowired
+	public void setNcdCareMasterDataServiceImpl(NCDCareMasterDataServiceImpl ncdCareMasterDataServiceImpl)
+	{
+		this.ncdCareMasterDataServiceImpl = ncdCareMasterDataServiceImpl;
+	}
+	
 	@Autowired
 	public void setqCMasterDataServiceImpl(QCMasterDataServiceImpl qCMasterDataServiceImpl)
 	{
@@ -130,7 +137,7 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 				case 3 :{
 					// 3 : NCD care
 					//TODO: NCD Care Master Data call
-					doctorMasterData = "No Master Data found for NCD Care";
+					doctorMasterData = ncdCareMasterDataServiceImpl.getNCDCareMasterData();
 				}
 				break;
 				case 4 :{
