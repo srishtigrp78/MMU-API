@@ -313,7 +313,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 			if (null != benChildDevelopmentHistory) {
 				benChildDevelopmentHistory.setBenVisitID(benVisitID);
-				developmentHistorySuccessFlag = generalOPDNurseServiceImpl
+				developmentHistorySuccessFlag = commonNurseServiceImpl
 						.saveChildDevelopmentHistory(benChildDevelopmentHistory);
 			}
 
@@ -329,7 +329,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 			if (null != childFeedingDetails) {
 				childFeedingDetails.setBenVisitID(benVisitID);
-				childFeedingSuccessFlag = generalOPDNurseServiceImpl.saveChildFeedingHistory(childFeedingDetails);
+				childFeedingSuccessFlag = commonNurseServiceImpl.saveChildFeedingHistory(childFeedingDetails);
 			}
 
 		}
@@ -345,7 +345,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 			if (null != perinatalHistory) {
 				perinatalHistory.setBenVisitID(benVisitID);
-				perinatalHistorySuccessFlag = generalOPDNurseServiceImpl.savePerinatalHistory(perinatalHistory);
+				perinatalHistorySuccessFlag = commonNurseServiceImpl.savePerinatalHistory(perinatalHistory);
 			}
 
 		}
@@ -624,19 +624,19 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 	// ------- Fetch beneficiary all Perinatal history data ---------------
 	public String getBenPerinatalHistoryData(Long beneficiaryRegID) {
-		return generalOPDNurseServiceImpl.fetchBenPerinatalHistory(beneficiaryRegID);
+		return commonNurseServiceImpl.fetchBenPerinatalHistory(beneficiaryRegID);
 	}
 	/// ------- End of Fetch beneficiary all Perinatal history data ------
 
 	// ------- Fetch beneficiary all Feeding history data ---------------
 	public String getBenFeedingHistoryData(Long beneficiaryRegID) {
-		return generalOPDNurseServiceImpl.fetchBenFeedingHistory(beneficiaryRegID);
+		return commonNurseServiceImpl.fetchBenFeedingHistory(beneficiaryRegID);
 	}
 	/// ------- End of Fetch beneficiary all Feeding history data ------
 
 	// ------- Fetch beneficiary all Development history data ---------------
 	public String getBenDevelopmentHistoryData(Long beneficiaryRegID) {
-		return generalOPDNurseServiceImpl.fetchBenDevelopmentHistory(beneficiaryRegID);
+		return commonNurseServiceImpl.fetchBenDevelopmentHistory(beneficiaryRegID);
 	}
 	/// ------- End of Fetch beneficiary all Development history data ------
 
@@ -773,9 +773,9 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				commonNurseServiceImpl.getChildOptionalVaccineHistory(benRegID, benVisitID));
 
 		HistoryDetailsMap.put("DevelopmentHistory",
-				generalOPDNurseServiceImpl.getDevelopmentHistory(benRegID, benVisitID));
-		HistoryDetailsMap.put("PerinatalHistory", generalOPDNurseServiceImpl.getPerinatalHistory(benRegID, benVisitID));
-		HistoryDetailsMap.put("FeedingHistory", generalOPDNurseServiceImpl.getFeedingHistory(benRegID, benVisitID));
+				commonNurseServiceImpl.getDevelopmentHistory(benRegID, benVisitID));
+		HistoryDetailsMap.put("PerinatalHistory", commonNurseServiceImpl.getPerinatalHistory(benRegID, benVisitID));
+		HistoryDetailsMap.put("FeedingHistory", commonNurseServiceImpl.getFeedingHistory(benRegID, benVisitID));
 
 		return new Gson().toJson(HistoryDetailsMap);
 	}

@@ -1,6 +1,8 @@
 package com.iemr.mmu.common;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyVararg;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.BeforeClass;
+import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Matchers;
 
@@ -367,6 +370,7 @@ public class TestCommonServices
 		PerinatalHistory perinatalHistory =  mock(PerinatalHistory.class);
 		when(generalOPDNurseServiceImplMock.savePerinatalHistory(perinatalHistory)).thenReturn(1L);*/
 		
+		/*Mocking Vital Repo's*/
 		BenAnthropometryDetail benAnthropometryDetail = spy(BenAnthropometryDetail.class);
 		benAnthropometryDetail.setID(1L);
 		when(benAnthropometryRepoMock.save(isA(BenAnthropometryDetail.class))).thenReturn(benAnthropometryDetail);
@@ -383,7 +387,6 @@ public class TestCommonServices
 		PhyHeadToToeExamination phyHeadToToeExamination = spy(PhyHeadToToeExamination.class);
 		phyHeadToToeExamination.setID(1L);
 		when(phyHeadToToeExaminationRepoMock.save(isA(PhyHeadToToeExamination.class))).thenReturn(phyHeadToToeExamination);
-		
 		
 		SysCardiovascularExamination sysCardiovascularExamination = spy(SysCardiovascularExamination.class);
 		sysCardiovascularExamination.setID(1L);
@@ -547,6 +550,72 @@ public class TestCommonServices
 		when(prescribedDrugDetailRepoMock.save(Matchers.anyListOf(PrescribedDrugDetail.class))).thenReturn(prescribedDrugDetailListRS);
 		
 		when(benVisitDetailRepoMock.updateBenFlowStatus("D", benVisitID)).thenReturn(1);
-		 
+		
+		when(benVisitDetailRepoMock.updateBeneficiaryVisitDetail(Matchers.anyShort(), Matchers.anyString(), Matchers.anyInt(), Matchers.anyString(), 
+				Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyLong())).thenReturn(1);
+		
+		when(benVisitDetailRepoMock.getVisitDetails(null, null)).thenReturn(null);
+	}
+	
+	@Test
+	public void saveBeneficiaryVisitDetailsPveTest(){
+		Long response = null;
+		try
+		{
+			BeneficiaryVisitDetail beneficiaryVisitDetail = new BeneficiaryVisitDetail();
+			response = commonNurseServiceImpl.saveBeneficiaryVisitDetails(beneficiaryVisitDetail);
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		assertThat(response).isEqualTo(1);
+	}
+	
+	@Test
+	public void getBenVisitCountPveTest(){
+		Short response = null;
+		try
+		{
+			response = commonNurseServiceImpl.getBenVisitCount(beneficiaryRegID);
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Short res = 1;
+		assertThat(response).isEqualTo(res);
+	}
+	
+	@Test
+	public void updateBeneficiaryVisitDetailsPveTest(){
+		int response = 0;
+		try
+		{
+			BeneficiaryVisitDetail beneficiaryVisitDetail = new BeneficiaryVisitDetail();
+			response = commonNurseServiceImpl.updateBeneficiaryVisitDetails(beneficiaryVisitDetail);
+
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		assertThat(response).isEqualTo(1);
+	}
+	
+	@Test
+	public void getCSVisitDetailsPveTest(){
+		BeneficiaryVisitDetail response = null;
+		try
+		{
+			response = commonNurseServiceImpl.getCSVisitDetails(null, null);
+			System.out.println("response "+response);
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		assertThat(response).isEqualTo(null);
 	}
 }

@@ -621,7 +621,10 @@ public class RegistrarServiceImpl implements RegistrarService {
 		List<Objects[]> beneficiaryDemographicData = registrarRepoBenDemoData.getBeneficiaryDemographicData(benRegID);
 
 		List<Object[]> benDetailsList = registrarRepoBenData.getBenDetailsByRegID(benRegID);
-		BeneficiaryData benDetails = BeneficiaryData.getBeneficiaryPersonalData(benDetailsList).get(0);
+		BeneficiaryData benDetails = null;
+		if(benDetailsList.size()>0){
+			benDetails = BeneficiaryData.getBeneficiaryPersonalData(benDetailsList).get(0);
+		}
 		if (benDetails != null) {
 			if (benDetails.getGenderID() != null) {
 				if (benDetails.getGenderID() == 1) {

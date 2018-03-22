@@ -52,6 +52,7 @@ public class GeneralOPDNurseServiceImpl implements GeneralOPDNurseService {
 		this.benChildDevelopmentHistoryRepo = benChildDevelopmentHistoryRepo;
 	}
 
+	@Deprecated
 	public Long saveChildDevelopmentHistory(BenChildDevelopmentHistory benChildDevelopmentHistory) {
 		Long developmentSuccessFlag = null;
 
@@ -64,6 +65,7 @@ public class GeneralOPDNurseServiceImpl implements GeneralOPDNurseService {
 		return developmentSuccessFlag;
 	}
 
+	@Deprecated
 	public Long saveChildFeedingHistory(ChildFeedingDetails childFeedingDetails) {
 		Long feedingSuccessFlag = null;
 		ChildFeedingDetails res = childFeedingDetailsRepo.save(childFeedingDetails);
@@ -73,6 +75,7 @@ public class GeneralOPDNurseServiceImpl implements GeneralOPDNurseService {
 		return feedingSuccessFlag;
 	}
 
+	@Deprecated
 	public Long savePerinatalHistory(PerinatalHistory perinatalHistory) {
 		Long perinatalSuccessFlag = null;
 
@@ -92,6 +95,7 @@ public class GeneralOPDNurseServiceImpl implements GeneralOPDNurseService {
 		return examinationID;
 	}
 
+	@Deprecated
 	public String fetchBenPerinatalHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> perinatalHistoryDetail = perinatalHistoryRepo.getBenPerinatalDetail(beneficiaryRegID);
 
@@ -154,6 +158,7 @@ public class GeneralOPDNurseServiceImpl implements GeneralOPDNurseService {
 
 	}
 
+	@Deprecated
 	public String fetchBenFeedingHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> feedingHistoryDetail = childFeedingDetailsRepo.getBenFeedingHistoryDetail(beneficiaryRegID);
 
@@ -216,6 +221,7 @@ public class GeneralOPDNurseServiceImpl implements GeneralOPDNurseService {
 
 	}
 
+	@Deprecated
 	public String fetchBenDevelopmentHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> developmentHistoryDetail = benChildDevelopmentHistoryRepo
 				.getBenDevelopmentHistoryDetail(beneficiaryRegID);
@@ -291,6 +297,7 @@ public class GeneralOPDNurseServiceImpl implements GeneralOPDNurseService {
 
 	}
 
+	@Deprecated
 	public BenChildDevelopmentHistory getDevelopmentHistory(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> benChildDevelopmentHistory = benChildDevelopmentHistoryRepo
 				.getBenDevelopmentDetails(beneficiaryRegID, benVisitID);
@@ -299,6 +306,7 @@ public class GeneralOPDNurseServiceImpl implements GeneralOPDNurseService {
 		return developmentHistoryDetails;
 	}
 
+	@Deprecated
 	public PerinatalHistory getPerinatalHistory(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> benPerinatalHistory = perinatalHistoryRepo.getBenPerinatalDetails(beneficiaryRegID,
 				benVisitID);
@@ -306,6 +314,7 @@ public class GeneralOPDNurseServiceImpl implements GeneralOPDNurseService {
 		return perinatalHistoryDetails;
 	}
 
+	@Deprecated
 	public ChildFeedingDetails getFeedingHistory(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> benFeedingHistory = childFeedingDetailsRepo.getBenFeedingDetails(beneficiaryRegID,
 				benVisitID);

@@ -331,7 +331,9 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		}
 		return ancWomenVaccineID;
 	}
-
+	
+	/* Method moved to common nurse service, Can remove this method */
+	@Deprecated
 	@Override
 	public int saveBenAdherenceDetails(BenAdherence benAdherence) {
 		int r = 0;
@@ -342,6 +344,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
+	/* Method moved to common nurse service, Can remove this method */
+	@Deprecated
 	@Override
 	public int saveBenChiefComplaints(List<BenChiefComplaint> benChiefComplaintList) {
 		int r = 0;
@@ -823,6 +827,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 	 * return benVisitDetailsOBJ1; }
 	 */
 
+	@Deprecated
 	@Override
 	public String getBenAdherence(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> resList = benAdherenceRepo.getBenAdherence(beneficiaryRegID, benVisitID);
@@ -839,6 +844,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return new Gson().toJson(benChiefComplaints);
 	}
 
+	@Deprecated
 	@Override
 	public String getLabTestOrders(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> resList = labTestOrderDetailRepo.getLabTestOrderDetails(beneficiaryRegID, benVisitID);

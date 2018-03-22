@@ -200,7 +200,7 @@ public class ANCServiceImpl implements ANCService {
 					&& (investigationSuccessFlag != null && investigationSuccessFlag > 0)
 					&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)) {
 
-				String s = ancDoctorServiceImpl.updateBenVisitStatusFlag(bvID, "D");
+				String s = commonNurseServiceImpl.updateBenVisitStatusFlag(bvID, "D");
 				if (s != null && s.length() > 0)
 					saveSuccessFlag = diagnosisSuccessFlag;
 			}
@@ -239,14 +239,14 @@ public class ANCServiceImpl implements ANCService {
 							benChiefComplaint.setBenVisitID(benVisitID);
 						}
 					}
-					ancNurseServiceImpl.saveBenChiefComplaints(benChiefComplaintList);
+					commonNurseServiceImpl.saveBenChiefComplaints(benChiefComplaintList);
 				}
 				if (visitDetailsOBJ.has("adherence") && !visitDetailsOBJ.get("adherence").isJsonNull()) {
 					// Save Ben Adherence
 					BenAdherence benAdherence = InputMapper.gson().fromJson(visitDetailsOBJ.get("adherence"),
 							BenAdherence.class);
 					benAdherence.setBenVisitID(benVisitID);
-					int r = ancNurseServiceImpl.saveBenAdherenceDetails(benAdherence);
+					int r = commonNurseServiceImpl.saveBenAdherenceDetails(benAdherence);
 				}
 				if (visitDetailsOBJ.has("investigation") && !visitDetailsOBJ.get("investigation").isJsonNull()) {
 					// Save Ben Investigations
@@ -701,7 +701,7 @@ public class ANCServiceImpl implements ANCService {
 
 		if ((null != genExmnSuccessFlag && genExmnSuccessFlag > 0)
 				&& (null != headToToeExmnSuccessFlag && headToToeExmnSuccessFlag > 0)
-				&& (null != gastroIntsExmnSuccessFlag && gastroIntsExmnSuccessFlag > 0)
+//				&& (null != gastroIntsExmnSuccessFlag && gastroIntsExmnSuccessFlag > 0)
 				&& (null != cardiExmnSuccessFlag && cardiExmnSuccessFlag > 0)
 				&& (null != respiratoryExmnSuccessFlag && respiratoryExmnSuccessFlag > 0)
 				&& (null != centralNrvsExmnSuccessFlag && centralNrvsExmnSuccessFlag > 0)
@@ -723,13 +723,13 @@ public class ANCServiceImpl implements ANCService {
 
 		resMap.put("ANCNurseVisitDetail", new Gson().toJson(visitDetail));
 
-		resMap.put("BenAdherence", ancNurseServiceImpl.getBenAdherence(benRegID, benVisitID));
+		resMap.put("BenAdherence", commonNurseServiceImpl.getBenAdherence(benRegID, benVisitID));
 
 		resMap.put("BenChiefComplaints", commonNurseServiceImpl.getBenChiefComplaints(benRegID, benVisitID));
 		// resMap.put("BenChiefComplaints",
 		// ancNurseServiceImpl.getBenChiefComplaints(benRegID, benVisitID));
 
-		resMap.put("LabTestOrders", ancNurseServiceImpl.getLabTestOrders(benRegID, benVisitID));
+		resMap.put("LabTestOrders", commonNurseServiceImpl.getLabTestOrders(benRegID, benVisitID));
 
 		return resMap.toString();
 	}
