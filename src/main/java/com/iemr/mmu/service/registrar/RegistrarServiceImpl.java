@@ -645,5 +645,16 @@ public class RegistrarServiceImpl implements RegistrarService {
 		}
 		return benDetails;
 	}
+	
+	
+	public String registerBeneficiary(String comingRequest, String authorizationKey){
+		
+		
+		// After successfull registration...
+		Long beneficiaryRegID = null;
+		Long beneficiaryID = null;
+		int i = commonBenStatusFlowServiceImpl.createBenFlowRecord(comingRequest, beneficiaryRegID, beneficiaryID);
+		return null;
+	}
 
 }

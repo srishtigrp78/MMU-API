@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -67,11 +68,17 @@ public class InsertRegistrarController {
 					+ "\"habitation\": \"String\", \"villageID\": \"Integer\", \"villageName\": \"String\", \"districtID\": \"Integer\","
 					+ "\"districtName\": \"String\", \"stateID\": \"Integer\", \"stateName\": \"String\", \"countryID\": \"Integer\","
 					+ "\"govID\": [{\"type\": \"String\",\"value\": \"String\"}], \"ageAtMarriage\": \"Integer\", \"createdBy\": \"String\", "
-					+ "\"servicePointID\": \"Integer\"}}") @RequestBody String comingRequest) {
+					+ "\"servicePointID\": \"Integer\"}}") @RequestBody String comingRequest,
+			@RequestHeader String authorizationKey) {
 
 		OutputResponse response = new OutputResponse();
 		try {
-
+			
+			// New code 23-03-2018
+			String s = registrarServiceImpl.registerBeneficiary(comingRequest, authorizationKey);
+			// end of New code 23-03-2018
+			
+			
 			// JsonObject responseOBJ = new JsonObject();
 			WrapperBeneficiaryRegistration wrapperBeneficiaryRegistrationOBJ = InputMapper.gson()
 					.fromJson(comingRequest, WrapperBeneficiaryRegistration.class);
