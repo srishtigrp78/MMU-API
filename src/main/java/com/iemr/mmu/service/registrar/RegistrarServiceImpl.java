@@ -622,7 +622,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 
 		List<Object[]> benDetailsList = registrarRepoBenData.getBenDetailsByRegID(benRegID);
 		BeneficiaryData benDetails = null;
-		if(benDetailsList.size()>0){
+		if (benDetailsList.size() > 0) {
 			benDetails = BeneficiaryData.getBeneficiaryPersonalData(benDetailsList).get(0);
 		}
 		if (benDetails != null) {
@@ -644,16 +644,6 @@ public class RegistrarServiceImpl implements RegistrarService {
 			}
 		}
 		return benDetails;
-	}
-
-	@Deprecated
-	public Long updateBenFlowStatusFlag(BeneficiaryData benData, String phoneNo) {
-
-		Long x = commonBenStatusFlowServiceImpl.updateBenFlowStatusFlagMain("registrar", 1,
-				benData.getBeneficiaryRegID(), null, null, null, null, null, (short) 1, (short) 0, (short) 0, (short) 0,
-				(short) 0, (short) 0, (short) 0, benData.getCreatedBy(), null, benData, phoneNo);
-
-		return x;
 	}
 
 }
