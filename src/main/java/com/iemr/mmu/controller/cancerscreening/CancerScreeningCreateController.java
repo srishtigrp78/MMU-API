@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,7 +46,8 @@ public class CancerScreeningCreateController {
 	@CrossOrigin
 	@ApiOperation(value = "Save cancer screening nurse data..", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
-	public String saveBenCancerScreeningNurseData(@RequestBody String requestObj) {
+	public String saveBenCancerScreeningNurseData(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
 			logger.info("Request object for cancer screening nurse data saving :" + requestObj);
@@ -56,9 +58,15 @@ public class CancerScreeningCreateController {
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
-				Long nurseDataSaveSuccessFlag = cSServiceImpl.saveCancerScreeningNurseData(jsnOBJ);
+				Long nurseDataSaveSuccessFlag = cSServiceImpl.saveCancerScreeningNurseData(jsnOBJ, Authorization);
 				if (nurseDataSaveSuccessFlag != null && nurseDataSaveSuccessFlag > 0) {
-					response.setResponse("Nurse data saved successfully.");
+					if (nurseDataSaveSuccessFlag == 1)
+						response.setResponse("Nurse data saved successfully.");
+					else if (nurseDataSaveSuccessFlag == 2)
+						response.setResponse("Nurse data saved and MAMMOGRAM order created successfully.");
+					else
+						response.setResponse(
+								"Nurse data saved successfully but 'Error in mammogram order creation', please contact administrator.");
 				} else {
 					response.setError(5000, "Something went wrong !!!");
 				}

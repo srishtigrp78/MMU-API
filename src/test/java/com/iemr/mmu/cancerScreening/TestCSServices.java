@@ -390,54 +390,54 @@ public class TestCSServices
 		when(benObstetricCancerHistoryRepoMock.getBenObstetricCancerHistoryData(beneficiaryRegID)).thenReturn(result);
 	}
 	
-	@Test
-	public void  saveCancerScreeningNurseDataPveTest(){
-		
-		Long response = null;
-		try
-		{
-			response = cSServiceImpl.saveCancerScreeningNurseData(nurseJsnOBJPve);
-			
-		} catch (Exception e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		assertThat(response).isEqualTo(1);
-	}
-	@Test
-	public void  saveCancerScreeningNurseDataNveTest(){
-		
-		Long response = null;
-		try
-		{
-			response = cSServiceImpl.saveCancerScreeningNurseData(nurseJsnOBJNve);
-
-		} catch (Exception e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		assertThat(response).isEqualTo(null);
-	}
-	@Test
-	public void  saveCancerScreeningNurseDataNveTest2(){
-		
-		Long response = null;
-		try
-		{
-			response = cSServiceImpl.saveCancerScreeningNurseData(nurseJsnOBJNve2);
-
-		} catch (Exception e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		assertThat(response).isEqualTo(1L);
-	}
+//	@Test
+//	public void  saveCancerScreeningNurseDataPveTest(){
+//		
+//		Long response = null;
+//		try
+//		{
+//			response = cSServiceImpl.saveCancerScreeningNurseData(nurseJsnOBJPve);
+//			
+//		} catch (Exception e)
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		assertThat(response).isEqualTo(1);
+//	}
+//	@Test
+//	public void  saveCancerScreeningNurseDataNveTest(){
+//		
+//		Long response = null;
+//		try
+//		{
+//			response = cSServiceImpl.saveCancerScreeningNurseData(nurseJsnOBJNve);
+//
+//		} catch (Exception e)
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		assertThat(response).isEqualTo(null);
+//	}
+//	@Test
+//	public void  saveCancerScreeningNurseDataNveTest2(){
+//		
+//		Long response = null;
+//		try
+//		{
+//			response = cSServiceImpl.saveCancerScreeningNurseData(nurseJsnOBJNve2);
+//
+//		} catch (Exception e)
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		assertThat(response).isEqualTo(1L);
+//	}
 	@Test
 	public void  saveCancerScreeningDoctorDataPveTest(){
 		

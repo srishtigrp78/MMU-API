@@ -1,5 +1,6 @@
 package com.iemr.mmu.service.cancerScreening;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,7 @@ import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
+import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.doctor.DoctorServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
@@ -43,6 +45,18 @@ public class CSServiceImpl implements CSService {
 	private CSOncologistServiceImpl csOncologistServiceImpl;
 	private DoctorServiceImpl doctorServiceImpl;
 	private CommonNurseServiceImpl commonNurseServiceImpl;
+	private CSCarestreamServiceImpl cSCarestreamServiceImpl;
+	private RegistrarRepoBenData registrarRepoBenData;
+
+	@Autowired
+	public void setRegistrarRepoBenData(RegistrarRepoBenData registrarRepoBenData) {
+		this.registrarRepoBenData = registrarRepoBenData;
+	}
+
+	@Autowired
+	public void setcSCarestreamServiceImpl(CSCarestreamServiceImpl cSCarestreamServiceImpl) {
+		this.cSCarestreamServiceImpl = cSCarestreamServiceImpl;
+	}
 
 	@Autowired
 	public void setCommonNurseServiceImpl(CommonNurseServiceImpl commonNurseServiceImpl) {
@@ -87,7 +101,7 @@ public class CSServiceImpl implements CSService {
 	 * @throws Exception
 	 */
 	@Transactional(rollbackFor = Exception.class)
-	public Long saveCancerScreeningNurseData(JsonObject requestOBJ) throws Exception {
+	public Long saveCancerScreeningNurseData(JsonObject requestOBJ, String Authorization) throws Exception {
 		Long nurseDataSuccessFlag = null;
 		// check if visit details data is not null
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
@@ -98,7 +112,7 @@ public class CSServiceImpl implements CSService {
 				// call method to save history data
 				Long historySaveSuccessFlag = saveBenHistoryDetails(requestOBJ, benVisitID);
 				// call method to save Examination data
-				Long examinationSuccessFlag = saveBenExaminationDetails(requestOBJ, benVisitID);
+				Long examinationSuccessFlag = saveBenExaminationDetails(requestOBJ, benVisitID, Authorization);
 				// call method to save vitals data
 				Long vitalSaveSuccessFlag = saveBenVitalsDetails(requestOBJ, benVisitID);
 
@@ -114,7 +128,8 @@ public class CSServiceImpl implements CSService {
 							String s = commonNurseServiceImpl.updateBenStatus(benVisitID, "Z");
 						}
 					}
-					nurseDataSuccessFlag = historySaveSuccessFlag;
+
+					nurseDataSuccessFlag = examinationSuccessFlag;
 				}
 
 			} else {
@@ -625,7 +640,8 @@ public class CSServiceImpl implements CSService {
 
 	// Examination page moved to Nurse screen, So passing visitId when calling
 	// from saveNurseData: On 26-02-18 by Navya
-	public Long saveBenExaminationDetails(JsonObject requestOBJ, Long benVisitID) throws Exception {
+	public Long saveBenExaminationDetails(JsonObject requestOBJ, Long benVisitID, String Authorization)
+			throws Exception {
 		Long signSympSuccessFlag = null;
 		Long lymphNodeSuccessFlag = null;
 		Long oralDetailsSuccessFlag = null;
@@ -709,7 +725,22 @@ public class CSServiceImpl implements CSService {
 				Long ID = cSNurseServiceImpl.saveCancerBreastExaminationData(cancerBreastExamination);
 				if (ID != null && ID > 0) {
 					// breastDetails stored successfully...
-					breastExmnSuccessFlag = ID;
+
+					// New code for care stream... 16-03-2018
+					if (cancerBreastExamination.getReferredToMammogram() != null
+							&& cancerBreastExamination.getReferredToMammogram() == true) {
+
+						int r = createCareStreamOrder(cancerBreastExamination.getBeneficiaryRegID(),
+								cancerBreastExamination.getBenVisitID(), Authorization);
+						if (r > 0) {
+							breastExmnSuccessFlag = Long.valueOf(2);
+						} else {
+							breastExmnSuccessFlag = Long.valueOf(3);
+						}
+					} else {
+						breastExmnSuccessFlag = Long.valueOf(1);
+					}
+					// End of New code for care stream... 16-03-2018
 				} else {
 					// Failed to store breastDetails..
 				}
@@ -788,7 +819,8 @@ public class CSServiceImpl implements CSService {
 					&& abdominalExmnSuccessFlag > 0 && null != gynecologicalExmnSuccessFlag
 					&& gynecologicalExmnSuccessFlag > 0 && null != imgCoordinatesSuccessFlag
 					&& imgCoordinatesSuccessFlag > 0) {
-				exmnSuccessFlag = signSympSuccessFlag;
+
+				exmnSuccessFlag = breastExmnSuccessFlag;
 
 			} else {
 				// TODO Rollback
@@ -895,6 +927,14 @@ public class CSServiceImpl implements CSService {
 	public int updateCancerDiagnosisDetailsByOncologist(CancerDiagnosis cancerDiagnosis) {
 		return csOncologistServiceImpl.updateCancerDiagnosisDetailsByOncologist(cancerDiagnosis);
 
+	}
+
+	private int createCareStreamOrder(long benRegID, long benVisitID, String Authorization) {
+		ArrayList<Object[]> benDataForCareStream = registrarRepoBenData.getBenDataForCareStream(benRegID);
+
+		int r = cSCarestreamServiceImpl.createMamographyRequest(benDataForCareStream, benRegID, benVisitID,
+				Authorization);
+		return r;
 	}
 
 }
