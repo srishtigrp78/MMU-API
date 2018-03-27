@@ -73,12 +73,11 @@ public class InsertRegistrarController {
 
 		OutputResponse response = new OutputResponse();
 		try {
-			
+
 			// New code 23-03-2018
 			String s = registrarServiceImpl.registerBeneficiary(comingRequest, authorizationKey);
 			// end of New code 23-03-2018
-			
-			
+
 			// JsonObject responseOBJ = new JsonObject();
 			WrapperBeneficiaryRegistration wrapperBeneficiaryRegistrationOBJ = InputMapper.gson()
 					.fromJson(comingRequest, WrapperBeneficiaryRegistration.class);
@@ -138,6 +137,24 @@ public class InsertRegistrarController {
 			logger.info("createBeneficiary response:" + response);
 		} catch (Exception e) {
 			logger.error("Error in createBeneficiary :" + e);
+			response.setError(e);
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin()
+	@ApiOperation(value = "Register a new Beneficiary new API", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/registrarBeneficaryRegistrationNew" }, method = { RequestMethod.POST })
+	public String registrarBeneficaryRegistrationNew(@RequestBody String comingReq, @RequestHeader(value = "Authorization") String Authorization) {
+		OutputResponse response = new OutputResponse();
+		try {
+			String s = registrarServiceImpl.registerBeneficiary(comingReq, Authorization);
+			if (s != null)
+				response.setResponse("Registration done. Beneficiary ID: " + s);
+			else
+				response.setError(5000, "Error in registration. Please contact administrator.");
+			System.out.println(s);
+		} catch (Exception e) {
 			response.setError(e);
 		}
 		return response.toString();

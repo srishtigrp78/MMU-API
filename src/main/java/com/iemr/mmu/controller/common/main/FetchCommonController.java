@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.iemr.mmu.controller.cancerscreening.CancerScreeningCreateController;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
@@ -17,7 +16,7 @@ import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin
 @RestController
-@RequestMapping({ "/common" })
+@RequestMapping(value = "/common" , headers = "Authorization")
 public class FetchCommonController {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
@@ -69,4 +68,19 @@ public class FetchCommonController {
 		return response.toString();
 	}
 	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Nurse worklist", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getNurseWorklistNew" }, method = { RequestMethod.GET })
+	public String getNurseWorkListNew() {
+		OutputResponse response = new OutputResponse();
+		try {
+			String s = commonNurseServiceImpl.getNurseWorkListNew();
+			response.setResponse(s);
+		} catch (Exception e) {
+			// e.printStackTrace();
+			logger.error("Error in getNurseWorklist:" + e);
+			response.setError(e);
+		}
+		return response.toString();
+	}
 }

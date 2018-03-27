@@ -41,6 +41,7 @@ import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
 import com.iemr.mmu.data.anc.WrapperFemaleObstetricHistory;
 import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
+import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
@@ -49,6 +50,7 @@ import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.data.registrar.WrapperRegWorklist;
+import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.nurse.BenAnthropometryRepo;
 import com.iemr.mmu.repo.nurse.BenPhysicalVitalRepo;
 import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
@@ -115,31 +117,33 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	private BenChildDevelopmentHistoryRepo benChildDevelopmentHistoryRepo;
 	private ChildFeedingDetailsRepo childFeedingDetailsRepo;
 	private PerinatalHistoryRepo perinatalHistoryRepo;
+	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
 
 	@Autowired
-	public void setBenChildDevelopmentHistoryRepo(BenChildDevelopmentHistoryRepo benChildDevelopmentHistoryRepo)
-	{
+	public void setBeneficiaryFlowStatusRepo(BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo) {
+		this.beneficiaryFlowStatusRepo = beneficiaryFlowStatusRepo;
+	}
+
+	@Autowired
+	public void setBenChildDevelopmentHistoryRepo(BenChildDevelopmentHistoryRepo benChildDevelopmentHistoryRepo) {
 		this.benChildDevelopmentHistoryRepo = benChildDevelopmentHistoryRepo;
 	}
-	
+
 	@Autowired
-	public void setChildFeedingDetailsRepo(ChildFeedingDetailsRepo childFeedingDetailsRepo)
-	{
+	public void setChildFeedingDetailsRepo(ChildFeedingDetailsRepo childFeedingDetailsRepo) {
 		this.childFeedingDetailsRepo = childFeedingDetailsRepo;
 	}
-	
+
 	@Autowired
-	public void setPerinatalHistoryRepo(PerinatalHistoryRepo perinatalHistoryRepo)
-	{
+	public void setPerinatalHistoryRepo(PerinatalHistoryRepo perinatalHistoryRepo) {
 		this.perinatalHistoryRepo = perinatalHistoryRepo;
 	}
-	
+
 	@Autowired
-	public void setBenAdherenceRepo(BenAdherenceRepo benAdherenceRepo)
-	{
+	public void setBenAdherenceRepo(BenAdherenceRepo benAdherenceRepo) {
 		this.benAdherenceRepo = benAdherenceRepo;
 	}
-	
+
 	@Autowired
 	public void setReistrarRepoBenSearch(ReistrarRepoBenSearch reistrarRepoBenSearch) {
 		this.reistrarRepoBenSearch = reistrarRepoBenSearch;
@@ -2175,6 +2179,13 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		return WrapperRegWorklist.getRegistrarWorkList(nurseWorkListData);
 	}
 
+	// New Nurse worklist.... 26-03-2018
+	public String getNurseWorkListNew() {
+		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getNurseWorklistNew();
+
+		return new Gson().toJson(obj);
+	}
+
 	public int saveBenAdherenceDetails(BenAdherence benAdherence) {
 		int r = 0;
 		BenAdherence benAdherenceOBJ = benAdherenceRepo.save(benAdherence);
@@ -2183,7 +2194,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		}
 		return r;
 	}
-	
+
 	public Long saveChildDevelopmentHistory(BenChildDevelopmentHistory benChildDevelopmentHistory) {
 		Long developmentSuccessFlag = null;
 
@@ -2214,19 +2225,19 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		}
 		return perinatalSuccessFlag;
 	}
-	
+
 	public String getBenAdherence(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> resList = benAdherenceRepo.getBenAdherence(beneficiaryRegID, benVisitID);
 		BenAdherence benAdherences = BenAdherence.getBenAdherences(resList);
 		return new Gson().toJson(benAdherences);
 	}
-	
+
 	public String getLabTestOrders(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> resList = labTestOrderDetailRepo.getLabTestOrderDetails(beneficiaryRegID, benVisitID);
 		WrapperBenInvestigationANC labTestOrderDetails = LabTestOrderDetail.getLabTestOrderDetails(resList);
 		return new Gson().toJson(labTestOrderDetails);
 	}
-	
+
 	public BenChildDevelopmentHistory getDevelopmentHistory(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> benChildDevelopmentHistory = benChildDevelopmentHistoryRepo
 				.getBenDevelopmentDetails(beneficiaryRegID, benVisitID);
@@ -2248,7 +2259,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		ChildFeedingDetails feedingHistoryDetails = ChildFeedingDetails.getBenFeedingDetails(benFeedingHistory);
 		return feedingHistoryDetails;
 	}
-	
+
 	public String fetchBenPerinatalHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> perinatalHistoryDetail = perinatalHistoryRepo.getBenPerinatalDetail(beneficiaryRegID);
 

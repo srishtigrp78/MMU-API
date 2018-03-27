@@ -11,7 +11,15 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -41,7 +49,11 @@ import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
  *
  */
 @Service
+@PropertySource("classpath:myApp.properties")
 public class RegistrarServiceImpl implements RegistrarService {
+	@Value("${registrationUrl}")
+	private String registrationUrl;
+	
 	private RegistrarRepoBenData registrarRepoBenData;
 	private RegistrarRepoBenDemoData registrarRepoBenDemoData;
 	private RegistrarRepoBenPhoneMapData registrarRepoBenPhoneMapData;
@@ -645,16 +657,24 @@ public class RegistrarServiceImpl implements RegistrarService {
 		}
 		return benDetails;
 	}
-	
-	
-	public String registerBeneficiary(String comingRequest, String authorizationKey){
-		
-		
+
+	public String registerBeneficiary(String comingRequest, String Authorization) throws Exception {
+		RestTemplate restTemplate = new RestTemplate();
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+		headers.add("Content-Type", "application/json");
+		headers.add("AUTHORIZATION", Authorization);
+		HttpEntity<Object> request = new HttpEntity<Object>(comingRequest, headers);
+		ResponseEntity<String> response = restTemplate.exchange(registrationUrl, HttpMethod.POST, request,
+				String.class);
 		// After successfull registration...
-		Long beneficiaryRegID = null;
-		Long beneficiaryID = null;
+		Long beneficiaryRegID = Long.valueOf(8054);
+		Long beneficiaryID = Long.valueOf(8054);
 		int i = commonBenStatusFlowServiceImpl.createBenFlowRecord(comingRequest, beneficiaryRegID, beneficiaryID);
-		return null;
+		if(i > 0)
+		return "";
+		else return null;
 	}
+
+	// private
 
 }
