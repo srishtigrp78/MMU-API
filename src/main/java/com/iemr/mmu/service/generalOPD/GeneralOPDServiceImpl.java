@@ -969,7 +969,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					ChildFeedingDetails.class);
 
 			if (null != childFeedingDetails) {
-				childFeedingSuccessFlag = generalOPDNurseServiceImpl.updateChildFeedingHistory(childFeedingDetails);
+				childFeedingSuccessFlag = commonNurseServiceImpl.updateChildFeedingHistory(childFeedingDetails);
 			}
 
 		} else {
@@ -983,7 +983,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					PerinatalHistory.class);
 
 			if (null != perinatalHistory) {
-				perinatalHistorySuccessFlag = generalOPDNurseServiceImpl.updatePerinatalHistory(perinatalHistory);
+				perinatalHistorySuccessFlag = commonNurseServiceImpl.updatePerinatalHistory(perinatalHistory);
 			}
 
 		} else {
@@ -997,7 +997,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					.fromJson(historyOBJ.get("developmentHistory"), BenChildDevelopmentHistory.class);
 
 			if (null != benChildDevelopmentHistory) {
-				developmentHistorySuccessFlag = generalOPDNurseServiceImpl
+				developmentHistorySuccessFlag = commonNurseServiceImpl
 						.updateChildDevelopmentHistory(benChildDevelopmentHistory);
 			}
 

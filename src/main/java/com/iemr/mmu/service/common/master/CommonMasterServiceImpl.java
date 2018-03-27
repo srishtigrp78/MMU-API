@@ -82,8 +82,8 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 				break;
 				case 3 :{
 					// 3 : NCD care
-					//TODO: NCD Care Master Data call
-					nurseMasterData = "No Master Data found for NCD Care";
+					//TODO: NCD Care Master Data call - tmprlly calling ANC master Data
+					nurseMasterData = ancMasterDataServiceImpl.getANCMasterDataForNurse();
 				}
 				break;
 				case 4 :{
@@ -93,8 +93,8 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 				break;
 				case 5 :{
 					// 5 : PNC
-					//TODO: PNC Master Data call
-					nurseMasterData = "No Master Data found for PNC Master";
+					//TODO: PNC Master Data call - tmprlly calling ANC master Data
+					nurseMasterData = ancMasterDataServiceImpl.getANCMasterDataForNurse();
 				}
 				break;
 				case 6 :{
