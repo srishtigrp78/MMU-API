@@ -48,6 +48,7 @@ import com.iemr.mmu.data.masterdata.anc.ServiceMaster;
 import com.iemr.mmu.data.masterdata.anc.SurgeryTypes;
 import com.iemr.mmu.data.masterdata.nurse.CancerDiseaseType;
 import com.iemr.mmu.data.masterdata.nurse.FamilyMemberType;
+import com.iemr.mmu.data.masterdata.pnc.NewbornHealthStatus;
 import com.iemr.mmu.repo.doctor.ChiefComplaintMasterRepo;
 import com.iemr.mmu.repo.doctor.DrugDoseMasterRepo;
 import com.iemr.mmu.repo.doctor.DrugDurationUnitMasterRepo;
@@ -88,6 +89,7 @@ import com.iemr.mmu.repo.masterrepo.anc.SurgeryTypesRepo;
 import com.iemr.mmu.repo.masterrepo.doctor.InstituteRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.CancerDiseaseMasterRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.FamilyMemberMasterRepo;
+import com.iemr.mmu.repo.masterrepo.pnc.NewbornHealthStatusRepo;
 
 @Service
 public class ANCMasterDataServiceImpl {
@@ -134,6 +136,14 @@ public class ANCMasterDataServiceImpl {
 	private DrugDurationUnitMasterRepo drugDurationUnitMasterRepo;
 	private DrugFormMasterRepo drugFormMasterRepo;
 	private DrugFrequencyMasterRepo drugFrequencyMasterRepo;
+	
+	private NewbornHealthStatusRepo newbornHealthStatusRepo;
+	
+	@Autowired
+	public void setNewbornHealthStatusRepo(NewbornHealthStatusRepo newbornHealthStatusRepo)
+	{
+		this.newbornHealthStatusRepo = newbornHealthStatusRepo;
+	}
 	
 	@Autowired
 	public void setAllergicReactionTypesRepo(AllergicReactionTypesRepo allergicReactionTypesRepo) {
@@ -400,6 +410,9 @@ public class ANCMasterDataServiceImpl {
 		ArrayList<Object[]> familyMemberTypes = familyMemberMasterRepo.getFamilyMemberTypeMaster();
 		ArrayList<Object[]> labTests = labTestMasterRepo.getLabTestMaster();
 	
+		//PNC specific master data
+		ArrayList<Object[]> healthStatuses = newbornHealthStatusRepo.getnewBornHealthStatuses();
+		
 		resMap.put("AllergicReactionTypes", AllergicReactionTypes.getAllergicReactionTypes(allergicReactionTypes));
 		resMap.put("bloodGroups", BloodGroups.getBloodGroups(bloodGroups));
 		resMap.put("childVaccinations", ChildVaccinations.getChildVaccinations(childVaccinations));
@@ -450,6 +463,8 @@ public class ANCMasterDataServiceImpl {
 		resMap.put("familyMemberTypes", FamilyMemberType.getFamilyMemberTypeMasterData(familyMemberTypes));
 		
 		resMap.put("labTests", LabTestMaster.getLabTestMasters(labTests));
+		
+		resMap.put("newbornHealthStatuses", NewbornHealthStatus.getNewbornHealthStatuses(healthStatuses));
 		
 		return new Gson().toJson(resMap);
 	}

@@ -352,6 +352,8 @@ public class GeneralOPDNurseServiceImpl implements GeneralOPDNurseService {
 		return response;
 	}
 
+	@Deprecated
+	/*Method moved to common Nurse services*/
 	public int updateChildFeedingHistory(ChildFeedingDetails childFeedingDetails) {
 		int response = 0;
 		if (null != childFeedingDetails) {
@@ -372,6 +374,8 @@ public class GeneralOPDNurseServiceImpl implements GeneralOPDNurseService {
 		return response;
 	}
 
+	@Deprecated
+	/*Method moved to common Nurse services*/
 	public int updatePerinatalHistory(PerinatalHistory perinatalHistory) {
 		int response = 0;
 		if (null != perinatalHistory) {
@@ -394,6 +398,8 @@ public class GeneralOPDNurseServiceImpl implements GeneralOPDNurseService {
 		return response;
 	}
 
+	@Deprecated
+	/*Method moved to common Nurse services*/
 	public int updateChildDevelopmentHistory(BenChildDevelopmentHistory childDevelopmentDetails) {
 		int response = 0;
 		if (null != childDevelopmentDetails) {

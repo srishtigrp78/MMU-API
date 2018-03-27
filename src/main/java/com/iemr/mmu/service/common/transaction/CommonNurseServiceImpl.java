@@ -2447,4 +2447,67 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		return new Gson().toJson(response);
 
 	}
+	public int updateChildFeedingHistory(ChildFeedingDetails childFeedingDetails) {
+		int response = 0;
+		if (null != childFeedingDetails) {
+			String processed = childFeedingDetailsRepo.getBenChildFeedingDetailStatus(
+					childFeedingDetails.getBeneficiaryRegID(), childFeedingDetails.getBenVisitID());
+			if (null != processed && !"N".equals(processed)) {
+				processed = "U";
+			} else {
+				processed = "N";
+			}
+			response = childFeedingDetailsRepo.updateFeedingDetails(childFeedingDetails.getChildID(),
+					childFeedingDetails.getBenMotherID(), childFeedingDetails.getTypeOfFeed(),
+					childFeedingDetails.getCompFeedStartAge(), childFeedingDetails.getNoOfCompFeedPerDay(),
+					childFeedingDetails.getFoodIntoleranceStatus(), childFeedingDetails.getTypeofFoodIntolerance(),
+					childFeedingDetails.getModifiedBy(), processed,
+					childFeedingDetails.getBeneficiaryRegID(), childFeedingDetails.getBenVisitID());
+		}
+		return response;
+	}
+
+	public int updatePerinatalHistory(PerinatalHistory perinatalHistory) {
+		int response = 0;
+		if (null != perinatalHistory) {
+			String processed = perinatalHistoryRepo.getPerinatalHistoryStatus(perinatalHistory.getBeneficiaryRegID(),
+					perinatalHistory.getBenVisitID());
+			if (null != processed && !"N".equals(processed)) {
+				processed = "U";
+			} else {
+				processed = "N";
+			}
+			response = perinatalHistoryRepo.updatePerinatalDetails(perinatalHistory.getDeliveryPlaceID(),
+					perinatalHistory.getPlaceOfDelivery(), perinatalHistory.getOtherPlaceOfDelivery(),
+					perinatalHistory.getDeliveryTypeID(), perinatalHistory.getTypeOfDelivery(),
+					perinatalHistory.getComplicationAtBirthID(), perinatalHistory.getComplicationAtBirth(),
+					perinatalHistory.getOtherComplicationAtBirth(), perinatalHistory.getGestation(),
+					perinatalHistory.getBirthWeight_kg(), perinatalHistory.getModifiedBy(),
+					processed, perinatalHistory.getBeneficiaryRegID(),
+					perinatalHistory.getBenVisitID());
+		}
+		return response;
+	}
+
+	public int updateChildDevelopmentHistory(BenChildDevelopmentHistory childDevelopmentDetails) {
+		int response = 0;
+		if (null != childDevelopmentDetails) {
+			String processed = benChildDevelopmentHistoryRepo.getDevelopmentHistoryStatus(childDevelopmentDetails.getBeneficiaryRegID(), 
+					childDevelopmentDetails.getBenVisitID());
+			if (null != processed && !"N".equals(processed)) {
+				processed = "U";
+			}else{
+				processed = "N";
+			}
+			BenChildDevelopmentHistory childDevelopmentHistory = BenChildDevelopmentHistory
+					.getDevelopmentHistory(childDevelopmentDetails);
+			
+			response = benChildDevelopmentHistoryRepo.updatePerinatalDetails(childDevelopmentHistory.getGrossMotorMilestone(), 
+					childDevelopmentHistory.getIsGMMAttained(), childDevelopmentHistory.getFineMotorMilestone(), childDevelopmentHistory.getIsFMMAttained(), 
+					childDevelopmentHistory.getSocialMilestone(), childDevelopmentHistory.getIsSMAttained(), childDevelopmentHistory.getLanguageMilestone(), 
+					childDevelopmentHistory.getIsLMAttained(), childDevelopmentHistory.getDevelopmentProblem(), childDevelopmentHistory.getModifiedBy(), processed, 
+					childDevelopmentHistory.getBeneficiaryRegID(), childDevelopmentHistory.getBenVisitID());
+		}
+		return response;
+	}
 }

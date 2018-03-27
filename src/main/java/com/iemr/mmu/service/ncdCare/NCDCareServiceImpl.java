@@ -26,6 +26,7 @@ import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
 import com.iemr.mmu.data.anc.WrapperFemaleObstetricHistory;
 import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
+import com.iemr.mmu.data.ncdcare.NCDCareDiagnosis;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
@@ -40,6 +41,13 @@ public class NCDCareServiceImpl implements NCDCareService
 {
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
+	private NCDCareDoctorServiceImpl ncdCareDoctorServiceImpl;
+	
+	@Autowired
+	public void setNcdCareDoctorServiceImpl(NCDCareDoctorServiceImpl ncdCareDoctorServiceImpl)
+	{
+		this.ncdCareDoctorServiceImpl = ncdCareDoctorServiceImpl;
+	}
 	
 	@Autowired
 	public void setCommonDoctorServiceImpl(CommonDoctorServiceImpl commonDoctorServiceImpl)
@@ -595,7 +603,8 @@ public class NCDCareServiceImpl implements NCDCareService
 		Long investigationSuccessFlag = null;
 		Integer findingSuccessFlag = null;
 		Integer prescriptionSuccessFlag = null;
-
+		Long diagnosisSuccessFlag = null;
+		
 		String createdBy = null;
 		Long bvID = null;
 
@@ -613,17 +622,30 @@ public class NCDCareServiceImpl implements NCDCareService
 			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull())
 			{
 				JsonObject diagnosisObj = requestOBJ.getAsJsonObject("diagnosis");
-				/*NCDCareDetails wrapperBenInvestigationANC =
-						InputMapper.gson().fromJson(requestOBJ.get("investigation"), WrapperBenInvestigationANC.class);*/
-				
+				NCDCareDiagnosis ncdDiagnosis =
+						InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), NCDCareDiagnosis.class);
+				diagnosisSuccessFlag = ncdCareDoctorServiceImpl.saveNCDDiagnosisData(ncdDiagnosis);
 
 			} else
 			{
+				diagnosisSuccessFlag = new Long(1);
 			}
-			PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
-			// Save Prescription
-			prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
+			/*if (requestOBJ.has("refer") && !requestOBJ.get("refer").isJsonNull())
+			{
+				PrescriptionDetail prescriptionDetail =
+						InputMapper.gson().fromJson(requestOBJ.get("refer"), PrescriptionDetail.class);
+				// Save Prescription
+				prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
+			}else{
+				//prescriptionID = 0;
+			}*/
 
+			if (requestOBJ.has("prescription") && !requestOBJ.get("prescription").isJsonNull())
+			{
+				PrescriptionDetail prescriptionDetail =
+						InputMapper.gson().fromJson(requestOBJ.get("prescription"), PrescriptionDetail.class);
+				prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
+			}
 			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull())
 			{
 				WrapperBenInvestigationANC wrapperBenInvestigationANC =
@@ -673,9 +695,10 @@ public class NCDCareServiceImpl implements NCDCareService
 				}
 			} else
 			{
+				prescriptionSuccessFlag = 1;
 			}
 
-			if ((findingSuccessFlag != null && findingSuccessFlag > 0)
+			if ((findingSuccessFlag != null && findingSuccessFlag > 0) && (diagnosisSuccessFlag != null && diagnosisSuccessFlag>0)
 					&& (prescriptionID != null && prescriptionID > 0) && (investigationSuccessFlag != null && investigationSuccessFlag > 0)
 					&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0))
 			{
@@ -691,4 +714,217 @@ public class NCDCareServiceImpl implements NCDCareService
 		return saveSuccessFlag;
 	}
 	/// --------------- END of saving doctor data ------------------------
+	
+	
+	/**
+	 * 
+	 * @param requestOBJ
+	 * @return success or failure flag for General OPD History updating by
+	 *         Doctor
+	 */
+	@Transactional(rollbackFor = Exception.class)
+	public int updateBenHistoryDetails(JsonObject historyOBJ) throws Exception {
+		int pastHistorySuccessFlag = 0;
+		int comrbidSuccessFlag = 0;
+		int medicationSuccessFlag = 0;
+		int personalHistorySuccessFlag = 0;
+		int allergyHistorySuccessFlag = 0;
+		int familyHistorySuccessFlag = 0;
+		int menstrualHistorySuccessFlag = 0;
+		int obstetricSuccessFlag = 0;
+		int childVaccineSuccessFlag = 0;
+		int childFeedingSuccessFlag = 0;
+		int perinatalHistorySuccessFlag = 0;
+		int developmentHistorySuccessFlag = 0;
+		int immunizationSuccessFlag = 0;
+
+		// Update Past History
+		if (historyOBJ != null && historyOBJ.has("pastHistory") && !historyOBJ.get("pastHistory").isJsonNull()) {
+			BenMedHistory benMedHistory = InputMapper.gson().fromJson(historyOBJ.get("pastHistory"),
+					BenMedHistory.class);
+			pastHistorySuccessFlag = commonNurseServiceImpl.updateBenPastHistoryDetails(benMedHistory);
+
+		} else {
+			pastHistorySuccessFlag = 1;
+		}
+
+		// Update Comorbidity/concurrent Conditions
+		if (historyOBJ != null && historyOBJ.has("comorbidConditions")
+				&& !historyOBJ.get("comorbidConditions").isJsonNull()) {
+			WrapperComorbidCondDetails wrapperComorbidCondDetails = InputMapper.gson()
+					.fromJson(historyOBJ.get("comorbidConditions"), WrapperComorbidCondDetails.class);
+			comrbidSuccessFlag = commonNurseServiceImpl.updateBenComorbidConditions(wrapperComorbidCondDetails);
+		} else {
+			comrbidSuccessFlag = 1;
+		}
+
+		// Update Medication History
+		if (historyOBJ != null && historyOBJ.has("medicationHistory")
+				&& !historyOBJ.get("medicationHistory").isJsonNull()) {
+			WrapperMedicationHistory wrapperMedicationHistory = InputMapper.gson()
+					.fromJson(historyOBJ.get("medicationHistory"), WrapperMedicationHistory.class);
+			medicationSuccessFlag = commonNurseServiceImpl.updateBenMedicationHistory(wrapperMedicationHistory);
+		} else {
+			medicationSuccessFlag = 1;
+		}
+		// Update Personal History
+		if (historyOBJ != null && historyOBJ.has("personalHistory")
+				&& !historyOBJ.get("personalHistory").isJsonNull()) {
+			// Update Ben Personal Habits..
+			BenPersonalHabit personalHabit = InputMapper.gson().fromJson(historyOBJ.get("personalHistory"),
+					BenPersonalHabit.class);
+
+			personalHistorySuccessFlag = commonNurseServiceImpl.updateBenPersonalHistory(personalHabit);
+
+			// Update Ben Allergy History..
+			BenAllergyHistory benAllergyHistory = InputMapper.gson().fromJson(historyOBJ.get("personalHistory"),
+					BenAllergyHistory.class);
+			allergyHistorySuccessFlag = commonNurseServiceImpl.updateBenAllergicHistory(benAllergyHistory);
+
+		} else {
+			allergyHistorySuccessFlag = 1;
+			personalHistorySuccessFlag = 1;
+		}
+
+		// Update Family History
+		if (historyOBJ != null && historyOBJ.has("familyHistory") && !historyOBJ.get("familyHistory").isJsonNull()) {
+			BenFamilyHistory benFamilyHistory = InputMapper.gson().fromJson(historyOBJ.get("familyHistory"),
+					BenFamilyHistory.class);
+			familyHistorySuccessFlag = commonNurseServiceImpl.updateBenFamilyHistory(benFamilyHistory);
+		} else {
+			familyHistorySuccessFlag = 1;
+		}
+
+		// Update Menstrual History
+		if (historyOBJ != null && historyOBJ.has("menstrualHistory")
+				&& !historyOBJ.get("menstrualHistory").isJsonNull()) {
+			BenMenstrualDetails menstrualDetails = InputMapper.gson().fromJson(historyOBJ.get("menstrualHistory"),
+					BenMenstrualDetails.class);
+			menstrualHistorySuccessFlag = commonNurseServiceImpl.updateMenstrualHistory(menstrualDetails);
+		} else {
+			menstrualHistorySuccessFlag = 1;
+		}
+
+		// Update Past Obstetric History
+		if (historyOBJ != null && historyOBJ.has("femaleObstetricHistory")
+				&& !historyOBJ.get("femaleObstetricHistory").isJsonNull()) {
+			WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory = InputMapper.gson()
+					.fromJson(historyOBJ.get("femaleObstetricHistory"), WrapperFemaleObstetricHistory.class);
+
+			obstetricSuccessFlag = commonNurseServiceImpl.updatePastObstetricHistory(wrapperFemaleObstetricHistory);
+		} else {
+			obstetricSuccessFlag = 1;
+		}
+
+		if (historyOBJ != null && historyOBJ.has("immunizationHistory")
+				&& !historyOBJ.get("immunizationHistory").isJsonNull()) {
+			
+			JsonObject immunizationHistory = historyOBJ.getAsJsonObject("immunizationHistory");
+			if(immunizationHistory.get("immunizationList")!=null && immunizationHistory.getAsJsonArray("immunizationList").size()>0){
+				WrapperImmunizationHistory wrapperImmunizationHistory = InputMapper.gson()
+						.fromJson(historyOBJ.get("immunizationHistory"), WrapperImmunizationHistory.class);
+				immunizationSuccessFlag = commonNurseServiceImpl.updateChildImmunizationDetail(wrapperImmunizationHistory);
+			}else{
+				immunizationSuccessFlag = 1;
+			}
+		} else {
+			immunizationSuccessFlag = 1;
+		}
+
+		// Update Other/Optional Vaccines History
+		if (historyOBJ != null && historyOBJ.has("childVaccineDetails")
+				&& !historyOBJ.get("childVaccineDetails").isJsonNull()) {
+			WrapperChildOptionalVaccineDetail wrapperChildVaccineDetail = InputMapper.gson()
+					.fromJson(historyOBJ.get("childVaccineDetails"), WrapperChildOptionalVaccineDetail.class);
+			childVaccineSuccessFlag = commonNurseServiceImpl
+					.updateChildOptionalVaccineDetail(wrapperChildVaccineDetail);
+		} else {
+			childVaccineSuccessFlag = 1;
+		}
+
+		// Update ChildFeeding History
+		if (historyOBJ != null && historyOBJ.has("feedingHistory") && !historyOBJ.get("feedingHistory").isJsonNull()) {
+			ChildFeedingDetails childFeedingDetails = InputMapper.gson().fromJson(historyOBJ.get("feedingHistory"),
+					ChildFeedingDetails.class);
+
+			if (null != childFeedingDetails) {
+				childFeedingSuccessFlag = commonNurseServiceImpl.updateChildFeedingHistory(childFeedingDetails);
+			}
+
+		} else {
+			childFeedingSuccessFlag = 1;
+		}
+
+		// Update Perinatal History
+		if (historyOBJ != null && historyOBJ.has("perinatalHistroy")
+				&& !historyOBJ.get("perinatalHistroy").isJsonNull()) {
+			PerinatalHistory perinatalHistory = InputMapper.gson().fromJson(historyOBJ.get("perinatalHistroy"),
+					PerinatalHistory.class);
+
+			if (null != perinatalHistory) {
+				perinatalHistorySuccessFlag = commonNurseServiceImpl.updatePerinatalHistory(perinatalHistory);
+			}
+
+		} else {
+			perinatalHistorySuccessFlag = 1;
+		}
+
+		// Update Development History
+		if (historyOBJ != null && historyOBJ.has("developmentHistory")
+				&& !historyOBJ.get("developmentHistory").isJsonNull()) {
+			BenChildDevelopmentHistory benChildDevelopmentHistory = InputMapper.gson()
+					.fromJson(historyOBJ.get("developmentHistory"), BenChildDevelopmentHistory.class);
+
+			if (null != benChildDevelopmentHistory) {
+				developmentHistorySuccessFlag = commonNurseServiceImpl
+						.updateChildDevelopmentHistory(benChildDevelopmentHistory);
+			}
+
+		} else {
+			developmentHistorySuccessFlag = 1;
+		}
+
+		int historyUpdateSuccessFlag = 0;
+
+		if (pastHistorySuccessFlag > 0 && comrbidSuccessFlag > 0 && medicationSuccessFlag > 0
+				&& allergyHistorySuccessFlag > 0 && familyHistorySuccessFlag > 0 && obstetricSuccessFlag > 0
+				&& childVaccineSuccessFlag > 0 && personalHistorySuccessFlag > 0 && menstrualHistorySuccessFlag > 0
+				&& immunizationSuccessFlag > 0 && childFeedingSuccessFlag > 0 && perinatalHistorySuccessFlag > 0
+				&& developmentHistorySuccessFlag > 0) {
+
+			historyUpdateSuccessFlag = pastHistorySuccessFlag;
+		}
+		return historyUpdateSuccessFlag;
+	}
+	
+	/**
+	 * 
+	 * @param requestOBJ
+	 * @return success or failure flag for vitals data updating
+	 */
+	@Transactional(rollbackFor = Exception.class)
+	public int updateBenVitalDetails(JsonObject vitalDetailsOBJ) throws Exception {
+		int vitalSuccessFlag = 0;
+		int anthropometrySuccessFlag = 0;
+		int phyVitalSuccessFlag = 0;
+		// Save Physical Anthropometry && Physical Vital Details
+		if (vitalDetailsOBJ != null) {
+			BenAnthropometryDetail benAnthropometryDetail = InputMapper.gson().fromJson(vitalDetailsOBJ,
+					BenAnthropometryDetail.class);
+			BenPhysicalVitalDetail benPhysicalVitalDetail = InputMapper.gson().fromJson(vitalDetailsOBJ,
+					BenPhysicalVitalDetail.class);
+
+			anthropometrySuccessFlag = commonNurseServiceImpl.updateANCAnthropometryDetails(benAnthropometryDetail);
+			phyVitalSuccessFlag = commonNurseServiceImpl.updateANCPhysicalVitalDetails(benPhysicalVitalDetail);
+
+			if (anthropometrySuccessFlag > 0 && phyVitalSuccessFlag > 0) {
+				vitalSuccessFlag = anthropometrySuccessFlag;
+			}
+		} else {
+			vitalSuccessFlag = 1;
+		}
+
+		return vitalSuccessFlag;
+	}
+
 }
