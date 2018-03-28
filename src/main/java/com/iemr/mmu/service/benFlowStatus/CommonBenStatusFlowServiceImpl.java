@@ -47,6 +47,10 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 		else
 			return 0;
 	}
+	
+	public int updateBenFlowNurseAfterNurseActivity(Long benRegId, Long benVisitID, String visitReason, String visitCategory, Short nurseFlag, Short docFlag){
+		return 0;
+	}
 
 	private BeneficiaryFlowStatus getBenFlowRecordObj(String requestOBJ, Long beneficiaryRegID, Long beneficiaryID)
 			throws Exception {

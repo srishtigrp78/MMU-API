@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.ANCCareDetails;
 import com.iemr.mmu.data.anc.BenAdherence;
@@ -39,6 +40,7 @@ import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
+import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
@@ -52,6 +54,12 @@ public class ANCServiceImpl implements ANCService {
 	private ANCDoctorServiceImpl ancDoctorServiceImpl;
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
+	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
+
+	@Autowired
+	public void setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl) {
+		this.commonBenStatusFlowServiceImpl = commonBenStatusFlowServiceImpl;
+	}
 
 	@Autowired
 	public void setCommonDoctorServiceImpl(CommonDoctorServiceImpl commonDoctorServiceImpl) {
@@ -81,6 +89,8 @@ public class ANCServiceImpl implements ANCService {
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public Long saveANCNurseData(JsonObject requestOBJ) throws Exception {
+		// String vr = "";
+		// String vc = "";
 		Long saveSuccessFlag = null;
 		// check if visit details data is not null
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
@@ -93,6 +103,10 @@ public class ANCServiceImpl implements ANCService {
 			Long vitalSaveSuccessFlag = null;
 			Long examtnSaveSuccessFlag = null;
 			Integer i = null;
+
+			// code moved from inner code
+			JsonObject tmpOBJ = requestOBJ.getAsJsonObject("visitDetails").getAsJsonObject("visitDetails");
+
 			if (benVisitID != null && benVisitID > 0) {
 				// call method to save ANC data
 				ancSaveSuccessFlag = saveBenANCDetails(requestOBJ.getAsJsonObject("ancDetails"), benVisitID);
@@ -105,10 +119,13 @@ public class ANCServiceImpl implements ANCService {
 				examtnSaveSuccessFlag = saveBenANCExaminationDetails(requestOBJ.getAsJsonObject("examinationDetails"),
 						benVisitID);
 
-				JsonObject tmpOBJ = requestOBJ.get("visitDetails").getAsJsonObject();
-				JsonObject tmpOBJ1 = tmpOBJ.get("visitDetails").getAsJsonObject();
+				// Code moved above if statement
+				// JsonObject tmpOBJ =
+				// requestOBJ.getAsJsonObject("visitDetails").getAsJsonObject("visitDetails");
+				// JsonObject tmpOBJ1 =
+				// tmpOBJ.get("visitDetails").getAsJsonObject();
 
-				i = commonNurseServiceImpl.updateBeneficiaryStatus('N', tmpOBJ1.get("beneficiaryRegID").getAsLong());
+				i = commonNurseServiceImpl.updateBeneficiaryStatus('N', tmpOBJ.get("beneficiaryRegID").getAsLong());
 			} else {
 				// Error in visit details saving or it is null
 			}
@@ -116,6 +133,22 @@ public class ANCServiceImpl implements ANCService {
 					&& (null != historySaveSuccessFlag && historySaveSuccessFlag > 0)
 					&& (null != vitalSaveSuccessFlag && vitalSaveSuccessFlag > 0)
 					&& (null != examtnSaveSuccessFlag && examtnSaveSuccessFlag > 0) && (i != null)) {
+				/**
+				 * We have to write new code to update ben status flow new logic
+				 */
+				JsonArray investigationDataCheck = requestOBJ.getAsJsonObject("visitDetails")
+						.getAsJsonObject("investigation").getAsJsonArray("laboratoryList");
+				if (!investigationDataCheck.isJsonNull() && investigationDataCheck.size() > 0) {
+					commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(
+							tmpOBJ.get("beneficiaryRegID").getAsLong(), benVisitID,
+							tmpOBJ.get("visitReason").getAsString(), tmpOBJ.get("visitCategory").getAsString(),
+							(short) 3, (short) 1);
+					System.out.println(investigationDataCheck);
+					// ben will transfer to lab and doc both
+				}
+				System.out.println(investigationDataCheck);
+				// End of update ben status flow new logic
+
 				saveSuccessFlag = ancSaveSuccessFlag;
 			}
 		} else {
@@ -535,7 +568,8 @@ public class ANCServiceImpl implements ANCService {
 			}
 			if (null != benPhysicalVitalDetail) {
 				benPhysicalVitalDetail.setBenVisitID(benVisitID);
-				phyVitalSuccessFlag = commonNurseServiceImpl.saveBeneficiaryPhysicalVitalDetails(benPhysicalVitalDetail);
+				phyVitalSuccessFlag = commonNurseServiceImpl
+						.saveBeneficiaryPhysicalVitalDetails(benPhysicalVitalDetail);
 			}
 
 			if (anthropometrySuccessFlag != null && anthropometrySuccessFlag > 0 && phyVitalSuccessFlag != null
@@ -701,7 +735,8 @@ public class ANCServiceImpl implements ANCService {
 
 		if ((null != genExmnSuccessFlag && genExmnSuccessFlag > 0)
 				&& (null != headToToeExmnSuccessFlag && headToToeExmnSuccessFlag > 0)
-//				&& (null != gastroIntsExmnSuccessFlag && gastroIntsExmnSuccessFlag > 0)
+				// && (null != gastroIntsExmnSuccessFlag &&
+				// gastroIntsExmnSuccessFlag > 0)
 				&& (null != cardiExmnSuccessFlag && cardiExmnSuccessFlag > 0)
 				&& (null != respiratoryExmnSuccessFlag && respiratoryExmnSuccessFlag > 0)
 				&& (null != centralNrvsExmnSuccessFlag && centralNrvsExmnSuccessFlag > 0)
@@ -1046,20 +1081,21 @@ public class ANCServiceImpl implements ANCService {
 		// Update Immunization History
 		if (ancHistoryOBJ != null && ancHistoryOBJ.has("immunizationHistory")
 				&& !ancHistoryOBJ.get("immunizationHistory").isJsonNull()) {
-			
+
 			JsonObject immunizationHistory = ancHistoryOBJ.getAsJsonObject("immunizationHistory");
-			if(immunizationHistory.get("immunizationList")!=null && immunizationHistory.getAsJsonArray("immunizationList").size()>0){
+			if (immunizationHistory.get("immunizationList") != null
+					&& immunizationHistory.getAsJsonArray("immunizationList").size() > 0) {
 				WrapperImmunizationHistory wrapperImmunizationHistory = InputMapper.gson()
 						.fromJson(ancHistoryOBJ.get("immunizationHistory"), WrapperImmunizationHistory.class);
-				immunizationSuccessFlag = commonNurseServiceImpl.updateChildImmunizationDetail(wrapperImmunizationHistory);
-			}else{
+				immunizationSuccessFlag = commonNurseServiceImpl
+						.updateChildImmunizationDetail(wrapperImmunizationHistory);
+			} else {
 				immunizationSuccessFlag = 1;
 			}
 		} else {
 			immunizationSuccessFlag = 1;
 		}
-		
-		
+
 		// Update Other/Optional Vaccines History
 		if (ancHistoryOBJ != null && ancHistoryOBJ.has("childVaccineDetails")
 				&& !ancHistoryOBJ.get("childVaccineDetails").isJsonNull()) {
