@@ -7,6 +7,4 @@ public interface NCDCareMasterDataService
 
 	String getNCDCareMasterData();
 
-	List<Object[]> getNCDCareTypes();
-
 }

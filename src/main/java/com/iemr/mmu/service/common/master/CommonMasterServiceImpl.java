@@ -137,7 +137,7 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 				case 3 :{
 					// 3 : NCD care
 					//TODO: NCD Care Master Data call
-					doctorMasterData = ncdCareMasterDataServiceImpl.getNCDCareMasterData();
+					doctorMasterData = ancMasterDataServiceImpl.getANCMasterDataForDoctor(providerServiceMapID);
 				}
 				break;
 				case 4 :{
