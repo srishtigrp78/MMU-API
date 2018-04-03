@@ -29,6 +29,7 @@ import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
+import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.doctor.DoctorServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
@@ -47,6 +48,12 @@ public class CSServiceImpl implements CSService {
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private CSCarestreamServiceImpl cSCarestreamServiceImpl;
 	private RegistrarRepoBenData registrarRepoBenData;
+	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
+
+	@Autowired
+	public void setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl) {
+		this.commonBenStatusFlowServiceImpl = commonBenStatusFlowServiceImpl;
+	}
 
 	@Autowired
 	public void setRegistrarRepoBenData(RegistrarRepoBenData registrarRepoBenData) {
@@ -106,7 +113,10 @@ public class CSServiceImpl implements CSService {
 		// check if visit details data is not null
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
 			// Call method to save visit details data
-			Long benVisitID = saveBenVisitDetails(requestOBJ);
+			BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(requestOBJ.get("visitDetails"),
+					BeneficiaryVisitDetail.class);
+
+			Long benVisitID = saveBenVisitDetails(benVisitDetailsOBJ);
 			// check if visit details data saved successfully
 			if (benVisitID != null && benVisitID > 0) {
 				// call method to save history data
@@ -130,6 +140,13 @@ public class CSServiceImpl implements CSService {
 					}
 
 					nurseDataSuccessFlag = examinationSuccessFlag;
+
+					/**
+					 * We have to write new code to update ben status flow new
+					 * logic
+					 */
+					int j = updateBenStatusFlagAfterNurseSaveSuccess(benVisitDetailsOBJ, benVisitID);
+
 				}
 
 			} else {
@@ -138,6 +155,19 @@ public class CSServiceImpl implements CSService {
 
 		}
 		return nurseDataSuccessFlag;
+	}
+
+	// method for updating ben flow status flag for nurse
+	private int updateBenStatusFlagAfterNurseSaveSuccess(BeneficiaryVisitDetail benVisitDetailsOBJ, Long benVisitID) {
+		short nurseFlag = (short) 2;
+		short docFlag = (short) 0;
+		short labIteration = (short) 0;
+
+		int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(
+				benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitID, benVisitDetailsOBJ.getVisitReason(),
+				benVisitDetailsOBJ.getVisitCategory(), nurseFlag, docFlag, labIteration);
+
+		return i;
 	}
 
 	private Long getBenRegID(JsonObject requestOBJ) throws Exception {
@@ -151,9 +181,10 @@ public class CSServiceImpl implements CSService {
 	 * @param requestOBJ
 	 * @return success or failure flag for visitDetails data saving
 	 */
-	public Long saveBenVisitDetails(JsonObject requestOBJ) throws Exception {
-		BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(requestOBJ.get("visitDetails"),
-				BeneficiaryVisitDetail.class);
+	public Long saveBenVisitDetails(BeneficiaryVisitDetail benVisitDetailsOBJ) throws Exception {
+		// BeneficiaryVisitDetail benVisitDetailsOBJ =
+		// InputMapper.gson().fromJson(requestOBJ.get("visitDetails"),
+		// BeneficiaryVisitDetail.class);
 
 		Long benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
 		// Long benVisitID =

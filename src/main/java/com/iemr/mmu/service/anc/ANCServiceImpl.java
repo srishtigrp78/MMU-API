@@ -133,23 +133,43 @@ public class ANCServiceImpl implements ANCService {
 					&& (null != historySaveSuccessFlag && historySaveSuccessFlag > 0)
 					&& (null != vitalSaveSuccessFlag && vitalSaveSuccessFlag > 0)
 					&& (null != examtnSaveSuccessFlag && examtnSaveSuccessFlag > 0) && (i != null)) {
+
+				saveSuccessFlag = ancSaveSuccessFlag;
+
 				/**
 				 * We have to write new code to update ben status flow new logic
 				 */
+
 				JsonArray investigationDataCheck = requestOBJ.getAsJsonObject("visitDetails")
 						.getAsJsonObject("investigation").getAsJsonArray("laboratoryList");
+
+				short nurseFlag;
+				short docFlag;
+				short labIteration;
+
 				if (!investigationDataCheck.isJsonNull() && investigationDataCheck.size() > 0) {
-					commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(
-							tmpOBJ.get("beneficiaryRegID").getAsLong(), benVisitID,
-							tmpOBJ.get("visitReason").getAsString(), tmpOBJ.get("visitCategory").getAsString(),
-							(short) 3, (short) 1);
-					System.out.println(investigationDataCheck);
+
 					// ben will transfer to lab and doc both
+					nurseFlag = (short) 3;
+					docFlag = (short) 1;
+					labIteration = (short) 1;
+				} else {
+					// ben will transfer doc only
+					nurseFlag = (short) 2;
+					docFlag = (short) 0;
+					labIteration = (short) 0;
 				}
-				System.out.println(investigationDataCheck);
+
+				int rs = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(
+						tmpOBJ.get("beneficiaryRegID").getAsLong(), benVisitID, tmpOBJ.get("visitReason").getAsString(),
+						tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration);
+
+				// System.out.println(investigationDataCheck);
 				// End of update ben status flow new logic
 
-				saveSuccessFlag = ancSaveSuccessFlag;
+				// later this line will be uncommented
+				// if (rs > 0)
+
 			}
 		} else {
 			// Can't create BenVisitID

@@ -47,8 +47,12 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 		else
 			return 0;
 	}
-	
-	public int updateBenFlowNurseAfterNurseActivity(Long benRegId, Long benVisitID, String visitReason, String visitCategory, Short nurseFlag, Short docFlag){
+
+	public int updateBenFlowNurseAfterNurseActivity(Long benRegID, Long benVisitID, String visitReason,
+			String visitCategory, Short nurseFlag, Short docFlag, Short labIteration) {
+		int i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterNurseActivity(benRegID, benVisitID, visitReason,
+				visitCategory, nurseFlag, docFlag, labIteration);
+		System.out.println("hello");
 		return 0;
 	}
 
@@ -56,6 +60,7 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 			throws Exception {
 
 		BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(requestOBJ, BeneficiaryFlowStatus.class);
+
 		obj.setDistrictName(obj.getPermanentAddress().getDistrict());
 		obj.setVillageName(obj.getPermanentAddress().getVillage());
 		obj.setBeneficiaryRegID(beneficiaryRegID);
@@ -124,8 +129,8 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 		obj.setPharmacist_flag((short) 0);
 		return obj;
 	}
-	
-	public int nurseFlowCompleteBenMoveToDocWorklist(){
+
+	public int nurseFlowCompleteBenMoveToDocWorklist() {
 		return 0;
 	}
 
