@@ -149,8 +149,39 @@ public class BeneficiaryFlowStatus {
 	@Expose
 	@Column(name = "beneficiary_id")
 	private Long beneficiaryID;
+	
+	@Expose
+	@Column(name = "lab_iteration_cnt")
+	private Short labIteration;
+	
 	@Transient
 	private Address permanentAddress;
+
+	
+	
+	public Short getGender() {
+		return gender;
+	}
+
+	public void setGender(Short gender) {
+		this.gender = gender;
+	}
+
+	public String getPreferredPhoneNum() {
+		return preferredPhoneNum;
+	}
+
+	public void setPreferredPhoneNum(String preferredPhoneNum) {
+		this.preferredPhoneNum = preferredPhoneNum;
+	}
+
+	public Short getLabIteration() {
+		return labIteration;
+	}
+
+	public void setLabIteration(Short labIteration) {
+		this.labIteration = labIteration;
+	}
 
 	public Long getBenFlowID() {
 		return benFlowID;

@@ -39,9 +39,9 @@ import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
+import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
-import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 /***
@@ -55,6 +55,12 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private GeneralOPDNurseServiceImpl generalOPDNurseServiceImpl;
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
+	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
+
+	@Autowired
+	public void setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl) {
+		this.commonBenStatusFlowServiceImpl = commonBenStatusFlowServiceImpl;
+	}
 
 	@Autowired
 	public void setCommonDoctorServiceImpl(CommonDoctorServiceImpl commonDoctorServiceImpl) {
@@ -83,6 +89,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 			// Call method to save visit details data
 			Long benVisitID = saveBenVisitDetails(requestOBJ.getAsJsonObject("visitDetails"));
 
+			JsonObject tmpOBJ = requestOBJ.getAsJsonObject("visitDetails").getAsJsonObject("visitDetails");
+
 			if (benVisitID != null && benVisitID > 0) {
 				// call method to save History data
 				if (requestOBJ.has("historyDetails") && !requestOBJ.get("historyDetails").isJsonNull())
@@ -98,11 +106,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					examtnSaveSuccessFlag = saveBenExaminationDetails(requestOBJ.getAsJsonObject("examinationDetails"),
 							benVisitID);
 
-				JsonObject tmpOBJ = requestOBJ.get("visitDetails").getAsJsonObject();
-				JsonObject tmpOBJ1 = tmpOBJ.get("visitDetails").getAsJsonObject();
-
-				int i = commonNurseServiceImpl.updateBeneficiaryStatus('N',
-						tmpOBJ1.get("beneficiaryRegID").getAsLong());
+				int i = commonNurseServiceImpl.updateBeneficiaryStatus('N', tmpOBJ.get("beneficiaryRegID").getAsLong());
 			} else {
 				// Beneficiary Visit ID not generated.
 			}
@@ -110,12 +114,33 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 			if ((null != historySaveSuccessFlag && historySaveSuccessFlag > 0)
 					&& (null != vitalSaveSuccessFlag && vitalSaveSuccessFlag > 0)
 					&& (null != examtnSaveSuccessFlag && examtnSaveSuccessFlag > 0)) {
+
 				saveSuccessFlag = historySaveSuccessFlag;
+
+				/**
+				 * We have to write new code to update ben status flow new logic
+				 */
+
+				int i = updateBenStatusFlagAfterNurseSaveSuccess(tmpOBJ, benVisitID);
+
 			}
 		} else {
 			// Can't create benVisitID.
 		}
 		return saveSuccessFlag;
+	}
+
+	// method for updating ben flow status flag for nurse
+	private int updateBenStatusFlagAfterNurseSaveSuccess(JsonObject tmpOBJ, Long benVisitID) {
+		short nurseFlag = (short) 2;
+		short docFlag = (short) 0;
+		short labIteration = (short) 0;
+
+		int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(
+				tmpOBJ.get("beneficiaryRegID").getAsLong(), benVisitID, tmpOBJ.get("visitReason").getAsString(),
+				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration);
+
+		return i;
 	}
 
 	@Override
@@ -772,8 +797,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		HistoryDetailsMap.put("childOptionalVaccineHistory",
 				commonNurseServiceImpl.getChildOptionalVaccineHistory(benRegID, benVisitID));
 
-		HistoryDetailsMap.put("DevelopmentHistory",
-				commonNurseServiceImpl.getDevelopmentHistory(benRegID, benVisitID));
+		HistoryDetailsMap.put("DevelopmentHistory", commonNurseServiceImpl.getDevelopmentHistory(benRegID, benVisitID));
 		HistoryDetailsMap.put("PerinatalHistory", commonNurseServiceImpl.getPerinatalHistory(benRegID, benVisitID));
 		HistoryDetailsMap.put("FeedingHistory", commonNurseServiceImpl.getFeedingHistory(benRegID, benVisitID));
 
@@ -939,13 +963,15 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 		if (historyOBJ != null && historyOBJ.has("immunizationHistory")
 				&& !historyOBJ.get("immunizationHistory").isJsonNull()) {
-			
+
 			JsonObject immunizationHistory = historyOBJ.getAsJsonObject("immunizationHistory");
-			if(immunizationHistory.get("immunizationList")!=null && immunizationHistory.getAsJsonArray("immunizationList").size()>0){
+			if (immunizationHistory.get("immunizationList") != null
+					&& immunizationHistory.getAsJsonArray("immunizationList").size() > 0) {
 				WrapperImmunizationHistory wrapperImmunizationHistory = InputMapper.gson()
 						.fromJson(historyOBJ.get("immunizationHistory"), WrapperImmunizationHistory.class);
-				immunizationSuccessFlag = commonNurseServiceImpl.updateChildImmunizationDetail(wrapperImmunizationHistory);
-			}else{
+				immunizationSuccessFlag = commonNurseServiceImpl
+						.updateChildImmunizationDetail(wrapperImmunizationHistory);
+			} else {
 				immunizationSuccessFlag = 1;
 			}
 		} else {

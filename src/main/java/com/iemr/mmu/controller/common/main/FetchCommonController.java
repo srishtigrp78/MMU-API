@@ -69,13 +69,16 @@ public class FetchCommonController {
 	}
 	
 	@CrossOrigin()
-	@ApiOperation(value = "Get Nurse worklist", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get Nurse worklist new", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getNurseWorklistNew" }, method = { RequestMethod.GET })
 	public String getNurseWorkListNew() {
 		OutputResponse response = new OutputResponse();
 		try {
 			String s = commonNurseServiceImpl.getNurseWorkListNew();
+			if(s != null)
 			response.setResponse(s);
+			else
+				response.setError(5000, "Error while fetching Nurse worklist");
 		} catch (Exception e) {
 			// e.printStackTrace();
 			logger.error("Error in getNurseWorklist:" + e);
