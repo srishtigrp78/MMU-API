@@ -68,9 +68,7 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 		try {
 			int result = ancServiceImpl.UpdateANCVisitDetails(jsnOBJ);
 			if (result > 0) {
-				Map<String, Integer> resMap = new HashMap<String, Integer>();
-				resMap.put("result", result);
-				response.setResponse(new Gson().toJson(resMap));
+				response.setResponse("ANC Visit Data updated successfully.");
 			} else {
 				response.setError(500, "Failed to update ANC Visit Nurse Data");
 			}
@@ -107,9 +105,7 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 		try {
 			int result = ancServiceImpl.updateBenANCDetails(jsnOBJ);
 			if (result > 0) {
-				Map<String, Integer> resMap = new HashMap<String, Integer>();
-				resMap.put("result", result);
-				response.setResponse(new Gson().toJson(resMap));
+				response.setResponse("ANC Care Data updated successfully.");
 			} else {
 				response.setError(500, "Failed to update ANC care Nurse Data");
 			}
@@ -146,9 +142,7 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 		try {
 			int result = ancServiceImpl.updateBenANCHistoryDetails(jsnOBJ);
 			if (result > 0) {
-				Map<String, Integer> resMap = new HashMap<String, Integer>();
-				resMap.put("result", result);
-				response.setResponse(new Gson().toJson(resMap));
+				response.setResponse("ANC History Data updated successfully.");
 			} else {
 				response.setError(500, "Failed to update ANC History Nurse Data");
 			}
@@ -185,9 +179,7 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 		try {
 			int result = ancServiceImpl.updateBenANCVitalDetails(jsnOBJ);
 			if (result > 0) {
-				Map<String, Integer> resMap = new HashMap<String, Integer>();
-				resMap.put("result", result);
-				response.setResponse(new Gson().toJson(resMap));
+				response.setResponse("ANC Vital Data updated successfully.");
 			} else {
 				response.setError(500, "Failed to update ANC Vital Nurse Data");
 			}
@@ -224,9 +216,7 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 		try {
 			int result = ancServiceImpl.updateBenANCExaminationDetails(jsnOBJ);
 			if (result > 0) {
-				Map<String, Integer> resMap = new HashMap<String, Integer>();
-				resMap.put("result", result);
-				response.setResponse(new Gson().toJson(resMap));
+				response.setResponse("ANC Examination Data updated successfully.");
 			} else {
 				response.setError(500, "Failed to update ANC Examination Nurse Data");
 			}

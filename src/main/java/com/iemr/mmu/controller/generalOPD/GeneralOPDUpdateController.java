@@ -56,9 +56,7 @@ public class GeneralOPDUpdateController {
 		try {
 			int result = generalOPDServiceImpl.UpdateVisitDetails(jsnOBJ);
 			if (result > 0) {
-				Map<String, Integer> resMap = new HashMap<String, Integer>();
-				resMap.put("result", result);
-				response.setResponse(new Gson().toJson(resMap));
+				response.setResponse("General OPD Visit Data updated successfully.");
 			} else {
 				response.setError(500, "Failed to update Visit Nurse Data");
 			}
@@ -95,9 +93,7 @@ public class GeneralOPDUpdateController {
 		try {
 			int result = generalOPDServiceImpl.updateBenHistoryDetails(jsnOBJ);
 			if (result > 0) {
-				Map<String, Integer> resMap = new HashMap<String, Integer>();
-				resMap.put("result", result);
-				response.setResponse(new Gson().toJson(resMap));
+				response.setResponse("General OPD History Data updated successfully.");
 			} else {
 				response.setError(500, "Failed to update General OPD History Nurse Data");
 			}
@@ -134,9 +130,7 @@ public class GeneralOPDUpdateController {
 		try {
 			int result = generalOPDServiceImpl.updateBenVitalDetails(jsnOBJ);
 			if (result > 0) {
-				Map<String, Integer> resMap = new HashMap<String, Integer>();
-				resMap.put("result", result);
-				response.setResponse(new Gson().toJson(resMap));
+				response.setResponse("General OPD Vital Data updated successfully.");
 			} else {
 				response.setError(500, "Failed to update General OPD Vital Nurse Data");
 			}
@@ -173,9 +167,7 @@ public class GeneralOPDUpdateController {
 		try {
 			int result = generalOPDServiceImpl.updateBenExaminationDetails(jsnOBJ);
 			if (result > 0) {
-				Map<String, Integer> resMap = new HashMap<String, Integer>();
-				resMap.put("result", result);
-				response.setResponse(new Gson().toJson(resMap));
+				response.setResponse("General OPD Examination Data updated successfully.");
 			} else {
 				response.setError(500, "Failed to update General OPD Examination Nurse Data");
 			}

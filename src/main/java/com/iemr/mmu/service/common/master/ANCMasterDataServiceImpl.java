@@ -15,6 +15,7 @@ import com.iemr.mmu.data.doctor.DrugFormMaster;
 import com.iemr.mmu.data.doctor.DrugFrequencyMaster;
 import com.iemr.mmu.data.doctor.LabTestMaster;
 import com.iemr.mmu.data.institution.Institute;
+import com.iemr.mmu.data.labModule.ProcedureData;
 import com.iemr.mmu.data.masterdata.anc.AllergicReactionTypes;
 import com.iemr.mmu.data.masterdata.anc.BirthComplication;
 import com.iemr.mmu.data.masterdata.anc.BloodGroups;
@@ -57,6 +58,7 @@ import com.iemr.mmu.repo.doctor.DrugDurationUnitMasterRepo;
 import com.iemr.mmu.repo.doctor.DrugFormMasterRepo;
 import com.iemr.mmu.repo.doctor.DrugFrequencyMasterRepo;
 import com.iemr.mmu.repo.doctor.LabTestMasterRepo;
+import com.iemr.mmu.repo.labModule.ProcedureRepo;
 import com.iemr.mmu.repo.masterrepo.anc.AllergicReactionTypesRepo;
 import com.iemr.mmu.repo.masterrepo.anc.BirthComplicationRepo;
 import com.iemr.mmu.repo.masterrepo.anc.BloodGroupsRepo;
@@ -144,6 +146,14 @@ public class ANCMasterDataServiceImpl {
 	
 	private NCDScreeningMasterServiceImpl ncdScreeningMasterServiceImpl;
 	private NCDCareTypeRepo ncdCareTypeRepo;
+	
+	private ProcedureRepo procedureRepo;
+	
+	@Autowired
+	public void setProcedureRepo(ProcedureRepo procedureRepo)
+	{
+		this.procedureRepo = procedureRepo;
+	}
 	
 	@Autowired
 	public void setNcdScreeningMasterServiceImpl(NCDScreeningMasterServiceImpl ncdScreeningMasterServiceImpl)
@@ -427,7 +437,8 @@ public class ANCMasterDataServiceImpl {
 		ArrayList<Object[]> quantityOfAlcoholIntake = personalHabitTypeRepo.getPersonalHabitTypeMaster("Average Quantity of Alcohol consumption");
 		ArrayList<Object[]> familyMemberTypes = familyMemberMasterRepo.getFamilyMemberTypeMaster();
 		ArrayList<Object[]> labTests = labTestMasterRepo.getLabTestMaster();
-	
+		ArrayList<Object[]> procedures = procedureRepo.getProcedures("Radiology");
+		
 		//PNC specific master data
 		ArrayList<Object[]> healthStatuses = newbornHealthStatusRepo.getnewBornHealthStatuses();
 		
@@ -483,6 +494,7 @@ public class ANCMasterDataServiceImpl {
 		resMap.put("labTests", LabTestMaster.getLabTestMasters(labTests));
 		
 		resMap.put("newbornHealthStatuses", NewbornHealthStatus.getNewbornHealthStatuses(healthStatuses));
+		resMap.put("procedures", ProcedureData.getProcedures(procedures));
 		
 		return new Gson().toJson(resMap);
 	}

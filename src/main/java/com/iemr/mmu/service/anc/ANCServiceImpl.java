@@ -136,17 +136,17 @@ public class ANCServiceImpl implements ANCService {
 				/**
 				 * We have to write new code to update ben status flow new logic
 				 */
-				JsonArray investigationDataCheck = requestOBJ.getAsJsonObject("visitDetails")
+				/*JsonArray investigationDataCheck = requestOBJ.getAsJsonObject("visitDetails")
 						.getAsJsonObject("investigation").getAsJsonArray("laboratoryList");
-				if (!investigationDataCheck.isJsonNull() && investigationDataCheck.size() > 0) {
+				if (!investigationDataCheck.isJsonNull() && investigationDataCheck.size() > 0) {*/
 					commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(
 							tmpOBJ.get("beneficiaryRegID").getAsLong(), benVisitID,
 							tmpOBJ.get("visitReason").getAsString(), tmpOBJ.get("visitCategory").getAsString(),
 							(short) 3, (short) 1);
-					System.out.println(investigationDataCheck);
+					//System.out.println(investigationDataCheck);
 					// ben will transfer to lab and doc both
-				}
-				System.out.println(investigationDataCheck);
+			/*	}*/
+				//System.out.println(investigationDataCheck);
 				// End of update ben status flow new logic
 
 				saveSuccessFlag = ancSaveSuccessFlag;

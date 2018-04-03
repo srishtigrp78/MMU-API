@@ -456,7 +456,7 @@ public class NCDCareServiceImpl implements NCDCareService
 
 		BeneficiaryVisitDetail visitDetail = commonNurseServiceImpl.getCSVisitDetails(benRegID, benVisitID);
 
-		resMap.put("ANCNurseVisitDetail", new Gson().toJson(visitDetail));
+		resMap.put("NCDCareNurseVisitDetail", new Gson().toJson(visitDetail));
 
 		resMap.put("BenAdherence", commonNurseServiceImpl.getBenAdherence(benRegID, benVisitID));
 
