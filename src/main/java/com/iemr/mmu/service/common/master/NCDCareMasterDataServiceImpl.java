@@ -31,25 +31,16 @@ public class NCDCareMasterDataServiceImpl implements NCDCareMasterDataService
 		this.ncdCareTypeRepo = ncdCareTypeRepo;
 	}
 	
+	@Deprecated
 	@Override
 	public String getNCDCareMasterData() {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 		
 		resMap.put("ncdCareConditions", NCDScreeningCondition.getNCDScreeningCondition((ArrayList<Object[]>) 
 																	ncdScreeningMasterServiceImpl.getNCDScreeningConditions()));
-		resMap.put("ncdCareTypes", NCDCareType.getNCDCareTypes((ArrayList<Object[]>) getNCDCareTypes()));
+		resMap.put("ncdCareTypes", NCDCareType.getNCDCareTypes((ArrayList<Object[]>) ncdCareTypeRepo.getNCDCareTypes()));
 		
 		return new Gson().toJson(resMap);
 	}
 
-	@Override
-	public List<Object[]> getNCDCareTypes() {
-		List<Object[]> ncdCareTypes  = null;
-		try {
-			ncdCareTypes = ncdCareTypeRepo.getNCDCareTypes();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return ncdCareTypes;
-	} 
 }

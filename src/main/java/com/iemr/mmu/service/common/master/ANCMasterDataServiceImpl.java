@@ -46,6 +46,8 @@ import com.iemr.mmu.data.masterdata.anc.PregDuration;
 import com.iemr.mmu.data.masterdata.anc.PregOutcome;
 import com.iemr.mmu.data.masterdata.anc.ServiceMaster;
 import com.iemr.mmu.data.masterdata.anc.SurgeryTypes;
+import com.iemr.mmu.data.masterdata.ncdcare.NCDCareType;
+import com.iemr.mmu.data.masterdata.ncdscreening.NCDScreeningCondition;
 import com.iemr.mmu.data.masterdata.nurse.CancerDiseaseType;
 import com.iemr.mmu.data.masterdata.nurse.FamilyMemberType;
 import com.iemr.mmu.data.masterdata.pnc.NewbornHealthStatus;
@@ -87,6 +89,7 @@ import com.iemr.mmu.repo.masterrepo.anc.PregOutcomeRepo;
 import com.iemr.mmu.repo.masterrepo.anc.ServiceMasterRepo;
 import com.iemr.mmu.repo.masterrepo.anc.SurgeryTypesRepo;
 import com.iemr.mmu.repo.masterrepo.doctor.InstituteRepo;
+import com.iemr.mmu.repo.masterrepo.ncdCare.NCDCareTypeRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.CancerDiseaseMasterRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.FamilyMemberMasterRepo;
 import com.iemr.mmu.repo.masterrepo.pnc.NewbornHealthStatusRepo;
@@ -138,6 +141,21 @@ public class ANCMasterDataServiceImpl {
 	private DrugFrequencyMasterRepo drugFrequencyMasterRepo;
 	
 	private NewbornHealthStatusRepo newbornHealthStatusRepo;
+	
+	private NCDScreeningMasterServiceImpl ncdScreeningMasterServiceImpl;
+	private NCDCareTypeRepo ncdCareTypeRepo;
+	
+	@Autowired
+	public void setNcdScreeningMasterServiceImpl(NCDScreeningMasterServiceImpl ncdScreeningMasterServiceImpl)
+	{
+		this.ncdScreeningMasterServiceImpl = ncdScreeningMasterServiceImpl;
+	}
+	
+	@Autowired
+	public void setNcdCareTypeRepo(NCDCareTypeRepo ncdCareTypeRepo)
+	{
+		this.ncdCareTypeRepo = ncdCareTypeRepo;
+	}
 	
 	@Autowired
 	public void setNewbornHealthStatusRepo(NewbornHealthStatusRepo newbornHealthStatusRepo)
@@ -492,6 +510,12 @@ public class ANCMasterDataServiceImpl {
 		resMap.put("counsellingTypes", CounsellingType.getCounsellingType(counsellingTypes));
 		resMap.put("higherHealthCare", institute.getinstituteDetails(instituteDetails));
 		resMap.put("additionalServices", ServiceMaster.getServiceMaster(additionalServices));
+
+		//NCD Care specific master data
+		resMap.put("ncdCareConditions", NCDScreeningCondition.getNCDScreeningCondition((ArrayList<Object[]>) 
+				ncdScreeningMasterServiceImpl.getNCDScreeningConditions()));
+		resMap.put("ncdCareTypes", NCDCareType.getNCDCareTypes((ArrayList<Object[]>) 
+				ncdCareTypeRepo.getNCDCareTypes()));
 
 		return new Gson().toJson(resMap);
 	}
