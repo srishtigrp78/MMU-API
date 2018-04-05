@@ -39,9 +39,14 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 		this.beneficiaryFlowStatusRepo = beneficiaryFlowStatusRepo;
 	}
 
-	public int createBenFlowRecord(String requestOBJ, Long beneficiaryRegID, Long beneficiaryID) throws Exception {
-		BeneficiaryFlowStatus obj = getBenFlowRecordObj(requestOBJ, beneficiaryRegID, beneficiaryID);
-		BeneficiaryFlowStatus objRS = beneficiaryFlowStatusRepo.save(obj);
+	public int createBenFlowRecord(String requestOBJ, Long beneficiaryRegID, Long beneficiaryID) {
+		BeneficiaryFlowStatus objRS = null;
+		try {
+			BeneficiaryFlowStatus obj = getBenFlowRecordObj(requestOBJ, beneficiaryRegID, beneficiaryID);
+			objRS = beneficiaryFlowStatusRepo.save(obj);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		if (objRS != null)
 			return 1;
 		else
@@ -50,9 +55,13 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 
 	public int updateBenFlowNurseAfterNurseActivity(Long benRegID, Long benVisitID, String visitReason,
 			String visitCategory, Short nurseFlag, Short docFlag, Short labIteration) {
-		int i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterNurseActivity(benRegID, benVisitID, visitReason,
-				visitCategory, nurseFlag, docFlag, labIteration);
-		System.out.println("hello");
+		try {
+			int i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterNurseActivity(benRegID, benVisitID, visitReason,
+					visitCategory, nurseFlag, docFlag, labIteration);
+			System.out.println("hello");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return 0;
 	}
 
