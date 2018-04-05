@@ -121,7 +121,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				 * We have to write new code to update ben status flow new logic
 				 */
 
-				int i = updateBenStatusFlagAfterNurseSaveSuccess(tmpOBJ, benVisitID);
+			//	int i = updateBenStatusFlagAfterNurseSaveSuccess(tmpOBJ, benVisitID);
 
 			}
 		} else {

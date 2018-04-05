@@ -229,7 +229,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 				 * We have to write new code to update ben status flow new logic
 				 */
 
-				int j = updateBenStatusFlagAfterNurseSaveSuccess(benVisitDetailsOBJ, benVisitID);
+				//int j = updateBenStatusFlagAfterNurseSaveSuccess(benVisitDetailsOBJ, benVisitID);
 
 			} else {
 

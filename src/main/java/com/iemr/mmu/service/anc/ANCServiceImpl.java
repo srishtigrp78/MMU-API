@@ -149,9 +149,9 @@ public class ANCServiceImpl implements ANCService
 				 * We have to write new code to update ben status flow new logic
 				 */
 
-				int J =	updateBenFlowNurseAfterNurseActivityANC(
-								requestOBJ.getAsJsonObject("visitDetails").getAsJsonObject("investigation").getAsJsonArray("laboratoryList"), tmpOBJ,
-								benVisitID);
+//				int J =	updateBenFlowNurseAfterNurseActivityANC(
+//								requestOBJ.getAsJsonObject("visitDetails").getAsJsonObject("investigation").getAsJsonArray("laboratoryList"), tmpOBJ,
+//								benVisitID);
 
 				// End of update ben status flow new logic
 
