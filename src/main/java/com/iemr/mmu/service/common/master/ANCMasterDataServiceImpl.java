@@ -437,7 +437,7 @@ public class ANCMasterDataServiceImpl {
 		ArrayList<Object[]> quantityOfAlcoholIntake = personalHabitTypeRepo.getPersonalHabitTypeMaster("Average Quantity of Alcohol consumption");
 		ArrayList<Object[]> familyMemberTypes = familyMemberMasterRepo.getFamilyMemberTypeMaster();
 		ArrayList<Object[]> labTests = labTestMasterRepo.getLabTestMaster();
-		ArrayList<Object[]> procedures = procedureRepo.getProcedures("Radiology");
+		ArrayList<Object[]> procedures = procedureRepo.getProcedureMasterData();
 		
 		//PNC specific master data
 		ArrayList<Object[]> healthStatuses = newbornHealthStatusRepo.getnewBornHealthStatuses();

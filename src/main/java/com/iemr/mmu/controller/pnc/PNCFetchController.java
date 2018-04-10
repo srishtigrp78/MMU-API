@@ -4,6 +4,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +34,64 @@ public class PNCFetchController
 	public void setPncServiceImpl(PNCServiceImpl pncServiceImpl)
 	{
 		this.pncServiceImpl = pncServiceImpl;
+	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary Visit details from Nurse PNC", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenVisitDetailsFrmNursePNC" }, method = { RequestMethod.POST })
+	@Transactional(rollbackFor = Exception.class)
+	public String getBenVisitDetailsFrmNursePNC(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenVisitDetailsFrmNursePNC request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.length() > 1) {
+				Long benRegID = obj.getLong("benRegID");
+				Long benVisitID = obj.getLong("benVisitID");
+
+				String res = pncServiceImpl.getBenVisitDetailsFrmNursePNC(benRegID, benVisitID);
+				response.setResponse(res);
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenDataFrmNurseScrnToDocScrnVisitDetails response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenDataFrmNurseScrnToDocScrnVisitDetails:" + e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary PNC Care details from Nurse PNC", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenPNCDetailsFrmNursePNC" }, method = { RequestMethod.POST })
+	@Transactional(rollbackFor = Exception.class)
+	public String getBenPNCDetailsFrmNursePNC(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenPNCDetailsFrmNursePNC request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID") && obj.has("benVisitID")) {
+				Long benRegID = obj.getLong("benRegID");
+				Long benVisitID = obj.getLong("benVisitID");
+
+				String res = pncServiceImpl.getBenPNCDetailsFrmNursePNC(benRegID, benVisitID);
+				response.setResponse(res);
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenPNCDetailsFrmNursePNC response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenPNCDetailsFrmNursePNC:" + e);
+		}
+		return response.toString();
 	}
 	
 	@CrossOrigin()
@@ -91,6 +150,33 @@ public class PNCFetchController
 		return response.toString();
 	}
 	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary PNC Examination details from Nurse to Doctor ", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenExaminationDetailsPNC" }, method = { RequestMethod.POST })
+
+	public String getBenExaminationDetailsPNC(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenExaminationDetailsPNC request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID") && obj.has("benVisitID")) {
+				Long benRegID = obj.getLong("benRegID");
+				Long benVisitID = obj.getLong("benVisitID");
+
+				String s = pncServiceImpl.getPNCExaminationDetailsData(benRegID, benVisitID);
+				response.setResponse(s);
+			} else {
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenExaminationDetailsPNC response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenExaminationDetailsPNC:" + e);
+		}
+		return response.toString();
+	}
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Past History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenPastHistory" }, method = { RequestMethod.POST })

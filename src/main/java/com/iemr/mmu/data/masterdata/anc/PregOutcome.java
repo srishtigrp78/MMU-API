@@ -19,12 +19,12 @@ public class PregOutcome {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Expose
 	@Column(name = "PregOutcomeID")
-	private Short PregOutcomeID;
+	private Short pregOutcomeID;
 
 	@Expose
 	@Column(name = "PregOutcome")
-	private String PregOutcome;
-	
+	private String pregOutcome;
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -51,17 +51,17 @@ public class PregOutcome {
 
 	public PregOutcome(Short pregOutcomeID, String pregOutcome) {
 		super();
-		PregOutcomeID = pregOutcomeID;
-		PregOutcome = pregOutcome;
+		this.pregOutcomeID = pregOutcomeID;
+		this.pregOutcome = pregOutcome;
 	}
-	
+
 	public static ArrayList<PregOutcome> getPregOutcomes(ArrayList<Object[]> resList) {
 		ArrayList<PregOutcome> resArray = new ArrayList<PregOutcome>();
 		for (Object[] obj : resList) {
-			PregOutcome cOBJ = new PregOutcome((Short)obj[0], (String)obj[1]);
+			PregOutcome cOBJ = new PregOutcome((Short) obj[0], (String) obj[1]);
 			resArray.add(cOBJ);
 		}
 		return resArray;
 	}
-	
+
 }

@@ -12,7 +12,13 @@ import com.iemr.mmu.data.labModule.ProcedureData;
 @Repository
 public interface ProcedureRepo extends CrudRepository<ProcedureData, Integer>
 {
-	@Query("select procedureID, procedureName, procedureDesc, gender, providerServiceMapID from ProcedureData"
+	/*@Query("select procedureID, procedureName, procedureDesc, gender, providerServiceMapID from ProcedureData"
 			+ " where procedureType =:procedureType and deleted = false order by procedureName")
-	public ArrayList<Object[]> getProcedures(@Param("procedureType") String procedureType);
+	public ArrayList<Object[]> getProcedures(@Param("procedureType") String procedureType);*/
+	
+	@Query("select procedureID, procedureName, procedureDesc, procedureType, gender, providerServiceMapID from ProcedureData"
+			+ " where deleted = false order by procedureName")
+	public ArrayList<Object[]> getProcedureMasterData();
+	
+	
 }

@@ -147,8 +147,8 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 				break;
 				case 5 :{
 					// 5 : PNC
-					//TODO: PNC Master Data call
-					doctorMasterData = "No Master Data found for PNC Master";
+					//TODO:  PNC Master Data call - tmprlly calling ANC master Data
+					doctorMasterData = ancMasterDataServiceImpl.getANCMasterDataForDoctor(providerServiceMapID);
 				}
 				break;
 				case 6 :{

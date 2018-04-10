@@ -15,6 +15,7 @@ import com.iemr.mmu.data.doctor.DrugFormMaster;
 import com.iemr.mmu.data.doctor.DrugFrequencyMaster;
 import com.iemr.mmu.data.doctor.LabTestMaster;
 import com.iemr.mmu.data.doctor.TempMasterDrug;
+import com.iemr.mmu.data.labModule.ProcedureData;
 import com.iemr.mmu.repo.doctor.ChiefComplaintMasterRepo;
 import com.iemr.mmu.repo.doctor.DrugDoseMasterRepo;
 import com.iemr.mmu.repo.doctor.DrugDurationUnitMasterRepo;
@@ -22,6 +23,7 @@ import com.iemr.mmu.repo.doctor.DrugFormMasterRepo;
 import com.iemr.mmu.repo.doctor.DrugFrequencyMasterRepo;
 import com.iemr.mmu.repo.doctor.LabTestMasterRepo;
 import com.iemr.mmu.repo.doctor.TempMasterDrugRepo;
+import com.iemr.mmu.repo.labModule.ProcedureRepo;
 
 @Service
 public class QCMasterDataServiceImpl implements QCMasterDataService{
@@ -34,6 +36,13 @@ public class QCMasterDataServiceImpl implements QCMasterDataService{
 	private DrugFrequencyMasterRepo drugFrequencyMasterRepo;
 	private LabTestMasterRepo labTestMasterRepo;
 	private TempMasterDrugRepo tempMasterDrugRepo;
+	private ProcedureRepo procedureRepo;
+	
+	@Autowired
+	public void setProcedureRepo(ProcedureRepo procedureRepo)
+	{
+		this.procedureRepo = procedureRepo;
+	}
 	
 	@Autowired
 	public void setChiefComplaintMasterRepo(ChiefComplaintMasterRepo chiefComplaintMasterRepo) {
@@ -80,6 +89,7 @@ public class QCMasterDataServiceImpl implements QCMasterDataService{
 		ArrayList<Object[]> dfmList = drugFormMasterRepo.getDrugFormMaster();
 		ArrayList<Object[]> dfrmList = drugFrequencyMasterRepo.getDrugFrequencyMaster();
 		ArrayList<Object[]> ltmList = labTestMasterRepo.getLabTestMaster();
+		ArrayList<Object[]> procedures = procedureRepo.getProcedureMasterData();
 		ArrayList<TempMasterDrug> tempMasterDrugList = tempMasterDrugRepo.findByDeletedFalseOrderByDrugDisplayNameAsc();
 		resMap.put("chiefComplaintMaster", ChiefComplaintMaster.getChiefComplaintMasters(ccList));
 		resMap.put("drugDoseMaster", DrugDoseMaster.getDrugDoseMasters(ddmList));
@@ -88,6 +98,7 @@ public class QCMasterDataServiceImpl implements QCMasterDataService{
 		resMap.put("drugFrequencyMaster", DrugFrequencyMaster.getDrugFrequencyMaster(dfrmList));
 		resMap.put("labTestMaster", LabTestMaster.getLabTestMasters(ltmList));
 		resMap.put("tempDrugMaster", TempMasterDrug.getTempDrugMasterList(tempMasterDrugList));
+		resMap.put("procedures", ProcedureData.getProcedures(procedures));
 		return new Gson().toJson(resMap);
 	}
 }

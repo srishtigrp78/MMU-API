@@ -67,12 +67,13 @@ public class ProcedureData
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
-	public ProcedureData(Integer procedureID, String procedureName, String procedureDesc, String gender, Integer providerServiceMapID)
+	public ProcedureData(Integer procedureID, String procedureName, String procedureDesc, String procedureType, String gender, Integer providerServiceMapID)
 	{
 		super();
 		this.procedureID = procedureID;
 		this.procedureName = procedureName;
 		this.procedureDesc = procedureDesc;
+		this.procedureType = procedureType;
 		this.gender = gender;
 		this.providerServiceMapID = providerServiceMapID;
 	}
@@ -80,7 +81,7 @@ public class ProcedureData
 	public static ArrayList<ProcedureData> getProcedures(ArrayList<Object[]> resList) {
 		ArrayList<ProcedureData> resArray = new ArrayList<ProcedureData>();
 		for (Object[] obj : resList) {
-			ProcedureData cOBJ = new ProcedureData((Integer)obj[0], (String)obj[1], (String)obj[2], (String)obj[3], (Integer)obj[4]);
+			ProcedureData cOBJ = new ProcedureData((Integer)obj[0], (String)obj[1], (String)obj[2], (String)obj[3], (String)obj[4], (Integer)obj[5]);
 			resArray.add(cOBJ);
 		}
 		return resArray;

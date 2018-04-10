@@ -399,7 +399,6 @@ public class ANCServiceImpl implements ANCService
 			{
 				ancCareDetailsOBJ.setBenVisitID(benVisitID);
 				ancCareSuccessFlag = ancNurseServiceImpl.saveBenAncCareDetails(ancCareDetailsOBJ);
-
 			}
 		}
 		if (ancDetailsOBJ != null && ancDetailsOBJ.has("ancImmunization") && !ancDetailsOBJ.get("ancImmunization").isJsonNull())

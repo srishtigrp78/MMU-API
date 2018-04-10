@@ -11,7 +11,7 @@ import com.iemr.mmu.data.masterdata.anc.PregOutcome;
 @Repository
 public interface PregOutcomeRepo extends CrudRepository<PregOutcome, Short>{
 	
-	@Query("select PregOutcomeID, PregOutcome from PregOutcome where deleted = false order by PregOutcome")
+	@Query("select pregOutcomeID, pregOutcome from PregOutcome where deleted = false order by pregOutcome")
 	public ArrayList<Object[]> getPregOutcomes();
 	
 }
