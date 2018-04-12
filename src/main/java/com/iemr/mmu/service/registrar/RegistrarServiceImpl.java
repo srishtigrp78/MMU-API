@@ -55,6 +55,12 @@ public class RegistrarServiceImpl implements RegistrarService {
 	@Value("${registrationUrl}")
 	private String registrationUrl;
 
+	@Value("${registrarQuickSearchByIdUrl}")
+	private String registrarQuickSearchByIdUrl;
+
+	@Value("${registrarQuickSearchByPhoneNoUrl}")
+	private String registrarQuickSearchByPhoneNoUrl;
+
 	private RegistrarRepoBenData registrarRepoBenData;
 	private RegistrarRepoBenDemoData registrarRepoBenDemoData;
 	private RegistrarRepoBenPhoneMapData registrarRepoBenPhoneMapData;
@@ -690,6 +696,33 @@ public class RegistrarServiceImpl implements RegistrarService {
 			// log error that registration failed.
 		}
 		return beneficiaryID;
+	}
+
+	public String beneficiaryQuickSearch(String requestObj, String Authorization) {
+		String returnOBJ = null;
+		RestTemplate restTemplate = new RestTemplate();
+		JSONObject obj = new JSONObject(requestObj);
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+		headers.add("Content-Type", "application/json");
+		headers.add("AUTHORIZATION", Authorization);
+		if (obj.has("beneficiaryID") && !obj.isNull("beneficiaryID")) {
+			HttpEntity<Object> request = new HttpEntity<Object>(requestObj, headers);
+			ResponseEntity<String> response = restTemplate.exchange(registrarQuickSearchByIdUrl, HttpMethod.POST, request,
+					String.class);
+			if (response.hasBody())
+				returnOBJ = response.getBody();
+
+		} else {
+			if (obj.has("phoneNo") && !obj.isNull("phoneNo")) {
+				HttpEntity<Object> request = new HttpEntity<Object>(requestObj, headers);
+				ResponseEntity<String> response = restTemplate.exchange(registrarQuickSearchByPhoneNoUrl, HttpMethod.POST, request,
+						String.class);
+				if (response.hasBody())
+					returnOBJ = response.getBody();
+			} else {
+			}
+		}
+		return returnOBJ;
 	}
 
 }

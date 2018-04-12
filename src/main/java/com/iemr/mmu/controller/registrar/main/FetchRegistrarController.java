@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -216,5 +217,28 @@ public class FetchRegistrarController {
 
 		}
 		return response.toString();
+	}
+
+	@CrossOrigin()
+	@ApiOperation(value = "Search beneficiary for BeneficiaryID or beneficiary Phone No", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/quickSearchNew" }, method = { RequestMethod.POST })
+	public String quickSearchNew(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
+		String searchList = null;
+		OutputResponse response = new OutputResponse();
+		try {
+			searchList = registrarServiceImpl.beneficiaryQuickSearch(requestObj, Authorization);
+			if (searchList == null) {
+				response.setError(5000, "Invalid request");
+				return response.toString();
+			} else {
+				return searchList;
+			}
+		} catch (Exception e) {
+			logger.error("Error in Quick Search" + e);
+			response.setError(e);
+			return response.toString();
+		}
+
 	}
 }
