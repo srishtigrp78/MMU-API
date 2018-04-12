@@ -9,6 +9,7 @@ public class WrapperBenInvestigationANC {
 	private Long benVisitID;
 	private Integer providerServiceMapID;
 	private Long prescriptionID;
+	private String externalInvestigations;
 	private String createdBy;
 
 	private ArrayList<LabTestOrderDetail> laboratoryList;
@@ -73,6 +74,14 @@ public class WrapperBenInvestigationANC {
 
 	public void setLaboratoryList(ArrayList<LabTestOrderDetail> laboratoryList) {
 		this.laboratoryList = laboratoryList;
+	}
+
+	public String getExternalInvestigations() {
+		return externalInvestigations;
+	}
+
+	public void setExternalInvestigations(String externalInvestigations) {
+		this.externalInvestigations = externalInvestigations;
 	}
 
 }

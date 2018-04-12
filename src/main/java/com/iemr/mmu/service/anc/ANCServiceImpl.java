@@ -233,7 +233,8 @@ public class ANCServiceImpl implements ANCService
 					prescriptionID =
 							commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
 									wrapperBenInvestigationANC.getBeneficiaryRegID(), wrapperBenInvestigationANC.getBenVisitID(),
-									wrapperBenInvestigationANC.getProviderServiceMapID(), wrapperBenInvestigationANC.getCreatedBy());
+									wrapperBenInvestigationANC.getProviderServiceMapID(), wrapperBenInvestigationANC.getCreatedBy(),
+									wrapperBenInvestigationANC.getExternalInvestigations());
 
 					createdBy = wrapperBenInvestigationANC.getCreatedBy();
 					bvID = wrapperBenInvestigationANC.getBenVisitID();
@@ -302,6 +303,9 @@ public class ANCServiceImpl implements ANCService
 	public Long saveBenVisitDetails(JsonObject visitDetailsOBJ) throws Exception
 	{
 		Long benVisitID = null;
+		int investigationSuccessFlag = 0;
+		int adherenceSuccessFlag = 0;
+		int chiefComplaintsSuccessFlag = 0;
 		if (visitDetailsOBJ != null && visitDetailsOBJ.has("visitDetails") && !visitDetailsOBJ.get("visitDetails").isJsonNull())
 		{
 
@@ -328,14 +332,14 @@ public class ANCServiceImpl implements ANCService
 							benChiefComplaint.setBenVisitID(benVisitID);
 						}
 					}
-					commonNurseServiceImpl.saveBenChiefComplaints(benChiefComplaintList);
+					chiefComplaintsSuccessFlag = commonNurseServiceImpl.saveBenChiefComplaints(benChiefComplaintList);
 				}
 				if (visitDetailsOBJ.has("adherence") && !visitDetailsOBJ.get("adherence").isJsonNull())
 				{
 					// Save Ben Adherence
 					BenAdherence benAdherence = InputMapper.gson().fromJson(visitDetailsOBJ.get("adherence"), BenAdherence.class);
 					benAdherence.setBenVisitID(benVisitID);
-					int r = commonNurseServiceImpl.saveBenAdherenceDetails(benAdherence);
+					adherenceSuccessFlag = commonNurseServiceImpl.saveBenAdherenceDetails(benAdherence);
 				}
 				if (visitDetailsOBJ.has("investigation") && !visitDetailsOBJ.get("investigation").isJsonNull())
 				{
@@ -345,33 +349,17 @@ public class ANCServiceImpl implements ANCService
 
 					if (wrapperBenInvestigationANC != null)
 					{
-						// Long prescriptionID =
-						// ancNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
-						// wrapperBenInvestigationANC.getBeneficiaryRegID(),
-						// wrapperBenInvestigationANC.getBenVisitID(),
-						// wrapperBenInvestigationANC.getProviderServiceMapID(),
-						// wrapperBenInvestigationANC.getCreatedBy());
-
-						Long prescriptionID =
-								commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
-										wrapperBenInvestigationANC.getBeneficiaryRegID(), wrapperBenInvestigationANC.getBenVisitID(),
-										wrapperBenInvestigationANC.getProviderServiceMapID(), wrapperBenInvestigationANC.getCreatedBy());
-
-						//
 						wrapperBenInvestigationANC.setBenVisitID(benVisitID);
-						wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
-						Long investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
-						if (investigationSuccessFlag != null && investigationSuccessFlag > 0)
-						{
-							// Investigation data saved successfully.
-						} else
-						{
-							// Something went wrong !!!
-						}
+						investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigationDetails(wrapperBenInvestigationANC);
+						
 					} else
 					{
 						// Invalid Data..
 					}
+					
+				}
+				if(adherenceSuccessFlag>0 && chiefComplaintsSuccessFlag>0 && investigationSuccessFlag>0){
+					// Adherence, ChiefComplaints and Investigation Details stored successfully.
 				}
 
 				// TODO Save Ben Upload Files
@@ -846,7 +834,7 @@ public class ANCServiceImpl implements ANCService
 		// resMap.put("BenChiefComplaints",
 		// ancNurseServiceImpl.getBenChiefComplaints(benRegID, benVisitID));
 
-		resMap.put("LabTestOrders", commonNurseServiceImpl.getLabTestOrders(benRegID, benVisitID));
+		resMap.put("Investigation", commonNurseServiceImpl.getLabTestOrders(benRegID, benVisitID));
 
 		return resMap.toString();
 	}

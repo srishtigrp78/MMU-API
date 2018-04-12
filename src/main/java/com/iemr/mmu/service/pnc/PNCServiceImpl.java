@@ -156,7 +156,8 @@ public class PNCServiceImpl implements PNCService {
 							wrapperBenInvestigationANC.getBeneficiaryRegID(),
 							wrapperBenInvestigationANC.getBenVisitID(),
 							wrapperBenInvestigationANC.getProviderServiceMapID(),
-							wrapperBenInvestigationANC.getCreatedBy());
+							wrapperBenInvestigationANC.getCreatedBy(),
+							wrapperBenInvestigationANC.getExternalInvestigations());
 
 					createdBy = wrapperBenInvestigationANC.getCreatedBy();
 					bvID = wrapperBenInvestigationANC.getBenVisitID();
