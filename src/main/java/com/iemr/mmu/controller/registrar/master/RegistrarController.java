@@ -119,10 +119,10 @@ public class RegistrarController {
 	 * nurseServiceImpl.updateBeneficiaryStatus('R', benRegID); if
 	 * (benData.getBeneficiaryID() != null) {
 	 * response.setResponse(benData.getBeneficiaryID()); } else { //
-	 * i_beneficiary, i_bendemographics and // m_benphonemap // roll-back
+	 * i_beneficiary, I_bendemographics and // m_benphonemap // roll-back
 	 * response.
 	 * setResponse("Registration Done But BeneficiaryID Not Generated!!!"); } }
-	 * else { // i_beneficiary, i_bendemographics and m_benphonemap // roll-back
+	 * else { // i_beneficiary, I_bendemographics and m_benphonemap // roll-back
 	 * response.setError(500, "Something Went-Wrong"); } } else { //
 	 * i_beneficiary roll-back response.setError(500, "Something Went-Wrong"); }
 	 * } logger.info("createBeneficiary response:" + response); } catch
@@ -358,7 +358,7 @@ public class RegistrarController {
 	 * nurseServiceImpl.updateBeneficiaryStatus('R', benRegID);
 	 * response.setResponse("Beneficiary Details updated successfully!!!");
 	 * 
-	 * } else { // i_beneficiary, i_bendemographics and m_benphonemap //
+	 * } else { // i_beneficiary, I_bendemographics and m_benphonemap //
 	 * roll-back response.setError(500, "Something Went-Wrong"); } } else { //
 	 * i_beneficiary roll-back response.setError(500, "Something Went-Wrong"); }
 	 * } logger.info("updateBeneficiary response:" + response); } catch

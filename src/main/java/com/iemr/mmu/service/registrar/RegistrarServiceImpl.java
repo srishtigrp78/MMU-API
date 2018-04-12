@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -53,7 +54,7 @@ import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 public class RegistrarServiceImpl implements RegistrarService {
 	@Value("${registrationUrl}")
 	private String registrationUrl;
-	
+
 	private RegistrarRepoBenData registrarRepoBenData;
 	private RegistrarRepoBenDemoData registrarRepoBenDemoData;
 	private RegistrarRepoBenPhoneMapData registrarRepoBenPhoneMapData;
@@ -124,7 +125,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 	public Long createBeneficiaryDemographic(JsonObject benD, Long benRegID) {
 		Long tmpBenDemoID = null;
 		// Call repository for saving data in
-		// Table: i_bendemographics
+		// Table: I_bendemographics
 		// Persistence Class: BeneficiaryDemographicData
 		BeneficiaryDemographicData benDemoData = registrarRepoBenDemoData.save(getBenDemoOBJ(benD, benRegID));
 		if (benDemoData != null) {
@@ -246,7 +247,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 	@Override
 	public String getRegWorkList(int i) {
 		// Call repository for fetching data from
-		// Table: i_beneficiary, i_bendemographics, m_benphonemap
+		// Table: i_beneficiary, I_bendemographics, m_benphonemap
 		// Persistence Class: BeneficiaryData, BeneficiaryDemographicData,
 		// ...................BeneficiaryPhoneMapping
 		List<Object[]> resList = registrarRepoBenData.getRegistrarWorkList(i);
@@ -512,7 +513,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 	public int updateBeneficiaryDemographic(JsonObject benD, Long benRegID) {
 		Long tmpBenDemoID = null;
 		// Call repository for updating data in
-		// Table: i_bendemographics
+		// Table: I_bendemographics
 		// Persistence Class: BeneficiaryDemographicData
 		BeneficiaryDemographicData benDemographicData = getBenDemoOBJ(benD, benRegID);
 		Integer benDemoData = registrarRepoBenDemoData.updateBendemographicData(benDemographicData.getCountryID(),
@@ -658,7 +659,11 @@ public class RegistrarServiceImpl implements RegistrarService {
 		return benDetails;
 	}
 
-	public String registerBeneficiary(String comingRequest, String Authorization) throws Exception {
+	public Long registerBeneficiary(String comingRequest, String Authorization) throws Exception {
+
+		Long beneficiaryRegID = null;
+		Long beneficiaryID = null;
+
 		RestTemplate restTemplate = new RestTemplate();
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
 		headers.add("Content-Type", "application/json");
@@ -666,15 +671,25 @@ public class RegistrarServiceImpl implements RegistrarService {
 		HttpEntity<Object> request = new HttpEntity<Object>(comingRequest, headers);
 		ResponseEntity<String> response = restTemplate.exchange(registrationUrl, HttpMethod.POST, request,
 				String.class);
-		// After successfull registration...
-		Long beneficiaryRegID = Long.valueOf(8054);
-		Long beneficiaryID = Long.valueOf(8054);
-		int i = commonBenStatusFlowServiceImpl.createBenFlowRecord(comingRequest, beneficiaryRegID, beneficiaryID);
-		if(i > 0)
-		return "";
-		else return null;
-	}
+		if (response.getStatusCodeValue() == 200 & response.hasBody()) {
+			String responseStr = response.getBody();
+			JSONObject responseOBJ = new JSONObject(responseStr);
+			beneficiaryRegID = responseOBJ.getJSONObject("data").getLong("beneficiaryRegID");
+			beneficiaryID = responseOBJ.getJSONObject("data").getLong("beneficiaryID");
+			System.out.println("hello");
 
-	// private
+			int i = commonBenStatusFlowServiceImpl.createBenFlowRecord(comingRequest, beneficiaryRegID, beneficiaryID);
+			if (i > 0) {
+
+			} else {
+				beneficiaryID = null;
+				// log error that beneficiaryID generated but flow part is not
+				// done successfully.
+			}
+		} else {
+			// log error that registration failed.
+		}
+		return beneficiaryID;
+	}
 
 }

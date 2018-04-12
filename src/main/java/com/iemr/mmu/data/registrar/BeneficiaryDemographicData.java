@@ -19,7 +19,7 @@ import com.iemr.mmu.data.login.MasterServicePoint;
 import com.iemr.mmu.data.provider.ProviderServiceMapping;
 
 @Entity
-@Table(name = "i_bendemographics")
+@Table(name = "I_bendemographics")
 public class BeneficiaryDemographicData {
 	@Id
 	@GeneratedValue

@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
-import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
@@ -29,8 +27,7 @@ public class UpdateCommonController {
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 
 	@Autowired
-	public void setCommonNurseServiceImpl(CommonNurseServiceImpl commonNurseServiceImpl)
-	{
+	public void setCommonNurseServiceImpl(CommonNurseServiceImpl commonNurseServiceImpl) {
 		this.commonNurseServiceImpl = commonNurseServiceImpl;
 	}
 
@@ -67,6 +64,20 @@ public class UpdateCommonController {
 			logger.error("Error in benDetailsAndSubmitToNurse:" + e);
 		}
 
+		return response.toString();
+	}
+
+	@CrossOrigin
+	@ApiOperation(value = "Extend Redis Session for 30 mins", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/extend/redisSession" }, method = { RequestMethod.POST })
+	public String extendRedisSession() {
+		OutputResponse response = new OutputResponse();
+		try {
+			// temp code later have to validate the user also.
+			response.setResponse("Session extended for 30 mins");
+		} catch (Exception e) {
+			logger.error("Error while extending running session");
+		}
 		return response.toString();
 	}
 }

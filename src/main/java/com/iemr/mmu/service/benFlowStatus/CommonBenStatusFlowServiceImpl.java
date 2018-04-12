@@ -69,17 +69,19 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 			throws Exception {
 
 		BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(requestOBJ, BeneficiaryFlowStatus.class);
-
-		obj.setDistrictName(obj.getPermanentAddress().getDistrict());
-		obj.setVillageName(obj.getPermanentAddress().getVillage());
+		obj.setDistrictName(obj.getI_bendemographics().getDistrictName());
+		obj.setVillageName(obj.getI_bendemographics().getDistrictBranchName());
 		obj.setBeneficiaryRegID(beneficiaryRegID);
 		obj.setBeneficiaryID(beneficiaryID);
+		if (obj.getBenPhoneMaps() != null && obj.getBenPhoneMaps().size() > 0
+				&& obj.getBenPhoneMaps().get(0).getPhoneNo() != null)
+			obj.setPreferredPhoneNum(obj.getBenPhoneMaps().get(0).getPhoneNo());
 
 		String ageDetails = "";
 		int age_val = 0;
-		if (obj.getDob() != null) {
+		if (obj.getdOB() != null) {
 
-			Date date = new Date(obj.getDob().getTime());
+			Date date = new Date(obj.getdOB().getTime());
 			Calendar cal = Calendar.getInstance();
 
 			cal.setTime(date);
@@ -112,13 +114,6 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 
 		obj.setAge(ageDetails);
 		obj.setBen_age_val(age_val);
-
-		if (obj.getGenderID() == 1)
-			obj.setGenderName("Male");
-		else if (obj.getGenderID() == 2)
-			obj.setGenderName("Female");
-		else
-			obj.setGenderName("Transgender");
 
 		if (obj.getLastName() != null)
 			obj.setBenName(obj.getFirstName() + " " + obj.getLastName());

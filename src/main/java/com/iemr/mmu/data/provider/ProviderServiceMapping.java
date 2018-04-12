@@ -77,7 +77,7 @@ public class ProviderServiceMapping {
 	@Column(name = "DistrictBlockID")
 	private Integer districtBlockID;
 	@Expose
-	@Column(name = "Address")
+	@Column(name = "I_bendemographics")
 	private String address;
 	@Expose
 	@Column(name = "StatusID")

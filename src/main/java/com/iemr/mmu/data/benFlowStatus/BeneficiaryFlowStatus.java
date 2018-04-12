@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.benFlowStatus;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -117,11 +118,11 @@ public class BeneficiaryFlowStatus {
 
 	@Expose
 	@Column(name = "ben_dob")
-	private Timestamp dob;
+	private Timestamp dOB;
 
 	@Expose
 	@Column(name = "ben_gender_val")
-	private Short gender;
+	private Short genderID;
 
 	@Expose
 	@Column(name = "ben_gender")
@@ -149,39 +150,15 @@ public class BeneficiaryFlowStatus {
 	@Expose
 	@Column(name = "beneficiary_id")
 	private Long beneficiaryID;
-	
+
 	@Expose
 	@Column(name = "lab_iteration_cnt")
 	private Short labIteration;
-	
+
 	@Transient
-	private Address permanentAddress;
-
-	
-	
-	public Short getGender() {
-		return gender;
-	}
-
-	public void setGender(Short gender) {
-		this.gender = gender;
-	}
-
-	public String getPreferredPhoneNum() {
-		return preferredPhoneNum;
-	}
-
-	public void setPreferredPhoneNum(String preferredPhoneNum) {
-		this.preferredPhoneNum = preferredPhoneNum;
-	}
-
-	public Short getLabIteration() {
-		return labIteration;
-	}
-
-	public void setLabIteration(Short labIteration) {
-		this.labIteration = labIteration;
-	}
+	private I_bendemographics i_bendemographics;
+	@Transient
+	private List<BenPhoneMaps> benPhoneMaps;
 
 	public Long getBenFlowID() {
 		return benFlowID;
@@ -375,20 +352,20 @@ public class BeneficiaryFlowStatus {
 		this.ben_age_val = ben_age_val;
 	}
 
-	public Timestamp getDob() {
-		return dob;
+	public Timestamp getdOB() {
+		return dOB;
 	}
 
-	public void setDob(Timestamp dob) {
-		this.dob = dob;
+	public void setdOB(Timestamp dOB) {
+		this.dOB = dOB;
 	}
 
 	public Short getGenderID() {
-		return gender;
+		return genderID;
 	}
 
 	public void setGenderID(Short genderID) {
-		this.gender = genderID;
+		this.genderID = genderID;
 	}
 
 	public String getGenderName() {
@@ -399,12 +376,12 @@ public class BeneficiaryFlowStatus {
 		this.genderName = genderName;
 	}
 
-	public String getPhoneNo() {
+	public String getPreferredPhoneNum() {
 		return preferredPhoneNum;
 	}
 
-	public void setPhoneNo(String phoneNo) {
-		this.preferredPhoneNum = phoneNo;
+	public void setPreferredPhoneNum(String preferredPhoneNum) {
+		this.preferredPhoneNum = preferredPhoneNum;
 	}
 
 	public String getFatherName() {
@@ -447,12 +424,28 @@ public class BeneficiaryFlowStatus {
 		this.beneficiaryID = beneficiaryID;
 	}
 
-	public Address getPermanentAddress() {
-		return permanentAddress;
+	public Short getLabIteration() {
+		return labIteration;
 	}
 
-	public void setPermanentAddress(Address permanentAddress) {
-		this.permanentAddress = permanentAddress;
+	public void setLabIteration(Short labIteration) {
+		this.labIteration = labIteration;
+	}
+
+	public I_bendemographics getI_bendemographics() {
+		return i_bendemographics;
+	}
+
+	public void setI_bendemographics(I_bendemographics i_bendemographics) {
+		this.i_bendemographics = i_bendemographics;
+	}
+
+	public List<BenPhoneMaps> getBenPhoneMaps() {
+		return benPhoneMaps;
+	}
+
+	public void setBenPhoneMaps(List<BenPhoneMaps> benPhoneMaps) {
+		this.benPhoneMaps = benPhoneMaps;
 	}
 
 }

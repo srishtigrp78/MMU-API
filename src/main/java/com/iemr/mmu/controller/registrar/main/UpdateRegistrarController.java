@@ -93,7 +93,7 @@ public class UpdateRegistrarController {
 						response.setResponse("Beneficiary Details updated successfully!!!");
 
 					} else {
-						// i_beneficiary, i_bendemographics and m_benphonemap
+						// i_beneficiary, I_bendemographics and m_benphonemap
 						// roll-back
 						response.setError(500, "Something Went-Wrong");
 					}

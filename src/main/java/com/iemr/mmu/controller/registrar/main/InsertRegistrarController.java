@@ -75,7 +75,9 @@ public class InsertRegistrarController {
 		try {
 
 			// New code 23-03-2018
-		//	String s = registrarServiceImpl.registerBeneficiary(comingRequest, Authorization);
+			// String s =
+			// registrarServiceImpl.registerBeneficiary(comingRequest,
+			// Authorization);
 			// end of New code 23-03-2018
 
 			// JsonObject responseOBJ = new JsonObject();
@@ -106,7 +108,7 @@ public class InsertRegistrarController {
 						if (benData.getBeneficiaryID() != null) {
 							response.setResponse(benData.getBeneficiaryID());
 						} else {
-							// i_beneficiary, i_bendemographics and
+							// i_beneficiary, I_bendemographics and
 							// m_benphonemap
 							// roll-back
 
@@ -125,7 +127,7 @@ public class InsertRegistrarController {
 							// end of Temp code[replace by 1.1]
 						}
 					} else {
-						// i_beneficiary, i_bendemographics and m_benphonemap
+						// i_beneficiary, I_bendemographics and m_benphonemap
 						// roll-back
 						response.setError(500, "Something Went-Wrong");
 					}
@@ -145,15 +147,16 @@ public class InsertRegistrarController {
 	@CrossOrigin()
 	@ApiOperation(value = "Register a new Beneficiary new API", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/registrarBeneficaryRegistrationNew" }, method = { RequestMethod.POST })
-	public String registrarBeneficaryRegistrationNew(@RequestBody String comingReq, @RequestHeader(value = "Authorization") String Authorization) {
+	public String registrarBeneficaryRegistrationNew(@RequestBody String comingReq,
+			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
-			String s = registrarServiceImpl.registerBeneficiary(comingReq, Authorization);
-			if (s != null)
-				response.setResponse("Registration done. Beneficiary ID: " + s);
+			Long r = registrarServiceImpl.registerBeneficiary(comingReq, Authorization);
+			if (r != null)
+				response.setResponse("Beneficiary successfully registered. Beneficiary ID is : " + r);
 			else
 				response.setError(5000, "Error in registration. Please contact administrator.");
-			System.out.println(s);
+			System.out.println(r);
 		} catch (Exception e) {
 			response.setError(e);
 		}
