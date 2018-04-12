@@ -706,13 +706,16 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 			} else {
 			}
 
-			// Save Prescription
-			prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
+			
 
 			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull()) {
 				WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
 						.fromJson(requestOBJ.get("investigation"), WrapperBenInvestigationANC.class);
 
+				// Save Prescription
+				prescriptionDetail.setExternalInvestigation(wrapperBenInvestigationANC.getExternalInvestigations());
+				prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
+				
 				if (wrapperBenInvestigationANC != null) {
 					createdBy = wrapperBenInvestigationANC.getCreatedBy();
 					bvID = wrapperBenInvestigationANC.getBenVisitID();

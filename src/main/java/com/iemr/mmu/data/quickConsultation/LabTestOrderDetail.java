@@ -39,20 +39,16 @@ public class LabTestOrderDetail {
 	private Long prescriptionID;
 
 	@Expose
-	@Column(name = "TestID")
-	private Integer testID;
+	@Column(name = "ProcedureID")
+	private Integer procedureID;
 
 	@Expose
-	@Column(name = "OrderedTestName")
-	private String testName;
+	@Column(name = "ProcedureName")
+	private String procedureName;
 
 	@Expose
 	@Column(name = "TestingRequirements")
 	private String testingRequirements;
-
-	@Expose
-	@Column(name = "IsRadiologyImaging")
-	private Boolean isRadiologyImaging;
 
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -139,20 +135,20 @@ public class LabTestOrderDetail {
 		this.prescriptionID = prescriptionID;
 	}
 
-	public Integer getTestID() {
-		return testID;
+	public Integer getProcedureID() {
+		return procedureID;
 	}
 
-	public void setTestID(Integer testID) {
-		this.testID = testID;
+	public void setProcedureID(Integer procedureID) {
+		this.procedureID = procedureID;
 	}
 
-	public String getTestName() {
-		return testName;
+	public String getProcedureName() {
+		return procedureName;
 	}
 
-	public void setTestName(String testName) {
-		this.testName = testName;
+	public void setProcedureName(String procedureName) {
+		this.procedureName = procedureName;
 	}
 
 	public String getTestingRequirements() {
@@ -163,12 +159,8 @@ public class LabTestOrderDetail {
 		this.testingRequirements = testingRequirements;
 	}
 
-	public Boolean getIsRadiologyImaging() {
-		return isRadiologyImaging;
-	}
-
-	public void setIsRadiologyImaging(Boolean isRadiologyImaging) {
-		this.isRadiologyImaging = isRadiologyImaging;
+	public void setLabTestOrderID(Long labTestOrderID) {
+		this.labTestOrderID = labTestOrderID;
 	}
 
 	public Boolean getDeleted() {
@@ -294,18 +286,15 @@ public class LabTestOrderDetail {
 
 				JsonObject obj = csobj.getAsJsonObject();
 
-				if (obj.has("testID") && !obj.get("testID").isJsonNull())
-					labTestOrderDetail.setTestID(obj.get("testID").getAsInt());
+				if (obj.has("procedureID") && !obj.get("procedureID").isJsonNull())
+					labTestOrderDetail.setProcedureID(obj.get("procedureID").getAsInt());
 
-				if (obj.has("testName") && !obj.get("testName").isJsonNull())
-					labTestOrderDetail.setTestName(obj.get("testName").getAsString());
+				if (obj.has("procedureName") && !obj.get("procedureName").isJsonNull())
+					labTestOrderDetail.setProcedureName(obj.get("procedureName").getAsString());
 				;
 
 				if (obj.has("testingRequirements") && !obj.get("testingRequirements").isJsonNull())
 					labTestOrderDetail.setTestingRequirements(obj.get("testingRequirements").getAsString());
-
-				if (obj.has("isRadiologyImaging") && !obj.get("isRadiologyImaging").isJsonNull())
-					labTestOrderDetail.setIsRadiologyImaging(obj.get("isRadiologyImaging").getAsBoolean());
 
 				if (emrgCasesheet.has("createdBy") && !emrgCasesheet.get("createdBy").isJsonNull())
 					labTestOrderDetail.setCreatedBy(emrgCasesheet.get("createdBy").getAsString());
@@ -317,11 +306,10 @@ public class LabTestOrderDetail {
 		return resArray;
 	}
 
-	public LabTestOrderDetail(Integer testID, String orderedTestName, Boolean isRadiologyImaging) {
+	public LabTestOrderDetail(Integer procedureID, String procedureName) {
 		super();
-		this.testID = testID;
-		this.testName = orderedTestName;
-		this.isRadiologyImaging = isRadiologyImaging;
+		this.procedureID = procedureID;
+		this.procedureName = procedureName;
 	}
 
 	public static WrapperBenInvestigationANC getLabTestOrderDetails(ArrayList<Object[]> resList) {
@@ -336,7 +324,7 @@ public class LabTestOrderDetail {
 			ArrayList<LabTestOrderDetail> laboratoryList = new ArrayList<LabTestOrderDetail>();
 			for (Object[] obj : resList) {
 
-				LabTestOrderDetail cOBJ = new LabTestOrderDetail((Integer) obj[3], (String) obj[4], (Boolean) obj[5]);
+				LabTestOrderDetail cOBJ = new LabTestOrderDetail((Integer) obj[3], (String) obj[4]);
 				laboratoryList.add(cOBJ);
 				// resArray.add(cOBJ);
 			}

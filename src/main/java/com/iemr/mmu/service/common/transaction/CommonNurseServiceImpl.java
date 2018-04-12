@@ -2072,12 +2072,13 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	}
 
 	public Long savePrescriptionDetailsAndGetPrescriptionID(Long benRegID, Long benVisitID, Integer psmID,
-			String createdBy) {
+			String createdBy, String externalInvestigation) {
 		PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
 		prescriptionDetail.setBeneficiaryRegID(benRegID);
 		prescriptionDetail.setBenVisitID(benVisitID);
 		prescriptionDetail.setProviderServiceMapID(psmID);
 		prescriptionDetail.setCreatedBy(createdBy);
+		prescriptionDetail.setExternalInvestigation(externalInvestigation);
 
 		Long prescriptionID = saveBenPrescription(prescriptionDetail);
 		return prescriptionID;
@@ -2127,6 +2128,34 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		return r;
 	}
 
+	public int saveBenInvestigationDetails(WrapperBenInvestigationANC wrapperBenInvestigationANC) {
+		Long investigationSuccessFlag = null;
+		int res= 0;
+		if (wrapperBenInvestigationANC != null)
+		{
+			Long prescriptionID =
+					savePrescriptionDetailsAndGetPrescriptionID(
+							wrapperBenInvestigationANC.getBeneficiaryRegID(), wrapperBenInvestigationANC.getBenVisitID(),
+							wrapperBenInvestigationANC.getProviderServiceMapID(), wrapperBenInvestigationANC.getCreatedBy(),
+							wrapperBenInvestigationANC.getExternalInvestigations());
+
+			wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
+			investigationSuccessFlag = saveBenInvestigation(wrapperBenInvestigationANC);
+			if (investigationSuccessFlag != null && investigationSuccessFlag > 0)
+			{
+				// Investigation data saved successfully.
+				res = 1;
+			} else
+			{
+				// Something went wrong !!!
+			}
+		} else
+		{
+			// Invalid Data..
+		}
+		return res;
+	}
+	
 	public Long saveBenInvestigation(WrapperBenInvestigationANC wrapperBenInvestigationANC) {
 		Long r = null;
 

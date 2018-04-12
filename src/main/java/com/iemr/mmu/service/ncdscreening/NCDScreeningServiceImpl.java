@@ -67,10 +67,10 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 					ncdScreening.setBenVisitID(visitID);
 					saveNCDScreeningDetails = ncdScreeningNurseServiceImpl.saveNCDScreeningDetails(ncdScreening);
 				}
-
+				//There are no external investigations for NCD Screening  Nurse, So passing null
 				Long prescriptionID = commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
 						ncdScreening.getBeneficiaryRegID(), ncdScreening.getBenVisitID(),
-						ncdScreening.getProviderServiceMapID(), ncdScreening.getCreatedBy());
+						ncdScreening.getProviderServiceMapID(), ncdScreening.getCreatedBy(), null);
 
 				if (prescriptionID != null && prescriptionID > 0) {
 

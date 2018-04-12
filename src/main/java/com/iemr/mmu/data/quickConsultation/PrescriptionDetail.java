@@ -43,6 +43,10 @@ public class PrescriptionDetail {
 	private String confirmatoryDiagnosis;
 	
 	@Expose
+	@Column(name = "ExternalInvestigation")
+	private String externalInvestigation;
+	
+	@Expose
 	@Column(name = "Remarks")
 	private String remarks;
 	
@@ -258,6 +262,14 @@ public class PrescriptionDetail {
 	public void setPrescriptionID(Long prescriptionID)
 	{
 		this.prescriptionID = prescriptionID;
+	}
+
+	public String getExternalInvestigation() {
+		return externalInvestigation;
+	}
+
+	public void setExternalInvestigation(String externalInvestigation) {
+		this.externalInvestigation = externalInvestigation;
 	}
 	
 }

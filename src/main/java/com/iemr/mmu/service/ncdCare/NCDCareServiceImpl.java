@@ -111,6 +111,8 @@ public class NCDCareServiceImpl implements NCDCareService
 	public Long saveBenVisitDetails(JsonObject visitDetailsOBJ) throws Exception
 	{
 		Long benVisitID = null;
+		int adherenceSuccessFlag = 0;
+		int investigationSuccessFlag = 0;
 		if (visitDetailsOBJ != null && visitDetailsOBJ.has("visitDetails") && !visitDetailsOBJ.get("visitDetails").isJsonNull())
 		{
 
@@ -128,7 +130,7 @@ public class NCDCareServiceImpl implements NCDCareService
 					// Save Ben Adherence
 					BenAdherence benAdherence = InputMapper.gson().fromJson(visitDetailsOBJ.get("adherence"), BenAdherence.class);
 					benAdherence.setBenVisitID(benVisitID);
-					int r = commonNurseServiceImpl.saveBenAdherenceDetails(benAdherence);
+					adherenceSuccessFlag = commonNurseServiceImpl.saveBenAdherenceDetails(benAdherence);
 				}
 				if (visitDetailsOBJ.has("investigation") && !visitDetailsOBJ.get("investigation").isJsonNull())
 				{
@@ -138,26 +140,17 @@ public class NCDCareServiceImpl implements NCDCareService
 
 					if (wrapperBenInvestigationANC != null)
 					{
-
-						Long prescriptionID =
-								commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
-										wrapperBenInvestigationANC.getBeneficiaryRegID(), wrapperBenInvestigationANC.getBenVisitID(),
-										wrapperBenInvestigationANC.getProviderServiceMapID(), wrapperBenInvestigationANC.getCreatedBy());
-
 						wrapperBenInvestigationANC.setBenVisitID(benVisitID);
-						wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
-						Long investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
-						if (investigationSuccessFlag != null && investigationSuccessFlag > 0)
-						{
-							// Investigation data saved successfully.
-						} else
-						{
-							// Something went wrong !!!
-						}
+						investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigationDetails(wrapperBenInvestigationANC);
+						
 					} else
 					{
 						// Invalid Data..
 					}
+				}
+				
+				if(adherenceSuccessFlag>0 && investigationSuccessFlag>0){
+					// Adherence and Investigation Details stored successfully.
 				}
 			}
 		}
@@ -460,7 +453,7 @@ public class NCDCareServiceImpl implements NCDCareService
 
 		resMap.put("BenAdherence", commonNurseServiceImpl.getBenAdherence(benRegID, benVisitID));
 
-		resMap.put("LabTestOrders", commonNurseServiceImpl.getLabTestOrders(benRegID, benVisitID));
+		resMap.put("Investigation", commonNurseServiceImpl.getLabTestOrders(benRegID, benVisitID));
 
 		return resMap.toString();
 	}
@@ -640,12 +633,6 @@ public class NCDCareServiceImpl implements NCDCareService
 				//prescriptionID = 0;
 			}*/
 
-			if (requestOBJ.has("prescription") && !requestOBJ.get("prescription").isJsonNull())
-			{
-				PrescriptionDetail prescriptionDetail =
-						InputMapper.gson().fromJson(requestOBJ.get("prescription"), PrescriptionDetail.class);
-				prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
-			}
 			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull())
 			{
 				WrapperBenInvestigationANC wrapperBenInvestigationANC =
@@ -653,6 +640,12 @@ public class NCDCareServiceImpl implements NCDCareService
 
 				if (wrapperBenInvestigationANC != null)
 				{
+					prescriptionID =
+							commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
+									wrapperBenInvestigationANC.getBeneficiaryRegID(), wrapperBenInvestigationANC.getBenVisitID(),
+									wrapperBenInvestigationANC.getProviderServiceMapID(), wrapperBenInvestigationANC.getCreatedBy(),
+									wrapperBenInvestigationANC.getExternalInvestigations());
+
 					createdBy = wrapperBenInvestigationANC.getCreatedBy();
 					bvID = wrapperBenInvestigationANC.getBenVisitID();
 
