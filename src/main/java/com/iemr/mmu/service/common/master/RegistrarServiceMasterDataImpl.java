@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.masterdata.registrar.CommunityMaster;
 import com.iemr.mmu.data.masterdata.registrar.GenderMaster;
 import com.iemr.mmu.data.masterdata.registrar.GovIdEntityType;
@@ -18,6 +19,7 @@ import com.iemr.mmu.data.masterdata.registrar.OccupationMaster;
 import com.iemr.mmu.data.masterdata.registrar.QualificationMaster;
 import com.iemr.mmu.data.masterdata.registrar.ReligionMaster;
 import com.iemr.mmu.data.registrar.BeneficiaryData;
+import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.masterrepo.CommunityMasterRepo;
 import com.iemr.mmu.repo.masterrepo.GenderMasterRepo;
 import com.iemr.mmu.repo.masterrepo.GovIdEntityTypeRepo;
@@ -43,6 +45,12 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 	private ReligionMasterRepo religionMasterRepo;
 	private RegistrarRepoBenData registrarRepoBenData;
 	private BeneficiaryImageRepo beneficiaryImageRepo;
+	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
+
+	@Autowired
+	public void setBeneficiaryFlowStatusRepo(BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo) {
+		this.beneficiaryFlowStatusRepo = beneficiaryFlowStatusRepo;
+	}
 
 	@Autowired
 	public void setBeneficiaryImageRepo(BeneficiaryImageRepo beneficiaryImageRepo) {
@@ -106,7 +114,7 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 		ArrayList<Object[]> qm = qualificationMasterRepo.getQualificationMaster();
 		ArrayList<Object[]> rm = religionMasterRepo.getReligionMaster();
 
-	//	System.out.println("hello....");
+		// System.out.println("hello....");
 		try {
 			resMap.put("communityMaster", CommunityMaster.getCommunityMasterData(cm));
 			resMap.put("genderMaster", GenderMaster.getGenderMasterData(gm));
@@ -122,8 +130,8 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 			e.printStackTrace();
 		}
 
-		//System.out.println("helloo");
-		//System.out.println(new Gson().toJson(resMap));
+		// System.out.println("helloo");
+		// System.out.println(new Gson().toJson(resMap));
 		return new Gson().toJson(resMap);
 
 	}
@@ -159,4 +167,11 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 		return new Gson().toJson(benDetails);
 	}
 
+	// Beneficiary details for left side of the screen new
+	public String getBenDetailsForLeftSideByRegIDNew(Long beneficiaryRegID, Long benFlowID, String Authorization) {
+		ArrayList<Object[]> benFlowOBJ = beneficiaryFlowStatusRepo.getBenDetailsForLeftSidePanel(beneficiaryRegID, benFlowID);
+		BeneficiaryFlowStatus returnBenFlowOBJ = BeneficiaryFlowStatus.getBeneficiaryFlowStatusForLeftPanel(benFlowOBJ);
+		// have to add image also from common and identity.
+		return new Gson().toJson(returnBenFlowOBJ);
+	}
 }

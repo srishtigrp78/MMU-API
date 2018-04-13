@@ -125,6 +125,7 @@ public class FetchRegistrarController {
 		return response.toString();
 	}
 
+	// API for left side ben data
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Details of given beneficiaryRegID", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/get/benDetailsByRegID" }, method = { RequestMethod.POST })
@@ -219,6 +220,7 @@ public class FetchRegistrarController {
 		return response.toString();
 	}
 
+	// beneficiary quick search new integrated with common and identity
 	@CrossOrigin()
 	@ApiOperation(value = "Search beneficiary for BeneficiaryID or beneficiary Phone No", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/quickSearchNew" }, method = { RequestMethod.POST })
@@ -240,5 +242,38 @@ public class FetchRegistrarController {
 			return response.toString();
 		}
 
+	}
+
+	// Get Beneficiary Details for left side panel of given beneficiaryRegID new
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary Details for left side panel of given beneficiaryRegID", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/get/benDetailsByRegIDForLeftPanelNew" }, method = { RequestMethod.POST })
+	public String getBenDetailsForLeftSidePanelByRegID(
+			@ApiParam(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String comingRequest,
+			@RequestHeader(value = "Authorization") String Authorization) {
+		OutputResponse response = new OutputResponse();
+		logger.info("getBenDetailsByRegID request :" + comingRequest);
+		try {
+
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("beneficiaryRegID") && obj.has("benFlowID")) {
+				if (obj.getLong("beneficiaryRegID") > 0 && obj.getLong("benFlowID") > 0) {
+
+					String beneficiaryData = registrarServiceMasterDataImpl.getBenDetailsForLeftSideByRegIDNew(
+							obj.getLong("beneficiaryRegID"), obj.getLong("benFlowID"), Authorization);
+
+					response.setResponse(beneficiaryData);
+				} else {
+					response.setError(500, "Invalid Beneficiary ID");
+				}
+			} else {
+				response.setError(500, "Invalid request");
+			}
+			logger.info("getBenDetailsByRegID response :" + response);
+		} catch (Exception e) {
+			logger.error("Error in getBenDetailsByRegID :" + e);
+			response.setError(e);
+		}
+		return response.toString();
 	}
 }

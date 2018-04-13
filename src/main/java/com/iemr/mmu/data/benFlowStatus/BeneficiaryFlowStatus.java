@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.benFlowStatus;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -159,6 +160,47 @@ public class BeneficiaryFlowStatus {
 	private I_bendemographics i_bendemographics;
 	@Transient
 	private List<BenPhoneMaps> benPhoneMaps;
+	@Transient
+	private String benImage;
+	@Transient
+	private Integer ageVal;
+	@Transient
+	private Timestamp serviceDate;
+	@Transient
+	private String beneficiaryName;
+	@Transient
+	private Timestamp createdDate;
+
+	public BeneficiaryFlowStatus() {
+	}
+
+	public BeneficiaryFlowStatus(Long benFlowID, Long benRegID, Timestamp visitDate, String benName, String age,
+			Integer ageVal, Short genderID, String genderName, String villageName, String districtName) {
+		this.benFlowID = benFlowID;
+		this.beneficiaryRegID = benRegID;
+		this.serviceDate = visitDate;
+		this.beneficiaryName = benName;
+		this.age = age;
+		this.ageVal = ageVal;
+		this.genderID = genderID;
+		this.genderName = genderName;
+		this.villageName = villageName;
+		this.districtName = districtName;
+		this.createdDate = visitDate;
+
+	}
+
+	public static BeneficiaryFlowStatus getBeneficiaryFlowStatusForLeftPanel(ArrayList<Object[]> objList) {
+		BeneficiaryFlowStatus obj = null;
+		if (objList != null && objList.size() > 0) {
+			for (Object[] objArr : objList) {
+				obj = new BeneficiaryFlowStatus((Long) objArr[0], (Long) objArr[1], (Timestamp) objArr[2],
+						(String) objArr[3], (String) objArr[4], (Integer) objArr[5], (Short) objArr[6],
+						(String) objArr[7], (String) objArr[8], (String) objArr[9]);
+			}
+		}
+		return obj;
+	}
 
 	public Long getBenFlowID() {
 		return benFlowID;

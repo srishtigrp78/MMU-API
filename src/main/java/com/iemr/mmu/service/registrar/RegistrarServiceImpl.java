@@ -665,6 +665,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 		return benDetails;
 	}
 
+	// New beneficiary registration with common and identity
 	public Long registerBeneficiary(String comingRequest, String Authorization) throws Exception {
 
 		Long beneficiaryRegID = null;
@@ -698,6 +699,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 		return beneficiaryID;
 	}
 
+	// beneficiary quick search new integrated with common and identity
 	public String beneficiaryQuickSearch(String requestObj, String Authorization) {
 		String returnOBJ = null;
 		RestTemplate restTemplate = new RestTemplate();
@@ -707,16 +709,16 @@ public class RegistrarServiceImpl implements RegistrarService {
 		headers.add("AUTHORIZATION", Authorization);
 		if (obj.has("beneficiaryID") && !obj.isNull("beneficiaryID")) {
 			HttpEntity<Object> request = new HttpEntity<Object>(requestObj, headers);
-			ResponseEntity<String> response = restTemplate.exchange(registrarQuickSearchByIdUrl, HttpMethod.POST, request,
-					String.class);
+			ResponseEntity<String> response = restTemplate.exchange(registrarQuickSearchByIdUrl, HttpMethod.POST,
+					request, String.class);
 			if (response.hasBody())
 				returnOBJ = response.getBody();
 
 		} else {
 			if (obj.has("phoneNo") && !obj.isNull("phoneNo")) {
 				HttpEntity<Object> request = new HttpEntity<Object>(requestObj, headers);
-				ResponseEntity<String> response = restTemplate.exchange(registrarQuickSearchByPhoneNoUrl, HttpMethod.POST, request,
-						String.class);
+				ResponseEntity<String> response = restTemplate.exchange(registrarQuickSearchByPhoneNoUrl,
+						HttpMethod.POST, request, String.class);
 				if (response.hasBody())
 					returnOBJ = response.getBody();
 			} else {

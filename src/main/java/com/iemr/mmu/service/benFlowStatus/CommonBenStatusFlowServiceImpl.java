@@ -21,17 +21,11 @@ import com.iemr.mmu.utils.mapper.InputMapper;
 @Service
 public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowService {
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
-	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private BenVisitDetailRepo benVisitDetailRepo;
 
 	@Autowired
 	public void setBenVisitDetailRepo(BenVisitDetailRepo benVisitDetailRepo) {
 		this.benVisitDetailRepo = benVisitDetailRepo;
-	}
-
-	@Autowired
-	public void setCommonNurseServiceImpl(CommonNurseServiceImpl commonNurseServiceImpl) {
-		this.commonNurseServiceImpl = commonNurseServiceImpl;
 	}
 
 	@Autowired
