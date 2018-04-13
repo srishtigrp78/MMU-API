@@ -480,7 +480,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					examinationDetailsOBJ.get("gastroIntestinalExamination"), SysGastrointestinalExamination.class);
 			if (null != gastrointestinalExamination) {
 				gastrointestinalExamination.setBenVisitID(benVisitID);
-				gastroIntsExmnSuccessFlag = generalOPDNurseServiceImpl
+				gastroIntsExmnSuccessFlag = commonNurseServiceImpl
 						.saveSysGastrointestinalExamination(gastrointestinalExamination);
 
 			}
@@ -826,7 +826,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		examinationDetailsMap.put("headToToeExamination",
 				commonNurseServiceImpl.getHeadToToeExaminationData(benRegID, benVisitID));
 		examinationDetailsMap.put("gastrointestinalExamination",
-				generalOPDNurseServiceImpl.getSysGastrointestinalExamination(benRegID, benVisitID));
+				commonNurseServiceImpl.getSysGastrointestinalExamination(benRegID, benVisitID));
 		examinationDetailsMap.put("cardiovascularExamination",
 				commonNurseServiceImpl.getCardiovascularExamination(benRegID, benVisitID));
 		examinationDetailsMap.put("respiratoryExamination",
@@ -1121,7 +1121,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				&& !examinationDetailsOBJ.get("gastroIntestinalExamination").isJsonNull()) {
 			SysGastrointestinalExamination gastrointestinalExamination = InputMapper.gson().fromJson(
 					examinationDetailsOBJ.get("gastroIntestinalExamination"), SysGastrointestinalExamination.class);
-			gastroIntsExmnSuccessFlag = generalOPDNurseServiceImpl
+			gastroIntsExmnSuccessFlag = commonNurseServiceImpl
 					.updateSysGastrointestinalExamination(gastrointestinalExamination);
 		} else {
 			gastroIntsExmnSuccessFlag = 1;
