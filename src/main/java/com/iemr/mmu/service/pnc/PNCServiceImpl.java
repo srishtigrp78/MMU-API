@@ -469,6 +469,7 @@ public class PNCServiceImpl implements PNCService {
 
 		Long genExmnSuccessFlag = null;
 		Long headToToeExmnSuccessFlag = null;
+		Long gastroIntsExmnSuccessFlag = null;
 		Long cardiExmnSuccessFlag = null;
 		Long respiratoryExmnSuccessFlag = null;
 		Long centralNrvsExmnSuccessFlag = null;
@@ -503,20 +504,20 @@ public class PNCServiceImpl implements PNCService {
 			headToToeExmnSuccessFlag = new Long(1);
 		}
 
-		/*// Save Gastro Intestinal Examination Details
+		// Save Gastro Intestinal Examination Details
 		if (examinationDetailsOBJ != null && examinationDetailsOBJ.has("gastroIntestinalExamination")
 				&& !examinationDetailsOBJ.get("gastroIntestinalExamination").isJsonNull()) {
 			SysGastrointestinalExamination gastrointestinalExamination = InputMapper.gson().fromJson(
 					examinationDetailsOBJ.get("gastroIntestinalExamination"), SysGastrointestinalExamination.class);
 			if (null != gastrointestinalExamination) {
 				gastrointestinalExamination.setBenVisitID(benVisitID);
-				gastroIntsExmnSuccessFlag = generalOPDNurseServiceImpl
+				gastroIntsExmnSuccessFlag = commonNurseServiceImpl
 						.saveSysGastrointestinalExamination(gastrointestinalExamination);
 
 			}
 		} else {
 			gastroIntsExmnSuccessFlag = new Long(1);
-		}*/
+		}
 				
 		// Save cardioVascular Examination Details
 		if (examinationDetailsOBJ != null && examinationDetailsOBJ.has("cardioVascularExamination")
@@ -596,6 +597,7 @@ public class PNCServiceImpl implements PNCService {
 		Long exmnSuccessFlag = null;
 		if ((null != genExmnSuccessFlag && genExmnSuccessFlag > 0)
 				&& (null != headToToeExmnSuccessFlag && headToToeExmnSuccessFlag > 0)
+				&& (null != gastroIntsExmnSuccessFlag && gastroIntsExmnSuccessFlag > 0)
 				&& (null != cardiExmnSuccessFlag && cardiExmnSuccessFlag > 0)
 				&& (null != respiratoryExmnSuccessFlag && respiratoryExmnSuccessFlag > 0)
 				&& (null != centralNrvsExmnSuccessFlag && centralNrvsExmnSuccessFlag > 0)
@@ -674,6 +676,8 @@ public class PNCServiceImpl implements PNCService {
 				commonNurseServiceImpl.getGeneralExaminationData(benRegID, benVisitID));
 		examinationDetailsMap.put("headToToeExamination",
 				commonNurseServiceImpl.getHeadToToeExaminationData(benRegID, benVisitID));
+		examinationDetailsMap.put("gastrointestinalExamination",
+				commonNurseServiceImpl.getSysGastrointestinalExamination(benRegID, benVisitID));
 		examinationDetailsMap.put("cardiovascularExamination",
 				commonNurseServiceImpl.getCardiovascularExamination(benRegID, benVisitID));
 		examinationDetailsMap.put("respiratoryExamination",
@@ -998,6 +1002,7 @@ public class PNCServiceImpl implements PNCService {
 
 		int genExmnSuccessFlag = 0;
 		int headToToeExmnSuccessFlag = 0;
+		int gastroIntsExmnSuccessFlag = 0;
 		int cardiExmnSuccessFlag = 0;
 		int respiratoryExmnSuccessFlag = 0;
 		int centralNrvsExmnSuccessFlag = 0;
@@ -1022,6 +1027,17 @@ public class PNCServiceImpl implements PNCService {
 			headToToeExmnSuccessFlag = commonNurseServiceImpl.updatePhyHeadToToeExamination(headToToeExamination);
 		} else {
 			headToToeExmnSuccessFlag = 1;
+		}
+		
+		// Save Gastro Intestinal Examination Details
+		if (examinationDetailsOBJ != null && examinationDetailsOBJ.has("gastroIntestinalExamination")
+				&& !examinationDetailsOBJ.get("gastroIntestinalExamination").isJsonNull()) {
+			SysGastrointestinalExamination gastrointestinalExamination = InputMapper.gson().fromJson(
+					examinationDetailsOBJ.get("gastroIntestinalExamination"), SysGastrointestinalExamination.class);
+			gastroIntsExmnSuccessFlag = commonNurseServiceImpl
+					.updateSysGastrointestinalExamination(gastrointestinalExamination);
+		} else {
+			gastroIntsExmnSuccessFlag = 1;
 		}
 		
 		// Save Cardio Vascular Examination Details
@@ -1082,7 +1098,7 @@ public class PNCServiceImpl implements PNCService {
 
 		if (genExmnSuccessFlag > 0 && headToToeExmnSuccessFlag > 0 && cardiExmnSuccessFlag > 0
 				&& respiratoryExmnSuccessFlag > 0 && centralNrvsExmnSuccessFlag > 0 && muskelstlExmnSuccessFlag > 0
-				&& genitorinaryExmnSuccessFlag > 0) {
+				&& genitorinaryExmnSuccessFlag > 0 && gastroIntsExmnSuccessFlag > 0) {
 			exmnSuccessFlag = genExmnSuccessFlag;
 		}
 		return exmnSuccessFlag;

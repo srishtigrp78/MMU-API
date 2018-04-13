@@ -677,7 +677,6 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		return examinationID;
 	}
 
-	@Deprecated
 	public Long saveSysGastrointestinalExamination(SysGastrointestinalExamination gastrointestinalExamination) {
 		Long examinationID = null;
 		SysGastrointestinalExamination response = sysGastrointestinalExaminationRepo.save(gastrointestinalExamination);
@@ -1564,7 +1563,6 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 	}
 
-	@Deprecated
 	public SysGastrointestinalExamination getSysGastrointestinalExamination(Long benRegID, Long benVisitID) {
 		SysGastrointestinalExamination sysGastrointestinalExaminationData = sysGastrointestinalExaminationRepo
 				.getSSysGastrointestinalExamination(benRegID, benVisitID);
@@ -2547,6 +2545,29 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					childDevelopmentHistory.getSocialMilestone(), childDevelopmentHistory.getIsSMAttained(), childDevelopmentHistory.getLanguageMilestone(), 
 					childDevelopmentHistory.getIsLMAttained(), childDevelopmentHistory.getDevelopmentProblem(), childDevelopmentHistory.getModifiedBy(), processed, 
 					childDevelopmentHistory.getBeneficiaryRegID(), childDevelopmentHistory.getBenVisitID());
+		}
+		return response;
+	}
+	
+	public int updateSysGastrointestinalExamination(SysGastrointestinalExamination gastrointestinalExamination) {
+		int response = 0;
+		if (null != gastrointestinalExamination) {
+			String processed = sysGastrointestinalExaminationRepo.getBenGastrointestinalExaminationStatus(
+					gastrointestinalExamination.getBeneficiaryRegID(), gastrointestinalExamination.getBenVisitID());
+			if (null != processed && !"N".equals(processed)) {
+				processed = "U";
+			} else {
+				processed = "N";
+			}
+			response = sysGastrointestinalExaminationRepo.updateSysGastrointestinalExamination(
+					gastrointestinalExamination.getInspection(), gastrointestinalExamination.getPalpation(),
+					gastrointestinalExamination.getPalpation_AbdomenTexture(),
+					gastrointestinalExamination.getPalpation_Liver(), gastrointestinalExamination.getPalpation_Spleen(),
+					gastrointestinalExamination.getPalpation_Tenderness(),
+					gastrointestinalExamination.getPalpation_LocationOfTenderness(),
+					gastrointestinalExamination.getPercussion(), gastrointestinalExamination.getAuscultation(),
+					gastrointestinalExamination.getAnalRegion(), gastrointestinalExamination.getModifiedBy(), processed,
+					gastrointestinalExamination.getBeneficiaryRegID(), gastrointestinalExamination.getBenVisitID());
 		}
 		return response;
 	}

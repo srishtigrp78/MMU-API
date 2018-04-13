@@ -86,6 +86,7 @@ public class GeneralOPDNurseServiceImpl implements GeneralOPDNurseService {
 		return perinatalSuccessFlag;
 	}
 
+	@Deprecated
 	public Long saveSysGastrointestinalExamination(SysGastrointestinalExamination gastrointestinalExamination) {
 		Long examinationID = null;
 		SysGastrointestinalExamination response = sysGastrointestinalExaminationRepo.save(gastrointestinalExamination);
@@ -322,6 +323,7 @@ public class GeneralOPDNurseServiceImpl implements GeneralOPDNurseService {
 		return feedingHistoryDetails;
 	}
 
+	@Deprecated
 	public SysGastrointestinalExamination getSysGastrointestinalExamination(Long benRegID, Long benVisitID) {
 		SysGastrointestinalExamination sysGastrointestinalExaminationData = sysGastrointestinalExaminationRepo
 				.getSSysGastrointestinalExamination(benRegID, benVisitID);
@@ -329,6 +331,7 @@ public class GeneralOPDNurseServiceImpl implements GeneralOPDNurseService {
 		return sysGastrointestinalExaminationData;
 	}
 
+	@Deprecated
 	public int updateSysGastrointestinalExamination(SysGastrointestinalExamination gastrointestinalExamination) {
 		int response = 0;
 		if (null != gastrointestinalExamination) {
