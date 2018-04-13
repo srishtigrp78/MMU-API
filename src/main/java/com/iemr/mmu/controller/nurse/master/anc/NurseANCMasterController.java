@@ -38,7 +38,7 @@ public class NurseANCMasterController {
 		OutputResponse response = new OutputResponse();
 		logger.info("getMasterDataForANC..");
 		try {
-			response.setResponse(ancMasterDataServiceImpl.getANCMasterDataForNurse());
+			response.setResponse(ancMasterDataServiceImpl.getCommonNurseMasterDataForGenopdAncNcdcarePnc());
 			logger.info("getMasterDataForANC response:" + response);
 		} catch (Exception e) {
 			response.setError(e);

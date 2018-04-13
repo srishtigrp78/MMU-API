@@ -38,7 +38,7 @@ public class DoctorANCMasterController {
 		OutputResponse response = new OutputResponse();
 		try {
 			// Passing temp value 1, as we are not ging to use this API anymore
-			String s = ancMasterDataServiceImpl.getANCMasterDataForDoctor(1);
+			String s = ancMasterDataServiceImpl.getCommonDoctorMasterDataForGenopdAncNcdcarePnc(1);
 			if (s != null)
 				response.setResponse(s);
 			else

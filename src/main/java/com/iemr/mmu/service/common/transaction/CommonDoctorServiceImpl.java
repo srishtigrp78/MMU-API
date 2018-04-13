@@ -1,5 +1,6 @@
 package com.iemr.mmu.service.common.transaction;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.ANCDiagnosis;
+import com.iemr.mmu.data.anc.BenPersonalHabit;
 import com.iemr.mmu.data.anc.WrapperAncFindings;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
@@ -71,11 +73,19 @@ public class CommonDoctorServiceImpl {
 	}
 
 	public Integer saveFindings(JsonObject obj) throws Exception {
-		WrapperAncFindings wrapperAncFindings = InputMapper.gson().fromJson(obj, WrapperAncFindings.class);
-		return saveDocFindings(wrapperAncFindings);
+		int i = 0;
+		BenClinicalObservations clinicalObservations = InputMapper.gson().fromJson(obj, BenClinicalObservations.class);
+		BenClinicalObservations benClinicalObservationsRS = benClinicalObservationsRepo
+				.save(clinicalObservations);
+		if (benClinicalObservationsRS != null) {
+			i = 1;
+		}
+		
+		return i;
 
 	}
 
+	@Deprecated
 	public Integer saveDocFindings(WrapperAncFindings wrapperAncFindings) {
 		int i = 0;
 		BenClinicalObservations benClinicalObservationsRS = benClinicalObservationsRepo
@@ -183,5 +193,24 @@ public class CommonDoctorServiceImpl {
 		List<Object[]> docWorkListData = docWorkListRepo.getDocWorkList();
 		// System.out.println("hello");
 		return WrapperRegWorklist.getDocWorkListData(docWorkListData);
+	}
+	
+	public String fetchBenPreviousSignificantFindings(Long beneficiaryRegID) {
+		ArrayList<Object[]> previousSignificantFindings = (ArrayList<Object[]>) benClinicalObservationsRepo.
+				getPreviousSignificantFindings(beneficiaryRegID);
+
+		Map<String, Object> response = new HashMap<String, Object>();
+
+		ArrayList<BenClinicalObservations> clinicalObservations = new ArrayList<BenClinicalObservations>();
+		if (null != clinicalObservations) {
+			for (Object[] obj : previousSignificantFindings) {
+				BenClinicalObservations clinicalObservation = new BenClinicalObservations((String)obj[1], (Date)obj[0]);
+						clinicalObservations.add(clinicalObservation);
+			}
+		}
+
+		response.put("findings", clinicalObservations);
+		return new Gson().toJson(response);
+
 	}
 }

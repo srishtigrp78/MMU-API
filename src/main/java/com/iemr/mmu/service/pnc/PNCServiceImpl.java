@@ -503,6 +503,21 @@ public class PNCServiceImpl implements PNCService {
 			headToToeExmnSuccessFlag = new Long(1);
 		}
 
+		/*// Save Gastro Intestinal Examination Details
+		if (examinationDetailsOBJ != null && examinationDetailsOBJ.has("gastroIntestinalExamination")
+				&& !examinationDetailsOBJ.get("gastroIntestinalExamination").isJsonNull()) {
+			SysGastrointestinalExamination gastrointestinalExamination = InputMapper.gson().fromJson(
+					examinationDetailsOBJ.get("gastroIntestinalExamination"), SysGastrointestinalExamination.class);
+			if (null != gastrointestinalExamination) {
+				gastrointestinalExamination.setBenVisitID(benVisitID);
+				gastroIntsExmnSuccessFlag = generalOPDNurseServiceImpl
+						.saveSysGastrointestinalExamination(gastrointestinalExamination);
+
+			}
+		} else {
+			gastroIntsExmnSuccessFlag = new Long(1);
+		}*/
+				
 		// Save cardioVascular Examination Details
 		if (examinationDetailsOBJ != null && examinationDetailsOBJ.has("cardioVascularExamination")
 				&& !examinationDetailsOBJ.get("cardioVascularExamination").isJsonNull()) {

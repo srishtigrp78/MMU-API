@@ -368,7 +368,7 @@ public class ANCMasterDataServiceImpl {
 		this.complicationTypesRepo = complicationTypesRepo;
 	}
 	
-	public String getANCMasterDataForNurse() {
+	public String getCommonNurseMasterDataForGenopdAncNcdcarePnc() {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 			
 		ArrayList<Object[]> allergicReactionTypes = allergicReactionTypesRepo.getAllergicReactionTypes();
@@ -500,7 +500,7 @@ public class ANCMasterDataServiceImpl {
 	}
 	
 	
-	public String getANCMasterDataForDoctor(int psmID) {
+	public String getCommonDoctorMasterDataForGenopdAncNcdcarePnc(int psmID) {
 		Map<String, Object> resMap = new HashMap<>();
 		ArrayList<Object[]> ccList = chiefComplaintMasterRepo.getChiefComplaintMaster();
 		ArrayList<Object[]> ddmList = drugDoseMasterRepo.getDrugDoseMaster();

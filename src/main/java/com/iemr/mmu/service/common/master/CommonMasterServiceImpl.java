@@ -83,24 +83,24 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 				case 3 :{
 					// 3 : NCD care
 					//TODO: NCD Care Master Data call - tmprlly calling ANC master Data
-					nurseMasterData = ancMasterDataServiceImpl.getANCMasterDataForNurse();
+					nurseMasterData = ancMasterDataServiceImpl.getCommonNurseMasterDataForGenopdAncNcdcarePnc();
 				}
 				break;
 				case 4 :{
 					// 4 : ANC
-					nurseMasterData = ancMasterDataServiceImpl.getANCMasterDataForNurse();
+					nurseMasterData = ancMasterDataServiceImpl.getCommonNurseMasterDataForGenopdAncNcdcarePnc();
 				}
 				break;
 				case 5 :{
 					// 5 : PNC
 					//TODO: PNC Master Data call - tmprlly calling ANC master Data
-					nurseMasterData = ancMasterDataServiceImpl.getANCMasterDataForNurse();
+					nurseMasterData = ancMasterDataServiceImpl.getCommonNurseMasterDataForGenopdAncNcdcarePnc();
 				}
 				break;
 				case 6 :{
 					// 6 : General OPD
 					//TODO: General OPD Master Data call - tmprlly calling ANC master Data
-					nurseMasterData = ancMasterDataServiceImpl.getANCMasterDataForNurse();
+					nurseMasterData = ancMasterDataServiceImpl.getCommonNurseMasterDataForGenopdAncNcdcarePnc();
 				}
 				break;
 				case 7 :{
@@ -137,24 +137,24 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 				case 3 :{
 					// 3 : NCD care
 					//TODO: NCD Care Master Data call
-					doctorMasterData = ancMasterDataServiceImpl.getANCMasterDataForDoctor(providerServiceMapID);
+					doctorMasterData = ancMasterDataServiceImpl.getCommonDoctorMasterDataForGenopdAncNcdcarePnc(providerServiceMapID);
 				}
 				break;
 				case 4 :{
 					// 4 : ANC
-					doctorMasterData = ancMasterDataServiceImpl.getANCMasterDataForDoctor(providerServiceMapID);
+					doctorMasterData = ancMasterDataServiceImpl.getCommonDoctorMasterDataForGenopdAncNcdcarePnc(providerServiceMapID);
 				}
 				break;
 				case 5 :{
 					// 5 : PNC
 					//TODO:  PNC Master Data call - tmprlly calling ANC master Data
-					doctorMasterData = ancMasterDataServiceImpl.getANCMasterDataForDoctor(providerServiceMapID);
+					doctorMasterData = ancMasterDataServiceImpl.getCommonDoctorMasterDataForGenopdAncNcdcarePnc(providerServiceMapID);
 				}
 				break;
 				case 6 :{
 					// 6 : General OPD
 					//TODO: General OPD Master Data call - tmprlly calling ANC master Data
-					doctorMasterData = ancMasterDataServiceImpl.getANCMasterDataForDoctor(providerServiceMapID);
+					doctorMasterData = ancMasterDataServiceImpl.getCommonDoctorMasterDataForGenopdAncNcdcarePnc(providerServiceMapID);
 				}
 				break;
 				case 7 :{

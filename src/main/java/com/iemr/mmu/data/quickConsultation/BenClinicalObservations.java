@@ -1,5 +1,6 @@
 package com.iemr.mmu.data.quickConsultation;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -7,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
@@ -37,6 +39,14 @@ public class BenClinicalObservations {
 	@Expose
 	@Column(name = "OtherSymptoms")
 	private String otherSymptoms;
+	
+	@Expose
+	@Column(name = "SignificantFindings")
+	private String significantFindings;
+	
+	@Expose
+	@Column(name = "IsForHistory")
+	private Boolean isForHistory;
 
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -85,6 +95,9 @@ public class BenClinicalObservations {
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
+	
+	@Transient
+	private Date captureDate;
 	
 	public BenClinicalObservations() {
 		super();
@@ -233,6 +246,28 @@ public class BenClinicalObservations {
 
 	public void setReservedForChange(String reservedForChange) {
 		this.reservedForChange = reservedForChange;
+	}
+
+	public String getSignificantFindings() {
+		return significantFindings;
+	}
+
+	public void setSignificantFindings(String significantFindings) {
+		this.significantFindings = significantFindings;
+	}
+
+	public Boolean getIsForHistory() {
+		return isForHistory;
+	}
+
+	public void setIsForHistory(Boolean isForHistory) {
+		this.isForHistory = isForHistory;
+	}
+
+	public BenClinicalObservations(String significantFindings, Date createdDate) {
+		super();
+		this.significantFindings = significantFindings;
+		this.captureDate = createdDate;
 	}
 
 	// public static BenClinicalObservations

@@ -1,9 +1,11 @@
 package com.iemr.mmu.controller.common.main;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +15,7 @@ import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
@@ -82,6 +85,32 @@ public class FetchCommonController {
 		} catch (Exception e) {
 			// e.printStackTrace();
 			logger.error("Error in getNurseWorklist:" + e);
+			response.setError(e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Doctor Entered Previous significant Findings", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getDoctorPreviousSignificantFindings" }, method = { RequestMethod.POST })
+	public String getDoctorPreviousSignificantFindings(
+			@ApiParam(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.length() > 0) {
+				Long beneficiaryRegID = obj.getLong("beneficiaryRegID");
+				String s = commonDoctorServiceImpl.fetchBenPreviousSignificantFindings(beneficiaryRegID);
+				if(s != null)
+					response.setResponse(s);
+				else
+					response.setError(5000, "Error while fetching Doctor Entered Previous significant Findings");
+			}else{
+				response.setError(5000, "Invalid Data!");
+			}
+		} catch (Exception e) {
+			// e.printStackTrace();
+			logger.error("Error while fetching Doctor Entered Previous significant Findings" + e);
 			response.setError(e);
 		}
 		return response.toString();
