@@ -6,7 +6,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
@@ -33,7 +41,10 @@ import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
 
 @Service
+@PropertySource("classpath:myApp.properties")
 public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterData {
+	@Value("${getBenImageFromIdentity}")
+	private String getBenImageFromIdentity;
 
 	private CommunityMasterRepo communityMasterRepo;
 	private GenderMasterRepo genderMasterRepo;
@@ -168,10 +179,26 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 	}
 
 	// Beneficiary details for left side of the screen new
-	public String getBenDetailsForLeftSideByRegIDNew(Long beneficiaryRegID, Long benFlowID, String Authorization) {
-		ArrayList<Object[]> benFlowOBJ = beneficiaryFlowStatusRepo.getBenDetailsForLeftSidePanel(beneficiaryRegID, benFlowID);
+	public String getBenDetailsForLeftSideByRegIDNew(Long beneficiaryRegID, Long benFlowID, String Authorization,
+			String comingRequest) {
+		ArrayList<Object[]> benFlowOBJ = beneficiaryFlowStatusRepo.getBenDetailsForLeftSidePanel(beneficiaryRegID,
+				benFlowID);
 		BeneficiaryFlowStatus returnBenFlowOBJ = BeneficiaryFlowStatus.getBeneficiaryFlowStatusForLeftPanel(benFlowOBJ);
 		// have to add image also from common and identity.
 		return new Gson().toJson(returnBenFlowOBJ);
+	}
+
+	public String getBenImageFromIdentityAPI(String Authorization, String comingRequest) throws Exception {
+		String returnOBJ = null;
+		RestTemplate restTemplate = new RestTemplate();
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+		headers.add("Content-Type", "application/json");
+		headers.add("AUTHORIZATION", Authorization);
+
+		HttpEntity<Object> request = new HttpEntity<Object>(comingRequest, headers);
+		ResponseEntity<String> response = restTemplate.exchange(getBenImageFromIdentity, HttpMethod.POST, request,
+				String.class);
+		returnOBJ = response.getBody();
+		return returnOBJ;
 	}
 }

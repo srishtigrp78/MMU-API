@@ -260,7 +260,7 @@ public class FetchRegistrarController {
 				if (obj.getLong("beneficiaryRegID") > 0 && obj.getLong("benFlowID") > 0) {
 
 					String beneficiaryData = registrarServiceMasterDataImpl.getBenDetailsForLeftSideByRegIDNew(
-							obj.getLong("beneficiaryRegID"), obj.getLong("benFlowID"), Authorization);
+							obj.getLong("beneficiaryRegID"), obj.getLong("benFlowID"), Authorization, comingRequest);
 
 					response.setResponse(beneficiaryData);
 				} else {
@@ -275,5 +275,22 @@ public class FetchRegistrarController {
 			response.setError(e);
 		}
 		return response.toString();
+	}
+
+	@CrossOrigin()
+	@ApiOperation(value = "get beneficiary image", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenImage" }, method = { RequestMethod.POST })
+	public String getBenImage(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
+		OutputResponse response = new OutputResponse();
+		try {
+			String returnOBJ = registrarServiceMasterDataImpl.getBenImageFromIdentityAPI(Authorization, requestObj);
+			return returnOBJ;
+		} catch (Exception e) {
+			logger.error("Error ben image fetch" + e);
+			response.setError(e);
+			return response.toString();
+		}
+
 	}
 }
