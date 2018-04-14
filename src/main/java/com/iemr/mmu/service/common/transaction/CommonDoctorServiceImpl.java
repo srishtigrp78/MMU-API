@@ -12,12 +12,15 @@ import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.ANCDiagnosis;
+import com.iemr.mmu.data.anc.BenMedHistory;
 import com.iemr.mmu.data.anc.BenPersonalHabit;
 import com.iemr.mmu.data.anc.WrapperAncFindings;
+import com.iemr.mmu.data.doctor.BenReferDetails;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.data.registrar.WrapperRegWorklist;
+import com.iemr.mmu.repo.doctor.BenReferDetailsRepo;
 import com.iemr.mmu.repo.doctor.DocWorkListRepo;
 import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
 import com.iemr.mmu.repo.nurse.anc.ANCDiagnosisRepo;
@@ -41,7 +44,13 @@ public class CommonDoctorServiceImpl {
 	private NurseServiceImpl nurseServiceImpl;
 	private BenVisitDetailRepo benVisitDetailRepo;
 	private DocWorkListRepo docWorkListRepo;
+	private BenReferDetailsRepo benReferDetailsRepo;
 
+	@Autowired
+	public void setBenReferDetailsRepo(BenReferDetailsRepo benReferDetailsRepo) {
+		this.benReferDetailsRepo = benReferDetailsRepo;
+	}
+	
 	@Autowired
 	public void setDocWorkListRepo(DocWorkListRepo docWorkListRepo) {
 		this.docWorkListRepo = docWorkListRepo;
@@ -213,4 +222,35 @@ public class CommonDoctorServiceImpl {
 		return new Gson().toJson(response);
 
 	}
+	
+	public Long saveBenReferDetails(JsonObject obj) throws IEMRException {
+		Long ID = null;
+		BenReferDetails referDetails = InputMapper.gson().fromJson(obj, BenReferDetails.class);
+		List<Map<String, Object>> refrredToAdditionalServiceList = referDetails.getRefrredToAdditionalServiceList();
+		List<BenReferDetails> referDetailsList = new ArrayList<BenReferDetails>();
+		for(Map<String, Object> refrredToAdditionalService : refrredToAdditionalServiceList){
+			
+			BenReferDetails benReferDetails = new BenReferDetails();
+			benReferDetails.setBeneficiaryRegID(referDetails.getBeneficiaryRegID());
+			benReferDetails.setBenVisitID(referDetails.getBenVisitID());
+			benReferDetails.setProviderServiceMapID(referDetails.getProviderServiceMapID());
+			benReferDetails.setCreatedBy(referDetails.getCreatedBy());
+			benReferDetails.setReferredToInstituteID(referDetails.getReferredToInstituteID());
+			benReferDetails.setReferredToInstituteName(referDetails.getReferredToInstituteName());
+			
+			if(null != refrredToAdditionalService && null != refrredToAdditionalService.get("serviceID")){
+				benReferDetails.setServiceID(new Integer(refrredToAdditionalService.get("serviceID").toString()));
+			}
+			if(null != refrredToAdditionalService && null != refrredToAdditionalService.get("serviceName")){
+				benReferDetails.setServiceName(refrredToAdditionalService.get("serviceName").toString());
+			}
+			referDetailsList.add(benReferDetails);
+		}
+		ArrayList<BenReferDetails> res = (ArrayList<BenReferDetails>) benReferDetailsRepo.save(referDetailsList);
+		if (null != res && res.size() > 0) {
+			ID = res.get(0).getBenReferID();
+		}
+		return ID;
+	}
+
 }

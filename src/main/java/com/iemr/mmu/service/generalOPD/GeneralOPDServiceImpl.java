@@ -674,7 +674,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		Long investigationSuccessFlag = null;
 		Integer findingSuccessFlag = null;
 		Integer prescriptionSuccessFlag = null;
-
+		Long referSaveSuccessFlag = null;
+		
 		String createdBy = null;
 		Long bvID = null;
 
@@ -753,11 +754,20 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 			} else {
 			}
 
+			if (requestOBJ.has("refer") && !requestOBJ.get("refer").isJsonNull())
+			{
+				referSaveSuccessFlag = commonDoctorServiceImpl.saveBenReferDetails(requestOBJ.get("refer").getAsJsonObject());
+			} else
+			{
+				referSaveSuccessFlag = new Long(1);
+			}
+			
 			// END of please this part of code later Neeraj *****
 
 			if ((findingSuccessFlag != null && findingSuccessFlag > 0) && (prescriptionID != null && prescriptionID > 0)
 					&& (investigationSuccessFlag != null && investigationSuccessFlag > 0)
-					&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)) {
+					&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)
+					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
 
 				String s = commonNurseServiceImpl.updateBenVisitStatusFlag(bvID, "D");
 				if (s != null && s.length() > 0)
