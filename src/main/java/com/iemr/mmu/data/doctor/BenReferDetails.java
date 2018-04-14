@@ -1,8 +1,7 @@
 package com.iemr.mmu.data.doctor;
 
 import java.sql.Timestamp;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +11,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.masterdata.anc.ServiceMaster;
 
 @Entity
 @Table(name = "t_benreferdetails")
@@ -38,23 +38,23 @@ public class BenReferDetails {
 	@Expose
 	@Column(name = "VisitCode")
 	private Long VisitCode;
-	
+
 	@Expose
 	@Column(name = "referredToInstituteID")
 	private Integer referredToInstituteID;
-	
+
 	@Expose
 	@Column(name = "referredToInstituteName")
 	private String referredToInstituteName;
-	
+
 	@Expose
 	@Column(name = "serviceID")
-	private Integer serviceID;
-	
+	private Short serviceID;
+
 	@Expose
 	@Column(name = "serviceName")
 	private String serviceName;
-	
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -82,30 +82,30 @@ public class BenReferDetails {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
 
 	@Transient
-	private List<Map<String,Object>> refrredToAdditionalServiceList;
-	
+	private ArrayList<ServiceMaster> refrredToAdditionalServiceList;
+
 	public Long getBenReferID() {
 		return benReferID;
 	}
@@ -162,11 +162,11 @@ public class BenReferDetails {
 		this.referredToInstituteName = referredToInstituteName;
 	}
 
-	public Integer getServiceID() {
+	public Short getServiceID() {
 		return serviceID;
 	}
 
-	public void setServiceID(Integer serviceID) {
+	public void setServiceID(Short serviceID) {
 		this.serviceID = serviceID;
 	}
 
@@ -274,12 +274,12 @@ public class BenReferDetails {
 		this.reservedForChange = reservedForChange;
 	}
 
-	public List<Map<String, Object>> getRefrredToAdditionalServiceList() {
+	public ArrayList<ServiceMaster> getRefrredToAdditionalServiceList() {
 		return refrredToAdditionalServiceList;
 	}
 
-	public void setRefrredToAdditionalServiceList(List<Map<String, Object>> refrredToAdditionalServiceList) {
+	public void setRefrredToAdditionalServiceList(ArrayList<ServiceMaster> refrredToAdditionalServiceList) {
 		this.refrredToAdditionalServiceList = refrredToAdditionalServiceList;
 	}
-	
+
 }

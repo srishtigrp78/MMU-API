@@ -12,10 +12,9 @@ import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.ANCDiagnosis;
-import com.iemr.mmu.data.anc.BenMedHistory;
-import com.iemr.mmu.data.anc.BenPersonalHabit;
 import com.iemr.mmu.data.anc.WrapperAncFindings;
 import com.iemr.mmu.data.doctor.BenReferDetails;
+import com.iemr.mmu.data.masterdata.anc.ServiceMaster;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
@@ -50,12 +49,12 @@ public class CommonDoctorServiceImpl {
 	public void setBenReferDetailsRepo(BenReferDetailsRepo benReferDetailsRepo) {
 		this.benReferDetailsRepo = benReferDetailsRepo;
 	}
-	
+
 	@Autowired
 	public void setDocWorkListRepo(DocWorkListRepo docWorkListRepo) {
 		this.docWorkListRepo = docWorkListRepo;
 	}
-	
+
 	@Autowired
 	public void setBenVisitDetailRepo(BenVisitDetailRepo benVisitDetailRepo) {
 		this.benVisitDetailRepo = benVisitDetailRepo;
@@ -84,12 +83,11 @@ public class CommonDoctorServiceImpl {
 	public Integer saveFindings(JsonObject obj) throws Exception {
 		int i = 0;
 		BenClinicalObservations clinicalObservations = InputMapper.gson().fromJson(obj, BenClinicalObservations.class);
-		BenClinicalObservations benClinicalObservationsRS = benClinicalObservationsRepo
-				.save(clinicalObservations);
+		BenClinicalObservations benClinicalObservationsRS = benClinicalObservationsRepo.save(clinicalObservations);
 		if (benClinicalObservationsRS != null) {
 			i = 1;
 		}
-		
+
 		return i;
 
 	}
@@ -169,7 +167,7 @@ public class CommonDoctorServiceImpl {
 		return ID;
 	}
 
-	/* Moved to common Nurse Services*/
+	/* Moved to common Nurse Services */
 	@Deprecated
 	public Long savePrescriptionDetailsAndGetPrescriptionID(Long benRegID, Long benVisitID, Integer psmID,
 			String createdBy) {
@@ -197,24 +195,25 @@ public class CommonDoctorServiceImpl {
 		}
 		return new Gson().toJson(resMap);
 	}
-	
+
 	public String getDocWorkList() {
 		List<Object[]> docWorkListData = docWorkListRepo.getDocWorkList();
 		// System.out.println("hello");
 		return WrapperRegWorklist.getDocWorkListData(docWorkListData);
 	}
-	
+
 	public String fetchBenPreviousSignificantFindings(Long beneficiaryRegID) {
-		ArrayList<Object[]> previousSignificantFindings = (ArrayList<Object[]>) benClinicalObservationsRepo.
-				getPreviousSignificantFindings(beneficiaryRegID);
+		ArrayList<Object[]> previousSignificantFindings = (ArrayList<Object[]>) benClinicalObservationsRepo
+				.getPreviousSignificantFindings(beneficiaryRegID);
 
 		Map<String, Object> response = new HashMap<String, Object>();
 
 		ArrayList<BenClinicalObservations> clinicalObservations = new ArrayList<BenClinicalObservations>();
 		if (null != clinicalObservations) {
 			for (Object[] obj : previousSignificantFindings) {
-				BenClinicalObservations clinicalObservation = new BenClinicalObservations((String)obj[1], (Date)obj[0]);
-						clinicalObservations.add(clinicalObservation);
+				BenClinicalObservations clinicalObservation = new BenClinicalObservations((String) obj[1],
+						(Date) obj[0]);
+				clinicalObservations.add(clinicalObservation);
 			}
 		}
 
@@ -222,30 +221,38 @@ public class CommonDoctorServiceImpl {
 		return new Gson().toJson(response);
 
 	}
-	
+
 	public Long saveBenReferDetails(JsonObject obj) throws IEMRException {
 		Long ID = null;
 		BenReferDetails referDetails = InputMapper.gson().fromJson(obj, BenReferDetails.class);
-		List<Map<String, Object>> refrredToAdditionalServiceList = referDetails.getRefrredToAdditionalServiceList();
 		List<BenReferDetails> referDetailsList = new ArrayList<BenReferDetails>();
-		for(Map<String, Object> refrredToAdditionalService : refrredToAdditionalServiceList){
-			
-			BenReferDetails benReferDetails = new BenReferDetails();
-			benReferDetails.setBeneficiaryRegID(referDetails.getBeneficiaryRegID());
-			benReferDetails.setBenVisitID(referDetails.getBenVisitID());
-			benReferDetails.setProviderServiceMapID(referDetails.getProviderServiceMapID());
-			benReferDetails.setCreatedBy(referDetails.getCreatedBy());
-			benReferDetails.setReferredToInstituteID(referDetails.getReferredToInstituteID());
-			benReferDetails.setReferredToInstituteName(referDetails.getReferredToInstituteName());
-			
-			if(null != refrredToAdditionalService && null != refrredToAdditionalService.get("serviceID")){
-				benReferDetails.setServiceID(new Integer(refrredToAdditionalService.get("serviceID").toString()));
+
+		BenReferDetails referDetailsTemp = null;
+
+		if (referDetails.getRefrredToAdditionalServiceList() != null
+				&& referDetails.getRefrredToAdditionalServiceList().size() > 0) {
+			for (ServiceMaster sm : referDetails.getRefrredToAdditionalServiceList()) {
+				referDetailsTemp = new BenReferDetails();
+				referDetailsTemp.setBeneficiaryRegID(referDetails.getBeneficiaryRegID());
+				referDetailsTemp.setBenVisitID(referDetails.getBenVisitID());
+				referDetailsTemp.setProviderServiceMapID(referDetails.getProviderServiceMapID());
+				referDetailsTemp.setVisitCode(referDetails.getVisitCode());
+				referDetailsTemp.setCreatedBy(referDetails.getCreatedBy());
+				if (referDetails.getReferredToInstituteID() != null
+						&& referDetails.getReferredToInstituteName() != null) {
+					referDetailsTemp.setReferredToInstituteID(referDetails.getReferredToInstituteID());
+					referDetailsTemp.setReferredToInstituteName(referDetails.getReferredToInstituteName());
+				}
+				
+				referDetailsTemp.setServiceID(sm.getServiceID());
+				referDetailsTemp.setServiceName(sm.getServiceName());
+
+				referDetailsList.add(referDetailsTemp);
 			}
-			if(null != refrredToAdditionalService && null != refrredToAdditionalService.get("serviceName")){
-				benReferDetails.setServiceName(refrredToAdditionalService.get("serviceName").toString());
-			}
-			referDetailsList.add(benReferDetails);
+		} else {
+			referDetailsList.add(referDetails);
 		}
+
 		ArrayList<BenReferDetails> res = (ArrayList<BenReferDetails>) benReferDetailsRepo.save(referDetailsList);
 		if (null != res && res.size() > 0) {
 			ID = res.get(0).getBenReferID();
