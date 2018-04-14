@@ -213,10 +213,13 @@ public class NCDCareServiceImpl implements NCDCareService
 		{
 			WrapperMedicationHistory wrapperMedicationHistory =
 					InputMapper.gson().fromJson(ncdCareHistoryOBJ.get("medicationHistory"), WrapperMedicationHistory.class);
-			if (null != wrapperMedicationHistory)
+			if (null != wrapperMedicationHistory && wrapperMedicationHistory
+					.getBenMedicationHistoryDetails().size()>0)
 			{
 				wrapperMedicationHistory.setBenVisitID(benVisitID);
 				medicationSuccessFlag = commonNurseServiceImpl.saveBenMedicationHistory(wrapperMedicationHistory);
+			} else {
+				medicationSuccessFlag = new Long(1);
 			}
 
 		} else
@@ -597,6 +600,7 @@ public class NCDCareServiceImpl implements NCDCareService
 		Integer findingSuccessFlag = null;
 		Integer prescriptionSuccessFlag = null;
 		Long diagnosisSuccessFlag = null;
+		Long referSaveSuccessFlag = null;
 		
 		String createdBy = null;
 		Long bvID = null;
@@ -691,9 +695,18 @@ public class NCDCareServiceImpl implements NCDCareService
 				prescriptionSuccessFlag = 1;
 			}
 
+			if (requestOBJ.has("refer") && !requestOBJ.get("refer").isJsonNull())
+			{
+				referSaveSuccessFlag = commonDoctorServiceImpl.saveBenReferDetails(requestOBJ.get("refer").getAsJsonObject());
+			} else
+			{
+				referSaveSuccessFlag = new Long(1);
+			}
+			
 			if ((findingSuccessFlag != null && findingSuccessFlag > 0) && (diagnosisSuccessFlag != null && diagnosisSuccessFlag>0)
 					&& (prescriptionID != null && prescriptionID > 0) && (investigationSuccessFlag != null && investigationSuccessFlag > 0)
-					&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0))
+					&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)
+					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0))
 			{
 
 				String s = commonNurseServiceImpl.updateBenVisitStatusFlag(bvID, "D");
