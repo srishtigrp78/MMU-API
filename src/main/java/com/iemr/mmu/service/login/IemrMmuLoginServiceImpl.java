@@ -149,6 +149,8 @@ public class IemrMmuLoginServiceImpl implements IemrMmuLoginService {
 		}
 		resMap.put("UserVanSpDetails", userVanSpDetails_ViewList);
 		// System.out.println("helloo bhai---" + new Gson().toJson(resMap));
+		// Later will remove below part till 1.1 new api is getting called on
+		// continue button
 		List<Object[]> parkingPlaceList = userParkingplaceMappingRepo.getUserParkingPlce(userID);
 		Map<String, Object> parkingPlaceLocationMap = new HashMap<>();
 		if (parkingPlaceList.size() > 0) {
@@ -162,6 +164,7 @@ public class IemrMmuLoginServiceImpl implements IemrMmuLoginService {
 			parkingPlaceLocationMap.put("blockName", obj1[6]);
 		}
 		resMap.put("UserLocDetails", parkingPlaceLocationMap);
+		// 1.1
 		return new Gson().toJson(resMap);
 	}
 }

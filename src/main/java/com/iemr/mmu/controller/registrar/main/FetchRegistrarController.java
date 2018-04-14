@@ -276,7 +276,7 @@ public class FetchRegistrarController {
 		}
 		return response.toString();
 	}
-
+// new api for ben image
 	@CrossOrigin()
 	@ApiOperation(value = "get beneficiary image", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenImage" }, method = { RequestMethod.POST })
