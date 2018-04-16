@@ -2,6 +2,7 @@ package com.iemr.mmu.data.anc;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 
 @Entity
 @Table(name = "t_ancdiagnosis")
@@ -292,5 +294,34 @@ public class ANCDiagnosis {
 	public void setReservedForChange(String reservedForChange) {
 		this.reservedForChange = reservedForChange;
 	}
+
+	public ANCDiagnosis(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
+			String highRiskStatus, String highRiskCondition, String complicationOfCurrentPregnancy,
+			Boolean isMaternalDeath, String placeOfDeath, Date dateOfDeath, String causeOfDeath) {
+		super();
+		ID = iD;
+		this.beneficiaryRegID = beneficiaryRegID;
+		this.benVisitID = benVisitID;
+		this.providerServiceMapID = providerServiceMapID;
+		this.highRiskStatus = highRiskStatus;
+		this.highRiskCondition = highRiskCondition;
+		this.complicationOfCurrentPregnancy = complicationOfCurrentPregnancy;
+		this.isMaternalDeath = isMaternalDeath;
+		this.placeOfDeath = placeOfDeath;
+		this.dateOfDeath = dateOfDeath;
+		this.causeOfDeath = causeOfDeath;
+	}
 	
+	public static ANCDiagnosis getANCDiagnosisDetails(ArrayList<Object[]> resList) {
+		ArrayList<ANCDiagnosis> resArray = new ArrayList<ANCDiagnosis>();
+		ANCDiagnosis cOBJ = null;
+		if(null != resList && resList.size()>0){
+			for (Object[] obj : resList) {
+				cOBJ = new ANCDiagnosis((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (String)obj[4], (String)obj[5], (String)obj[6], 
+						(Boolean)obj[7], (String)obj[8], (Date)obj[9], (String)obj[10]);
+				
+			}
+		}
+		return cOBJ;
+	}
 }

@@ -13,11 +13,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.ANCDiagnosis;
 import com.iemr.mmu.data.anc.WrapperAncFindings;
+import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.doctor.BenReferDetails;
 import com.iemr.mmu.data.masterdata.anc.ServiceMaster;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
+import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
+import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.data.registrar.WrapperRegWorklist;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
@@ -27,6 +30,9 @@ import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
 import com.iemr.mmu.repo.nurse.anc.ANCDiagnosisRepo;
 import com.iemr.mmu.repo.quickConsultation.BenChiefComplaintRepo;
 import com.iemr.mmu.repo.quickConsultation.BenClinicalObservationsRepo;
+import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
+import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
+import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
@@ -46,12 +52,30 @@ public class CommonDoctorServiceImpl {
 	private BenVisitDetailRepo benVisitDetailRepo;
 	private DocWorkListRepo docWorkListRepo;
 	private BenReferDetailsRepo benReferDetailsRepo;
+	private LabTestOrderDetailRepo labTestOrderDetailRepo;
+	private PrescribedDrugDetailRepo prescribedDrugDetailRepo;
+	private PrescriptionDetailRepo prescriptionDetailRepo;
 
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
 
 	@Autowired
 	public void setBeneficiaryFlowStatusRepo(BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo) {
 		this.beneficiaryFlowStatusRepo = beneficiaryFlowStatusRepo;
+	}
+
+	@Autowired
+	public void setPrescriptionDetailRepo(PrescriptionDetailRepo prescriptionDetailRepo) {
+		this.prescriptionDetailRepo = prescriptionDetailRepo;
+	}
+
+	@Autowired
+	public void setPrescribedDrugDetailRepo(PrescribedDrugDetailRepo prescribedDrugDetailRepo) {
+		this.prescribedDrugDetailRepo = prescribedDrugDetailRepo;
+	}
+
+	@Autowired
+	public void setLabTestOrderDetailRepo(LabTestOrderDetailRepo labTestOrderDetailRepo) {
+		this.labTestOrderDetailRepo = labTestOrderDetailRepo;
 	}
 
 	@Autowired
@@ -101,14 +125,21 @@ public class CommonDoctorServiceImpl {
 
 	}
 
-	@Deprecated
 	public Integer saveDocFindings(WrapperAncFindings wrapperAncFindings) {
 		int i = 0;
 		BenClinicalObservations benClinicalObservationsRS = benClinicalObservationsRepo
 				.save(getBenClinicalObservations(wrapperAncFindings));
 
-		ArrayList<BenChiefComplaint> tmpBenCHiefComplaints = getBenChiefComplaint(wrapperAncFindings);
+		// ArrayList<BenChiefComplaint> tmpBenCHiefComplaints =
+		// getBenChiefComplaint(wrapperAncFindings);
+		ArrayList<BenChiefComplaint> tmpBenCHiefComplaints = wrapperAncFindings.getChiefComplaints();
 		if (tmpBenCHiefComplaints.size() > 0) {
+			for (BenChiefComplaint benChiefComplaint : tmpBenCHiefComplaints) {
+				benChiefComplaint.setBeneficiaryRegID(wrapperAncFindings.getBeneficiaryRegID());
+				benChiefComplaint.setBenVisitID(wrapperAncFindings.getBenVisitID());
+				benChiefComplaint.setProviderServiceMapID(wrapperAncFindings.getProviderServiceMapID());
+				benChiefComplaint.setCreatedBy(wrapperAncFindings.getCreatedBy());
+			}
 			ArrayList<BenChiefComplaint> benChiefComplaintListRS = (ArrayList<BenChiefComplaint>) benChiefComplaintRepo
 					.save(tmpBenCHiefComplaints);
 		}
@@ -273,6 +304,38 @@ public class CommonDoctorServiceImpl {
 			ID = res.get(0).getBenReferID();
 		}
 		return ID;
+	}
+
+	public String getFindingsDetails(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> clinicalObservationsList = benClinicalObservationsRepo.getFindingsData(beneficiaryRegID,
+				benVisitID);
+		ArrayList<Object[]> chiefComplaintsList = benChiefComplaintRepo.getBenChiefComplaints(beneficiaryRegID,
+				benVisitID);
+
+		WrapperAncFindings findings = WrapperAncFindings.getFindingsData(clinicalObservationsList, chiefComplaintsList);
+		return new Gson().toJson(findings);
+	}
+
+	public String getInvestigationDetails(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> labTestOrders = labTestOrderDetailRepo.getLabTestOrderDetails(beneficiaryRegID, benVisitID);
+		WrapperBenInvestigationANC labTestOrdersList = LabTestOrderDetail.getLabTestOrderDetails(labTestOrders);
+
+		return new Gson().toJson(labTestOrdersList);
+	}
+
+	public String getPrescribedDrugs(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> prescriptions = prescriptionDetailRepo.getBenPrescription(beneficiaryRegID, benVisitID);
+
+		ArrayList<PrescriptionDetail> prescriptionsList = PrescriptionDetail.getPrescriptions(prescriptions);
+		if (null != prescriptionsList && prescriptionsList.size() > 0) {
+			for (PrescriptionDetail prescription : prescriptionsList) {
+				ArrayList<Object[]> prescribedDrugs = prescribedDrugDetailRepo
+						.getBenPrescribedDrugDetails(prescription.getPrescriptionID());
+				prescription.setPrescribedDrugs(PrescribedDrugDetail.getprescribedDrugs(prescribedDrugs));
+			}
+		}
+
+		return new Gson().toJson(prescriptionsList);
 	}
 
 }

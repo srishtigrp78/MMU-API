@@ -7,7 +7,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.iemr.mmu.data.anc.ANCCareDetails;
 import com.iemr.mmu.data.anc.ANCDiagnosis;
 import com.iemr.mmu.data.anc.WrapperAncFindings;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
@@ -192,5 +194,10 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 	public String updateBenVisitStatusFlag(Long benVisitID, String c) {
 		return doctorServiceImpl.updateBenStatus(benVisitID, c);
 	}
-
+	
+	public String getANCDiagnosisDetails(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> resList = ancDiagnosisRepo.getANCDiagnosisDetails(beneficiaryRegID, benVisitID);
+		ANCDiagnosis ancDiagnosisDetails = ANCDiagnosis.getANCDiagnosisDetails(resList);
+		return new Gson().toJson(ancDiagnosisDetails);
+	}
 }

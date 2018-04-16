@@ -20,6 +20,7 @@ import com.iemr.mmu.data.anc.BenMenstrualDetails;
 import com.iemr.mmu.data.anc.BenPersonalHabit;
 import com.iemr.mmu.data.anc.ChildFeedingDetails;
 import com.iemr.mmu.data.anc.PerinatalHistory;
+import com.iemr.mmu.data.anc.WrapperAncFindings;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.anc.WrapperChildOptionalVaccineDetail;
 import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
@@ -612,7 +613,9 @@ public class NCDCareServiceImpl implements NCDCareService {
 
 		if (requestOBJ != null) {
 			if (requestOBJ.has("findings") && !requestOBJ.get("findings").isJsonNull()) {
-				findingSuccessFlag = commonDoctorServiceImpl.saveFindings(requestOBJ.get("findings").getAsJsonObject());
+				//findingSuccessFlag = commonDoctorServiceImpl.saveFindings(requestOBJ.get("findings").getAsJsonObject());
+				WrapperAncFindings wrapperAncFindings = InputMapper.gson().fromJson(requestOBJ.get("findings"), WrapperAncFindings.class);
+				findingSuccessFlag = commonDoctorServiceImpl.saveDocFindings(wrapperAncFindings);
 
 			} else {
 				findingSuccessFlag = 1;

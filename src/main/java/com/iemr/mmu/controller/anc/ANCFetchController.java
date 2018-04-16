@@ -476,4 +476,32 @@ public class ANCFetchController {
 		return response.toString();
 	}
 
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary Doctor Entered Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenCaseRecordFromDoctorANC" }, method = { RequestMethod.POST })
+	@Transactional(rollbackFor = Exception.class)
+	public String getBenCaseRecordFromDoctorANC(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenCaseRecordFromDoctorANC request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("benVisitID")) {
+				Long benRegID = obj.getLong("benRegID");
+				Long benVisitID = obj.getLong("benVisitID");
+
+				String res = ancServiceImpl.getBenCaseRecordFromDoctorANC(benRegID, benVisitID);
+				response.setResponse(res);
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenCaseRecordFromDoctorANC response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenCaseRecordFromDoctorANC:" + e);
+		}
+		return response.toString();
+	}
 }

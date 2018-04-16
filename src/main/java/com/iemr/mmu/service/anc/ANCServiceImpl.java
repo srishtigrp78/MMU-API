@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.ANCCareDetails;
+import com.iemr.mmu.data.anc.ANCDiagnosis;
 import com.iemr.mmu.data.anc.BenAdherence;
 import com.iemr.mmu.data.anc.BenAllergyHistory;
 import com.iemr.mmu.data.anc.BenFamilyHistory;
@@ -27,6 +28,7 @@ import com.iemr.mmu.data.anc.SysGenitourinarySystemExamination;
 import com.iemr.mmu.data.anc.SysMusculoskeletalSystemExamination;
 import com.iemr.mmu.data.anc.SysObstetricExamination;
 import com.iemr.mmu.data.anc.SysRespiratoryExamination;
+import com.iemr.mmu.data.anc.WrapperAncFindings;
 import com.iemr.mmu.data.anc.WrapperAncImmunization;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.anc.WrapperChildOptionalVaccineDetail;
@@ -200,7 +202,9 @@ public class ANCServiceImpl implements ANCService {
 
 		if (requestOBJ != null) {
 			if (requestOBJ.has("findings") && !requestOBJ.get("findings").isJsonNull()) {
-				findingSuccessFlag = commonDoctorServiceImpl.saveFindings(requestOBJ.get("findings").getAsJsonObject());
+				
+				WrapperAncFindings wrapperAncFindings = InputMapper.gson().fromJson(requestOBJ.get("findings"), WrapperAncFindings.class);
+				findingSuccessFlag = commonDoctorServiceImpl.saveDocFindings(wrapperAncFindings);
 				// findingSuccessFlag =
 				// ancDoctorServiceImpl.saveANCFindings(requestOBJ.get("findings").getAsJsonObject());
 
@@ -1282,6 +1286,23 @@ public class ANCServiceImpl implements ANCService {
 			exmnSuccessFlag = genExmnSuccessFlag;
 		}
 		return exmnSuccessFlag;
+	}
+	
+	public String getBenCaseRecordFromDoctorANC(Long benRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("ANCFindings", commonDoctorServiceImpl.getFindingsDetails(benRegID, benVisitID));
+		
+		resMap.put("ANCDiagnosis", ancDoctorServiceImpl.getANCDiagnosisDetails(benRegID, benVisitID));
+
+		resMap.put("ANCInvestigation", commonDoctorServiceImpl.getInvestigationDetails(benRegID, benVisitID));
+		
+		resMap.put("prescription", commonDoctorServiceImpl.getPrescribedDrugs(benRegID, benVisitID));
+
+		//TODO
+		//resMap.put("Refer", commonDoctorServiceImpl.getReferralDetails(benRegID, benVisitID));
+
+		return resMap.toString();
 	}
 
 }
