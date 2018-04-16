@@ -59,13 +59,13 @@ public class ANCCreateController {
 			if (jsnOBJ != null) {
 				Long ancRes = ancServiceImpl.saveANCNurseData(jsnOBJ);
 				if (null != ancRes && ancRes > 0) {
-					response.setResponse("ANC Nurse Entered Details stored successfully.");
+					response.setResponse("ANC Nurse entered data stored successfully.");
 				} else {
-					response.setResponse("Failed to store ANC Details.");
+					response.setError(5000,"Failed to store ANC Details.");
 				}
 
 			} else {
-				response.setError(5000, "Invalid Request !!!");
+				response.setError(5000, "Invalid Request.");
 			}
 
 		} catch (Exception e) {

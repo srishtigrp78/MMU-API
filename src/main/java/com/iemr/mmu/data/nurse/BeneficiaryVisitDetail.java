@@ -14,7 +14,6 @@ import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 import com.iemr.mmu.data.provider.ProviderServiceMapping;
-import com.iemr.mmu.data.registrar.BeneficiaryData;
 
 @Entity
 @Table(name = "t_benvisitdetail")
@@ -28,10 +27,10 @@ public class BeneficiaryVisitDetail {
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
-	@Expose
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(updatable = false, insertable = false, name = "BeneficiaryRegID")
-	private BeneficiaryData beneficiaryData;
+//	@Expose
+//	@OneToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(updatable = false, insertable = false, name = "BeneficiaryRegID")
+//	private BeneficiaryData beneficiaryData;
 
 	@Expose
 	@Column(name = "ProviderServiceMapID")
@@ -142,7 +141,7 @@ public class BeneficiaryVisitDetail {
 		// TODO Auto-generated constructor stub
 	}
 
-	public BeneficiaryVisitDetail(Long benVisitID, Long beneficiaryRegID, BeneficiaryData beneficiaryData,
+	public BeneficiaryVisitDetail(Long benVisitID, Long beneficiaryRegID,
 			Integer providerServiceMapID, Timestamp visitDateTime, Short visitNo, Short visitReasonID,
 			String visitReason, Integer visitCategoryID, String visitCategory, String pregnancyStatus, String rCHID,
 			String healthFacilityType, String healthFacilityLocation, String reportFilePath, Boolean deleted,
@@ -151,7 +150,7 @@ public class BeneficiaryVisitDetail {
 		super();
 		this.benVisitID = benVisitID;
 		this.beneficiaryRegID = beneficiaryRegID;
-		this.beneficiaryData = beneficiaryData;
+//		this.beneficiaryData = beneficiaryData;
 		this.providerServiceMapID = providerServiceMapID;
 		this.visitDateTime = visitDateTime;
 		this.visitNo = visitNo;
@@ -239,13 +238,13 @@ public class BeneficiaryVisitDetail {
 		this.beneficiaryRegID = beneficiaryRegID;
 	}
 
-	public BeneficiaryData getBeneficiaryData() {
-		return beneficiaryData;
-	}
-
-	public void setBeneficiaryData(BeneficiaryData beneficiaryData) {
-		this.beneficiaryData = beneficiaryData;
-	}
+	// public BeneficiaryData getBeneficiaryData() {
+	// return beneficiaryData;
+	// }
+	//
+	// public void setBeneficiaryData(BeneficiaryData beneficiaryData) {
+	// this.beneficiaryData = beneficiaryData;
+	// }
 
 	public Integer getProviderServiceMapID() {
 		return providerServiceMapID;

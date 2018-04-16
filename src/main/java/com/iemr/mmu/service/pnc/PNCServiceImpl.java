@@ -11,8 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.iemr.mmu.data.anc.ANCCareDetails;
-import com.iemr.mmu.data.anc.BenAdherence;
 import com.iemr.mmu.data.anc.BenAllergyHistory;
 import com.iemr.mmu.data.anc.BenChildDevelopmentHistory;
 import com.iemr.mmu.data.anc.BenFamilyHistory;
@@ -29,7 +27,6 @@ import com.iemr.mmu.data.anc.SysGastrointestinalExamination;
 import com.iemr.mmu.data.anc.SysGenitourinarySystemExamination;
 import com.iemr.mmu.data.anc.SysMusculoskeletalSystemExamination;
 import com.iemr.mmu.data.anc.SysRespiratoryExamination;
-import com.iemr.mmu.data.anc.WrapperAncImmunization;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.anc.WrapperChildOptionalVaccineDetail;
 import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
@@ -42,6 +39,7 @@ import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.pnc.PNCCare;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
+import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
@@ -51,6 +49,13 @@ public class PNCServiceImpl implements PNCService {
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
 	private PNCNurseServiceImpl pncNurseServiceImpl;
+
+	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
+
+	@Autowired
+	public void setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl) {
+		this.commonBenStatusFlowServiceImpl = commonBenStatusFlowServiceImpl;
+	}
 
 	@Autowired
 	public void setCommonNurseServiceImpl(CommonNurseServiceImpl commonNurseServiceImpl) {
@@ -81,6 +86,16 @@ public class PNCServiceImpl implements PNCService {
 			Long vitalSaveSuccessFlag = null;
 			Long examtnSaveSuccessFlag = null;
 			Integer i = null;
+
+			// temporary object for ben flow part. for getting visit reason and
+			// category and ben reg id
+			JsonObject tmpOBJ = requestOBJ.getAsJsonObject("visitDetails").getAsJsonObject("visitDetails");
+			// Getting benflowID for ben status update
+			Long benFlowID = null;
+			if (requestOBJ.has("benFlowID")) {
+				benFlowID = requestOBJ.get("benFlowID").getAsLong();
+			}
+
 			if (benVisitID != null && benVisitID > 0) {
 				// call method to save History data
 				if (requestOBJ.has("historyDetails") && !requestOBJ.get("historyDetails").isJsonNull())
@@ -101,10 +116,7 @@ public class PNCServiceImpl implements PNCService {
 					examtnSaveSuccessFlag = saveBenExaminationDetails(requestOBJ.getAsJsonObject("examinationDetails"),
 							benVisitID);
 
-				JsonObject tmpOBJ = requestOBJ.get("visitDetails").getAsJsonObject();
-				JsonObject tmpOBJ1 = tmpOBJ.get("visitDetails").getAsJsonObject();
-
-				i = commonNurseServiceImpl.updateBeneficiaryStatus('N', tmpOBJ1.get("beneficiaryRegID").getAsLong());
+				i = commonNurseServiceImpl.updateBeneficiaryStatus('N', tmpOBJ.get("beneficiaryRegID").getAsLong());
 			} else {
 				// Error in visit details saving or it is null
 			}
@@ -112,12 +124,33 @@ public class PNCServiceImpl implements PNCService {
 					&& (null != pncSaveSuccessFlag && pncSaveSuccessFlag > 0)
 					&& (null != vitalSaveSuccessFlag && vitalSaveSuccessFlag > 0)
 					&& (null != examtnSaveSuccessFlag && examtnSaveSuccessFlag > 0) && (i != null)) {
+
 				saveSuccessFlag = historySaveSuccessFlag;
+
+				/**
+				 * We have to write new code to update ben status flow new logic
+				 */
+
+				int j = updateBenStatusFlagAfterNurseSaveSuccess(tmpOBJ, benVisitID, benFlowID);
+
 			}
 		} else {
 			// Can't create BenVisitID
 		}
 		return saveSuccessFlag;
+	}
+
+	// method for updating ben flow status flag for nurse
+	private int updateBenStatusFlagAfterNurseSaveSuccess(JsonObject tmpOBJ, Long benVisitID, Long benFlowID) {
+		short nurseFlag = (short) 2;
+		short docFlag = (short) 0;
+		short labIteration = (short) 0;
+
+		int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
+				tmpOBJ.get("beneficiaryRegID").getAsLong(), benVisitID, tmpOBJ.get("visitReason").getAsString(),
+				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration);
+
+		return i;
 	}
 
 	@Transactional(rollbackFor = Exception.class)
@@ -193,17 +226,16 @@ public class PNCServiceImpl implements PNCService {
 			} else {
 			}
 
-			if (requestOBJ.has("refer") && !requestOBJ.get("refer").isJsonNull())
-			{
-				referSaveSuccessFlag = commonDoctorServiceImpl.saveBenReferDetails(requestOBJ.get("refer").getAsJsonObject());
-			} else
-			{
+			if (requestOBJ.has("refer") && !requestOBJ.get("refer").isJsonNull()) {
+				referSaveSuccessFlag = commonDoctorServiceImpl
+						.saveBenReferDetails(requestOBJ.get("refer").getAsJsonObject());
+			} else {
 				referSaveSuccessFlag = new Long(1);
 			}
 			if ((findingSuccessFlag != null && findingSuccessFlag > 0)
 					&& (investigationSuccessFlag != null && investigationSuccessFlag > 0)
 					&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)
-					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0 )) {
+					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
 
 				String s = commonNurseServiceImpl.updateBenVisitStatusFlag(bvID, "D");
 				if (s != null && s.length() > 0)
@@ -304,14 +336,14 @@ public class PNCServiceImpl implements PNCService {
 				&& !pncHistoryOBJ.get("medicationHistory").isJsonNull()) {
 			WrapperMedicationHistory wrapperMedicationHistory = InputMapper.gson()
 					.fromJson(pncHistoryOBJ.get("medicationHistory"), WrapperMedicationHistory.class);
-			if (null != wrapperMedicationHistory && wrapperMedicationHistory
-					.getBenMedicationHistoryDetails().size()>0) {
+			if (null != wrapperMedicationHistory
+					&& wrapperMedicationHistory.getBenMedicationHistoryDetails().size() > 0) {
 				wrapperMedicationHistory.setBenVisitID(benVisitID);
 				medicationSuccessFlag = commonNurseServiceImpl.saveBenMedicationHistory(wrapperMedicationHistory);
 
 				// medicationSuccessFlag =
 				// ancNurseServiceImpl.saveBenANCMedicationHistory(wrapperMedicationHistory);
-			}else{
+			} else {
 				medicationSuccessFlag = new Long(1);
 			}
 		} else {
@@ -526,7 +558,7 @@ public class PNCServiceImpl implements PNCService {
 		} else {
 			gastroIntsExmnSuccessFlag = new Long(1);
 		}
-				
+
 		// Save cardioVascular Examination Details
 		if (examinationDetailsOBJ != null && examinationDetailsOBJ.has("cardioVascularExamination")
 				&& !examinationDetailsOBJ.get("cardioVascularExamination").isJsonNull()) {
@@ -631,10 +663,9 @@ public class PNCServiceImpl implements PNCService {
 
 		return resMap.toString();
 	}
-	
+
 	@Override
-	public String getBenPNCDetailsFrmNursePNC(Long benRegID, Long benVisitID)
-	{
+	public String getBenPNCDetailsFrmNursePNC(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
 
 		resMap.put("PNCCareDetail", pncNurseServiceImpl.getPNCCareDetails(benRegID, benVisitID));
@@ -676,7 +707,7 @@ public class PNCServiceImpl implements PNCService {
 
 		return resMap.toString();
 	}
-	
+
 	public String getPNCExaminationDetailsData(Long benRegID, Long benVisitID) {
 		Map<String, Object> examinationDetailsMap = new HashMap<String, Object>();
 
@@ -699,7 +730,6 @@ public class PNCServiceImpl implements PNCService {
 
 		return new Gson().toJson(examinationDetailsMap);
 	}
-
 
 	// ------- Fetch beneficiary all past history data ------------------
 	public String getPastHistoryData(Long beneficiaryRegID) {
@@ -1036,7 +1066,7 @@ public class PNCServiceImpl implements PNCService {
 		} else {
 			headToToeExmnSuccessFlag = 1;
 		}
-		
+
 		// Save Gastro Intestinal Examination Details
 		if (examinationDetailsOBJ != null && examinationDetailsOBJ.has("gastroIntestinalExamination")
 				&& !examinationDetailsOBJ.get("gastroIntestinalExamination").isJsonNull()) {
@@ -1047,7 +1077,7 @@ public class PNCServiceImpl implements PNCService {
 		} else {
 			gastroIntsExmnSuccessFlag = 1;
 		}
-		
+
 		// Save Cardio Vascular Examination Details
 		if (examinationDetailsOBJ != null && examinationDetailsOBJ.has("cardioVascularExamination")
 				&& !examinationDetailsOBJ.get("cardioVascularExamination").isJsonNull()) {
@@ -1111,7 +1141,7 @@ public class PNCServiceImpl implements PNCService {
 		}
 		return exmnSuccessFlag;
 	}
-	
+
 	/***
 	 * 
 	 * @param pncDetailsOBJ
@@ -1120,15 +1150,13 @@ public class PNCServiceImpl implements PNCService {
 	 * @throws Exception
 	 */
 	@Transactional(rollbackFor = Exception.class)
-	public int updateBenPNCDetails(JsonObject pncDetailsOBJ) throws Exception
-	{
+	public int updateBenPNCDetails(JsonObject pncDetailsOBJ) throws Exception {
 		int pncSuccessFlag = 0;
-		if (pncDetailsOBJ != null && pncDetailsOBJ.has("PNCDetails") && !pncDetailsOBJ.get("PNCDetails").isJsonNull())
-		{
+		if (pncDetailsOBJ != null && pncDetailsOBJ.has("PNCDetails") && !pncDetailsOBJ.get("PNCDetails").isJsonNull()) {
 			// Update Ben pnc Care Details
 			PNCCare pncCareDetailsOBJ = InputMapper.gson().fromJson(pncDetailsOBJ.get("PNCDetails"), PNCCare.class);
 			pncSuccessFlag = pncNurseServiceImpl.updateBenPNCCareDetails(pncCareDetailsOBJ);
-		}else{
+		} else {
 			pncSuccessFlag = 1;
 		}
 

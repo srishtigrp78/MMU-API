@@ -47,10 +47,10 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 			return 0;
 	}
 
-	public int updateBenFlowNurseAfterNurseActivity(Long benRegID, Long benVisitID, String visitReason,
+	public int updateBenFlowNurseAfterNurseActivity(Long benFlowID, Long benRegID, Long benVisitID, String visitReason,
 			String visitCategory, Short nurseFlag, Short docFlag, Short labIteration) {
 		try {
-			int i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterNurseActivity(benRegID, benVisitID, visitReason,
+			int i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterNurseActivity(benFlowID, benRegID, benVisitID, visitReason,
 					visitCategory, nurseFlag, docFlag, labIteration);
 			System.out.println("hello");
 		} catch (Exception e) {

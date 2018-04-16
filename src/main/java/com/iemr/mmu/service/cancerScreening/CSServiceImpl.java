@@ -117,6 +117,13 @@ public class CSServiceImpl implements CSService {
 					BeneficiaryVisitDetail.class);
 
 			Long benVisitID = saveBenVisitDetails(benVisitDetailsOBJ);
+
+			// Getting benflowID for ben status update
+			Long benFlowID = null;
+			if (requestOBJ.has("benFlowID")) {
+				benFlowID = requestOBJ.get("benFlowID").getAsLong();
+			}
+
 			// check if visit details data saved successfully
 			if (benVisitID != null && benVisitID > 0) {
 				// call method to save history data
@@ -145,7 +152,7 @@ public class CSServiceImpl implements CSService {
 					 * We have to write new code to update ben status flow new
 					 * logic
 					 */
-				//	int j = updateBenStatusFlagAfterNurseSaveSuccess(benVisitDetailsOBJ, benVisitID);
+					int j = updateBenStatusFlagAfterNurseSaveSuccess(benVisitDetailsOBJ, benVisitID, benFlowID);
 
 				}
 
@@ -158,12 +165,13 @@ public class CSServiceImpl implements CSService {
 	}
 
 	// method for updating ben flow status flag for nurse
-	private int updateBenStatusFlagAfterNurseSaveSuccess(BeneficiaryVisitDetail benVisitDetailsOBJ, Long benVisitID) {
+	private int updateBenStatusFlagAfterNurseSaveSuccess(BeneficiaryVisitDetail benVisitDetailsOBJ, Long benVisitID,
+			Long benFlowID) {
 		short nurseFlag = (short) 2;
 		short docFlag = (short) 0;
 		short labIteration = (short) 0;
 
-		int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(
+		int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitID, benVisitDetailsOBJ.getVisitReason(),
 				benVisitDetailsOBJ.getVisitCategory(), nurseFlag, docFlag, labIteration);
 

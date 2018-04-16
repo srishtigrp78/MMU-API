@@ -25,12 +25,13 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	@Modifying
 	@Query("UPDATE BeneficiaryFlowStatus t set t.benVisitID = :benVisitID, t.VisitReason = :visitReason, "
 			+ " t.VisitCategory = :visitCategory, t.nurseFlag = :nurseFlag, t.doctorFlag = :docFlag, "
-			+ " t.labIteration = :labIteration WHERE t.beneficiaryRegID = :benRegID AND t.benVisitID IS NULL "
-			+ " AND DATE(visitDate) is CURDATE() AND nurseFlag = 1 ")
-	public int updateBenFlowStatusAfterNurseActivity(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID, @Param("visitReason") String visitReason,
-			@Param("visitCategory") String visitCategory, @Param("nurseFlag") Short nurseFlag,
-			@Param("docFlag") Short docFlag, @Param("labIteration") Short labIteration);
+			+ " t.labIteration = :labIteration WHERE t.benFlowID = :benFlowID AND t.beneficiaryRegID = :benRegID "
+			+ " AND nurseFlag = 1 ")
+	public int updateBenFlowStatusAfterNurseActivity(@Param("benFlowID") Long benFlowID,
+			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID,
+			@Param("visitReason") String visitReason, @Param("visitCategory") String visitCategory,
+			@Param("nurseFlag") Short nurseFlag, @Param("docFlag") Short docFlag,
+			@Param("labIteration") Short labIteration);
 
 	@Query("SELECT  t.benFlowID, t.beneficiaryRegID, t.visitDate, t.benName, t.age, t.ben_age_val, t.genderID, t.genderName, "
 			+ " t.villageName, t.districtName from BeneficiaryFlowStatus t "

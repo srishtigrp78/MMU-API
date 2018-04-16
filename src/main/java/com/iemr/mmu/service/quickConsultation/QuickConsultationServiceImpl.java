@@ -203,50 +203,61 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	@Override
 	public Integer quickConsultNurseDataInsert(JsonObject jsnOBJ) throws Exception {
 		Integer returnOBJ = 0;
-		BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(jsnOBJ.get("visitDetails"),
-				BeneficiaryVisitDetail.class);
-		Long benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
+		if (jsnOBJ != null && jsnOBJ.has("visitDetails") && !jsnOBJ.get("visitDetails").isJsonNull()) {
 
-		if (benVisitID != null && benVisitID > 0) {
-			BenAnthropometryDetail benAnthropometryDetail = InputMapper.gson().fromJson(jsnOBJ.get("vitalsDetails"),
-					BenAnthropometryDetail.class);
-			benAnthropometryDetail.setBenVisitID(benVisitID);
-			Long benAnthropometryID = commonNurseServiceImpl
-					.saveBeneficiaryPhysicalAnthropometryDetails(benAnthropometryDetail);
-			BenPhysicalVitalDetail benPhysicalVitalDetail = InputMapper.gson().fromJson(jsnOBJ.get("vitalsDetails"),
-					BenPhysicalVitalDetail.class);
-			benPhysicalVitalDetail.setBenVisitID(benVisitID);
-			Long benPhysicalVitalID = commonNurseServiceImpl
-					.saveBeneficiaryPhysicalVitalDetails(benPhysicalVitalDetail);
-			if (benAnthropometryID != null && benAnthropometryID > 0 && benPhysicalVitalID != null
-					&& benPhysicalVitalID > 0) {
-				Integer i = commonNurseServiceImpl.updateBeneficiaryStatus('N',
-						benVisitDetailsOBJ.getBeneficiaryRegID());
+			BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(jsnOBJ.get("visitDetails"),
+					BeneficiaryVisitDetail.class);
+			Long benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
 
-				returnOBJ = 1;
-
-				/**
-				 * We have to write new code to update ben status flow new logic
-				 */
-
-				//int j = updateBenStatusFlagAfterNurseSaveSuccess(benVisitDetailsOBJ, benVisitID);
-
-			} else {
-
+			// Getting benflowID for ben status update
+			Long benFlowID = null;
+			if (jsnOBJ.has("benFlowID")) {
+				benFlowID = jsnOBJ.get("benFlowID").getAsLong();
 			}
-		} else {
-			// Error in beneficiary visit creation...
+
+			if (benVisitID != null && benVisitID > 0) {
+				BenAnthropometryDetail benAnthropometryDetail = InputMapper.gson().fromJson(jsnOBJ.get("vitalsDetails"),
+						BenAnthropometryDetail.class);
+				benAnthropometryDetail.setBenVisitID(benVisitID);
+				Long benAnthropometryID = commonNurseServiceImpl
+						.saveBeneficiaryPhysicalAnthropometryDetails(benAnthropometryDetail);
+				BenPhysicalVitalDetail benPhysicalVitalDetail = InputMapper.gson().fromJson(jsnOBJ.get("vitalsDetails"),
+						BenPhysicalVitalDetail.class);
+				benPhysicalVitalDetail.setBenVisitID(benVisitID);
+				Long benPhysicalVitalID = commonNurseServiceImpl
+						.saveBeneficiaryPhysicalVitalDetails(benPhysicalVitalDetail);
+				if (benAnthropometryID != null && benAnthropometryID > 0 && benPhysicalVitalID != null
+						&& benPhysicalVitalID > 0) {
+					Integer i = commonNurseServiceImpl.updateBeneficiaryStatus('N',
+							benVisitDetailsOBJ.getBeneficiaryRegID());
+
+					returnOBJ = 1;
+
+					/**
+					 * We have to write new code to update ben status flow new
+					 * logic
+					 */
+
+					int j = updateBenStatusFlagAfterNurseSaveSuccess(benVisitDetailsOBJ, benVisitID, benFlowID);
+
+				} else {
+
+				}
+			} else {
+				// Error in beneficiary visit creation...
+			}
 		}
 		return returnOBJ;
 	}
 
 	// method for updating ben flow status flag for nurse
-	private int updateBenStatusFlagAfterNurseSaveSuccess(BeneficiaryVisitDetail benVisitDetailsOBJ, Long benVisitID) {
+	private int updateBenStatusFlagAfterNurseSaveSuccess(BeneficiaryVisitDetail benVisitDetailsOBJ, Long benVisitID,
+			Long benFlowID) {
 		short nurseFlag = (short) 2;
 		short docFlag = (short) 0;
 		short labIteration = (short) 0;
 
-		int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(
+		int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitID, benVisitDetailsOBJ.getVisitReason(),
 				benVisitDetailsOBJ.getVisitCategory(), nurseFlag, docFlag, labIteration);
 

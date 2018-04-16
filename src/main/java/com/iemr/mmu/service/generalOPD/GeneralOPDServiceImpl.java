@@ -89,7 +89,14 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 			// Call method to save visit details data
 			Long benVisitID = saveBenVisitDetails(requestOBJ.getAsJsonObject("visitDetails"));
 
+			// temporary object for ben flow part. for getting visit reason and
+			// category and ben reg id
 			JsonObject tmpOBJ = requestOBJ.getAsJsonObject("visitDetails").getAsJsonObject("visitDetails");
+			//Getting benflowID for ben status update
+			Long benFlowID = null;
+			if (requestOBJ.has("benFlowID")) {
+				benFlowID = requestOBJ.get("benFlowID").getAsLong();
+			}
 
 			if (benVisitID != null && benVisitID > 0) {
 				// call method to save History data
@@ -121,7 +128,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				 * We have to write new code to update ben status flow new logic
 				 */
 
-			//	int i = updateBenStatusFlagAfterNurseSaveSuccess(tmpOBJ, benVisitID);
+				int i = updateBenStatusFlagAfterNurseSaveSuccess(tmpOBJ, benVisitID, benFlowID);
 
 			}
 		} else {
@@ -131,12 +138,12 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	}
 
 	// method for updating ben flow status flag for nurse
-	private int updateBenStatusFlagAfterNurseSaveSuccess(JsonObject tmpOBJ, Long benVisitID) {
+	private int updateBenStatusFlagAfterNurseSaveSuccess(JsonObject tmpOBJ, Long benVisitID, Long benFlowID) {
 		short nurseFlag = (short) 2;
 		short docFlag = (short) 0;
 		short labIteration = (short) 0;
 
-		int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(
+		int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				tmpOBJ.get("beneficiaryRegID").getAsLong(), benVisitID, tmpOBJ.get("visitReason").getAsString(),
 				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration);
 
@@ -675,7 +682,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		Integer findingSuccessFlag = null;
 		Integer prescriptionSuccessFlag = null;
 		Long referSaveSuccessFlag = null;
-		
+
 		String createdBy = null;
 		Long bvID = null;
 
@@ -707,8 +714,6 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 			} else {
 			}
 
-			
-
 			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull()) {
 				WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
 						.fromJson(requestOBJ.get("investigation"), WrapperBenInvestigationANC.class);
@@ -716,7 +721,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				// Save Prescription
 				prescriptionDetail.setExternalInvestigation(wrapperBenInvestigationANC.getExternalInvestigations());
 				prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
-				
+
 				if (wrapperBenInvestigationANC != null) {
 					createdBy = wrapperBenInvestigationANC.getCreatedBy();
 					bvID = wrapperBenInvestigationANC.getBenVisitID();
@@ -754,14 +759,13 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 			} else {
 			}
 
-			if (requestOBJ.has("refer") && !requestOBJ.get("refer").isJsonNull())
-			{
-				referSaveSuccessFlag = commonDoctorServiceImpl.saveBenReferDetails(requestOBJ.get("refer").getAsJsonObject());
-			} else
-			{
+			if (requestOBJ.has("refer") && !requestOBJ.get("refer").isJsonNull()) {
+				referSaveSuccessFlag = commonDoctorServiceImpl
+						.saveBenReferDetails(requestOBJ.get("refer").getAsJsonObject());
+			} else {
 				referSaveSuccessFlag = new Long(1);
 			}
-			
+
 			// END of please this part of code later Neeraj *****
 
 			if ((findingSuccessFlag != null && findingSuccessFlag > 0) && (prescriptionID != null && prescriptionID > 0)
