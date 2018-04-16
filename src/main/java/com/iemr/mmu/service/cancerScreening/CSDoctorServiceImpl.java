@@ -17,6 +17,7 @@ import com.iemr.mmu.data.doctor.CancerLymphNodeDetails;
 import com.iemr.mmu.data.doctor.CancerOralExamination;
 import com.iemr.mmu.data.doctor.CancerSignAndSymptoms;
 import com.iemr.mmu.data.doctor.WrapperCancerExamImgAnotasn;
+import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
 import com.iemr.mmu.repo.doctor.CancerAbdominalExaminationRepo;
 import com.iemr.mmu.repo.doctor.CancerBreastExaminationRepo;
 import com.iemr.mmu.repo.doctor.CancerDiagnosisRepo;
@@ -294,7 +295,7 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 		return cancerBreastExamination;
 	}
 
-	private CancerDiagnosis getBenCancerDiagnosisData(Long benRegID, Long benVisitID) {
+	public CancerDiagnosis getBenCancerDiagnosisData(Long benRegID, Long benVisitID) {
 		CancerDiagnosis cancerDiagnosis = cancerDiagnosisRepo.getBenCancerDiagnosisDetails(benRegID, benVisitID);
 		// System.out.println("cancerDiagnosis .....");
 		if (null != cancerDiagnosis && null != cancerDiagnosis.getInstitute()) {
@@ -394,4 +395,5 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 		// System.out.println("hello");
 		return resList;
 	}
+	
 }

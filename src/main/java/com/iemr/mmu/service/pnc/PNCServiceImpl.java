@@ -27,6 +27,7 @@ import com.iemr.mmu.data.anc.SysGastrointestinalExamination;
 import com.iemr.mmu.data.anc.SysGenitourinarySystemExamination;
 import com.iemr.mmu.data.anc.SysMusculoskeletalSystemExamination;
 import com.iemr.mmu.data.anc.SysRespiratoryExamination;
+import com.iemr.mmu.data.anc.WrapperAncFindings;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.anc.WrapperChildOptionalVaccineDetail;
 import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
@@ -167,7 +168,9 @@ public class PNCServiceImpl implements PNCService {
 
 		if (requestOBJ != null) {
 			if (requestOBJ.has("findings") && !requestOBJ.get("findings").isJsonNull()) {
-				findingSuccessFlag = commonDoctorServiceImpl.saveFindings(requestOBJ.get("findings").getAsJsonObject());
+				//findingSuccessFlag = commonDoctorServiceImpl.saveFindings(requestOBJ.get("findings").getAsJsonObject());
+				WrapperAncFindings wrapperAncFindings = InputMapper.gson().fromJson(requestOBJ.get("findings"), WrapperAncFindings.class);
+				findingSuccessFlag = commonDoctorServiceImpl.saveDocFindings(wrapperAncFindings);
 				// findingSuccessFlag =
 				// ancDoctorServiceImpl.savePNCFindings(requestOBJ.get("findings").getAsJsonObject());
 

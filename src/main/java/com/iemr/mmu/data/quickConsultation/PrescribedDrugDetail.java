@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 
 @Entity
 @Table(name = "t_prescribeddrug")
@@ -393,6 +394,40 @@ public class PrescribedDrugDetail {
 			}
 		}
 
+		return resArray;
+	}
+	
+	public PrescribedDrugDetail(Long prescribedDrugID, Long prescriptionID, String drugForm,
+			String drugTradeOrBrandName, Integer drugID, String genericDrugName, String drugStrength, String dose,
+			String route, String frequency, String drugDuration, String relationToFood, String specialInstruction) {
+		super();
+		this.prescribedDrugID = prescribedDrugID;
+		this.prescriptionID = prescriptionID;
+		this.drugForm = drugForm;
+		this.drugTradeOrBrandName = drugTradeOrBrandName;
+		this.drugID = drugID;
+		this.genericDrugName = genericDrugName;
+		this.drugStrength = drugStrength;
+		this.dose = dose;
+		this.route = route;
+		this.frequency = frequency;
+		this.drugDuration = drugDuration;
+		this.relationToFood = relationToFood;
+		this.specialInstruction = specialInstruction;
+	}
+
+	public static ArrayList<PrescribedDrugDetail> getprescribedDrugs(ArrayList<Object[]> resList) {
+		ArrayList<PrescribedDrugDetail> resArray = new ArrayList<PrescribedDrugDetail>();
+		PrescribedDrugDetail cOBJ=null;
+		if (resList != null && resList.size() > 0) {
+			
+			for (Object[] obj : resList) {
+				
+				cOBJ = new PrescribedDrugDetail((Long)obj[0], (Long)obj[1], (String)obj[2], (String)obj[3], (Integer)obj[4], (String)obj[5], 
+						(String)obj[6], (String)obj[7], (String)obj[8], (String)obj[9], (String)obj[10], (String)obj[11], (String)obj[12]);
+				resArray.add(cOBJ);
+			}
+		}
 		return resArray;
 	}
 }

@@ -2,6 +2,7 @@ package com.iemr.mmu.data.quickConsultation;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.anc.ANCCareDetails;
 
 @Entity
 @Table(name = "t_benclinicalobservation")
@@ -270,6 +272,22 @@ public class BenClinicalObservations {
 		this.captureDate = createdDate;
 	}
 
+	
+	public BenClinicalObservations(Long clinicalObservationID, Long beneficiaryRegID, Long benVisitID,
+			Integer providerServiceMapID, String clinicalObservation, String otherSymptoms, String significantFindings,
+			Boolean isForHistory) {
+		super();
+		this.clinicalObservationID = clinicalObservationID;
+		this.beneficiaryRegID = beneficiaryRegID;
+		this.benVisitID = benVisitID;
+		this.providerServiceMapID = providerServiceMapID;
+		this.clinicalObservation = clinicalObservation;
+		this.otherSymptoms = otherSymptoms;
+		this.significantFindings = significantFindings;
+		this.isForHistory = isForHistory;
+	}
+
+	
 	// public static BenClinicalObservations
 	// getBenClinicalObservationsList(JsonObject emrgCasesheet) {
 	// ArrayList<BenClinicalObservations> resArray = new ArrayList<>();

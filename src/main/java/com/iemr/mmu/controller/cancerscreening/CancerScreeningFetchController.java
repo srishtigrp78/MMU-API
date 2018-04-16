@@ -280,4 +280,30 @@ public class CancerScreeningFetchController {
 		return response.toString();
 	}
 
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary Diagnosis details from Doctor screen", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenDataFrmDoctorDiagnosisScreen" }, method = { RequestMethod.POST })
+	public String getBenDataFrmDoctorDiagnosisScreen(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+		logger.info("getBenDataFrmDoctorDiagnosisScreen request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("benVisitID")) {
+				Long benRegID = obj.getLong("benRegID");
+				Long benVisitID = obj.getLong("benVisitID");
+
+				String s = cSServiceImpl.getBenDoctorDiagnosisData(benRegID, benVisitID);
+				response.setResponse(s);
+			} else {
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenDataFrmDoctorDiagnosisScreen response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenDataFrmDoctorDiagnosisScreen:" + e);
+		}
+		return response.toString();
+	}
+	
 }

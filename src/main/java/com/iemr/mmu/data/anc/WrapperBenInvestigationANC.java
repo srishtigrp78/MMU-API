@@ -2,6 +2,7 @@ package com.iemr.mmu.data.anc;
 
 import java.util.ArrayList;
 
+import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
 
 public class WrapperBenInvestigationANC {
@@ -83,5 +84,18 @@ public class WrapperBenInvestigationANC {
 	public void setExternalInvestigations(String externalInvestigations) {
 		this.externalInvestigations = externalInvestigations;
 	}
+	
+	/*public static WrapperBenInvestigationANC getInvestigations(ArrayList<Object[]> investigationList) {
+		WrapperBenInvestigationANC cOBJ = null;
+		
+		WrapperBenInvestigationANC  labTestOrdersList = LabTestOrderDetail.getLabTestOrderDetails(investigationList);
+		if(null != labTestOrdersList && labTestOrdersList.size()>0){
+			for (LabTestOrderDetail order : labTestOrdersList) {
+				
+						
+			}
+		}
+		return cOBJ;
+	}*/
 
 }

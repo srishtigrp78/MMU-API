@@ -1,12 +1,14 @@
 package com.iemr.mmu.data.quickConsultation;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
@@ -98,6 +100,18 @@ public class PrescriptionDetail {
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
 	
+	@Transient
+	private ArrayList<PrescribedDrugDetail> prescribedDrugs;
+	
+	
+	public ArrayList<PrescribedDrugDetail> getPrescribedDrugs() {
+		return prescribedDrugs;
+	}
+
+	public void setPrescribedDrugs(ArrayList<PrescribedDrugDetail> prescribedDrugs) {
+		this.prescribedDrugs = prescribedDrugs;
+	}
+
 	public PrescriptionDetail() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -270,6 +284,31 @@ public class PrescriptionDetail {
 
 	public void setExternalInvestigation(String externalInvestigation) {
 		this.externalInvestigation = externalInvestigation;
+	}
+	
+	
+	public PrescriptionDetail(Long prescriptionID, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
+			String externalInvestigation) {
+		super();
+		this.prescriptionID = prescriptionID;
+		this.beneficiaryRegID = beneficiaryRegID;
+		this.benVisitID = benVisitID;
+		this.providerServiceMapID = providerServiceMapID;
+		this.externalInvestigation = externalInvestigation;
+	}
+
+	public static ArrayList<PrescriptionDetail> getPrescriptions(ArrayList<Object[]> resList) {
+		ArrayList<PrescriptionDetail> resArray = new ArrayList<PrescriptionDetail>();
+		PrescriptionDetail cOBJ=null;
+		if (resList != null && resList.size() > 0) {
+			
+			for (Object[] obj : resList) {
+				
+				cOBJ = new PrescriptionDetail((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (String)obj[4]);
+				resArray.add(cOBJ);
+			}
+		}
+		return resArray;
 	}
 	
 }
