@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.masterdata.registrar.GenderMaster;
 
 /***
  * 
@@ -170,12 +171,17 @@ public class BeneficiaryFlowStatus {
 	private String beneficiaryName;
 	@Transient
 	private Timestamp createdDate;
+	@Transient
+	private String createdBy;
+	@Transient
+	private GenderMaster m_gender;
 
 	public BeneficiaryFlowStatus() {
 	}
 
 	public BeneficiaryFlowStatus(Long benFlowID, Long benRegID, Timestamp visitDate, String benName, String age,
-			Integer ageVal, Short genderID, String genderName, String villageName, String districtName) {
+			Integer ageVal, Short genderID, String genderName, String villageName, String districtName,
+			Long beneficiaryID) {
 		this.benFlowID = benFlowID;
 		this.beneficiaryRegID = benRegID;
 		this.serviceDate = visitDate;
@@ -187,7 +193,56 @@ public class BeneficiaryFlowStatus {
 		this.villageName = villageName;
 		this.districtName = districtName;
 		this.createdDate = visitDate;
+		this.beneficiaryID = beneficiaryID;
 
+	}
+
+	public GenderMaster getM_gender() {
+		return m_gender;
+	}
+
+	public void setM_gender(GenderMaster m_gender) {
+		this.m_gender = m_gender;
+	}
+
+	public Integer getAgeVal() {
+		return ageVal;
+	}
+
+	public void setAgeVal(Integer ageVal) {
+		this.ageVal = ageVal;
+	}
+
+	public Timestamp getServiceDate() {
+		return serviceDate;
+	}
+
+	public void setServiceDate(Timestamp serviceDate) {
+		this.serviceDate = serviceDate;
+	}
+
+	public String getBeneficiaryName() {
+		return beneficiaryName;
+	}
+
+	public void setBeneficiaryName(String beneficiaryName) {
+		this.beneficiaryName = beneficiaryName;
+	}
+
+	public Timestamp getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Timestamp createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 
 	public static BeneficiaryFlowStatus getBeneficiaryFlowStatusForLeftPanel(ArrayList<Object[]> objList) {
@@ -196,7 +251,7 @@ public class BeneficiaryFlowStatus {
 			for (Object[] objArr : objList) {
 				obj = new BeneficiaryFlowStatus((Long) objArr[0], (Long) objArr[1], (Timestamp) objArr[2],
 						(String) objArr[3], (String) objArr[4], (Integer) objArr[5], (Short) objArr[6],
-						(String) objArr[7], (String) objArr[8], (String) objArr[9]);
+						(String) objArr[7], (String) objArr[8], (String) objArr[9], (Long) objArr[10]);
 			}
 		}
 		return obj;

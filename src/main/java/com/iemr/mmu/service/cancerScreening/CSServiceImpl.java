@@ -167,8 +167,8 @@ public class CSServiceImpl implements CSService {
 	// method for updating ben flow status flag for nurse
 	private int updateBenStatusFlagAfterNurseSaveSuccess(BeneficiaryVisitDetail benVisitDetailsOBJ, Long benVisitID,
 			Long benFlowID) {
-		short nurseFlag = (short) 2;
-		short docFlag = (short) 0;
+		short nurseFlag = (short) 9;
+		short docFlag = (short) 1;
 		short labIteration = (short) 0;
 
 		int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,

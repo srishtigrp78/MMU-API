@@ -19,25 +19,23 @@ import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/common" , headers = "Authorization")
+@RequestMapping(value = "/common", headers = "Authorization")
 public class FetchCommonController {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
 	private CommonNurseServiceImpl commonNurseServiceImpl;
-	
+
 	@Autowired
-	public void setCommonDoctorServiceImpl(CommonDoctorServiceImpl commonDoctorServiceImpl)
-	{
+	public void setCommonDoctorServiceImpl(CommonDoctorServiceImpl commonDoctorServiceImpl) {
 		this.commonDoctorServiceImpl = commonDoctorServiceImpl;
 	}
-	
+
 	@Autowired
-	public void setCommonNurseServiceImpl(CommonNurseServiceImpl commonNurseServiceImpl)
-	{
+	public void setCommonNurseServiceImpl(CommonNurseServiceImpl commonNurseServiceImpl) {
 		this.commonNurseServiceImpl = commonNurseServiceImpl;
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "provides doctor worklist", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getDocWorklist" }, method = { RequestMethod.GET })
@@ -52,9 +50,22 @@ public class FetchCommonController {
 		}
 		return response.toString();
 	}
-	
-	
-	
+
+	@CrossOrigin()
+	@ApiOperation(value = "provides doctor worklist", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getDocWorklistNew" }, method = { RequestMethod.GET })
+	public String getDocWorkListNew() {
+		OutputResponse response = new OutputResponse();
+		try {
+			String s = commonDoctorServiceImpl.getDocWorkListNew();
+			response.setResponse(s);
+		} catch (Exception e) {
+			logger.error("Error in getDocWorkList:" + e);
+			response.setError(e);
+		}
+		return response.toString();
+	}
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Nurse worklist", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getNurseWorklist" }, method = { RequestMethod.GET })
@@ -70,7 +81,7 @@ public class FetchCommonController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Nurse worklist new", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getNurseWorklistNew" }, method = { RequestMethod.GET })
@@ -78,8 +89,8 @@ public class FetchCommonController {
 		OutputResponse response = new OutputResponse();
 		try {
 			String s = commonNurseServiceImpl.getNurseWorkListNew();
-			if(s != null)
-			response.setResponse(s);
+			if (s != null)
+				response.setResponse(s);
 			else
 				response.setError(5000, "Error while fetching Nurse worklist");
 		} catch (Exception e) {
@@ -89,7 +100,7 @@ public class FetchCommonController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Doctor Entered Previous significant Findings", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getDoctorPreviousSignificantFindings" }, method = { RequestMethod.POST })
@@ -98,19 +109,19 @@ public class FetchCommonController {
 		OutputResponse response = new OutputResponse();
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
-			if (obj.length() > 0) {
+			if (obj != null && obj.has("beneficiaryRegID") && obj.get("beneficiaryRegID") != null) {
 				Long beneficiaryRegID = obj.getLong("beneficiaryRegID");
 				String s = commonDoctorServiceImpl.fetchBenPreviousSignificantFindings(beneficiaryRegID);
-				if(s != null)
+				if (s != null)
 					response.setResponse(s);
 				else
-					response.setError(5000, "Error while fetching Doctor Entered Previous significant Findings");
-			}else{
-				response.setError(5000, "Invalid Data!");
+					response.setError(5000, "Error while fetching previous significant findings");
+			} else {
+				response.setError(5000, "Invalid data!");
 			}
 		} catch (Exception e) {
 			// e.printStackTrace();
-			logger.error("Error while fetching Doctor Entered Previous significant Findings" + e);
+			logger.error("Error while fetching previous significant findings" + e);
 			response.setError(e);
 		}
 		return response.toString();

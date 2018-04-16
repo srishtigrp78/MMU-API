@@ -42,4 +42,28 @@ public class GenderMaster {
 		return resArray;
 	}
 
+	public Short getGenderID() {
+		return genderID;
+	}
+
+	public void setGenderID(Short genderID) {
+		this.genderID = genderID;
+	}
+
+	public String getGenderName() {
+		return genderName;
+	}
+
+	public void setGenderName(String genderName) {
+		this.genderName = genderName;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
 }

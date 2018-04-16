@@ -43,6 +43,7 @@ import com.iemr.mmu.repo.registrar.RegistrarRepoBenPhoneMapData;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBeneficiaryDetails;
 import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
+import com.iemr.mmu.utils.response.OutputResponse;
 
 /***
  * 
@@ -666,8 +667,9 @@ public class RegistrarServiceImpl implements RegistrarService {
 	}
 
 	// New beneficiary registration with common and identity
-	public Long registerBeneficiary(String comingRequest, String Authorization) throws Exception {
+	public String registerBeneficiary(String comingRequest, String Authorization) throws Exception {
 
+		OutputResponse response1 = new OutputResponse();
 		Long beneficiaryRegID = null;
 		Long beneficiaryID = null;
 
@@ -687,16 +689,17 @@ public class RegistrarServiceImpl implements RegistrarService {
 
 			int i = commonBenStatusFlowServiceImpl.createBenFlowRecord(comingRequest, beneficiaryRegID, beneficiaryID);
 			if (i > 0) {
-
+				if (i == 1)
+					response1.setResponse("Beneficiary successfully registered. Beneficiary ID is : " + beneficiaryID);
 			} else {
-				beneficiaryID = null;
+				response1.setError(5000, "Error in registration. Please contact administrator.");
 				// log error that beneficiaryID generated but flow part is not
 				// done successfully.
 			}
 		} else {
 			// log error that registration failed.
 		}
-		return beneficiaryID;
+		return response1.toString();
 	}
 
 	// beneficiary quick search new integrated with common and identity
@@ -727,4 +730,8 @@ public class RegistrarServiceImpl implements RegistrarService {
 		return returnOBJ;
 	}
 
+	public int searchAndSubmitBeneficiaryToNurse(String requestOBJ) throws Exception {
+		int i = commonBenStatusFlowServiceImpl.createBenFlowRecord(requestOBJ, null, null);
+		return i;
+	}
 }

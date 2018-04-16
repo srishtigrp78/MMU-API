@@ -144,23 +144,23 @@ public class InsertRegistrarController {
 		return response.toString();
 	}
 
+	// beneficiary registration with common and identity new
 	@CrossOrigin()
 	@ApiOperation(value = "Register a new Beneficiary new API", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/registrarBeneficaryRegistrationNew" }, method = { RequestMethod.POST })
 	public String registrarBeneficaryRegistrationNew(@RequestBody String comingReq,
 			@RequestHeader(value = "Authorization") String Authorization) {
+		String s;
 		OutputResponse response = new OutputResponse();
 		try {
-			Long r = registrarServiceImpl.registerBeneficiary(comingReq, Authorization);
-			if (r != null)
-				response.setResponse("Beneficiary successfully registered. Beneficiary ID is : " + r);
-			else
-				response.setError(5000, "Error in registration. Please contact administrator.");
-			System.out.println(r);
+			s = registrarServiceImpl.registerBeneficiary(comingReq, Authorization);
+			return s;
 		} catch (Exception e) {
+			logger.error("Error in registration" + e);
 			response.setError(e);
+			return response.toString();
 		}
-		return response.toString();
+
 	}
 
 }

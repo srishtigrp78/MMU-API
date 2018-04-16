@@ -31,6 +31,9 @@ public class UpdateCommonController {
 		this.commonNurseServiceImpl = commonNurseServiceImpl;
 	}
 
+	
+	//this functionality are moved to registrar update controller.
+	//16-04-2018,  Neeraj kumar
 	@CrossOrigin
 	@ApiOperation(value = "update Beneficiary Status Flag", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/benDetailsAndSubmitToNurse" }, method = { RequestMethod.POST })

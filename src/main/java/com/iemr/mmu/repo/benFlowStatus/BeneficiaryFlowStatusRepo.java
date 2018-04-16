@@ -34,9 +34,17 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			@Param("labIteration") Short labIteration);
 
 	@Query("SELECT  t.benFlowID, t.beneficiaryRegID, t.visitDate, t.benName, t.age, t.ben_age_val, t.genderID, t.genderName, "
-			+ " t.villageName, t.districtName from BeneficiaryFlowStatus t "
+			+ " t.villageName, t.districtName, t.beneficiaryID from BeneficiaryFlowStatus t "
 			+ " Where t.beneficiaryRegID = :benRegID AND t.benFlowID = :benFlowID ")
 	public ArrayList<Object[]> getBenDetailsForLeftSidePanel(@Param("benRegID") Long benRegID,
 			@Param("benFlowID") Long benFlowID);
+
+	@Query("SELECT t from BeneficiaryFlowStatus t WHERE t.doctorFlag = 1 OR t.doctorFlag = 2 OR "
+			+ " t.doctorFlag = 3 OR t.nurseFlag = 2 OR t.doctorFlag = 9")
+	public ArrayList<BeneficiaryFlowStatus> getDocWorkListNew();
+
+	@Query("SELECT  t.benFlowID from BeneficiaryFlowStatus t WHERE t.beneficiaryRegID = :benRegID AND "
+			+ " t.nurseFlag = 1 AND Date(t.visitDate)  = curdate()")
+	public ArrayList<Long> checkBenAlreadyInNurseWorkList(@Param("benRegID") Long benRegID);
 
 }

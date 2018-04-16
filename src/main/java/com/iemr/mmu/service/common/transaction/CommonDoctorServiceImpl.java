@@ -13,12 +13,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.ANCDiagnosis;
 import com.iemr.mmu.data.anc.WrapperAncFindings;
+import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.doctor.BenReferDetails;
 import com.iemr.mmu.data.masterdata.anc.ServiceMaster;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.data.registrar.WrapperRegWorklist;
+import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.doctor.BenReferDetailsRepo;
 import com.iemr.mmu.repo.doctor.DocWorkListRepo;
 import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
@@ -44,6 +46,13 @@ public class CommonDoctorServiceImpl {
 	private BenVisitDetailRepo benVisitDetailRepo;
 	private DocWorkListRepo docWorkListRepo;
 	private BenReferDetailsRepo benReferDetailsRepo;
+
+	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
+
+	@Autowired
+	public void setBeneficiaryFlowStatusRepo(BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo) {
+		this.beneficiaryFlowStatusRepo = beneficiaryFlowStatusRepo;
+	}
 
 	@Autowired
 	public void setBenReferDetailsRepo(BenReferDetailsRepo benReferDetailsRepo) {
@@ -202,6 +211,12 @@ public class CommonDoctorServiceImpl {
 		return WrapperRegWorklist.getDocWorkListData(docWorkListData);
 	}
 
+	// New doc worklist service
+	public String getDocWorkListNew() {
+		ArrayList<BeneficiaryFlowStatus> docWorkList = beneficiaryFlowStatusRepo.getDocWorkListNew();
+		return new Gson().toJson(docWorkList);
+	}
+
 	public String fetchBenPreviousSignificantFindings(Long beneficiaryRegID) {
 		ArrayList<Object[]> previousSignificantFindings = (ArrayList<Object[]>) benClinicalObservationsRepo
 				.getPreviousSignificantFindings(beneficiaryRegID);
@@ -243,7 +258,7 @@ public class CommonDoctorServiceImpl {
 					referDetailsTemp.setReferredToInstituteID(referDetails.getReferredToInstituteID());
 					referDetailsTemp.setReferredToInstituteName(referDetails.getReferredToInstituteName());
 				}
-				
+
 				referDetailsTemp.setServiceID(sm.getServiceID());
 				referDetailsTemp.setServiceName(sm.getServiceName());
 

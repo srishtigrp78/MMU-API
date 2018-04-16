@@ -126,13 +126,13 @@ public class NCDCareServiceImpl implements NCDCareService {
 				&& investigationDataCheck.getAsJsonArray("laboratoryList").size() > 0) {
 
 			// ben will transfer to lab and doc both
-			nurseFlag = (short) 3;
-			docFlag = (short) 1;
+			nurseFlag = (short) 2;
+			docFlag = (short) 0;
 			labIteration = (short) 1;
 		} else {
 			// ben will transfer doc only
-			nurseFlag = (short) 2;
-			docFlag = (short) 0;
+			nurseFlag = (short) 9;
+			docFlag = (short) 1;
 			labIteration = (short) 0;
 		}
 

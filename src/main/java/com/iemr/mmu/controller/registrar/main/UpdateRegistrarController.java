@@ -13,7 +13,6 @@ import com.google.gson.JsonObject;
 import com.iemr.mmu.data.registrar.WrapperBeneficiaryRegistration;
 import com.iemr.mmu.service.common.master.RegistrarServiceMasterDataImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
-import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.service.registrar.RegistrarServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
@@ -46,6 +45,7 @@ public class UpdateRegistrarController {
 	public void setCommonNurseServiceImpl(CommonNurseServiceImpl commonNurseServiceImpl) {
 		this.commonNurseServiceImpl = commonNurseServiceImpl;
 	}
+
 	// Registrar Beneficiary Registration API .....
 	@CrossOrigin()
 	@ApiOperation(value = "Update Registered Beneficiary Data", consumes = "application/json", produces = "application/json")
@@ -105,6 +105,28 @@ public class UpdateRegistrarController {
 			logger.info("updateBeneficiary response:" + response);
 		} catch (Exception e) {
 			logger.error("Error in updateBeneficiary :" + e);
+			response.setError(e);
+		}
+		return response.toString();
+	}
+
+	// revisit to nurse by searching and submitting new
+	@ApiOperation(value = "registrar will submit a beneficiary to nurse for revisit", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/create/BenReVisitToNurse" }, method = { RequestMethod.POST })
+	public String createReVisitForBenToNurse(@RequestBody String requestOBJ) {
+		OutputResponse response = new OutputResponse();
+		try {
+			int i = registrarServiceImpl.searchAndSubmitBeneficiaryToNurse(requestOBJ);
+			if (i > 0) {
+				if (i == 1)
+					response.setResponse("Beneficiary moved to nurse worklist");
+				else
+					response.setError(5000, "Beneficiary already present in nurse worklist");
+			} else {
+				response.setError(5000, "Error while moving beneficiary to nurse worklist");
+			}
+		} catch (Exception e) {
+			logger.error("Error while creating re-visit " + e);
 			response.setError(e);
 		}
 		return response.toString();
