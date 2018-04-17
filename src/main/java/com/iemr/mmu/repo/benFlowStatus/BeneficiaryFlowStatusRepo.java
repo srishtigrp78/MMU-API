@@ -18,15 +18,16 @@ import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
  */
 @Repository
 public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlowStatus, Long> {
-	@Query("SELECT  t from BeneficiaryFlowStatus t WHERE t.nurseFlag = 1 AND t.deleted = false AND Date(t.visitDate)  = curdate()")
+	@Query("SELECT  t from BeneficiaryFlowStatus t WHERE t.nurseFlag = 1 AND t.deleted = false "
+			+ " AND Date(t.visitDate)  = curdate()")
 	public ArrayList<BeneficiaryFlowStatus> getNurseWorklistNew();
 
 	@Transactional
 	@Modifying
 	@Query("UPDATE BeneficiaryFlowStatus t set t.benVisitID = :benVisitID, t.VisitReason = :visitReason, "
 			+ " t.VisitCategory = :visitCategory, t.nurseFlag = :nurseFlag, t.doctorFlag = :docFlag, "
-			+ " t.labIteration = :labIteration WHERE t.benFlowID = :benFlowID AND t.beneficiaryRegID = :benRegID "
-			+ " AND nurseFlag = 1 ")
+			+ " t.labIteration = :labIteration, t.lab_technician_flag = 0 WHERE t.benFlowID = :benFlowID AND t.beneficiaryRegID = :benRegID "
+			+ " AND nurseFlag = 1  ")
 	public int updateBenFlowStatusAfterNurseActivity(@Param("benFlowID") Long benFlowID,
 			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID,
 			@Param("visitReason") String visitReason, @Param("visitCategory") String visitCategory,
@@ -40,11 +41,14 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			@Param("benFlowID") Long benFlowID);
 
 	@Query("SELECT t from BeneficiaryFlowStatus t WHERE t.doctorFlag = 1 OR t.doctorFlag = 2 OR "
-			+ " t.doctorFlag = 3 OR t.nurseFlag = 2 OR t.doctorFlag = 9")
+			+ " t.doctorFlag = 3 OR t.nurseFlag = 2 OR t.doctorFlag = 9 AND t.deleted = false")
 	public ArrayList<BeneficiaryFlowStatus> getDocWorkListNew();
 
 	@Query("SELECT  t.benFlowID from BeneficiaryFlowStatus t WHERE t.beneficiaryRegID = :benRegID AND "
-			+ " t.nurseFlag = 1 AND Date(t.visitDate)  = curdate()")
+			+ " t.nurseFlag = 1 AND Date(t.visitDate)  = curdate() AND t.deleted = false")
 	public ArrayList<Long> checkBenAlreadyInNurseWorkList(@Param("benRegID") Long benRegID);
+	
+	@Query("SELECT t from BeneficiaryFlowStatus t WHERE t.nurseFlag = 2 OR t.doctorFlag = 2 AND t.deleted = false")
+	ArrayList<BeneficiaryFlowStatus> getLabWorklistNew();
 
 }

@@ -51,6 +51,7 @@ public class FetchCommonController {
 		return response.toString();
 	}
 
+	// doc worklist new
 	@CrossOrigin()
 	@ApiOperation(value = "provides doctor worklist", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getDocWorklistNew" }, method = { RequestMethod.GET })
@@ -82,6 +83,7 @@ public class FetchCommonController {
 		return response.toString();
 	}
 
+	// nurse worklist new
 	@CrossOrigin()
 	@ApiOperation(value = "Get Nurse worklist new", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getNurseWorklistNew" }, method = { RequestMethod.GET })
@@ -122,6 +124,25 @@ public class FetchCommonController {
 		} catch (Exception e) {
 			// e.printStackTrace();
 			logger.error("Error while fetching previous significant findings" + e);
+			response.setError(e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Lab technician worklist new", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getLabWorklistNew" }, method = { RequestMethod.GET })
+	public String getLabWorkListNew() {
+		OutputResponse response = new OutputResponse();
+		try {
+			String s = commonNurseServiceImpl.getLabWorkListNew();
+			if (s != null)
+				response.setResponse(s);
+			else
+				response.setError(5000, "Error while fetching Lab worklist");
+		} catch (Exception e) {
+			// e.printStackTrace();
+			logger.error("Error in getLabWorklist:" + e);
 			response.setError(e);
 		}
 		return response.toString();

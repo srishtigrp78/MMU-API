@@ -2180,7 +2180,6 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		} else {
 			r = new Long(1);
-			;
 		}
 
 		return r;
@@ -2212,6 +2211,13 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		return new Gson().toJson(obj);
 	}
+	
+	// New Nurse worklist.... 26-03-2018
+	public String getLabWorkListNew() {
+			ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getLabWorklistNew();
+
+			return new Gson().toJson(obj);
+		}
 
 	public int saveBenAdherenceDetails(BenAdherence benAdherence) {
 		int r = 0;
