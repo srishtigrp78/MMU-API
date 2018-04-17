@@ -12,6 +12,7 @@ import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 import com.iemr.mmu.data.masterdata.anc.ServiceMaster;
+import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 
 @Entity
 @Table(name = "t_benreferdetails")
@@ -20,7 +21,7 @@ public class BenReferDetails {
 	@Id
 	@GeneratedValue
 	@Expose
-	@Column(name = "ID")
+	@Column(name = "benReferID")
 	private Long benReferID;
 
 	@Expose
@@ -281,5 +282,43 @@ public class BenReferDetails {
 	public void setRefrredToAdditionalServiceList(ArrayList<ServiceMaster> refrredToAdditionalServiceList) {
 		this.refrredToAdditionalServiceList = refrredToAdditionalServiceList;
 	}
+	
+	public BenReferDetails() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
+	public BenReferDetails(Long benReferID, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
+			Integer referredToInstituteID, String referredToInstituteName, Short serviceID,
+			String serviceName) {
+		super();
+		this.benReferID = benReferID;
+		this.beneficiaryRegID = beneficiaryRegID;
+		this.benVisitID = benVisitID;
+		this.providerServiceMapID = providerServiceMapID;
+		this.referredToInstituteID = referredToInstituteID;
+		this.referredToInstituteName = referredToInstituteName;
+		this.serviceID = serviceID;
+		this.serviceName = serviceName;
+	}
+
+	public static BenReferDetails getBenReferDetails(ArrayList<Object[]> resList) {
+		ArrayList<BenReferDetails> resArray = new ArrayList<BenReferDetails>();
+		BenReferDetails cOBJ=null;
+		if (resList != null && resList.size() > 0) {
+			
+			Object[] obj1 = resList.get(0);
+			cOBJ = new BenReferDetails((Long)obj1[0], (Long)obj1[1], (Long)obj1[2], (Integer)obj1[3], (Integer)obj1[4], (String)obj1[5], 
+					(Short)obj1[6], (String)obj1[7]);
+			ArrayList<ServiceMaster> servicesList = new ArrayList<ServiceMaster>();
+			for (Object[] obj : resList) {
+				
+				ServiceMaster sm = new ServiceMaster((Short)obj[6], (String)obj[7], "");
+				servicesList.add(sm);
+			}
+			
+			cOBJ.setRefrredToAdditionalServiceList(servicesList);
+		}
+		return cOBJ;
+	}
 }

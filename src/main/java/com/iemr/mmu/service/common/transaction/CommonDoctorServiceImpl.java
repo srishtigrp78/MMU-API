@@ -337,5 +337,13 @@ public class CommonDoctorServiceImpl {
 
 		return new Gson().toJson(prescriptionsList);
 	}
+	
+	public String getReferralDetails(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> resList = benReferDetailsRepo.getBenReferDetails(beneficiaryRegID, benVisitID);
+		
+		BenReferDetails referDetails = BenReferDetails.getBenReferDetails(resList);
+		
+		return new Gson().toJson(referDetails);
+	}
 
 }
