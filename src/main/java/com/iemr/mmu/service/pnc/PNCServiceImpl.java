@@ -243,6 +243,7 @@ public class PNCServiceImpl implements PNCService {
 			}
 			if ((findingSuccessFlag != null && findingSuccessFlag > 0)
 					&& (investigationSuccessFlag != null && investigationSuccessFlag > 0)
+					&& (diagnosisSuccessFlag != null && diagnosisSuccessFlag > 0)
 					&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
 
