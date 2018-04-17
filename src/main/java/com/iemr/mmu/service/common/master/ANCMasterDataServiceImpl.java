@@ -14,6 +14,7 @@ import com.iemr.mmu.data.doctor.DrugDurationUnitMaster;
 import com.iemr.mmu.data.doctor.DrugFormMaster;
 import com.iemr.mmu.data.doctor.DrugFrequencyMaster;
 import com.iemr.mmu.data.doctor.LabTestMaster;
+import com.iemr.mmu.data.doctor.TempMasterDrug;
 import com.iemr.mmu.data.institution.Institute;
 import com.iemr.mmu.data.labModule.ProcedureData;
 import com.iemr.mmu.data.masterdata.anc.AllergicReactionTypes;
@@ -58,6 +59,7 @@ import com.iemr.mmu.repo.doctor.DrugDurationUnitMasterRepo;
 import com.iemr.mmu.repo.doctor.DrugFormMasterRepo;
 import com.iemr.mmu.repo.doctor.DrugFrequencyMasterRepo;
 import com.iemr.mmu.repo.doctor.LabTestMasterRepo;
+import com.iemr.mmu.repo.doctor.TempMasterDrugRepo;
 import com.iemr.mmu.repo.labModule.ProcedureRepo;
 import com.iemr.mmu.repo.masterrepo.anc.AllergicReactionTypesRepo;
 import com.iemr.mmu.repo.masterrepo.anc.BirthComplicationRepo;
@@ -148,6 +150,13 @@ public class ANCMasterDataServiceImpl {
 	private NCDCareTypeRepo ncdCareTypeRepo;
 	
 	private ProcedureRepo procedureRepo;
+	
+	private TempMasterDrugRepo tempMasterDrugRepo;
+	
+	@Autowired
+	public void setTempMasterDrugRepo(TempMasterDrugRepo tempMasterDrugRepo) {
+		this.tempMasterDrugRepo = tempMasterDrugRepo;
+	}
 	
 	@Autowired
 	public void setProcedureRepo(ProcedureRepo procedureRepo)
@@ -512,7 +521,7 @@ public class ANCMasterDataServiceImpl {
 		
 		Institute institute = new Institute();
 		ArrayList<Object[]> instituteDetails = instituteRepo.getInstituteDetails(psmID);
-		
+		ArrayList<TempMasterDrug> tempMasterDrugList = tempMasterDrugRepo.findByDeletedFalseOrderByDrugDisplayNameAsc();
 		
 		resMap.put("chiefComplaintMaster", ChiefComplaintMaster.getChiefComplaintMasters(ccList));
 		resMap.put("drugDoseMaster", DrugDoseMaster.getDrugDoseMasters(ddmList));
@@ -528,6 +537,7 @@ public class ANCMasterDataServiceImpl {
 				ncdScreeningMasterServiceImpl.getNCDScreeningConditions()));
 		resMap.put("ncdCareTypes", NCDCareType.getNCDCareTypes((ArrayList<Object[]>) 
 				ncdCareTypeRepo.getNCDCareTypes()));
+		resMap.put("tempDrugMaster", TempMasterDrug.getTempDrugMasterList(tempMasterDrugList));
 
 		return new Gson().toJson(resMap);
 	}
