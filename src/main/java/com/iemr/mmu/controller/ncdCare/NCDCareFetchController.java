@@ -495,4 +495,33 @@ public class NCDCareFetchController
 		}
 		return response.toString();
 	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary Doctor Entered Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenCaseRecordFromDoctorNCDCare" }, method = { RequestMethod.POST })
+	@Transactional(rollbackFor = Exception.class)
+	public String getBenCaseRecordFromDoctorNCDCare(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenCaseRecordFromDoctorNCDCare request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("benVisitID")) {
+				Long benRegID = obj.getLong("benRegID");
+				Long benVisitID = obj.getLong("benVisitID");
+
+				String res = ncdCareServiceImpl.getBenCaseRecordFromDoctorNCDCare(benRegID, benVisitID);
+				response.setResponse(res);
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenCaseRecordFromDoctorNCDCare response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenCaseRecordFromDoctorNCDCare:" + e);
+		}
+		return response.toString();
+	}
 }

@@ -14,13 +14,13 @@ public class WrapperAncFindings {
 	private String clinicalObservation;
 	private String otherSymptoms;
 	private String significantFindings;
-	private ArrayList<Map<String, Object>> complaints;
-	private ArrayList<BenChiefComplaint> chiefComplaints;
+	private ArrayList<BenChiefComplaint> complaints;
+	//private ArrayList<BenChiefComplaint> chiefComplaints;
 	private Boolean isForHistory;
 
 	public WrapperAncFindings(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, String createdBy,
 			String clinicalObservation, String otherSymptoms, String significantFindings,
-			ArrayList<Map<String, Object>> complaints) {
+			ArrayList<BenChiefComplaint> complaints) {
 		super();
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
@@ -88,20 +88,12 @@ public class WrapperAncFindings {
 		this.significantFindings = significantFindings;
 	}
 
-	public ArrayList<Map<String, Object>> getComplaints() {
+	public ArrayList<BenChiefComplaint>  getComplaints() {
 		return complaints;
 	}
 
-	public void setComplaints(ArrayList<Map<String, Object>> complaints) {
+	public void setComplaints(ArrayList<BenChiefComplaint> complaints) {
 		this.complaints = complaints;
-	}
-
-	public ArrayList<BenChiefComplaint> getChiefComplaints() {
-		return chiefComplaints;
-	}
-
-	public void setChiefComplaints(ArrayList<BenChiefComplaint> chiefComplaints) {
-		this.chiefComplaints = chiefComplaints;
 	}
 
 	public Boolean getIsForHistory() {
@@ -122,7 +114,7 @@ public class WrapperAncFindings {
 		this.clinicalObservation = clinicalObservation;
 		this.otherSymptoms = otherSymptoms;
 		this.significantFindings = significantFindings;
-		this.chiefComplaints = chiefComplaints;
+		this.complaints = chiefComplaints;
 		this.isForHistory = isForHistory;
 	}
 

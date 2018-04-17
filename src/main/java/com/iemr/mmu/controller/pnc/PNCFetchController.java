@@ -548,5 +548,34 @@ public class PNCFetchController
 		}
 		return response.toString();
 	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary Doctor Entered Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenCaseRecordFromDoctorPNC" }, method = { RequestMethod.POST })
+	@Transactional(rollbackFor = Exception.class)
+	public String getBenCaseRecordFromDoctorPNC(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenCaseRecordFromDoctorPNC request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("benVisitID")) {
+				Long benRegID = obj.getLong("benRegID");
+				Long benVisitID = obj.getLong("benVisitID");
+
+				String res = pncServiceImpl.getBenCaseRecordFromDoctorPNC(benRegID, benVisitID);
+				response.setResponse(res);
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenCaseRecordFromDoctorPNC response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenCaseRecordFromDoctorPNC:" + e);
+		}
+		return response.toString();
+	}
 
 }

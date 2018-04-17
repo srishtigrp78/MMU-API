@@ -15,7 +15,7 @@ public interface ANCDiagnosisRepo extends CrudRepository<ANCDiagnosis, Long>{
 
 	@Query(" SELECT ID, beneficiaryRegID, benVisitID, providerServiceMapID, highRiskStatus, highRiskCondition, complicationOfCurrentPregnancy, "
 			+ "isMaternalDeath, placeOfDeath, dateOfDeath, causeOfDeath from ANCDiagnosis ba "
-			+ "WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID ")
+			+ "WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID AND ba.deleted = false ")
 	public ArrayList<Object[]> getANCDiagnosisDetails(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 }

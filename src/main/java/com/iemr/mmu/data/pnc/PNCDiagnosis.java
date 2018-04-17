@@ -1,4 +1,4 @@
-package com.iemr.mmu.data.anc;
+package com.iemr.mmu.data.pnc;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -11,12 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
-import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
+import com.iemr.mmu.data.anc.ANCDiagnosis;
 
 @Entity
-@Table(name = "t_ancdiagnosis")
-public class ANCDiagnosis {
-
+@Table(name = "t_pncdiagnosis")
+public class PNCDiagnosis {
 	@Id
 	@GeneratedValue
 	@Expose
@@ -36,25 +35,25 @@ public class ANCDiagnosis {
 	private Integer providerServiceMapID;
 
 	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
+	
+	@Expose
 	@Column(name = "PrescriptionID")
 	private Long prescriptionID;
 	
 	@Expose
-	@Column(name = "HighRiskStatus")
-	private String highRiskStatus;
-
+	@Column(name = "ProvisionalDiagnosis")
+	private String provisionalDiagnosis;
+	
 	@Expose
-	@Column(name = "HighRiskCondition")
-	private String highRiskCondition;
-
-	@Expose
-	@Column(name = "ComplicationOfCurrentPregnancy")
-	private String complicationOfCurrentPregnancy;
-
+	@Column(name = "ConfirmatoryDiagnosis")
+	private String confirmatoryDiagnosis;
+	
 	@Expose
 	@Column(name = "IsMaternalDeath")
 	private Boolean isMaternalDeath;
-
+	
 	@Expose
 	@Column(name = "PlaceOfDeath")
 	private String placeOfDeath;
@@ -62,11 +61,11 @@ public class ANCDiagnosis {
 	@Expose
 	@Column(name = "DateOfDeath")
 	private Date dateOfDeath;
-
+	
 	@Expose
 	@Column(name = "CauseOfDeath")
 	private String causeOfDeath;
-	
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -91,30 +90,6 @@ public class ANCDiagnosis {
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
-	@Expose
-	@Column(name = "VanSerialNo")
-	private Long vanSerialNo;
-	
-	@Expose
-	@Column(name = "VehicalNo")
-	private String vehicalNo;
-	
-	@Expose
-	@Column(name = "ParkingPlaceID")
-	private Integer parkingPlaceID;
-	
-	@Expose
-	@Column(name = "SyncedBy")
-	private String syncedBy;
-	
-	@Expose
-	@Column(name = "SyncedDate")
-	private Timestamp syncedDate;
-	
-	@Expose
-	@Column(name = "ReservedForChange")
-	private String reservedForChange;
-	
 	public Long getID() {
 		return ID;
 	}
@@ -147,28 +122,36 @@ public class ANCDiagnosis {
 		this.providerServiceMapID = providerServiceMapID;
 	}
 
-	public String getHighRiskStatus() {
-		return highRiskStatus;
+	public Long getVisitCode() {
+		return visitCode;
 	}
 
-	public void setHighRiskStatus(String highRiskStatus) {
-		this.highRiskStatus = highRiskStatus;
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 
-	public String getHighRiskCondition() {
-		return highRiskCondition;
+	public Long getPrescriptionID() {
+		return prescriptionID;
 	}
 
-	public void setHighRiskCondition(String highRiskCondition) {
-		this.highRiskCondition = highRiskCondition;
+	public void setPrescriptionID(Long prescriptionID) {
+		this.prescriptionID = prescriptionID;
 	}
 
-	public String getComplicationOfCurrentPregnancy() {
-		return complicationOfCurrentPregnancy;
+	public String getProvisionalDiagnosis() {
+		return provisionalDiagnosis;
 	}
 
-	public void setComplicationOfCurrentPregnancy(String complicationOfCurrentPregnancy) {
-		this.complicationOfCurrentPregnancy = complicationOfCurrentPregnancy;
+	public void setProvisionalDiagnosis(String provisionalDiagnosis) {
+		this.provisionalDiagnosis = provisionalDiagnosis;
+	}
+
+	public String getConfirmatoryDiagnosis() {
+		return confirmatoryDiagnosis;
+	}
+
+	public void setConfirmatoryDiagnosis(String confirmatoryDiagnosis) {
+		this.confirmatoryDiagnosis = confirmatoryDiagnosis;
 	}
 
 	public Boolean getIsMaternalDeath() {
@@ -251,89 +234,33 @@ public class ANCDiagnosis {
 		this.lastModDate = lastModDate;
 	}
 
-	public Long getVanSerialNo() {
-		return vanSerialNo;
-	}
-
-	public void setVanSerialNo(Long vanSerialNo) {
-		this.vanSerialNo = vanSerialNo;
-	}
-
-	public String getVehicalNo() {
-		return vehicalNo;
-	}
-
-	public void setVehicalNo(String vehicalNo) {
-		this.vehicalNo = vehicalNo;
-	}
-
-	public Integer getParkingPlaceID() {
-		return parkingPlaceID;
-	}
-
-	public void setParkingPlaceID(Integer parkingPlaceID) {
-		this.parkingPlaceID = parkingPlaceID;
-	}
-
-	public String getSyncedBy() {
-		return syncedBy;
-	}
-
-	public void setSyncedBy(String syncedBy) {
-		this.syncedBy = syncedBy;
-	}
-
-	public Timestamp getSyncedDate() {
-		return syncedDate;
-	}
-
-	public void setSyncedDate(Timestamp syncedDate) {
-		this.syncedDate = syncedDate;
-	}
-
-	public String getReservedForChange() {
-		return reservedForChange;
-	}
-
-	public void setReservedForChange(String reservedForChange) {
-		this.reservedForChange = reservedForChange;
-	}
-
-	public Long getPrescriptionID() {
-		return prescriptionID;
-	}
-
-	public void setPrescriptionID(Long prescriptionID) {
-		this.prescriptionID = prescriptionID;
-	}
-
-	public ANCDiagnosis(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
-			String highRiskStatus, String highRiskCondition, String complicationOfCurrentPregnancy,
-			Boolean isMaternalDeath, String placeOfDeath, Date dateOfDeath, String causeOfDeath) {
+	public PNCDiagnosis(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, Long prescriptionID,
+			String provisionalDiagnosis, String confirmatoryDiagnosis, Boolean isMaternalDeath, String placeOfDeath,
+			Date dateOfDeath, String causeOfDeath) {
 		super();
-		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
 		this.providerServiceMapID = providerServiceMapID;
-		this.highRiskStatus = highRiskStatus;
-		this.highRiskCondition = highRiskCondition;
-		this.complicationOfCurrentPregnancy = complicationOfCurrentPregnancy;
+		this.prescriptionID = prescriptionID;
+		this.provisionalDiagnosis = provisionalDiagnosis;
+		this.confirmatoryDiagnosis = confirmatoryDiagnosis;
 		this.isMaternalDeath = isMaternalDeath;
 		this.placeOfDeath = placeOfDeath;
 		this.dateOfDeath = dateOfDeath;
 		this.causeOfDeath = causeOfDeath;
 	}
 	
-	public static ANCDiagnosis getANCDiagnosisDetails(ArrayList<Object[]> resList) {
-		ArrayList<ANCDiagnosis> resArray = new ArrayList<ANCDiagnosis>();
-		ANCDiagnosis cOBJ = null;
+	public static PNCDiagnosis getPNCDiagnosisDetails(ArrayList<Object[]> resList) {
+		ArrayList<PNCDiagnosis> resArray = new ArrayList<PNCDiagnosis>();
+		PNCDiagnosis cOBJ = null;
 		if(null != resList && resList.size()>0){
 			for (Object[] obj : resList) {
-				cOBJ = new ANCDiagnosis((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (String)obj[4], (String)obj[5], (String)obj[6], 
-						(Boolean)obj[7], (String)obj[8], (Date)obj[9], (String)obj[10]);
+				cOBJ = new PNCDiagnosis((Long)obj[0], (Long)obj[1], (Integer)obj[2], (Long)obj[3], (String)obj[4], 
+						(String)obj[5], (Boolean)obj[6], (String)obj[7], (Date)obj[8], (String)obj[9]);
 				
 			}
 		}
 		return cOBJ;
 	}
+	
 }

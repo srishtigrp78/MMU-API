@@ -388,9 +388,13 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	public Long saveBenPastHistory(BenMedHistory benMedHistory) {
 		Long pastHistorySuccessFlag = null;
 		ArrayList<BenMedHistory> benMedHistoryList = benMedHistory.getBenPastHistory();
-		ArrayList<BenMedHistory> res = (ArrayList<BenMedHistory>) benMedHistoryRepo.save(benMedHistoryList);
-		if (null != res && res.size() > 0) {
-			pastHistorySuccessFlag = res.get(0).getBenMedHistoryID();
+		if(null != benMedHistoryList && benMedHistoryList.size()>0){
+			ArrayList<BenMedHistory> res = (ArrayList<BenMedHistory>) benMedHistoryRepo.save(benMedHistoryList);
+			if (null != res && res.size() > 0) {
+				pastHistorySuccessFlag = res.get(0).getBenMedHistoryID();
+			}
+		}else{
+			pastHistorySuccessFlag = new Long(1);
 		}
 		return pastHistorySuccessFlag;
 	}

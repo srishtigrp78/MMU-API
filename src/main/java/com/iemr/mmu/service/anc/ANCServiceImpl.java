@@ -210,11 +210,6 @@ public class ANCServiceImpl implements ANCService {
 
 			} else {
 			}
-			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
-				diagnosisSuccessFlag = ancDoctorServiceImpl
-						.saveBenANCDiagnosis(requestOBJ.get("diagnosis").getAsJsonObject());
-			} else {
-			}
 
 			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull()) {
 				WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
@@ -234,6 +229,12 @@ public class ANCServiceImpl implements ANCService {
 					wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
 					investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
 				}
+			} else {
+			}
+			
+			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
+				diagnosisSuccessFlag = ancDoctorServiceImpl
+						.saveBenANCDiagnosis(requestOBJ.get("diagnosis").getAsJsonObject(), prescriptionID);
 			} else {
 			}
 			if (requestOBJ.has("prescription") && !requestOBJ.get("prescription").isJsonNull()) {
@@ -1291,16 +1292,15 @@ public class ANCServiceImpl implements ANCService {
 	public String getBenCaseRecordFromDoctorANC(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
 
-		resMap.put("ANCFindings", commonDoctorServiceImpl.getFindingsDetails(benRegID, benVisitID));
+		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, benVisitID));
 		
-		resMap.put("ANCDiagnosis", ancDoctorServiceImpl.getANCDiagnosisDetails(benRegID, benVisitID));
+		resMap.put("diagnosis", ancDoctorServiceImpl.getANCDiagnosisDetails(benRegID, benVisitID));
 
-		resMap.put("ANCInvestigation", commonDoctorServiceImpl.getInvestigationDetails(benRegID, benVisitID));
+		resMap.put("investigation", commonDoctorServiceImpl.getInvestigationDetails(benRegID, benVisitID));
 		
 		resMap.put("prescription", commonDoctorServiceImpl.getPrescribedDrugs(benRegID, benVisitID));
 
-		//TODO
-		//resMap.put("Refer", commonDoctorServiceImpl.getReferralDetails(benRegID, benVisitID));
+		resMap.put("Refer", commonDoctorServiceImpl.getReferralDetails(benRegID, benVisitID));
 
 		return resMap.toString();
 	}

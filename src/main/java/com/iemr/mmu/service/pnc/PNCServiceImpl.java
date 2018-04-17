@@ -50,9 +50,15 @@ public class PNCServiceImpl implements PNCService {
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
 	private PNCNurseServiceImpl pncNurseServiceImpl;
+	private PNCDoctorServiceImpl pncDoctorServiceImpl;
 
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
 
+	@Autowired
+	public void setPncDoctorServiceImpl(PNCDoctorServiceImpl pncDoctorServiceImpl) {
+		this.pncDoctorServiceImpl = pncDoctorServiceImpl;
+	}
+	
 	@Autowired
 	public void setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl) {
 		this.commonBenStatusFlowServiceImpl = commonBenStatusFlowServiceImpl;
@@ -176,13 +182,7 @@ public class PNCServiceImpl implements PNCService {
 
 			} else {
 			}
-			/*
-			 * if (requestOBJ.has("diagnosis") &&
-			 * !requestOBJ.get("diagnosis").isJsonNull()) { diagnosisSuccessFlag
-			 * = ancDoctorServiceImpl
-			 * .saveBenANCDiagnosis(requestOBJ.get("diagnosis").getAsJsonObject(
-			 * )); } else { }
-			 */
+
 			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull()) {
 				WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
 						.fromJson(requestOBJ.get("investigation"), WrapperBenInvestigationANC.class);
@@ -201,6 +201,12 @@ public class PNCServiceImpl implements PNCService {
 					wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
 					investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
 				}
+			} else {
+			}
+			
+			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
+				diagnosisSuccessFlag = pncDoctorServiceImpl
+						.saveBenPNCDiagnosis(requestOBJ.get("diagnosis").getAsJsonObject(), prescriptionID);
 			} else {
 			}
 			if (requestOBJ.has("prescription") && !requestOBJ.get("prescription").isJsonNull()) {
@@ -237,6 +243,7 @@ public class PNCServiceImpl implements PNCService {
 			}
 			if ((findingSuccessFlag != null && findingSuccessFlag > 0)
 					&& (investigationSuccessFlag != null && investigationSuccessFlag > 0)
+					&& (diagnosisSuccessFlag != null && diagnosisSuccessFlag > 0)
 					&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
 
@@ -1164,5 +1171,21 @@ public class PNCServiceImpl implements PNCService {
 		}
 
 		return pncSuccessFlag;
+	}
+	
+	public String getBenCaseRecordFromDoctorPNC(Long benRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, benVisitID));
+		
+		resMap.put("diagnosis", pncDoctorServiceImpl.getPNCDiagnosisDetails(benRegID, benVisitID));
+
+		resMap.put("investigation", commonDoctorServiceImpl.getInvestigationDetails(benRegID, benVisitID));
+		
+		resMap.put("prescription", commonDoctorServiceImpl.getPrescribedDrugs(benRegID, benVisitID));
+
+		resMap.put("Refer", commonDoctorServiceImpl.getReferralDetails(benRegID, benVisitID));
+
+		return resMap.toString();
 	}
 }

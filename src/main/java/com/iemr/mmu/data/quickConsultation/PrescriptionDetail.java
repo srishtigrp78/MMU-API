@@ -297,6 +297,18 @@ public class PrescriptionDetail {
 		this.externalInvestigation = externalInvestigation;
 	}
 
+	
+	public PrescriptionDetail(Long prescriptionID, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
+			String diagnosisProvided, String instruction) {
+		super();
+		this.prescriptionID = prescriptionID;
+		this.beneficiaryRegID = beneficiaryRegID;
+		this.benVisitID = benVisitID;
+		this.providerServiceMapID = providerServiceMapID;
+		this.diagnosisProvided = diagnosisProvided;
+		this.instruction = instruction;
+	}
+
 	public static ArrayList<PrescriptionDetail> getPrescriptions(ArrayList<Object[]> resList) {
 		ArrayList<PrescriptionDetail> resArray = new ArrayList<PrescriptionDetail>();
 		PrescriptionDetail cOBJ=null;
@@ -311,4 +323,17 @@ public class PrescriptionDetail {
 		return resArray;
 	}
 	
+	public static ArrayList<PrescriptionDetail> getGeneralOPDDiagnosis(ArrayList<Object[]> resList) {
+		ArrayList<PrescriptionDetail> resArray = new ArrayList<PrescriptionDetail>();
+		PrescriptionDetail cOBJ=null;
+		if (resList != null && resList.size() > 0) {
+			
+			for (Object[] obj : resList) {
+				
+				cOBJ = new PrescriptionDetail((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (String)obj[4], (String)obj[5]);
+				resArray.add(cOBJ);
+			}
+		}
+		return resArray;
+	}
 }

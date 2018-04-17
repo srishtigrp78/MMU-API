@@ -132,7 +132,7 @@ public class CommonDoctorServiceImpl {
 
 		// ArrayList<BenChiefComplaint> tmpBenCHiefComplaints =
 		// getBenChiefComplaint(wrapperAncFindings);
-		ArrayList<BenChiefComplaint> tmpBenCHiefComplaints = wrapperAncFindings.getChiefComplaints();
+		ArrayList<BenChiefComplaint> tmpBenCHiefComplaints = wrapperAncFindings.getComplaints();
 		if (tmpBenCHiefComplaints.size() > 0) {
 			for (BenChiefComplaint benChiefComplaint : tmpBenCHiefComplaints) {
 				benChiefComplaint.setBeneficiaryRegID(wrapperAncFindings.getBeneficiaryRegID());
@@ -158,7 +158,9 @@ public class CommonDoctorServiceImpl {
 		benClinicalObservations.setCreatedBy(wrapperAncFindings.getCreatedBy());
 		benClinicalObservations.setClinicalObservation(wrapperAncFindings.getClinicalObservation());
 		benClinicalObservations.setOtherSymptoms(wrapperAncFindings.getOtherSymptoms());
-
+		benClinicalObservations.setSignificantFindings(wrapperAncFindings.getSignificantFindings());
+		benClinicalObservations.setIsForHistory(wrapperAncFindings.getIsForHistory());
+		
 		return benClinicalObservations;
 	}
 
@@ -167,27 +169,27 @@ public class CommonDoctorServiceImpl {
 		BenChiefComplaint benChiefComplaint;
 		if (wrapperAncFindings != null && wrapperAncFindings.getComplaints() != null
 				&& wrapperAncFindings.getComplaints().size() > 0) {
-			for (Map<String, Object> complaintsDetails : wrapperAncFindings.getComplaints()) {
+			for (BenChiefComplaint complaintsDetails : wrapperAncFindings.getComplaints()) {
 				benChiefComplaint = new BenChiefComplaint();
 				benChiefComplaint.setBeneficiaryRegID(wrapperAncFindings.getBeneficiaryRegID());
 				benChiefComplaint.setBenVisitID(wrapperAncFindings.getBenVisitID());
 				benChiefComplaint.setProviderServiceMapID(wrapperAncFindings.getProviderServiceMapID());
 				benChiefComplaint.setCreatedBy(wrapperAncFindings.getCreatedBy());
 
-				if (complaintsDetails.containsKey("chiefComplaintID")) {
-					Double d = (Double) complaintsDetails.get("chiefComplaintID");
+				if (null != complaintsDetails.getChiefComplaintID()) {
+					/*Double d = (Double) complaintsDetails.getChiefComplaintID();
 					if (d == null)
-						continue;
-					benChiefComplaint.setChiefComplaintID(d.intValue());
+						continue;*/
+					benChiefComplaint.setChiefComplaintID(complaintsDetails.getChiefComplaintID());
 				}
-				if (complaintsDetails.containsKey("chiefComplaint"))
-					benChiefComplaint.setChiefComplaint((String) complaintsDetails.get("chiefComplaint"));
-				if (complaintsDetails.containsKey("duration"))
-					benChiefComplaint.setDuration(Integer.parseInt(complaintsDetails.get("duration").toString()));
-				if (complaintsDetails.containsKey("unitOfDuration"))
-					benChiefComplaint.setUnitOfDuration((String) complaintsDetails.get("unitOfDuration"));
-				if (complaintsDetails.containsKey("description"))
-					benChiefComplaint.setDescription((String) complaintsDetails.get("description"));
+				if (null != complaintsDetails.getChiefComplaint())
+					benChiefComplaint.setChiefComplaint(complaintsDetails.getChiefComplaint());
+				if (null != complaintsDetails.getDuration())
+					benChiefComplaint.setDuration(complaintsDetails.getDuration());
+				if (null != complaintsDetails.getUnitOfDuration())
+					benChiefComplaint.setUnitOfDuration(complaintsDetails.getUnitOfDuration());
+				if (null != complaintsDetails.getDescription())
+					benChiefComplaint.setDescription(complaintsDetails.getDescription());
 
 				benChiefComplaintList.add(benChiefComplaint);
 			}
@@ -336,6 +338,14 @@ public class CommonDoctorServiceImpl {
 		}
 
 		return new Gson().toJson(prescriptionsList);
+	}
+	
+	public String getReferralDetails(Long beneficiaryRegID, Long benVisitID) {
+		ArrayList<Object[]> resList = benReferDetailsRepo.getBenReferDetails(beneficiaryRegID, benVisitID);
+		
+		BenReferDetails referDetails = BenReferDetails.getBenReferDetails(resList);
+		
+		return new Gson().toJson(referDetails);
 	}
 
 }

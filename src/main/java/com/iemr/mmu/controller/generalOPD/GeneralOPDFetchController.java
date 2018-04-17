@@ -519,4 +519,33 @@ public class GeneralOPDFetchController {
 		}
 		return response.toString();
 	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary Doctor Entered Details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenCaseRecordFromDoctorGeneralOPD" }, method = { RequestMethod.POST })
+	@Transactional(rollbackFor = Exception.class)
+	public String getBenCaseRecordFromDoctorGeneralOPD(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenCaseRecordFromDoctorGeneralOPD request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("benVisitID")) {
+				Long benRegID = obj.getLong("benRegID");
+				Long benVisitID = obj.getLong("benVisitID");
+
+				String res = generalOPDServiceImpl.getBenCaseRecordFromDoctorGeneralOPD(benRegID, benVisitID);
+				response.setResponse(res);
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid Request Data !!!");
+			}
+			logger.info("getBenCaseRecordFromDoctorGeneralOPD response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in getBenCaseRecordFromDoctorGeneralOPD:" + e);
+		}
+		return response.toString();
+	}
 }
