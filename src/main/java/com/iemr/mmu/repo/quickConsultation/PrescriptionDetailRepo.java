@@ -16,4 +16,9 @@ public interface PrescriptionDetailRepo extends CrudRepository<PrescriptionDetai
 			+ "from PrescriptionDetail ba WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID AND ba.deleted = false")
 	public ArrayList<Object[]> getBenPrescription(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
+	
+	@Query(" SELECT prescriptionID, beneficiaryRegID, benVisitID, providerServiceMapID, diagnosisProvided, instruction "
+			+ "from PrescriptionDetail ba WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID AND ba.deleted = false")
+	public ArrayList<Object[]> getGeneralOPDDiagnosisDetails(@Param("benRegID") Long benRegID,
+			@Param("benVisitID") Long benVisitID);
 }

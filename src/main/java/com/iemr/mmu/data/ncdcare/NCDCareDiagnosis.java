@@ -1,6 +1,8 @@
 package com.iemr.mmu.data.ncdcare;
 
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.anc.ANCDiagnosis;
 
 @Entity
 @Table(name = "t_ncddiagnosis")
@@ -33,8 +36,12 @@ public class NCDCareDiagnosis
 	private Integer providerServiceMapID;
 	
 	@Expose
+	@Column(name = "PrescriptionID")
+	private Long prescriptionID;
+	
+	@Expose
 	@Column(name = "NCD_Condition")
-	private String ncdCareCondition;
+	private String ncdScreeningCondition;
 	
 	@Expose
 	@Column(name = "NCD_Complication")
@@ -135,12 +142,12 @@ public class NCDCareDiagnosis
 	
 	public String getNcdCareCondition()
 	{
-		return ncdCareCondition;
+		return ncdScreeningCondition;
 	}
 
 	public void setNcdCareCondition(String ncdCareCondition)
 	{
-		this.ncdCareCondition = ncdCareCondition;
+		this.ncdScreeningCondition = ncdCareCondition;
 	}
 
 	
@@ -283,6 +290,36 @@ public class NCDCareDiagnosis
 	{
 		this.reservedForChange = reservedForChange;
 	}
+
+	public Long getPrescriptionID() {
+		return prescriptionID;
+	}
+
+	public void setPrescriptionID(Long prescriptionID) {
+		this.prescriptionID = prescriptionID;
+	}
+
+	public NCDCareDiagnosis(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
+			String ncdCareCondition, String ncdComplication, String ncdCareType) {
+		super();
+		this.beneficiaryRegID = beneficiaryRegID;
+		this.benVisitID = benVisitID;
+		this.providerServiceMapID = providerServiceMapID;
+		this.ncdScreeningCondition = ncdCareCondition;
+		this.ncdComplication = ncdComplication;
+		this.ncdCareType = ncdCareType;
+	}
 	
+	public static ArrayList<NCDCareDiagnosis> getNCDCareDiagnosisDetails(ArrayList<Object[]> resList) {
+		ArrayList<NCDCareDiagnosis> resArray = new ArrayList<NCDCareDiagnosis>();
+		NCDCareDiagnosis cOBJ = null;
+		if(null != resList && resList.size()>0){
+			for (Object[] obj : resList) {
+				cOBJ = new NCDCareDiagnosis((Long)obj[0], (Long)obj[1], (Integer)obj[2], (String)obj[3], (String)obj[4], (String)obj[5]);
+				resArray.add(cOBJ);
+			}
+		}
+		return resArray;
+	}
 	
 }

@@ -57,7 +57,13 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	private GeneralOPDNurseServiceImpl generalOPDNurseServiceImpl;
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
+	private GeneralOPDDoctorServiceImpl generalOPDDoctorServiceImpl;
 
+	@Autowired
+	public void setGeneralOPDDoctorServiceImpl(GeneralOPDDoctorServiceImpl generalOPDDoctorServiceImpl) {
+		this.generalOPDDoctorServiceImpl = generalOPDDoctorServiceImpl;
+	}
+	
 	@Autowired
 	public void setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl) {
 		this.commonBenStatusFlowServiceImpl = commonBenStatusFlowServiceImpl;
@@ -1205,5 +1211,21 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 			exmnSuccessFlag = genExmnSuccessFlag;
 		}
 		return exmnSuccessFlag;
+	}
+	
+	public String getBenCaseRecordFromDoctorGeneralOPD(Long benRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, benVisitID));
+		
+		resMap.put("diagnosis", generalOPDDoctorServiceImpl.getGeneralOPDDiagnosisDetails(benRegID, benVisitID));
+
+		resMap.put("investigation", commonDoctorServiceImpl.getInvestigationDetails(benRegID, benVisitID));
+		
+		resMap.put("prescription", commonDoctorServiceImpl.getPrescribedDrugs(benRegID, benVisitID));
+
+		resMap.put("Refer", commonDoctorServiceImpl.getReferralDetails(benRegID, benVisitID));
+
+		return resMap.toString();
 	}
 }

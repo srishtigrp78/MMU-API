@@ -103,32 +103,33 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 	}
 
 	/* Method Moved to common service, Can remove from here */
+	@Deprecated
 	private ArrayList<BenChiefComplaint> getBenChiefComplaint(WrapperAncFindings wrapperAncFindings) {
 		ArrayList<BenChiefComplaint> benChiefComplaintList = new ArrayList<>();
 		BenChiefComplaint benChiefComplaint;
 		if (wrapperAncFindings != null && wrapperAncFindings.getComplaints() != null
 				&& wrapperAncFindings.getComplaints().size() > 0) {
-			for (Map<String, Object> complaintsDetails : wrapperAncFindings.getComplaints()) {
+			for (BenChiefComplaint complaintsDetails : wrapperAncFindings.getComplaints()) {
 				benChiefComplaint = new BenChiefComplaint();
 				benChiefComplaint.setBeneficiaryRegID(wrapperAncFindings.getBeneficiaryRegID());
 				benChiefComplaint.setBenVisitID(wrapperAncFindings.getBenVisitID());
 				benChiefComplaint.setProviderServiceMapID(wrapperAncFindings.getProviderServiceMapID());
 				benChiefComplaint.setCreatedBy(wrapperAncFindings.getCreatedBy());
 
-				if (complaintsDetails.containsKey("chiefComplaintID")) {
-					Double d = (Double) complaintsDetails.get("chiefComplaintID");
+				if (null != complaintsDetails.getChiefComplaintID()) {
+					/*Double d = (Double) complaintsDetails.getChiefComplaintID();
 					if (d == null)
-						continue;
-					benChiefComplaint.setChiefComplaintID(d.intValue());
+						continue;*/
+					benChiefComplaint.setChiefComplaintID(complaintsDetails.getChiefComplaintID());
 				}
-				if (complaintsDetails.containsKey("chiefComplaint"))
-					benChiefComplaint.setChiefComplaint((String) complaintsDetails.get("chiefComplaint"));
-				if (complaintsDetails.containsKey("duration"))
-					benChiefComplaint.setDuration(Integer.parseInt(complaintsDetails.get("duration").toString()));
-				if (complaintsDetails.containsKey("unitOfDuration"))
-					benChiefComplaint.setUnitOfDuration((String) complaintsDetails.get("unitOfDuration"));
-				if (complaintsDetails.containsKey("description"))
-					benChiefComplaint.setDescription((String) complaintsDetails.get("description"));
+				if (null != complaintsDetails.getChiefComplaint())
+					benChiefComplaint.setChiefComplaint(complaintsDetails.getChiefComplaint());
+				if (null != complaintsDetails.getDuration())
+					benChiefComplaint.setDuration(complaintsDetails.getDuration());
+				if (null != complaintsDetails.getUnitOfDuration())
+					benChiefComplaint.setUnitOfDuration(complaintsDetails.getUnitOfDuration());
+				if (null != complaintsDetails.getDescription())
+					benChiefComplaint.setDescription(complaintsDetails.getDescription());
 
 				benChiefComplaintList.add(benChiefComplaint);
 			}
@@ -136,9 +137,11 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 		return benChiefComplaintList;
 	}
 
-	public Long saveBenANCDiagnosis(JsonObject obj) throws IEMRException {
+	public Long saveBenANCDiagnosis(JsonObject obj, Long prescriptionID) throws IEMRException {
 		Long ID = null;
 		ANCDiagnosis ancDiagnosis = InputMapper.gson().fromJson(obj, ANCDiagnosis.class);
+		ancDiagnosis.setPrescriptionID(prescriptionID);
+		
 		ANCDiagnosis res = ancDiagnosisRepo.save(ancDiagnosis);
 		if (null != res && res.getID() > 0) {
 			ID = res.getID();

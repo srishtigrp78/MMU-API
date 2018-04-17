@@ -210,11 +210,6 @@ public class ANCServiceImpl implements ANCService {
 
 			} else {
 			}
-			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
-				diagnosisSuccessFlag = ancDoctorServiceImpl
-						.saveBenANCDiagnosis(requestOBJ.get("diagnosis").getAsJsonObject());
-			} else {
-			}
 
 			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull()) {
 				WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
@@ -234,6 +229,12 @@ public class ANCServiceImpl implements ANCService {
 					wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
 					investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
 				}
+			} else {
+			}
+			
+			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
+				diagnosisSuccessFlag = ancDoctorServiceImpl
+						.saveBenANCDiagnosis(requestOBJ.get("diagnosis").getAsJsonObject(), prescriptionID);
 			} else {
 			}
 			if (requestOBJ.has("prescription") && !requestOBJ.get("prescription").isJsonNull()) {

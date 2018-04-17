@@ -621,15 +621,6 @@ public class NCDCareServiceImpl implements NCDCareService {
 				findingSuccessFlag = 1;
 			}
 
-			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
-				JsonObject diagnosisObj = requestOBJ.getAsJsonObject("diagnosis");
-				NCDCareDiagnosis ncdDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
-						NCDCareDiagnosis.class);
-				diagnosisSuccessFlag = ncdCareDoctorServiceImpl.saveNCDDiagnosisData(ncdDiagnosis);
-
-			} else {
-				diagnosisSuccessFlag = new Long(1);
-			}
 			/*
 			 * if (requestOBJ.has("refer") &&
 			 * !requestOBJ.get("refer").isJsonNull()) { PrescriptionDetail
@@ -662,6 +653,17 @@ public class NCDCareServiceImpl implements NCDCareService {
 				investigationSuccessFlag = new Long(1);
 			}
 
+			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
+				JsonObject diagnosisObj = requestOBJ.getAsJsonObject("diagnosis");
+				NCDCareDiagnosis ncdDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
+						NCDCareDiagnosis.class);
+				ncdDiagnosis.setPrescriptionID(prescriptionID);
+				diagnosisSuccessFlag = ncdCareDoctorServiceImpl.saveNCDDiagnosisData(ncdDiagnosis);
+
+			} else {
+				diagnosisSuccessFlag = new Long(1);
+			}
+			
 			if (requestOBJ.has("prescription") && !requestOBJ.get("prescription").isJsonNull()) {
 				JsonObject tmpOBJ = requestOBJ.get("prescription").getAsJsonObject();
 				if (tmpOBJ.has("prescribedDrugs") && !tmpOBJ.get("prescribedDrugs").isJsonNull()) {
@@ -927,4 +929,19 @@ public class NCDCareServiceImpl implements NCDCareService {
 		return vitalSuccessFlag;
 	}
 
+	public String getBenCaseRecordFromDoctorNCDCare(Long benRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, benVisitID));
+		
+		resMap.put("diagnosis", ncdCareDoctorServiceImpl.getNCDCareDiagnosisDetails(benRegID, benVisitID));
+
+		resMap.put("investigation", commonDoctorServiceImpl.getInvestigationDetails(benRegID, benVisitID));
+		
+		resMap.put("prescription", commonDoctorServiceImpl.getPrescribedDrugs(benRegID, benVisitID));
+
+		resMap.put("Refer", commonDoctorServiceImpl.getReferralDetails(benRegID, benVisitID));
+
+		return resMap.toString();
+	}
 }
