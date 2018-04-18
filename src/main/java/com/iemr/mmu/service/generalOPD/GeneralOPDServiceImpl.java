@@ -754,7 +754,11 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 						for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
 							tmpObj.setPrescriptionID(prescriptionID);
 							tmpObj.setCreatedBy(createdBy);
-
+							Map<String, String> drug =tmpObj.getDrug();
+							if(null != drug && drug.size()>0 && drug.containsKey("drugID") && drug.containsKey("drugDisplayName")){
+								tmpObj.setDrugID(Integer.parseInt(drug.get("drugID")));
+								tmpObj.setGenericDrugName(drug.get("drugDisplayName"));
+							}
 						}
 						Integer r = commonNurseServiceImpl.saveBenPrescribedDrugsList(prescribedDrugDetailList);
 						if (r > 0 && r != null) {
