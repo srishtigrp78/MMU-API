@@ -47,8 +47,14 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	@Query("SELECT  t.benFlowID from BeneficiaryFlowStatus t WHERE t.beneficiaryRegID = :benRegID AND "
 			+ " t.nurseFlag = 1 AND Date(t.visitDate)  = curdate() AND t.deleted = false")
 	public ArrayList<Long> checkBenAlreadyInNurseWorkList(@Param("benRegID") Long benRegID);
-	
+
 	@Query("SELECT t from BeneficiaryFlowStatus t WHERE t.nurseFlag = 2 OR t.doctorFlag = 2 AND t.deleted = false")
-	ArrayList<BeneficiaryFlowStatus> getLabWorklistNew();
+	public ArrayList<BeneficiaryFlowStatus> getLabWorklistNew();
+
+	@Query("UPDATE BeneficiaryFlowStatus t set t.doctorFlag = :docFlag , t.pharmacist_flag = :pharmaFlag WHERE t.benFlowID = :benFlowID AND "
+			+ " t.beneficiaryRegID = :benRegID AND t.beneficiaryID = :benID AND t.benVisitID = :benVisitID ")
+	public int updateBenFlowStatusAfterDoctorActivity(@Param("benFlowID") Long benFlowID,
+			@Param("benRegID") Long benRegID, @Param("benID") Long benID, @Param("benVisitID") Long benVisitID,
+			@Param("docFlag") Short docFlag, @Param("pharmaFlag") Short pharmaFlag);
 
 }

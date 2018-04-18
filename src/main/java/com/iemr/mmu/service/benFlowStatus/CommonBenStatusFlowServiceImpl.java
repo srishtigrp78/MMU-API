@@ -5,6 +5,8 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,8 @@ import com.iemr.mmu.utils.mapper.InputMapper;
  */
 @Service
 public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowService {
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
 	private BenVisitDetailRepo benVisitDetailRepo;
 
@@ -60,7 +64,8 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			// e.printStackTrace();
+			logger.error("Error in ben flow creation = " + e);
 		}
 		return returnOBJ;
 	}
@@ -73,7 +78,8 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 					visitReason, visitCategory, nurseFlag, docFlag, labIteration);
 			System.out.println("hello");
 		} catch (Exception e) {
-			e.printStackTrace();
+			// e.printStackTrace();
+			logger.error("Error in ben flow creation = " + e);
 		}
 		return i;
 	}
@@ -157,6 +163,18 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 		obj.setPharmacist_flag((short) 0);
 		obj.setAgentId(obj.getCreatedBy());
 		return obj;
+	}
+
+	public int updateBenFlowAfterDocData(Long benFlowID, Long benRegID, Long benID, Long benVisitID, short docFlag,
+			short pharmaFlag) {
+		int i = 0;
+		try {
+			i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterDoctorActivity(benFlowID, benRegID, benID, benVisitID,
+					docFlag, pharmaFlag);
+		} catch (Exception e) {
+			logger.error("Error in ben flow creation = " + e);
+		}
+		return i;
 	}
 
 }
