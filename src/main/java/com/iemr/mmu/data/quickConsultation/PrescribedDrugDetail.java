@@ -2,12 +2,14 @@ package com.iemr.mmu.data.quickConsultation;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -119,6 +121,17 @@ public class PrescribedDrugDetail {
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
 	
+	@Transient
+	private Map<String, String> drug;
+	
+	public Map<String, String> getDrug() {
+		return drug;
+	}
+
+	public void setDrug(Map<String, String> drug) {
+		this.drug = drug;
+	}
+
 	public PrescribedDrugDetail() {
 		super();
 		// TODO Auto-generated constructor stub
