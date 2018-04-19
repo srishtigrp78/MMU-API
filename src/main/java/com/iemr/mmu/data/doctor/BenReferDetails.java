@@ -312,9 +312,10 @@ public class BenReferDetails {
 					(Short)obj1[6], (String)obj1[7]);
 			ArrayList<ServiceMaster> servicesList = new ArrayList<ServiceMaster>();
 			for (Object[] obj : resList) {
-				
-				ServiceMaster sm = new ServiceMaster((Short)obj[6], (String)obj[7], "");
-				servicesList.add(sm);
+				if(null != obj[6]){
+					ServiceMaster sm = new ServiceMaster((Short)obj[6], (String)obj[7]);
+					servicesList.add(sm);
+				}
 			}
 			
 			cOBJ.setRefrredToAdditionalServiceList(servicesList);

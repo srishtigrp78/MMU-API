@@ -128,6 +128,10 @@ public class WrapperAncFindings {
 						(String)obj[4], (String)obj[5], chiefcmplts, (Boolean)obj[6]);
 						
 			}
+		}else if (null != chiefcmplts && chiefcmplts.size()>0){
+			BenChiefComplaint cmplint = chiefcmplts.get(0);
+			cOBJ = new WrapperAncFindings(cmplint.getBeneficiaryRegID(), cmplint.getBenVisitID(), cmplint.getProviderServiceMapID(), null, 
+					null, null, chiefcmplts, null);
 		}
 		return cOBJ;
 	}

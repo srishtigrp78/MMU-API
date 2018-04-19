@@ -65,6 +65,12 @@ public class ServiceMaster {
 		this.serviceDesc = serviceDesc;
 	}
 	
+	public ServiceMaster(Short serviceID, String serviceName) {
+		super();
+		this.serviceID = serviceID;
+		this.serviceName = serviceName;
+	}
+
 	public static ArrayList<ServiceMaster> getServiceMaster(ArrayList<Object[]> resList) {
 		ArrayList<ServiceMaster> resArray = new ArrayList<ServiceMaster>();
 		for (Object[] obj : resList) {

@@ -984,4 +984,11 @@ public class CSServiceImpl implements CSService {
 	}
 	//Fetch CS Doctor Details END....
 
+	public String getBenCaseRecordFromDoctorCS(Long benRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("diagnosis", cSDoctorServiceImpl.getBenCancerDiagnosisData(benRegID, benVisitID));
+
+		return new Gson().toJson(resMap);
+	}
 }
