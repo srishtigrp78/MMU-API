@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.BenAdherence;
 import com.iemr.mmu.data.anc.BenAllergyHistory;
@@ -612,6 +613,17 @@ public class NCDCareServiceImpl implements NCDCareService {
 		Long bvID = null;
 
 		if (requestOBJ != null) {
+			
+			JsonArray testList = null;
+			JsonArray drugList = null;
+			if (requestOBJ.has("investigation")) {
+				testList = requestOBJ.getAsJsonObject("investigation").getAsJsonArray("laboratoryList");
+			}
+			if (requestOBJ.has("prescription")) {
+				drugList = requestOBJ.getAsJsonObject("prescription").getAsJsonArray("prescribedDrugs");
+			}
+			
+			
 			if (requestOBJ.has("findings") && !requestOBJ.get("findings").isJsonNull()) {
 				//findingSuccessFlag = commonDoctorServiceImpl.saveFindings(requestOBJ.get("findings").getAsJsonObject());
 				WrapperAncFindings wrapperAncFindings = InputMapper.gson().fromJson(requestOBJ.get("findings"), WrapperAncFindings.class);
@@ -708,9 +720,62 @@ public class NCDCareServiceImpl implements NCDCareService {
 					&& (investigationSuccessFlag != null && investigationSuccessFlag > 0)
 					&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
+				
+				
+				// New code for ben fow logic
+				short pharmaFalg;
+				short docFlag;
+				short labFalg;
 
-				String s = commonNurseServiceImpl.updateBenVisitStatusFlag(bvID, "D");
-				if (s != null && s.length() > 0)
+				Long tmpBenFlowID = requestOBJ.get("benFlowID").getAsLong();
+				Long tmpBeneficiaryID = requestOBJ.get("beneficiaryID").getAsLong();
+				Long tmpBenVisitID = requestOBJ.getAsJsonObject("diagnosis").get("benVisitID").getAsLong();
+				Long tmpbeneficiaryRegID = requestOBJ.getAsJsonObject("diagnosis").get("beneficiaryRegID").getAsLong();
+
+				if (testList != null && !testList.isJsonNull() && testList.size() > 0 && drugList != null
+						&& !drugList.isJsonNull() && drugList.size() > 0) {
+					if (drugList.get(0) != null && !drugList.get(0).isJsonNull()) {
+						JsonObject firstDrugDetails = drugList.get(0).getAsJsonObject();
+						if (firstDrugDetails.get("drug") == null || firstDrugDetails.get("drug").isJsonNull()) {
+							// drug not prescribed
+							pharmaFalg = (short) 0;
+						} else {
+							pharmaFalg = (short) 1;
+						}
+
+					} else {
+						pharmaFalg = (short) 0;
+					}
+
+					docFlag = (short) 2;
+
+				} else {
+					// either lab or drug or both no prescribed
+					if (drugList.get(0) != null && !drugList.get(0).isJsonNull()) {
+						JsonObject firstDrugDetails = drugList.get(0).getAsJsonObject();
+						if (firstDrugDetails.get("drug") == null || firstDrugDetails.get("drug").isJsonNull()) {
+							// drug not prescribed
+							pharmaFalg = (short) 0;
+						} else {
+							pharmaFalg = (short) 1;
+						}
+
+					} else {
+						pharmaFalg = (short) 0;
+					}
+
+					docFlag = (short) 9;
+
+				}
+
+				int l = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
+						tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg);
+
+				// End of new code
+
+//
+//				String s = commonNurseServiceImpl.updateBenVisitStatusFlag(bvID, "D");
+//				if (s != null && s.length() > 0)
 					saveSuccessFlag = investigationSuccessFlag;
 			}
 		} else {

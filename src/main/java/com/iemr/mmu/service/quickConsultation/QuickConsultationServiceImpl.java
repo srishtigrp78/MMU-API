@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
@@ -257,7 +258,6 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		short docFlag = (short) 1;
 		short labIteration = (short) 0;
 
-
 		int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitID, benVisitDetailsOBJ.getVisitReason(),
 				benVisitDetailsOBJ.getVisitCategory(), nurseFlag, docFlag, labIteration);
@@ -275,6 +275,9 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		Long prescribedDrugID = null;
 		Long labTestOrderID = null;
 
+		JsonArray testList = quickConsultDoctorOBJ.getAsJsonArray("labTestOrders");
+		JsonArray drugList = quickConsultDoctorOBJ.getAsJsonArray("prescribedDrugs");
+
 		if (prescriptionID != null && prescriptionID > 0) {
 
 			prescribedDrugID = saveBeneficiaryPrescribedDrugDetail(quickConsultDoctorOBJ, prescriptionID);
@@ -286,10 +289,64 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		if ((null != benChiefComplaintID && benChiefComplaintID > 0)
 				&& (null != clinicalObservationID && clinicalObservationID > 0)
 				&& (prescriptionID != null && prescriptionID > 0)) {
-			if (quickConsultDoctorOBJ.has("benVisitID") && !quickConsultDoctorOBJ.get("benVisitID").isJsonNull()) {
-				Integer i = benVisitDetailRepo.updateBenFlowStatus("D",
-						quickConsultDoctorOBJ.get("benVisitID").getAsLong());
+
+			// New code for ben fow logic
+			short pharmaFalg;
+			short docFlag;
+			short labFalg;
+
+			Long tmpBenFlowID = quickConsultDoctorOBJ.get("benFlowID").getAsLong();
+			Long tmpBeneficiaryID = quickConsultDoctorOBJ.get("beneficiaryID").getAsLong();
+			Long tmpBenVisitID = quickConsultDoctorOBJ.get("benVisitID").getAsLong();
+			Long tmpbeneficiaryRegID = quickConsultDoctorOBJ.get("beneficiaryRegID").getAsLong();
+
+			if (testList != null && !testList.isJsonNull() && testList.size() > 0 && drugList != null
+					&& !drugList.isJsonNull() && drugList.size() > 0) {
+				if (drugList.get(0) != null && !drugList.get(0).isJsonNull()) {
+					JsonObject firstDrugDetails = drugList.get(0).getAsJsonObject();
+					if (firstDrugDetails.get("drug") == null || firstDrugDetails.get("drug").isJsonNull()) {
+						// drug not prescribed
+						pharmaFalg = (short) 0;
+					} else {
+						pharmaFalg = (short) 1;
+					}
+
+				} else {
+					pharmaFalg = (short) 0;
+				}
+
+				docFlag = (short) 2;
+
+			} else {
+				// either lab or drug or both no prescribed
+				if (drugList.get(0) != null && !drugList.get(0).isJsonNull()) {
+					JsonObject firstDrugDetails = drugList.get(0).getAsJsonObject();
+					if (firstDrugDetails.get("drug") == null || firstDrugDetails.get("drug").isJsonNull()) {
+						// drug not prescribed
+						pharmaFalg = (short) 0;
+					} else {
+						pharmaFalg = (short) 1;
+					}
+
+				} else {
+					pharmaFalg = (short) 0;
+				}
+
+				docFlag = (short) 9;
+
 			}
+
+			int l = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
+					tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg);
+
+			// End of new code
+
+			// if (quickConsultDoctorOBJ.has("benVisitID") &&
+			// !quickConsultDoctorOBJ.get("benVisitID").isJsonNull()) {
+			// Integer i = benVisitDetailRepo.updateBenFlowStatus("D",
+			// quickConsultDoctorOBJ.get("benVisitID").getAsLong());
+			// }
+
 			returnOBJ = 1;
 		}
 		return returnOBJ;

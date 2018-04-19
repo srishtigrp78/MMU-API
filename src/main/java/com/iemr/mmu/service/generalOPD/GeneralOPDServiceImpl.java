@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.BenAllergyHistory;
 import com.iemr.mmu.data.anc.BenChildDevelopmentHistory;
@@ -63,7 +64,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	public void setGeneralOPDDoctorServiceImpl(GeneralOPDDoctorServiceImpl generalOPDDoctorServiceImpl) {
 		this.generalOPDDoctorServiceImpl = generalOPDDoctorServiceImpl;
 	}
-	
+
 	@Autowired
 	public void setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl) {
 		this.commonBenStatusFlowServiceImpl = commonBenStatusFlowServiceImpl;
@@ -99,7 +100,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 			// temporary object for ben flow part. for getting visit reason and
 			// category and ben reg id
 			JsonObject tmpOBJ = requestOBJ.getAsJsonObject("visitDetails").getAsJsonObject("visitDetails");
-			//Getting benflowID for ben status update
+			// Getting benflowID for ben status update
 			Long benFlowID = null;
 			if (requestOBJ.has("benFlowID")) {
 				benFlowID = requestOBJ.get("benFlowID").getAsLong();
@@ -694,9 +695,21 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		Long bvID = null;
 
 		if (requestOBJ != null) {
+
+			JsonArray testList = null;
+			JsonArray drugList = null;
+			if (requestOBJ.has("investigation")) {
+				testList = requestOBJ.getAsJsonObject("investigation").getAsJsonArray("laboratoryList");
+			}
+			if (requestOBJ.has("prescription")) {
+				drugList = requestOBJ.getAsJsonObject("prescription").getAsJsonArray("prescribedDrugs");
+			}
+
 			if (requestOBJ.has("findings") && !requestOBJ.get("findings").isJsonNull()) {
-				//findingSuccessFlag = commonDoctorServiceImpl.saveFindings(requestOBJ.get("findings").getAsJsonObject());
-				WrapperAncFindings wrapperAncFindings = InputMapper.gson().fromJson(requestOBJ.get("findings"), WrapperAncFindings.class);
+				// findingSuccessFlag =
+				// commonDoctorServiceImpl.saveFindings(requestOBJ.get("findings").getAsJsonObject());
+				WrapperAncFindings wrapperAncFindings = InputMapper.gson().fromJson(requestOBJ.get("findings"),
+						WrapperAncFindings.class);
 				findingSuccessFlag = commonDoctorServiceImpl.saveDocFindings(wrapperAncFindings);
 
 			} else {
@@ -754,8 +767,9 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 						for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
 							tmpObj.setPrescriptionID(prescriptionID);
 							tmpObj.setCreatedBy(createdBy);
-							Map<String, String> drug =tmpObj.getDrug();
-							if(null != drug && drug.size()>0 && drug.containsKey("drugID") && drug.containsKey("drugDisplayName")){
+							Map<String, String> drug = tmpObj.getDrug();
+							if (null != drug && drug.size() > 0 && drug.containsKey("drugID")
+									&& drug.containsKey("drugDisplayName")) {
 								tmpObj.setDrugID(Integer.parseInt(drug.get("drugID")));
 								tmpObj.setGenericDrugName(drug.get("drugDisplayName"));
 							}
@@ -786,9 +800,61 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
 
-				String s = commonNurseServiceImpl.updateBenVisitStatusFlag(bvID, "D");
-				if (s != null && s.length() > 0)
-					saveSuccessFlag = investigationSuccessFlag;
+				// New code for ben fow logic
+				short pharmaFalg;
+				short docFlag;
+				short labFalg;
+
+				Long tmpBenFlowID = requestOBJ.get("benFlowID").getAsLong();
+				Long tmpBeneficiaryID = requestOBJ.get("beneficiaryID").getAsLong();
+				Long tmpBenVisitID = requestOBJ.getAsJsonObject("diagnosis").get("benVisitID").getAsLong();
+				Long tmpbeneficiaryRegID = requestOBJ.getAsJsonObject("diagnosis").get("beneficiaryRegID").getAsLong();
+
+				if (testList != null && !testList.isJsonNull() && testList.size() > 0 && drugList != null
+						&& !drugList.isJsonNull() && drugList.size() > 0) {
+					if (drugList.get(0) != null && !drugList.get(0).isJsonNull()) {
+						JsonObject firstDrugDetails = drugList.get(0).getAsJsonObject();
+						if (firstDrugDetails.get("drug") == null || firstDrugDetails.get("drug").isJsonNull()) {
+							// drug not prescribed
+							pharmaFalg = (short) 0;
+						} else {
+							pharmaFalg = (short) 1;
+						}
+
+					} else {
+						pharmaFalg = (short) 0;
+					}
+
+					docFlag = (short) 2;
+
+				} else {
+					// either lab or drug or both no prescribed
+					if (drugList.get(0) != null && !drugList.get(0).isJsonNull()) {
+						JsonObject firstDrugDetails = drugList.get(0).getAsJsonObject();
+						if (firstDrugDetails.get("drug") == null || firstDrugDetails.get("drug").isJsonNull()) {
+							// drug not prescribed
+							pharmaFalg = (short) 0;
+						} else {
+							pharmaFalg = (short) 1;
+						}
+
+					} else {
+						pharmaFalg = (short) 0;
+					}
+
+					docFlag = (short) 9;
+
+				}
+
+				int l = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
+						tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg);
+
+				// End of new code
+
+				// String s =
+				// commonNurseServiceImpl.updateBenVisitStatusFlag(bvID, "D");
+				// if (s != null && s.length() > 0)
+				saveSuccessFlag = investigationSuccessFlag;
 			}
 		} else {
 			// request OBJ is null.
@@ -1216,16 +1282,16 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		}
 		return exmnSuccessFlag;
 	}
-	
+
 	public String getBenCaseRecordFromDoctorGeneralOPD(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
 
 		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, benVisitID));
-		
+
 		resMap.put("diagnosis", generalOPDDoctorServiceImpl.getGeneralOPDDiagnosisDetails(benRegID, benVisitID));
 
 		resMap.put("investigation", commonDoctorServiceImpl.getInvestigationDetails(benRegID, benVisitID));
-		
+
 		resMap.put("prescription", commonDoctorServiceImpl.getPrescribedDrugs(benRegID, benVisitID));
 
 		resMap.put("Refer", commonDoctorServiceImpl.getReferralDetails(benRegID, benVisitID));
