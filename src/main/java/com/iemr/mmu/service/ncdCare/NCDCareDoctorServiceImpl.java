@@ -34,7 +34,7 @@ public class NCDCareDoctorServiceImpl implements NCDCareDoctorService
 	
 	public String getNCDCareDiagnosisDetails(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> resList = ncdCareDiagnosisRepo.getNCDCareDiagnosisDetails(beneficiaryRegID, benVisitID);
-		ArrayList<NCDCareDiagnosis> ncdCareDiagnosisDetails = NCDCareDiagnosis.getNCDCareDiagnosisDetails(resList);
+		NCDCareDiagnosis ncdCareDiagnosisDetails = NCDCareDiagnosis.getNCDCareDiagnosisDetails(resList);
 		return new Gson().toJson(ncdCareDiagnosisDetails);
 	}
 }

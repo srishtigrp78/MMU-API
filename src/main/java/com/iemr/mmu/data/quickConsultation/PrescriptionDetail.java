@@ -288,12 +288,14 @@ public class PrescriptionDetail {
 	
 	
 	public PrescriptionDetail(Long prescriptionID, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
-			String externalInvestigation) {
+			String diagnosisProvided, String instruction, String externalInvestigation) {
 		super();
 		this.prescriptionID = prescriptionID;
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
 		this.providerServiceMapID = providerServiceMapID;
+		this.diagnosisProvided = diagnosisProvided;
+		this.instruction = instruction;
 		this.externalInvestigation = externalInvestigation;
 	}
 
@@ -309,31 +311,28 @@ public class PrescriptionDetail {
 		this.instruction = instruction;
 	}
 
-	public static ArrayList<PrescriptionDetail> getPrescriptions(ArrayList<Object[]> resList) {
-		ArrayList<PrescriptionDetail> resArray = new ArrayList<PrescriptionDetail>();
+	public static PrescriptionDetail getPrescriptions(ArrayList<Object[]> resList) {
 		PrescriptionDetail cOBJ=null;
 		if (resList != null && resList.size() > 0) {
 			
 			for (Object[] obj : resList) {
 				
-				cOBJ = new PrescriptionDetail((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (String)obj[4]);
-				resArray.add(cOBJ);
+				cOBJ = new PrescriptionDetail((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (String)obj[4], (String)obj[5], (String)obj[6]);
+				
 			}
 		}
-		return resArray;
+		return cOBJ;
 	}
 	
-	public static ArrayList<PrescriptionDetail> getGeneralOPDDiagnosis(ArrayList<Object[]> resList) {
-		ArrayList<PrescriptionDetail> resArray = new ArrayList<PrescriptionDetail>();
+	public static PrescriptionDetail getGeneralOPDDiagnosis(ArrayList<Object[]> resList) {
 		PrescriptionDetail cOBJ=null;
 		if (resList != null && resList.size() > 0) {
 			
 			for (Object[] obj : resList) {
 				
 				cOBJ = new PrescriptionDetail((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (String)obj[4], (String)obj[5]);
-				resArray.add(cOBJ);
 			}
 		}
-		return resArray;
+		return cOBJ;
 	}
 }
