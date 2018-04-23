@@ -140,7 +140,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 
 		int rs = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				tmpOBJ.get("beneficiaryRegID").getAsLong(), benVisitID, tmpOBJ.get("visitReason").getAsString(),
-				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration);
+				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0);
 
 		return rs;
 	}
@@ -769,7 +769,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 				}
 
 				int l = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
-						tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg);
+						tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
 
 				// End of new code
 

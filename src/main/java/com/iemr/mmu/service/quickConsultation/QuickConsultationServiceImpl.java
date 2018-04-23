@@ -277,7 +277,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 
 		int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitID, benVisitDetailsOBJ.getVisitReason(),
-				benVisitDetailsOBJ.getVisitCategory(), nurseFlag, docFlag, labIteration);
+				benVisitDetailsOBJ.getVisitCategory(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0);
 
 		return i;
 	}
@@ -354,7 +354,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 			}
 
 			int l = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
-					tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg);
+					tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
 
 			// End of new code
 
