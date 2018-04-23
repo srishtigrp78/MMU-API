@@ -4,10 +4,12 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 
@@ -22,5 +24,25 @@ public interface BenClinicalObservationsRepo extends CrudRepository<BenClinicalO
 			+ "otherSymptoms, significantFindings, isForHistory from BenClinicalObservations ba "
 			+ "WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID AND ba.deleted = false")
 	public ArrayList<Object[]> getFindingsData(@Param("benRegID") Long benRegID,
+			@Param("benVisitID") Long benVisitID);
+	
+	@Query("SELECT processed from BenClinicalObservations where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	public String getBenClinicalObservationStatus(@Param("benRegID") Long benRegID,
+			@Param("benVisitID") Long benVisitID);
+	
+	@Transactional
+	@Modifying
+	@Query("update BenClinicalObservations set clinicalObservation=:clinicalObservation, otherSymptoms=:otherSymptoms, "
+			+ "significantFindings=:significantFindings, isForHistory=:isForHistory, "
+			+ "  modifiedBy=:modifiedBy, processed=:processed where "
+			+ "beneficiaryRegID=:beneficiaryRegID AND benVisitID = :benVisitID")
+	public int updateBenClinicalObservations(
+			@Param("clinicalObservation") String clinicalObservation,
+			@Param("otherSymptoms") String otherSymptoms,
+			@Param("significantFindings") String significantFindings,
+			@Param("isForHistory") Boolean isForHistory,
+			@Param("modifiedBy") String modifiedBy,
+			@Param("processed") String processed,
+			@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("benVisitID") Long benVisitID);
 }

@@ -17,6 +17,7 @@ import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.doctor.BenReferDetails;
 import com.iemr.mmu.data.masterdata.anc.ServiceMaster;
+import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
@@ -58,6 +59,13 @@ public class CommonDoctorServiceImpl {
 
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
 
+	private CommonNurseServiceImpl commonNurseServiceImpl;
+	
+	@Autowired
+	public void setCommonNurseServiceImpl(CommonNurseServiceImpl commonNurseServiceImpl) {
+		this.commonNurseServiceImpl = commonNurseServiceImpl;
+	}
+	
 	@Autowired
 	public void setBeneficiaryFlowStatusRepo(BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo) {
 		this.beneficiaryFlowStatusRepo = beneficiaryFlowStatusRepo;
@@ -160,7 +168,7 @@ public class CommonDoctorServiceImpl {
 		benClinicalObservations.setOtherSymptoms(wrapperAncFindings.getOtherSymptoms());
 		benClinicalObservations.setSignificantFindings(wrapperAncFindings.getSignificantFindings());
 		benClinicalObservations.setIsForHistory(wrapperAncFindings.getIsForHistory());
-		
+		benClinicalObservations.setModifiedBy(wrapperAncFindings.getModifiedBy());
 		return benClinicalObservations;
 	}
 
@@ -346,4 +354,148 @@ public class CommonDoctorServiceImpl {
 		return new Gson().toJson(referDetails);
 	}
 
+	public Integer updateDocFindings(WrapperAncFindings wrapperAncFindings) {
+		int clinObsrvtnsRes = 0;
+		int chiefCmpltsRes = 0;
+		int updateFindingsRes = 0;
+		
+		BenClinicalObservations benClinicalObservations = getBenClinicalObservations(wrapperAncFindings);
+		clinObsrvtnsRes = updateBenClinicalObservations(benClinicalObservations);
+
+		
+		ArrayList<BenChiefComplaint> tmpBenCHiefComplaints = wrapperAncFindings.getComplaints();
+		if (tmpBenCHiefComplaints.size() > 0) {
+			for (BenChiefComplaint benChiefComplaint : tmpBenCHiefComplaints) {
+				benChiefComplaint.setBeneficiaryRegID(wrapperAncFindings.getBeneficiaryRegID());
+				benChiefComplaint.setBenVisitID(wrapperAncFindings.getBenVisitID());
+				benChiefComplaint.setProviderServiceMapID(wrapperAncFindings.getProviderServiceMapID());
+				benChiefComplaint.setCreatedBy(wrapperAncFindings.getCreatedBy());
+			}
+			chiefCmpltsRes = updateDoctorBenChiefComplaints(tmpBenCHiefComplaints);
+			
+		}
+		if (clinObsrvtnsRes > 0 && chiefCmpltsRes > 0) {
+			updateFindingsRes = 1;
+
+		}
+		return updateFindingsRes;
+	}
+	
+	public int updateDoctorBenChiefComplaints(List<BenChiefComplaint> benChiefComplaintList) {
+		int r = 0;
+		if (null != benChiefComplaintList && benChiefComplaintList.size() > 0) {
+
+			List<BenChiefComplaint> benChiefComplaintResultList = (List<BenChiefComplaint>) benChiefComplaintRepo
+					.save(benChiefComplaintList);
+
+			if (benChiefComplaintResultList != null && benChiefComplaintResultList.size() > 0) {
+				r = benChiefComplaintResultList.size();
+			}
+		}else{
+			r = 1;
+		}
+		return r;
+	}
+
+	
+	public int updateBenClinicalObservations(BenClinicalObservations benClinicalObservations) {
+		Integer r = 0;
+		int recordsAvailable = 0;
+		if (null != benClinicalObservations) {
+			String processed = benClinicalObservationsRepo.getBenClinicalObservationStatus(benClinicalObservations.getBeneficiaryRegID(), 
+					benClinicalObservations.getBenVisitID());
+			
+			if (null != processed) {
+				recordsAvailable = 1;
+			}
+			
+			if (null != processed && !processed.equals("N")) {
+				processed = "U";
+			} else {
+				processed = "N";
+			}
+			if(recordsAvailable>0){
+				// anthropometryDetail.setModifiedBy(anthropometryDetail.getCreatedBy());
+				r = benClinicalObservationsRepo.updateBenClinicalObservations(benClinicalObservations.getClinicalObservation(), 
+						benClinicalObservations.getOtherSymptoms(), benClinicalObservations.getSignificantFindings(), 
+						benClinicalObservations.getIsForHistory(), benClinicalObservations.getCreatedBy(), 
+						processed, benClinicalObservations.getBeneficiaryRegID(), benClinicalObservations.getBenVisitID());
+			}else{
+				BenClinicalObservations observationsRes = benClinicalObservationsRepo.save(benClinicalObservations);
+				if(null != observationsRes && observationsRes.getClinicalObservationID()>0){
+					r = 1;
+				}
+			}
+		}
+		return r;
+	}
+	
+	/*public Long checkPrescriptionAvailable(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, String createdBy) {
+		Long prescriptionID = null;
+		ArrayList<Object[]> res=prescriptionDetailRepo.getBenPrescription(beneficiaryRegID, benVisitID);
+		if(null != res && res.size()>0){
+			Object[] obj= res.get(0);
+			prescriptionID = (Long)obj[0];
+		}else{
+			prescriptionID = commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
+					beneficiaryRegID,
+					benVisitID,
+					providerServiceMapID,
+					createdBy,
+					"");
+		}
+		return prescriptionID;
+	}*/
+	
+	public Long updateBenReferDetails(JsonObject referObj) throws IEMRException {
+		Long ID = null;
+		int delRes = 0;
+		BenReferDetails referDetails = InputMapper.gson().fromJson(referObj, BenReferDetails.class);
+		List<BenReferDetails> referDetailsList = new ArrayList<BenReferDetails>();
+
+		BenReferDetails referDetailsTemp = null;
+
+		ArrayList<Object[]> benReferDetailsStatuses = benReferDetailsRepo.getBenReferDetailsStatus(referDetails.getBeneficiaryRegID(), 
+				referDetails.getBenVisitID());
+		
+		for (Object[] obj : benReferDetailsStatuses) {
+			String processed = (String) obj[1];
+			if (null != processed && !"N".equals(processed)) {
+				processed = "U";
+			} else {
+				processed = "N";
+			}
+		}
+		
+		if (referDetails.getRefrredToAdditionalServiceList() != null
+				&& referDetails.getRefrredToAdditionalServiceList().size() > 0) {
+			for (ServiceMaster sm : referDetails.getRefrredToAdditionalServiceList()) {
+				referDetailsTemp = new BenReferDetails();
+				referDetailsTemp.setBeneficiaryRegID(referDetails.getBeneficiaryRegID());
+				referDetailsTemp.setBenVisitID(referDetails.getBenVisitID());
+				referDetailsTemp.setProviderServiceMapID(referDetails.getProviderServiceMapID());
+				referDetailsTemp.setVisitCode(referDetails.getVisitCode());
+				referDetailsTemp.setCreatedBy(referDetails.getCreatedBy());
+				if (referDetails.getReferredToInstituteID() != null
+						&& referDetails.getReferredToInstituteName() != null) {
+					referDetailsTemp.setReferredToInstituteID(referDetails.getReferredToInstituteID());
+					referDetailsTemp.setReferredToInstituteName(referDetails.getReferredToInstituteName());
+				}
+
+				referDetailsTemp.setServiceID(sm.getServiceID());
+				referDetailsTemp.setServiceName(sm.getServiceName());
+
+				referDetailsList.add(referDetailsTemp);
+			}
+		} else {
+			referDetailsList.add(referDetails);
+		}
+
+		ArrayList<BenReferDetails> res = (ArrayList<BenReferDetails>) benReferDetailsRepo.save(referDetailsList);
+		if (null != res && res.size() > 0) {
+			ID = res.get(0).getBenReferID();
+		}
+		return ID;
+	}
+	
 }

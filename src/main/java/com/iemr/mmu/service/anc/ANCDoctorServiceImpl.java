@@ -203,4 +203,38 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 		ANCDiagnosis ancDiagnosisDetails = ANCDiagnosis.getANCDiagnosisDetails(resList);
 		return new Gson().toJson(ancDiagnosisDetails);
 	}
+	
+	public int updateBenANCDiagnosis(JsonObject obj) throws IEMRException {
+		int res = 0;
+		ANCDiagnosis ancDiagnosis = InputMapper.gson().fromJson(obj, ANCDiagnosis.class);
+		int recordsAvailable = 0;
+		String processed = ancDiagnosisRepo.getANCDiagnosisStatus(ancDiagnosis.getBeneficiaryRegID(), 
+				ancDiagnosis.getBenVisitID());
+		
+		if (null != processed) {
+			recordsAvailable = 1;
+		}
+		
+		if (null != processed && !processed.equals("N")) {
+			processed = "U";
+		} else {
+			processed = "N";
+		}
+		if(recordsAvailable>=0){
+			ancDiagnosis.setModifiedBy(ancDiagnosis.getCreatedBy());
+			res = ancDiagnosisRepo.updateANCDiagnosis(ancDiagnosis.getHighRiskStatus(), ancDiagnosis.getHighRiskCondition(), 
+					ancDiagnosis.getComplicationOfCurrentPregnancy(), ancDiagnosis.getIsMaternalDeath(), ancDiagnosis.getPlaceOfDeath(), 
+					ancDiagnosis.getDateOfDeath(), ancDiagnosis.getCauseOfDeath(), ancDiagnosis.getModifiedBy(), processed, 
+					ancDiagnosis.getBeneficiaryRegID(), ancDiagnosis.getBenVisitID(), ancDiagnosis.getPrescriptionID());
+		}else{
+			ancDiagnosis.setProcessed(processed);
+			ANCDiagnosis ancDiagnosisRes  = ancDiagnosisRepo.save(ancDiagnosis);
+			if(null != ancDiagnosisRes && ancDiagnosisRes.getID()>0){
+				res = 1;
+			}
+			
+		}
+		
+		return res;
+	}
 }
