@@ -688,7 +688,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 			JSONObject responseOBJ = new JSONObject(responseStr);
 			beneficiaryRegID = responseOBJ.getJSONObject("data").getLong("beneficiaryRegID");
 			beneficiaryID = responseOBJ.getJSONObject("data").getLong("beneficiaryID");
-			System.out.println("hello");
+			//System.out.println("hello");
 
 			int i = commonBenStatusFlowServiceImpl.createBenFlowRecord(comingRequest, beneficiaryRegID, beneficiaryID);
 			if (i > 0) {
