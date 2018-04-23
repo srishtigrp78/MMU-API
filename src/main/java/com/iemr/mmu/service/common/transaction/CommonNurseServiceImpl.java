@@ -2231,6 +2231,13 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		return new Gson().toJson(obj);
 	}
+	
+	// New pharma worklist.... 26-03-2018
+		public String getPharmaWorkListNew() {
+			ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getPharmaWorkListNew();
+
+			return new Gson().toJson(obj);
+		}
 
 	public int saveBenAdherenceDetails(BenAdherence benAdherence) {
 		int r = 0;

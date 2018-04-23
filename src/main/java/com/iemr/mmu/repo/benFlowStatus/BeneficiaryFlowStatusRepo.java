@@ -68,5 +68,8 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	
 	@Query("SELECT t from BeneficiaryFlowStatus t WHERE t.oncologist_flag = 1")
 	public ArrayList<BeneficiaryFlowStatus> getOncologistWorkListNew();
+	
+	@Query("SELECT t from BeneficiaryFlowStatus t WHERE t.pharmacist_flag = 1")
+	public ArrayList<BeneficiaryFlowStatus> getPharmaWorkListNew();
 
 }

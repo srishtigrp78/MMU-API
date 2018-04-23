@@ -62,6 +62,9 @@ public class RegistrarServiceImpl implements RegistrarService {
 	@Value("${registrarQuickSearchByPhoneNoUrl}")
 	private String registrarQuickSearchByPhoneNoUrl;
 
+	@Value("${beneficiaryEditUrl}")
+	private String beneficiaryEditUrl;
+
 	private RegistrarRepoBenData registrarRepoBenData;
 	private RegistrarRepoBenDemoData registrarRepoBenDemoData;
 	private RegistrarRepoBenPhoneMapData registrarRepoBenPhoneMapData;
@@ -700,6 +703,18 @@ public class RegistrarServiceImpl implements RegistrarService {
 			// log error that registration failed.
 		}
 		return response1.toString();
+	}
+
+	// New beneficiary update api
+	public String updateBeneficiary(String comingRequest, String Authorization) throws Exception {
+		RestTemplate restTemplate = new RestTemplate();
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+		headers.add("Content-Type", "application/json");
+		headers.add("AUTHORIZATION", Authorization);
+		HttpEntity<Object> request = new HttpEntity<Object>(comingRequest, headers);
+		ResponseEntity<String> response = restTemplate.exchange(beneficiaryEditUrl, HttpMethod.POST, request,
+				String.class);
+		return response.toString();
 	}
 
 	// beneficiary quick search new integrated with common and identity

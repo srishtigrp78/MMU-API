@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -131,4 +132,19 @@ public class UpdateRegistrarController {
 		}
 		return response.toString();
 	}
+
+	@ApiOperation(value = "ben edit, save or submit", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/BeneficiaryUpdate" }, method = { RequestMethod.POST })
+	public String beneficiaryUpdate(@RequestBody String requestOBJ,
+			@RequestHeader(value = "Authorization") String Authorization) {
+		OutputResponse response = new OutputResponse();
+		try {
+			String s = registrarServiceImpl.updateBeneficiary(requestOBJ, Authorization);
+			response.setResponse(s);
+		} catch (Exception e) {
+
+		}
+		return response.toString();
+	}
+
 }
