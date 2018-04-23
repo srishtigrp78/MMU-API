@@ -11,6 +11,7 @@ public class WrapperAncFindings {
 	private Long benVisitID;
 	private Integer providerServiceMapID;
 	private String createdBy;
+	private String modifiedBy;
 	private String clinicalObservation;
 	private String otherSymptoms;
 	private String significantFindings;
@@ -102,6 +103,14 @@ public class WrapperAncFindings {
 
 	public void setIsForHistory(Boolean isForHistory) {
 		this.isForHistory = isForHistory;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
 	}
 
 	public WrapperAncFindings(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,

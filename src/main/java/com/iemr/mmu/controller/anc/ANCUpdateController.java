@@ -229,4 +229,32 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 		return response.toString();
 	}
 	
+	@CrossOrigin
+	@ApiOperation(value = "update ANC Doctor Data", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/doctorData" }, method = { RequestMethod.POST })
+	public String updateANCDoctorData( @RequestBody String requestObj) {
+
+		OutputResponse response = new OutputResponse();
+		logger.info("updateANCDoctorData request:" + requestObj);
+
+		JsonObject jsnOBJ = new JsonObject();
+		JsonParser jsnParser = new JsonParser();
+		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		jsnOBJ = jsnElmnt.getAsJsonObject();
+
+		try {
+			Long result = ancServiceImpl.updateANCDoctorData(jsnOBJ);
+			if (null != result && result > 0) {
+				response.setResponse("ANC Doctor Data updated successfully.");
+			} else {
+				response.setError(500, "Failed to update ANC Doctor Data");
+			}
+			logger.info("updateANCDoctorData response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in updateANCDoctorData :" + e);
+		}
+
+		return response.toString();
+	}
 }

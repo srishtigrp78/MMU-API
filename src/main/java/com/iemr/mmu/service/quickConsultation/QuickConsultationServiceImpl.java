@@ -153,7 +153,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	}
 
 	// Prescription for ANC...
-	@Deprecated
+	/*@Deprecated*/
 	public Long saveBenPrescriptionForANC(PrescriptionDetail prescription) {
 		Long r = null;
 		PrescriptionDetail prescriptionRS = prescriptionDetailRepo.save(prescription);
