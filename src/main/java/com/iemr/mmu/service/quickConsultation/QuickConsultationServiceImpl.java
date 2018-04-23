@@ -1,6 +1,8 @@
 package com.iemr.mmu.service.quickConsultation;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +30,9 @@ import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
+import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
+import com.iemr.mmu.service.generalOPD.GeneralOPDDoctorServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
@@ -44,7 +48,20 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	private BenVisitDetailRepo benVisitDetailRepo;
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
+	
+	private CommonDoctorServiceImpl commonDoctorServiceImpl;
+	private GeneralOPDDoctorServiceImpl generalOPDDoctorServiceImpl;
 
+	@Autowired
+	public void setCommonDoctorServiceImpl(CommonDoctorServiceImpl commonDoctorServiceImpl) {
+		this.commonDoctorServiceImpl = commonDoctorServiceImpl;
+	}
+	
+	@Autowired
+	public void setGeneralOPDDoctorServiceImpl(GeneralOPDDoctorServiceImpl generalOPDDoctorServiceImpl) {
+		this.generalOPDDoctorServiceImpl = generalOPDDoctorServiceImpl;
+	}
+	
 	@Autowired
 	public void setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl) {
 		this.commonBenStatusFlowServiceImpl = commonBenStatusFlowServiceImpl;
@@ -377,4 +394,25 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	}
 
 	// ------- END of Fetch (Nurse data to Doctor screen) ----------------
+	
+	public String getBenCaseRecordFromDoctorQuickConsult(Long benRegID, Long benVisitID) {
+		/*Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, benVisitID));
+		
+		resMap.put("diagnosis", generalOPDDoctorServiceImpl.getGeneralOPDDiagnosisDetails(benRegID, benVisitID));
+
+		resMap.put("investigation", commonDoctorServiceImpl.getInvestigationDetails(benRegID, benVisitID));
+
+		resMap.put("prescription", commonDoctorServiceImpl.getPrescribedDrugs(benRegID, benVisitID));*/
+
+
+		
+		List<Object> resList =new ArrayList<Object>();
+		resList.add(commonDoctorServiceImpl.getFindingsDetails(benRegID, benVisitID));
+				resList.add(commonDoctorServiceImpl.getInvestigationDetails(benRegID, benVisitID));
+		resList.add(commonDoctorServiceImpl.getPrescribedDrugs(benRegID, benVisitID));
+		
+		return resList.toString();
+	}
 }

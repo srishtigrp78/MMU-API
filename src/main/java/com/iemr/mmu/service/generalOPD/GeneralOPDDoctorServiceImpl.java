@@ -28,7 +28,7 @@ public class GeneralOPDDoctorServiceImpl implements GeneralOPDDoctorService {
 	
 	public String getGeneralOPDDiagnosisDetails(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> diagnosisDetails = prescriptionDetailRepo.getGeneralOPDDiagnosisDetails(beneficiaryRegID, benVisitID);
-		ArrayList<PrescriptionDetail> diagnosisList = PrescriptionDetail.getGeneralOPDDiagnosis(diagnosisDetails);
+		PrescriptionDetail diagnosisList = PrescriptionDetail.getGeneralOPDDiagnosis(diagnosisDetails);
 
 		return new Gson().toJson(diagnosisList);
 	}

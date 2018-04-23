@@ -310,16 +310,14 @@ public class NCDCareDiagnosis
 		this.ncdCareType = ncdCareType;
 	}
 	
-	public static ArrayList<NCDCareDiagnosis> getNCDCareDiagnosisDetails(ArrayList<Object[]> resList) {
-		ArrayList<NCDCareDiagnosis> resArray = new ArrayList<NCDCareDiagnosis>();
+	public static NCDCareDiagnosis getNCDCareDiagnosisDetails(ArrayList<Object[]> resList) {
 		NCDCareDiagnosis cOBJ = null;
 		if(null != resList && resList.size()>0){
 			for (Object[] obj : resList) {
 				cOBJ = new NCDCareDiagnosis((Long)obj[0], (Long)obj[1], (Integer)obj[2], (String)obj[3], (String)obj[4], (String)obj[5]);
-				resArray.add(cOBJ);
 			}
 		}
-		return resArray;
+		return cOBJ;
 	}
 	
 }

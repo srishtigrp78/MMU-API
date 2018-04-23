@@ -328,16 +328,14 @@ public class CommonDoctorServiceImpl {
 	public String getPrescribedDrugs(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> prescriptions = prescriptionDetailRepo.getBenPrescription(beneficiaryRegID, benVisitID);
 
-		ArrayList<PrescriptionDetail> prescriptionsList = PrescriptionDetail.getPrescriptions(prescriptions);
-		if (null != prescriptionsList && prescriptionsList.size() > 0) {
-			for (PrescriptionDetail prescription : prescriptionsList) {
-				ArrayList<Object[]> prescribedDrugs = prescribedDrugDetailRepo
-						.getBenPrescribedDrugDetails(prescription.getPrescriptionID());
-				prescription.setPrescribedDrugs(PrescribedDrugDetail.getprescribedDrugs(prescribedDrugs));
-			}
+		PrescriptionDetail prescriptionData = PrescriptionDetail.getPrescriptions(prescriptions);
+		if (null != prescriptionData ) {
+			ArrayList<Object[]> prescribedDrugs = prescribedDrugDetailRepo
+					.getBenPrescribedDrugDetails(prescriptionData.getPrescriptionID());
+			prescriptionData.setPrescribedDrugs(PrescribedDrugDetail.getprescribedDrugs(prescribedDrugs));
 		}
 
-		return new Gson().toJson(prescriptionsList);
+		return new Gson().toJson(prescriptionData);
 	}
 	
 	public String getReferralDetails(Long beneficiaryRegID, Long benVisitID) {
