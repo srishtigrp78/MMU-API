@@ -52,13 +52,13 @@ public class ANCCareDetails {
 	@Column(name = "Description")
 	private String description;
 
-	@Expose
+	/*@Expose
 	@Column(name = "ANCRegistrationDate")
 	private Date aNCRegistrationDate;
 
 	@Expose
 	@Column(name = "ANCVisitNumber")
-	private Short aNCVisitNumber;
+	private Short aNCVisitNumber;*/
 
 	@Expose
 	@Column(name = "LastMenstrualPeriod_LMP")
@@ -80,10 +80,10 @@ public class ANCCareDetails {
 	@Column(name = "PrimiGravida")
 	private Boolean primiGravida;
 
-	@Expose
+	/*@Expose
 	@Column(name = "ObstetricFormula")
 	private String obstetricFormula;
-
+*/
 	@Expose
 	@Column(name = "Gravida_G")
 	private Short gravida_G;
@@ -169,9 +169,9 @@ public class ANCCareDetails {
 	}
 
 	public ANCCareDetails(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, Short visitNo,
-			String comolaintType, String duration, String description, Date aNCRegistrationDate, Short aNCVisitNumber,
+			String comolaintType, String duration, String description, 
 			Date lastMenstrualPeriod_LMP, Short gestationalAgeOrPeriodofAmenorrhea_POA, Short trimesterNumber,
-			Date expectedDateofDelivery, Boolean primiGravida, String obstetricFormula, Short gravida_G,
+			Date expectedDateofDelivery, Boolean primiGravida, Short gravida_G,
 			Short termDeliveries_T, Short pretermDeliveries_P, Short abortions_A, Short livebirths_L, String bloodGroup) {
 		super();
 		ID = iD;
@@ -182,14 +182,11 @@ public class ANCCareDetails {
 		this.comolaintType = comolaintType;
 		this.duration = duration;
 		this.description = description;
-		this.aNCRegistrationDate = aNCRegistrationDate;
-		this.aNCVisitNumber = aNCVisitNumber;
 		this.lastMenstrualPeriod_LMP = lastMenstrualPeriod_LMP;
 		this.gestationalAgeOrPeriodofAmenorrhea_POA = gestationalAgeOrPeriodofAmenorrhea_POA;
 		this.trimesterNumber = trimesterNumber;
 		this.expectedDateofDelivery = expectedDateofDelivery;
 		this.primiGravida = primiGravida;
-		this.obstetricFormula = obstetricFormula;
 		this.gravida_G = gravida_G;
 		this.termDeliveries_T = termDeliveries_T;
 		this.pretermDeliveries_P = pretermDeliveries_P;
@@ -203,16 +200,16 @@ public class ANCCareDetails {
 		ANCCareDetails cOBJ = null;
 		for (Object[] obj : resList) {
 			cOBJ = new ANCCareDetails((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (Short)obj[4], (String)obj[5], 
-					(String)obj[6], (String)obj[7], (Date)obj[8], (Short)obj[9], (Date)obj[10], (Short)obj[11], 
-					(Short)obj[12], (Date)obj[13], (Boolean)obj[14], (String)obj[15], (Short)obj[16], (Short)obj[17], (Short)obj[18],
-					(Short)obj[19], (Short)obj[20], (String)obj[21]);
+					(String)obj[6], (String)obj[7], (Date)obj[8], (Short)obj[9], 
+					(Short)obj[10], (Date)obj[11], (Boolean)obj[12], (Short)obj[13], (Short)obj[14], (Short)obj[15],
+					(Short)obj[16], (Short)obj[17], (String)obj[18]);
 			
-			Date Ldate=(Date)obj[10];
+			Date Ldate=(Date)obj[8];
 			if(null != Ldate){
 				cOBJ.setLmpDate(Ldate.toString());
 			}
 			
-			Date EDate=(Date)obj[13];
+			Date EDate=(Date)obj[11];
 			if(null != EDate){
 				cOBJ.setExpDelDt(EDate.toString());
 			}
@@ -284,22 +281,6 @@ public class ANCCareDetails {
 		this.description = description;
 	}
 
-	public Date getaNCRegistrationDate() {
-		return aNCRegistrationDate;
-	}
-
-	public void setaNCRegistrationDate(Date aNCRegistrationDate) {
-		this.aNCRegistrationDate = aNCRegistrationDate;
-	}
-
-	public Short getaNCVisitNumber() {
-		return aNCVisitNumber;
-	}
-
-	public void setaNCVisitNumber(Short aNCVisitNumber) {
-		this.aNCVisitNumber = aNCVisitNumber;
-	}
-
 	public Date getLastMenstrualPeriod_LMP() {
 		return lastMenstrualPeriod_LMP;
 	}
@@ -338,14 +319,6 @@ public class ANCCareDetails {
 
 	public void setPrimiGravida(Boolean primiGravida) {
 		this.primiGravida = primiGravida;
-	}
-
-	public String getObstetricFormula() {
-		return obstetricFormula;
-	}
-
-	public void setObstetricFormula(String obstetricFormula) {
-		this.obstetricFormula = obstetricFormula;
 	}
 
 	public Short getGravida_G() {

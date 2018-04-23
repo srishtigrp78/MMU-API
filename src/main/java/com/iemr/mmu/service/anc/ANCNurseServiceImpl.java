@@ -2135,12 +2135,23 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 			ancCareDetailsOBJ
 					.setExpectedDateofDelivery(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(edDate).getTime()));
 		}
-		r = ancCareRepo.updateANCCareDetails(ancCareDetailsOBJ.getComolaintType(), ancCareDetailsOBJ.getDuration(),
+		/*r = ancCareRepo.updateANCCareDetails(ancCareDetailsOBJ.getComolaintType(), ancCareDetailsOBJ.getDuration(),
 				ancCareDetailsOBJ.getDescription(), ancCareDetailsOBJ.getaNCRegistrationDate(),
 				ancCareDetailsOBJ.getaNCVisitNumber(), ancCareDetailsOBJ.getLastMenstrualPeriod_LMP(),
 				ancCareDetailsOBJ.getGestationalAgeOrPeriodofAmenorrhea_POA(), ancCareDetailsOBJ.getTrimesterNumber(),
 				ancCareDetailsOBJ.getExpectedDateofDelivery(), ancCareDetailsOBJ.getPrimiGravida(),
 				ancCareDetailsOBJ.getObstetricFormula(), ancCareDetailsOBJ.getGravida_G(),
+				ancCareDetailsOBJ.getTermDeliveries_T(), ancCareDetailsOBJ.getPretermDeliveries_P(),
+				ancCareDetailsOBJ.getAbortions_A(), ancCareDetailsOBJ.getLivebirths_L(),
+				ancCareDetailsOBJ.getBloodGroup(), ancCareDetailsOBJ.getModifiedBy(), processed,
+				ancCareDetailsOBJ.getBeneficiaryRegID(), ancCareDetailsOBJ.getBenVisitID());*/
+		
+		
+		r = ancCareRepo.updateANCCareDetails(ancCareDetailsOBJ.getComolaintType(), ancCareDetailsOBJ.getDuration(),
+				ancCareDetailsOBJ.getDescription(), ancCareDetailsOBJ.getLastMenstrualPeriod_LMP(),
+				ancCareDetailsOBJ.getGestationalAgeOrPeriodofAmenorrhea_POA(), ancCareDetailsOBJ.getTrimesterNumber(),
+				ancCareDetailsOBJ.getExpectedDateofDelivery(), ancCareDetailsOBJ.getPrimiGravida(),
+				ancCareDetailsOBJ.getGravida_G(),
 				ancCareDetailsOBJ.getTermDeliveries_T(), ancCareDetailsOBJ.getPretermDeliveries_P(),
 				ancCareDetailsOBJ.getAbortions_A(), ancCareDetailsOBJ.getLivebirths_L(),
 				ancCareDetailsOBJ.getBloodGroup(), ancCareDetailsOBJ.getModifiedBy(), processed,
