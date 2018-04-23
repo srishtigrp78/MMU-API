@@ -388,12 +388,12 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	public Long saveBenPastHistory(BenMedHistory benMedHistory) {
 		Long pastHistorySuccessFlag = null;
 		ArrayList<BenMedHistory> benMedHistoryList = benMedHistory.getBenPastHistory();
-		if(null != benMedHistoryList && benMedHistoryList.size()>0){
+		if (null != benMedHistoryList && benMedHistoryList.size() > 0) {
 			ArrayList<BenMedHistory> res = (ArrayList<BenMedHistory>) benMedHistoryRepo.save(benMedHistoryList);
 			if (null != res && res.size() > 0) {
 				pastHistorySuccessFlag = res.get(0).getBenMedHistoryID();
 			}
-		}else{
+		} else {
 			pastHistorySuccessFlag = new Long(1);
 		}
 		return pastHistorySuccessFlag;
@@ -2132,32 +2132,27 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 	public int saveBenInvestigationDetails(WrapperBenInvestigationANC wrapperBenInvestigationANC) {
 		Long investigationSuccessFlag = null;
-		int res= 0;
-		if (wrapperBenInvestigationANC != null)
-		{
-			Long prescriptionID =
-					savePrescriptionDetailsAndGetPrescriptionID(
-							wrapperBenInvestigationANC.getBeneficiaryRegID(), wrapperBenInvestigationANC.getBenVisitID(),
-							wrapperBenInvestigationANC.getProviderServiceMapID(), wrapperBenInvestigationANC.getCreatedBy(),
-							wrapperBenInvestigationANC.getExternalInvestigations());
+		int res = 0;
+		if (wrapperBenInvestigationANC != null) {
+			Long prescriptionID = savePrescriptionDetailsAndGetPrescriptionID(
+					wrapperBenInvestigationANC.getBeneficiaryRegID(), wrapperBenInvestigationANC.getBenVisitID(),
+					wrapperBenInvestigationANC.getProviderServiceMapID(), wrapperBenInvestigationANC.getCreatedBy(),
+					wrapperBenInvestigationANC.getExternalInvestigations());
 
 			wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
 			investigationSuccessFlag = saveBenInvestigation(wrapperBenInvestigationANC);
-			if (investigationSuccessFlag != null && investigationSuccessFlag > 0)
-			{
+			if (investigationSuccessFlag != null && investigationSuccessFlag > 0) {
 				// Investigation data saved successfully.
 				res = 1;
-			} else
-			{
+			} else {
 				// Something went wrong !!!
 			}
-		} else
-		{
+		} else {
 			// Invalid Data..
 		}
 		return res;
 	}
-	
+
 	public Long saveBenInvestigation(WrapperBenInvestigationANC wrapperBenInvestigationANC) {
 		Long r = null;
 
@@ -2215,13 +2210,27 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		return new Gson().toJson(obj);
 	}
-	
-	// New Nurse worklist.... 26-03-2018
-	public String getLabWorkListNew() {
-			ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getLabWorklistNew();
 
-			return new Gson().toJson(obj);
-		}
+	// New Lab worklist.... 26-03-2018
+	public String getLabWorkListNew() {
+		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getLabWorklistNew();
+
+		return new Gson().toJson(obj);
+	}
+
+	// New radiologist worklist.... 26-03-2018
+	public String getRadiologistWorkListNew() {
+		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getRadiologistWorkListNew();
+
+		return new Gson().toJson(obj);
+	}
+
+	// New oncologist worklist.... 26-03-2018
+	public String getOncologistWorkListNew() {
+		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getOncologistWorkListNew();
+
+		return new Gson().toJson(obj);
+	}
 
 	public int saveBenAdherenceDetails(BenAdherence benAdherence) {
 		int r = 0;
@@ -2495,6 +2504,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		return new Gson().toJson(response);
 
 	}
+
 	public int updateChildFeedingHistory(ChildFeedingDetails childFeedingDetails) {
 		int response = 0;
 		if (null != childFeedingDetails) {
@@ -2509,8 +2519,8 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					childFeedingDetails.getBenMotherID(), childFeedingDetails.getTypeOfFeed(),
 					childFeedingDetails.getCompFeedStartAge(), childFeedingDetails.getNoOfCompFeedPerDay(),
 					childFeedingDetails.getFoodIntoleranceStatus(), childFeedingDetails.getTypeofFoodIntolerance(),
-					childFeedingDetails.getModifiedBy(), processed,
-					childFeedingDetails.getBeneficiaryRegID(), childFeedingDetails.getBenVisitID());
+					childFeedingDetails.getModifiedBy(), processed, childFeedingDetails.getBeneficiaryRegID(),
+					childFeedingDetails.getBenVisitID());
 		}
 		return response;
 	}
@@ -2530,9 +2540,8 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					perinatalHistory.getDeliveryTypeID(), perinatalHistory.getTypeOfDelivery(),
 					perinatalHistory.getComplicationAtBirthID(), perinatalHistory.getComplicationAtBirth(),
 					perinatalHistory.getOtherComplicationAtBirth(), perinatalHistory.getGestation(),
-					perinatalHistory.getBirthWeight_kg(), perinatalHistory.getModifiedBy(),
-					processed, perinatalHistory.getBeneficiaryRegID(),
-					perinatalHistory.getBenVisitID());
+					perinatalHistory.getBirthWeight_kg(), perinatalHistory.getModifiedBy(), processed,
+					perinatalHistory.getBeneficiaryRegID(), perinatalHistory.getBenVisitID());
 		}
 		return response;
 	}
@@ -2540,25 +2549,27 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	public int updateChildDevelopmentHistory(BenChildDevelopmentHistory childDevelopmentDetails) {
 		int response = 0;
 		if (null != childDevelopmentDetails) {
-			String processed = benChildDevelopmentHistoryRepo.getDevelopmentHistoryStatus(childDevelopmentDetails.getBeneficiaryRegID(), 
-					childDevelopmentDetails.getBenVisitID());
+			String processed = benChildDevelopmentHistoryRepo.getDevelopmentHistoryStatus(
+					childDevelopmentDetails.getBeneficiaryRegID(), childDevelopmentDetails.getBenVisitID());
 			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
-			}else{
+			} else {
 				processed = "N";
 			}
 			BenChildDevelopmentHistory childDevelopmentHistory = BenChildDevelopmentHistory
 					.getDevelopmentHistory(childDevelopmentDetails);
-			
-			response = benChildDevelopmentHistoryRepo.updatePerinatalDetails(childDevelopmentHistory.getGrossMotorMilestone(), 
-					childDevelopmentHistory.getIsGMMAttained(), childDevelopmentHistory.getFineMotorMilestone(), childDevelopmentHistory.getIsFMMAttained(), 
-					childDevelopmentHistory.getSocialMilestone(), childDevelopmentHistory.getIsSMAttained(), childDevelopmentHistory.getLanguageMilestone(), 
-					childDevelopmentHistory.getIsLMAttained(), childDevelopmentHistory.getDevelopmentProblem(), childDevelopmentHistory.getModifiedBy(), processed, 
+
+			response = benChildDevelopmentHistoryRepo.updatePerinatalDetails(
+					childDevelopmentHistory.getGrossMotorMilestone(), childDevelopmentHistory.getIsGMMAttained(),
+					childDevelopmentHistory.getFineMotorMilestone(), childDevelopmentHistory.getIsFMMAttained(),
+					childDevelopmentHistory.getSocialMilestone(), childDevelopmentHistory.getIsSMAttained(),
+					childDevelopmentHistory.getLanguageMilestone(), childDevelopmentHistory.getIsLMAttained(),
+					childDevelopmentHistory.getDevelopmentProblem(), childDevelopmentHistory.getModifiedBy(), processed,
 					childDevelopmentHistory.getBeneficiaryRegID(), childDevelopmentHistory.getBenVisitID());
 		}
 		return response;
 	}
-	
+
 	public int updateSysGastrointestinalExamination(SysGastrointestinalExamination gastrointestinalExamination) {
 		int response = 0;
 		if (null != gastrointestinalExamination) {

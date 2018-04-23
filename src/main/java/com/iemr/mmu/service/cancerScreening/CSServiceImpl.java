@@ -126,6 +126,32 @@ public class CSServiceImpl implements CSService {
 
 			// check if visit details data saved successfully
 			if (benVisitID != null && benVisitID > 0) {
+
+				Boolean isReferedToMammogram = null;
+				// check if referred to mammogram is true or false
+				if (requestOBJ.has("examinationDetails") && requestOBJ.get("examinationDetails") != null
+						&& !requestOBJ.get("examinationDetails").isJsonNull()) {
+					JsonObject examination = requestOBJ.getAsJsonObject("examinationDetails");
+					if (examination.has("breastDetails") && examination.get("breastDetails") != null
+							&& !examination.get("breastDetails").isJsonNull()) {
+						JsonObject breastExamination = examination.getAsJsonObject("breastDetails");
+						if (breastExamination.has("referredToMammogram")
+								&& breastExamination.get("referredToMammogram") != null
+								&& !breastExamination.get("referredToMammogram").isJsonNull()) {
+							isReferedToMammogram = breastExamination.get("referredToMammogram").getAsBoolean();
+						}
+
+					}
+
+				}
+
+				// check if doctor visit required ??
+				Boolean docVisitReq = false;
+				if (requestOBJ.has("sendToDoctorWorklist") && requestOBJ.get("sendToDoctorWorklist") != null
+						&& !requestOBJ.get("sendToDoctorWorklist").isJsonNull()) {
+					docVisitReq = requestOBJ.get("sendToDoctorWorklist").getAsBoolean();
+				}
+
 				// call method to save history data
 				Long historySaveSuccessFlag = saveBenHistoryDetails(requestOBJ, benVisitID);
 				// call method to save Examination data
@@ -139,12 +165,16 @@ public class CSServiceImpl implements CSService {
 
 					Integer i = commonNurseServiceImpl.updateBeneficiaryStatus('N', getBenRegID(requestOBJ));
 
-					if (requestOBJ != null && requestOBJ.has("sendToDoctorWorklist")
-							&& !requestOBJ.get("sendToDoctorWorklist").isJsonNull()) {
-						if (requestOBJ.get("sendToDoctorWorklist").getAsBoolean() == false) {
-							String s = commonNurseServiceImpl.updateBenStatus(benVisitID, "Z");
-						}
-					}
+					// if (requestOBJ != null &&
+					// requestOBJ.has("sendToDoctorWorklist")
+					// && !requestOBJ.get("sendToDoctorWorklist").isJsonNull())
+					// {
+					// if (requestOBJ.get("sendToDoctorWorklist").getAsBoolean()
+					// == false) {
+					// String s =
+					// commonNurseServiceImpl.updateBenStatus(benVisitID, "Z");
+					// }
+					// }
 
 					nurseDataSuccessFlag = examinationSuccessFlag;
 
@@ -152,7 +182,8 @@ public class CSServiceImpl implements CSService {
 					 * We have to write new code to update ben status flow new
 					 * logic
 					 */
-					int j = updateBenStatusFlagAfterNurseSaveSuccess(benVisitDetailsOBJ, benVisitID, benFlowID);
+					int j = updateBenStatusFlagAfterNurseSaveSuccess(benVisitDetailsOBJ, benVisitID, benFlowID,
+							isReferedToMammogram, docVisitReq);
 
 				}
 
@@ -166,14 +197,28 @@ public class CSServiceImpl implements CSService {
 
 	// method for updating ben flow status flag for nurse
 	private int updateBenStatusFlagAfterNurseSaveSuccess(BeneficiaryVisitDetail benVisitDetailsOBJ, Long benVisitID,
-			Long benFlowID) {
+			Long benFlowID, Boolean isReferedToMammogram, Boolean docVisitReq) {
 		short nurseFlag = (short) 9;
-		short docFlag = (short) 1;
+		short docFlag = (short) 0;
 		short labIteration = (short) 0;
+		short radiologistFlag = (short) 0;
+		short oncologistFlag = (short) 0;
+
+		if (isReferedToMammogram != null) {
+			if (isReferedToMammogram == true)
+				radiologistFlag = (short) 1;
+
+		}
+
+		if (docVisitReq == true)
+			docFlag = (short) 1;
+		else
+			oncologistFlag = (short) 1;
 
 		int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitID, benVisitDetailsOBJ.getVisitReason(),
-				benVisitDetailsOBJ.getVisitCategory(), nurseFlag, docFlag, labIteration);
+				benVisitDetailsOBJ.getVisitCategory(), nurseFlag, docFlag, labIteration, radiologistFlag,
+				oncologistFlag);
 
 		return i;
 	}
@@ -640,9 +685,31 @@ public class CSServiceImpl implements CSService {
 			 */
 			if (diagnosisSuccessFlag != null && diagnosisSuccessFlag > 0) {
 
-				String s = commonNurseServiceImpl.updateBenStatus(getBenVisitID(requestOBJ), "D");
-				if (s != null && s.length() > 0)
-					docDataSuccessFlag = diagnosisSuccessFlag;
+				Long tmpBenFlowID = null;
+				Long tmpbeneficiaryRegID = null;
+				Long tmpBeneficiaryID = null;
+				Long tmpBenVisitID = null;
+
+				if (requestOBJ.getAsJsonObject("diagnosis") != null
+						&& !requestOBJ.getAsJsonObject("diagnosis").isJsonNull()) {
+					tmpBenFlowID = requestOBJ.getAsJsonObject("diagnosis").get("benFlowID").getAsLong();
+					tmpbeneficiaryRegID = requestOBJ.getAsJsonObject("diagnosis").get("beneficiaryRegID").getAsLong();
+					tmpBeneficiaryID = requestOBJ.getAsJsonObject("diagnosis").get("beneficiaryID").getAsLong();
+					tmpBenVisitID = requestOBJ.getAsJsonObject("diagnosis").get("benVisitID").getAsLong();
+				}
+
+				short docFlag = (short) 9;
+				short pharmaFalg = (short) 0;
+				short oncologistFlag = (short) 1;
+
+				int l = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
+						tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, oncologistFlag);
+
+				// String s =
+				// commonNurseServiceImpl.updateBenStatus(getBenVisitID(requestOBJ),
+				// "D");
+				// if (s != null && s.length() > 0)
+				docDataSuccessFlag = diagnosisSuccessFlag;
 			}
 		} else {
 			// NO input available..
@@ -975,14 +1042,14 @@ public class CSServiceImpl implements CSService {
 				Authorization);
 		return r;
 	}
-	
-	//Fetch CS Doctor Details START....
+
+	// Fetch CS Doctor Details START....
 	public String getBenDoctorDiagnosisData(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
 		resMap.put("benDiagnosisDetails", cSDoctorServiceImpl.getBenCancerDiagnosisData(benRegID, benVisitID));
 		return new Gson().toJson(resMap);
 	}
-	//Fetch CS Doctor Details END....
+	// Fetch CS Doctor Details END....
 
 	public String getBenCaseRecordFromDoctorCS(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();

@@ -147,4 +147,44 @@ public class FetchCommonController {
 		}
 		return response.toString();
 	}
+	
+	// Get radiologist worklist new
+	@CrossOrigin()
+	@ApiOperation(value = "Get radiologist worklist new", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getRadiologist-worklist-New" }, method = { RequestMethod.GET })
+	public String getRadiologistWorklistNew() {
+		OutputResponse response = new OutputResponse();
+		try {
+			String s = commonNurseServiceImpl.getRadiologistWorkListNew();
+			if (s != null)
+				response.setResponse(s);
+			else
+				response.setError(5000, "Error while fetching radiologist worklist");
+		} catch (Exception e) {
+			// e.printStackTrace();
+			logger.error("Error in getLabWorklist:" + e);
+			response.setError(e);
+		}
+		return response.toString();
+	}
+	
+	// Get oncologist worklist new
+		@CrossOrigin()
+		@ApiOperation(value = "Get oncologist worklist new", consumes = "application/json", produces = "application/json")
+		@RequestMapping(value = { "/getOncologist-worklist-New" }, method = { RequestMethod.GET })
+		public String getOncologistWorklistNew() {
+			OutputResponse response = new OutputResponse();
+			try {
+				String s = commonNurseServiceImpl.getOncologistWorkListNew();
+				if (s != null)
+					response.setResponse(s);
+				else
+					response.setError(5000, "Error while fetching oncologist worklist");
+			} catch (Exception e) {
+				// e.printStackTrace();
+				logger.error("Error in getLabWorklist:" + e);
+				response.setError(e);
+			}
+			return response.toString();
+		}
 }

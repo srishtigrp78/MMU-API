@@ -26,13 +26,15 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	@Modifying
 	@Query("UPDATE BeneficiaryFlowStatus t set t.benVisitID = :benVisitID, t.VisitReason = :visitReason, "
 			+ " t.VisitCategory = :visitCategory, t.nurseFlag = :nurseFlag, t.doctorFlag = :docFlag, "
-			+ " t.labIteration = :labIteration, t.lab_technician_flag = 0 WHERE t.benFlowID = :benFlowID AND t.beneficiaryRegID = :benRegID "
+			+ " t.labIteration = :labIteration, t.lab_technician_flag = 0, t.radiologist_flag = :radiologistFlag, "
+			+ " t.oncologist_flag = :oncologistFlag  WHERE t.benFlowID = :benFlowID AND t.beneficiaryRegID = :benRegID "
 			+ " AND nurseFlag = 1  ")
 	public int updateBenFlowStatusAfterNurseActivity(@Param("benFlowID") Long benFlowID,
 			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID,
 			@Param("visitReason") String visitReason, @Param("visitCategory") String visitCategory,
 			@Param("nurseFlag") Short nurseFlag, @Param("docFlag") Short docFlag,
-			@Param("labIteration") Short labIteration);
+			@Param("labIteration") Short labIteration, @Param("radiologistFlag") Short radiologistFlag,
+			@Param("oncologistFlag") Short oncologistFlag);
 
 	@Query("SELECT  t.benFlowID, t.beneficiaryRegID, t.visitDate, t.benName, t.age, t.ben_age_val, t.genderID, t.genderName, "
 			+ " t.villageName, t.districtName, t.beneficiaryID from BeneficiaryFlowStatus t "
@@ -53,10 +55,18 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 
 	@Transactional
 	@Modifying
-	@Query("UPDATE BeneficiaryFlowStatus t set t.doctorFlag = :docFlag , t.pharmacist_flag = :pharmaFlag WHERE t.benFlowID = :benFlowID AND "
+	@Query("UPDATE BeneficiaryFlowStatus t set t.doctorFlag = :docFlag , t.pharmacist_flag = :pharmaFlag, "
+			+ " t.oncologist_flag = :oncologistFlag " + " WHERE t.benFlowID = :benFlowID AND "
 			+ " t.beneficiaryRegID = :benRegID AND t.beneficiaryID = :benID AND t.benVisitID = :benVisitID ")
 	public int updateBenFlowStatusAfterDoctorActivity(@Param("benFlowID") Long benFlowID,
 			@Param("benRegID") Long benRegID, @Param("benID") Long benID, @Param("benVisitID") Long benVisitID,
-			@Param("docFlag") Short docFlag, @Param("pharmaFlag") Short pharmaFlag);
+			@Param("docFlag") Short docFlag, @Param("pharmaFlag") Short pharmaFlag,
+			@Param("oncologistFlag") Short oncologistFlag);
+	
+	@Query("SELECT t from BeneficiaryFlowStatus t WHERE t.radiologist_flag = 1")
+	public ArrayList<BeneficiaryFlowStatus> getRadiologistWorkListNew();
+	
+	@Query("SELECT t from BeneficiaryFlowStatus t WHERE t.oncologist_flag = 1")
+	public ArrayList<BeneficiaryFlowStatus> getOncologistWorkListNew();
 
 }

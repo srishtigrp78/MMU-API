@@ -156,7 +156,7 @@ public class PNCServiceImpl implements PNCService {
 
 		int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				tmpOBJ.get("beneficiaryRegID").getAsLong(), benVisitID, tmpOBJ.get("visitReason").getAsString(),
-				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration);
+				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0);
 
 		return i;
 	}
@@ -311,7 +311,7 @@ public class PNCServiceImpl implements PNCService {
 				}
 
 				int l = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
-						tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg);
+						tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
 
 				// End of new code
 				

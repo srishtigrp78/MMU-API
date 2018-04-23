@@ -71,11 +71,12 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 	}
 
 	public int updateBenFlowNurseAfterNurseActivity(Long benFlowID, Long benRegID, Long benVisitID, String visitReason,
-			String visitCategory, Short nurseFlag, Short docFlag, Short labIteration) {
+			String visitCategory, Short nurseFlag, Short docFlag, Short labIteration, Short radiologistFlag,
+			Short oncologistFlag) {
 		int i = 0;
 		try {
 			i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterNurseActivity(benFlowID, benRegID, benVisitID,
-					visitReason, visitCategory, nurseFlag, docFlag, labIteration);
+					visitReason, visitCategory, nurseFlag, docFlag, labIteration, radiologistFlag, oncologistFlag);
 			System.out.println("hello");
 		} catch (Exception e) {
 			// e.printStackTrace();
@@ -166,11 +167,11 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 	}
 
 	public int updateBenFlowAfterDocData(Long benFlowID, Long benRegID, Long benID, Long benVisitID, short docFlag,
-			short pharmaFlag) {
+			short pharmaFlag, short oncologistFlag) {
 		int i = 0;
 		try {
 			i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterDoctorActivity(benFlowID, benRegID, benID, benVisitID,
-					docFlag, pharmaFlag);
+					docFlag, pharmaFlag, oncologistFlag);
 		} catch (Exception e) {
 			logger.error("Error in ben flow creation = " + e);
 		}
