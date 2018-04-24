@@ -20,7 +20,7 @@ public interface CancerSignAndSymptomsRepo extends CrudRepository<CancerSignAndS
 	public CancerSignAndSymptoms getBenCancerSignAndSymptomsDetails(@Param("benRegID") Long benRegID,
 	@Param("benVisitID") Long benVisitID);
 	
-	@Query("SELECT processed from CancerSignAndSymptoms where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	@Query("SELECT processed from CancerSignAndSymptoms where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID AND deleted=false")
 	public String getCancerSignAndSymptomsStatus(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 	

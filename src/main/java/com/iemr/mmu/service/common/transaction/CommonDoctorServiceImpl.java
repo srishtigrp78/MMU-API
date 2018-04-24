@@ -17,7 +17,6 @@ import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.doctor.BenReferDetails;
 import com.iemr.mmu.data.masterdata.anc.ServiceMaster;
-import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
@@ -60,12 +59,12 @@ public class CommonDoctorServiceImpl {
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
 
 	private CommonNurseServiceImpl commonNurseServiceImpl;
-	
+
 	@Autowired
 	public void setCommonNurseServiceImpl(CommonNurseServiceImpl commonNurseServiceImpl) {
 		this.commonNurseServiceImpl = commonNurseServiceImpl;
 	}
-	
+
 	@Autowired
 	public void setBeneficiaryFlowStatusRepo(BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo) {
 		this.beneficiaryFlowStatusRepo = beneficiaryFlowStatusRepo;
@@ -185,9 +184,11 @@ public class CommonDoctorServiceImpl {
 				benChiefComplaint.setCreatedBy(wrapperAncFindings.getCreatedBy());
 
 				if (null != complaintsDetails.getChiefComplaintID()) {
-					/*Double d = (Double) complaintsDetails.getChiefComplaintID();
-					if (d == null)
-						continue;*/
+					/*
+					 * Double d = (Double)
+					 * complaintsDetails.getChiefComplaintID(); if (d == null)
+					 * continue;
+					 */
 					benChiefComplaint.setChiefComplaintID(complaintsDetails.getChiefComplaintID());
 				}
 				if (null != complaintsDetails.getChiefComplaint())
@@ -306,7 +307,8 @@ public class CommonDoctorServiceImpl {
 				referDetailsList.add(referDetailsTemp);
 			}
 		} else {
-			referDetailsList.add(referDetails);
+			if (referDetails.getReferredToInstituteID() != null)
+				referDetailsList.add(referDetails);
 		}
 
 		ArrayList<BenReferDetails> res = (ArrayList<BenReferDetails>) benReferDetailsRepo.save(referDetailsList);
@@ -337,20 +339,22 @@ public class CommonDoctorServiceImpl {
 		ArrayList<Object[]> prescriptions = prescriptionDetailRepo.getBenPrescription(beneficiaryRegID, benVisitID);
 
 		PrescriptionDetail prescriptionData = PrescriptionDetail.getPrescriptions(prescriptions);
-		if (null != prescriptionData ) {
-			ArrayList<Object[]> prescribedDrugs = prescribedDrugDetailRepo
-					.getBenPrescribedDrugDetails(prescriptionData.getPrescriptionID());
-			prescriptionData.setPrescribedDrugs(PrescribedDrugDetail.getprescribedDrugs(prescribedDrugs));
+		if (null != prescriptionData) {
+			ArrayList<Object[]> resList = prescribedDrugDetailRepo
+					.getBenPrescribedDrugDetails(beneficiaryRegID, benVisitID);
+			
+			ArrayList<PrescribedDrugDetail>  prescribedDrugs = PrescribedDrugDetail.getprescribedDrugs(resList);
+			prescriptionData.setPrescribedDrugs(prescribedDrugs);
 		}
 
 		return new Gson().toJson(prescriptionData);
 	}
-	
+
 	public String getReferralDetails(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> resList = benReferDetailsRepo.getBenReferDetails(beneficiaryRegID, benVisitID);
-		
+
 		BenReferDetails referDetails = BenReferDetails.getBenReferDetails(resList);
-		
+
 		return new Gson().toJson(referDetails);
 	}
 
@@ -358,11 +362,10 @@ public class CommonDoctorServiceImpl {
 		int clinObsrvtnsRes = 0;
 		int chiefCmpltsRes = 0;
 		int updateFindingsRes = 0;
-		
+
 		BenClinicalObservations benClinicalObservations = getBenClinicalObservations(wrapperAncFindings);
 		clinObsrvtnsRes = updateBenClinicalObservations(benClinicalObservations);
 
-		
 		ArrayList<BenChiefComplaint> tmpBenCHiefComplaints = wrapperAncFindings.getComplaints();
 		if (tmpBenCHiefComplaints.size() > 0) {
 			for (BenChiefComplaint benChiefComplaint : tmpBenCHiefComplaints) {
@@ -372,7 +375,7 @@ public class CommonDoctorServiceImpl {
 				benChiefComplaint.setCreatedBy(wrapperAncFindings.getCreatedBy());
 			}
 			chiefCmpltsRes = updateDoctorBenChiefComplaints(tmpBenCHiefComplaints);
-			
+
 		}
 		if (clinObsrvtnsRes > 0 && chiefCmpltsRes > 0) {
 			updateFindingsRes = 1;
@@ -380,7 +383,7 @@ public class CommonDoctorServiceImpl {
 		}
 		return updateFindingsRes;
 	}
-	
+
 	public int updateDoctorBenChiefComplaints(List<BenChiefComplaint> benChiefComplaintList) {
 		int r = 0;
 		if (null != benChiefComplaintList && benChiefComplaintList.size() > 0) {
@@ -391,62 +394,57 @@ public class CommonDoctorServiceImpl {
 			if (benChiefComplaintResultList != null && benChiefComplaintResultList.size() > 0) {
 				r = benChiefComplaintResultList.size();
 			}
-		}else{
+		} else {
 			r = 1;
 		}
 		return r;
 	}
 
-	
 	public int updateBenClinicalObservations(BenClinicalObservations benClinicalObservations) {
 		Integer r = 0;
 		int recordsAvailable = 0;
 		if (null != benClinicalObservations) {
-			String processed = benClinicalObservationsRepo.getBenClinicalObservationStatus(benClinicalObservations.getBeneficiaryRegID(), 
-					benClinicalObservations.getBenVisitID());
-			
+			String processed = benClinicalObservationsRepo.getBenClinicalObservationStatus(
+					benClinicalObservations.getBeneficiaryRegID(), benClinicalObservations.getBenVisitID());
+
 			if (null != processed) {
 				recordsAvailable = 1;
 			}
-			
+
 			if (null != processed && !processed.equals("N")) {
 				processed = "U";
 			} else {
 				processed = "N";
 			}
-			if(recordsAvailable>0){
+			if (recordsAvailable > 0) {
 				// anthropometryDetail.setModifiedBy(anthropometryDetail.getCreatedBy());
-				r = benClinicalObservationsRepo.updateBenClinicalObservations(benClinicalObservations.getClinicalObservation(), 
-						benClinicalObservations.getOtherSymptoms(), benClinicalObservations.getSignificantFindings(), 
-						benClinicalObservations.getIsForHistory(), benClinicalObservations.getCreatedBy(), 
-						processed, benClinicalObservations.getBeneficiaryRegID(), benClinicalObservations.getBenVisitID());
-			}else{
+				r = benClinicalObservationsRepo.updateBenClinicalObservations(
+						benClinicalObservations.getClinicalObservation(), benClinicalObservations.getOtherSymptoms(),
+						benClinicalObservations.getSignificantFindings(), benClinicalObservations.getIsForHistory(),
+						benClinicalObservations.getCreatedBy(), processed,
+						benClinicalObservations.getBeneficiaryRegID(), benClinicalObservations.getBenVisitID());
+			} else {
 				BenClinicalObservations observationsRes = benClinicalObservationsRepo.save(benClinicalObservations);
-				if(null != observationsRes && observationsRes.getClinicalObservationID()>0){
+				if (null != observationsRes && observationsRes.getClinicalObservationID() > 0) {
 					r = 1;
 				}
 			}
 		}
 		return r;
 	}
-	
-	/*public Long checkPrescriptionAvailable(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, String createdBy) {
-		Long prescriptionID = null;
-		ArrayList<Object[]> res=prescriptionDetailRepo.getBenPrescription(beneficiaryRegID, benVisitID);
-		if(null != res && res.size()>0){
-			Object[] obj= res.get(0);
-			prescriptionID = (Long)obj[0];
-		}else{
-			prescriptionID = commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
-					beneficiaryRegID,
-					benVisitID,
-					providerServiceMapID,
-					createdBy,
-					"");
-		}
-		return prescriptionID;
-	}*/
-	
+
+	/*
+	 * public Long checkPrescriptionAvailable(Long beneficiaryRegID, Long
+	 * benVisitID, Integer providerServiceMapID, String createdBy) { Long
+	 * prescriptionID = null; ArrayList<Object[]>
+	 * res=prescriptionDetailRepo.getBenPrescription(beneficiaryRegID,
+	 * benVisitID); if(null != res && res.size()>0){ Object[] obj= res.get(0);
+	 * prescriptionID = (Long)obj[0]; }else{ prescriptionID =
+	 * commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
+	 * beneficiaryRegID, benVisitID, providerServiceMapID, createdBy, ""); }
+	 * return prescriptionID; }
+	 */
+
 	public Long updateBenReferDetails(JsonObject referObj) throws IEMRException {
 		Long ID = null;
 		int delRes = 0;
@@ -455,9 +453,9 @@ public class CommonDoctorServiceImpl {
 
 		BenReferDetails referDetailsTemp = null;
 
-		ArrayList<Object[]> benReferDetailsStatuses = benReferDetailsRepo.getBenReferDetailsStatus(referDetails.getBeneficiaryRegID(), 
-				referDetails.getBenVisitID());
-		
+		ArrayList<Object[]> benReferDetailsStatuses = benReferDetailsRepo
+				.getBenReferDetailsStatus(referDetails.getBeneficiaryRegID(), referDetails.getBenVisitID());
+
 		for (Object[] obj : benReferDetailsStatuses) {
 			String processed = (String) obj[1];
 			if (null != processed && !"N".equals(processed)) {
@@ -465,8 +463,10 @@ public class CommonDoctorServiceImpl {
 			} else {
 				processed = "N";
 			}
+			benReferDetailsRepo.updateReferredInstituteName(referDetails.getReferredToInstituteID(), referDetails.getReferredToInstituteName(), 
+					(Long) obj[0], processed);
 		}
-		
+
 		if (referDetails.getRefrredToAdditionalServiceList() != null
 				&& referDetails.getRefrredToAdditionalServiceList().size() > 0) {
 			for (ServiceMaster sm : referDetails.getRefrredToAdditionalServiceList()) {
@@ -497,5 +497,5 @@ public class CommonDoctorServiceImpl {
 		}
 		return ID;
 	}
-	
+
 }

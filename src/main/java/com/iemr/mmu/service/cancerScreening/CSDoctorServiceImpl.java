@@ -239,6 +239,16 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 	@Override
 	public Long saveCancerDiagnosisData(CancerDiagnosis cancerDiagnosis) {
 
+		cancerDiagnosis = getCancerDiagnosisObj(cancerDiagnosis);
+		
+		CancerDiagnosis response = cancerDiagnosisRepo.save(cancerDiagnosis);
+		if (response != null)
+			return response.getID();
+		else
+			return null;
+	}
+
+	public CancerDiagnosis getCancerDiagnosisObj(CancerDiagnosis cancerDiagnosis){
 		List<String> refrredToAdditionalServiceList = cancerDiagnosis.getRefrredToAdditionalServiceList();
 		String refrredToAdditionalServiceData = "";
 		if (refrredToAdditionalServiceList != null && refrredToAdditionalServiceList.size() > 0) {
@@ -250,13 +260,9 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 			}
 		}
 		cancerDiagnosis.setRefrredToAdditionalService(refrredToAdditionalServiceData);
-		CancerDiagnosis response = cancerDiagnosisRepo.save(cancerDiagnosis);
-		if (response != null)
-			return response.getID();
-		else
-			return null;
+		return  cancerDiagnosis;
 	}
-
+	
 	//Commented few stamts in below method bcz Those screens moved to nurse ServiceImpl
 	public Map<String, Object> getBenDoctorEnteredDataForCaseSheet(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
@@ -394,6 +400,39 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 		}
 		// System.out.println("hello");
 		return resList;
+	}
+	
+	public int updateCancerDiagnosisDetailsByDoctor(CancerDiagnosis cancerDiagnosis) {
+		
+		int response = 0;
+		int recordsAvailable = 0;
+		String processed= cancerDiagnosisRepo.getCancerDiagnosisStatuses(cancerDiagnosis.getBeneficiaryRegID(),
+				cancerDiagnosis.getBenVisitID());
+		if (null != processed) {
+			recordsAvailable = 1;
+		}
+		if (null != processed && !processed.equalsIgnoreCase("N")) {
+			processed = "U";
+
+		} else {
+			processed = "N";
+		}
+		
+		if (recordsAvailable > 0) {
+			cancerDiagnosis = getCancerDiagnosisObj(cancerDiagnosis);
+			response = cancerDiagnosisRepo.updateCancerDiagnosisDetailsByDoctor(cancerDiagnosis.getProvisionalDiagnosisPrimaryDoctor(),
+					cancerDiagnosis.getRemarks(), cancerDiagnosis.getReferredToInstituteID(), cancerDiagnosis.getRefrredToAdditionalService(),
+					cancerDiagnosis.getModifiedBy(), processed, cancerDiagnosis.getBeneficiaryRegID(), cancerDiagnosis.getBenVisitID());
+		} else {
+			cancerDiagnosis.setCreatedBy(cancerDiagnosis.getModifiedBy());
+			Long cancerDiagnosisRS = saveCancerDiagnosisData(cancerDiagnosis);
+			if (cancerDiagnosisRS != null && cancerDiagnosisRS>0) {
+				response = 1;
+			}
+		}
+
+		return response;
+
 	}
 	
 }

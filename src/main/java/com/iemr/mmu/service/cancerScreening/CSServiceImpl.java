@@ -15,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.iemr.mmu.data.anc.ANCDiagnosis;
+import com.iemr.mmu.data.anc.WrapperAncFindings;
+import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.doctor.CancerAbdominalExamination;
 import com.iemr.mmu.data.doctor.CancerBreastExamination;
 import com.iemr.mmu.data.doctor.CancerDiagnosis;
@@ -28,6 +31,8 @@ import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
+import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
+import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
@@ -1058,4 +1063,24 @@ public class CSServiceImpl implements CSService {
 
 		return new Gson().toJson(resMap);
 	}
+	
+	@Transactional(rollbackFor = Exception.class)
+	public Long updateCancerScreeningDoctorData(JsonObject requestOBJ) throws Exception {
+		Long updateSuccessFlag = null;
+		int diagnosisSuccessFlag = 0;
+		if (requestOBJ != null) {
+		
+			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
+				CancerDiagnosis cancerDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
+						CancerDiagnosis.class);
+				diagnosisSuccessFlag = cSDoctorServiceImpl.updateCancerDiagnosisDetailsByDoctor(cancerDiagnosis);
+			} else{
+				diagnosisSuccessFlag = 1;
+			}
+		} else {
+			// request OBJ is null.
+		}
+		return updateSuccessFlag;
+	}
+	
 }

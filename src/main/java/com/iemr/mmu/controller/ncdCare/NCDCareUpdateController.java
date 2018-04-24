@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,7 @@ public class NCDCareUpdateController
 	
 	private NCDCareServiceImpl ncdCareServiceImpl;
 	
+	@Autowired
 	public void setNcdCareServiceImpl(NCDCareServiceImpl ncdCareServiceImpl)
 	{
 		this.ncdCareServiceImpl = ncdCareServiceImpl;
@@ -116,4 +118,32 @@ public class NCDCareUpdateController
 		return response.toString();
 	}
 	
+	@CrossOrigin
+	@ApiOperation(value = "update NCDCare Doctor Data", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/doctorData" }, method = { RequestMethod.POST })
+	public String updateNCDCareDoctorData( @RequestBody String requestObj) {
+
+		OutputResponse response = new OutputResponse();
+		logger.info("updateNCDCareDoctorData request:" + requestObj);
+
+		JsonObject jsnOBJ = new JsonObject();
+		JsonParser jsnParser = new JsonParser();
+		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		jsnOBJ = jsnElmnt.getAsJsonObject();
+
+		try {
+			Long result = ncdCareServiceImpl.updateNCDCareDoctorData(jsnOBJ);
+			if (null != result && result > 0) {
+				response.setResponse("NCDCare Doctor Data updated successfully.");
+			} else {
+				response.setError(500, "Failed to update NCDCare Doctor Data");
+			}
+			logger.info("updateNCDCareDoctorData response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in updateNCDCareDoctorData :" + e);
+		}
+
+		return response.toString();
+	}
 }

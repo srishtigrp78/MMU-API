@@ -307,7 +307,7 @@ public class ANCDiagnosis {
 		this.prescriptionID = prescriptionID;
 	}
 
-	public ANCDiagnosis(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
+	public ANCDiagnosis(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, Long prescriptionID,
 			String highRiskStatus, String highRiskCondition, String complicationOfCurrentPregnancy,
 			Boolean isMaternalDeath, String placeOfDeath, Date dateOfDeath, String causeOfDeath) {
 		super();
@@ -315,6 +315,7 @@ public class ANCDiagnosis {
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
 		this.providerServiceMapID = providerServiceMapID;
+		this.prescriptionID = prescriptionID;
 		this.highRiskStatus = highRiskStatus;
 		this.highRiskCondition = highRiskCondition;
 		this.complicationOfCurrentPregnancy = complicationOfCurrentPregnancy;
@@ -329,8 +330,8 @@ public class ANCDiagnosis {
 		ANCDiagnosis cOBJ = null;
 		if(null != resList && resList.size()>0){
 			for (Object[] obj : resList) {
-				cOBJ = new ANCDiagnosis((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (String)obj[4], (String)obj[5], (String)obj[6], 
-						(Boolean)obj[7], (String)obj[8], (Date)obj[9], (String)obj[10]);
+				cOBJ = new ANCDiagnosis((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (Long)obj[4], (String)obj[5], (String)obj[6], (String)obj[7], 
+						(Boolean)obj[8], (String)obj[9], (Date)obj[10], (String)obj[11]);
 				
 			}
 		}

@@ -343,7 +343,7 @@ public class TestCSServices
 		
 		when(cancerExaminationImageAnnotationRepoMock.deleteExistingImageAnnotationDetails(Matchers.any(), Matchers.any())).thenReturn(1);
 		
-		when(cancerDiagnosisRepoMock.updateDetailsByOncologist(Matchers.any(), Matchers.any(),Matchers.any(), Matchers.any())).thenReturn(1);
+		when(cancerDiagnosisRepoMock.updateDetailsByOncologist(Matchers.any(), Matchers.any(),Matchers.any(), Matchers.any(), Matchers.any())).thenReturn(1);
 		
 		when(benVisitDetailRepoMock.getVisitDetails(beneficiaryRegID, benVisitID)).thenReturn(spy(BeneficiaryVisitDetail.class));
 		

@@ -299,12 +299,13 @@ public class NCDCareDiagnosis
 		this.prescriptionID = prescriptionID;
 	}
 
-	public NCDCareDiagnosis(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
+	public NCDCareDiagnosis(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, Long prescriptionID,
 			String ncdCareCondition, String ncdComplication, String ncdCareType) {
 		super();
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
 		this.providerServiceMapID = providerServiceMapID;
+		this.prescriptionID = prescriptionID;
 		this.ncdScreeningCondition = ncdCareCondition;
 		this.ncdComplication = ncdComplication;
 		this.ncdCareType = ncdCareType;
@@ -314,7 +315,7 @@ public class NCDCareDiagnosis
 		NCDCareDiagnosis cOBJ = null;
 		if(null != resList && resList.size()>0){
 			for (Object[] obj : resList) {
-				cOBJ = new NCDCareDiagnosis((Long)obj[0], (Long)obj[1], (Integer)obj[2], (String)obj[3], (String)obj[4], (String)obj[5]);
+				cOBJ = new NCDCareDiagnosis((Long)obj[0], (Long)obj[1], (Integer)obj[2], (Long)obj[3], (String)obj[4], (String)obj[5], (String)obj[6]);
 			}
 		}
 		return cOBJ;

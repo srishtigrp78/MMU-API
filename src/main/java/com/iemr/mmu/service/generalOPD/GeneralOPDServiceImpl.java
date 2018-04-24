@@ -757,7 +757,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 			if (requestOBJ.has("prescription") && !requestOBJ.get("prescription").isJsonNull()) {
 				JsonObject tmpOBJ = requestOBJ.get("prescription").getAsJsonObject();
-				if (tmpOBJ.has("prescribedDrugs") && !tmpOBJ.get("prescribedDrugs").isJsonNull()) {
+				if (null != tmpOBJ && tmpOBJ.has("prescribedDrugs") && !tmpOBJ.get("prescribedDrugs").isJsonNull()) {
 					PrescribedDrugDetail[] prescribedDrugDetail = InputMapper.gson()
 							.fromJson(tmpOBJ.get("prescribedDrugs"), PrescribedDrugDetail[].class);
 
@@ -767,6 +767,10 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 						for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
 							tmpObj.setPrescriptionID(prescriptionID);
 							tmpObj.setCreatedBy(createdBy);
+							if(tmpOBJ.has("beneficiaryRegID")  && null != tmpOBJ.get("beneficiaryRegID"))
+								tmpObj.setBeneficiaryRegID(tmpOBJ.get("beneficiaryRegID").getAsLong());
+							if(tmpOBJ.has("benVisitID")  && null != tmpOBJ.get("benVisitID"))
+								tmpObj.setBenVisitID(tmpOBJ.get("benVisitID").getAsLong());
 							Map<String, String> drug = tmpObj.getDrug();
 							if (null != drug && drug.size() > 0 && drug.containsKey("drugID")
 									&& drug.containsKey("drugDisplayName")) {
@@ -1297,5 +1301,126 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		resMap.put("Refer", commonDoctorServiceImpl.getReferralDetails(benRegID, benVisitID));
 
 		return resMap.toString();
+	}
+	
+	@Transactional(rollbackFor = Exception.class)
+	public Long updateGeneralOPDDoctorData(JsonObject requestOBJ) throws Exception {
+		Long updateSuccessFlag = null;
+		Long prescriptionID = null;
+		Long investigationSuccessFlag = null;
+		Integer findingSuccessFlag = null;
+		Integer diagnosisSuccessFlag = null;
+		Integer prescriptionSuccessFlag = null;
+		Long referSaveSuccessFlag = null;
+
+		String createdBy =null;
+		if (requestOBJ != null) {
+
+			if (requestOBJ.has("findings") && !requestOBJ.get("findings").isJsonNull()) {
+
+				WrapperAncFindings wrapperAncFindings = InputMapper.gson().fromJson(requestOBJ.get("findings"),
+						WrapperAncFindings.class);
+				findingSuccessFlag = commonDoctorServiceImpl.updateDocFindings(wrapperAncFindings);
+				
+			} else {
+				findingSuccessFlag = 1;
+			}
+			
+			PrescriptionDetail prescriptionDetail = null;
+
+			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
+				JsonObject diagnosisObj = requestOBJ.getAsJsonObject("diagnosis");
+
+				prescriptionDetail = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), PrescriptionDetail.class);
+
+				if (diagnosisObj.has("provisionalDiagnosis")
+						&& !diagnosisObj.get("provisionalDiagnosis").isJsonNull()) {
+					prescriptionDetail.setDiagnosisProvided(diagnosisObj.get("provisionalDiagnosis").toString());
+				}
+				if (diagnosisObj.has("specialistAdvice") && !diagnosisObj.get("specialistAdvice").isJsonNull()) {
+					prescriptionDetail.setInstruction(diagnosisObj.get("specialistAdvice").toString());
+				}
+				//diagnosisSuccessFlag = generalOPDDoctorServiceImpl.updateBenGeneralOPDDiagnosis(prescriptionDetail);
+			} else {
+				diagnosisSuccessFlag = 1;
+			}
+			
+			//Fetch Benficiary details to check/create prescription existence
+			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull()) {
+				WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
+						.fromJson(requestOBJ.get("investigation"), WrapperBenInvestigationANC.class);
+
+				if (wrapperBenInvestigationANC != null) {
+					if(null == prescriptionDetail){
+						prescriptionDetail = InputMapper.gson().fromJson(requestOBJ.get("investigation"), PrescriptionDetail.class);
+					}
+					prescriptionDetail.setExternalInvestigation(wrapperBenInvestigationANC.getExternalInvestigations());
+					prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
+					
+					createdBy = wrapperBenInvestigationANC.getCreatedBy();
+
+					wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
+					investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
+				} 
+			} else {
+				investigationSuccessFlag = new Long(1);
+			}
+					
+			if (requestOBJ.has("prescription") && !requestOBJ.get("prescription").isJsonNull()) {
+				JsonObject tmpOBJ = requestOBJ.get("prescription").getAsJsonObject();
+				
+				if (tmpOBJ.has("prescribedDrugs") && !tmpOBJ.get("prescribedDrugs").isJsonNull()) {
+					if(null == prescriptionID){
+						if(null == prescriptionDetail){
+							prescriptionDetail = InputMapper.gson().fromJson(tmpOBJ, PrescriptionDetail.class);
+						}
+						prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
+					}
+					PrescribedDrugDetail[] prescribedDrugDetail = InputMapper.gson()
+							.fromJson(tmpOBJ.get("prescribedDrugs"), PrescribedDrugDetail[].class);
+
+					List<PrescribedDrugDetail> prescribedDrugDetailList = Arrays.asList(prescribedDrugDetail);
+
+					if (prescribedDrugDetailList.size() > 0) {
+						for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
+							tmpObj.setPrescriptionID(prescriptionID);
+							tmpObj.setCreatedBy(createdBy);
+							Map<String, String> drug = tmpObj.getDrug();
+							if (null != drug && drug.size() > 0 && drug.containsKey("drugID")
+									&& drug.containsKey("drugDisplayName")) {
+								tmpObj.setDrugID(Integer.parseInt(drug.get("drugID")));
+								tmpObj.setGenericDrugName(drug.get("drugDisplayName"));
+							}
+						}
+						Integer r = commonNurseServiceImpl.saveBenPrescribedDrugsList(prescribedDrugDetailList);
+						if (r > 0 && r != null) {
+							prescriptionSuccessFlag = r;
+						}
+
+					} else {
+						prescriptionSuccessFlag = 1;
+					}
+				}
+			} else {
+				prescriptionSuccessFlag = 1;
+			}
+				
+			if (requestOBJ.has("refer") && !requestOBJ.get("refer").isJsonNull()) {
+				referSaveSuccessFlag = commonDoctorServiceImpl
+						.updateBenReferDetails(requestOBJ.get("refer").getAsJsonObject());
+			} else {
+				referSaveSuccessFlag = new Long(1);
+			}
+			if ((findingSuccessFlag != null && findingSuccessFlag > 0)
+					&& (prescriptionID != null && prescriptionID > 0)
+					&& (investigationSuccessFlag != null && investigationSuccessFlag > 0)
+					&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)
+					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
+				updateSuccessFlag = investigationSuccessFlag;
+			}
+		} else {
+			// request OBJ is null.
+		}
+		return updateSuccessFlag;
 	}
 }
