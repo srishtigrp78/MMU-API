@@ -17,7 +17,7 @@ public interface NCDCareDiagnosisRepo extends CrudRepository<NCDCareDiagnosis, L
 
 	@Query(" SELECT beneficiaryRegID, benVisitID, providerServiceMapID, prescriptionID, ncdScreeningCondition, ncdComplication, ncdCareType "
 			+ "from NCDCareDiagnosis ba "
-			+ "WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID and ba.deleted = false")
+			+ "WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID and ba.deleted = false order by createdDate desc")
 	public ArrayList<Object[]> getNCDCareDiagnosisDetails(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 	
@@ -27,10 +27,10 @@ public interface NCDCareDiagnosisRepo extends CrudRepository<NCDCareDiagnosis, L
 	
 	@Transactional
 	@Modifying
-	@Query("update NCDCareDiagnosis set ncdCareCondition=:ncdCareCondition, ncdComplication=:ncdComplication, "
+	@Query("update NCDCareDiagnosis set ncdScreeningCondition=:ncdScreeningCondition, ncdComplication=:ncdComplication, "
 			+ "ncdCareType=:ncdCareType, modifiedBy=:modifiedBy, processed=:processed "
 			+ "where benVisitID=:benVisitID AND beneficiaryRegID=:beneficiaryRegID AND prescriptionID=:prescriptionID")
-	public int updateNCDCareDiagnosis(@Param("ncdCareCondition") String ncdCareCondition,
+	public int updateNCDCareDiagnosis(@Param("ncdScreeningCondition") String ncdScreeningCondition,
 			@Param("ncdComplication") String ncdComplication,
 			@Param("ncdCareType") String ncdCareType,
 			@Param("modifiedBy") String modifiedBy,

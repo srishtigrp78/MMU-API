@@ -305,6 +305,7 @@ public class NCDCareDiagnosis
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
 		this.providerServiceMapID = providerServiceMapID;
+		this.prescriptionID = prescriptionID;
 		this.ncdScreeningCondition = ncdCareCondition;
 		this.ncdComplication = ncdComplication;
 		this.ncdCareType = ncdCareType;

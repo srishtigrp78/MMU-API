@@ -17,7 +17,7 @@ import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 public interface PrescriptionDetailRepo extends CrudRepository<PrescriptionDetail, Long>{
 
 	@Query(" SELECT prescriptionID, beneficiaryRegID, benVisitID, providerServiceMapID, diagnosisProvided, instruction, externalInvestigation "
-			+ "from PrescriptionDetail ba WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID AND ba.deleted = false")
+			+ "from PrescriptionDetail ba WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID AND ba.deleted = false order by createdDate desc")
 	public ArrayList<Object[]> getBenPrescription(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 	
@@ -26,7 +26,7 @@ public interface PrescriptionDetailRepo extends CrudRepository<PrescriptionDetai
 	public ArrayList<Object[]> getGeneralOPDDiagnosisDetails(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 	
-/*	@Query("SELECT processed from PrescriptionDetail where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	@Query("SELECT processed from PrescriptionDetail where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
 	public String getGeneralOPDDiagnosisStatus(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 	
@@ -41,6 +41,6 @@ public interface PrescriptionDetailRepo extends CrudRepository<PrescriptionDetai
 			@Param("processed") String processed,
 			@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("benVisitID") Long benVisitID,
-			@Param("prescriptionID") Long prescriptionID);*/
+			@Param("prescriptionID") Long prescriptionID);
 	
 }
