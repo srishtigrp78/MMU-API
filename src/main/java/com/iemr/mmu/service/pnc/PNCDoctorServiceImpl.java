@@ -40,4 +40,37 @@ public class PNCDoctorServiceImpl implements PNCDoctorService {
 		PNCDiagnosis pncDiagnosisDetails = PNCDiagnosis.getPNCDiagnosisDetails(resList);
 		return new Gson().toJson(pncDiagnosisDetails);
 	}
+	
+	public int updateBenPNCDiagnosis(PNCDiagnosis pncDiagnosis, Long prescriptionID) throws IEMRException {
+		int res = 0;
+		int recordsAvailable = 0;
+		String processed = pncDiagnosisRepo.getPNCDiagnosisStatus(pncDiagnosis.getBeneficiaryRegID(), 
+				pncDiagnosis.getBenVisitID());
+		
+		if (null != processed) {
+			recordsAvailable = 1;
+		}
+		
+		if (null != processed && !processed.equals("N")) {
+			processed = "U";
+		} else {
+			processed = "N";
+		}
+		if(recordsAvailable>0){
+			pncDiagnosis.setModifiedBy(pncDiagnosis.getCreatedBy());
+			res = pncDiagnosisRepo.updatePNCDiagnosis(pncDiagnosis.getProvisionalDiagnosis(), pncDiagnosis.getConfirmatoryDiagnosis(),
+					pncDiagnosis.getIsMaternalDeath(), pncDiagnosis.getPlaceOfDeath(), pncDiagnosis.getDateOfDeath(), pncDiagnosis.getCauseOfDeath(), 
+					pncDiagnosis.getModifiedBy(), processed, pncDiagnosis.getBeneficiaryRegID(), pncDiagnosis.getBenVisitID(),
+					pncDiagnosis.getPrescriptionID());
+		}else{
+			pncDiagnosis.setPrescriptionID(prescriptionID);
+			PNCDiagnosis pncDiagnosisRes  = pncDiagnosisRepo.save(pncDiagnosis);
+			if(null != pncDiagnosisRes && pncDiagnosisRes.getID()>0){
+				res = 1;
+			}
+			
+		}
+		
+		return res;
+	}
 }

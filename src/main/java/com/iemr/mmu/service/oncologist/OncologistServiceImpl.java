@@ -16,12 +16,13 @@ public class OncologistServiceImpl implements OncologistService{
 		this.cancerDiagnosisRepo = cancerDiagnosisRepo;
 	}
 	
+	@Deprecated
 	@Override
 	public int updateCancerDiagnosisDetailsByOncologist(CancerDiagnosis cancerDiagnosis) {
 		int response = 0;
 		try {
 			response = cancerDiagnosisRepo.updateDetailsByOncologist(cancerDiagnosis.getProvisionalDiagnosisOncologist(), 
-					cancerDiagnosis.getBeneficiaryRegID(), cancerDiagnosis.getBenVisitID(), cancerDiagnosis.getModifiedBy());
+					cancerDiagnosis.getBeneficiaryRegID(), cancerDiagnosis.getBenVisitID(), cancerDiagnosis.getModifiedBy(),"N");
 
 		} catch (Exception e) {
 			e.printStackTrace();

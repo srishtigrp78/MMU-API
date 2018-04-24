@@ -33,6 +33,7 @@ import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
+import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
@@ -678,7 +679,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 			
 			if (requestOBJ.has("prescription") && !requestOBJ.get("prescription").isJsonNull()) {
 				JsonObject tmpOBJ = requestOBJ.get("prescription").getAsJsonObject();
-				if (tmpOBJ.has("prescribedDrugs") && !tmpOBJ.get("prescribedDrugs").isJsonNull()) {
+				if (null != tmpOBJ && tmpOBJ.has("prescribedDrugs") && !tmpOBJ.get("prescribedDrugs").isJsonNull()) {
 					PrescribedDrugDetail[] prescribedDrugDetail = InputMapper.gson()
 							.fromJson(tmpOBJ.get("prescribedDrugs"), PrescribedDrugDetail[].class);
 
@@ -688,6 +689,10 @@ public class NCDCareServiceImpl implements NCDCareService {
 						for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
 							tmpObj.setPrescriptionID(prescriptionID);
 							tmpObj.setCreatedBy(createdBy);
+							if(tmpOBJ.has("beneficiaryRegID")  && null != tmpOBJ.get("beneficiaryRegID"))
+								tmpObj.setBeneficiaryRegID(tmpOBJ.get("beneficiaryRegID").getAsLong());
+							if(tmpOBJ.has("benVisitID")  && null != tmpOBJ.get("benVisitID"))
+								tmpObj.setBenVisitID(tmpOBJ.get("benVisitID").getAsLong());
 							Map<String, String> drug =tmpObj.getDrug();
 							if(null != drug && drug.size()>0 && drug.containsKey("drugID") && drug.containsKey("drugDisplayName")){
 								tmpObj.setDrugID(Integer.parseInt(drug.get("drugID")));
@@ -1012,5 +1017,123 @@ public class NCDCareServiceImpl implements NCDCareService {
 		resMap.put("Refer", commonDoctorServiceImpl.getReferralDetails(benRegID, benVisitID));
 
 		return resMap.toString();
+	}
+	
+	@Transactional(rollbackFor = Exception.class)
+	public Long updateNCDCareDoctorData(JsonObject requestOBJ) throws Exception {
+		Long updateSuccessFlag = null;
+		Long prescriptionID = null;
+		Long investigationSuccessFlag = null;
+		Integer findingSuccessFlag = null;
+		Integer diagnosisSuccessFlag = null;
+		Integer prescriptionSuccessFlag = null;
+		Long referSaveSuccessFlag = null;
+
+		String createdBy =null;
+		if (requestOBJ != null) {
+
+			if (requestOBJ.has("findings") && !requestOBJ.get("findings").isJsonNull()) {
+
+				WrapperAncFindings wrapperAncFindings = InputMapper.gson().fromJson(requestOBJ.get("findings"),
+						WrapperAncFindings.class);
+				findingSuccessFlag = commonDoctorServiceImpl.updateDocFindings(wrapperAncFindings);
+				
+			} else {
+				findingSuccessFlag = 1;
+			}
+			
+			//Fetch Benficiary details to check/create prescription existence
+			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull()) {
+				WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
+						.fromJson(requestOBJ.get("investigation"), WrapperBenInvestigationANC.class);
+
+				if (wrapperBenInvestigationANC != null) {
+					prescriptionID = commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
+							wrapperBenInvestigationANC.getBeneficiaryRegID(),
+							wrapperBenInvestigationANC.getBenVisitID(),
+							wrapperBenInvestigationANC.getProviderServiceMapID(),
+							wrapperBenInvestigationANC.getCreatedBy(),
+							wrapperBenInvestigationANC.getExternalInvestigations());
+
+					createdBy = wrapperBenInvestigationANC.getCreatedBy();
+
+					wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
+					investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
+				} 
+			} else {
+				investigationSuccessFlag = new Long(1);
+			}
+			
+			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
+				NCDCareDiagnosis ncdCareDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), NCDCareDiagnosis.class);
+				if(null == prescriptionID){
+					PrescriptionDetail prescriptionDetail = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), PrescriptionDetail.class);
+					prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
+				}
+				diagnosisSuccessFlag = ncdCareDoctorServiceImpl.updateBenNCDCareDiagnosis(ncdCareDiagnosis, prescriptionID);
+			} else{
+				diagnosisSuccessFlag = 1;
+			}
+					
+			if (requestOBJ.has("prescription") && !requestOBJ.get("prescription").isJsonNull()) {
+				JsonObject tmpOBJ = requestOBJ.get("prescription").getAsJsonObject();
+				
+				if (tmpOBJ.has("prescribedDrugs") && !tmpOBJ.get("prescribedDrugs").isJsonNull()) {
+					if(null == prescriptionID){
+						PrescriptionDetail prescriptionDetail = InputMapper.gson()
+								.fromJson(tmpOBJ, PrescriptionDetail.class);
+						prescriptionID = commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
+								prescriptionDetail.getBeneficiaryRegID(),
+								prescriptionDetail.getBenVisitID(),
+								prescriptionDetail.getProviderServiceMapID(),
+								prescriptionDetail.getCreatedBy(),
+								prescriptionDetail.getExternalInvestigation());
+					}
+					PrescribedDrugDetail[] prescribedDrugDetail = InputMapper.gson()
+							.fromJson(tmpOBJ.get("prescribedDrugs"), PrescribedDrugDetail[].class);
+
+					List<PrescribedDrugDetail> prescribedDrugDetailList = Arrays.asList(prescribedDrugDetail);
+
+					if (prescribedDrugDetailList.size() > 0) {
+						for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
+							tmpObj.setPrescriptionID(prescriptionID);
+							tmpObj.setCreatedBy(createdBy);
+							Map<String, String> drug = tmpObj.getDrug();
+							if (null != drug && drug.size() > 0 && drug.containsKey("drugID")
+									&& drug.containsKey("drugDisplayName")) {
+								tmpObj.setDrugID(Integer.parseInt(drug.get("drugID")));
+								tmpObj.setGenericDrugName(drug.get("drugDisplayName"));
+							}
+						}
+						Integer r = commonNurseServiceImpl.saveBenPrescribedDrugsList(prescribedDrugDetailList);
+						if (r > 0 && r != null) {
+							prescriptionSuccessFlag = r;
+						}
+
+					} else {
+						prescriptionSuccessFlag = 1;
+					}
+				}
+			} else {
+				prescriptionSuccessFlag = 1;
+			}
+				
+			if (requestOBJ.has("refer") && !requestOBJ.get("refer").isJsonNull()) {
+				referSaveSuccessFlag = commonDoctorServiceImpl
+						.updateBenReferDetails(requestOBJ.get("refer").getAsJsonObject());
+			} else {
+				referSaveSuccessFlag = new Long(1);
+			}
+			if ((findingSuccessFlag != null && findingSuccessFlag > 0)
+					&& (diagnosisSuccessFlag != null && diagnosisSuccessFlag > 0)
+					&& (investigationSuccessFlag != null && investigationSuccessFlag > 0)
+					&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)
+					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
+				updateSuccessFlag = investigationSuccessFlag;
+			}
+		} else {
+			// request OBJ is null.
+		}
+		return updateSuccessFlag;
 	}
 }

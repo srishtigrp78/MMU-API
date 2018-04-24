@@ -253,7 +253,7 @@ public class ANCServiceImpl implements ANCService {
 			}
 			if (requestOBJ.has("prescription") && !requestOBJ.get("prescription").isJsonNull()) {
 				JsonObject tmpOBJ = requestOBJ.get("prescription").getAsJsonObject();
-				if (tmpOBJ.has("prescribedDrugs") && !tmpOBJ.get("prescribedDrugs").isJsonNull()) {
+				if (null != tmpOBJ && tmpOBJ.has("prescribedDrugs") && !tmpOBJ.get("prescribedDrugs").isJsonNull()) {
 					PrescribedDrugDetail[] prescribedDrugDetail = InputMapper.gson()
 							.fromJson(tmpOBJ.get("prescribedDrugs"), PrescribedDrugDetail[].class);
 
@@ -263,6 +263,10 @@ public class ANCServiceImpl implements ANCService {
 						for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
 							tmpObj.setPrescriptionID(prescriptionID);
 							tmpObj.setCreatedBy(createdBy);
+							if(tmpOBJ.has("beneficiaryRegID")  && null != tmpOBJ.get("beneficiaryRegID"))
+								tmpObj.setBeneficiaryRegID(tmpOBJ.get("beneficiaryRegID").getAsLong());
+							if(tmpOBJ.has("benVisitID")  && null != tmpOBJ.get("benVisitID"))
+								tmpObj.setBenVisitID(tmpOBJ.get("benVisitID").getAsLong());
 							Map<String, String> drug = tmpObj.getDrug();
 							if (null != drug && drug.size() > 0 && drug.containsKey("drugID")
 									&& drug.containsKey("drugDisplayName")) {
@@ -1400,12 +1404,6 @@ public class ANCServiceImpl implements ANCService {
 				findingSuccessFlag = 1;
 			}
 			
-			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
-				diagnosisSuccessFlag = ancDoctorServiceImpl.updateBenANCDiagnosis(requestOBJ.get("diagnosis").getAsJsonObject());
-			} else{
-				diagnosisSuccessFlag = 1;
-			}
-			
 			//Fetch Benficiary details to check/create prescription existence
 			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull()) {
 				WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
@@ -1427,7 +1425,18 @@ public class ANCServiceImpl implements ANCService {
 			} else {
 				investigationSuccessFlag = new Long(1);
 			}
-					
+			
+			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
+				ANCDiagnosis ancDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), ANCDiagnosis.class);
+				if(null == prescriptionID){
+					PrescriptionDetail prescriptionDetail = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), PrescriptionDetail.class);
+					prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
+				}
+				diagnosisSuccessFlag = ancDoctorServiceImpl.updateBenANCDiagnosis(ancDiagnosis, prescriptionID);
+			} else{
+				diagnosisSuccessFlag = 1;
+			}
+			
 			if (requestOBJ.has("prescription") && !requestOBJ.get("prescription").isJsonNull()) {
 				JsonObject tmpOBJ = requestOBJ.get("prescription").getAsJsonObject();
 				

@@ -26,6 +26,14 @@ public class PrescribedDrugDetail {
 	private Long prescribedDrugID;
 
 	@Expose
+	@Column(name = "BeneficiaryRegID")
+	private Long beneficiaryRegID;
+	
+	@Expose
+	@Column(name = "BenVisitID")
+	private Long benVisitID;
+	
+	@Expose
 	@Column(name = "PrescriptionID")
 	private Long prescriptionID;
 
@@ -343,6 +351,22 @@ public class PrescribedDrugDetail {
 
 	public void setReservedForChange(String reservedForChange) {
 		this.reservedForChange = reservedForChange;
+	}
+
+	public Long getBeneficiaryRegID() {
+		return beneficiaryRegID;
+	}
+
+	public void setBeneficiaryRegID(Long beneficiaryRegID) {
+		this.beneficiaryRegID = beneficiaryRegID;
+	}
+
+	public Long getBenVisitID() {
+		return benVisitID;
+	}
+
+	public void setBenVisitID(Long benVisitID) {
+		this.benVisitID = benVisitID;
 	}
 
 	public static ArrayList<PrescribedDrugDetail> getBenPrescribedDrugDetailList(JsonObject emrgCasesheet,

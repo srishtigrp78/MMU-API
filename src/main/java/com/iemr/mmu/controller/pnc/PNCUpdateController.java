@@ -188,4 +188,33 @@ public class PNCUpdateController
 
 		return response.toString();
 	}
+	
+	@CrossOrigin
+	@ApiOperation(value = "update PNC Doctor Data", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/doctorData" }, method = { RequestMethod.POST })
+	public String updatePNCDoctorData( @RequestBody String requestObj) {
+
+		OutputResponse response = new OutputResponse();
+		logger.info("updatePNCDoctorData request:" + requestObj);
+
+		JsonObject jsnOBJ = new JsonObject();
+		JsonParser jsnParser = new JsonParser();
+		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		jsnOBJ = jsnElmnt.getAsJsonObject();
+
+		try {
+			Long result = pncServiceImpl.updatePNCDoctorData(jsnOBJ);
+			if (null != result && result > 0) {
+				response.setResponse("PNC Doctor Data updated successfully.");
+			} else {
+				response.setError(500, "Failed to update PNC Doctor Data");
+			}
+			logger.info("updatePNCDoctorData response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in updatePNCDoctorData :" + e);
+		}
+
+		return response.toString();
+	}
 }

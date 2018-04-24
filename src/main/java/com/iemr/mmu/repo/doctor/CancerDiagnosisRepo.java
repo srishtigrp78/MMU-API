@@ -19,16 +19,35 @@ public interface CancerDiagnosisRepo extends CrudRepository<CancerDiagnosis, Lon
 	public CancerDiagnosis getBenCancerDiagnosisDetails(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 
-	@Query(" SELECT ID, processed  from CancerDiagnosis c  WHERE c.beneficiaryRegID = :benRegID AND c.benVisitID = :benVisitID ")
-	public ArrayList<Object[]> checkDiagonosisDataAvailableForBen(@Param("benRegID") Long benRegID,
+	@Query(" SELECT processed  from CancerDiagnosis c  WHERE c.beneficiaryRegID = :benRegID AND c.benVisitID = :benVisitID AND c.deleted=false")
+	public String getCancerDiagnosisStatuses(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 
 	@Transactional
 	@Modifying
-	@Query(" update CancerDiagnosis set provisionalDiagnosisOncologist=:provisionalDiagnosisOncologist, modifiedBy=:modifiedBy "
-			+ "WHERE beneficiaryRegID = :benRegID AND benVisitID = :benVisitID")
+	@Query(" update CancerDiagnosis set provisionalDiagnosisOncologist=:provisionalDiagnosisOncologist, modifiedBy=:modifiedBy, processed=:processed "
+			+ "WHERE beneficiaryRegID =:benRegID AND benVisitID =:benVisitID")
 	public int updateDetailsByOncologist(@Param("provisionalDiagnosisOncologist") String provisionalDiagnosisOncologist,
-			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID,
-			@Param("modifiedBy") String modifiedBy);
-
+			@Param("benRegID") Long benRegID, 
+			@Param("benVisitID") Long benVisitID,
+			@Param("modifiedBy") String modifiedBy,
+			@Param("processed") String processed);
+	
+	
+	@Transactional
+	@Modifying
+	@Query(" update CancerDiagnosis set provisionalDiagnosisPrimaryDoctor=:provisionalDiagnosisPrimaryDoctor, remarks=:remarks, "
+			+ "referredToInstituteID=:referredToInstituteID, refrredToAdditionalService=:refrredToAdditionalService, "
+			+ "modifiedBy=:modifiedBy, processed=:processed "
+			+ "WHERE beneficiaryRegID =:beneficiaryRegID AND benVisitID =:benVisitID")
+	public int updateCancerDiagnosisDetailsByDoctor(@Param("provisionalDiagnosisPrimaryDoctor") String provisionalDiagnosisPrimaryDoctor,
+			@Param("remarks") String remarks,
+			@Param("referredToInstituteID") Integer referredToInstituteID,
+			@Param("refrredToAdditionalService") String refrredToAdditionalService,
+			@Param("modifiedBy") String modifiedBy,
+			@Param("processed") String processed,
+			@Param("beneficiaryRegID") Long beneficiaryRegID, 
+			@Param("benVisitID") Long benVisitID);
+	
 }
+		
