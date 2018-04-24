@@ -1,0 +1,68 @@
+package com.iemr.mmu.controller.labtechnician;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.iemr.mmu.service.labtechnician.LabTechnicianServiceImpl;
+import com.iemr.mmu.utils.response.OutputResponse;
+
+import io.swagger.annotations.ApiOperation;
+
+/***
+ * 
+ * @author NE298657
+ *
+ */
+
+@RestController
+@CrossOrigin
+@RequestMapping(value = "/labTechnician", headers = "Authorization")
+public class LabtechnicianFetchController {
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+
+	private LabTechnicianServiceImpl labTechnicianServiceImpl;
+
+	@Autowired
+	public void setLabTechnicianServiceImpl(LabTechnicianServiceImpl labTechnicianServiceImpl) {
+		this.labTechnicianServiceImpl = labTechnicianServiceImpl;
+	}
+
+	@CrossOrigin
+	@ApiOperation(value = "getBeneficiaryPrescribedProcedure..", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/get/prescribedProceduresList" }, method = { RequestMethod.POST })
+	public String getBeneficiaryPrescribedProcedure(@RequestBody String requestOBJ) {
+		OutputResponse response = new OutputResponse();
+		try {
+			logger.info("get request for ben prescribed test " + requestOBJ);
+			JsonObject jsnOBJ = new JsonObject();
+			JsonParser jsnParser = new JsonParser();
+			JsonElement jsnElmnt = jsnParser.parse(requestOBJ);
+			jsnOBJ = jsnElmnt.getAsJsonObject();
+
+			if (jsnOBJ != null && !jsnOBJ.isJsonNull() && jsnOBJ.has("beneficiaryRegID") && jsnOBJ.has("benVisitID")) {
+
+				String s = labTechnicianServiceImpl.getBenePrescribedProcedureDetails(
+						jsnOBJ.get("beneficiaryRegID").getAsLong(), jsnOBJ.get("benVisitID").getAsLong());
+				if (s != null)
+					response.setResponse(s);
+				else
+					response.setError(5000, "Error in prescribed procedure details");
+			} else {
+				response.setError(5000, "Invalid request");
+			}
+		} catch (Exception e) {
+			logger.error("Exception in beneficiary prescribed procedure fetching" + e);
+			response.setError(e);
+		}
+		return response.toString();
+	}
+}
