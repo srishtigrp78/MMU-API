@@ -19,4 +19,6 @@ public interface QuickConsultationService {
 	public Integer quickConsultNurseDataInsert(JsonObject jsnOBJ) throws Exception;
 
 	public Integer quickConsultDoctorDataInsert(JsonObject quickConsultDoctorOBJ) throws Exception;
+
+	Integer updateBeneficiaryClinicalObservations(JsonObject caseSheet) throws Exception;
 }

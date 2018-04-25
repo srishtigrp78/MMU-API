@@ -426,6 +426,12 @@ public class PrescribedDrugDetail {
 
 				if (emrgCasesheet.has("createdBy") && !emrgCasesheet.get("createdBy").isJsonNull())
 					prescribedDrugDetail.setCreatedBy(emrgCasesheet.get("createdBy").getAsString());
+				
+				if (emrgCasesheet.has("beneficiaryRegID") && !emrgCasesheet.get("beneficiaryRegID").isJsonNull())
+					prescribedDrugDetail.setBeneficiaryRegID(emrgCasesheet.get("beneficiaryRegID").getAsLong());
+				
+				if (emrgCasesheet.has("benVisitID") && !emrgCasesheet.get("benVisitID").isJsonNull())
+					prescribedDrugDetail.setBenVisitID(emrgCasesheet.get("benVisitID").getAsLong());
 
 				resArray.add(prescribedDrugDetail);
 			}

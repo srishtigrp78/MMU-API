@@ -1381,6 +1381,13 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 						prescriptionDetail = InputMapper.gson().fromJson(requestOBJ.get("investigation"),
 								PrescriptionDetail.class);
 					}
+					if (diagnosisSuccessFlag == 1) {
+						PrescriptionDetail latestPrescription = commonDoctorServiceImpl.getLatestPrescription(
+								wrapperBenInvestigationANC.getBeneficiaryRegID(),
+								wrapperBenInvestigationANC.getBenVisitID());
+						prescriptionDetail.setDiagnosisProvided(latestPrescription.getDiagnosisProvided());
+						prescriptionDetail.setInstruction(latestPrescription.getInstruction());
+					}
 					prescriptionDetail.setExternalInvestigation(wrapperBenInvestigationANC.getExternalInvestigations());
 					prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
 
@@ -1396,10 +1403,24 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 			if (requestOBJ.has("prescription") && !requestOBJ.get("prescription").isJsonNull()) {
 				JsonObject tmpOBJ = requestOBJ.get("prescription").getAsJsonObject();
 
+				Long beneficiaryRegID = null;
+				Long benVisitID = null;
+
+				if (tmpOBJ.has("beneficiaryRegID") && null != tmpOBJ.get("beneficiaryRegID"))
+					beneficiaryRegID = tmpOBJ.get("beneficiaryRegID").getAsLong();
+				if (tmpOBJ.has("benVisitID") && null != tmpOBJ.get("benVisitID"))
+					benVisitID = tmpOBJ.get("benVisitID").getAsLong();
+
 				if (tmpOBJ.has("prescribedDrugs") && !tmpOBJ.get("prescribedDrugs").isJsonNull()) {
 					if (null == prescriptionID) {
 						if (null == prescriptionDetail) {
 							prescriptionDetail = InputMapper.gson().fromJson(tmpOBJ, PrescriptionDetail.class);
+						}
+						if (diagnosisSuccessFlag == 1) {
+							PrescriptionDetail latestPrescription = commonDoctorServiceImpl
+									.getLatestPrescription(beneficiaryRegID, benVisitID);
+							prescriptionDetail.setDiagnosisProvided(latestPrescription.getDiagnosisProvided());
+							prescriptionDetail.setInstruction(latestPrescription.getInstruction());
 						}
 						prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
 					}
@@ -1412,6 +1433,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 						for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
 							tmpObj.setPrescriptionID(prescriptionID);
 							tmpObj.setCreatedBy(createdBy);
+							tmpObj.setBeneficiaryRegID(beneficiaryRegID);
+							tmpObj.setBenVisitID(benVisitID);
 							Map<String, String> drug = tmpObj.getDrug();
 							if (null != drug && drug.size() > 0 && drug.containsKey("drugID")
 									&& drug.containsKey("drugDisplayName")) {

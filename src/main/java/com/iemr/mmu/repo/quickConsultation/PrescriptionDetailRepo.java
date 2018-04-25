@@ -17,7 +17,7 @@ import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 public interface PrescriptionDetailRepo extends CrudRepository<PrescriptionDetail, Long>{
 
 	@Query(" SELECT prescriptionID, beneficiaryRegID, benVisitID, providerServiceMapID, diagnosisProvided, instruction, externalInvestigation "
-			+ "from PrescriptionDetail ba WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID AND ba.deleted = false order by createdDate desc")
+			+ "from PrescriptionDetail ba WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID AND ba.deleted = false")
 	public ArrayList<Object[]> getBenPrescription(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 	

@@ -349,6 +349,13 @@ public class CommonDoctorServiceImpl {
 
 		return new Gson().toJson(prescriptionData);
 	}
+	
+	public PrescriptionDetail getLatestPrescription(Long beneficiaryRegID, Long benVisitID){
+		ArrayList<Object[]> prescriptions = prescriptionDetailRepo.getBenPrescription(beneficiaryRegID, benVisitID);
+
+		PrescriptionDetail prescriptionData = PrescriptionDetail.getPrescriptions(prescriptions);
+		return prescriptionData;
+	}
 
 	public String getReferralDetails(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> resList = benReferDetailsRepo.getBenReferDetails(beneficiaryRegID, benVisitID);
