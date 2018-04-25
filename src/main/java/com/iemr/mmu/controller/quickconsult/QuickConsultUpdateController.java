@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.iemr.mmu.data.quickConsultation.WrapperQuickConsultation;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
+import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
@@ -50,7 +52,12 @@ public class QuickConsultUpdateController {
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
-			Long result = quickConsultationServiceImpl.updateGeneralOPDQCDoctorData(jsnOBJ);
+			WrapperQuickConsultation wrapperQuickConsultation = InputMapper.gson().fromJson(requestObj,
+					WrapperQuickConsultation.class);
+
+			JsonObject quickConsultDoctorOBJ = wrapperQuickConsultation.getQuickConsultation();
+			
+			Long result = quickConsultationServiceImpl.updateGeneralOPDQCDoctorData(quickConsultDoctorOBJ);
 			if (null != result && result > 0) {
 				response.setResponse("GeneralOPD(QC) Doctor Data updated successfully.");
 			} else {
