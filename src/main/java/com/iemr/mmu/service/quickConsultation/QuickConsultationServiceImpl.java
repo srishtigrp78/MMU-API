@@ -316,42 +316,63 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 			Long tmpBeneficiaryID = quickConsultDoctorOBJ.get("beneficiaryID").getAsLong();
 			Long tmpBenVisitID = quickConsultDoctorOBJ.get("benVisitID").getAsLong();
 			Long tmpbeneficiaryRegID = quickConsultDoctorOBJ.get("beneficiaryRegID").getAsLong();
-
-			if (testList != null && !testList.isJsonNull() && testList.size() > 0 && drugList != null
-					&& !drugList.isJsonNull() && drugList.size() > 0) {
-				if (drugList.get(0) != null && !drugList.get(0).isJsonNull()) {
-					JsonObject firstDrugDetails = drugList.get(0).getAsJsonObject();
-					if (firstDrugDetails.get("drug") == null || firstDrugDetails.get("drug").isJsonNull()) {
-						// drug not prescribed
-						pharmaFalg = (short) 0;
-					} else {
-						pharmaFalg = (short) 1;
-					}
-
-				} else {
-					pharmaFalg = (short) 0;
-				}
-
+			
+			// new logic on 25-04-2018
+			if (testList != null && !testList.isJsonNull() && testList.size() > 0) {
 				docFlag = (short) 2;
-
 			} else {
-				// either lab or drug or both no prescribed
-				if (drugList.get(0) != null && !drugList.get(0).isJsonNull()) {
-					JsonObject firstDrugDetails = drugList.get(0).getAsJsonObject();
-					if (firstDrugDetails.get("drug") == null || firstDrugDetails.get("drug").isJsonNull()) {
-						// drug not prescribed
-						pharmaFalg = (short) 0;
-					} else {
-						pharmaFalg = (short) 1;
-					}
-
-				} else {
-					pharmaFalg = (short) 0;
-				}
-
 				docFlag = (short) 9;
 
 			}
+
+			if (drugList != null && !drugList.isJsonNull() && drugList.size() > 0) {
+				JsonObject firstDrugDetails = drugList.get(0).getAsJsonObject();
+				if (firstDrugDetails.get("drug") == null || firstDrugDetails.get("drug").isJsonNull())
+					pharmaFalg = (short) 0;
+				else
+					pharmaFalg = (short) 1;
+			} else {
+				pharmaFalg = (short) 0;
+			}
+
+			// if (testList != null && !testList.isJsonNull() && testList.size()
+			// > 0 && drugList != null
+			// && !drugList.isJsonNull() && drugList.size() > 0) {
+			// if (drugList.get(0) != null && !drugList.get(0).isJsonNull()) {
+			// JsonObject firstDrugDetails = drugList.get(0).getAsJsonObject();
+			// if (firstDrugDetails.get("drug") == null ||
+			// firstDrugDetails.get("drug").isJsonNull()) {
+			// // drug not prescribed
+			// pharmaFalg = (short) 0;
+			// } else {
+			// pharmaFalg = (short) 1;
+			// }
+			//
+			// } else {
+			// pharmaFalg = (short) 0;
+			// }
+			//
+			// docFlag = (short) 2;
+			//
+			// } else {
+			// // either lab or drug or both no prescribed
+			// if (drugList.get(0) != null && !drugList.get(0).isJsonNull()) {
+			// JsonObject firstDrugDetails = drugList.get(0).getAsJsonObject();
+			// if (firstDrugDetails.get("drug") == null ||
+			// firstDrugDetails.get("drug").isJsonNull()) {
+			// // drug not prescribed
+			// pharmaFalg = (short) 0;
+			// } else {
+			// pharmaFalg = (short) 1;
+			// }
+			//
+			// } else {
+			// pharmaFalg = (short) 0;
+			// }
+			//
+			// docFlag = (short) 9;
+			//
+			// }
 
 			int l = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
 					tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);

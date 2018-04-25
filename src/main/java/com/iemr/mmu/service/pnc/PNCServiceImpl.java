@@ -61,7 +61,7 @@ public class PNCServiceImpl implements PNCService {
 	public void setPncDoctorServiceImpl(PNCDoctorServiceImpl pncDoctorServiceImpl) {
 		this.pncDoctorServiceImpl = pncDoctorServiceImpl;
 	}
-	
+
 	@Autowired
 	public void setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl) {
 		this.commonBenStatusFlowServiceImpl = commonBenStatusFlowServiceImpl;
@@ -176,7 +176,7 @@ public class PNCServiceImpl implements PNCService {
 		Long bvID = null;
 
 		if (requestOBJ != null) {
-			
+
 			JsonArray testList = null;
 			JsonArray drugList = null;
 			if (requestOBJ.has("investigation")) {
@@ -185,11 +185,12 @@ public class PNCServiceImpl implements PNCService {
 			if (requestOBJ.has("prescription")) {
 				drugList = requestOBJ.getAsJsonObject("prescription").getAsJsonArray("prescribedDrugs");
 			}
-			
-			
+
 			if (requestOBJ.has("findings") && !requestOBJ.get("findings").isJsonNull()) {
-				//findingSuccessFlag = commonDoctorServiceImpl.saveFindings(requestOBJ.get("findings").getAsJsonObject());
-				WrapperAncFindings wrapperAncFindings = InputMapper.gson().fromJson(requestOBJ.get("findings"), WrapperAncFindings.class);
+				// findingSuccessFlag =
+				// commonDoctorServiceImpl.saveFindings(requestOBJ.get("findings").getAsJsonObject());
+				WrapperAncFindings wrapperAncFindings = InputMapper.gson().fromJson(requestOBJ.get("findings"),
+						WrapperAncFindings.class);
 				findingSuccessFlag = commonDoctorServiceImpl.saveDocFindings(wrapperAncFindings);
 				// findingSuccessFlag =
 				// ancDoctorServiceImpl.savePNCFindings(requestOBJ.get("findings").getAsJsonObject());
@@ -217,7 +218,7 @@ public class PNCServiceImpl implements PNCService {
 				}
 			} else {
 			}
-			
+
 			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
 				diagnosisSuccessFlag = pncDoctorServiceImpl
 						.saveBenPNCDiagnosis(requestOBJ.get("diagnosis").getAsJsonObject(), prescriptionID);
@@ -235,12 +236,13 @@ public class PNCServiceImpl implements PNCService {
 						for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
 							tmpObj.setPrescriptionID(prescriptionID);
 							tmpObj.setCreatedBy(createdBy);
-							if(tmpOBJ.has("beneficiaryRegID")  && null != tmpOBJ.get("beneficiaryRegID"))
+							if (tmpOBJ.has("beneficiaryRegID") && null != tmpOBJ.get("beneficiaryRegID"))
 								tmpObj.setBeneficiaryRegID(tmpOBJ.get("beneficiaryRegID").getAsLong());
-							if(tmpOBJ.has("benVisitID")  && null != tmpOBJ.get("benVisitID"))
+							if (tmpOBJ.has("benVisitID") && null != tmpOBJ.get("benVisitID"))
 								tmpObj.setBenVisitID(tmpOBJ.get("benVisitID").getAsLong());
-							Map<String, String> drug =tmpObj.getDrug();
-							if(null != drug && drug.size()>0 && drug.containsKey("drugID") && drug.containsKey("drugDisplayName")){
+							Map<String, String> drug = tmpObj.getDrug();
+							if (null != drug && drug.size() > 0 && drug.containsKey("drugID")
+									&& drug.containsKey("drugDisplayName")) {
 								tmpObj.setDrugID(Integer.parseInt(drug.get("drugID")));
 								tmpObj.setGenericDrugName(drug.get("drugDisplayName"));
 							}
@@ -269,7 +271,6 @@ public class PNCServiceImpl implements PNCService {
 					&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
 
-				
 				// New code for ben fow logic
 				short pharmaFalg;
 				short docFlag;
@@ -280,52 +281,76 @@ public class PNCServiceImpl implements PNCService {
 				Long tmpBenVisitID = requestOBJ.getAsJsonObject("diagnosis").get("benVisitID").getAsLong();
 				Long tmpbeneficiaryRegID = requestOBJ.getAsJsonObject("diagnosis").get("beneficiaryRegID").getAsLong();
 
-				if (testList != null && !testList.isJsonNull() && testList.size() > 0 && drugList != null
-						&& !drugList.isJsonNull() && drugList.size() > 0) {
-					if (drugList.get(0) != null && !drugList.get(0).isJsonNull()) {
-						JsonObject firstDrugDetails = drugList.get(0).getAsJsonObject();
-						if (firstDrugDetails.get("drug") == null || firstDrugDetails.get("drug").isJsonNull()) {
-							// drug not prescribed
-							pharmaFalg = (short) 0;
-						} else {
-							pharmaFalg = (short) 1;
-						}
-
-					} else {
-						pharmaFalg = (short) 0;
-					}
-
+				// new logic on 25-04-2018
+				if (testList != null && !testList.isJsonNull() && testList.size() > 0) {
 					docFlag = (short) 2;
-
 				} else {
-					// either lab or drug or both no prescribed
-					if (drugList.get(0) != null && !drugList.get(0).isJsonNull()) {
-						JsonObject firstDrugDetails = drugList.get(0).getAsJsonObject();
-						if (firstDrugDetails.get("drug") == null || firstDrugDetails.get("drug").isJsonNull()) {
-							// drug not prescribed
-							pharmaFalg = (short) 0;
-						} else {
-							pharmaFalg = (short) 1;
-						}
-
-					} else {
-						pharmaFalg = (short) 0;
-					}
-
 					docFlag = (short) 9;
 
 				}
+
+				if (drugList != null && !drugList.isJsonNull() && drugList.size() > 0) {
+					JsonObject firstDrugDetails = drugList.get(0).getAsJsonObject();
+					if (firstDrugDetails.get("drug") == null || firstDrugDetails.get("drug").isJsonNull())
+						pharmaFalg = (short) 0;
+					else
+						pharmaFalg = (short) 1;
+				} else {
+					pharmaFalg = (short) 0;
+				}
+
+				// if (testList != null && !testList.isJsonNull() &&
+				// testList.size() > 0 && drugList != null
+				// && !drugList.isJsonNull() && drugList.size() > 0) {
+				// if (drugList.get(0) != null && !drugList.get(0).isJsonNull())
+				// {
+				// JsonObject firstDrugDetails =
+				// drugList.get(0).getAsJsonObject();
+				// if (firstDrugDetails.get("drug") == null ||
+				// firstDrugDetails.get("drug").isJsonNull()) {
+				// // drug not prescribed
+				// pharmaFalg = (short) 0;
+				// } else {
+				// pharmaFalg = (short) 1;
+				// }
+				//
+				// } else {
+				// pharmaFalg = (short) 0;
+				// }
+				//
+				// docFlag = (short) 2;
+				//
+				// } else {
+				// // either lab or drug or both no prescribed
+				// if (drugList.get(0) != null && !drugList.get(0).isJsonNull())
+				// {
+				// JsonObject firstDrugDetails =
+				// drugList.get(0).getAsJsonObject();
+				// if (firstDrugDetails.get("drug") == null ||
+				// firstDrugDetails.get("drug").isJsonNull()) {
+				// // drug not prescribed
+				// pharmaFalg = (short) 0;
+				// } else {
+				// pharmaFalg = (short) 1;
+				// }
+				//
+				// } else {
+				// pharmaFalg = (short) 0;
+				// }
+				//
+				// docFlag = (short) 9;
+				//
+				// }
 
 				int l = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
 						tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
 
 				// End of new code
-				
-				
+
 				// String s =
 				// commonNurseServiceImpl.updateBenVisitStatusFlag(bvID, "D");
 				// if (s != null && s.length() > 0)
-					saveSuccessFlag = investigationSuccessFlag;
+				saveSuccessFlag = investigationSuccessFlag;
 			}
 		} else {
 			// request OBJ is null.
@@ -1248,23 +1273,23 @@ public class PNCServiceImpl implements PNCService {
 
 		return pncSuccessFlag;
 	}
-	
+
 	public String getBenCaseRecordFromDoctorPNC(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
 
 		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, benVisitID));
-		
+
 		resMap.put("diagnosis", pncDoctorServiceImpl.getPNCDiagnosisDetails(benRegID, benVisitID));
 
 		resMap.put("investigation", commonDoctorServiceImpl.getInvestigationDetails(benRegID, benVisitID));
-		
+
 		resMap.put("prescription", commonDoctorServiceImpl.getPrescribedDrugs(benRegID, benVisitID));
 
 		resMap.put("Refer", commonDoctorServiceImpl.getReferralDetails(benRegID, benVisitID));
 
 		return resMap.toString();
 	}
-	
+
 	@Transactional(rollbackFor = Exception.class)
 	public Long updatePNCDoctorData(JsonObject requestOBJ) throws Exception {
 		Long updateSuccessFlag = null;
@@ -1275,7 +1300,7 @@ public class PNCServiceImpl implements PNCService {
 		Integer prescriptionSuccessFlag = null;
 		Long referSaveSuccessFlag = null;
 
-		String createdBy =null;
+		String createdBy = null;
 		if (requestOBJ != null) {
 
 			if (requestOBJ.has("findings") && !requestOBJ.get("findings").isJsonNull()) {
@@ -1283,12 +1308,12 @@ public class PNCServiceImpl implements PNCService {
 				WrapperAncFindings wrapperAncFindings = InputMapper.gson().fromJson(requestOBJ.get("findings"),
 						WrapperAncFindings.class);
 				findingSuccessFlag = commonDoctorServiceImpl.updateDocFindings(wrapperAncFindings);
-				
+
 			} else {
 				findingSuccessFlag = 1;
 			}
-			
-			//Fetch Benficiary details to check/create prescription existence
+
+			// Fetch Benficiary details to check/create prescription existence
 			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull()) {
 				WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
 						.fromJson(requestOBJ.get("investigation"), WrapperBenInvestigationANC.class);
@@ -1305,34 +1330,34 @@ public class PNCServiceImpl implements PNCService {
 
 					wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
 					investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
-				} 
+				}
 			} else {
 				investigationSuccessFlag = new Long(1);
 			}
-				
+
 			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
-				PNCDiagnosis pncDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), PNCDiagnosis.class);
-				if(null == prescriptionID){
-					PrescriptionDetail prescriptionDetail = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), PrescriptionDetail.class);
+				PNCDiagnosis pncDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
+						PNCDiagnosis.class);
+				if (null == prescriptionID) {
+					PrescriptionDetail prescriptionDetail = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
+							PrescriptionDetail.class);
 					prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
 				}
 				diagnosisSuccessFlag = pncDoctorServiceImpl.updateBenPNCDiagnosis(pncDiagnosis, prescriptionID);
-			} else{
+			} else {
 				diagnosisSuccessFlag = 1;
 			}
-			
+
 			if (requestOBJ.has("prescription") && !requestOBJ.get("prescription").isJsonNull()) {
 				JsonObject tmpOBJ = requestOBJ.get("prescription").getAsJsonObject();
-				
+
 				if (tmpOBJ.has("prescribedDrugs") && !tmpOBJ.get("prescribedDrugs").isJsonNull()) {
-					if(null == prescriptionID){
-						PrescriptionDetail prescriptionDetail = InputMapper.gson()
-								.fromJson(tmpOBJ, PrescriptionDetail.class);
+					if (null == prescriptionID) {
+						PrescriptionDetail prescriptionDetail = InputMapper.gson().fromJson(tmpOBJ,
+								PrescriptionDetail.class);
 						prescriptionID = commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
-								prescriptionDetail.getBeneficiaryRegID(),
-								prescriptionDetail.getBenVisitID(),
-								prescriptionDetail.getProviderServiceMapID(),
-								prescriptionDetail.getCreatedBy(),
+								prescriptionDetail.getBeneficiaryRegID(), prescriptionDetail.getBenVisitID(),
+								prescriptionDetail.getProviderServiceMapID(), prescriptionDetail.getCreatedBy(),
 								prescriptionDetail.getExternalInvestigation());
 					}
 					PrescribedDrugDetail[] prescribedDrugDetail = InputMapper.gson()
@@ -1363,7 +1388,7 @@ public class PNCServiceImpl implements PNCService {
 			} else {
 				prescriptionSuccessFlag = 1;
 			}
-				
+
 			if (requestOBJ.has("refer") && !requestOBJ.get("refer").isJsonNull()) {
 				referSaveSuccessFlag = commonDoctorServiceImpl
 						.updateBenReferDetails(requestOBJ.get("refer").getAsJsonObject());
