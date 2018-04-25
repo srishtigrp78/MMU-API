@@ -745,8 +745,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
 
 				if (wrapperBenInvestigationANC != null) {
-					createdBy = wrapperBenInvestigationANC.getCreatedBy();
-					bvID = wrapperBenInvestigationANC.getBenVisitID();
+					// createdBy = wrapperBenInvestigationANC.getCreatedBy();
+					// bvID = wrapperBenInvestigationANC.getBenVisitID();
 
 					wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
 					investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
@@ -766,7 +766,9 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					if (prescribedDrugDetailList.size() > 0) {
 						for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
 							tmpObj.setPrescriptionID(prescriptionID);
-							tmpObj.setCreatedBy(createdBy);
+							// tmpObj.setCreatedBy(createdBy);
+							if (tmpOBJ.has("createdBy") && null != tmpOBJ.get("createdBy"))
+								tmpObj.setCreatedBy(tmpOBJ.get("createdBy").getAsString());
 							if (tmpOBJ.has("beneficiaryRegID") && null != tmpOBJ.get("beneficiaryRegID"))
 								tmpObj.setBeneficiaryRegID(tmpOBJ.get("beneficiaryRegID").getAsLong());
 							if (tmpOBJ.has("benVisitID") && null != tmpOBJ.get("benVisitID"))
@@ -786,8 +788,11 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					} else {
 						prescriptionSuccessFlag = 1;
 					}
+				} else {
+					prescriptionSuccessFlag = 1;
 				}
 			} else {
+				prescriptionSuccessFlag = 1;
 			}
 
 			if (requestOBJ.has("refer") && !requestOBJ.get("refer").isJsonNull()) {

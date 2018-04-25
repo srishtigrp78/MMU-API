@@ -3,7 +3,6 @@ package com.iemr.mmu.data.anc;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -141,9 +140,9 @@ public class BenMedHistory {
 
 	@Transient
 	private Date captureDate;
-	
-	public BenMedHistory(Date createdDate, String illnessType, String otherIllnessType, Date yearOfIllnessTmp, String surgeryType,
-			String otherSurgeryType, Date yearOfSurgeryTmp) {
+
+	public BenMedHistory(Date createdDate, String illnessType, String otherIllnessType, Date yearOfIllnessTmp,
+			String surgeryType, String otherSurgeryType, Date yearOfSurgeryTmp) {
 		this.captureDate = createdDate;
 		this.Illness_Type = illnessType;
 		this.Other_Illness_Type = otherIllnessType;
@@ -456,7 +455,8 @@ public class BenMedHistory {
 				benMedHistory
 						.setYearofSurgery(Utility.convertToDateFormat(surgeryTimePeriodUnit, surgeryTimePeriodAgo));
 			}
-			medHistoryList.add(benMedHistory);
+			if (benMedHistory.getIllnessTypeID() != null || benMedHistory.getSurgeryID() != null)
+				medHistoryList.add(benMedHistory);
 		}
 
 		return medHistoryList;
@@ -478,37 +478,37 @@ public class BenMedHistory {
 
 				Map<String, Object> illness = new HashMap<String, Object>();
 				Map<String, Object> timePeriod = null;
-				if(null != benMedHistory.getIllnessTypeID() && benMedHistory.getIllnessTypeID()>0){
+				if (null != benMedHistory.getIllnessTypeID() && benMedHistory.getIllnessTypeID() > 0) {
 					illness.put("illnessTypeID", benMedHistory.getIllnessTypeID());
 					illness.put("illnessType", benMedHistory.getIllnessType());
 					illness.put("otherIllnessType", benMedHistory.getOtherIllnessType());
-	
+
 					timePeriod = Utility.convertTimeToWords(benMedHistory.getYearofIllness(),
 							benMedHistory.getCreatedDate());
-	
+
 					illness.put("timePeriodAgo", timePeriod.get("timePeriodAgo"));
 					illness.put("timePeriodUnit", timePeriod.get("timePeriodUnit"));
 					pastIllness.add(illness);
 				}
 
-				if(null != benMedHistory.getSurgeryID() && benMedHistory.getSurgeryID()>0){
+				if (null != benMedHistory.getSurgeryID() && benMedHistory.getSurgeryID() > 0) {
 					Map<String, Object> surgery = new HashMap<String, Object>();
-	
+
 					surgery.put("surgeryID", benMedHistory.getSurgeryID());
 					surgery.put("surgeryType", benMedHistory.getSurgeryType());
 					surgery.put("otherSurgeryType", benMedHistory.getOtherSurgeryType());
-	
+
 					timePeriod = Utility.convertTimeToWords(benMedHistory.getYearofSurgery(),
 							benMedHistory.getCreatedDate());
-	
+
 					surgery.put("timePeriodAgo", timePeriod.get("timePeriodAgo"));
 					surgery.put("timePeriodUnit", timePeriod.get("timePeriodUnit"));
-	
+
 					pastSurgery.add(surgery);
 				}
 			}
-				benHistory.setPastIllness(pastIllness);
-				benHistory.setPastSurgery(pastSurgery);
+			benHistory.setPastIllness(pastIllness);
+			benHistory.setPastSurgery(pastSurgery);
 		}
 		return benHistory;
 

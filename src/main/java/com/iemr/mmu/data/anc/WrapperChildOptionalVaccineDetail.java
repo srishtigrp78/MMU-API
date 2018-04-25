@@ -37,25 +37,34 @@ public class WrapperChildOptionalVaccineDetail {
 	}
 
 	public ArrayList<ChildOptionalVaccineDetail> getChildOptionalVaccineDetails() {
+
+		ArrayList<ChildOptionalVaccineDetail> childOptionalVaccineListTMP = new ArrayList<>();
 		if (null != childOptionalVaccineList && childOptionalVaccineList.size() > 0) {
 			for (ChildOptionalVaccineDetail childOptionalVaccine : childOptionalVaccineList) {
 
-				childOptionalVaccine.setBeneficiaryRegID(beneficiaryRegID);
-				childOptionalVaccine.setBenVisitID(benVisitID);
-				childOptionalVaccine.setProviderServiceMapID(providerServiceMapID);
-				childOptionalVaccine.setCreatedBy(createdBy);
-			}
-		} else {
-			ChildOptionalVaccineDetail childOptionalVaccine = new ChildOptionalVaccineDetail();
-			childOptionalVaccine.setBeneficiaryRegID(beneficiaryRegID);
-			childOptionalVaccine.setBenVisitID(benVisitID);
-			childOptionalVaccine.setProviderServiceMapID(providerServiceMapID);
-			childOptionalVaccine.setCreatedBy(createdBy);
+				if (childOptionalVaccine.getVaccineName() != null) {
+					childOptionalVaccine.setBeneficiaryRegID(beneficiaryRegID);
+					childOptionalVaccine.setBenVisitID(benVisitID);
+					childOptionalVaccine.setProviderServiceMapID(providerServiceMapID);
+					childOptionalVaccine.setCreatedBy(createdBy);
 
-			childOptionalVaccineList = new ArrayList<ChildOptionalVaccineDetail>();
-			childOptionalVaccineList.add(childOptionalVaccine);
+					childOptionalVaccineListTMP.add(childOptionalVaccine);
+				}
+			}
 		}
-		return childOptionalVaccineList;
+		// else {
+		// ChildOptionalVaccineDetail childOptionalVaccine = new
+		// ChildOptionalVaccineDetail();
+		// childOptionalVaccine.setBeneficiaryRegID(beneficiaryRegID);
+		// childOptionalVaccine.setBenVisitID(benVisitID);
+		// childOptionalVaccine.setProviderServiceMapID(providerServiceMapID);
+		// childOptionalVaccine.setCreatedBy(createdBy);
+		//
+		// childOptionalVaccineList = new
+		// ArrayList<ChildOptionalVaccineDetail>();
+		// childOptionalVaccineList.add(childOptionalVaccine);
+		// }
+		return childOptionalVaccineListTMP;
 	}
 
 	public static WrapperChildOptionalVaccineDetail getChildOptionalVaccineDetail(

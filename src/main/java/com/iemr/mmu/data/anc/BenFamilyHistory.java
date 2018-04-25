@@ -32,15 +32,15 @@ public class BenFamilyHistory {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "FamilyMember")
 	private String familyMember;
-	
+
 	@Expose
 	@Column(name = "DiseaseTypeID")
 	private Short diseaseTypeID;
@@ -48,19 +48,19 @@ public class BenFamilyHistory {
 	@Expose
 	@Column(name = "DiseaseType")
 	private String diseaseType;
-	
+
 	@Expose
 	@Column(name = "OtherDiseaseType")
 	private String otherDiseaseType;
-	
+
 	@Expose
 	@Column(name = "IsGeneticDisorder")
 	private Boolean isGeneticDisorder;
-	
+
 	@Expose
 	@Column(name = "GeneticDisorder")
 	private String geneticDisorder;
-	
+
 	@Expose
 	@Column(name = "IsConsanguineousMarrige")
 	private Boolean isConsanguineousMarrige;
@@ -92,34 +92,34 @@ public class BenFamilyHistory {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	@Transient
 	@Expose
-	private List<Map<String,Object>> familyDiseaseList;
+	private List<Map<String, Object>> familyDiseaseList;
 
 	@Transient
 	private Date captureDate;
-	
+
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
@@ -232,18 +232,18 @@ public class BenFamilyHistory {
 		this.lastModDate = lastModDate;
 	}
 
-	public List<Map<String,Object>> getFamilyDiseaseList() {
+	public List<Map<String, Object>> getFamilyDiseaseList() {
 		return familyDiseaseList;
 	}
 
-	public void setFamilyDiseaseList(List<Map<String,Object>> familyDiseaseList) {
+	public void setFamilyDiseaseList(List<Map<String, Object>> familyDiseaseList) {
 		this.familyDiseaseList = familyDiseaseList;
 	}
 
 	public Long getID() {
 		return ID;
 	}
-	
+
 	public Short getDiseaseTypeID() {
 		return diseaseTypeID;
 	}
@@ -259,7 +259,7 @@ public class BenFamilyHistory {
 	public void setOtherDiseaseType(String otherDiseaseType) {
 		this.otherDiseaseType = otherDiseaseType;
 	}
-	
+
 	public Long getVanSerialNo() {
 		return vanSerialNo;
 	}
@@ -325,48 +325,49 @@ public class BenFamilyHistory {
 		this.isConsanguineousMarrige = isConsanguineousMarrige;
 	}
 
-	public ArrayList<BenFamilyHistory> getBenFamilyHistory(){
-		
-			ArrayList<BenFamilyHistory> benFamilyHistoryList=new ArrayList<BenFamilyHistory>();
-			if(null != familyDiseaseList){
-				for(Map<String,Object> disease: familyDiseaseList){
-					BenFamilyHistory benFamilyHistory = new BenFamilyHistory();
-					benFamilyHistory.setBeneficiaryRegID(beneficiaryRegID);
-					benFamilyHistory.setBenVisitID(benVisitID);
-					benFamilyHistory.setProviderServiceMapID(providerServiceMapID);
-					benFamilyHistory.setCreatedBy(createdBy);
-								
-					benFamilyHistory.setGeneticDisorder(geneticDisorder);
-					benFamilyHistory.setIsGeneticDisorder(isGeneticDisorder);
-					benFamilyHistory.setIsConsanguineousMarrige(isConsanguineousMarrige);
-					
-					if(null != disease.get("diseaseTypeID")){
-						benFamilyHistory.setDiseaseTypeID(new Short(disease.get("diseaseTypeID").toString()));
-					}
-					if(null != disease.get("diseaseType")){
-						benFamilyHistory.setDiseaseType(disease.get("diseaseType").toString());
-					}
-					
-					if(null != disease.get("otherDiseaseType")){
-						benFamilyHistory.setOtherDiseaseType(disease.get("otherDiseaseType").toString());
-					}
-					
-					List<String> familyMemberList = (List<String>) disease.get("familyMembers");
-					
-					String familyMembers = "";
-					if(null != familyMemberList){
-						for(String familyMember: familyMemberList){
-							familyMembers += familyMember +",";
-						}	
-					}
-					benFamilyHistory.setFamilyMember(familyMembers);
-					benFamilyHistoryList.add(benFamilyHistory);
+	public ArrayList<BenFamilyHistory> getBenFamilyHistory() {
+
+		ArrayList<BenFamilyHistory> benFamilyHistoryList = new ArrayList<BenFamilyHistory>();
+		if (null != familyDiseaseList) {
+			for (Map<String, Object> disease : familyDiseaseList) {
+				BenFamilyHistory benFamilyHistory = new BenFamilyHistory();
+				benFamilyHistory.setBeneficiaryRegID(beneficiaryRegID);
+				benFamilyHistory.setBenVisitID(benVisitID);
+				benFamilyHistory.setProviderServiceMapID(providerServiceMapID);
+				benFamilyHistory.setCreatedBy(createdBy);
+
+				benFamilyHistory.setGeneticDisorder(geneticDisorder);
+				benFamilyHistory.setIsGeneticDisorder(isGeneticDisorder);
+				benFamilyHistory.setIsConsanguineousMarrige(isConsanguineousMarrige);
+
+				if (null != disease.get("diseaseTypeID")) {
+					benFamilyHistory.setDiseaseTypeID(new Short(disease.get("diseaseTypeID").toString()));
 				}
+				if (null != disease.get("diseaseType")) {
+					benFamilyHistory.setDiseaseType(disease.get("diseaseType").toString());
+				}
+
+				if (null != disease.get("otherDiseaseType")) {
+					benFamilyHistory.setOtherDiseaseType(disease.get("otherDiseaseType").toString());
+				}
+
+				List<String> familyMemberList = (List<String>) disease.get("familyMembers");
+
+				String familyMembers = "";
+				if (null != familyMemberList) {
+					for (String familyMember : familyMemberList) {
+						familyMembers += familyMember + ",";
+					}
+				}
+				benFamilyHistory.setFamilyMember(familyMembers);
+				if (benFamilyHistory.getDiseaseTypeID() != null && benFamilyHistory.getFamilyMember() != null
+						&& benFamilyHistory.getFamilyMember().length() > 1)
+					benFamilyHistoryList.add(benFamilyHistory);
 			}
-			return benFamilyHistoryList;
+		}
+		return benFamilyHistoryList;
 	}
 
-	
 	public BenFamilyHistory(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			Boolean isGeneticDisorder, String geneticDisorder, Boolean isConsanguineousMarrige) {
 		super();
@@ -385,32 +386,31 @@ public class BenFamilyHistory {
 		this.diseaseType = diseaseType;
 		this.otherDiseaseType = otherDiseaseType;
 	}
-	
-	public static BenFamilyHistory getBenFamilyHistory(ArrayList<Object[]> familyHistory){
+
+	public static BenFamilyHistory getBenFamilyHistory(ArrayList<Object[]> familyHistory) {
 		BenFamilyHistory benfamilyHistory = null;
-		if(null != familyHistory && familyHistory.size()>0){
+		if (null != familyHistory && familyHistory.size() > 0) {
 			Object[] obj1 = familyHistory.get(0);
-	
-			benfamilyHistory = new BenFamilyHistory((Long)obj1[0], (Long)obj1[1], (Integer)obj1[2], (Boolean)obj1[7], (String)obj1[8], 
-					(Boolean)obj1[9]);
-			
-			List<Map<String,Object>> familyDiseaseList = new ArrayList<Map<String, Object>>();
-			
-			for(Object[] obj: familyHistory){
-				BenFamilyHistory familyDetails = new BenFamilyHistory((String)obj[3], (Short)obj[4], (String)obj[5], (String)obj[6]);
-				
-								
-				Map<String,Object> familyDisease = new HashMap<String,Object>();
+
+			benfamilyHistory = new BenFamilyHistory((Long) obj1[0], (Long) obj1[1], (Integer) obj1[2],
+					(Boolean) obj1[7], (String) obj1[8], (Boolean) obj1[9]);
+
+			List<Map<String, Object>> familyDiseaseList = new ArrayList<Map<String, Object>>();
+
+			for (Object[] obj : familyHistory) {
+				BenFamilyHistory familyDetails = new BenFamilyHistory((String) obj[3], (Short) obj[4], (String) obj[5],
+						(String) obj[6]);
+
+				Map<String, Object> familyDisease = new HashMap<String, Object>();
 				familyDisease.put("diseaseTypeID", familyDetails.getDiseaseTypeID());
 				familyDisease.put("diseaseType", familyDetails.getDiseaseType());
 				familyDisease.put("otherDiseaseType", familyDetails.getOtherDiseaseType());
-				
-				if(null != familyDetails.getFamilyMember()){
-					String[] familyMembers= familyDetails.getFamilyMember().split(",");
-				
-				
+
+				if (null != familyDetails.getFamilyMember()) {
+					String[] familyMembers = familyDetails.getFamilyMember().split(",");
+
 					List<String> familyMembersList = new ArrayList<String>();
-					for(String familyMember: familyMembers){
+					for (String familyMember : familyMembers) {
 						familyMembersList.add(familyMember);
 					}
 					familyDisease.put("familyMembers", familyMembersList);
@@ -425,5 +425,5 @@ public class BenFamilyHistory {
 	public void setID(Long iD) {
 		ID = iD;
 	}
-	
+
 }

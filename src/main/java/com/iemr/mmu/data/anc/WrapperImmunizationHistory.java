@@ -14,7 +14,7 @@ public class WrapperImmunizationHistory {
 	private Integer providerServiceMapID;
 	private String createdBy;
 	private String modifiedBy;
-	
+
 	private ArrayList<ChildVaccineDetail1> immunizationList;
 
 	public ArrayList<ChildVaccineDetail1> getImmunizationList() {
@@ -24,7 +24,7 @@ public class WrapperImmunizationHistory {
 	public void setImmunizationList(ArrayList<ChildVaccineDetail1> immunizationList) {
 		this.immunizationList = immunizationList;
 	}
-	
+
 	public String getModifiedBy() {
 		return modifiedBy;
 	}
@@ -32,7 +32,7 @@ public class WrapperImmunizationHistory {
 	public void setModifiedBy(String modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
-	
+
 	public Long getBenVisitID() {
 		return benVisitID;
 	}
@@ -40,16 +40,18 @@ public class WrapperImmunizationHistory {
 	public void setBenVisitID(Long benVisitID) {
 		this.benVisitID = benVisitID;
 	}
-	
-	public ArrayList<ChildVaccineDetail1> getBenChildVaccineDetails(){
-		
+
+	public ArrayList<ChildVaccineDetail1> getBenChildVaccineDetails() {
+
 		ArrayList<ChildVaccineDetail1> childVaccineDetailList = new ArrayList<ChildVaccineDetail1>();
-		if(null != immunizationList && immunizationList.size()>0){
-			for(ChildVaccineDetail1 childVaccineDetail:immunizationList){
-					
-				List<Map<String,Object>> vaccinesList = childVaccineDetail.getVaccines();
-				for(Map<String,Object> vaccine :vaccinesList){
-					ChildVaccineDetail1 vaccineDetail = new ChildVaccineDetail1(childVaccineDetail.getDefaultReceivingAge(), vaccine.get("vaccine").toString(), (Boolean)vaccine.get("status"));
+		if (null != immunizationList && immunizationList.size() > 0) {
+			for (ChildVaccineDetail1 childVaccineDetail : immunizationList) {
+
+				List<Map<String, Object>> vaccinesList = childVaccineDetail.getVaccines();
+				for (Map<String, Object> vaccine : vaccinesList) {
+					ChildVaccineDetail1 vaccineDetail = new ChildVaccineDetail1(
+							childVaccineDetail.getDefaultReceivingAge(), vaccine.get("vaccine").toString(),
+							(Boolean) vaccine.get("status"));
 					vaccineDetail.setBeneficiaryRegID(beneficiaryRegID);
 					vaccineDetail.setBenVisitID(benVisitID);
 					vaccineDetail.setProviderServiceMapID(providerServiceMapID);
@@ -57,7 +59,7 @@ public class WrapperImmunizationHistory {
 					vaccineDetail.setModifiedBy(modifiedBy);
 					childVaccineDetailList.add(vaccineDetail);
 				}
-				
+
 			}
 		} else {
 			ChildVaccineDetail1 vaccineDetail = new ChildVaccineDetail1();
@@ -70,39 +72,39 @@ public class WrapperImmunizationHistory {
 		}
 		return childVaccineDetailList;
 	}
-	
-	public static WrapperImmunizationHistory getChildVaccineDetail(ArrayList<Object[]> childVaccineDetail){
+
+	public static WrapperImmunizationHistory getChildVaccineDetail(ArrayList<Object[]> childVaccineDetail) {
 		WrapperImmunizationHistory WIH = new WrapperImmunizationHistory();
 		WIH.immunizationList = new ArrayList<ChildVaccineDetail1>();
-		
-		if(null != childVaccineDetail && childVaccineDetail.size()>0){
+
+		if (null != childVaccineDetail && childVaccineDetail.size() > 0) {
 			Object[] obj1 = childVaccineDetail.get(0);
-			WIH.beneficiaryRegID = (Long)obj1[0];
-			WIH.benVisitID = (Long)obj1[1];
-			WIH.providerServiceMapID = (Integer)obj1[2];
-			List<Map<String,Object>> vaccinesList = new ArrayList<Map<String,Object>>();
+			WIH.beneficiaryRegID = (Long) obj1[0];
+			WIH.benVisitID = (Long) obj1[1];
+			WIH.providerServiceMapID = (Integer) obj1[2];
+			List<Map<String, Object>> vaccinesList = new ArrayList<Map<String, Object>>();
 			ChildVaccineDetail1 childVaccine = null;
-			Map<String,Object> vaccines = new HashMap<String,Object>();
-			
-			int size =childVaccineDetail.size();
-			for(Object[] obj: childVaccineDetail){
-				if(!(null!= childVaccine && childVaccine.getDefaultReceivingAge().equals((String)obj[3]))){
-					
-					if(null!= childVaccine){
+			Map<String, Object> vaccines = new HashMap<String, Object>();
+
+			int size = childVaccineDetail.size();
+			for (Object[] obj : childVaccineDetail) {
+				if (!(null != childVaccine && childVaccine.getDefaultReceivingAge().equals((String) obj[3]))) {
+
+					if (null != childVaccine) {
 						WIH.immunizationList.add(childVaccine);
 					}
-					vaccinesList = new ArrayList<Map<String,Object>>();
-					childVaccine= new ChildVaccineDetail1((String)obj[3]);
+					vaccinesList = new ArrayList<Map<String, Object>>();
+					childVaccine = new ChildVaccineDetail1((String) obj[3]);
 				}
-				
-				vaccines = new HashMap<String,Object>();
-				vaccines.put("vaccine", (String)obj[4]);
-				vaccines.put("status",  (Boolean)obj[5]);
+
+				vaccines = new HashMap<String, Object>();
+				vaccines.put("vaccine", (String) obj[4]);
+				vaccines.put("status", (Boolean) obj[5]);
 				vaccinesList.add(vaccines);
 				childVaccine.setVaccines(vaccinesList);
-				
+
 				int index = childVaccineDetail.indexOf(obj);
-				if(index==size-1){
+				if (index == size - 1) {
 					WIH.immunizationList.add(childVaccine);
 				}
 			}

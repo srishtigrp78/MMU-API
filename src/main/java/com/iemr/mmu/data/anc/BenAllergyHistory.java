@@ -19,7 +19,7 @@ import com.google.gson.annotations.Expose;
 @Entity
 @Table(name = "t_BenAllergyHistory")
 public class BenAllergyHistory {
-	
+
 	@Id
 	@GeneratedValue
 	@Expose
@@ -33,7 +33,7 @@ public class BenAllergyHistory {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
@@ -41,35 +41,35 @@ public class BenAllergyHistory {
 	@Expose
 	@Column(name = "allergyStatus")
 	private String allergyStatus;
-	
+
 	@Expose
 	@Column(name = "allergyType")
 	private String allergyType;
-	
+
 	@Expose
 	@Column(name = "allergenName")
 	private String allergyName;
-	
+
 	@Expose
 	@Column(name = "allergicReactionTypeID")
 	private String allergicReactionTypeID;
-	
+
 	@Expose
 	@Column(name = "allergicReactionType")
 	private String allergicReactionType;
-	
+
 	@Expose
 	@Column(name = "OtherAllergicReaction")
 	private String otherAllergicReaction;
-	
+
 	@Transient
 	@Expose
-	private List<Map<String,String>> typeOfAllergicReactions;
-	
+	private List<Map<String, String>> typeOfAllergicReactions;
+
 	@Expose
 	@Column(name = "Remarks")
 	private String remarks;
-	
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -93,43 +93,43 @@ public class BenAllergyHistory {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
-	
+
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	@Transient
 	@Expose
 	private List<Map<String, Object>> allergicList;
 
 	@Transient
 	private Date captureDate;
-	
+
 	public BenAllergyHistory() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public BenAllergyHistory(Date createdDate, String allergyStatus, String allergyType, String allergenName,
 			String allergicReactionType, String otherAllergicReaction, String remarks) {
 		super();
@@ -142,18 +142,18 @@ public class BenAllergyHistory {
 		this.remarks = remarks;
 	}
 
-	 public BenAllergyHistory(String allergyStatus, String allergyType, String allergenName,
-				String allergicReactionTypeID, String allergicReactionType, String otherAllergicReaction, String remarks) {
-			super();
-			this.allergyStatus = allergyStatus;
-			this.allergyType = allergyType;
-			this.allergyName = allergenName;
-			this.allergicReactionTypeID = allergicReactionTypeID;
-			this.allergicReactionType = allergicReactionType;
-			this.otherAllergicReaction = otherAllergicReaction;
-			this.remarks = remarks;
-		}
-	 
+	public BenAllergyHistory(String allergyStatus, String allergyType, String allergenName,
+			String allergicReactionTypeID, String allergicReactionType, String otherAllergicReaction, String remarks) {
+		super();
+		this.allergyStatus = allergyStatus;
+		this.allergyType = allergyType;
+		this.allergyName = allergenName;
+		this.allergicReactionTypeID = allergicReactionTypeID;
+		this.allergicReactionType = allergicReactionType;
+		this.otherAllergicReaction = otherAllergicReaction;
+		this.remarks = remarks;
+	}
+
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
@@ -277,15 +277,15 @@ public class BenAllergyHistory {
 	public Long getID() {
 		return ID;
 	}
-	
-	public List<Map<String,String>> getTypeOfAllergicReactions() {
+
+	public List<Map<String, String>> getTypeOfAllergicReactions() {
 		return typeOfAllergicReactions;
 	}
 
-	public void setTypeOfAllergicReactions(List<Map<String,String>> typeOfAllergicReactions) {
+	public void setTypeOfAllergicReactions(List<Map<String, String>> typeOfAllergicReactions) {
 		this.typeOfAllergicReactions = typeOfAllergicReactions;
 	}
-	
+
 	public String getOtherAllergicReaction() {
 		return otherAllergicReaction;
 	}
@@ -293,7 +293,7 @@ public class BenAllergyHistory {
 	public void setOtherAllergicReaction(String otherAllergicReaction) {
 		this.otherAllergicReaction = otherAllergicReaction;
 	}
-	
+
 	public String getAllergicReactionTypeID() {
 		return allergicReactionTypeID;
 	}
@@ -350,99 +350,102 @@ public class BenAllergyHistory {
 		this.reservedForChange = reservedForChange;
 	}
 
-	public ArrayList<BenAllergyHistory> getBenAllergicHistory(){
-		ArrayList<BenAllergyHistory> benAllergyHistoryList=new ArrayList<BenAllergyHistory>();
-		if(allergicList.size()>0){
-			for(Map<String,Object> allergic:allergicList){
+	public ArrayList<BenAllergyHistory> getBenAllergicHistory() {
+		ArrayList<BenAllergyHistory> benAllergyHistoryList = new ArrayList<BenAllergyHistory>();
+		if (allergicList.size() > 0) {
+			for (Map<String, Object> allergic : allergicList) {
 				BenAllergyHistory benAllergyHistory = new BenAllergyHistory();
-	
-				if(null != allergic.get("allergyName")){
+
+				if (null != allergic.get("allergyName")) {
 					benAllergyHistory.setAllergyName(allergic.get("allergyName").toString());
 				}
-				if(null != allergic.get("allergyType")){
+				if (null != allergic.get("allergyType")) {
 					benAllergyHistory.setAllergyType(allergic.get("allergyType").toString());
 				}
-				
+
 				benAllergyHistory.setBeneficiaryRegID(beneficiaryRegID);
 				benAllergyHistory.setBenVisitID(benVisitID);
 				benAllergyHistory.setProviderServiceMapID(providerServiceMapID);
 				benAllergyHistory.setAllergyStatus(allergyStatus);
 				benAllergyHistory.setCreatedBy(createdBy);
-				
-				
-				List<Map<String,String>> reactionTypesList= (List<Map<String,String>>) allergic.get("typeOfAllergicReactions");
+
+				List<Map<String, String>> reactionTypesList = (List<Map<String, String>>) allergic
+						.get("typeOfAllergicReactions");
 				String reactionTypes = "";
 				String reactionTypeIDs = "";
-				if(null != reactionTypesList){
-					for(Map<String,String> reactionType:reactionTypesList){
+				if (null != reactionTypesList) {
+					for (Map<String, String> reactionType : reactionTypesList) {
 						reactionTypes += reactionType.get("name") + ",";
 						reactionTypeIDs += reactionType.get("allergicReactionTypeID") + ",";
 					}
 				}
 				benAllergyHistory.setAllergicReactionTypeID(reactionTypeIDs);
 				benAllergyHistory.setAllergicReactionType(reactionTypes);
-				
-				if(null != allergic.get("otherAllergicReaction")){
+
+				if (null != allergic.get("otherAllergicReaction")) {
 					benAllergyHistory.setOtherAllergicReaction(allergic.get("otherAllergicReaction").toString());
 				}
-				
-				benAllergyHistoryList.add(benAllergyHistory);
+
+				if (allergyType != null)
+					benAllergyHistoryList.add(benAllergyHistory);
 			}
 		} else {
-			
-			BenAllergyHistory benAllergyHistory = new BenAllergyHistory();
-			
-			benAllergyHistory.setBeneficiaryRegID(beneficiaryRegID);
-			benAllergyHistory.setBenVisitID(benVisitID);
-			benAllergyHistory.setProviderServiceMapID(providerServiceMapID);
-			benAllergyHistory.setCreatedBy(createdBy);
-			
-			benAllergyHistoryList.add(benAllergyHistory);
+			if (allergyStatus != null) {
+
+				BenAllergyHistory benAllergyHistory = new BenAllergyHistory();
+
+				benAllergyHistory.setBeneficiaryRegID(beneficiaryRegID);
+				benAllergyHistory.setBenVisitID(benVisitID);
+				benAllergyHistory.setProviderServiceMapID(providerServiceMapID);
+				benAllergyHistory.setCreatedBy(createdBy);
+
+				benAllergyHistory.setAllergyStatus(allergyStatus);
+
+				benAllergyHistoryList.add(benAllergyHistory);
+			}
 		}
 		return benAllergyHistoryList;
 	}
-	
-	
-	public static ArrayList<BenAllergyHistory> getBenAllergicHistory(ArrayList<Object[]> allergyDetails){
-		ArrayList<BenAllergyHistory> benAllergyHistoryList=new ArrayList<BenAllergyHistory>();
-		
-		if(null != allergyDetails && allergyDetails.size()>0){
-			for(Object[] obj : allergyDetails){
-				
-				BenAllergyHistory allergyHistory = new BenAllergyHistory((String)obj[3], (String)obj[4], (String)obj[5], (String)obj[6], 
-						(String)obj[7], (String)obj[8], (String)obj[9]);
-				
+
+	public static ArrayList<BenAllergyHistory> getBenAllergicHistory(ArrayList<Object[]> allergyDetails) {
+		ArrayList<BenAllergyHistory> benAllergyHistoryList = new ArrayList<BenAllergyHistory>();
+
+		if (null != allergyDetails && allergyDetails.size() > 0) {
+			for (Object[] obj : allergyDetails) {
+
+				BenAllergyHistory allergyHistory = new BenAllergyHistory((String) obj[3], (String) obj[4],
+						(String) obj[5], (String) obj[6], (String) obj[7], (String) obj[8], (String) obj[9]);
+
 				String allergicReactionTypeID = allergyHistory.getAllergicReactionTypeID();
 				String[] allergicReactionTypeIDs = null;
-				if(null != allergicReactionTypeID){
-					allergicReactionTypeIDs =allergicReactionTypeID.toString().split(",");
+				if (null != allergicReactionTypeID) {
+					allergicReactionTypeIDs = allergicReactionTypeID.toString().split(",");
 				}
-				
+
 				String allergicReactionType = allergyHistory.getAllergicReactionType();
 				String[] allergicReactionTypes = null;
-				if(null != allergicReactionType){
+				if (null != allergicReactionType) {
 					allergicReactionTypes = allergicReactionType.toString().split(",");
 				}
-				
-				List<Map<String,String>> reactionTypesList =new ArrayList<Map<String,String>>();
-				Map<String,String> reactionTypes = null;
-				
-				if(null != allergicReactionTypes && allergicReactionTypes.length>0){
-					for(int i=0; i<allergicReactionTypes.length; i++){
-						reactionTypes = new HashMap<String,String>();
+
+				List<Map<String, String>> reactionTypesList = new ArrayList<Map<String, String>>();
+				Map<String, String> reactionTypes = null;
+
+				if (null != allergicReactionTypes && allergicReactionTypes.length > 0) {
+					for (int i = 0; i < allergicReactionTypes.length; i++) {
+						reactionTypes = new HashMap<String, String>();
 						reactionTypes.put("name", allergicReactionTypes[i]);
 						reactionTypes.put("allergicReactionTypeID", allergicReactionTypeIDs[i]);
-						
+
 						reactionTypesList.add(reactionTypes);
 					}
 				}
-				
-				
+
 				allergyHistory.setTypeOfAllergicReactions(reactionTypesList);
-				
+
 				benAllergyHistoryList.add(allergyHistory);
 			}
-			
+
 		}
 		return benAllergyHistoryList;
 	}
@@ -450,6 +453,5 @@ public class BenAllergyHistory {
 	public void setID(Long iD) {
 		ID = iD;
 	}
-	
-	
+
 }

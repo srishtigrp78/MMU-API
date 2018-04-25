@@ -376,11 +376,18 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 	public int saveBenChiefComplaints(List<BenChiefComplaint> benChiefComplaintList) {
 		int r = 0;
-		List<BenChiefComplaint> benChiefComplaintResultList = (List<BenChiefComplaint>) benChiefComplaintRepo
-				.save(benChiefComplaintList);
-
-		if (benChiefComplaintResultList != null && benChiefComplaintResultList.size() > 0) {
-			r = benChiefComplaintResultList.size();
+		List<BenChiefComplaint> benChiefComplaintListNew = new ArrayList<>();
+		for (BenChiefComplaint obj : benChiefComplaintList) {
+			if (obj.getChiefComplaintID() != null)
+				benChiefComplaintListNew.add(obj);
+		}
+		if (benChiefComplaintListNew.size() > 0) {
+			List<BenChiefComplaint> benChiefComplaintResultList = (List<BenChiefComplaint>) benChiefComplaintRepo
+					.save(benChiefComplaintListNew);
+			if (benChiefComplaintListNew.size() == benChiefComplaintResultList.size())
+				r = 1;
+		} else {
+			r = 1;
 		}
 		return r;
 	}
@@ -390,8 +397,8 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		ArrayList<BenMedHistory> benMedHistoryList = benMedHistory.getBenPastHistory();
 		if (null != benMedHistoryList && benMedHistoryList.size() > 0) {
 			ArrayList<BenMedHistory> res = (ArrayList<BenMedHistory>) benMedHistoryRepo.save(benMedHistoryList);
-			if (null != res && res.size() > 0) {
-				pastHistorySuccessFlag = res.get(0).getBenMedHistoryID();
+			if (benMedHistoryList.size() == res.size()) {
+				pastHistorySuccessFlag = new Long(1);
 			}
 		} else {
 			pastHistorySuccessFlag = new Long(1);
@@ -403,10 +410,14 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		Long comrbidSuccessFlag = null;
 		ArrayList<BencomrbidityCondDetails> bencomrbidityCondDetailsList = wrapperComorbidCondDetails
 				.getComrbidityConds();
-		ArrayList<BencomrbidityCondDetails> res = (ArrayList<BencomrbidityCondDetails>) bencomrbidityCondRepo
-				.save(bencomrbidityCondDetailsList);
-		if (null != res && res.size() > 0) {
-			comrbidSuccessFlag = res.get(0).getID();
+		if (bencomrbidityCondDetailsList.size() > 0) {
+			ArrayList<BencomrbidityCondDetails> res = (ArrayList<BencomrbidityCondDetails>) bencomrbidityCondRepo
+					.save(bencomrbidityCondDetailsList);
+			if (bencomrbidityCondDetailsList.size() == res.size()) {
+				comrbidSuccessFlag = res.get(0).getID();
+			}
+		} else {
+			comrbidSuccessFlag = new Long(1);
 		}
 		return comrbidSuccessFlag;
 	}
@@ -415,10 +426,14 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		Long medicationSuccessFlag = null;
 		ArrayList<BenMedicationHistory> benMedicationHistoryList = wrapperMedicationHistory
 				.getBenMedicationHistoryDetails();
-		ArrayList<BenMedicationHistory> res = (ArrayList<BenMedicationHistory>) benMedicationHistoryRepo
-				.save(benMedicationHistoryList);
-		if (null != res && res.size() > 0) {
-			medicationSuccessFlag = res.get(0).getID();
+		if (benMedicationHistoryList.size() > 0) {
+			ArrayList<BenMedicationHistory> res = (ArrayList<BenMedicationHistory>) benMedicationHistoryRepo
+					.save(benMedicationHistoryList);
+			if (benMedicationHistoryList.size() == res.size()) {
+				medicationSuccessFlag = res.get(0).getID();
+			}
+		} else {
+			medicationSuccessFlag = new Long(1);
 		}
 		return medicationSuccessFlag;
 	}
@@ -428,10 +443,14 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		ArrayList<FemaleObstetricHistory> FemaleObstetricHistorylist = wrapperFemaleObstetricHistory
 				.getFemaleObstetricHistoryDetails();
-		ArrayList<FemaleObstetricHistory> res = (ArrayList<FemaleObstetricHistory>) femaleObstetricHistoryRepo
-				.save(FemaleObstetricHistorylist);
-		if (null != res && res.size() > 0) {
-			obstetricSuccessFlag = res.get(0).getObstetricHistoryID();
+		if (FemaleObstetricHistorylist.size() > 0) {
+			ArrayList<FemaleObstetricHistory> res = (ArrayList<FemaleObstetricHistory>) femaleObstetricHistoryRepo
+					.save(FemaleObstetricHistorylist);
+			if (FemaleObstetricHistorylist.size() == res.size()) {
+				obstetricSuccessFlag = new Long(1);
+			}
+		} else {
+			obstetricSuccessFlag = new Long(1);
 		}
 		return obstetricSuccessFlag;
 	}
@@ -450,9 +469,14 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		Long familyHistorySuccessFlag = null;
 
 		ArrayList<BenFamilyHistory> familyHistoryList = benFamilyHistory.getBenFamilyHistory();
-		ArrayList<BenFamilyHistory> res = (ArrayList<BenFamilyHistory>) benFamilyHistoryRepo.save(familyHistoryList);
-		if (null != res && res.size() > 0) {
-			familyHistorySuccessFlag = res.get(0).getID();
+		if (familyHistoryList.size() > 0) {
+			ArrayList<BenFamilyHistory> res = (ArrayList<BenFamilyHistory>) benFamilyHistoryRepo
+					.save(familyHistoryList);
+			if (familyHistoryList.size() == res.size()) {
+				familyHistorySuccessFlag = new Long(1);
+			}
+		} else {
+			familyHistorySuccessFlag = new Long(1);
 		}
 		return familyHistorySuccessFlag;
 	}
@@ -461,9 +485,13 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		Integer personalHistorySuccessFlag = null;
 
 		ArrayList<BenPersonalHabit> personalHabits = benPersonalHabit.getPersonalHistory();
-		ArrayList<BenPersonalHabit> res = (ArrayList<BenPersonalHabit>) benPersonalHabitRepo.save(personalHabits);
-		if (null != res && res.size() > 0) {
-			personalHistorySuccessFlag = res.get(0).getBenPersonalHabitID();
+		if (personalHabits.size() > 0) {
+			ArrayList<BenPersonalHabit> res = (ArrayList<BenPersonalHabit>) benPersonalHabitRepo.save(personalHabits);
+			if (personalHabits.size() == res.size()) {
+				personalHistorySuccessFlag = 1;
+			}
+		} else {
+			personalHistorySuccessFlag = 1;
 		}
 		return personalHistorySuccessFlag;
 	}
@@ -472,9 +500,13 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		Long allergyHistorySuccessFlag = null;
 
 		ArrayList<BenAllergyHistory> allergyList = benAllergyHistory.getBenAllergicHistory();
-		ArrayList<BenAllergyHistory> res = (ArrayList<BenAllergyHistory>) benAllergyHistoryRepo.save(allergyList);
-		if (null != res && res.size() > 0) {
-			allergyHistorySuccessFlag = res.get(0).getID();
+		if (allergyList.size() > 0) {
+			ArrayList<BenAllergyHistory> res = (ArrayList<BenAllergyHistory>) benAllergyHistoryRepo.save(allergyList);
+			if (allergyList.size() == res.size()) {
+				allergyHistorySuccessFlag = new Long(1);
+			}
+		} else {
+			allergyHistorySuccessFlag = new Long(1);
 		}
 		return allergyHistorySuccessFlag;
 	}
@@ -483,10 +515,14 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		Long childVaccineSuccessFlag = null;
 		ArrayList<ChildOptionalVaccineDetail> childOptionalVaccineDetails = wrapperChildVaccineDetail
 				.getChildOptionalVaccineDetails();
-		ArrayList<ChildOptionalVaccineDetail> res = (ArrayList<ChildOptionalVaccineDetail>) childOptionalVaccineDetailRepo
-				.save(childOptionalVaccineDetails);
-		if (null != res && res.size() > 0) {
-			childVaccineSuccessFlag = res.get(0).getID();
+		if (childOptionalVaccineDetails.size() > 0) {
+			ArrayList<ChildOptionalVaccineDetail> res = (ArrayList<ChildOptionalVaccineDetail>) childOptionalVaccineDetailRepo
+					.save(childOptionalVaccineDetails);
+			if (childOptionalVaccineDetails.size() == res.size()) {
+				childVaccineSuccessFlag = new Long(1);
+			}
+		} else {
+			childVaccineSuccessFlag = new Long(1);
 		}
 		return childVaccineSuccessFlag;
 	}
@@ -1646,9 +1682,13 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			}
 
 			ArrayList<BenMedHistory> benMedHistoryList = benMedHistory.getBenPastHistory();
-			ArrayList<BenMedHistory> res = (ArrayList<BenMedHistory>) benMedHistoryRepo.save(benMedHistoryList);
-			if (null != res && res.size() > 0) {
-				r = res.size();
+			if (null != benMedHistoryList && benMedHistoryList.size() > 0) {
+				ArrayList<BenMedHistory> res = (ArrayList<BenMedHistory>) benMedHistoryRepo.save(benMedHistoryList);
+				if (benMedHistoryList.size() == res.size()) {
+					r = 1;
+				}
+			} else {
+				r = 1;
 			}
 		}
 		return r;
@@ -1676,10 +1716,14 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 			ArrayList<BencomrbidityCondDetails> bencomrbidityCondDetailsList = wrapperComorbidCondDetails
 					.getComrbidityConds();
-			ArrayList<BencomrbidityCondDetails> res = (ArrayList<BencomrbidityCondDetails>) bencomrbidityCondRepo
-					.save(bencomrbidityCondDetailsList);
-			if (null != res && res.size() > 0) {
-				r = res.size();
+			if (null != bencomrbidityCondDetailsList && bencomrbidityCondDetailsList.size() > 0) {
+				ArrayList<BencomrbidityCondDetails> res = (ArrayList<BencomrbidityCondDetails>) bencomrbidityCondRepo
+						.save(bencomrbidityCondDetailsList);
+				if (bencomrbidityCondDetailsList.size() == res.size()) {
+					r = 1;
+				}
+			} else {
+				r = 1;
 			}
 		}
 		return r;
@@ -1706,10 +1750,14 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 			ArrayList<BenMedicationHistory> benMedicationHistoryList = wrapperMedicationHistory
 					.getBenMedicationHistoryDetails();
-			ArrayList<BenMedicationHistory> res = (ArrayList<BenMedicationHistory>) benMedicationHistoryRepo
-					.save(benMedicationHistoryList);
-			if (null != res && res.size() > 0) {
-				r = res.size();
+			if (null != benMedicationHistoryList && benMedicationHistoryList.size() > 0) {
+				ArrayList<BenMedicationHistory> res = (ArrayList<BenMedicationHistory>) benMedicationHistoryRepo
+						.save(benMedicationHistoryList);
+				if (benMedicationHistoryList.size() == res.size()) {
+					r = 1;
+				}
+			} else {
+				r = 1;
 			}
 		}
 		return r;
@@ -1735,9 +1783,14 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			}
 
 			ArrayList<BenPersonalHabit> personalHabits = benPersonalHabit.getPersonalHistory();
-			ArrayList<BenPersonalHabit> res = (ArrayList<BenPersonalHabit>) benPersonalHabitRepo.save(personalHabits);
-			if (null != res && res.size() > 0) {
-				r = res.size();
+			if (null != personalHabits && personalHabits.size() > 0) {
+				ArrayList<BenPersonalHabit> res = (ArrayList<BenPersonalHabit>) benPersonalHabitRepo
+						.save(personalHabits);
+				if (personalHabits.size() > 0) {
+					r = 1;
+				}
+			} else {
+				r = 1;
 			}
 		}
 		return r;
@@ -1762,9 +1815,14 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			}
 
 			ArrayList<BenAllergyHistory> allergyList = benAllergyHistory.getBenAllergicHistory();
-			ArrayList<BenAllergyHistory> res = (ArrayList<BenAllergyHistory>) benAllergyHistoryRepo.save(allergyList);
-			if (null != res && res.size() > 0) {
-				r = res.size();
+			if (null != allergyList && allergyList.size() > 0) {
+				ArrayList<BenAllergyHistory> res = (ArrayList<BenAllergyHistory>) benAllergyHistoryRepo
+						.save(allergyList);
+				if (allergyList.size() == res.size()) {
+					r = 1;
+				}
+			} else {
+				r = 1;
 			}
 		}
 		return r;
@@ -1789,10 +1847,14 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			}
 
 			ArrayList<BenFamilyHistory> familyHistoryList = benFamilyHistory.getBenFamilyHistory();
-			ArrayList<BenFamilyHistory> res = (ArrayList<BenFamilyHistory>) benFamilyHistoryRepo
-					.save(familyHistoryList);
-			if (null != res && res.size() > 0) {
-				r = res.size();
+			if (null != familyHistoryList && familyHistoryList.size() > 0) {
+				ArrayList<BenFamilyHistory> res = (ArrayList<BenFamilyHistory>) benFamilyHistoryRepo
+						.save(familyHistoryList);
+				if (familyHistoryList.size() == res.size()) {
+					r = 1;
+				}
+			} else {
+				r = 1;
 			}
 		}
 		return r;
@@ -1800,21 +1862,33 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 	public int updateMenstrualHistory(BenMenstrualDetails benMenstrualDetails) {
 		int response = 0;
+		int recordsAvailable = 0;
 		if (null != benMenstrualDetails) {
 			String processed = benMenstrualDetailsRepo.getBenMenstrualDetailStatus(
 					benMenstrualDetails.getBeneficiaryRegID(), benMenstrualDetails.getBenVisitID());
+			if (processed != null) {
+				recordsAvailable = 1;
+			}
 			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
 			} else {
 				processed = "N";
 			}
-			response = benMenstrualDetailsRepo.updateMenstrualDetails(benMenstrualDetails.getMenstrualCycleStatusID(),
-					benMenstrualDetails.getRegularity(), benMenstrualDetails.getMenstrualCyclelengthID(),
-					benMenstrualDetails.getCycleLength(), benMenstrualDetails.getMenstrualFlowDurationID(),
-					benMenstrualDetails.getBloodFlowDuration(), benMenstrualDetails.getMenstrualProblemID(),
-					benMenstrualDetails.getProblemName(), benMenstrualDetails.getlMPDate(),
-					benMenstrualDetails.getModifiedBy(), processed, benMenstrualDetails.getBeneficiaryRegID(),
-					benMenstrualDetails.getBenVisitID());
+			if (recordsAvailable > 0) {
+				response = benMenstrualDetailsRepo.updateMenstrualDetails(
+						benMenstrualDetails.getMenstrualCycleStatusID(), benMenstrualDetails.getRegularity(),
+						benMenstrualDetails.getMenstrualCyclelengthID(), benMenstrualDetails.getCycleLength(),
+						benMenstrualDetails.getMenstrualFlowDurationID(), benMenstrualDetails.getBloodFlowDuration(),
+						benMenstrualDetails.getMenstrualProblemID(), benMenstrualDetails.getProblemName(),
+						benMenstrualDetails.getlMPDate(), benMenstrualDetails.getModifiedBy(), processed,
+						benMenstrualDetails.getBeneficiaryRegID(), benMenstrualDetails.getBenVisitID());
+			} else {
+				benMenstrualDetails.setCreatedBy(benMenstrualDetails.getModifiedBy());
+				BenMenstrualDetails menstrualDetails = benMenstrualDetailsRepo.save(benMenstrualDetails);
+				if (null != menstrualDetails && menstrualDetails.getBenMenstrualID() > 0) {
+					response = 1;
+				}
+			}
 		}
 		return response;
 	}
@@ -1869,9 +1943,13 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 			ArrayList<ChildOptionalVaccineDetail> childOptionalVaccineDetails = wrapperChildOptionalVaccineDetail
 					.getChildOptionalVaccineDetails();
-			ArrayList<ChildOptionalVaccineDetail> res = (ArrayList<ChildOptionalVaccineDetail>) childOptionalVaccineDetailRepo
-					.save(childOptionalVaccineDetails);
-			if (null != res && res.size() > 0) {
+			if (null != childOptionalVaccineDetails && childOptionalVaccineDetails.size() > 0) {
+				ArrayList<ChildOptionalVaccineDetail> res = (ArrayList<ChildOptionalVaccineDetail>) childOptionalVaccineDetailRepo
+						.save(childOptionalVaccineDetails);
+				if (childOptionalVaccineDetails.size() == res.size()) {
+					r = 1;
+				}
+			} else {
 				r = 1;
 			}
 		}
@@ -2103,20 +2181,21 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	}
 
 	public Long saveBeneficiaryLabTestOrderDetails(JsonObject caseSheet, Long prescriptionID) {
-
+		Long returnOBJ = null;
 		ArrayList<LabTestOrderDetail> labTestOrderDetails = LabTestOrderDetail.getLabTestOrderDetailList(caseSheet,
 				prescriptionID);
 
-		List<LabTestOrderDetail> labTestOrders = (List<LabTestOrderDetail>) labTestOrderDetailRepo
-				.save(labTestOrderDetails);
-
-		if (null != labTestOrders && labTestOrders.size() >= 0) {
-			for (LabTestOrderDetail labTestOrder : labTestOrders) {
-				return labTestOrder.getLabTestOrderID();
+		if (labTestOrderDetails != null && labTestOrderDetails.size() > 0) {
+			List<LabTestOrderDetail> labTestOrders = (List<LabTestOrderDetail>) labTestOrderDetailRepo
+					.save(labTestOrderDetails);
+			if (labTestOrderDetails.size() == labTestOrders.size()) {
+				returnOBJ = new Long(1);
 			}
+		} else {
+			returnOBJ = new Long(1);
 		}
 
-		return null;
+		return returnOBJ;
 	}
 
 	public Integer saveBenPrescribedDrugsList(List<PrescribedDrugDetail> prescribedDrugDetailList) {
@@ -2231,13 +2310,13 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		return new Gson().toJson(obj);
 	}
-	
-	// New pharma worklist.... 26-03-2018
-		public String getPharmaWorkListNew() {
-			ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getPharmaWorkListNew();
 
-			return new Gson().toJson(obj);
-		}
+	// New pharma worklist.... 26-03-2018
+	public String getPharmaWorkListNew() {
+		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getPharmaWorkListNew();
+
+		return new Gson().toJson(obj);
+	}
 
 	public int saveBenAdherenceDetails(BenAdherence benAdherence) {
 		int r = 0;
@@ -2514,50 +2593,79 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 	public int updateChildFeedingHistory(ChildFeedingDetails childFeedingDetails) {
 		int response = 0;
+		int recordsAvailable = 0;
 		if (null != childFeedingDetails) {
 			String processed = childFeedingDetailsRepo.getBenChildFeedingDetailStatus(
 					childFeedingDetails.getBeneficiaryRegID(), childFeedingDetails.getBenVisitID());
+			if (null != processed) {
+				recordsAvailable = 1;
+			}
 			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
 			} else {
 				processed = "N";
 			}
-			response = childFeedingDetailsRepo.updateFeedingDetails(childFeedingDetails.getChildID(),
-					childFeedingDetails.getBenMotherID(), childFeedingDetails.getTypeOfFeed(),
-					childFeedingDetails.getCompFeedStartAge(), childFeedingDetails.getNoOfCompFeedPerDay(),
-					childFeedingDetails.getFoodIntoleranceStatus(), childFeedingDetails.getTypeofFoodIntolerance(),
-					childFeedingDetails.getModifiedBy(), processed, childFeedingDetails.getBeneficiaryRegID(),
-					childFeedingDetails.getBenVisitID());
+			if (recordsAvailable > 0) {
+				response = childFeedingDetailsRepo.updateFeedingDetails(childFeedingDetails.getChildID(),
+						childFeedingDetails.getBenMotherID(), childFeedingDetails.getTypeOfFeed(),
+						childFeedingDetails.getCompFeedStartAge(), childFeedingDetails.getNoOfCompFeedPerDay(),
+						childFeedingDetails.getFoodIntoleranceStatus(), childFeedingDetails.getTypeofFoodIntolerance(),
+						childFeedingDetails.getModifiedBy(), processed, childFeedingDetails.getBeneficiaryRegID(),
+						childFeedingDetails.getBenVisitID());
+			} else {
+				childFeedingDetails.setCreatedBy(childFeedingDetails.getModifiedBy());
+				ChildFeedingDetails feedingDetails = childFeedingDetailsRepo.save(childFeedingDetails);
+				if (null != feedingDetails && feedingDetails.getID() > 0) {
+					response = 1;
+				}
+			}
 		}
 		return response;
 	}
 
 	public int updatePerinatalHistory(PerinatalHistory perinatalHistory) {
 		int response = 0;
+		int recordsAvailable = 0;
 		if (null != perinatalHistory) {
 			String processed = perinatalHistoryRepo.getPerinatalHistoryStatus(perinatalHistory.getBeneficiaryRegID(),
 					perinatalHistory.getBenVisitID());
+			if (null != processed) {
+				recordsAvailable = 1;
+			}
 			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
 			} else {
 				processed = "N";
 			}
-			response = perinatalHistoryRepo.updatePerinatalDetails(perinatalHistory.getDeliveryPlaceID(),
-					perinatalHistory.getPlaceOfDelivery(), perinatalHistory.getOtherPlaceOfDelivery(),
-					perinatalHistory.getDeliveryTypeID(), perinatalHistory.getTypeOfDelivery(),
-					perinatalHistory.getComplicationAtBirthID(), perinatalHistory.getComplicationAtBirth(),
-					perinatalHistory.getOtherComplicationAtBirth(), perinatalHistory.getGestation(),
-					perinatalHistory.getBirthWeight_kg(), perinatalHistory.getModifiedBy(), processed,
-					perinatalHistory.getBeneficiaryRegID(), perinatalHistory.getBenVisitID());
+			if (recordsAvailable > 0) {
+				response = perinatalHistoryRepo.updatePerinatalDetails(perinatalHistory.getDeliveryPlaceID(),
+						perinatalHistory.getPlaceOfDelivery(), perinatalHistory.getOtherPlaceOfDelivery(),
+						perinatalHistory.getDeliveryTypeID(), perinatalHistory.getTypeOfDelivery(),
+						perinatalHistory.getComplicationAtBirthID(), perinatalHistory.getComplicationAtBirth(),
+						perinatalHistory.getOtherComplicationAtBirth(), perinatalHistory.getGestation(),
+						perinatalHistory.getBirthWeight_kg(), perinatalHistory.getModifiedBy(), processed,
+						perinatalHistory.getBeneficiaryRegID(), perinatalHistory.getBenVisitID());
+			} else {
+				perinatalHistory.setCreatedBy(perinatalHistory.getModifiedBy());
+				PerinatalHistory perinatalRes = perinatalHistoryRepo.save(perinatalHistory);
+				if (null != perinatalRes && perinatalRes.getID() > 0) {
+					response = 1;
+				}
+
+			}
 		}
 		return response;
 	}
 
 	public int updateChildDevelopmentHistory(BenChildDevelopmentHistory childDevelopmentDetails) {
 		int response = 0;
+		int recordsAvailable = 0;
 		if (null != childDevelopmentDetails) {
 			String processed = benChildDevelopmentHistoryRepo.getDevelopmentHistoryStatus(
 					childDevelopmentDetails.getBeneficiaryRegID(), childDevelopmentDetails.getBenVisitID());
+			if (null != processed) {
+				recordsAvailable = 1;
+			}
 			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
 			} else {
@@ -2565,14 +2673,23 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			}
 			BenChildDevelopmentHistory childDevelopmentHistory = BenChildDevelopmentHistory
 					.getDevelopmentHistory(childDevelopmentDetails);
-
-			response = benChildDevelopmentHistoryRepo.updatePerinatalDetails(
-					childDevelopmentHistory.getGrossMotorMilestone(), childDevelopmentHistory.getIsGMMAttained(),
-					childDevelopmentHistory.getFineMotorMilestone(), childDevelopmentHistory.getIsFMMAttained(),
-					childDevelopmentHistory.getSocialMilestone(), childDevelopmentHistory.getIsSMAttained(),
-					childDevelopmentHistory.getLanguageMilestone(), childDevelopmentHistory.getIsLMAttained(),
-					childDevelopmentHistory.getDevelopmentProblem(), childDevelopmentHistory.getModifiedBy(), processed,
-					childDevelopmentHistory.getBeneficiaryRegID(), childDevelopmentHistory.getBenVisitID());
+			if (recordsAvailable > 0) {
+				response = benChildDevelopmentHistoryRepo.updatePerinatalDetails(
+						childDevelopmentHistory.getGrossMotorMilestone(), childDevelopmentHistory.getIsGMMAttained(),
+						childDevelopmentHistory.getFineMotorMilestone(), childDevelopmentHistory.getIsFMMAttained(),
+						childDevelopmentHistory.getSocialMilestone(), childDevelopmentHistory.getIsSMAttained(),
+						childDevelopmentHistory.getLanguageMilestone(), childDevelopmentHistory.getIsLMAttained(),
+						childDevelopmentHistory.getDevelopmentProblem(), childDevelopmentHistory.getModifiedBy(),
+						processed, childDevelopmentHistory.getBeneficiaryRegID(),
+						childDevelopmentHistory.getBenVisitID());
+			} else {
+				childDevelopmentHistory.setCreatedBy(childDevelopmentHistory.getModifiedBy());
+				BenChildDevelopmentHistory developmentDetails = benChildDevelopmentHistoryRepo
+						.save(childDevelopmentHistory);
+				if (null != developmentDetails && developmentDetails.getID() > 0) {
+					response = 1;
+				}
+			}
 		}
 		return response;
 	}

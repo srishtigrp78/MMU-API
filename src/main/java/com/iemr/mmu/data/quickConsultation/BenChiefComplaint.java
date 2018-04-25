@@ -316,7 +316,7 @@ public class BenChiefComplaint {
 	public static ArrayList<BenChiefComplaint> getBenChiefComplaintList(JsonObject emrgCasesheet) {
 		ArrayList<BenChiefComplaint> resArray = new ArrayList<>();
 		BenChiefComplaint benChiefComplaint = null;
-		System.out.println("ello");
+		//System.out.println("ello");
 		if (emrgCasesheet.has("benChiefComplaint") && !emrgCasesheet.get("benChiefComplaint").isJsonNull()
 				&& emrgCasesheet.get("benChiefComplaint").isJsonArray()) {
 			for (JsonElement csobj : emrgCasesheet.getAsJsonArray("benChiefComplaint")) {

@@ -1,9 +1,6 @@
 package com.iemr.mmu.service.quickConsultation;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,9 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.iemr.mmu.data.anc.ANCDiagnosis;
-import com.iemr.mmu.data.anc.WrapperAncFindings;
-import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
@@ -53,7 +47,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	private BenVisitDetailRepo benVisitDetailRepo;
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
-	
+
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
 	private GeneralOPDDoctorServiceImpl generalOPDDoctorServiceImpl;
 
@@ -61,12 +55,12 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	public void setCommonDoctorServiceImpl(CommonDoctorServiceImpl commonDoctorServiceImpl) {
 		this.commonDoctorServiceImpl = commonDoctorServiceImpl;
 	}
-	
+
 	@Autowired
 	public void setGeneralOPDDoctorServiceImpl(GeneralOPDDoctorServiceImpl generalOPDDoctorServiceImpl) {
 		this.generalOPDDoctorServiceImpl = generalOPDDoctorServiceImpl;
 	}
-	
+
 	@Autowired
 	public void setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl) {
 		this.commonBenStatusFlowServiceImpl = commonBenStatusFlowServiceImpl;
@@ -120,16 +114,19 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	@Override
 	public Long saveBeneficiaryChiefComplaint(JsonObject caseSheet) {
 		ArrayList<BenChiefComplaint> benChiefComplaints = BenChiefComplaint.getBenChiefComplaintList(caseSheet);
+		Long returnOBJ = null;
+		if (benChiefComplaints != null && benChiefComplaints.size() > 0) {
+			List<BenChiefComplaint> chiefComplaints = (List<BenChiefComplaint>) benChiefComplaintRepo
+					.save(benChiefComplaints);
 
-		List<BenChiefComplaint> chiefComplaints = (List<BenChiefComplaint>) benChiefComplaintRepo
-				.save(benChiefComplaints);
-		if (null != chiefComplaints && chiefComplaints.size() > 0) {
-			for (BenChiefComplaint chiefComplaint : chiefComplaints) {
-				return chiefComplaint.getBenChiefComplaintID();
+			if (benChiefComplaints.size() == chiefComplaints.size()) {
+				returnOBJ = new Long(1);
 			}
+		} else {
+			returnOBJ = new Long(1);
 		}
 
-		return null;
+		return returnOBJ;
 	}
 
 	@Override
@@ -143,7 +140,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		}
 		return null;
 	}
-	
+
 	@Deprecated
 	@Override
 	public Long saveBeneficiaryPrescription(JsonObject caseSheet) throws Exception {
@@ -158,7 +155,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	}
 
 	// Prescription for ANC...
-	/*@Deprecated*/
+	/* @Deprecated */
 	public Long saveBenPrescriptionForANC(PrescriptionDetail prescription) {
 		Long r = null;
 		PrescriptionDetail prescriptionRS = prescriptionDetailRepo.save(prescription);
@@ -321,7 +318,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 			Long tmpBeneficiaryID = quickConsultDoctorOBJ.get("beneficiaryID").getAsLong();
 			Long tmpBenVisitID = quickConsultDoctorOBJ.get("benVisitID").getAsLong();
 			Long tmpbeneficiaryRegID = quickConsultDoctorOBJ.get("beneficiaryRegID").getAsLong();
-			
+
 			// new logic on 25-04-2018
 			if (testList != null && !testList.isJsonNull() && testList.size() > 0) {
 				docFlag = (short) 2;
@@ -420,57 +417,62 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	}
 
 	// ------- END of Fetch (Nurse data to Doctor screen) ----------------
-	
+
 	public String getBenCaseRecordFromDoctorQuickConsult(Long benRegID, Long benVisitID) {
-		/*Map<String, Object> resMap = new HashMap<>();
+		/*
+		 * Map<String, Object> resMap = new HashMap<>();
+		 * 
+		 * resMap.put("findings",
+		 * commonDoctorServiceImpl.getFindingsDetails(benRegID, benVisitID));
+		 * 
+		 * resMap.put("diagnosis",
+		 * generalOPDDoctorServiceImpl.getGeneralOPDDiagnosisDetails(benRegID,
+		 * benVisitID));
+		 * 
+		 * resMap.put("investigation",
+		 * commonDoctorServiceImpl.getInvestigationDetails(benRegID,
+		 * benVisitID));
+		 * 
+		 * resMap.put("prescription",
+		 * commonDoctorServiceImpl.getPrescribedDrugs(benRegID, benVisitID));
+		 */
 
-		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, benVisitID));
-		
-		resMap.put("diagnosis", generalOPDDoctorServiceImpl.getGeneralOPDDiagnosisDetails(benRegID, benVisitID));
-
-		resMap.put("investigation", commonDoctorServiceImpl.getInvestigationDetails(benRegID, benVisitID));
-
-		resMap.put("prescription", commonDoctorServiceImpl.getPrescribedDrugs(benRegID, benVisitID));*/
-
-
-		
-		List<Object> resList =new ArrayList<Object>();
+		List<Object> resList = new ArrayList<Object>();
 		resList.add(commonDoctorServiceImpl.getFindingsDetails(benRegID, benVisitID));
 		resList.add(commonDoctorServiceImpl.getInvestigationDetails(benRegID, benVisitID));
 		resList.add(commonDoctorServiceImpl.getPrescribedDrugs(benRegID, benVisitID));
-		
+
 		return resList.toString();
 	}
-	
+
 	@Transactional(rollbackFor = Exception.class)
 	public Long updateGeneralOPDQCDoctorData(JsonObject quickConsultDoctorOBJ) throws Exception {
-		Long updateSuccessFlag = null;	
+		Long updateSuccessFlag = null;
 		Long benChiefComplaintID = saveBeneficiaryChiefComplaint(quickConsultDoctorOBJ);
 		Integer clinicalObservationID = updateBeneficiaryClinicalObservations(quickConsultDoctorOBJ);
 		Long prescriptionID = commonNurseServiceImpl.saveBeneficiaryPrescription(quickConsultDoctorOBJ);
-	
+
 		Long prescribedDrugID = null;
 		Long labTestOrderID = null;
-	
+
 		if (prescriptionID != null && prescriptionID > 0) {
-	
+
 			prescribedDrugID = saveBeneficiaryPrescribedDrugDetail(quickConsultDoctorOBJ, prescriptionID);
-	
+
 			labTestOrderID = commonNurseServiceImpl.saveBeneficiaryLabTestOrderDetails(quickConsultDoctorOBJ,
 					prescriptionID);
-	
+
 		}
 		if ((null != benChiefComplaintID && benChiefComplaintID > 0)
 				&& (null != clinicalObservationID && clinicalObservationID > 0)
-				&& (prescriptionID != null && prescriptionID > 0) 
-				&& ( null != prescribedDrugID && prescribedDrugID > 0) 
-				&& ( null != labTestOrderID && labTestOrderID > 0) ) {
+				&& (prescriptionID != null && prescriptionID > 0) && (null != prescribedDrugID && prescribedDrugID > 0)
+				&& (null != labTestOrderID && labTestOrderID > 0)) {
 			updateSuccessFlag = benChiefComplaintID;
 		}
-		
+
 		return updateSuccessFlag;
 	}
-	
+
 	@Override
 	public Integer updateBeneficiaryClinicalObservations(JsonObject caseSheet) throws Exception {
 		Integer r = 0;
@@ -479,5 +481,5 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		r = commonDoctorServiceImpl.updateBenClinicalObservations(benClinicalObservations);
 		return r;
 	}
-	
+
 }
