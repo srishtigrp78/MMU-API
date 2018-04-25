@@ -452,21 +452,33 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		Integer clinicalObservationID = updateBeneficiaryClinicalObservations(quickConsultDoctorOBJ);
 		Long prescriptionID = commonNurseServiceImpl.saveBeneficiaryPrescription(quickConsultDoctorOBJ);
 
-		Long prescribedDrugID = null;
-		Long labTestOrderID = null;
+		Long prescribedDrugSuccessFlag = null;
+		Long labTestOrderSuccessFlag = null;
 
 		if (prescriptionID != null && prescriptionID > 0) {
 
-			prescribedDrugID = saveBeneficiaryPrescribedDrugDetail(quickConsultDoctorOBJ, prescriptionID);
+			if (quickConsultDoctorOBJ.has("prescribedDrugs")
+					&& !quickConsultDoctorOBJ.get("prescribedDrugs").isJsonNull()) {
+				prescribedDrugSuccessFlag = saveBeneficiaryPrescribedDrugDetail(quickConsultDoctorOBJ, prescriptionID);
+			} else {
+				prescribedDrugSuccessFlag = new Long(1);
+			}
 
-			labTestOrderID = commonNurseServiceImpl.saveBeneficiaryLabTestOrderDetails(quickConsultDoctorOBJ,
-					prescriptionID);
+			if (quickConsultDoctorOBJ.has("labTestOrders") && !quickConsultDoctorOBJ.get("labTestOrders").isJsonNull()
+					&& quickConsultDoctorOBJ.getAsJsonArray("labTestOrders").size() > 0) {
+				labTestOrderSuccessFlag = commonNurseServiceImpl
+						.saveBeneficiaryLabTestOrderDetails(quickConsultDoctorOBJ, prescriptionID);
+			} else {
+				labTestOrderSuccessFlag = new Long(1);
+			}
 
 		}
 		if ((null != benChiefComplaintID && benChiefComplaintID > 0)
 				&& (null != clinicalObservationID && clinicalObservationID > 0)
-				&& (prescriptionID != null && prescriptionID > 0) && (null != prescribedDrugID && prescribedDrugID > 0)
-				&& (null != labTestOrderID && labTestOrderID > 0)) {
+				&& (prescriptionID != null && prescriptionID > 0)
+				&& (null != prescribedDrugSuccessFlag && prescribedDrugSuccessFlag > 0)
+				&& (null != labTestOrderSuccessFlag && labTestOrderSuccessFlag > 0)) {
+
 			updateSuccessFlag = benChiefComplaintID;
 		}
 
