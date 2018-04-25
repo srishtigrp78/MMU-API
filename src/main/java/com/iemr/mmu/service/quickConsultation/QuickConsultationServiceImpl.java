@@ -1,6 +1,7 @@
 package com.iemr.mmu.service.quickConsultation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,10 +10,14 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.iemr.mmu.data.anc.ANCDiagnosis;
+import com.iemr.mmu.data.anc.WrapperAncFindings;
+import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
@@ -138,7 +143,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		}
 		return null;
 	}
-
+	
 	@Deprecated
 	@Override
 	public Long saveBeneficiaryPrescription(JsonObject caseSheet) throws Exception {
@@ -410,9 +415,48 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		
 		List<Object> resList =new ArrayList<Object>();
 		resList.add(commonDoctorServiceImpl.getFindingsDetails(benRegID, benVisitID));
-				resList.add(commonDoctorServiceImpl.getInvestigationDetails(benRegID, benVisitID));
+		resList.add(commonDoctorServiceImpl.getInvestigationDetails(benRegID, benVisitID));
 		resList.add(commonDoctorServiceImpl.getPrescribedDrugs(benRegID, benVisitID));
 		
 		return resList.toString();
 	}
+	
+	@Transactional(rollbackFor = Exception.class)
+	public Long updateGeneralOPDQCDoctorData(JsonObject quickConsultDoctorOBJ) throws Exception {
+		Long updateSuccessFlag = null;	
+		Long benChiefComplaintID = saveBeneficiaryChiefComplaint(quickConsultDoctorOBJ);
+		Integer clinicalObservationID = updateBeneficiaryClinicalObservations(quickConsultDoctorOBJ);
+		Long prescriptionID = commonNurseServiceImpl.saveBeneficiaryPrescription(quickConsultDoctorOBJ);
+	
+		Long prescribedDrugID = null;
+		Long labTestOrderID = null;
+	
+		if (prescriptionID != null && prescriptionID > 0) {
+	
+			prescribedDrugID = saveBeneficiaryPrescribedDrugDetail(quickConsultDoctorOBJ, prescriptionID);
+	
+			labTestOrderID = commonNurseServiceImpl.saveBeneficiaryLabTestOrderDetails(quickConsultDoctorOBJ,
+					prescriptionID);
+	
+		}
+		if ((null != benChiefComplaintID && benChiefComplaintID > 0)
+				&& (null != clinicalObservationID && clinicalObservationID > 0)
+				&& (prescriptionID != null && prescriptionID > 0) 
+				&& ( null != prescribedDrugID && prescribedDrugID > 0) 
+				&& ( null != labTestOrderID && labTestOrderID > 0) ) {
+			updateSuccessFlag = benChiefComplaintID;
+		}
+		
+		return updateSuccessFlag;
+	}
+	
+	@Override
+	public Integer updateBeneficiaryClinicalObservations(JsonObject caseSheet) throws Exception {
+		Integer r = 0;
+		BenClinicalObservations benClinicalObservations = InputMapper.gson().fromJson(caseSheet,
+				BenClinicalObservations.class);
+		r = commonDoctorServiceImpl.updateBenClinicalObservations(benClinicalObservations);
+		return r;
+	}
+	
 }
