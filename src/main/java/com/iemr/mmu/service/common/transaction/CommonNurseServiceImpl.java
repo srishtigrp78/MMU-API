@@ -1914,7 +1914,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					.getFemaleObstetricHistoryDetails();
 			ArrayList<FemaleObstetricHistory> res = (ArrayList<FemaleObstetricHistory>) femaleObstetricHistoryRepo
 					.save(femaleObstetricHistoryDetails);
-			if (null != res && res.size() > 0) {
+			if (femaleObstetricHistoryDetails.size() == res.size()) {
 				r = 1;
 			}
 		}

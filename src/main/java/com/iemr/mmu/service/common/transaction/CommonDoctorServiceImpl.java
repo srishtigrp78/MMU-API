@@ -307,25 +307,28 @@ public class CommonDoctorServiceImpl {
 		if (referDetails.getRefrredToAdditionalServiceList() != null
 				&& referDetails.getRefrredToAdditionalServiceList().size() > 0) {
 			for (ServiceMaster sm : referDetails.getRefrredToAdditionalServiceList()) {
-				referDetailsTemp = new BenReferDetails();
-				referDetailsTemp.setBeneficiaryRegID(referDetails.getBeneficiaryRegID());
-				referDetailsTemp.setBenVisitID(referDetails.getBenVisitID());
-				referDetailsTemp.setProviderServiceMapID(referDetails.getProviderServiceMapID());
-				referDetailsTemp.setVisitCode(referDetails.getVisitCode());
-				referDetailsTemp.setCreatedBy(referDetails.getCreatedBy());
-				if (referDetails.getReferredToInstituteID() != null
-						&& referDetails.getReferredToInstituteName() != null) {
-					referDetailsTemp.setReferredToInstituteID(referDetails.getReferredToInstituteID());
-					referDetailsTemp.setReferredToInstituteName(referDetails.getReferredToInstituteName());
+				if (sm.getServiceName() != null) {
+					referDetailsTemp = new BenReferDetails();
+					referDetailsTemp.setBeneficiaryRegID(referDetails.getBeneficiaryRegID());
+					referDetailsTemp.setBenVisitID(referDetails.getBenVisitID());
+					referDetailsTemp.setProviderServiceMapID(referDetails.getProviderServiceMapID());
+					referDetailsTemp.setVisitCode(referDetails.getVisitCode());
+					referDetailsTemp.setCreatedBy(referDetails.getCreatedBy());
+
+					referDetailsTemp.setServiceID(sm.getServiceID());
+					referDetailsTemp.setServiceName(sm.getServiceName());
+
+					if (referDetails.getReferredToInstituteID() != null
+							&& referDetails.getReferredToInstituteName() != null) {
+						referDetailsTemp.setReferredToInstituteID(referDetails.getReferredToInstituteID());
+						referDetailsTemp.setReferredToInstituteName(referDetails.getReferredToInstituteName());
+					}
+
+					referDetailsList.add(referDetailsTemp);
 				}
-
-				referDetailsTemp.setServiceID(sm.getServiceID());
-				referDetailsTemp.setServiceName(sm.getServiceName());
-
-				referDetailsList.add(referDetailsTemp);
 			}
 		} else {
-			if (referDetails.getReferredToInstituteID() != null)
+			if (referDetails.getReferredToInstituteName() != null)
 				referDetailsList.add(referDetails);
 		}
 
@@ -392,14 +395,19 @@ public class CommonDoctorServiceImpl {
 		clinObsrvtnsRes = updateBenClinicalObservations(benClinicalObservations);
 
 		ArrayList<BenChiefComplaint> tmpBenCHiefComplaints = wrapperAncFindings.getComplaints();
+		ArrayList<BenChiefComplaint> tmpBenCHiefComplaintsTMP = new ArrayList<>();
 		if (tmpBenCHiefComplaints.size() > 0) {
 			for (BenChiefComplaint benChiefComplaint : tmpBenCHiefComplaints) {
-				benChiefComplaint.setBeneficiaryRegID(wrapperAncFindings.getBeneficiaryRegID());
-				benChiefComplaint.setBenVisitID(wrapperAncFindings.getBenVisitID());
-				benChiefComplaint.setProviderServiceMapID(wrapperAncFindings.getProviderServiceMapID());
-				benChiefComplaint.setCreatedBy(wrapperAncFindings.getCreatedBy());
+				if (benChiefComplaint.getChiefComplaint() != null) {
+					benChiefComplaint.setBeneficiaryRegID(wrapperAncFindings.getBeneficiaryRegID());
+					benChiefComplaint.setBenVisitID(wrapperAncFindings.getBenVisitID());
+					benChiefComplaint.setProviderServiceMapID(wrapperAncFindings.getProviderServiceMapID());
+					benChiefComplaint.setCreatedBy(wrapperAncFindings.getCreatedBy());
+
+					tmpBenCHiefComplaintsTMP.add(benChiefComplaint);
+				}
 			}
-			chiefCmpltsRes = updateDoctorBenChiefComplaints(tmpBenCHiefComplaints);
+			chiefCmpltsRes = updateDoctorBenChiefComplaints(tmpBenCHiefComplaintsTMP);
 
 		}
 		if (clinObsrvtnsRes > 0 && chiefCmpltsRes > 0) {
@@ -495,30 +503,33 @@ public class CommonDoctorServiceImpl {
 		if (referDetails.getRefrredToAdditionalServiceList() != null
 				&& referDetails.getRefrredToAdditionalServiceList().size() > 0) {
 			for (ServiceMaster sm : referDetails.getRefrredToAdditionalServiceList()) {
-				referDetailsTemp = new BenReferDetails();
-				referDetailsTemp.setBeneficiaryRegID(referDetails.getBeneficiaryRegID());
-				referDetailsTemp.setBenVisitID(referDetails.getBenVisitID());
-				referDetailsTemp.setProviderServiceMapID(referDetails.getProviderServiceMapID());
-				referDetailsTemp.setVisitCode(referDetails.getVisitCode());
-				referDetailsTemp.setCreatedBy(referDetails.getCreatedBy());
-				if (referDetails.getReferredToInstituteID() != null
-						&& referDetails.getReferredToInstituteName() != null) {
-					referDetailsTemp.setReferredToInstituteID(referDetails.getReferredToInstituteID());
-					referDetailsTemp.setReferredToInstituteName(referDetails.getReferredToInstituteName());
+				if (sm.getServiceName() != null) {
+					referDetailsTemp = new BenReferDetails();
+					referDetailsTemp.setBeneficiaryRegID(referDetails.getBeneficiaryRegID());
+					referDetailsTemp.setBenVisitID(referDetails.getBenVisitID());
+					referDetailsTemp.setProviderServiceMapID(referDetails.getProviderServiceMapID());
+					referDetailsTemp.setVisitCode(referDetails.getVisitCode());
+					referDetailsTemp.setCreatedBy(referDetails.getCreatedBy());
+					if (referDetails.getReferredToInstituteID() != null
+							&& referDetails.getReferredToInstituteName() != null) {
+						referDetailsTemp.setReferredToInstituteID(referDetails.getReferredToInstituteID());
+						referDetailsTemp.setReferredToInstituteName(referDetails.getReferredToInstituteName());
+					}
+
+					referDetailsTemp.setServiceID(sm.getServiceID());
+					referDetailsTemp.setServiceName(sm.getServiceName());
+
+					referDetailsList.add(referDetailsTemp);
 				}
-
-				referDetailsTemp.setServiceID(sm.getServiceID());
-				referDetailsTemp.setServiceName(sm.getServiceName());
-
-				referDetailsList.add(referDetailsTemp);
 			}
 		} else {
-			referDetailsList.add(referDetails);
+			if (referDetails.getReferredToInstituteName() != null)
+				referDetailsList.add(referDetails);
 		}
 
 		ArrayList<BenReferDetails> res = (ArrayList<BenReferDetails>) benReferDetailsRepo.save(referDetailsList);
-		if (null != res && res.size() > 0) {
-			ID = res.get(0).getBenReferID();
+		if (referDetailsList.size() == res.size()) {
+			ID = new Long(1);
 		}
 		return ID;
 	}

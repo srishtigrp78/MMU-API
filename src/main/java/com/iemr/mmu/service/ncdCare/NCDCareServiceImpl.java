@@ -1086,7 +1086,12 @@ public class NCDCareServiceImpl implements NCDCareService {
 				WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
 						.fromJson(requestOBJ.get("investigation"), WrapperBenInvestigationANC.class);
 
-				if (wrapperBenInvestigationANC != null) {
+				if (wrapperBenInvestigationANC != null
+						&& ((wrapperBenInvestigationANC.getExternalInvestigations() != null
+								&& wrapperBenInvestigationANC.getExternalInvestigations().length() > 0)
+								|| (wrapperBenInvestigationANC.getLaboratoryList() != null
+										&& wrapperBenInvestigationANC.getLaboratoryList().size() > 0))) {
+
 					prescriptionID = commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
 							wrapperBenInvestigationANC.getBeneficiaryRegID(),
 							wrapperBenInvestigationANC.getBenVisitID(),
@@ -1094,7 +1099,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 							wrapperBenInvestigationANC.getCreatedBy(),
 							wrapperBenInvestigationANC.getExternalInvestigations());
 
-					createdBy = wrapperBenInvestigationANC.getCreatedBy();
+					// bvID = wrapperBenInvestigationANC.getBenVisitID();
 
 					wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
 					investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
@@ -1103,45 +1108,38 @@ public class NCDCareServiceImpl implements NCDCareService {
 				investigationSuccessFlag = new Long(1);
 			}
 
+
 			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
 				NCDCareDiagnosis ncdCareDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
 						NCDCareDiagnosis.class);
-				if (null == prescriptionID) {
-					PrescriptionDetail prescriptionDetail = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
-							PrescriptionDetail.class);
-					prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
-				}
 				diagnosisSuccessFlag = ncdCareDoctorServiceImpl.updateBenNCDCareDiagnosis(ncdCareDiagnosis,
-						prescriptionID);
+						null);
 			} else {
 				diagnosisSuccessFlag = 1;
 			}
 
 			if (requestOBJ.has("prescription") && !requestOBJ.get("prescription").isJsonNull()) {
 				JsonObject tmpOBJ = requestOBJ.get("prescription").getAsJsonObject();
-
-				if (tmpOBJ.has("prescribedDrugs") && !tmpOBJ.get("prescribedDrugs").isJsonNull()) {
-					if (null == prescriptionID) {
-						PrescriptionDetail prescriptionDetail = InputMapper.gson().fromJson(tmpOBJ,
-								PrescriptionDetail.class);
-						prescriptionID = commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
-								prescriptionDetail.getBeneficiaryRegID(), prescriptionDetail.getBenVisitID(),
-								prescriptionDetail.getProviderServiceMapID(), prescriptionDetail.getCreatedBy(),
-								prescriptionDetail.getExternalInvestigation());
-					}
+				if (null != tmpOBJ && tmpOBJ.has("prescribedDrugs") && !tmpOBJ.get("prescribedDrugs").isJsonNull()) {
 					PrescribedDrugDetail[] prescribedDrugDetail = InputMapper.gson()
 							.fromJson(tmpOBJ.get("prescribedDrugs"), PrescribedDrugDetail[].class);
 
 					List<PrescribedDrugDetail> prescribedDrugDetailList = Arrays.asList(prescribedDrugDetail);
 
-					if (prescribedDrugDetailList.size() > 0) {
+					if (prescribedDrugDetailList.size() > 0 && prescribedDrugDetailList.get(0).getDrug() != null) {
+						if (prescriptionID == null) {
+							prescriptionID = commonNurseServiceImpl.saveBeneficiaryPrescription(tmpOBJ);
+						}
 						for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
 							tmpObj.setPrescriptionID(prescriptionID);
-							tmpObj.setCreatedBy(createdBy);
+							// tmpObj.setCreatedBy(createdBy);
 							if (tmpOBJ.has("beneficiaryRegID") && null != tmpOBJ.get("beneficiaryRegID"))
 								tmpObj.setBeneficiaryRegID(tmpOBJ.get("beneficiaryRegID").getAsLong());
 							if (tmpOBJ.has("benVisitID") && null != tmpOBJ.get("benVisitID"))
 								tmpObj.setBenVisitID(tmpOBJ.get("benVisitID").getAsLong());
+							if (tmpOBJ.has("createdBy") && null != tmpOBJ.get("createdBy"))
+								tmpObj.setCreatedBy(tmpOBJ.get("createdBy").getAsString());
+
 							Map<String, String> drug = tmpObj.getDrug();
 							if (null != drug && drug.size() > 0 && drug.containsKey("drugID")
 									&& drug.containsKey("drugDisplayName")) {
@@ -1157,6 +1155,8 @@ public class NCDCareServiceImpl implements NCDCareService {
 					} else {
 						prescriptionSuccessFlag = 1;
 					}
+				} else {
+					prescriptionSuccessFlag = 1;
 				}
 			} else {
 				prescriptionSuccessFlag = 1;

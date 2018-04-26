@@ -1,5 +1,6 @@
 package com.iemr.mmu.service.generalOPD;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -1346,6 +1347,26 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		String createdBy = null;
 		if (requestOBJ != null) {
 
+			JsonArray testList = null;
+			JsonArray drugList = null;
+
+			Boolean isTestPrescribed = false;
+			Boolean isMedicinePrescribed = false;
+
+			if (requestOBJ.has("investigation")) {
+				testList = requestOBJ.getAsJsonObject("investigation").getAsJsonArray("laboratoryList");
+				if (testList != null && !testList.isJsonNull() && testList.size() > 0)
+					isTestPrescribed = true;
+			}
+			if (requestOBJ.has("prescription")) {
+				drugList = requestOBJ.getAsJsonObject("prescription").getAsJsonArray("prescribedDrugs");
+				if (drugList != null && !drugList.isJsonNull() && drugList.size() > 0) {
+					JsonObject tmp = drugList.get(0).getAsJsonObject();
+					if (tmp.get("drug") != null && !tmp.get("drug").isJsonNull())
+						isMedicinePrescribed = true;
+				}
+			}
+
 			if (requestOBJ.has("findings") && !requestOBJ.get("findings").isJsonNull()) {
 
 				WrapperAncFindings wrapperAncFindings = InputMapper.gson().fromJson(requestOBJ.get("findings"),
@@ -1376,28 +1397,21 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				diagnosisSuccessFlag = 1;
 			}
 
-			// Fetch Benficiary details to check/create prescription existence
-			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull()) {
+			WrapperBenInvestigationANC wrapperBenInvestigationANCTMP = InputMapper.gson()
+					.fromJson(requestOBJ.get("investigation"), WrapperBenInvestigationANC.class);
+			prescriptionDetail.setExternalInvestigation(wrapperBenInvestigationANCTMP.getExternalInvestigations());
+
+			if (isTestPrescribed == true || isMedicinePrescribed == true) {
+				prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
+			} else {
+				int i = generalOPDDoctorServiceImpl.updateBenGeneralOPDDiagnosis(prescriptionDetail);
+			}
+
+			if (isTestPrescribed == true) {
 				WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
 						.fromJson(requestOBJ.get("investigation"), WrapperBenInvestigationANC.class);
 
 				if (wrapperBenInvestigationANC != null) {
-					if (null == prescriptionDetail) {
-						prescriptionDetail = InputMapper.gson().fromJson(requestOBJ.get("investigation"),
-								PrescriptionDetail.class);
-					}
-					if (diagnosisSuccessFlag == 1) {
-						PrescriptionDetail latestPrescription = commonDoctorServiceImpl.getLatestPrescription(
-								wrapperBenInvestigationANC.getBeneficiaryRegID(),
-								wrapperBenInvestigationANC.getBenVisitID());
-						prescriptionDetail.setDiagnosisProvided(latestPrescription.getDiagnosisProvided());
-						prescriptionDetail.setInstruction(latestPrescription.getInstruction());
-					}
-					prescriptionDetail.setExternalInvestigation(wrapperBenInvestigationANC.getExternalInvestigations());
-					prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
-
-					createdBy = wrapperBenInvestigationANC.getCreatedBy();
-
 					wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
 					investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
 				}
@@ -1405,57 +1419,40 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				investigationSuccessFlag = new Long(1);
 			}
 
-			if (requestOBJ.has("prescription") && !requestOBJ.get("prescription").isJsonNull()) {
+			if (isMedicinePrescribed == true) {
 				JsonObject tmpOBJ = requestOBJ.get("prescription").getAsJsonObject();
 
-				Long beneficiaryRegID = null;
-				Long benVisitID = null;
+				PrescribedDrugDetail[] prescribedDrugDetail = InputMapper.gson().fromJson(tmpOBJ.get("prescribedDrugs"),
+						PrescribedDrugDetail[].class);
 
-				if (tmpOBJ.has("beneficiaryRegID") && null != tmpOBJ.get("beneficiaryRegID"))
-					beneficiaryRegID = tmpOBJ.get("beneficiaryRegID").getAsLong();
-				if (tmpOBJ.has("benVisitID") && null != tmpOBJ.get("benVisitID"))
-					benVisitID = tmpOBJ.get("benVisitID").getAsLong();
+				List<PrescribedDrugDetail> prescribedDrugDetailList = Arrays.asList(prescribedDrugDetail);
 
-				if (tmpOBJ.has("prescribedDrugs") && !tmpOBJ.get("prescribedDrugs").isJsonNull()) {
-					if (null == prescriptionID) {
-						if (null == prescriptionDetail) {
-							prescriptionDetail = InputMapper.gson().fromJson(tmpOBJ, PrescriptionDetail.class);
+				if (prescribedDrugDetailList.size() > 0) {
+					for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
+						tmpObj.setPrescriptionID(prescriptionID);
+						// tmpObj.setCreatedBy(createdBy);
+						if (tmpOBJ.has("createdBy") && null != tmpOBJ.get("createdBy"))
+							tmpObj.setCreatedBy(tmpOBJ.get("createdBy").getAsString());
+						if (tmpOBJ.has("beneficiaryRegID") && null != tmpOBJ.get("beneficiaryRegID"))
+							tmpObj.setBeneficiaryRegID(tmpOBJ.get("beneficiaryRegID").getAsLong());
+						if (tmpOBJ.has("benVisitID") && null != tmpOBJ.get("benVisitID"))
+							tmpObj.setBenVisitID(tmpOBJ.get("benVisitID").getAsLong());
+						Map<String, String> drug = tmpObj.getDrug();
+						if (null != drug && drug.size() > 0 && drug.containsKey("drugID")
+								&& drug.containsKey("drugDisplayName")) {
+							tmpObj.setDrugID(Integer.parseInt(drug.get("drugID")));
+							tmpObj.setGenericDrugName(drug.get("drugDisplayName"));
 						}
-						if (diagnosisSuccessFlag == 1) {
-							PrescriptionDetail latestPrescription = commonDoctorServiceImpl
-									.getLatestPrescription(beneficiaryRegID, benVisitID);
-							prescriptionDetail.setDiagnosisProvided(latestPrescription.getDiagnosisProvided());
-							prescriptionDetail.setInstruction(latestPrescription.getInstruction());
-						}
-						prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
 					}
-					PrescribedDrugDetail[] prescribedDrugDetail = InputMapper.gson()
-							.fromJson(tmpOBJ.get("prescribedDrugs"), PrescribedDrugDetail[].class);
-
-					List<PrescribedDrugDetail> prescribedDrugDetailList = Arrays.asList(prescribedDrugDetail);
-
-					if (prescribedDrugDetailList.size() > 0) {
-						for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
-							tmpObj.setPrescriptionID(prescriptionID);
-							tmpObj.setCreatedBy(createdBy);
-							tmpObj.setBeneficiaryRegID(beneficiaryRegID);
-							tmpObj.setBenVisitID(benVisitID);
-							Map<String, String> drug = tmpObj.getDrug();
-							if (null != drug && drug.size() > 0 && drug.containsKey("drugID")
-									&& drug.containsKey("drugDisplayName")) {
-								tmpObj.setDrugID(Integer.parseInt(drug.get("drugID")));
-								tmpObj.setGenericDrugName(drug.get("drugDisplayName"));
-							}
-						}
-						Integer r = commonNurseServiceImpl.saveBenPrescribedDrugsList(prescribedDrugDetailList);
-						if (r > 0 && r != null) {
-							prescriptionSuccessFlag = r;
-						}
-
-					} else {
-						prescriptionSuccessFlag = 1;
+					Integer r = commonNurseServiceImpl.saveBenPrescribedDrugsList(prescribedDrugDetailList);
+					if (r > 0 && r != null) {
+						prescriptionSuccessFlag = r;
 					}
+
+				} else {
+					prescriptionSuccessFlag = 1;
 				}
+
 			} else {
 				prescriptionSuccessFlag = 1;
 			}

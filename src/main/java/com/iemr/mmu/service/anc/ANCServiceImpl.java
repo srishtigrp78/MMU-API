@@ -42,7 +42,6 @@ import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
-import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
@@ -1174,6 +1173,8 @@ public class ANCServiceImpl implements ANCService {
 					BenMedHistory.class);
 			pastHistorySuccessFlag = commonNurseServiceImpl.updateBenPastHistoryDetails(benMedHistory);
 
+		} else {
+			pastHistorySuccessFlag = 1;
 		}
 
 		// Update Comorbidity/concurrent Conditions
@@ -1182,6 +1183,8 @@ public class ANCServiceImpl implements ANCService {
 			WrapperComorbidCondDetails wrapperComorbidCondDetails = InputMapper.gson()
 					.fromJson(ancHistoryOBJ.get("comorbidConditions"), WrapperComorbidCondDetails.class);
 			comrbidSuccessFlag = commonNurseServiceImpl.updateBenComorbidConditions(wrapperComorbidCondDetails);
+		} else {
+			comrbidSuccessFlag = 1;
 		}
 
 		// Update Medication History
@@ -1190,6 +1193,8 @@ public class ANCServiceImpl implements ANCService {
 			WrapperMedicationHistory wrapperMedicationHistory = InputMapper.gson()
 					.fromJson(ancHistoryOBJ.get("medicationHistory"), WrapperMedicationHistory.class);
 			medicationSuccessFlag = commonNurseServiceImpl.updateBenMedicationHistory(wrapperMedicationHistory);
+		} else {
+			medicationSuccessFlag = 1;
 		}
 		// Update Personal History
 		if (ancHistoryOBJ != null && ancHistoryOBJ.has("personalHistory")
@@ -1205,6 +1210,9 @@ public class ANCServiceImpl implements ANCService {
 					BenAllergyHistory.class);
 			allergyHistorySuccessFlag = commonNurseServiceImpl.updateBenAllergicHistory(benAllergyHistory);
 
+		} else {
+			personalHistorySuccessFlag = 1;
+			allergyHistorySuccessFlag = 1;
 		}
 
 		// Update Family History
@@ -1213,6 +1221,8 @@ public class ANCServiceImpl implements ANCService {
 			BenFamilyHistory benFamilyHistory = InputMapper.gson().fromJson(ancHistoryOBJ.get("familyHistory"),
 					BenFamilyHistory.class);
 			familyHistorySuccessFlag = commonNurseServiceImpl.updateBenFamilyHistory(benFamilyHistory);
+		} else {
+			familyHistorySuccessFlag = 1;
 		}
 
 		// Update Menstrual History
@@ -1221,6 +1231,8 @@ public class ANCServiceImpl implements ANCService {
 			BenMenstrualDetails menstrualDetails = InputMapper.gson().fromJson(ancHistoryOBJ.get("menstrualHistory"),
 					BenMenstrualDetails.class);
 			menstrualHistorySuccessFlag = commonNurseServiceImpl.updateMenstrualHistory(menstrualDetails);
+		} else {
+			menstrualHistorySuccessFlag = 1;
 		}
 
 		// Update Past Obstetric History
@@ -1230,6 +1242,8 @@ public class ANCServiceImpl implements ANCService {
 					.fromJson(ancHistoryOBJ.get("femaleObstetricHistory"), WrapperFemaleObstetricHistory.class);
 
 			obstetricSuccessFlag = commonNurseServiceImpl.updatePastObstetricHistory(wrapperFemaleObstetricHistory);
+		} else {
+			obstetricSuccessFlag = 1;
 		}
 
 		/** For Female above 12 yrs old and below 16 years old.. **/
@@ -1453,12 +1467,45 @@ public class ANCServiceImpl implements ANCService {
 				findingSuccessFlag = 1;
 			}
 
-			// Fetch Benficiary details to check/create prescription existence
+			// // Fetch Benficiary details to check/create prescription
+			// existence
+			// if (requestOBJ.has("investigation") &&
+			// !requestOBJ.get("investigation").isJsonNull()) {
+			// WrapperBenInvestigationANC wrapperBenInvestigationANC =
+			// InputMapper.gson()
+			// .fromJson(requestOBJ.get("investigation"),
+			// WrapperBenInvestigationANC.class);
+			//
+			// if (wrapperBenInvestigationANC != null) {
+			// prescriptionID =
+			// commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
+			// wrapperBenInvestigationANC.getBeneficiaryRegID(),
+			// wrapperBenInvestigationANC.getBenVisitID(),
+			// wrapperBenInvestigationANC.getProviderServiceMapID(),
+			// wrapperBenInvestigationANC.getCreatedBy(),
+			// wrapperBenInvestigationANC.getExternalInvestigations());
+			//
+			// createdBy = wrapperBenInvestigationANC.getCreatedBy();
+			//
+			// wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
+			// investigationSuccessFlag =
+			// commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
+			// }
+			// } else {
+			// investigationSuccessFlag = new Long(1);
+			// }
+
+			// new code for investigation update (always new insert if there)
 			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull()) {
 				WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
 						.fromJson(requestOBJ.get("investigation"), WrapperBenInvestigationANC.class);
 
-				if (wrapperBenInvestigationANC != null) {
+				if (wrapperBenInvestigationANC != null
+						&& ((wrapperBenInvestigationANC.getExternalInvestigations() != null
+								&& wrapperBenInvestigationANC.getExternalInvestigations().length() > 0)
+								|| (wrapperBenInvestigationANC.getLaboratoryList() != null
+										&& wrapperBenInvestigationANC.getLaboratoryList().size() > 0))) {
+
 					prescriptionID = commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
 							wrapperBenInvestigationANC.getBeneficiaryRegID(),
 							wrapperBenInvestigationANC.getBenVisitID(),
@@ -1466,7 +1513,7 @@ public class ANCServiceImpl implements ANCService {
 							wrapperBenInvestigationANC.getCreatedBy(),
 							wrapperBenInvestigationANC.getExternalInvestigations());
 
-					createdBy = wrapperBenInvestigationANC.getCreatedBy();
+					// bvID = wrapperBenInvestigationANC.getBenVisitID();
 
 					wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
 					investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
@@ -1478,41 +1525,34 @@ public class ANCServiceImpl implements ANCService {
 			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
 				ANCDiagnosis ancDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
 						ANCDiagnosis.class);
-				if (null == prescriptionID) {
-					PrescriptionDetail prescriptionDetail = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
-							PrescriptionDetail.class);
-					prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
-				}
-				diagnosisSuccessFlag = ancDoctorServiceImpl.updateBenANCDiagnosis(ancDiagnosis, prescriptionID);
+
+				diagnosisSuccessFlag = ancDoctorServiceImpl.updateBenANCDiagnosis(ancDiagnosis, null);
 			} else {
 				diagnosisSuccessFlag = 1;
 			}
 
 			if (requestOBJ.has("prescription") && !requestOBJ.get("prescription").isJsonNull()) {
 				JsonObject tmpOBJ = requestOBJ.get("prescription").getAsJsonObject();
-
-				if (tmpOBJ.has("prescribedDrugs") && !tmpOBJ.get("prescribedDrugs").isJsonNull()) {
-					if (null == prescriptionID) {
-						PrescriptionDetail prescriptionDetail = InputMapper.gson().fromJson(tmpOBJ,
-								PrescriptionDetail.class);
-						prescriptionID = commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
-								prescriptionDetail.getBeneficiaryRegID(), prescriptionDetail.getBenVisitID(),
-								prescriptionDetail.getProviderServiceMapID(), prescriptionDetail.getCreatedBy(),
-								prescriptionDetail.getExternalInvestigation());
-					}
+				if (null != tmpOBJ && tmpOBJ.has("prescribedDrugs") && !tmpOBJ.get("prescribedDrugs").isJsonNull()) {
 					PrescribedDrugDetail[] prescribedDrugDetail = InputMapper.gson()
 							.fromJson(tmpOBJ.get("prescribedDrugs"), PrescribedDrugDetail[].class);
 
 					List<PrescribedDrugDetail> prescribedDrugDetailList = Arrays.asList(prescribedDrugDetail);
 
-					if (prescribedDrugDetailList.size() > 0) {
+					if (prescribedDrugDetailList.size() > 0 && prescribedDrugDetailList.get(0).getDrug() != null) {
+						if (prescriptionID == null) {
+							prescriptionID = commonNurseServiceImpl.saveBeneficiaryPrescription(tmpOBJ);
+						}
 						for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
 							tmpObj.setPrescriptionID(prescriptionID);
-							tmpObj.setCreatedBy(createdBy);
+							// tmpObj.setCreatedBy(createdBy);
 							if (tmpOBJ.has("beneficiaryRegID") && null != tmpOBJ.get("beneficiaryRegID"))
 								tmpObj.setBeneficiaryRegID(tmpOBJ.get("beneficiaryRegID").getAsLong());
 							if (tmpOBJ.has("benVisitID") && null != tmpOBJ.get("benVisitID"))
 								tmpObj.setBenVisitID(tmpOBJ.get("benVisitID").getAsLong());
+							if (tmpOBJ.has("createdBy") && null != tmpOBJ.get("createdBy"))
+								tmpObj.setCreatedBy(tmpOBJ.get("createdBy").getAsString());
+
 							Map<String, String> drug = tmpObj.getDrug();
 							if (null != drug && drug.size() > 0 && drug.containsKey("drugID")
 									&& drug.containsKey("drugDisplayName")) {
@@ -1528,6 +1568,8 @@ public class ANCServiceImpl implements ANCService {
 					} else {
 						prescriptionSuccessFlag = 1;
 					}
+				} else {
+					prescriptionSuccessFlag = 1;
 				}
 			} else {
 				prescriptionSuccessFlag = 1;
@@ -1544,6 +1586,7 @@ public class ANCServiceImpl implements ANCService {
 					&& (investigationSuccessFlag != null && investigationSuccessFlag > 0)
 					&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
+
 				updateSuccessFlag = investigationSuccessFlag;
 			}
 		} else {

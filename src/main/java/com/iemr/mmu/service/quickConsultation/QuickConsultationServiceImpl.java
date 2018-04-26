@@ -448,31 +448,55 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	@Transactional(rollbackFor = Exception.class)
 	public Long updateGeneralOPDQCDoctorData(JsonObject quickConsultDoctorOBJ) throws Exception {
 		Long updateSuccessFlag = null;
+		Long prescriptionID = null;
 		Long benChiefComplaintID = saveBeneficiaryChiefComplaint(quickConsultDoctorOBJ);
 		Integer clinicalObservationID = updateBeneficiaryClinicalObservations(quickConsultDoctorOBJ);
-		Long prescriptionID = commonNurseServiceImpl.saveBeneficiaryPrescription(quickConsultDoctorOBJ);
+
+		JsonArray testList = null;
+		JsonArray drugList = null;
+
+		Boolean isTestPrescribed = false;
+		Boolean isMedicinePrescribed = false;
+
+		if (quickConsultDoctorOBJ.has("labTestOrders")) {
+			testList = quickConsultDoctorOBJ.getAsJsonArray("laboratoryList");
+			if (testList != null && !testList.isJsonNull() && testList.size() > 0)
+				isTestPrescribed = true;
+		}
+		if (quickConsultDoctorOBJ.has("prescribedDrugs")) {
+			drugList = quickConsultDoctorOBJ.getAsJsonArray("prescribedDrugs");
+			if (drugList != null && !drugList.isJsonNull() && drugList.size() > 0) {
+				JsonObject tmp = drugList.get(0).getAsJsonObject();
+				if (tmp.get("drug") != null && !tmp.get("drug").isJsonNull())
+					isMedicinePrescribed = true;
+			}
+		}
+
+		PrescriptionDetail prescriptionDetail = InputMapper.gson().fromJson(quickConsultDoctorOBJ,
+				PrescriptionDetail.class);
+
+		if (isTestPrescribed == true || isMedicinePrescribed == true) {
+			prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
+		} else {
+			int i = generalOPDDoctorServiceImpl.updateBenGeneralOPDDiagnosis(prescriptionDetail);
+		}
 
 		Long prescribedDrugSuccessFlag = null;
 		Long labTestOrderSuccessFlag = null;
 
-		if (prescriptionID != null && prescriptionID > 0) {
-
-			if (quickConsultDoctorOBJ.has("prescribedDrugs")
-					&& !quickConsultDoctorOBJ.get("prescribedDrugs").isJsonNull()) {
-				prescribedDrugSuccessFlag = saveBeneficiaryPrescribedDrugDetail(quickConsultDoctorOBJ, prescriptionID);
-			} else {
-				prescribedDrugSuccessFlag = new Long(1);
-			}
-
-			if (quickConsultDoctorOBJ.has("labTestOrders") && !quickConsultDoctorOBJ.get("labTestOrders").isJsonNull()
-					&& quickConsultDoctorOBJ.getAsJsonArray("labTestOrders").size() > 0) {
-				labTestOrderSuccessFlag = commonNurseServiceImpl
-						.saveBeneficiaryLabTestOrderDetails(quickConsultDoctorOBJ, prescriptionID);
-			} else {
-				labTestOrderSuccessFlag = new Long(1);
-			}
-
+		if (isMedicinePrescribed == true) {
+			prescribedDrugSuccessFlag = saveBeneficiaryPrescribedDrugDetail(quickConsultDoctorOBJ, prescriptionID);
+		} else {
+			prescribedDrugSuccessFlag = new Long(1);
 		}
+
+		if (isTestPrescribed == true) {
+			labTestOrderSuccessFlag = commonNurseServiceImpl.saveBeneficiaryLabTestOrderDetails(quickConsultDoctorOBJ,
+					prescriptionID);
+		} else {
+			labTestOrderSuccessFlag = new Long(1);
+		}
+
 		if ((null != benChiefComplaintID && benChiefComplaintID > 0)
 				&& (null != clinicalObservationID && clinicalObservationID > 0)
 				&& (prescriptionID != null && prescriptionID > 0)
