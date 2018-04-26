@@ -245,6 +245,8 @@ public class ANCServiceImpl implements ANCService {
 
 					wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
 					investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
+				}else{
+					investigationSuccessFlag = new Long(1);
 				}
 			} else {
 				investigationSuccessFlag = new Long(1);
@@ -1475,6 +1477,8 @@ public class ANCServiceImpl implements ANCService {
 
 					wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
 					investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
+				}else{
+					investigationSuccessFlag = new Long(1);
 				}
 			} else {
 				investigationSuccessFlag = new Long(1);

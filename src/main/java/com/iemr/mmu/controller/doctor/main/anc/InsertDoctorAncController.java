@@ -43,6 +43,7 @@ public class InsertDoctorAncController {
 		this.ancServiceImpl = ancServiceImpl;
 	}
 
+	@Deprecated
 	@CrossOrigin
 	@ApiOperation(value = "Save doc anc Findings details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/anc/caseRecord/findings" }, method = { RequestMethod.POST })
@@ -104,6 +105,7 @@ public class InsertDoctorAncController {
 	}
 
 	/** New screen for ANC **/
+	@Deprecated
 	@CrossOrigin
 	@ApiOperation(value = "save Beneficiary ANC Diagnosis", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/anc/caseRecord/ancDiagnosis" }, method = { RequestMethod.POST })
@@ -162,6 +164,7 @@ public class InsertDoctorAncController {
 		return response.toString();
 	}
 
+	@Deprecated
 	@CrossOrigin
 	@ApiOperation(value = "save Beneficiary ANC Prescription", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/anc/caseRecord/prescription" }, method = { RequestMethod.POST })

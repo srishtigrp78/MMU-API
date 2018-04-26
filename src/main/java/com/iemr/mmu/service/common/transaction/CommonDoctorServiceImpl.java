@@ -409,6 +409,8 @@ public class CommonDoctorServiceImpl {
 			}
 			chiefCmpltsRes = updateDoctorBenChiefComplaints(tmpBenCHiefComplaintsTMP);
 
+		}else{
+			chiefCmpltsRes = 1;
 		}
 		if (clinObsrvtnsRes > 0 && chiefCmpltsRes > 0) {
 			updateFindingsRes = 1;

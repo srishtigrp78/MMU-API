@@ -386,7 +386,7 @@ public class BenAllergyHistory {
 					benAllergyHistory.setOtherAllergicReaction(allergic.get("otherAllergicReaction").toString());
 				}
 
-				if (allergyType != null)
+				if (benAllergyHistory.getAllergyType() != null)
 					benAllergyHistoryList.add(benAllergyHistory);
 			}
 		} else {

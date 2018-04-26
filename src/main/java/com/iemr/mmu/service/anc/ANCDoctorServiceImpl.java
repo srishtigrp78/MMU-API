@@ -195,6 +195,7 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 		return r;
 	}
 
+	@Deprecated
 	/* Method moved to common service, Can remove from here */
 	public String updateBenVisitStatusFlag(Long benVisitID, String c) {
 		return doctorServiceImpl.updateBenStatus(benVisitID, c);
@@ -227,7 +228,7 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 					ancDiagnosis.getHighRiskCondition(), ancDiagnosis.getComplicationOfCurrentPregnancy(),
 					ancDiagnosis.getIsMaternalDeath(), ancDiagnosis.getPlaceOfDeath(), ancDiagnosis.getDateOfDeath(),
 					ancDiagnosis.getCauseOfDeath(), ancDiagnosis.getModifiedBy(), processed,
-					ancDiagnosis.getBeneficiaryRegID(), ancDiagnosis.getBenVisitID(), ancDiagnosis.getPrescriptionID());
+					ancDiagnosis.getBeneficiaryRegID(), ancDiagnosis.getBenVisitID());
 		} else {
 			ancDiagnosis.setPrescriptionID(prescriptionID);
 			ANCDiagnosis ancDiagnosisRes = ancDiagnosisRepo.save(ancDiagnosis);
