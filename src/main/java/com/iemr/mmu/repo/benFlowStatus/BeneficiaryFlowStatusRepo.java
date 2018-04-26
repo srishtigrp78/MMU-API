@@ -62,14 +62,29 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			@Param("benRegID") Long benRegID, @Param("benID") Long benID, @Param("benVisitID") Long benVisitID,
 			@Param("docFlag") Short docFlag, @Param("pharmaFlag") Short pharmaFlag,
 			@Param("oncologistFlag") Short oncologistFlag);
-	
+
+	@Transactional
+	@Modifying
+	@Query("UPDATE BeneficiaryFlowStatus t set t.doctorFlag = :docFlag , t.pharmacist_flag = :pharmaFlag, "
+			+ " t.oncologist_flag = :oncologistFlag " + " WHERE t.benFlowID = :benFlowID AND "
+			+ " t.beneficiaryRegID = :benRegID AND t.beneficiaryID = :benID AND t.benVisitID = :benVisitID ")
+	public int updateBenFlowStatusAfterDoctorActivityUpdate(@Param("benFlowID") Long benFlowID,
+			@Param("benRegID") Long benRegID, @Param("benID") Long benID, @Param("benVisitID") Long benVisitID,
+			@Param("docFlag") Short docFlag, @Param("pharmaFlag") Short pharmaFlag,
+			@Param("oncologistFlag") Short oncologistFlag);
+
 	@Query("SELECT t from BeneficiaryFlowStatus t WHERE t.radiologist_flag = 1")
 	public ArrayList<BeneficiaryFlowStatus> getRadiologistWorkListNew();
-	
+
 	@Query("SELECT t from BeneficiaryFlowStatus t WHERE t.oncologist_flag = 1")
 	public ArrayList<BeneficiaryFlowStatus> getOncologistWorkListNew();
-	
+
 	@Query("SELECT t from BeneficiaryFlowStatus t WHERE t.pharmacist_flag = 1")
 	public ArrayList<BeneficiaryFlowStatus> getPharmaWorkListNew();
+	
+	@Query("SELECT t.pharmacist_flag from BeneficiaryFlowStatus t WHERE t.benFlowID = :benFlowID")
+	public Short getPharmaFlag(@Param("benFlowID") Long benFlowID);
+	
+	
 
 }

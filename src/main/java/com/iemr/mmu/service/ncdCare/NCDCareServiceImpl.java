@@ -33,7 +33,6 @@ import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
-import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
@@ -725,7 +724,6 @@ public class NCDCareServiceImpl implements NCDCareService {
 				prescriptionSuccessFlag = 1;
 			}
 
-
 			if (requestOBJ.has("refer") && !requestOBJ.get("refer").isJsonNull()) {
 				referSaveSuccessFlag = commonDoctorServiceImpl
 						.saveBenReferDetails(requestOBJ.get("refer").getAsJsonObject());
@@ -1071,6 +1069,15 @@ public class NCDCareServiceImpl implements NCDCareService {
 		String createdBy = null;
 		if (requestOBJ != null) {
 
+			JsonArray testList = null;
+			JsonArray drugList = null;
+			if (requestOBJ.has("investigation")) {
+				testList = requestOBJ.getAsJsonObject("investigation").getAsJsonArray("laboratoryList");
+			}
+			if (requestOBJ.has("prescription")) {
+				drugList = requestOBJ.getAsJsonObject("prescription").getAsJsonArray("prescribedDrugs");
+			}
+
 			if (requestOBJ.has("findings") && !requestOBJ.get("findings").isJsonNull()) {
 
 				WrapperAncFindings wrapperAncFindings = InputMapper.gson().fromJson(requestOBJ.get("findings"),
@@ -1108,12 +1115,10 @@ public class NCDCareServiceImpl implements NCDCareService {
 				investigationSuccessFlag = new Long(1);
 			}
 
-
 			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
 				NCDCareDiagnosis ncdCareDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
 						NCDCareDiagnosis.class);
-				diagnosisSuccessFlag = ncdCareDoctorServiceImpl.updateBenNCDCareDiagnosis(ncdCareDiagnosis,
-						null);
+				diagnosisSuccessFlag = ncdCareDoctorServiceImpl.updateBenNCDCareDiagnosis(ncdCareDiagnosis, null);
 			} else {
 				diagnosisSuccessFlag = 1;
 			}
@@ -1173,6 +1178,38 @@ public class NCDCareServiceImpl implements NCDCareService {
 					&& (investigationSuccessFlag != null && investigationSuccessFlag > 0)
 					&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
+
+				// New code for ben fow logic
+				short pharmaFalg;
+				short docFlag;
+				short labFalg;
+
+				Long tmpBenFlowID = requestOBJ.get("benFlowID").getAsLong();
+				Long tmpBeneficiaryID = requestOBJ.get("beneficiaryID").getAsLong();
+				Long tmpBenVisitID = requestOBJ.getAsJsonObject("diagnosis").get("benVisitID").getAsLong();
+				Long tmpbeneficiaryRegID = requestOBJ.getAsJsonObject("diagnosis").get("beneficiaryRegID").getAsLong();
+
+				// new logic on 25-04-2018
+				if (testList != null && !testList.isJsonNull() && testList.size() > 0) {
+					docFlag = (short) 2;
+				} else {
+					docFlag = (short) 9;
+
+				}
+
+				if (drugList != null && !drugList.isJsonNull() && drugList.size() > 0) {
+					JsonObject firstDrugDetails = drugList.get(0).getAsJsonObject();
+					if (firstDrugDetails.get("drug") == null || firstDrugDetails.get("drug").isJsonNull())
+						pharmaFalg = (short) 0;
+					else
+						pharmaFalg = (short) 1;
+				} else {
+					pharmaFalg = (short) 0;
+				}
+
+				int l = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdate(tmpBenFlowID,
+						tmpbeneficiaryRegID, tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
+
 				updateSuccessFlag = investigationSuccessFlag;
 			}
 		} else {

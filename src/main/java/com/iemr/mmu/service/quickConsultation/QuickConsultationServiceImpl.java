@@ -503,6 +503,37 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 				&& (null != prescribedDrugSuccessFlag && prescribedDrugSuccessFlag > 0)
 				&& (null != labTestOrderSuccessFlag && labTestOrderSuccessFlag > 0)) {
 
+			// New code for ben fow logic
+			short pharmaFalg;
+			short docFlag;
+			short labFalg;
+
+			Long tmpBenFlowID = quickConsultDoctorOBJ.get("benFlowID").getAsLong();
+			Long tmpBeneficiaryID = quickConsultDoctorOBJ.get("beneficiaryID").getAsLong();
+			Long tmpBenVisitID = quickConsultDoctorOBJ.get("benVisitID").getAsLong();
+			Long tmpbeneficiaryRegID = quickConsultDoctorOBJ.get("beneficiaryRegID").getAsLong();
+
+			// new logic on 25-04-2018
+			if (testList != null && !testList.isJsonNull() && testList.size() > 0) {
+				docFlag = (short) 2;
+			} else {
+				docFlag = (short) 9;
+
+			}
+
+			if (drugList != null && !drugList.isJsonNull() && drugList.size() > 0) {
+				JsonObject firstDrugDetails = drugList.get(0).getAsJsonObject();
+				if (firstDrugDetails.get("drug") == null || firstDrugDetails.get("drug").isJsonNull())
+					pharmaFalg = (short) 0;
+				else
+					pharmaFalg = (short) 1;
+			} else {
+				pharmaFalg = (short) 0;
+			}
+
+			int l = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdate(tmpBenFlowID, tmpbeneficiaryRegID,
+					tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
+
 			updateSuccessFlag = benChiefComplaintID;
 		}
 

@@ -42,7 +42,6 @@ import com.iemr.mmu.data.pnc.PNCCare;
 import com.iemr.mmu.data.pnc.PNCDiagnosis;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
-import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
@@ -1319,6 +1318,15 @@ public class PNCServiceImpl implements PNCService {
 		String createdBy = null;
 		if (requestOBJ != null) {
 
+			JsonArray testList = null;
+			JsonArray drugList = null;
+			if (requestOBJ.has("investigation")) {
+				testList = requestOBJ.getAsJsonObject("investigation").getAsJsonArray("laboratoryList");
+			}
+			if (requestOBJ.has("prescription")) {
+				drugList = requestOBJ.getAsJsonObject("prescription").getAsJsonArray("prescribedDrugs");
+			}
+
 			if (requestOBJ.has("findings") && !requestOBJ.get("findings").isJsonNull()) {
 
 				WrapperAncFindings wrapperAncFindings = InputMapper.gson().fromJson(requestOBJ.get("findings"),
@@ -1419,6 +1427,38 @@ public class PNCServiceImpl implements PNCService {
 					&& (investigationSuccessFlag != null && investigationSuccessFlag > 0)
 					&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
+
+				// New code for ben fow logic
+				short pharmaFalg;
+				short docFlag;
+				short labFalg;
+
+				Long tmpBenFlowID = requestOBJ.get("benFlowID").getAsLong();
+				Long tmpBeneficiaryID = requestOBJ.get("beneficiaryID").getAsLong();
+				Long tmpBenVisitID = requestOBJ.getAsJsonObject("diagnosis").get("benVisitID").getAsLong();
+				Long tmpbeneficiaryRegID = requestOBJ.getAsJsonObject("diagnosis").get("beneficiaryRegID").getAsLong();
+
+				// new logic on 25-04-2018
+				if (testList != null && !testList.isJsonNull() && testList.size() > 0) {
+					docFlag = (short) 2;
+				} else {
+					docFlag = (short) 9;
+
+				}
+
+				if (drugList != null && !drugList.isJsonNull() && drugList.size() > 0) {
+					JsonObject firstDrugDetails = drugList.get(0).getAsJsonObject();
+					if (firstDrugDetails.get("drug") == null || firstDrugDetails.get("drug").isJsonNull())
+						pharmaFalg = (short) 0;
+					else
+						pharmaFalg = (short) 1;
+				} else {
+					pharmaFalg = (short) 0;
+				}
+
+				int l = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdate(tmpBenFlowID,
+						tmpbeneficiaryRegID, tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
+
 				updateSuccessFlag = investigationSuccessFlag;
 			}
 		} else {

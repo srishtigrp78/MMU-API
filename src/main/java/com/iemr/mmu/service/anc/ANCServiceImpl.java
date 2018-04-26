@@ -341,60 +341,9 @@ public class ANCServiceImpl implements ANCService {
 					pharmaFalg = (short) 0;
 				}
 
-				// old logic above is the new one
-
-				// if (testList != null && !testList.isJsonNull() &&
-				// testList.size() > 0 && drugList != null
-				// && !drugList.isJsonNull() && drugList.size() > 0) {
-				// if (drugList.get(0) != null && !drugList.get(0).isJsonNull())
-				// {
-				// JsonObject firstDrugDetails =
-				// drugList.get(0).getAsJsonObject();
-				// if (firstDrugDetails.get("drug") == null ||
-				// firstDrugDetails.get("drug").isJsonNull()) {
-				// // drug not prescribed
-				// pharmaFalg = (short) 0;
-				// } else {
-				// pharmaFalg = (short) 1;
-				// }
-				//
-				// } else {
-				// pharmaFalg = (short) 0;
-				// }
-				//
-				// docFlag = (short) 2;
-				//
-				// } else {
-				// // either lab or drug or both no prescribed
-				// if (drugList.get(0) != null && !drugList.get(0).isJsonNull())
-				// {
-				// JsonObject firstDrugDetails =
-				// drugList.get(0).getAsJsonObject();
-				// if (firstDrugDetails.get("drug") == null ||
-				// firstDrugDetails.get("drug").isJsonNull()) {
-				// // drug not prescribed
-				// pharmaFalg = (short) 0;
-				// } else {
-				// pharmaFalg = (short) 1;
-				// }
-				//
-				// } else {
-				// pharmaFalg = (short) 0;
-				// }
-				//
-				// docFlag = (short) 9;
-				//
-				// }
-
 				int l = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
 						tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
 
-				// End of new code
-
-				// Old code for ben flow
-				// String s =
-				// commonNurseServiceImpl.updateBenVisitStatusFlag(bvID, "D");
-				// if (s != null && s.length() > 0)
 				saveSuccessFlag = diagnosisSuccessFlag;
 			}
 		} else {
@@ -1457,6 +1406,15 @@ public class ANCServiceImpl implements ANCService {
 		String createdBy = null;
 		if (requestOBJ != null) {
 
+			JsonArray testList = null;
+			JsonArray drugList = null;
+			if (requestOBJ.has("investigation")) {
+				testList = requestOBJ.getAsJsonObject("investigation").getAsJsonArray("laboratoryList");
+			}
+			if (requestOBJ.has("prescription")) {
+				drugList = requestOBJ.getAsJsonObject("prescription").getAsJsonArray("prescribedDrugs");
+			}
+
 			if (requestOBJ.has("findings") && !requestOBJ.get("findings").isJsonNull()) {
 
 				WrapperAncFindings wrapperAncFindings = InputMapper.gson().fromJson(requestOBJ.get("findings"),
@@ -1586,6 +1544,37 @@ public class ANCServiceImpl implements ANCService {
 					&& (investigationSuccessFlag != null && investigationSuccessFlag > 0)
 					&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
+
+				// New code for ben fow logic
+				short pharmaFalg;
+				short docFlag;
+				short labFalg;
+
+				Long tmpBenFlowID = requestOBJ.get("benFlowID").getAsLong();
+				Long tmpBeneficiaryID = requestOBJ.get("beneficiaryID").getAsLong();
+				Long tmpBenVisitID = requestOBJ.getAsJsonObject("diagnosis").get("benVisitID").getAsLong();
+				Long tmpbeneficiaryRegID = requestOBJ.getAsJsonObject("diagnosis").get("beneficiaryRegID").getAsLong();
+
+				// new logic on 25-04-2018
+				if (testList != null && !testList.isJsonNull() && testList.size() > 0) {
+					docFlag = (short) 2;
+				} else {
+					docFlag = (short) 9;
+
+				}
+
+				if (drugList != null && !drugList.isJsonNull() && drugList.size() > 0) {
+					JsonObject firstDrugDetails = drugList.get(0).getAsJsonObject();
+					if (firstDrugDetails.get("drug") == null || firstDrugDetails.get("drug").isJsonNull())
+						pharmaFalg = (short) 0;
+					else
+						pharmaFalg = (short) 1;
+				} else {
+					pharmaFalg = (short) 0;
+				}
+
+				int l = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdate(tmpBenFlowID, tmpbeneficiaryRegID,
+						tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
 
 				updateSuccessFlag = investigationSuccessFlag;
 			}
