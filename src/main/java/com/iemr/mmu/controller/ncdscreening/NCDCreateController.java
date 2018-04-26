@@ -26,17 +26,17 @@ import io.swagger.annotations.ApiOperation;
  */
 @CrossOrigin
 @RestController
-@RequestMapping(value =  "/NCD", headers = "Authorization")
+@RequestMapping(value = "/NCD", headers = "Authorization")
 public class NCDCreateController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-	
+
 	private NCDScreeningServiceImpl ncdScreeningServiceImpl;
-	
+
 	@Autowired
 	public void setNcdScreeningServiceImpl(NCDScreeningServiceImpl ncdScreeningServiceImpl) {
 		this.ncdScreeningServiceImpl = ncdScreeningServiceImpl;
 	}
-	
+
 	@CrossOrigin
 	@ApiOperation(value = "save Beneficiary NCD Screening Detail", consumes = "application/json", produces = "application/json")
 
@@ -55,8 +55,8 @@ public class NCDCreateController {
 
 			if (jsonObject != null) {
 				Integer r = ncdScreeningServiceImpl.saveNCDScreeningNurseData(jsonObject);
-				if (r != null && r == 1) {
-					response.setResponse("Beneficiary Visit Details and NCD Screening data saved successfully");
+				if (r != null && r > 0) {
+					response.setResponse("NCD Screening data saved successfully");
 				} else {
 					response.setError(5000, "Error in saving ncd screening details");
 				}

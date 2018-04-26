@@ -1,7 +1,6 @@
 package com.iemr.mmu.data.ncdScreening;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
@@ -20,110 +20,124 @@ public class NCDScreening {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Expose
 	@Column(name = "ID")
-	private Long ID;  
-	
+	private Long ID;
+
 	@Expose
 	@Column(name = "BeneficiaryRegID")
-	private Long beneficiaryRegID; 
-	
+	private Long beneficiaryRegID;
+
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
-	private Integer providerServiceMapID; 
-	
+	private Integer providerServiceMapID;
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
-	
+
 	@Expose
 	@Column(name = "NCDScreeningVisitNo")
 	private Short ncdScreeningVisitNo;
-	
+
 	@Expose
 	@Column(name = "NCDScreeningConditionID")
 	private Integer ncdScreeningConditionID;
-	
+
 	@Expose
 	@Column(name = "ScreeningCondition")
-	private String screeningCondition; 
-	
+	private String screeningCondition;
+
 	@Expose
 	@Column(name = "NCDScreeningReasonID")
 	private Integer ncdScreeningReasonID;
-	
+
 	@Expose
 	@Column(name = "ReasonForScreening")
 	private String reasonForScreening;
-	
+
 	@Expose
 	@Column(name = "NextScreeningDate")
-	private Timestamp nextScreeningDate;
-	
+	private Timestamp nextScreeningDateDB;
+
+	@Transient
+	private String nextScreeningDate;
+
 	@Expose
 	@Column(name = "ActionForScreenPositive")
 	private String actionForScreenPositive;
-	
+
 	@Expose
 	@Column(name = "IsScreeningComplete")
 	private Boolean isScreeningComplete;
-	
-	@Expose(serialize= false)
+
+	@Expose
+	@Column(name = "IsBPPrescribed")
+	private Boolean isBPPrescribed;
+
+	@Expose
+	@Column(name = "IsBloodGlucosePrescribed")
+	private Boolean isBloodGlucosePrescribed;
+
+	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
 
-	@Expose(serialize= false)
+	@Expose
 	@Column(name = "Processed", insertable = false, updatable = true)
 	private String processed;
 
-	@Expose(serialize= false)
+	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
 
-	@Expose(serialize= false)
+	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
 	private Timestamp createdDate;
 
-	@Expose(serialize= false)
+	@Expose
 	@Column(name = "ModifiedBy")
 	private String modifiedBy;
 
-	@Expose(serialize= false)
+	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
-	
+
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
-	public Long getId() {
+
+	@Transient
+	private Long benFlowID;
+
+	public Long getID() {
 		return ID;
 	}
 
-	public void setId(Long id) {
-		this.ID = id;
+	public void setID(Long iD) {
+		ID = iD;
 	}
 
 	public Long getBeneficiaryRegID() {
@@ -198,11 +212,19 @@ public class NCDScreening {
 		this.reasonForScreening = reasonForScreening;
 	}
 
-	public Timestamp getNextScreeningDate() {
+	public Timestamp getNextScreeningDateDB() {
+		return nextScreeningDateDB;
+	}
+
+	public void setNextScreeningDateDB(Timestamp nextScreeningDateDB) {
+		this.nextScreeningDateDB = nextScreeningDateDB;
+	}
+
+	public String getNextScreeningDate() {
 		return nextScreeningDate;
 	}
 
-	public void setNextScreeningDate(Timestamp nextScreeningDate) {
+	public void setNextScreeningDate(String nextScreeningDate) {
 		this.nextScreeningDate = nextScreeningDate;
 	}
 
@@ -220,6 +242,22 @@ public class NCDScreening {
 
 	public void setIsScreeningComplete(Boolean isScreeningComplete) {
 		this.isScreeningComplete = isScreeningComplete;
+	}
+
+	public Boolean getIsBPPrescribed() {
+		return isBPPrescribed;
+	}
+
+	public void setIsBPPrescribed(Boolean isBPPrescribed) {
+		this.isBPPrescribed = isBPPrescribed;
+	}
+
+	public Boolean getIsBloodGlucosePrescribed() {
+		return isBloodGlucosePrescribed;
+	}
+
+	public void setIsBloodGlucosePrescribed(Boolean isBloodGlucosePrescribed) {
+		this.isBloodGlucosePrescribed = isBloodGlucosePrescribed;
 	}
 
 	public Boolean getDeleted() {
@@ -246,7 +284,7 @@ public class NCDScreening {
 		this.createdBy = createdBy;
 	}
 
-	public Date getCreatedDate() {
+	public Timestamp getCreatedDate() {
 		return createdDate;
 	}
 
@@ -318,17 +356,12 @@ public class NCDScreening {
 		this.reservedForChange = reservedForChange;
 	}
 
-	@Override
-	public String toString() {
-		return "NCDScreening [ID=" + ID + ", beneficiaryRegID=" + beneficiaryRegID + ", benVisitID=" + benVisitID
-				+ ", providerServiceMapID=" + providerServiceMapID + ", visitCode=" + visitCode
-				+ ", ncdScreeningVisitNo=" + ncdScreeningVisitNo + ", ncdScreeningConditionID="
-				+ ncdScreeningConditionID + ", screeningCondition=" + screeningCondition + ", ncdScreeningReasonID="
-				+ ncdScreeningReasonID + ", reasonForScreening=" + reasonForScreening + ", nextScreeningDate="
-				+ nextScreeningDate + ", actionForScreenPositive=" + actionForScreenPositive + ", isScreeningComplete="
-				+ isScreeningComplete + ", deleted=" + deleted + ", processed=" + processed + ", createdBy=" + createdBy
-				+ ", createdDate=" + createdDate + ", modifiedBy=" + modifiedBy + ", lastModDate=" + lastModDate + "]";
+	public Long getBenFlowID() {
+		return benFlowID;
 	}
-	
-	
+
+	public void setBenFlowID(Long benFlowID) {
+		this.benFlowID = benFlowID;
+	}
+
 }

@@ -138,13 +138,14 @@ public class UpdateRegistrarController {
 	public String beneficiaryUpdate(@RequestBody String requestOBJ,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
+		String s = null;
 		try {
-			String s = registrarServiceImpl.updateBeneficiary(requestOBJ, Authorization);
-			response.setResponse(s);
+			 s = registrarServiceImpl.updateBeneficiary(requestOBJ, Authorization);
+			//response.setResponse(s);
 		} catch (Exception e) {
 
 		}
-		return response.toString();
+		return s ;
 	}
 
 }

@@ -18,7 +18,7 @@ import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
  */
 @Repository
 public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlowStatus, Long> {
-	@Query("SELECT  t from BeneficiaryFlowStatus t WHERE t.nurseFlag = 1 AND t.deleted = false "
+	@Query("SELECT  t from BeneficiaryFlowStatus t WHERE (t.nurseFlag = 1 OR t.nurseFlag = 100) AND t.deleted = false "
 			+ " AND Date(t.visitDate)  = curdate()")
 	public ArrayList<BeneficiaryFlowStatus> getNurseWorklistNew();
 
@@ -42,15 +42,15 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	public ArrayList<Object[]> getBenDetailsForLeftSidePanel(@Param("benRegID") Long benRegID,
 			@Param("benFlowID") Long benFlowID);
 
-	@Query("SELECT t from BeneficiaryFlowStatus t WHERE t.doctorFlag = 1 OR t.doctorFlag = 2 OR "
-			+ " t.doctorFlag = 3 OR t.nurseFlag = 2 OR t.doctorFlag = 9 AND t.deleted = false")
+	@Query("SELECT t from BeneficiaryFlowStatus t WHERE (t.doctorFlag = 1 OR t.doctorFlag = 2 OR "
+			+ " t.doctorFlag = 3 OR t.nurseFlag = 2 OR t.doctorFlag = 9) AND t.deleted = false")
 	public ArrayList<BeneficiaryFlowStatus> getDocWorkListNew();
 
 	@Query("SELECT  t.benFlowID from BeneficiaryFlowStatus t WHERE t.beneficiaryRegID = :benRegID AND "
 			+ " t.nurseFlag = 1 AND Date(t.visitDate)  = curdate() AND t.deleted = false")
 	public ArrayList<Long> checkBenAlreadyInNurseWorkList(@Param("benRegID") Long benRegID);
 
-	@Query("SELECT t from BeneficiaryFlowStatus t WHERE t.nurseFlag = 2 OR t.doctorFlag = 2 AND t.deleted = false")
+	@Query("SELECT t from BeneficiaryFlowStatus t WHERE (t.nurseFlag = 2 OR t.doctorFlag = 2) AND t.deleted = false")
 	public ArrayList<BeneficiaryFlowStatus> getLabWorklistNew();
 
 	@Transactional
