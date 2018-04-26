@@ -218,6 +218,8 @@ public class PNCServiceImpl implements PNCService {
 
 					wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
 					investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
+				}else{
+					investigationSuccessFlag = new Long(1);
 				}
 			} else {
 				investigationSuccessFlag = new Long(1);
@@ -1359,6 +1361,8 @@ public class PNCServiceImpl implements PNCService {
 
 					wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
 					investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
+				}else{
+					investigationSuccessFlag = new Long(1);
 				}
 			} else {
 				investigationSuccessFlag = new Long(1);

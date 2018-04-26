@@ -59,7 +59,7 @@ public class NCDCareDoctorServiceImpl implements NCDCareDoctorService
 			ncdCareDiagnosis.setModifiedBy(ncdCareDiagnosis.getCreatedBy());
 			res = ncdCareDiagnosisRepo.updateNCDCareDiagnosis(ncdCareDiagnosis.getNcdCareCondition(), ncdCareDiagnosis.getNcdComplication(), 
 					ncdCareDiagnosis.getNcdCareType(), ncdCareDiagnosis.getModifiedBy(), processed, ncdCareDiagnosis.getBeneficiaryRegID(), 
-					ncdCareDiagnosis.getBenVisitID(), ncdCareDiagnosis.getPrescriptionID());
+					ncdCareDiagnosis.getBenVisitID());
 		}else{
 			ncdCareDiagnosis.setPrescriptionID(prescriptionID);
 			NCDCareDiagnosis ncdCareDiagnosisRes  = ncdCareDiagnosisRepo.save(ncdCareDiagnosis);

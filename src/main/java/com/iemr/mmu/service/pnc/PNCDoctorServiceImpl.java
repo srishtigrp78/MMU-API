@@ -60,8 +60,7 @@ public class PNCDoctorServiceImpl implements PNCDoctorService {
 			pncDiagnosis.setModifiedBy(pncDiagnosis.getCreatedBy());
 			res = pncDiagnosisRepo.updatePNCDiagnosis(pncDiagnosis.getProvisionalDiagnosis(), pncDiagnosis.getConfirmatoryDiagnosis(),
 					pncDiagnosis.getIsMaternalDeath(), pncDiagnosis.getPlaceOfDeath(), pncDiagnosis.getDateOfDeath(), pncDiagnosis.getCauseOfDeath(), 
-					pncDiagnosis.getModifiedBy(), processed, pncDiagnosis.getBeneficiaryRegID(), pncDiagnosis.getBenVisitID(),
-					pncDiagnosis.getPrescriptionID());
+					pncDiagnosis.getModifiedBy(), processed, pncDiagnosis.getBeneficiaryRegID(), pncDiagnosis.getBenVisitID());
 		}else{
 			pncDiagnosis.setPrescriptionID(prescriptionID);
 			PNCDiagnosis pncDiagnosisRes  = pncDiagnosisRepo.save(pncDiagnosis);

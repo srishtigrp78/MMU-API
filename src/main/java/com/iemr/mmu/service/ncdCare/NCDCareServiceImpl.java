@@ -665,6 +665,8 @@ public class NCDCareServiceImpl implements NCDCareService {
 
 					wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
 					investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
+				}else{
+					investigationSuccessFlag = new Long(1);
 				}
 			} else {
 				investigationSuccessFlag = new Long(1);
@@ -733,7 +735,6 @@ public class NCDCareServiceImpl implements NCDCareService {
 
 			if ((findingSuccessFlag != null && findingSuccessFlag > 0)
 					&& (diagnosisSuccessFlag != null && diagnosisSuccessFlag > 0)
-					&& (prescriptionID != null && prescriptionID > 0)
 					&& (investigationSuccessFlag != null && investigationSuccessFlag > 0)
 					&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
@@ -1110,6 +1111,8 @@ public class NCDCareServiceImpl implements NCDCareService {
 
 					wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
 					investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
+				}else{
+					investigationSuccessFlag = new Long(1);
 				}
 			} else {
 				investigationSuccessFlag = new Long(1);

@@ -29,13 +29,12 @@ public interface NCDCareDiagnosisRepo extends CrudRepository<NCDCareDiagnosis, L
 	@Modifying
 	@Query("update NCDCareDiagnosis set ncdScreeningCondition=:ncdScreeningCondition, ncdComplication=:ncdComplication, "
 			+ "ncdCareType=:ncdCareType, modifiedBy=:modifiedBy, processed=:processed "
-			+ "where benVisitID=:benVisitID AND beneficiaryRegID=:beneficiaryRegID AND prescriptionID=:prescriptionID")
+			+ "where benVisitID=:benVisitID AND beneficiaryRegID=:beneficiaryRegID")
 	public int updateNCDCareDiagnosis(@Param("ncdScreeningCondition") String ncdScreeningCondition,
 			@Param("ncdComplication") String ncdComplication,
 			@Param("ncdCareType") String ncdCareType,
 			@Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed,
 			@Param("beneficiaryRegID") Long beneficiaryRegID,
-			@Param("benVisitID") Long benVisitID,
-			@Param("prescriptionID") Long prescriptionID);
+			@Param("benVisitID") Long benVisitID);
 }

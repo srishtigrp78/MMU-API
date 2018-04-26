@@ -31,7 +31,7 @@ public interface PNCDiagnosisRepo extends CrudRepository<PNCDiagnosis, Long>{
 	@Query("update PNCDiagnosis set provisionalDiagnosis=:provisionalDiagnosis, confirmatoryDiagnosis=:confirmatoryDiagnosis, "
 			+ "isMaternalDeath=:isMaternalDeath, placeOfDeath=:placeOfDeath,"
 			+ "dateOfDeath=:dateOfDeath, causeOfDeath=:causeOfDeath, modifiedBy=:modifiedBy, processed=:processed "
-			+ "where benVisitID=:benVisitID AND beneficiaryRegID=:beneficiaryRegID AND prescriptionID=:prescriptionID")
+			+ "where benVisitID=:benVisitID AND beneficiaryRegID=:beneficiaryRegID")
 	public int updatePNCDiagnosis(@Param("provisionalDiagnosis") String provisionalDiagnosis,
 			@Param("confirmatoryDiagnosis") String confirmatoryDiagnosis,
 			@Param("isMaternalDeath") Boolean isMaternalDeath,
@@ -41,7 +41,6 @@ public interface PNCDiagnosisRepo extends CrudRepository<PNCDiagnosis, Long>{
 			@Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed,
 			@Param("beneficiaryRegID") Long beneficiaryRegID,
-			@Param("benVisitID") Long benVisitID,
-			@Param("prescriptionID") Long prescriptionID);
+			@Param("benVisitID") Long benVisitID);
 	
 }

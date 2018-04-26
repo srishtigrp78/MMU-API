@@ -31,7 +31,7 @@ public interface ANCDiagnosisRepo extends CrudRepository<ANCDiagnosis, Long>{
 	@Query("update ANCDiagnosis set highRiskStatus=:highRiskStatus, highRiskCondition=:highRiskCondition, "
 			+ "complicationOfCurrentPregnancy=:complicationOfCurrentPregnancy, isMaternalDeath=:isMaternalDeath, placeOfDeath=:placeOfDeath,"
 			+ "dateOfDeath=:dateOfDeath, causeOfDeath=:causeOfDeath, modifiedBy=:modifiedBy, processed=:processed "
-			+ "where benVisitID=:benVisitID AND beneficiaryRegID=:beneficiaryRegID AND prescriptionID=:prescriptionID")
+			+ "where benVisitID=:benVisitID AND beneficiaryRegID=:beneficiaryRegID")
 	public int updateANCDiagnosis(@Param("highRiskStatus") String highRiskStatus,
 			@Param("highRiskCondition") String highRiskCondition,
 			@Param("complicationOfCurrentPregnancy") String complicationOfCurrentPregnancy,
@@ -42,6 +42,5 @@ public interface ANCDiagnosisRepo extends CrudRepository<ANCDiagnosis, Long>{
 			@Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed,
 			@Param("beneficiaryRegID") Long beneficiaryRegID,
-			@Param("benVisitID") Long benVisitID,
-			@Param("prescriptionID") Long prescriptionID);
+			@Param("benVisitID") Long benVisitID);
 }
