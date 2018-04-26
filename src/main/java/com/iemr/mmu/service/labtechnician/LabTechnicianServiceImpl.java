@@ -173,7 +173,7 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 				compDetails.put("testComponentDesc", obj.getTestComponentDesc());
 				compDetails.put("inputType", "File");
 
-				procedureCompDetails.put("compListDetails", compDetails);
+				procedureCompDetails.put("compDetails", compDetails);
 
 				returnOBJ.add(procedureCompDetails);
 

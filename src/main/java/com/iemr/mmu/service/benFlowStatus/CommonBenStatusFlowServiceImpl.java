@@ -108,6 +108,9 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 		if (obj.getGenderName() == null)
 			obj.setGenderName(obj.getM_gender().getGenderName());
 
+		if (obj.getI_bendemographics().getServicePointName() != null)
+			obj.setServicePointName(obj.getI_bendemographics().getServicePointName());
+
 		String ageDetails = "";
 		int age_val = 0;
 		if (obj.getdOB() != null) {

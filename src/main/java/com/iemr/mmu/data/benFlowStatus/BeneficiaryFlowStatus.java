@@ -147,6 +147,18 @@ public class BeneficiaryFlowStatus {
 	private String districtName;
 
 	@Expose
+	@Column(name = "servicePoint")
+	private String servicePointName;
+
+	public String getServicePointName() {
+		return servicePointName;
+	}
+
+	public void setServicePointName(String servicePointName) {
+		this.servicePointName = servicePointName;
+	}
+
+	@Expose
 	@Column(name = "village")
 	private String villageName;
 	@Expose
@@ -181,7 +193,7 @@ public class BeneficiaryFlowStatus {
 
 	public BeneficiaryFlowStatus(Long benFlowID, Long benRegID, Timestamp visitDate, String benName, String age,
 			Integer ageVal, Short genderID, String genderName, String villageName, String districtName,
-			Long beneficiaryID) {
+			Long beneficiaryID, String servicePoint) {
 		this.benFlowID = benFlowID;
 		this.beneficiaryRegID = benRegID;
 		this.serviceDate = visitDate;
@@ -194,6 +206,7 @@ public class BeneficiaryFlowStatus {
 		this.districtName = districtName;
 		this.createdDate = visitDate;
 		this.beneficiaryID = beneficiaryID;
+		this.servicePointName = servicePoint;
 
 	}
 
@@ -251,7 +264,8 @@ public class BeneficiaryFlowStatus {
 			for (Object[] objArr : objList) {
 				obj = new BeneficiaryFlowStatus((Long) objArr[0], (Long) objArr[1], (Timestamp) objArr[2],
 						(String) objArr[3], (String) objArr[4], (Integer) objArr[5], (Short) objArr[6],
-						(String) objArr[7], (String) objArr[8], (String) objArr[9], (Long) objArr[10]);
+						(String) objArr[7], (String) objArr[8], (String) objArr[9], (Long) objArr[10],
+						(String) objArr[11]);
 			}
 		}
 		return obj;

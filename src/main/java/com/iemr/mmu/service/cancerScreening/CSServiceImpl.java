@@ -9,15 +9,20 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.iemr.mmu.data.anc.ANCDiagnosis;
-import com.iemr.mmu.data.anc.WrapperAncFindings;
-import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
+import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.doctor.CancerAbdominalExamination;
 import com.iemr.mmu.data.doctor.CancerBreastExamination;
 import com.iemr.mmu.data.doctor.CancerDiagnosis;
@@ -31,8 +36,7 @@ import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
-import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
-import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
+import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
@@ -44,6 +48,9 @@ import com.iemr.mmu.utils.mapper.InputMapper;
 @Service
 public class CSServiceImpl implements CSService {
 
+	@Value("${registrarQuickSearchByIdUrl}")
+	private String registrarQuickSearchByIdUrl;
+
 	private NurseServiceImpl nurseServiceImpl;
 	private CSNurseServiceImpl cSNurseServiceImpl;
 	private CSDoctorServiceImpl cSDoctorServiceImpl;
@@ -54,6 +61,12 @@ public class CSServiceImpl implements CSService {
 	private CSCarestreamServiceImpl cSCarestreamServiceImpl;
 	private RegistrarRepoBenData registrarRepoBenData;
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
+	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
+
+	@Autowired
+	public void setBeneficiaryFlowStatusRepo(BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo) {
+		this.beneficiaryFlowStatusRepo = beneficiaryFlowStatusRepo;
+	}
 
 	@Autowired
 	public void setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl) {
@@ -974,20 +987,22 @@ public class CSServiceImpl implements CSService {
 
 	// -------Fetch Case-sheet data ----------------------------------
 
-	public String getCancerCasesheetData(JSONObject obj) {
+	public String getCancerCasesheetData(JSONObject obj, String Authorization) throws Exception {
 		String caseSheetData = null;
 		if (obj.length() > 1) {
 			Long benRegID = null;
 			Long benVisitID = null;
+			Long benFlowID = null;
 			try {
 				benRegID = obj.getLong("benRegID");
 				benVisitID = obj.getLong("benVisitID");
+				benFlowID = obj.getLong("benFlowID");
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
-			caseSheetData = getBenDataForCaseSheet(benRegID, benVisitID);
+			caseSheetData = getBenDataForCaseSheet(benFlowID, benRegID, benVisitID, Authorization);
 
 		} else {
 
@@ -996,16 +1011,48 @@ public class CSServiceImpl implements CSService {
 		return caseSheetData;
 	}
 
-	public String getBenDataForCaseSheet(Long benRegID, Long benVisitID) {
+	public String getBenDataForCaseSheet(Long benFlowID, Long benRegID, Long benVisitID, String Authorization)
+			throws Exception {
 
 		Map<String, Object> caseSheetData = cSNurseServiceImpl.getBenNurseDataForCaseSheet(benRegID, benVisitID);
-
+		// getBenDetailsByBenRegID(benRegID, Authorization);
 		caseSheetData.putAll(cSDoctorServiceImpl.getBenDoctorEnteredDataForCaseSheet(benRegID, benVisitID));
-		caseSheetData.put("BeneficiaryData", registrarServiceImpl.getBeneficiaryPersonalDetails(benRegID));
+
+		caseSheetData.put("BeneficiaryData", getBenDetails(benFlowID, benRegID));
 		caseSheetData.put("ImageAnnotatedData",
 				cSNurseServiceImpl.getCancerExaminationImageAnnotationCasesheet(benRegID, benVisitID));
 
 		return new Gson().toJson(caseSheetData);
+	}
+
+	private BeneficiaryFlowStatus getBenDetails(Long benFlowID, Long benRegID) {
+		ArrayList<Object[]> tmpOBJ = beneficiaryFlowStatusRepo.getBenDetailsForLeftSidePanel(benRegID, benFlowID);
+		BeneficiaryFlowStatus obj = BeneficiaryFlowStatus.getBeneficiaryFlowStatusForLeftPanel(tmpOBJ);
+		return obj;
+	}
+
+	// method not required
+	@Deprecated
+	private void getBenDetailsByBenRegID(Long benRegID, String Authorization) throws Exception {
+		String s = null;
+		Map<String, Object> requestMap = new HashMap<>();
+		requestMap.put("beneficiaryRegID", benRegID);
+		String requestObj = new Gson().toJson(requestMap);
+
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+		headers.add("Content-Type", "application/json");
+		headers.add("AUTHORIZATION", Authorization);
+
+		RestTemplate restTemplate = new RestTemplate();
+		HttpEntity<Object> request = new HttpEntity<Object>(requestObj, headers);
+		ResponseEntity<String> response = restTemplate.exchange(registrarQuickSearchByIdUrl, HttpMethod.POST, request,
+				String.class);
+		if (response.hasBody()) {
+			s = response.getBody();
+		}
+
+		BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(s, BeneficiaryFlowStatus.class);
+		System.out.println("hello");
 	}
 
 	/// -------End of Fetch Case-sheet data ----------------------------------
@@ -1063,18 +1110,18 @@ public class CSServiceImpl implements CSService {
 
 		return new Gson().toJson(resMap);
 	}
-	
+
 	@Transactional(rollbackFor = Exception.class)
 	public Long updateCancerScreeningDoctorData(JsonObject requestOBJ) throws Exception {
 		Long updateSuccessFlag = null;
 		int diagnosisSuccessFlag = 0;
 		if (requestOBJ != null) {
-		
+
 			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
 				CancerDiagnosis cancerDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
 						CancerDiagnosis.class);
 				diagnosisSuccessFlag = cSDoctorServiceImpl.updateCancerDiagnosisDetailsByDoctor(cancerDiagnosis);
-			} else{
+			} else {
 				diagnosisSuccessFlag = 1;
 			}
 		} else {
@@ -1082,5 +1129,5 @@ public class CSServiceImpl implements CSService {
 		}
 		return updateSuccessFlag;
 	}
-	
+
 }

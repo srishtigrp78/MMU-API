@@ -8,6 +8,25 @@ public class I_bendemographics {
 	private Integer districtBranchID;
 	private String districtBranchName;
 
+	private Integer servicePointID;
+	private String servicePointName;
+
+	public Integer getServicePointID() {
+		return servicePointID;
+	}
+
+	public void setServicePointID(Integer servicePointID) {
+		this.servicePointID = servicePointID;
+	}
+
+	public String getServicePointName() {
+		return servicePointName;
+	}
+
+	public void setServicePointName(String servicePointName) {
+		this.servicePointName = servicePointName;
+	}
+
 	public Integer getDistrictId() {
 		return districtId;
 	}

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -148,17 +149,18 @@ public class CancerScreeningFetchController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary data for case sheet", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBeneficiaryDataEnteredByNurseAndDoctor" }, method = { RequestMethod.POST })
 	public String getBenDataForCaseSheet(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest,
+			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
 		logger.info("getBenDataForCaseSheet request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
-			String caseSheetData = cSServiceImpl.getCancerCasesheetData(obj);
+			String caseSheetData = cSServiceImpl.getCancerCasesheetData(obj, Authorization);
 			if (caseSheetData != null) {
 				response.setResponse(caseSheetData);
 			} else {
@@ -306,7 +308,7 @@ public class CancerScreeningFetchController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Doctor Entered Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenCaseRecordFromDoctorCS" }, method = { RequestMethod.POST })
@@ -335,5 +337,5 @@ public class CancerScreeningFetchController {
 		}
 		return response.toString();
 	}
-	
+
 }
