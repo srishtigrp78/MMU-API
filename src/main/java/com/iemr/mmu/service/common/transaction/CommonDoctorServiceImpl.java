@@ -333,8 +333,8 @@ public class CommonDoctorServiceImpl {
 		}
 
 		ArrayList<BenReferDetails> res = (ArrayList<BenReferDetails>) benReferDetailsRepo.save(referDetailsList);
-		if (null != res && res.size() > 0) {
-			ID = res.get(0).getBenReferID();
+		if (referDetailsList.size() == res.size()) {
+			ID = new Long(1);
 		}
 		return ID;
 	}
@@ -409,7 +409,7 @@ public class CommonDoctorServiceImpl {
 			}
 			chiefCmpltsRes = updateDoctorBenChiefComplaints(tmpBenCHiefComplaintsTMP);
 
-		}else{
+		} else {
 			chiefCmpltsRes = 1;
 		}
 		if (clinObsrvtnsRes > 0 && chiefCmpltsRes > 0) {
