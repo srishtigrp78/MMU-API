@@ -198,6 +198,7 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 		HttpEntity<Object> request = new HttpEntity<Object>(comingRequest, headers);
 		ResponseEntity<String> response = restTemplate.exchange(getBenImageFromIdentity, HttpMethod.POST, request,
 				String.class);
+	//	if()
 		returnOBJ = response.getBody();
 		return returnOBJ;
 	}

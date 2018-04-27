@@ -745,6 +745,12 @@ public class RegistrarServiceImpl implements RegistrarService {
 		return returnOBJ;
 	}
 
+	
+	// beneficiary advance search new integrated with common and identity
+		public String beneficiaryAdvanceSearch(String requestObj, String Authorization) {
+		return null;
+		}
+	
 	public int searchAndSubmitBeneficiaryToNurse(String requestOBJ) throws Exception {
 		int i = commonBenStatusFlowServiceImpl.createBenFlowRecord(requestOBJ, null, null);
 		return i;
