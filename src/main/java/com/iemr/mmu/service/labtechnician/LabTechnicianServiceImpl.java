@@ -1,7 +1,6 @@
 package com.iemr.mmu.service.labtechnician;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +14,6 @@ import com.google.gson.JsonObject;
 import com.iemr.mmu.data.labModule.LabResultEntry;
 import com.iemr.mmu.data.labModule.WrapperLabResultEntry;
 import com.iemr.mmu.data.labtechnician.V_benLabTestOrderedDetails;
-import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.repo.labModule.LabResultEntryRepo;
 import com.iemr.mmu.repo.labtechnician.V_benLabTestOrderedDetailsRepo;
 import com.iemr.mmu.utils.mapper.InputMapper;
@@ -287,6 +285,10 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 							labCompResult.setTestComponentID(Integer.parseInt(comp.get("testComponentID")));
 							labCompResult.setTestResultValue(comp.get("testResultValue").toString());
 
+							if (comp.containsKey("testResultUnit") && comp.get("testResultUnit") != null
+									&& !comp.get("testResultUnit").isEmpty())
+								labCompResult.setTestResultUnit(comp.get("testResultUnit"));
+
 							labCompResult.setBeneficiaryRegID(wrapperLabResults.getBeneficiaryRegID());
 							labCompResult.setBenVisitID(wrapperLabResults.getVisitID());
 							labCompResult.setProviderServiceMapID(wrapperLabResults.getProviderServiceMapID());
@@ -304,7 +306,7 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 				if (null != labResultEntryRes && labResultsListNew.size() == labResultEntryRes.size()) {
 					labResultSaveFlag = 1;
 				}
-			}else{
+			} else {
 				labResultSaveFlag = 1;
 			}
 		} else {

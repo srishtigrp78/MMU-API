@@ -27,56 +27,56 @@ public class LabResultEntry {
 	@Column(name = "BeneficiaryRegID")
 	@Expose
 	private Long beneficiaryRegID;
-	
+
 	@Column(name = "BenVisitID")
 	@Expose
 	private Long benVisitID;
-	
+
 	@Column(name = "ProviderServiceMapID")
 	@Expose
 	private Integer providerServiceMapID;
-	
+
 	@Column(name = "VisitCode")
 	@Expose
 	private Long visitCode;
-	
+
 	@Column(name = "PrescriptionID")
 	@Expose
 	private Long prescriptionID;
-	
+
 	@Column(name = "ProcedureID")
 	@Expose
 	private Integer procedureID;
-	
+
 	@Column(name = "TestComponentID")
 	@Expose
 	private Integer testComponentID;
-	
+
 	@Column(name = "TestResultValue")
 	@Expose
 	private String testResultValue;
-	
+
 	@Column(name = "TestResultUnit")
 	@Expose
 	private String testResultUnit;
-	
+
 	@Column(name = "TestReportFilePath")
 	@Expose
 	private String testReportFilePath;
-	
+
 	@Column(name = "Remarks")
 	@Expose
 	private String remarks;
-	
+
 	@Transient
 	private List<Map<String, String>> compList;
-	
+
 	@Expose
-	@Column(name = "Deleted", insertable = false, updatable = true)
+	@Column(name = "Deleted", insertable = false)
 	private Boolean deleted;
 
 	@Expose
-	@Column(name = "Processed", insertable = false, updatable = true)
+	@Column(name = "Processed", insertable = false)
 	private String processed;
 
 	@Expose
@@ -92,32 +92,43 @@ public class LabResultEntry {
 	private String modifiedBy;
 
 	@Expose
-	@Column(name = "LastModDate", insertable = false, updatable = false)
+	@Column(name = "LastModDate", insertable = false)
 	private Timestamp lastModDate;
-	
+
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
+
+	@Transient
+	private Boolean labCompleted;
+
+	public Boolean getLabCompleted() {
+		return labCompleted;
+	}
+
+	public void setLabCompleted(Boolean labCompleted) {
+		this.labCompleted = labCompleted;
+	}
 
 	public Long getID() {
 		return ID;
