@@ -1,19 +1,34 @@
 package com.iemr.mmu.service.labtechnician;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.iemr.mmu.data.labModule.LabResultEntry;
+import com.iemr.mmu.data.labModule.WrapperLabResultEntry;
 import com.iemr.mmu.data.labtechnician.V_benLabTestOrderedDetails;
+import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
+import com.iemr.mmu.repo.labModule.LabResultEntryRepo;
 import com.iemr.mmu.repo.labtechnician.V_benLabTestOrderedDetailsRepo;
+import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
 public class LabTechnicianServiceImpl implements LabTechnicianService {
 	private V_benLabTestOrderedDetailsRepo v_benLabTestOrderedDetailsRepo;
+	private LabResultEntryRepo labResultEntryRepo;
+
+	@Autowired
+	public void setLabResultEntryRepo(LabResultEntryRepo labResultEntryRepo) {
+		this.labResultEntryRepo = labResultEntryRepo;
+	}
 
 	@Autowired
 	public void setV_benLabTestOrderedDetailsRepo(V_benLabTestOrderedDetailsRepo v_benLabTestOrderedDetailsRepo) {
@@ -181,5 +196,120 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 		}
 
 		return returnOBJ;
+	}
+
+	/*
+	 * @Transactional(rollbackFor = Exception.class) public Integer
+	 * saveLabTestResult(JsonObject requestOBJ) throws Exception {
+	 * 
+	 * Integer labResultSaveFlag = null; if (requestOBJ != null &&
+	 * requestOBJ.has("labTestResults") && null !=
+	 * requestOBJ.get("labTestResults") &&
+	 * !requestOBJ.get("labTestResults").isJsonNull()) {
+	 * 
+	 * LabResultEntry[] labResults =
+	 * InputMapper.gson().fromJson(requestOBJ.get("labTestResults"),
+	 * LabResultEntry[].class); List<LabResultEntry> labResultsList =
+	 * Arrays.asList(labResults);
+	 * 
+	 * if(null != labResultsList && labResultsList.size()>0){
+	 * List<LabResultEntry> labResultsListNew = new ArrayList<LabResultEntry>();
+	 * for(LabResultEntry labResult : labResultsList){ List<Map<String, String>>
+	 * compResult = labResult.getCompList(); if(null != compResult &&
+	 * compResult.size()>0){ for(Map<String, String> comp: compResult){
+	 * LabResultEntry labCompResult = new LabResultEntry();
+	 * labCompResult.setPrescriptionID(labResult.getPrescriptionID());
+	 * labCompResult.setProcedureID(labResult.getProcedureID());
+	 * 
+	 * if(null != comp.get("testComponentID") &&
+	 * !comp.get("testComponentID").toString().isEmpty() && null !=
+	 * comp.get("testResultValue") &&
+	 * !comp.get("testResultValue").toString().isEmpty()){
+	 * labCompResult.setTestComponentID(Integer.parseInt(comp.get(
+	 * "testComponentID")));
+	 * labCompResult.setTestResultValue(comp.get("testResultValue").toString());
+	 * 
+	 * if(requestOBJ.has("beneficiaryRegID") && null !=
+	 * requestOBJ.get("beneficiaryRegID") &&
+	 * !requestOBJ.get("beneficiaryRegID").isJsonArray()){
+	 * labCompResult.setBeneficiaryRegID(requestOBJ.get("beneficiaryRegID").
+	 * getAsLong()); }
+	 * 
+	 * if(requestOBJ.has("createdBy") && null != requestOBJ.get("createdBy") &&
+	 * !requestOBJ.get("createdBy").isJsonArray()){
+	 * labCompResult.setCreatedBy(requestOBJ.get("createdBy").toString()); }
+	 * 
+	 * labResultsListNew.add(labCompResult); }
+	 * 
+	 * } } } List<LabResultEntry> labResultEntryRes = (List<LabResultEntry>)
+	 * labResultEntryRepo.save(labResultsListNew); if(null != labResultEntryRes
+	 * && labResultsListNew.size() == labResultEntryRes.size()){
+	 * labResultSaveFlag = 1; } }else{ labResultSaveFlag = 1; } }else{
+	 * labResultSaveFlag = 1; } return labResultSaveFlag; }
+	 */
+
+	@Transactional(rollbackFor = Exception.class)
+	public Integer saveLabTestResult(JsonObject requestOBJ) throws Exception {
+
+		Integer labResultSaveFlag = null;
+		if (requestOBJ != null && requestOBJ.has("labTestResults") && null != requestOBJ.get("labTestResults")
+				&& !requestOBJ.get("labTestResults").isJsonNull()) {
+
+			WrapperLabResultEntry wrapperLabResults = InputMapper.gson().fromJson(requestOBJ,
+					WrapperLabResultEntry.class);
+
+			labResultSaveFlag = saveLabTestResult(wrapperLabResults);
+
+		} else {
+			labResultSaveFlag = 1;
+		}
+		return labResultSaveFlag;
+	}
+
+	public Integer saveLabTestResult(WrapperLabResultEntry wrapperLabResults) {
+		Integer labResultSaveFlag = null;
+
+		List<LabResultEntry> labResultsList = wrapperLabResults.getLabTestResults();
+
+		if (null != labResultsList && labResultsList.size() > 0) {
+			List<LabResultEntry> labResultsListNew = new ArrayList<LabResultEntry>();
+			for (LabResultEntry labResult : labResultsList) {
+				List<Map<String, String>> compResult = labResult.getCompList();
+				if (null != compResult && compResult.size() > 0) {
+					for (Map<String, String> comp : compResult) {
+						LabResultEntry labCompResult = new LabResultEntry();
+						labCompResult.setPrescriptionID(labResult.getPrescriptionID());
+						labCompResult.setProcedureID(labResult.getProcedureID());
+
+						if (null != comp.get("testComponentID") && !comp.get("testComponentID").toString().isEmpty()
+								&& null != comp.get("testResultValue")
+								&& !comp.get("testResultValue").toString().isEmpty()) {
+							labCompResult.setTestComponentID(Integer.parseInt(comp.get("testComponentID")));
+							labCompResult.setTestResultValue(comp.get("testResultValue").toString());
+
+							labCompResult.setBeneficiaryRegID(wrapperLabResults.getBeneficiaryRegID());
+							labCompResult.setBenVisitID(wrapperLabResults.getVisitID());
+							labCompResult.setProviderServiceMapID(wrapperLabResults.getProviderServiceMapID());
+							labCompResult.setCreatedBy(wrapperLabResults.getCreatedBy());
+
+							labResultsListNew.add(labCompResult);
+						}
+
+					}
+				}
+			}
+			if (null != labResultsListNew && labResultsListNew.size() > 0) {
+				List<LabResultEntry> labResultEntryRes = (List<LabResultEntry>) labResultEntryRepo
+						.save(labResultsListNew);
+				if (null != labResultEntryRes && labResultsListNew.size() == labResultEntryRes.size()) {
+					labResultSaveFlag = 1;
+				}
+			}else{
+				labResultSaveFlag = 1;
+			}
+		} else {
+			labResultSaveFlag = 1;
+		}
+		return labResultSaveFlag;
 	}
 }

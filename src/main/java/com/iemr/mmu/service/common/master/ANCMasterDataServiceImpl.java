@@ -40,6 +40,7 @@ import com.iemr.mmu.data.masterdata.anc.MenstrualCycleStatus;
 import com.iemr.mmu.data.masterdata.anc.MenstrualProblem;
 import com.iemr.mmu.data.masterdata.anc.Musculoskeletal;
 import com.iemr.mmu.data.masterdata.anc.NewBornComplication;
+import com.iemr.mmu.data.masterdata.anc.OptionalVaccinations;
 import com.iemr.mmu.data.masterdata.anc.PersonalHabitType;
 import com.iemr.mmu.data.masterdata.anc.PostNatalComplication;
 import com.iemr.mmu.data.masterdata.anc.PostpartumComplicationTypes;
@@ -84,6 +85,7 @@ import com.iemr.mmu.repo.masterrepo.anc.MenstrualCycleStatusRepo;
 import com.iemr.mmu.repo.masterrepo.anc.MenstrualProblemRepo;
 import com.iemr.mmu.repo.masterrepo.anc.MusculoskeletalRepo;
 import com.iemr.mmu.repo.masterrepo.anc.NewBornComplicationRepo;
+import com.iemr.mmu.repo.masterrepo.anc.OptionalVaccinationsRepo;
 import com.iemr.mmu.repo.masterrepo.anc.PersonalHabitTypeRepo;
 import com.iemr.mmu.repo.masterrepo.anc.PostNatalComplicationRepo;
 import com.iemr.mmu.repo.masterrepo.anc.PostpartumComplicationTypesRepo;
@@ -152,6 +154,13 @@ public class ANCMasterDataServiceImpl {
 	private ProcedureRepo procedureRepo;
 	
 	private TempMasterDrugRepo tempMasterDrugRepo;
+	
+	private OptionalVaccinationsRepo optionalVaccinationsRepo;
+	
+	@Autowired
+	public void setOptionalVaccinationsRepo(OptionalVaccinationsRepo optionalVaccinationsRepo) {
+		this.optionalVaccinationsRepo = optionalVaccinationsRepo;
+	}
 	
 	@Autowired
 	public void setTempMasterDrugRepo(TempMasterDrugRepo tempMasterDrugRepo) {
@@ -451,6 +460,8 @@ public class ANCMasterDataServiceImpl {
 		//PNC specific master data
 		ArrayList<Object[]> healthStatuses = newbornHealthStatusRepo.getnewBornHealthStatuses();
 		
+		ArrayList<Object[]> optionalVaccinations = optionalVaccinationsRepo.getOptionalVaccinations();
+		
 		resMap.put("AllergicReactionTypes", AllergicReactionTypes.getAllergicReactionTypes(allergicReactionTypes));
 		resMap.put("bloodGroups", BloodGroups.getBloodGroups(bloodGroups));
 		resMap.put("childVaccinations", ChildVaccinations.getChildVaccinations(childVaccinations));
@@ -504,6 +515,7 @@ public class ANCMasterDataServiceImpl {
 		
 		resMap.put("newbornHealthStatuses", NewbornHealthStatus.getNewbornHealthStatuses(healthStatuses));
 		resMap.put("procedures", ProcedureData.getProcedures(procedures));
+		resMap.put("vaccineMasterData", OptionalVaccinations.getOptionalVaccinations(optionalVaccinations));
 		
 		return new Gson().toJson(resMap);
 	}
