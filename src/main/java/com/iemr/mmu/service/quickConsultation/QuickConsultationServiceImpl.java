@@ -449,6 +449,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	public Long updateGeneralOPDQCDoctorData(JsonObject quickConsultDoctorOBJ) throws Exception {
 		Long updateSuccessFlag = null;
 		Long prescriptionID = null;
+		Integer diagnosisSuccessFlag = null;
 		Long benChiefComplaintID = saveBeneficiaryChiefComplaint(quickConsultDoctorOBJ);
 		Integer clinicalObservationID = updateBeneficiaryClinicalObservations(quickConsultDoctorOBJ);
 
@@ -477,8 +478,12 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 
 		if (isTestPrescribed == true || isMedicinePrescribed == true) {
 			prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
+			if (prescriptionID > 0)
+				diagnosisSuccessFlag = 1;
 		} else {
 			int i = generalOPDDoctorServiceImpl.updateBenGeneralOPDDiagnosis(prescriptionDetail);
+			if (i > 0)
+				diagnosisSuccessFlag = 1;
 		}
 
 		Long prescribedDrugSuccessFlag = null;
@@ -499,7 +504,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 
 		if ((null != benChiefComplaintID && benChiefComplaintID > 0)
 				&& (null != clinicalObservationID && clinicalObservationID > 0)
-				&& (prescriptionID != null && prescriptionID > 0)
+				&& (diagnosisSuccessFlag != null && diagnosisSuccessFlag > 0)
 				&& (null != prescribedDrugSuccessFlag && prescribedDrugSuccessFlag > 0)
 				&& (null != labTestOrderSuccessFlag && labTestOrderSuccessFlag > 0)) {
 

@@ -18,7 +18,7 @@ public class PrescriptionDetail {
 	@Id
 	@GeneratedValue
 	@Expose
-	@Column(name = "PrescriptionID", insertable = false)
+	@Column(name = "PrescriptionID", insertable = false, updatable = false)
 	private Long prescriptionID;
 	
 	@Expose

@@ -196,9 +196,9 @@ public class GeneralOPDUpdateController {
 		try {
 			Long result = generalOPDServiceImpl.updateGeneralOPDDoctorData(jsnOBJ);
 			if (null != result && result > 0) {
-				response.setResponse("GeneralOPD Doctor Data updated successfully.");
+				response.setResponse("General OPD Doctor Data updated successfully.");
 			} else {
-				response.setError(500, "Failed to update GeneralOPD Doctor Data");
+				response.setError(500, "Failed to update General OPD Doctor Data");
 			}
 			logger.info("updateGeneralOPDDoctorData response:" + response);
 		} catch (Exception e) {

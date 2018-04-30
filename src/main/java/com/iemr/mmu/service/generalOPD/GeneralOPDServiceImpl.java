@@ -1,6 +1,5 @@
 package com.iemr.mmu.service.generalOPD;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -1403,8 +1402,12 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 			if (isTestPrescribed == true || isMedicinePrescribed == true) {
 				prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
+				if (prescriptionID > 0)
+					diagnosisSuccessFlag = 1;
 			} else {
 				int i = generalOPDDoctorServiceImpl.updateBenGeneralOPDDiagnosis(prescriptionDetail);
+				if (i > 0)
+					diagnosisSuccessFlag = 1;
 			}
 
 			if (isTestPrescribed == true) {
@@ -1463,7 +1466,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 			} else {
 				referSaveSuccessFlag = new Long(1);
 			}
-			if ((findingSuccessFlag != null && findingSuccessFlag > 0) && (prescriptionID != null && prescriptionID > 0)
+			if ((findingSuccessFlag != null && findingSuccessFlag > 0)
+					&& (diagnosisSuccessFlag != null && diagnosisSuccessFlag > 0)
 					&& (investigationSuccessFlag != null && investigationSuccessFlag > 0)
 					&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
