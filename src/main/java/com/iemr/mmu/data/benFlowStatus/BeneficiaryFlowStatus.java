@@ -187,6 +187,8 @@ public class BeneficiaryFlowStatus {
 	private String createdBy;
 	@Transient
 	private GenderMaster m_gender;
+	@Transient
+	private Boolean passToNurse;
 
 	public BeneficiaryFlowStatus() {
 	}
@@ -208,6 +210,14 @@ public class BeneficiaryFlowStatus {
 		this.beneficiaryID = beneficiaryID;
 		this.servicePointName = servicePoint;
 
+	}
+
+	public Boolean getPassToNurse() {
+		return passToNurse;
+	}
+
+	public void setPassToNurse(Boolean passToNurse) {
+		this.passToNurse = passToNurse;
 	}
 
 	public GenderMaster getM_gender() {

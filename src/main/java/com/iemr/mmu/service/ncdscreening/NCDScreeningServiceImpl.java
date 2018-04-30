@@ -65,8 +65,10 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 
 			NCDScreening ncdScreening = InputMapper.gson().fromJson(jsonObject.get("ncdScreeningDetails"),
 					NCDScreening.class);
+
 			if (ncdScreening.getNextScreeningDate() != null)
-				ncdScreening.setNextScreeningDateDB(Timestamp.valueOf(ncdScreening.getNextScreeningDate()));
+				ncdScreening.setNextScreeningDateDB(Timestamp
+						.valueOf(ncdScreening.getNextScreeningDate().replaceAll("T", " ").replaceAll("Z", " ")));
 
 			Long visitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(beneficiaryVisitDetail);
 
@@ -96,7 +98,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		short docFlag = (short) 0;
 		short labIteration = (short) 0;
 
-		if (isScreeningDone == true)
+		if (isScreeningDone != null && isScreeningDone == true)
 			nurseFlag = (short) 9;
 		else
 			nurseFlag = (short) 100;
@@ -146,7 +148,8 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		NCDScreening ncdScreening = InputMapper.gson().fromJson(jsonObject, NCDScreening.class);
 
 		if (ncdScreening.getNextScreeningDate() != null)
-			ncdScreening.setNextScreeningDateDB(Timestamp.valueOf(ncdScreening.getNextScreeningDate()));
+			ncdScreening.setNextScreeningDateDB(
+					Timestamp.valueOf(ncdScreening.getNextScreeningDate().replaceAll("T", " ").replaceAll("Z", " ")));
 
 		BenAnthropometryDetail anthropometryDetail = InputMapper.gson().fromJson(jsonObject,
 				BenAnthropometryDetail.class);
@@ -157,21 +160,23 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 
 		Integer updateNCDScreeningDetails = ncdScreeningNurseServiceImpl.updateNCDScreeningDetails(ncdScreening);
 		Integer updateANCAnthropometryDetails = commonNurseServiceImpl
-				.updateANCAnthropometryDetails(anthropometryDetail);
+				.updateANCAnthropometryDetails(anthropometryDetail);	
 		Integer updateANCPhysicalVitalDetails = commonNurseServiceImpl
 				.updateANCPhysicalVitalDetails(physicalVitalDetail);
 
 		if (null != updateANCAnthropometryDetails && null != updateANCPhysicalVitalDetails
 				&& null != updateNCDScreeningDetails) {
-			
-			// int i =
-			// updateBenFlowNurseAfterNurseActivityANC(ncdScreening.getBeneficiaryRegID(),
-			// ncdScreening.getBenVisitID(), ncdScreening.getBenFlowID(),
-			// beneficiaryVisitDetail.getVisitReason(),
-			// beneficiaryVisitDetail.getVisitCategory(),
-			// ncdScreening.getIsScreeningComplete());
 
+			short nurseFlag = (short) 0;
 			
+			if (ncdScreening.getIsScreeningComplete() != null && ncdScreening.getIsScreeningComplete() == true)
+				nurseFlag = (short) 9;
+			else
+				nurseFlag = (short) 100;
+			
+			int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseUpdateNCD_Screening(
+					ncdScreening.getBenFlowID(), ncdScreening.getBeneficiaryRegID(), nurseFlag);
+
 			result = 1;
 		}
 

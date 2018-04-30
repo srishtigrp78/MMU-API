@@ -243,31 +243,30 @@ public class FetchRegistrarController {
 		}
 
 	}
-	
-	
-	// beneficiary Advance search new integrated with common and identity
-		@CrossOrigin()
-		@ApiOperation(value = "Search beneficiary advance Search New", consumes = "application/json", produces = "application/json")
-		@RequestMapping(value = { "/advanceSearchNew" }, method = { RequestMethod.POST })
-		public String advanceSearchNew(@RequestBody String requestObj,
-				@RequestHeader(value = "Authorization") String Authorization) {
-			String searchList = null;
-			OutputResponse response = new OutputResponse();
-			try {
-				searchList = registrarServiceImpl.beneficiaryQuickSearch(requestObj, Authorization);
-				if (searchList == null) {
-					response.setError(5000, "Invalid request");
-					return response.toString();
-				} else {
-					return searchList;
-				}
-			} catch (Exception e) {
-				logger.error("Error in Quick Search" + e);
-				response.setError(e);
-				return response.toString();
-			}
 
+	// beneficiary Advance search new integrated with common and identity
+	@CrossOrigin()
+	@ApiOperation(value = "Search beneficiary advance Search New", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/advanceSearchNew" }, method = { RequestMethod.POST })
+	public String advanceSearchNew(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
+		String searchList = null;
+		OutputResponse response = new OutputResponse();
+		try {
+			searchList = registrarServiceImpl.beneficiaryAdvanceSearch(requestObj, Authorization);
+			if (searchList == null) {
+				response.setError(5000, "Invalid request");
+				return response.toString();
+			} else {
+				return searchList;
+			}
+		} catch (Exception e) {
+			logger.error("Error in Quick Search" + e);
+			response.setError(e);
+			return response.toString();
 		}
+
+	}
 
 	// Get Beneficiary Details for left side panel of given beneficiaryRegID new
 	@CrossOrigin()

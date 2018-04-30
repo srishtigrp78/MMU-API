@@ -85,6 +85,16 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 		return i;
 	}
 
+	public int updateBenFlowNurseAfterNurseUpdateNCD_Screening(Long benFlowID, Long benRegID, Short nurseFlag) {
+		int i = 0;
+		try {
+			i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterNurseDataUpdateNCD_Screening(benFlowID, benRegID, nurseFlag);
+		} catch (Exception e) {
+			logger.error("Error in ben flow updatation after nurse update NCD - screening = " + e);
+		}
+		return i;
+	}
+
 	private BeneficiaryFlowStatus getBenFlowRecordObj(String requestOBJ, Long beneficiaryRegID, Long beneficiaryID)
 			throws Exception {
 

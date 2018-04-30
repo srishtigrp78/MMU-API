@@ -81,10 +81,14 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 
 	@Query("SELECT t from BeneficiaryFlowStatus t WHERE t.pharmacist_flag = 1")
 	public ArrayList<BeneficiaryFlowStatus> getPharmaWorkListNew();
-	
+
 	@Query("SELECT t.pharmacist_flag from BeneficiaryFlowStatus t WHERE t.benFlowID = :benFlowID")
 	public Short getPharmaFlag(@Param("benFlowID") Long benFlowID);
-	
-	
+
+	@Transactional
+	@Modifying
+	@Query("UPDATE BeneficiaryFlowStatus t set t.nurseFlag = :nurseFlag where t.benFlowID = :benFlowID AND t.beneficiaryRegID = :benRegID ")
+	public int updateBenFlowStatusAfterNurseDataUpdateNCD_Screening(@Param("benFlowID") Long benFlowID,
+			@Param("benRegID") Long benRegID, @Param("nurseFlag") Short nurseFlag);
 
 }

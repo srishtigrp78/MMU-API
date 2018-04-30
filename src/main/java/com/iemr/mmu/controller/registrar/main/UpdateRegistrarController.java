@@ -138,14 +138,22 @@ public class UpdateRegistrarController {
 	public String beneficiaryUpdate(@RequestBody String requestOBJ,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
-		String s = null;
+		Integer s = null;
 		try {
-			 s = registrarServiceImpl.updateBeneficiary(requestOBJ, Authorization);
-			//response.setResponse(s);
+			s = registrarServiceImpl.updateBeneficiary(requestOBJ, Authorization);
+			if (s != null) {
+				if (s == 1)
+					response.setResponse("Beneficiary details updated successfully");
+				else
+					response.setResponse(
+							"Beneficiary details updated successfully but already present in nurse work-list");
+			} else {
+				response.setError(5000, "Error in update beneficiary details");
+			}
 		} catch (Exception e) {
 
 		}
-		return s ;
+		return response.toString();
 	}
 
 }

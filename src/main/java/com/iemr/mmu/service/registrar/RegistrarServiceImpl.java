@@ -25,6 +25,7 @@ import org.springframework.web.client.RestTemplate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.registrar.BenGovIdMapping;
 import com.iemr.mmu.data.registrar.BeneficiaryData;
 import com.iemr.mmu.data.registrar.BeneficiaryDemographicAdditional;
@@ -43,6 +44,7 @@ import com.iemr.mmu.repo.registrar.RegistrarRepoBenPhoneMapData;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBeneficiaryDetails;
 import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
+import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
 /***
@@ -64,6 +66,9 @@ public class RegistrarServiceImpl implements RegistrarService {
 
 	@Value("${beneficiaryEditUrl}")
 	private String beneficiaryEditUrl;
+
+	@Value("${registrarAdvanceSearchUrl}")
+	private String registrarAdvanceSearchUrl;
 
 	private RegistrarRepoBenData registrarRepoBenData;
 	private RegistrarRepoBenDemoData registrarRepoBenDemoData;
@@ -688,7 +693,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 			JSONObject responseOBJ = new JSONObject(responseStr);
 			beneficiaryRegID = responseOBJ.getJSONObject("data").getLong("beneficiaryRegID");
 			beneficiaryID = responseOBJ.getJSONObject("data").getLong("beneficiaryID");
-			//System.out.println("hello");
+			// System.out.println("hello");
 
 			int i = commonBenStatusFlowServiceImpl.createBenFlowRecord(comingRequest, beneficiaryRegID, beneficiaryID);
 			if (i > 0) {
@@ -706,7 +711,8 @@ public class RegistrarServiceImpl implements RegistrarService {
 	}
 
 	// New beneficiary update api
-	public String updateBeneficiary(String comingRequest, String Authorization) throws Exception {
+	public Integer updateBeneficiary(String comingRequest, String Authorization) throws Exception {
+		Integer returnOBJ = null;
 		RestTemplate restTemplate = new RestTemplate();
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
 		headers.add("Content-Type", "application/json");
@@ -714,7 +720,15 @@ public class RegistrarServiceImpl implements RegistrarService {
 		HttpEntity<Object> request = new HttpEntity<Object>(comingRequest, headers);
 		ResponseEntity<String> response = restTemplate.exchange(beneficiaryEditUrl, HttpMethod.POST, request,
 				String.class);
-		return response.toString();
+
+		if (response.getStatusCodeValue() == 200) {
+			BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingRequest, BeneficiaryFlowStatus.class);
+			if (obj.getPassToNurse() != null && obj.getPassToNurse() == true)
+				returnOBJ = searchAndSubmitBeneficiaryToNurse(comingRequest);
+			else
+				returnOBJ = 1;
+		}
+		return returnOBJ;
 	}
 
 	// beneficiary quick search new integrated with common and identity
@@ -745,12 +759,25 @@ public class RegistrarServiceImpl implements RegistrarService {
 		return returnOBJ;
 	}
 
-	
 	// beneficiary advance search new integrated with common and identity
-		public String beneficiaryAdvanceSearch(String requestObj, String Authorization) {
-		return null;
-		}
-	
+	public String beneficiaryAdvanceSearch(String requestObj, String Authorization) {
+		String returnOBJ = null;
+		RestTemplate restTemplate = new RestTemplate();
+		JSONObject obj = new JSONObject(requestObj);
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+		headers.add("Content-Type", "application/json");
+		headers.add("AUTHORIZATION", Authorization);
+		HttpEntity<Object> request = new HttpEntity<Object>(requestObj, headers);
+		ResponseEntity<String> response = restTemplate.exchange(registrarAdvanceSearchUrl, HttpMethod.POST, request,
+				String.class);
+
+		if (response.hasBody())
+			returnOBJ = response.getBody();
+
+		return returnOBJ;
+
+	}
+
 	public int searchAndSubmitBeneficiaryToNurse(String requestOBJ) throws Exception {
 		int i = commonBenStatusFlowServiceImpl.createBenFlowRecord(requestOBJ, null, null);
 		return i;
