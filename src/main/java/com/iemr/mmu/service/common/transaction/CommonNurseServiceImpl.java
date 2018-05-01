@@ -2201,11 +2201,15 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 	public Integer saveBenPrescribedDrugsList(List<PrescribedDrugDetail> prescribedDrugDetailList) {
 		Integer r = 0;
-		List<PrescribedDrugDetail> prescribedDrugDetailListRS = (List<PrescribedDrugDetail>) prescribedDrugDetailRepo
-				.save(prescribedDrugDetailList);
-		if (prescribedDrugDetailList.size() > 0 && prescribedDrugDetailListRS != null
-				&& prescribedDrugDetailListRS.size() > 0) {
-			r = prescribedDrugDetailListRS.size();
+
+		if (prescribedDrugDetailList.size() > 0) {
+			List<PrescribedDrugDetail> prescribedDrugDetailListRS = (List<PrescribedDrugDetail>) prescribedDrugDetailRepo
+					.save(prescribedDrugDetailList);
+			if (prescribedDrugDetailList.size() == prescribedDrugDetailListRS.size()) {
+				r = prescribedDrugDetailListRS.size();
+			}
+		} else {
+			r = 1;
 		}
 		return r;
 	}

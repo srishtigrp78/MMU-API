@@ -16,12 +16,19 @@ import com.iemr.mmu.data.labModule.WrapperLabResultEntry;
 import com.iemr.mmu.data.labtechnician.V_benLabTestOrderedDetails;
 import com.iemr.mmu.repo.labModule.LabResultEntryRepo;
 import com.iemr.mmu.repo.labtechnician.V_benLabTestOrderedDetailsRepo;
+import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
 public class LabTechnicianServiceImpl implements LabTechnicianService {
 	private V_benLabTestOrderedDetailsRepo v_benLabTestOrderedDetailsRepo;
 	private LabResultEntryRepo labResultEntryRepo;
+	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
+
+	@Autowired
+	public void setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl) {
+		this.commonBenStatusFlowServiceImpl = commonBenStatusFlowServiceImpl;
+	}
 
 	@Autowired
 	public void setLabResultEntryRepo(LabResultEntryRepo labResultEntryRepo) {
@@ -258,10 +265,43 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 
 			labResultSaveFlag = saveLabTestResult(wrapperLabResults);
 
+			if (labResultSaveFlag == 1) {
+				int i = updateBenFlowStatusFlagAfterLabResultEntry(wrapperLabResults.getLabCompleted(),
+						wrapperLabResults.getBenFlowID(), wrapperLabResults.getBeneficiaryRegID(),
+						wrapperLabResults.getVisitID(), wrapperLabResults.getNurseFlag(),
+						wrapperLabResults.getDoctorFlag());
+			}
+
 		} else {
 			labResultSaveFlag = 1;
 		}
+
 		return labResultSaveFlag;
+	}
+
+	private int updateBenFlowStatusFlagAfterLabResultEntry(Boolean isLabDone, Long benFlowID, Long benRegID,
+			Long benVisitID, Short nurseFlag, Short doctorFlag) {
+		int returnOBJ = 0;
+		short labFlag = (short) 0;
+
+		if (isLabDone == true) {
+			if (nurseFlag == 2) {
+				nurseFlag = 3;
+				doctorFlag = 1;
+			} else {
+				if (doctorFlag == 2) {
+					doctorFlag = 3;
+				}
+			}
+
+			labFlag = (short) 1;
+		} else {
+			labFlag = (short) 1;
+		}
+		returnOBJ = commonBenStatusFlowServiceImpl.updateFlowAfterLabResultEntry(benFlowID, benRegID, benVisitID,
+				nurseFlag, doctorFlag, labFlag);
+
+		return returnOBJ;
 	}
 
 	public Integer saveLabTestResult(WrapperLabResultEntry wrapperLabResults) {

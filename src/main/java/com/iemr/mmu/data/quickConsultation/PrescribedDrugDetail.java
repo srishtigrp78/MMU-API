@@ -14,7 +14,6 @@ import javax.persistence.Transient;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
-import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 
 @Entity
 @Table(name = "t_prescribeddrug")
@@ -28,11 +27,11 @@ public class PrescribedDrugDetail {
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
-	
+
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	
+
 	@Expose
 	@Column(name = "PrescriptionID")
 	private Long prescriptionID;
@@ -108,30 +107,30 @@ public class PrescribedDrugDetail {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	@Transient
 	private Map<String, String> drug;
-	
+
 	public Map<String, String> getDrug() {
 		return drug;
 	}
@@ -388,21 +387,6 @@ public class PrescribedDrugDetail {
 				if (obj.has("drugTradeOrBrandName") && !obj.get("drugTradeOrBrandName").isJsonNull())
 					prescribedDrugDetail.setDrugTradeOrBrandName(obj.get("drugTradeOrBrandName").getAsString());
 
-				// if (obj.has("genericDrugName") &&
-				// !obj.get("genericDrugName").isJsonNull())
-				// prescribedDrugDetail.setGenericDrugName(obj.get("genericDrugName").getAsString());
-
-				if (obj.has("drug") && !obj.get("drug").isJsonNull() && obj.size() > 0) {
-					JsonObject tmpDugDeailsOBJ = obj.getAsJsonObject("drug");
-					if (tmpDugDeailsOBJ.has("drugID") && !tmpDugDeailsOBJ.get("drugID").isJsonNull()
-							&& tmpDugDeailsOBJ.has("drugDisplayName")
-							&& !tmpDugDeailsOBJ.get("drugDisplayName").isJsonNull()) {
-						prescribedDrugDetail.setDrugID(tmpDugDeailsOBJ.get("drugID").getAsInt());
-						prescribedDrugDetail.setGenericDrugName(tmpDugDeailsOBJ.get("drugDisplayName").getAsString());
-					}
-
-				}
-
 				if (obj.has("drugStrength") && !obj.get("drugStrength").isJsonNull())
 					prescribedDrugDetail.setDrugStrength(obj.get("drugStrength").getAsString());
 
@@ -426,20 +410,36 @@ public class PrescribedDrugDetail {
 
 				if (emrgCasesheet.has("createdBy") && !emrgCasesheet.get("createdBy").isJsonNull())
 					prescribedDrugDetail.setCreatedBy(emrgCasesheet.get("createdBy").getAsString());
-				
+
 				if (emrgCasesheet.has("beneficiaryRegID") && !emrgCasesheet.get("beneficiaryRegID").isJsonNull())
 					prescribedDrugDetail.setBeneficiaryRegID(emrgCasesheet.get("beneficiaryRegID").getAsLong());
-				
+
 				if (emrgCasesheet.has("benVisitID") && !emrgCasesheet.get("benVisitID").isJsonNull())
 					prescribedDrugDetail.setBenVisitID(emrgCasesheet.get("benVisitID").getAsLong());
 
-				resArray.add(prescribedDrugDetail);
+				if (obj.has("drug") && !obj.get("drug").isJsonNull() && obj.size() > 0
+						&& obj.get("drug").isJsonObject()) {
+					JsonObject tmpDugDeailsOBJ = obj.getAsJsonObject("drug");
+					if (tmpDugDeailsOBJ.has("drugID") && !tmpDugDeailsOBJ.get("drugID").isJsonNull()
+							&& tmpDugDeailsOBJ.has("drugDisplayName")
+							&& !tmpDugDeailsOBJ.get("drugDisplayName").isJsonNull()) {
+						prescribedDrugDetail.setDrugID(tmpDugDeailsOBJ.get("drugID").getAsInt());
+						prescribedDrugDetail.setGenericDrugName(tmpDugDeailsOBJ.get("drugDisplayName").getAsString());
+						
+						resArray.add(prescribedDrugDetail);
+					}
+
+				}
+
+				
+
+				
 			}
 		}
 
 		return resArray;
 	}
-	
+
 	public PrescribedDrugDetail(Long prescribedDrugID, Long prescriptionID, String drugForm,
 			String drugTradeOrBrandName, Integer drugID, String genericDrugName, String drugStrength, String dose,
 			String route, String frequency, String drugDuration, String relationToFood, String specialInstruction) {
@@ -461,13 +461,14 @@ public class PrescribedDrugDetail {
 
 	public static ArrayList<PrescribedDrugDetail> getprescribedDrugs(ArrayList<Object[]> resList) {
 		ArrayList<PrescribedDrugDetail> resArray = new ArrayList<PrescribedDrugDetail>();
-		PrescribedDrugDetail cOBJ=null;
+		PrescribedDrugDetail cOBJ = null;
 		if (resList != null && resList.size() > 0) {
-			
+
 			for (Object[] obj : resList) {
-				
-				cOBJ = new PrescribedDrugDetail((Long)obj[0], (Long)obj[1], (String)obj[2], (String)obj[3], (Integer)obj[4], (String)obj[5], 
-						(String)obj[6], (String)obj[7], (String)obj[8], (String)obj[9], (String)obj[10], (String)obj[11], (String)obj[12]);
+
+				cOBJ = new PrescribedDrugDetail((Long) obj[0], (Long) obj[1], (String) obj[2], (String) obj[3],
+						(Integer) obj[4], (String) obj[5], (String) obj[6], (String) obj[7], (String) obj[8],
+						(String) obj[9], (String) obj[10], (String) obj[11], (String) obj[12]);
 				resArray.add(cOBJ);
 			}
 		}

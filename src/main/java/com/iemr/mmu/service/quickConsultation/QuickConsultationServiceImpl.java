@@ -181,6 +181,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		 * prescribedDrug.getPrescribedDrugID(); } }
 		 */
 
+		
 		Integer r = commonNurseServiceImpl.saveBenPrescribedDrugsList(prescriptionDetails);
 		if (r > 0 && r != null) {
 			prescribedDrugSuccessFlag = new Long(r);
@@ -299,7 +300,17 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 
 		if (prescriptionID != null && prescriptionID > 0) {
 
-			prescribedDrugID = saveBeneficiaryPrescribedDrugDetail(quickConsultDoctorOBJ, prescriptionID);
+			if (quickConsultDoctorOBJ.has("prescribedDrugs")) {
+				drugList = quickConsultDoctorOBJ.getAsJsonArray("prescribedDrugs");
+				if (drugList != null && !drugList.isJsonNull() && drugList.size() > 0) {
+					JsonObject tmp = drugList.get(0).getAsJsonObject();
+					if (tmp.get("drug") != null && !tmp.get("drug").isJsonNull())
+						prescribedDrugID = saveBeneficiaryPrescribedDrugDetail(quickConsultDoctorOBJ, prescriptionID);
+				}
+			}
+			/// prescribedDrugID =
+			/// saveBeneficiaryPrescribedDrugDetail(quickConsultDoctorOBJ,
+			/// prescriptionID);
 
 			labTestOrderID = commonNurseServiceImpl.saveBeneficiaryLabTestOrderDetails(quickConsultDoctorOBJ,
 					prescriptionID);
@@ -337,55 +348,8 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 				pharmaFalg = (short) 0;
 			}
 
-			// if (testList != null && !testList.isJsonNull() && testList.size()
-			// > 0 && drugList != null
-			// && !drugList.isJsonNull() && drugList.size() > 0) {
-			// if (drugList.get(0) != null && !drugList.get(0).isJsonNull()) {
-			// JsonObject firstDrugDetails = drugList.get(0).getAsJsonObject();
-			// if (firstDrugDetails.get("drug") == null ||
-			// firstDrugDetails.get("drug").isJsonNull()) {
-			// // drug not prescribed
-			// pharmaFalg = (short) 0;
-			// } else {
-			// pharmaFalg = (short) 1;
-			// }
-			//
-			// } else {
-			// pharmaFalg = (short) 0;
-			// }
-			//
-			// docFlag = (short) 2;
-			//
-			// } else {
-			// // either lab or drug or both no prescribed
-			// if (drugList.get(0) != null && !drugList.get(0).isJsonNull()) {
-			// JsonObject firstDrugDetails = drugList.get(0).getAsJsonObject();
-			// if (firstDrugDetails.get("drug") == null ||
-			// firstDrugDetails.get("drug").isJsonNull()) {
-			// // drug not prescribed
-			// pharmaFalg = (short) 0;
-			// } else {
-			// pharmaFalg = (short) 1;
-			// }
-			//
-			// } else {
-			// pharmaFalg = (short) 0;
-			// }
-			//
-			// docFlag = (short) 9;
-			//
-			// }
-
 			int l = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
 					tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
-
-			// End of new code
-
-			// if (quickConsultDoctorOBJ.has("benVisitID") &&
-			// !quickConsultDoctorOBJ.get("benVisitID").isJsonNull()) {
-			// Integer i = benVisitDetailRepo.updateBenFlowStatus("D",
-			// quickConsultDoctorOBJ.get("benVisitID").getAsLong());
-			// }
 
 			returnOBJ = 1;
 		}
@@ -460,7 +424,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		Boolean isMedicinePrescribed = false;
 
 		if (quickConsultDoctorOBJ.has("labTestOrders")) {
-			testList = quickConsultDoctorOBJ.getAsJsonArray("laboratoryList");
+			testList = quickConsultDoctorOBJ.getAsJsonArray("labTestOrders");
 			if (testList != null && !testList.isJsonNull() && testList.size() > 0)
 				isTestPrescribed = true;
 		}
@@ -468,7 +432,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 			drugList = quickConsultDoctorOBJ.getAsJsonArray("prescribedDrugs");
 			if (drugList != null && !drugList.isJsonNull() && drugList.size() > 0) {
 				JsonObject tmp = drugList.get(0).getAsJsonObject();
-				if (tmp.get("drug") != null && !tmp.get("drug").isJsonNull())
+				if (tmp.get("drug") != null && !tmp.get("drug").isJsonNull() && tmp.get("drug").isJsonObject())
 					isMedicinePrescribed = true;
 			}
 		}

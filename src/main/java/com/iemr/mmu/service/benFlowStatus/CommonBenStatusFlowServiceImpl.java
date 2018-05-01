@@ -88,7 +88,8 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 	public int updateBenFlowNurseAfterNurseUpdateNCD_Screening(Long benFlowID, Long benRegID, Short nurseFlag) {
 		int i = 0;
 		try {
-			i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterNurseDataUpdateNCD_Screening(benFlowID, benRegID, nurseFlag);
+			i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterNurseDataUpdateNCD_Screening(benFlowID, benRegID,
+					nurseFlag);
 		} catch (Exception e) {
 			logger.error("Error in ben flow updatation after nurse update NCD - screening = " + e);
 		}
@@ -209,6 +210,14 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 			logger.error("Error in ben flow creation = " + e);
 		}
 		return i;
+	}
+
+	public int updateFlowAfterLabResultEntry(Long benFlowID, Long benRegID, Long benVisitID, Short nurseFlag,
+			Short doctorFlag, Short labFlag) {
+		int i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterLabResultEntry(benFlowID, benRegID, benVisitID,
+				nurseFlag, doctorFlag, labFlag);
+		return i;
+
 	}
 
 }
