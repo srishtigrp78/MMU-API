@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.labModule;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -121,6 +124,83 @@ public class LabResultEntry {
 
 	@Transient
 	private Boolean labCompleted;
+
+	@Expose
+	@ManyToOne
+	@JoinColumn(name = "testComponentID", insertable = false)
+	private TestComponentMaster testComponentMaster;
+
+	@Expose
+	@ManyToOne
+	@JoinColumn(name = "procedureID", insertable = false)
+	private ProcedureData procedureData;
+
+	@Expose
+	@Transient
+	private String procedureName;
+
+	@Expose
+	@Transient
+	private String componentName;
+
+	public String getProcedureName() {
+		return procedureName;
+	}
+
+	public void setProcedureName(String procedureName) {
+		this.procedureName = procedureName;
+	}
+
+	public String getComponentName() {
+		return componentName;
+	}
+
+	public void setComponentName(String componentName) {
+		this.componentName = componentName;
+	}
+
+	public static ArrayList<LabResultEntry> getLabResultEntry(ArrayList<LabResultEntry> comingList) {
+		ArrayList<LabResultEntry> returnList = new ArrayList<>();
+		LabResultEntry tmpOBJ;
+		if (comingList != null && comingList.size() > 0) {
+			for (LabResultEntry obj : comingList) {
+				tmpOBJ = new LabResultEntry();
+				tmpOBJ.setProcedureID(obj.getProcedureID());
+				tmpOBJ.setProcedureName(obj.getProcedureData().getProcedureName());
+				tmpOBJ.setTestComponentID(obj.getTestComponentID());
+				tmpOBJ.setComponentName(obj.getTestComponentMaster().getTestComponentName());
+				tmpOBJ.setPrescriptionID(obj.getPrescriptionID());
+				tmpOBJ.setTestResultValue(obj.getTestResultValue());
+				tmpOBJ.setTestResultUnit(obj.getTestResultUnit());
+				tmpOBJ.setTestReportFilePath(obj.getTestReportFilePath());
+				
+				returnList.add(tmpOBJ);
+
+			}
+		}
+		return returnList;
+
+	}
+
+	public LabResultEntry() {
+
+	}
+
+	public TestComponentMaster getTestComponentMaster() {
+		return testComponentMaster;
+	}
+
+	public void setTestComponentMaster(TestComponentMaster testComponentMaster) {
+		this.testComponentMaster = testComponentMaster;
+	}
+
+	public ProcedureData getProcedureData() {
+		return procedureData;
+	}
+
+	public void setProcedureData(ProcedureData procedureData) {
+		this.procedureData = procedureData;
+	}
 
 	public Boolean getLabCompleted() {
 		return labCompleted;

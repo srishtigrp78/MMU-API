@@ -46,19 +46,31 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 		ArrayList<Object> radiologyList;
 		ArrayList<Object> laboratoryList;
 
+		ArrayList<Integer> resultEnteredProcList = new ArrayList<>();
+
+		ArrayList<LabResultEntry> procedureResults = getLabResultDataForBen(benRegID, benVisitID);
+
+		if (procedureResults != null && procedureResults.size() > 0) {
+			for (LabResultEntry obj : procedureResults) {
+				resultEnteredProcList.add(obj.getProcedureID());
+			}
+		}
+		resultEnteredProcList.add(0);
+
 		ArrayList<V_benLabTestOrderedDetails> orderedLabTestListLab = v_benLabTestOrderedDetailsRepo
-				.findDistinctByBeneficiaryRegIDAndBenVisitIDAndProcedureTypeOrderByProcedureIDAscTestComponentIDAscResultValueAsc(
-						benRegID, benVisitID, "Laboratory");
+				.findDistinctByBeneficiaryRegIDAndBenVisitIDAndProcedureTypeAndProcedureIDNotInOrderByProcedureIDAscTestComponentIDAscResultValueAsc(
+						benRegID, benVisitID, "Laboratory", resultEnteredProcList);
 
 		ArrayList<V_benLabTestOrderedDetails> orderedLabTestListRadio = v_benLabTestOrderedDetailsRepo
-				.findDistinctByBeneficiaryRegIDAndBenVisitIDAndProcedureTypeOrderByProcedureIDAscTestComponentIDAscResultValueAsc(
-						benRegID, benVisitID, "Radiology");
+				.findDistinctByBeneficiaryRegIDAndBenVisitIDAndProcedureTypeAndProcedureIDNotInOrderByProcedureIDAscTestComponentIDAscResultValueAsc(
+						benRegID, benVisitID, "Radiology", resultEnteredProcList);
 
 		radiologyList = getPrescribedLabTestInJsonFormatRadiology(orderedLabTestListRadio);
 		laboratoryList = getPrescribedLabTestInJsonFormatlaboratory(orderedLabTestListLab);
 
 		returnOBJ.put("radiologyList", radiologyList);
 		returnOBJ.put("laboratoryList", laboratoryList);
+		returnOBJ.put("archive", procedureResults);
 
 		return new Gson().toJson(returnOBJ);
 	}
@@ -168,6 +180,14 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 		}
 
 		return returnOBJ;
+	}
+
+	public ArrayList<LabResultEntry> getLabResultDataForBen(Long benRegID, Long benVisitID) {
+		ArrayList<LabResultEntry> procedureResults = new ArrayList<>();
+		procedureResults = labResultEntryRepo.findByBeneficiaryRegIDAndBenVisitID(benRegID, benVisitID);
+		procedureResults = LabResultEntry.getLabResultEntry(procedureResults);
+
+		return procedureResults;
 	}
 
 	private ArrayList<Object> getPrescribedLabTestInJsonFormatRadiology(
