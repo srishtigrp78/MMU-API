@@ -272,8 +272,8 @@ public class CommonDoctorServiceImpl {
 	}
 
 	// New doc worklist service
-	public String getDocWorkListNew() {
-		ArrayList<BeneficiaryFlowStatus> docWorkList = beneficiaryFlowStatusRepo.getDocWorkListNew();
+	public String getDocWorkListNew(Integer providerServiceMapId) {
+		ArrayList<BeneficiaryFlowStatus> docWorkList = beneficiaryFlowStatusRepo.getDocWorkListNew(providerServiceMapId);
 		return new Gson().toJson(docWorkList);
 	}
 

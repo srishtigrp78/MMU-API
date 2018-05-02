@@ -19,8 +19,8 @@ import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 @Repository
 public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlowStatus, Long> {
 	@Query("SELECT  t from BeneficiaryFlowStatus t WHERE (t.nurseFlag = 1 OR t.nurseFlag = 100) AND t.deleted = false "
-			+ " AND Date(t.visitDate)  = curdate()")
-	public ArrayList<BeneficiaryFlowStatus> getNurseWorklistNew();
+			+ " AND Date(t.visitDate)  = curdate() AND t.providerServiceMapId = :providerServiceMapId")
+	public ArrayList<BeneficiaryFlowStatus> getNurseWorklistNew(@Param("providerServiceMapId") Integer providerServiceMapId);
 
 	@Transactional
 	@Modifying
@@ -43,15 +43,16 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			@Param("benFlowID") Long benFlowID);
 
 	@Query("SELECT t from BeneficiaryFlowStatus t WHERE (t.doctorFlag = 1 OR t.doctorFlag = 2 OR "
-			+ " t.doctorFlag = 3 OR t.nurseFlag = 2 OR t.doctorFlag = 9) AND t.deleted = false")
-	public ArrayList<BeneficiaryFlowStatus> getDocWorkListNew();
+			+ " t.doctorFlag = 3 OR t.nurseFlag = 2 OR t.doctorFlag = 9) AND t.deleted = false AND t.providerServiceMapId = :providerServiceMapId")
+	public ArrayList<BeneficiaryFlowStatus> getDocWorkListNew(@Param("providerServiceMapId") Integer providerServiceMapId);
 
 	@Query("SELECT  t.benFlowID from BeneficiaryFlowStatus t WHERE t.beneficiaryRegID = :benRegID AND "
 			+ " (t.nurseFlag = 1 OR t.nurseFlag = 100) AND Date(t.visitDate)  = curdate() AND t.deleted = false")
 	public ArrayList<Long> checkBenAlreadyInNurseWorkList(@Param("benRegID") Long benRegID);
 
-	@Query("SELECT t from BeneficiaryFlowStatus t WHERE (t.nurseFlag = 2 OR t.doctorFlag = 2) AND t.deleted = false")
-	public ArrayList<BeneficiaryFlowStatus> getLabWorklistNew();
+	@Query("SELECT t from BeneficiaryFlowStatus t WHERE (t.nurseFlag = 2 OR t.doctorFlag = 2) AND t.deleted = false "
+			+ "AND t.providerServiceMapId = :providerServiceMapId")
+	public ArrayList<BeneficiaryFlowStatus> getLabWorklistNew(@Param("providerServiceMapId") Integer providerServiceMapId);
 
 	@Transactional
 	@Modifying
@@ -73,14 +74,14 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			@Param("docFlag") Short docFlag, @Param("pharmaFlag") Short pharmaFlag,
 			@Param("oncologistFlag") Short oncologistFlag);
 
-	@Query("SELECT t from BeneficiaryFlowStatus t WHERE t.radiologist_flag = 1")
-	public ArrayList<BeneficiaryFlowStatus> getRadiologistWorkListNew();
+	@Query("SELECT t from BeneficiaryFlowStatus t WHERE t.radiologist_flag = 1 AND t.providerServiceMapId= :providerServiceMapId")
+	public ArrayList<BeneficiaryFlowStatus> getRadiologistWorkListNew(@Param("providerServiceMapId") Integer providerServiceMapId);
 
-	@Query("SELECT t from BeneficiaryFlowStatus t WHERE t.oncologist_flag = 1")
-	public ArrayList<BeneficiaryFlowStatus> getOncologistWorkListNew();
+	@Query("SELECT t from BeneficiaryFlowStatus t WHERE t.oncologist_flag = 1 AND t.providerServiceMapId= :providerServiceMapId")
+	public ArrayList<BeneficiaryFlowStatus> getOncologistWorkListNew(@Param("providerServiceMapId") Integer providerServiceMapId);
 
-	@Query("SELECT t from BeneficiaryFlowStatus t WHERE t.pharmacist_flag = 1")
-	public ArrayList<BeneficiaryFlowStatus> getPharmaWorkListNew();
+	@Query("SELECT t from BeneficiaryFlowStatus t WHERE t.pharmacist_flag = 1 AND t.providerServiceMapId= :providerServiceMapId")
+	public ArrayList<BeneficiaryFlowStatus> getPharmaWorkListNew(@Param("providerServiceMapId") Integer providerServiceMapId);
 
 	@Query("SELECT t.pharmacist_flag from BeneficiaryFlowStatus t WHERE t.benFlowID = :benFlowID")
 	public Short getPharmaFlag(@Param("benFlowID") Long benFlowID);

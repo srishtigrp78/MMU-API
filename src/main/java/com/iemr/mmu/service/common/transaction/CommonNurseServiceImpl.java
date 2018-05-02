@@ -2289,36 +2289,36 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	}
 
 	// New Nurse worklist.... 26-03-2018
-	public String getNurseWorkListNew() {
-		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getNurseWorklistNew();
+	public String getNurseWorkListNew(Integer providerServiceMapId) {
+		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getNurseWorklistNew(providerServiceMapId);
 
 		return new Gson().toJson(obj);
 	}
 
 	// New Lab worklist.... 26-03-2018
-	public String getLabWorkListNew() {
-		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getLabWorklistNew();
+	public String getLabWorkListNew(Integer providerServiceMapId) {
+		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getLabWorklistNew(providerServiceMapId);
 
 		return new Gson().toJson(obj);
 	}
 
 	// New radiologist worklist.... 26-03-2018
-	public String getRadiologistWorkListNew() {
-		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getRadiologistWorkListNew();
+	public String getRadiologistWorkListNew(Integer providerServiceMapId) {
+		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getRadiologistWorkListNew(providerServiceMapId);
 
 		return new Gson().toJson(obj);
 	}
 
 	// New oncologist worklist.... 26-03-2018
-	public String getOncologistWorkListNew() {
-		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getOncologistWorkListNew();
+	public String getOncologistWorkListNew(Integer providerServiceMapId) {
+		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getOncologistWorkListNew(providerServiceMapId);
 
 		return new Gson().toJson(obj);
 	}
 
 	// New pharma worklist.... 26-03-2018
-	public String getPharmaWorkListNew() {
-		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getPharmaWorkListNew();
+	public String getPharmaWorkListNew(Integer providerServiceMapId) {
+		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getPharmaWorkListNew(providerServiceMapId);
 
 		return new Gson().toJson(obj);
 	}
