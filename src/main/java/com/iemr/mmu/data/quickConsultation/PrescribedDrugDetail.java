@@ -33,6 +33,10 @@ public class PrescribedDrugDetail {
 	private Long benVisitID;
 
 	@Expose
+	@Column(name = "ProviderServiceMapID")
+	private Integer providerServiceMapID;
+	
+	@Expose
 	@Column(name = "PrescriptionID")
 	private Long prescriptionID;
 
@@ -72,6 +76,10 @@ public class PrescribedDrugDetail {
 	@Column(name = "Duration")
 	private String drugDuration;
 
+	@Expose
+	@Column(name = "DuartionUnit")
+	private String drugDurationUnit;
+	
 	@Expose
 	@Column(name = "RelationToFood")
 	private String relationToFood;
@@ -368,6 +376,22 @@ public class PrescribedDrugDetail {
 		this.benVisitID = benVisitID;
 	}
 
+	public Integer getProviderServiceMapID() {
+		return providerServiceMapID;
+	}
+
+	public void setProviderServiceMapID(Integer providerServiceMapID) {
+		this.providerServiceMapID = providerServiceMapID;
+	}
+
+	public String getDrugDurationUnit() {
+		return drugDurationUnit;
+	}
+
+	public void setDrugDurationUnit(String drugDurationUnit) {
+		this.drugDurationUnit = drugDurationUnit;
+	}
+
 	public static ArrayList<PrescribedDrugDetail> getBenPrescribedDrugDetailList(JsonObject emrgCasesheet,
 			Long prescriptionID) {
 		ArrayList<PrescribedDrugDetail> resArray = new ArrayList<PrescribedDrugDetail>();
@@ -442,7 +466,7 @@ public class PrescribedDrugDetail {
 
 	public PrescribedDrugDetail(Long prescribedDrugID, Long prescriptionID, String drugForm,
 			String drugTradeOrBrandName, Integer drugID, String genericDrugName, String drugStrength, String dose,
-			String route, String frequency, String drugDuration, String relationToFood, String specialInstruction) {
+			String route, String frequency, String drugDuration, String drugDurationUnit, String relationToFood, String specialInstruction) {
 		super();
 		this.prescribedDrugID = prescribedDrugID;
 		this.prescriptionID = prescriptionID;
@@ -455,6 +479,7 @@ public class PrescribedDrugDetail {
 		this.route = route;
 		this.frequency = frequency;
 		this.drugDuration = drugDuration;
+		this.drugDurationUnit = drugDurationUnit;
 		this.relationToFood = relationToFood;
 		this.specialInstruction = specialInstruction;
 	}
@@ -468,7 +493,7 @@ public class PrescribedDrugDetail {
 
 				cOBJ = new PrescribedDrugDetail((Long) obj[0], (Long) obj[1], (String) obj[2], (String) obj[3],
 						(Integer) obj[4], (String) obj[5], (String) obj[6], (String) obj[7], (String) obj[8],
-						(String) obj[9], (String) obj[10], (String) obj[11], (String) obj[12]);
+						(String) obj[9], (String) obj[10], (String) obj[11], (String) obj[12], (String) obj[13]);
 				resArray.add(cOBJ);
 			}
 		}
