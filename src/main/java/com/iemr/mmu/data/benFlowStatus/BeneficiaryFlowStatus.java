@@ -159,6 +159,18 @@ public class BeneficiaryFlowStatus {
 	}
 
 	@Expose
+	@Column(name = "providerServiceMapID")
+	private Integer providerServiceMapId;
+
+	public Integer getProviderServiceMapID() {
+		return providerServiceMapId;
+	}
+
+	public void setProviderServiceMapID(Integer providerServiceMapId) {
+		this.providerServiceMapId = providerServiceMapId;
+	}
+
+	@Expose
 	@Column(name = "village")
 	private String villageName;
 	@Expose
