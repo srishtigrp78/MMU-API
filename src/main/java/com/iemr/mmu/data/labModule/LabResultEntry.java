@@ -2,6 +2,7 @@ package com.iemr.mmu.data.labModule;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -141,7 +142,27 @@ public class LabResultEntry {
 
 	@Expose
 	@Transient
-	private String componentName;
+	private String procedureType;
+
+	@Expose
+	@Transient
+	private ArrayList<Map<String, Object>> componentList;
+
+	public ArrayList<Map<String, Object>> getComponentList() {
+		return componentList;
+	}
+
+	public void setComponentList(ArrayList<Map<String, Object>> componentList) {
+		this.componentList = componentList;
+	}
+
+	public String getProcedureType() {
+		return procedureType;
+	}
+
+	public void setProcedureType(String procedureType) {
+		this.procedureType = procedureType;
+	}
 
 	public String getProcedureName() {
 		return procedureName;
@@ -151,30 +172,61 @@ public class LabResultEntry {
 		this.procedureName = procedureName;
 	}
 
-	public String getComponentName() {
-		return componentName;
-	}
-
-	public void setComponentName(String componentName) {
-		this.componentName = componentName;
-	}
-
 	public static ArrayList<LabResultEntry> getLabResultEntry(ArrayList<LabResultEntry> comingList) {
 		ArrayList<LabResultEntry> returnList = new ArrayList<>();
+		Integer procedureId = null;
+		Map<String, Object> compDetails = null;
+		ArrayList<Map<String, Object>> componentList = null;
+
 		LabResultEntry tmpOBJ;
+
 		if (comingList != null && comingList.size() > 0) {
 			for (LabResultEntry obj : comingList) {
-				tmpOBJ = new LabResultEntry();
-				tmpOBJ.setProcedureID(obj.getProcedureID());
-				tmpOBJ.setProcedureName(obj.getProcedureData().getProcedureName());
-				tmpOBJ.setTestComponentID(obj.getTestComponentID());
-				tmpOBJ.setComponentName(obj.getTestComponentMaster().getTestComponentName());
-				tmpOBJ.setPrescriptionID(obj.getPrescriptionID());
-				tmpOBJ.setTestResultValue(obj.getTestResultValue());
-				tmpOBJ.setTestResultUnit(obj.getTestResultUnit());
-				tmpOBJ.setTestReportFilePath(obj.getTestReportFilePath());
-				
-				returnList.add(tmpOBJ);
+				if (procedureId == null || procedureId != obj.getProcedureID()) {
+
+					procedureId = obj.getProcedureID();
+
+					tmpOBJ = new LabResultEntry();
+					tmpOBJ.setPrescriptionID(obj.getPrescriptionID());
+					tmpOBJ.setProcedureID(obj.getProcedureID());
+					tmpOBJ.setProcedureName(obj.getProcedureData().getProcedureName());
+					tmpOBJ.setProcedureType(obj.getProcedureType());
+
+					compDetails = new HashMap<String, Object>();
+					compDetails.put("testComponentID", obj.getTestComponentID());
+					compDetails.put("componentName", obj.getTestComponentMaster().getTestComponentName());
+					compDetails.put("testResultValue", obj.getTestResultValue());
+					compDetails.put("testResultUnit", obj.getTestResultUnit());
+					compDetails.put("testReportFilePath", obj.getTestReportFilePath());
+
+					componentList = new ArrayList<>();
+					componentList.add(compDetails);
+					tmpOBJ.setComponentList(componentList);
+
+					returnList.add(tmpOBJ);
+
+				} else {
+					compDetails = new HashMap<String, Object>();
+					compDetails.put("testComponentID", obj.getTestComponentID());
+					compDetails.put("componentName", obj.getTestComponentMaster().getTestComponentName());
+					compDetails.put("testResultValue", obj.getTestResultValue());
+					compDetails.put("testResultUnit", obj.getTestResultUnit());
+					compDetails.put("testReportFilePath", obj.getTestReportFilePath());
+					componentList.add(compDetails);
+				}
+
+				// tmpOBJ = new LabResultEntry();
+				// tmpOBJ.setProcedureID(obj.getProcedureID());
+				// tmpOBJ.setProcedureName(obj.getProcedureData().getProcedureName());
+				// tmpOBJ.setProcedureType(obj.getProcedureData().getProcedureType());
+				// tmpOBJ.setTestComponentID(obj.getTestComponentID());
+				// tmpOBJ.setComponentName(obj.getTestComponentMaster().getTestComponentName());
+				// tmpOBJ.setPrescriptionID(obj.getPrescriptionID());
+				// tmpOBJ.setTestResultValue(obj.getTestResultValue());
+				// tmpOBJ.setTestResultUnit(obj.getTestResultUnit());
+				// tmpOBJ.setTestReportFilePath(obj.getTestReportFilePath());
+
+				// returnList.add(tmpOBJ);
 
 			}
 		}

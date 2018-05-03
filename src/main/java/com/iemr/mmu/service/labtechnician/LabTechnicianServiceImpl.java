@@ -184,9 +184,8 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 
 	public ArrayList<LabResultEntry> getLabResultDataForBen(Long benRegID, Long benVisitID) {
 		ArrayList<LabResultEntry> procedureResults = new ArrayList<>();
-		procedureResults = labResultEntryRepo.findByBeneficiaryRegIDAndBenVisitID(benRegID, benVisitID);
+		procedureResults = labResultEntryRepo.findByBeneficiaryRegIDAndBenVisitIDOrderByProcedureIDAsc(benRegID, benVisitID);
 		procedureResults = LabResultEntry.getLabResultEntry(procedureResults);
-
 		return procedureResults;
 	}
 

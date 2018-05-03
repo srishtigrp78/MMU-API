@@ -51,7 +51,7 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 					returnOBJ = 0;
 			} else {
 				ArrayList<Long> benFlowIDList = beneficiaryFlowStatusRepo
-						.checkBenAlreadyInNurseWorkList(obj.getBeneficiaryRegID());
+						.checkBenAlreadyInNurseWorkList(obj.getBeneficiaryRegID(), obj.getProviderServiceMapID());
 				if (benFlowIDList != null && benFlowIDList.size() > 0) {
 					returnOBJ = 3;
 				} else {
