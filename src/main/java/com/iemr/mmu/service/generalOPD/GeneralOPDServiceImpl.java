@@ -44,6 +44,7 @@ import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
+import com.iemr.mmu.service.labtechnician.LabTechnicianServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 /***
@@ -59,6 +60,12 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
 	private GeneralOPDDoctorServiceImpl generalOPDDoctorServiceImpl;
+	private LabTechnicianServiceImpl labTechnicianServiceImpl;
+	
+	@Autowired
+	public void setLabTechnicianServiceImpl(LabTechnicianServiceImpl labTechnicianServiceImpl) {
+		this.labTechnicianServiceImpl = labTechnicianServiceImpl;
+	}
 
 	@Autowired
 	public void setGeneralOPDDoctorServiceImpl(GeneralOPDDoctorServiceImpl generalOPDDoctorServiceImpl) {
@@ -1330,6 +1337,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 		resMap.put("Refer", commonDoctorServiceImpl.getReferralDetails(benRegID, benVisitID));
 
+		resMap.put("LabReport", new Gson().toJson(labTechnicianServiceImpl.getLabResultDataForBen(benRegID, benVisitID)));
+		
 		return resMap.toString();
 	}
 
