@@ -190,7 +190,7 @@ public class LabResultEntry {
 					tmpOBJ.setPrescriptionID(obj.getPrescriptionID());
 					tmpOBJ.setProcedureID(obj.getProcedureID());
 					tmpOBJ.setProcedureName(obj.getProcedureData().getProcedureName());
-					tmpOBJ.setProcedureType(obj.getProcedureType());
+					tmpOBJ.setProcedureType(obj.getProcedureData().getProcedureType());
 
 					compDetails = new HashMap<String, Object>();
 					compDetails.put("testComponentID", obj.getTestComponentID());
