@@ -59,7 +59,7 @@ public interface PNCCareRepo extends CrudRepository<PNCCare, Integer>{
 			@Param("otherPostNatalComplication") String otherPostNatalComplication,
 			@Param("gestationID") Short gestationID,
 			@Param("gestationName") String gestationName,
-			@Param("birthWeightOfNewborn") Short birthWeightOfNewborn,
+			@Param("birthWeightOfNewborn") Double birthWeightOfNewborn,
 			@Param("newBornHealthStatusID") Integer newBornHealthStatusID,
 			@Param("newBornHealthStatus") String newBornHealthStatus,
 			@Param("modifiedBy") String modifiedBy,

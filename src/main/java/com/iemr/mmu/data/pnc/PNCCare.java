@@ -109,7 +109,7 @@ public class PNCCare {
 
 	@Expose
 	@Column(name = "BirthWeightOfNewborn")
-	private Short birthWeightOfNewborn;
+	private Double birthWeightOfNewborn;
 
 	@Expose
 	@Column(name = "NewBornHealthStatusID")
@@ -354,11 +354,11 @@ public class PNCCare {
 		this.gestationName = gestationName;
 	}
 
-	public Short getBirthWeightOfNewborn() {
+	public Double getBirthWeightOfNewborn() {
 		return birthWeightOfNewborn;
 	}
 
-	public void setBirthWeightOfNewborn(Short birthWeightOfNewborn) {
+	public void setBirthWeightOfNewborn(Double birthWeightOfNewborn) {
 		this.birthWeightOfNewborn = birthWeightOfNewborn;
 	}
 
@@ -479,7 +479,7 @@ public class PNCCare {
 			String otherDeliveryPlace, Date dateOfDelivery, Short deliveryComplicationID,
 			String deliveryComplication, String otherDeliveryComplication, Short pregOutcomeID, String pregOutcome,
 			Short postNatalComplicationID, String postNatalComplication, String otherPostNatalComplication,
-			Short gestationID, String gestationName, Short birthWeightOfNewborn, Integer newBornHealthStatusID,
+			Short gestationID, String gestationName, Double birthWeightOfNewborn, Integer newBornHealthStatusID,
 			String newBornHealthStatus) {
 		super();
 		ID = iD;
@@ -515,7 +515,7 @@ public class PNCCare {
 			
 			cOBJ = new PNCCare((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (Short)obj[4], (Short)obj[5], (String)obj[6], 
 					(Short)obj[7], (String)obj[8], (String)obj[9], (Date)obj[10], (Short)obj[11], (String)obj[12], (String)obj[13], (Short)obj[14], 
-					(String)obj[15], (Short)obj[16], (String)obj[17], (String)obj[18], (Short)obj[19], (String)obj[20], (Short)obj[21], (Integer)obj[22],
+					(String)obj[15], (Short)obj[16], (String)obj[17], (String)obj[18], (Short)obj[19], (String)obj[20], (Double)obj[21], (Integer)obj[22],
 					(String)obj[23]);
 			
 		}
