@@ -387,6 +387,14 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		return resMap.toString();
 	}
 
+	public String getBenQuickConsultNurseData(Long benRegID, Long benVisitID) {
+
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("vitals", getBeneficiaryVitalDetails(benRegID, benVisitID));
+
+		return resMap.toString();
+	}
 	// ------- END of Fetch (Nurse data to Doctor screen) ----------------
 
 	public String getBenCaseRecordFromDoctorQuickConsult(Long benRegID, Long benVisitID) {

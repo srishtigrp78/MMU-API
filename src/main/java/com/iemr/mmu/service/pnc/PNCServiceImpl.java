@@ -1297,7 +1297,21 @@ public class PNCServiceImpl implements PNCService {
 
 		return pncSuccessFlag;
 	}
+	
+	public String getBenPNCNurseData(Long benRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
 
+		resMap.put("pnc", getBenPNCDetailsFrmNursePNC(benRegID, benVisitID));
+
+		resMap.put("history", getBenHistoryDetails(benRegID, benVisitID));
+
+		resMap.put("vitals", getBeneficiaryVitalDetails(benRegID, benVisitID));
+
+		resMap.put("examination", getPNCExaminationDetailsData(benRegID, benVisitID));
+
+		return resMap.toString();
+	}
+	
 	public String getBenCaseRecordFromDoctorPNC(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
 
