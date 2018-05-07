@@ -7,12 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
+import com.iemr.mmu.service.common.transaction.CommonServiceImpl;
+import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +30,12 @@ public class FetchCommonController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
 	private CommonNurseServiceImpl commonNurseServiceImpl;
+	private CommonServiceImpl commonServiceImpl;
+
+	@Autowired
+	public void setCommonServiceImpl(CommonServiceImpl commonServiceImpl) {
+		this.commonServiceImpl = commonServiceImpl;
+	}
 
 	@Autowired
 	public void setCommonDoctorServiceImpl(CommonDoctorServiceImpl commonDoctorServiceImpl) {
@@ -129,7 +139,7 @@ public class FetchCommonController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Lab technician worklist new", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getLabWorklistNew/{providerServiceMapID}" }, method = { RequestMethod.GET })
@@ -148,7 +158,7 @@ public class FetchCommonController {
 		}
 		return response.toString();
 	}
-	
+
 	// Get radiologist worklist new
 	@CrossOrigin()
 	@ApiOperation(value = "Get radiologist worklist new", consumes = "application/json", produces = "application/json")
@@ -168,44 +178,63 @@ public class FetchCommonController {
 		}
 		return response.toString();
 	}
-	
+
 	// Get oncologist worklist new
-		@CrossOrigin()
-		@ApiOperation(value = "Get oncologist worklist new", consumes = "application/json", produces = "application/json")
-		@RequestMapping(value = { "/getOncologist-worklist-New/{providerServiceMapID}" }, method = { RequestMethod.GET })
-		public String getOncologistWorklistNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID) {
-			OutputResponse response = new OutputResponse();
-			try {
-				String s = commonNurseServiceImpl.getOncologistWorkListNew(providerServiceMapID);
-				if (s != null)
-					response.setResponse(s);
-				else
-					response.setError(5000, "Error while fetching oncologist worklist");
-			} catch (Exception e) {
-				// e.printStackTrace();
-				logger.error("Error in getLabWorklist:" + e);
-				response.setError(e);
-			}
-			return response.toString();
+	@CrossOrigin()
+	@ApiOperation(value = "Get oncologist worklist new", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getOncologist-worklist-New/{providerServiceMapID}" }, method = { RequestMethod.GET })
+	public String getOncologistWorklistNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID) {
+		OutputResponse response = new OutputResponse();
+		try {
+			String s = commonNurseServiceImpl.getOncologistWorkListNew(providerServiceMapID);
+			if (s != null)
+				response.setResponse(s);
+			else
+				response.setError(5000, "Error while fetching oncologist worklist");
+		} catch (Exception e) {
+			// e.printStackTrace();
+			logger.error("Error in getLabWorklist:" + e);
+			response.setError(e);
 		}
-		
-		// Get pharma worklist new
-				@CrossOrigin()
-				@ApiOperation(value = "Get pharma worklist new", consumes = "application/json", produces = "application/json")
-				@RequestMapping(value = { "/getPharma-worklist-New/{providerServiceMapID}" }, method = { RequestMethod.GET })
-				public String getPharmaWorklistNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID) {
-					OutputResponse response = new OutputResponse();
-					try {
-						String s = commonNurseServiceImpl.getPharmaWorkListNew(providerServiceMapID);
-						if (s != null)
-							response.setResponse(s);
-						else
-							response.setError(5000, "Error while fetching pharma worklist");
-					} catch (Exception e) {
-						// e.printStackTrace();
-						logger.error("Error in getLabWorklist:" + e);
-						response.setError(e);
-					}
-					return response.toString();
-				}
+		return response.toString();
+	}
+
+	// Get pharma worklist new
+	@CrossOrigin()
+	@ApiOperation(value = "Get pharma worklist new", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getPharma-worklist-New/{providerServiceMapID}" }, method = { RequestMethod.GET })
+	public String getPharmaWorklistNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID) {
+		OutputResponse response = new OutputResponse();
+		try {
+			String s = commonNurseServiceImpl.getPharmaWorkListNew(providerServiceMapID);
+			if (s != null)
+				response.setResponse(s);
+			else
+				response.setError(5000, "Error while fetching pharma worklist");
+		} catch (Exception e) {
+			// e.printStackTrace();
+			logger.error("Error in getLabWorklist:" + e);
+			response.setError(e);
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin()
+	@ApiOperation(value = "get case-sheet print data for beneficiary.", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/get/Case-sheet/printData" }, method = { RequestMethod.POST })
+	public String getCasesheetPrintData(@RequestBody String comingReq,
+			@RequestHeader(value = "Authorization") String Authorization) {
+		OutputResponse response = new OutputResponse();
+		try {
+			if (comingReq != null) {
+				BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingReq, BeneficiaryFlowStatus.class);
+				String casesheetData = commonServiceImpl.getCaseSheetPrintDataForBeneficiary(obj, Authorization);
+			} else
+				response.setError(5000, "Invalid request.");
+		} catch (Exception e) {
+			logger.error("" + e);
+		}
+
+		return response.toString();
+	}
 }
