@@ -1,10 +1,5 @@
 package com.iemr.mmu.controller.doctor.main.casesheet;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,54 +34,7 @@ public class CaseSheetController {
 	}
 
 	
-	/**
-	 * Fething beneficiary data filled by Nurse and Doctor for case sheet...
-	 */
-	@Deprecated
-	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary data for case sheet", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBeneficiaryDataEnteredByNurseAndDoctor" }, method = { RequestMethod.POST })
-	public String getBenDataForCaseSheet(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\", \"visitDateTime\":\"Date\"}") @RequestBody String comingRequest) {
-		OutputResponse response = new OutputResponse();
-		logger.info("getBenDataForCaseSheet request:" + comingRequest);
-		try {
-			JSONObject obj = new JSONObject(comingRequest);
-			if (obj.length() > 1) {
-				Long benRegID = obj.getLong("benRegID");
-				Long benVisitID = obj.getLong("benVisitID");
-				Date visitDateTime = null;
-				if (obj.has("visitDateTime") && null != obj.getString("visitDateTime")) {
-					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-					java.util.Date parsedDate;
-					try {
-						parsedDate = dateFormat.parse(obj.getString("visitDateTime"));
-						Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
-						// new Date(timestamp.getYear(), timestamp.getMonth(),
-						// timestamp.getDate());
-						visitDateTime = new Date(timestamp.getTime());
-						// System.out.println("hello");
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						// e.printStackTrace();
-						logger.error("Error in getBenDataForCaseSheet:" + e);
-					}
-				}
-
-				String caseSheetData = caseSheetServiceImpl.getBenDataForCaseSheet(benRegID, benVisitID, visitDateTime);
-
-				response.setResponse(caseSheetData);
-			} else {
-
-			}
-			logger.info("getBenDataForCaseSheet response:" + response);
-		} catch (Exception e) {
-			response.setError(e);
-			logger.error("Error in getBenDataForCaseSheet:" + e);
-		}
-		return response.toString();
-	}
-
+	
 	@CrossOrigin()
 	@ApiOperation(value = "Get casesheet History of Beneficiary", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBeneficiaryCaseSheetHistory" }, method = { RequestMethod.POST })
@@ -113,33 +61,5 @@ public class CaseSheetController {
 		return response.toString();
 	}
 
-	@Deprecated
-	@CrossOrigin()
-	@ApiOperation(value = "Get Cancer Examination Image-Annotation of Beneficiary", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getCancerExaminationImageAnnotation" }, method = { RequestMethod.POST })
-	public String getCancerExaminationImageAnnotation(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
-		OutputResponse response = new OutputResponse();
-		logger.info("getBenDataForCaseSheet request:" + comingRequest);
-		try {
-			JSONObject obj = new JSONObject(comingRequest);
-
-			if (obj.has("benRegID") && obj.has("benVisitID")) {
-				Long benRegID = obj.getLong("benRegID");
-				Long benVisitID = obj.getLong("benVisitID");
-				String s = caseSheetServiceImpl.getCancerExaminationImageAnnotation(benRegID, benVisitID);
-				// System.out.println(s);
-				response.setResponse(s);
-
-			} else {
-				response.setError(5000, "Invalid Request");
-			}
-			logger.info("getBenDataForCaseSheet response:" + response);
-		} catch (Exception e) {
-			response.setError(e);
-			logger.error("Error in getBenDataForCaseSheet:" + e);
-		}
-		return response.toString();
-	}
-
+	
 }

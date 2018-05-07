@@ -198,6 +198,7 @@ public class LabResultEntry {
 					compDetails.put("testResultValue", obj.getTestResultValue());
 					compDetails.put("testResultUnit", obj.getTestResultUnit());
 					compDetails.put("testReportFilePath", obj.getTestReportFilePath());
+					compDetails.put("remarks", obj.getRemarks());
 
 					componentList = new ArrayList<>();
 					componentList.add(compDetails);
@@ -212,6 +213,7 @@ public class LabResultEntry {
 					compDetails.put("testResultValue", obj.getTestResultValue());
 					compDetails.put("testResultUnit", obj.getTestResultUnit());
 					compDetails.put("testReportFilePath", obj.getTestReportFilePath());
+					compDetails.put("remarks", obj.getRemarks());
 					componentList.add(compDetails);
 				}
 
