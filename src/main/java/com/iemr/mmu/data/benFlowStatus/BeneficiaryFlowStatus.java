@@ -150,6 +150,26 @@ public class BeneficiaryFlowStatus {
 	@Column(name = "servicePoint")
 	private String servicePointName;
 
+	@Expose
+	@Column(name = "registrationDate")
+	private Timestamp registrationDate;
+
+	public Timestamp getRegistrationDate() {
+		return registrationDate;
+	}
+
+	public void setRegistrationDate(Timestamp registrationDate) {
+		this.registrationDate = registrationDate;
+	}
+
+	public Integer getProviderServiceMapId() {
+		return providerServiceMapId;
+	}
+
+	public void setProviderServiceMapId(Integer providerServiceMapId) {
+		this.providerServiceMapId = providerServiceMapId;
+	}
+
 	public String getServicePointName() {
 		return servicePointName;
 	}
@@ -207,7 +227,7 @@ public class BeneficiaryFlowStatus {
 
 	public BeneficiaryFlowStatus(Long benFlowID, Long benRegID, Timestamp visitDate, String benName, String age,
 			Integer ageVal, Short genderID, String genderName, String villageName, String districtName,
-			Long beneficiaryID, String servicePoint) {
+			Long beneficiaryID, String servicePoint, String VisitReason, String VisitCategory) {
 		this.benFlowID = benFlowID;
 		this.beneficiaryRegID = benRegID;
 		this.serviceDate = visitDate;
@@ -221,6 +241,8 @@ public class BeneficiaryFlowStatus {
 		this.createdDate = visitDate;
 		this.beneficiaryID = beneficiaryID;
 		this.servicePointName = servicePoint;
+		this.VisitReason = VisitReason;
+		this.VisitCategory = VisitCategory;
 
 	}
 
@@ -287,7 +309,7 @@ public class BeneficiaryFlowStatus {
 				obj = new BeneficiaryFlowStatus((Long) objArr[0], (Long) objArr[1], (Timestamp) objArr[2],
 						(String) objArr[3], (String) objArr[4], (Integer) objArr[5], (Short) objArr[6],
 						(String) objArr[7], (String) objArr[8], (String) objArr[9], (Long) objArr[10],
-						(String) objArr[11]);
+						(String) objArr[11], (String) objArr[12], (String) objArr[13]);
 			}
 		}
 		return obj;

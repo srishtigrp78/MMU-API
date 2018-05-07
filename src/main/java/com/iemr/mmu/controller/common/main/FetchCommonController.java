@@ -229,6 +229,7 @@ public class FetchCommonController {
 			if (comingReq != null) {
 				BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingReq, BeneficiaryFlowStatus.class);
 				String casesheetData = commonServiceImpl.getCaseSheetPrintDataForBeneficiary(obj, Authorization);
+				response.setResponse(casesheetData);
 			} else
 				response.setError(5000, "Invalid request.");
 		} catch (Exception e) {

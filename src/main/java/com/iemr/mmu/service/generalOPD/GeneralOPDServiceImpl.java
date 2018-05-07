@@ -1324,6 +1324,18 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		return exmnSuccessFlag;
 	}
 
+	public String getBenGeneralOPDNurseData(Long benRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("history", getBenHistoryDetails(benRegID, benVisitID));
+
+		resMap.put("vitals", getBeneficiaryVitalDetails(benRegID, benVisitID));
+
+		resMap.put("examination", getExaminationDetailsData(benRegID, benVisitID));
+
+		return resMap.toString();
+	}
+	
 	public String getBenCaseRecordFromDoctorGeneralOPD(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
 

@@ -1025,6 +1025,7 @@ public class CSServiceImpl implements CSService {
 		return new Gson().toJson(caseSheetData);
 	}
 
+	//Same method we have copied to commonServices, in future we can remove this from here..
 	private BeneficiaryFlowStatus getBenDetails(Long benFlowID, Long benRegID) {
 		ArrayList<Object[]> tmpOBJ = beneficiaryFlowStatusRepo.getBenDetailsForLeftSidePanel(benRegID, benFlowID);
 		BeneficiaryFlowStatus obj = BeneficiaryFlowStatus.getBeneficiaryFlowStatusForLeftPanel(tmpOBJ);

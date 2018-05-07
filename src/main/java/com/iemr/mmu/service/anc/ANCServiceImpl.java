@@ -877,6 +877,7 @@ public class ANCServiceImpl implements ANCService {
 		// resMap.put("BenChiefComplaints",
 		// ancNurseServiceImpl.getBenChiefComplaints(benRegID, benVisitID));
 
+		
 		resMap.put("Investigation", commonNurseServiceImpl.getLabTestOrders(benRegID, benVisitID));
 
 		return resMap.toString();
@@ -1385,6 +1386,20 @@ public class ANCServiceImpl implements ANCService {
 			exmnSuccessFlag = genExmnSuccessFlag;
 		}
 		return exmnSuccessFlag;
+	}
+	
+	public String getBenANCNurseData(Long benRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("anc", getBenANCDetailsFrmNurseANC(benRegID, benVisitID));
+
+		resMap.put("history", getBenANCHistoryDetails(benRegID, benVisitID));
+
+		resMap.put("vitals", getBeneficiaryVitalDetails(benRegID, benVisitID));
+
+		resMap.put("examination", getANCExaminationDetailsData(benRegID, benVisitID));
+		
+		return resMap.toString();
 	}
 
 	public String getBenCaseRecordFromDoctorANC(Long benRegID, Long benVisitID) {

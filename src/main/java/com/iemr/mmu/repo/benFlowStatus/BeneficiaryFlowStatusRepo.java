@@ -38,7 +38,7 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			@Param("oncologistFlag") Short oncologistFlag);
 
 	@Query("SELECT  t.benFlowID, t.beneficiaryRegID, t.visitDate, t.benName, t.age, t.ben_age_val, t.genderID, t.genderName, "
-			+ " t.villageName, t.districtName, t.beneficiaryID, t.servicePointName from BeneficiaryFlowStatus t "
+			+ " t.villageName, t.districtName, t.beneficiaryID, t.servicePointName, t.VisitReason, t.VisitCategory  from BeneficiaryFlowStatus t "
 			+ " Where t.beneficiaryRegID = :benRegID AND t.benFlowID = :benFlowID ")
 	public ArrayList<Object[]> getBenDetailsForLeftSidePanel(@Param("benRegID") Long benRegID,
 			@Param("benFlowID") Long benFlowID);

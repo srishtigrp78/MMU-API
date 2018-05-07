@@ -1048,6 +1048,16 @@ public class NCDCareServiceImpl implements NCDCareService {
 		return vitalSuccessFlag;
 	}
 
+	public String getBenNCDCareNurseData(Long benRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("vitals", getBeneficiaryVitalDetails(benRegID, benVisitID));
+
+		resMap.put("history", getBenNCDCareHistoryDetails(benRegID, benVisitID));
+
+		return resMap.toString();
+	}
+	
 	public String getBenCaseRecordFromDoctorNCDCare(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
 
