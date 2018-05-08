@@ -337,6 +337,7 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 						LabResultEntry labCompResult = new LabResultEntry();
 						labCompResult.setPrescriptionID(labResult.getPrescriptionID());
 						labCompResult.setProcedureID(labResult.getProcedureID());
+						
 
 						if (null != comp.get("testComponentID") && !comp.get("testComponentID").toString().isEmpty()
 								&& null != comp.get("testResultValue")
@@ -347,6 +348,11 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 							if (comp.containsKey("testResultUnit") && comp.get("testResultUnit") != null
 									&& !comp.get("testResultUnit").isEmpty())
 								labCompResult.setTestResultUnit(comp.get("testResultUnit"));
+							
+							if (comp.containsKey("remarks") && comp.get("remarks") != null
+									&& !comp.get("remarks").isEmpty())
+								
+								labCompResult.setRemarks(comp.get("remarks"));
 
 							labCompResult.setBeneficiaryRegID(wrapperLabResults.getBeneficiaryRegID());
 							labCompResult.setBenVisitID(wrapperLabResults.getVisitID());
