@@ -1351,6 +1351,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 		resMap.put("LabReport", new Gson().toJson(labTechnicianServiceImpl.getLabResultDataForBen(benRegID, benVisitID)));
 		
+		resMap.put("GraphData", new Gson().toJson(commonNurseServiceImpl.getGraphicalTrendData(benRegID, "genOPD")));
+		
 		return resMap.toString();
 	}
 

@@ -1073,6 +1073,8 @@ public class NCDCareServiceImpl implements NCDCareService {
 		
 		resMap.put("LabReport", new Gson().toJson(labTechnicianServiceImpl.getLabResultDataForBen(benRegID, benVisitID)));
 		
+		resMap.put("GraphData", new Gson().toJson(commonNurseServiceImpl.getGraphicalTrendData(benRegID, "ncdCare")));
+		
 		return resMap.toString();
 	}
 

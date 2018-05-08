@@ -26,65 +26,66 @@ public class CommonServiceImpl implements CommonService {
 	private NCDCareServiceImpl ncdCareServiceImpl;
 	private QuickConsultationServiceImpl quickConsultationServiceImpl;
 	
+
 	@Autowired
 	public void setQuickConsultationServiceImpl(QuickConsultationServiceImpl quickConsultationServiceImpl) {
 		this.quickConsultationServiceImpl = quickConsultationServiceImpl;
 	}
-	
+
 	@Autowired
 	public void setNcdCareServiceImpl(NCDCareServiceImpl ncdCareServiceImpl) {
 		this.ncdCareServiceImpl = ncdCareServiceImpl;
 	}
-	
+
 	@Autowired
 	public void setGeneralOPDServiceImpl(GeneralOPDServiceImpl generalOPDServiceImpl) {
 		this.generalOPDServiceImpl = generalOPDServiceImpl;
 	}
-	
+
 	@Autowired
 	public void setPncServiceImpl(PNCServiceImpl pncServiceImpl) {
 		this.pncServiceImpl = pncServiceImpl;
 	}
-	
+
 	@Autowired
 	public void setAncServiceImpl(ANCServiceImpl ancServiceImpl) {
 		this.ancServiceImpl = ancServiceImpl;
 	}
-	
+
 	@Autowired
 	public void setBeneficiaryFlowStatusRepo(BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo) {
 		this.beneficiaryFlowStatusRepo = beneficiaryFlowStatusRepo;
 	}
-	
+
 	public String getCaseSheetPrintDataForBeneficiary(BeneficiaryFlowStatus benFlowOBJ, String Authorization) {
 		String visitCategory = benFlowOBJ.getVisitCategory();
 		String caseSheetData = null;
-		
-		if(null!=visitCategory && visitCategory.length()>0){
-			switch(visitCategory){
-				case "ANC" :{
-					caseSheetData = getANC_PrintData(benFlowOBJ);
-				}
+
+		if (null != visitCategory && visitCategory.length() > 0) {
+			switch (visitCategory) {
+			case "ANC": {
+				caseSheetData = getANC_PrintData(benFlowOBJ);
+			}
 				break;
-				case "PNC" :{
-					caseSheetData = getPNC_PrintData(benFlowOBJ);
-				}
+			case "PNC": {
+				caseSheetData = getPNC_PrintData(benFlowOBJ);
+			}
 				break;
-				case "General OPD" :{
-					caseSheetData = getGenOPD_PrintData(benFlowOBJ);
-				}
+			case "General OPD": {
+				caseSheetData = getGenOPD_PrintData(benFlowOBJ);
+			}
 				break;
-				case "NCD care" :{
-					caseSheetData = getNCDcare_PrintData(benFlowOBJ);
-				}
+			case "NCD care": {
+				caseSheetData = getNCDcare_PrintData(benFlowOBJ);
+			}
 				break;
-				case "General OPD (QC)" :{
-					caseSheetData = getQC_PrintData(benFlowOBJ);
-				}
+			case "General OPD (QC)": {
+				caseSheetData = getQC_PrintData(benFlowOBJ);
+			}
 				break;
-				default :{
-					caseSheetData = "Invalid VisitCategory";
-				}
+			default: {
+				caseSheetData = "Invalid VisitCategory";
+			}
 			}
 		}
 		return caseSheetData;
@@ -92,12 +93,15 @@ public class CommonServiceImpl implements CommonService {
 
 	private String getANC_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
 		Map<String, Object> caseSheetData = new HashMap<>();
-		
-		caseSheetData.put("ancNurseData", ancServiceImpl.getBenANCNurseData(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
-		
-		caseSheetData.put("ancDoctorData", ancServiceImpl.getBenCaseRecordFromDoctorANC(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
 
-		caseSheetData.put("BeneficiaryData", getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
+		caseSheetData.put("ancNurseData",
+				ancServiceImpl.getBenANCNurseData(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
+
+		caseSheetData.put("ancDoctorData", ancServiceImpl
+				.getBenCaseRecordFromDoctorANC(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
+
+		caseSheetData.put("BeneficiaryData",
+				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
 
 		return caseSheetData.toString();
 	}
@@ -108,55 +112,68 @@ public class CommonServiceImpl implements CommonService {
 
 	private String getGenOPD_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
 		Map<String, Object> caseSheetData = new HashMap<>();
-		
-		caseSheetData.put("generalOPDNurseData", generalOPDServiceImpl.getBenGeneralOPDNurseData(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
-		
-		caseSheetData.put("generalOPDDoctorData", generalOPDServiceImpl.getBenCaseRecordFromDoctorGeneralOPD(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
 
-		caseSheetData.put("BeneficiaryData", getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
+		caseSheetData.put("generalOPDNurseData", generalOPDServiceImpl
+				.getBenGeneralOPDNurseData(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
+
+		caseSheetData.put("generalOPDDoctorData", generalOPDServiceImpl
+				.getBenCaseRecordFromDoctorGeneralOPD(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
+
+		caseSheetData.put("BeneficiaryData",
+				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
 
 		return caseSheetData.toString();
 	}
 
 	private String getNCDcare_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
 		Map<String, Object> caseSheetData = new HashMap<>();
-		
-		caseSheetData.put("ncdCareNurseData", ncdCareServiceImpl.getBenNCDCareNurseData(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
-		
-		caseSheetData.put("ncdCareDoctorData", ncdCareServiceImpl.getBenCaseRecordFromDoctorNCDCare(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
 
-		caseSheetData.put("BeneficiaryData", getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
+		caseSheetData.put("ncdCareNurseData", ncdCareServiceImpl
+				.getBenNCDCareNurseData(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
+
+		caseSheetData.put("ncdCareDoctorData", ncdCareServiceImpl
+				.getBenCaseRecordFromDoctorNCDCare(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
+
+		caseSheetData.put("BeneficiaryData",
+				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
 
 		return caseSheetData.toString();
 	}
 
 	private String getPNC_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
 		Map<String, Object> caseSheetData = new HashMap<>();
-		
-		caseSheetData.put("pncNurseData", pncServiceImpl.getBenPNCNurseData(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
-		
-		caseSheetData.put("pncDoctorData", pncServiceImpl.getBenCaseRecordFromDoctorPNC(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
 
-		caseSheetData.put("BeneficiaryData", getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
+		caseSheetData.put("pncNurseData",
+				pncServiceImpl.getBenPNCNurseData(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
+
+		caseSheetData.put("pncDoctorData", pncServiceImpl
+				.getBenCaseRecordFromDoctorPNC(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
+
+		caseSheetData.put("BeneficiaryData",
+				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
 
 		return caseSheetData.toString();
 	}
 
 	private String getQC_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
 		Map<String, Object> caseSheetData = new HashMap<>();
-		
-		caseSheetData.put("QCNurseData", quickConsultationServiceImpl.getBenQuickConsultNurseData(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
-		
-		caseSheetData.put("QCDoctorData", quickConsultationServiceImpl.getBenCaseRecordFromDoctorQuickConsult(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
 
-		caseSheetData.put("BeneficiaryData", getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
+		caseSheetData.put("QCNurseData", quickConsultationServiceImpl
+				.getBenQuickConsultNurseData(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
+
+		caseSheetData.put("QCDoctorData", quickConsultationServiceImpl
+				.getBenCaseRecordFromDoctorQuickConsult(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
+
+		caseSheetData.put("BeneficiaryData",
+				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
 
 		return caseSheetData.toString();
 	}
-	
+
 	private String getBenDetails(Long benFlowID, Long benRegID) {
 		ArrayList<Object[]> tmpOBJ = beneficiaryFlowStatusRepo.getBenDetailsForLeftSidePanel(benRegID, benFlowID);
 		BeneficiaryFlowStatus obj = BeneficiaryFlowStatus.getBeneficiaryFlowStatusForLeftPanel(tmpOBJ);
 		return new Gson().toJson(obj);
 	}
+
 }
