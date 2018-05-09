@@ -20,7 +20,7 @@ public interface BenMenstrualDetailsRepo extends CrudRepository<BenMenstrualDeta
 			+ "order by createdDate DESC")
 	public ArrayList<Object[]> getBenMenstrualDetail(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	
-	@Query(" SELECT beneficiaryRegID, benVisitID, providerServiceMapID, menstrualCycleStatusID, regularity, menstrualCyclelengthID, "
+	@Query(" SELECT beneficiaryRegID, benVisitID, providerServiceMapID, menstrualCycleStatusID, menstrualCycleStatus, regularity, menstrualCyclelengthID, "
 			+ "cycleLength, menstrualFlowDurationID, bloodFlowDuration, menstrualProblemID, problemName, lMPDate FROM BenMenstrualDetails "
 			+ " WHERE beneficiaryRegID = :benRegID AND benVisitID = :benVisitID AND deleted = false")
 	public ArrayList<Object[]> getBenMenstrualDetail(@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
@@ -33,13 +33,14 @@ public interface BenMenstrualDetailsRepo extends CrudRepository<BenMenstrualDeta
 	
 	@Transactional
 	@Modifying
-	@Query("update BenMenstrualDetails set menstrualCycleStatusID=:menstrualCycleStatusID, regularity=:regularity, "
-			+ "menstrualCyclelengthID=:menstrualCyclelengthID, cycleLength=:cycleLength,"
+	@Query("update BenMenstrualDetails set menstrualCycleStatusID=:menstrualCycleStatusID, menstrualCycleStatus=:menstrualCycleStatus, "
+			+ "regularity=:regularity,  menstrualCyclelengthID=:menstrualCyclelengthID, cycleLength=:cycleLength,"
 			+ " bloodFlowDuration=:bloodFlowDuration, menstrualProblemID=:menstrualProblemID, problemName=:problemName, lMPDate=:lMPDate,"
 			+ " menstrualFlowDurationID=:menstrualFlowDurationID,  modifiedBy=:modifiedBy, processed=:processed where "
 			+ "beneficiaryRegID=:beneficiaryRegID AND benVisitID = :benVisitID")
 	public int updateMenstrualDetails(
 			@Param("menstrualCycleStatusID") Short menstrualCycleStatusID,
+			@Param("menstrualCycleStatus") String menstrualCycleStatus,
 			@Param("regularity") String regularity,
 			@Param("menstrualCyclelengthID") Short menstrualCyclelengthID,
 			@Param("cycleLength") String cycleLength,

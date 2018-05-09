@@ -621,6 +621,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return examinationID;
 	}
 
+	/* Method moved to common, Can remove from here later */
 	@Override
 	public Long saveSysGenitourinarySystemExamination(
 			SysGenitourinarySystemExamination genitourinarySystemExamination) {
@@ -634,6 +635,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
+	/* Method moved to common, Can remove from here later */
 	@Override
 	public Long saveSysMusculoskeletalSystemExamination(
 			SysMusculoskeletalSystemExamination musculoskeletalSystemExamination) {
@@ -2472,6 +2474,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 				processed = "N";
 			}
 			response = benMenstrualDetailsRepo.updateMenstrualDetails(benMenstrualDetails.getMenstrualCycleStatusID(),
+					benMenstrualDetails.getMenstrualCycleStatus(),
 					benMenstrualDetails.getRegularity(), benMenstrualDetails.getMenstrualCyclelengthID(),
 					benMenstrualDetails.getCycleLength(), benMenstrualDetails.getMenstrualFlowDurationID(),
 					benMenstrualDetails.getBloodFlowDuration(), benMenstrualDetails.getMenstrualProblemID(),

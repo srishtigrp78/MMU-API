@@ -40,6 +40,10 @@ public class BenMenstrualDetails {
 	private Short menstrualCycleStatusID;
 
 	@Expose
+	@Column(name = "MenstrualCycleStatus")
+	private String menstrualCycleStatus;
+	
+	@Expose
 	@Column(name = "Regularity")
 	private String regularity;
 
@@ -155,6 +159,14 @@ public class BenMenstrualDetails {
 
 	public void setMenstrualCycleStatusID(Short menstrualCycleStatusID) {
 		this.menstrualCycleStatusID = menstrualCycleStatusID;
+	}
+	
+	public String getMenstrualCycleStatus() {
+		return menstrualCycleStatus;
+	}
+
+	public void setMenstrualCycleStatus(String menstrualCycleStatus) {
+		this.menstrualCycleStatus = menstrualCycleStatus;
 	}
 
 	public String getRegularity() {
@@ -353,7 +365,7 @@ public class BenMenstrualDetails {
 	}*/
 
 	public BenMenstrualDetails(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
-			Short menstrualCycleStatusID, String regularity, Short menstrualCyclelengthID, String cycleLength,
+			Short menstrualCycleStatusID, String menstrualCycleStatus, String regularity, Short menstrualCyclelengthID, String cycleLength,
 			Short menstrualFlowDurationID, String bloodFlowDuration, Short menstrualProblemID, String problemName,
 			Timestamp lMPDate) {
 		super();
@@ -369,6 +381,7 @@ public class BenMenstrualDetails {
 		this.menstrualProblemID = menstrualProblemID;
 		this.problemName = problemName;
 		this.lMPDate = lMPDate;
+		this.menstrualCycleStatus = menstrualCycleStatus;
 	}
 	
 	public static BenMenstrualDetails getBenMenstrualDetails(ArrayList<Object[]> menstrualHistoryDetails){
@@ -376,8 +389,8 @@ public class BenMenstrualDetails {
 		if(null != menstrualHistoryDetails && menstrualHistoryDetails.size()>0){
 			for(Object[] obj:menstrualHistoryDetails){
 				menstrualDetails = new BenMenstrualDetails((Long)obj[0], (Long)obj[1], (Integer)obj[2], 
-						(Short)obj[3], (String)obj[4], (Short)obj[5], (String)obj[6], (Short)obj[7], (String)obj[8], (Short)obj[9], 
-						(String)obj[10], (Timestamp)obj[11]);
+						(Short)obj[3], (String)obj[4], (String)obj[5], (Short)obj[6], (String)obj[7], (Short)obj[8], (String)obj[9], (Short)obj[10], 
+						(String)obj[11], (Timestamp)obj[12]);
 			}
 		}
 		return menstrualDetails;

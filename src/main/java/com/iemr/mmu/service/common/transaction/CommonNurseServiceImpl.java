@@ -1876,8 +1876,8 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			}
 			if (recordsAvailable > 0) {
 				response = benMenstrualDetailsRepo.updateMenstrualDetails(
-						benMenstrualDetails.getMenstrualCycleStatusID(), benMenstrualDetails.getRegularity(),
-						benMenstrualDetails.getMenstrualCyclelengthID(), benMenstrualDetails.getCycleLength(),
+						benMenstrualDetails.getMenstrualCycleStatusID(), benMenstrualDetails.getMenstrualCycleStatus(),
+						benMenstrualDetails.getRegularity(), benMenstrualDetails.getMenstrualCyclelengthID(), benMenstrualDetails.getCycleLength(),
 						benMenstrualDetails.getMenstrualFlowDurationID(), benMenstrualDetails.getBloodFlowDuration(),
 						benMenstrualDetails.getMenstrualProblemID(), benMenstrualDetails.getProblemName(),
 						benMenstrualDetails.getlMPDate(), benMenstrualDetails.getModifiedBy(), processed,

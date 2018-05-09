@@ -80,6 +80,7 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 		this.cancerSignAndSymptomsRepo = cancerSignAndSymptomsRepo;
 	}
 
+	@Deprecated
 	@Override
 	public Long saveCancerSignAndSymptomsData(CancerSignAndSymptoms cancerSignAndSymptoms, Long benVisitID) {
 		cancerSignAndSymptoms.setBenVisitID(benVisitID);
