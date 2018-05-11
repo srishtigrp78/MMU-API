@@ -425,7 +425,10 @@ public class PrescribedDrugDetail {
 
 				if (obj.has("drugDuration") && !obj.get("drugDuration").isJsonNull())
 					prescribedDrugDetail.setDuration(obj.get("drugDuration").getAsString());
-
+				
+				if (obj.has("drugDurationUnit") && !obj.get("drugDurationUnit").isJsonNull())
+					prescribedDrugDetail.setDrugDurationUnit(obj.get("drugDurationUnit").getAsString());
+				
 				if (obj.has("relationToFood") && !obj.get("relationToFood").isJsonNull())
 					prescribedDrugDetail.setRelationToFood(obj.get("relationToFood").getAsString());
 
