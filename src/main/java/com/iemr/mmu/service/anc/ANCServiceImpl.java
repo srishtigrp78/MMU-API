@@ -64,7 +64,7 @@ public class ANCServiceImpl implements ANCService {
 	public void setLabTechnicianServiceImpl(LabTechnicianServiceImpl labTechnicianServiceImpl) {
 		this.labTechnicianServiceImpl = labTechnicianServiceImpl;
 	}
-	
+
 	@Autowired
 	public void setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl) {
 		this.commonBenStatusFlowServiceImpl = commonBenStatusFlowServiceImpl;
@@ -252,7 +252,7 @@ public class ANCServiceImpl implements ANCService {
 
 					wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
 					investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
-				}else{
+				} else {
 					investigationSuccessFlag = new Long(1);
 				}
 			} else {
@@ -877,7 +877,6 @@ public class ANCServiceImpl implements ANCService {
 		// resMap.put("BenChiefComplaints",
 		// ancNurseServiceImpl.getBenChiefComplaints(benRegID, benVisitID));
 
-		
 		resMap.put("Investigation", commonNurseServiceImpl.getLabTestOrders(benRegID, benVisitID));
 
 		return resMap.toString();
@@ -1033,47 +1032,6 @@ public class ANCServiceImpl implements ANCService {
 	/// ------- End of Fetch beneficiary all Child Vaccine history data ------
 
 	// -------Update (Nurse data from Doctor screen)----------------------
-
-	@Override
-	@Transactional(rollbackFor = Exception.class)
-	public int UpdateANCVisitDetails(JsonObject jsnOBJ) throws Exception {
-
-		int visitDetailsUpdateRes = 0;
-		int chiefCompltUpdateRes = 0;
-		int adherenceUpdateRes = 0;
-		Long investigationUpdateRes = null;
-
-		if (jsnOBJ != null && jsnOBJ.has("visitDetails") && !jsnOBJ.get("visitDetails").isJsonNull()) {
-
-			if (jsnOBJ.has("chiefComplaints") && !jsnOBJ.get("chiefComplaints").isJsonNull()) {
-				// Update Ben Chief Complaints
-				BenChiefComplaint[] benChiefComplaintArray = InputMapper.gson().fromJson(jsnOBJ.get("chiefComplaints"),
-						BenChiefComplaint[].class);
-
-				List<BenChiefComplaint> benChiefComplaintList = Arrays.asList(benChiefComplaintArray);
-
-				chiefCompltUpdateRes = ancNurseServiceImpl.updateBenChiefComplaints(benChiefComplaintList);
-			}
-			if (jsnOBJ.has("adherence") && !jsnOBJ.get("adherence").isJsonNull()) {
-				// Update Ben Adherence
-				BenAdherence benAdherence = InputMapper.gson().fromJson(jsnOBJ.get("adherence"), BenAdherence.class);
-				adherenceUpdateRes = ancNurseServiceImpl.updateBenAdherenceDetails(benAdherence);
-			}
-			if (jsnOBJ.has("investigation") && !jsnOBJ.get("investigation").isJsonNull()) {
-				// Update Ben Investigations
-				WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
-						.fromJson(jsnOBJ.get("investigation"), WrapperBenInvestigationANC.class);
-
-				investigationUpdateRes = ancNurseServiceImpl.updateBenInvestigation(wrapperBenInvestigationANC);
-			}
-
-		}
-		if (chiefCompltUpdateRes > 0 && adherenceUpdateRes > 0
-				&& (null != investigationUpdateRes && investigationUpdateRes > 0)) {
-			visitDetailsUpdateRes = 1;
-		}
-		return visitDetailsUpdateRes;
-	}
 
 	/***
 	 * 
@@ -1301,7 +1259,7 @@ public class ANCServiceImpl implements ANCService {
 				&& !examinationDetailsOBJ.get("generalExamination").isJsonNull()) {
 			PhyGeneralExamination generalExamination = InputMapper.gson()
 					.fromJson(examinationDetailsOBJ.get("generalExamination"), PhyGeneralExamination.class);
-			genExmnSuccessFlag = ancNurseServiceImpl.updatePhyGeneralExamination(generalExamination);
+			genExmnSuccessFlag = commonNurseServiceImpl.updatePhyGeneralExamination(generalExamination);
 		}
 
 		// Save Head to toe Examination Details
@@ -1309,30 +1267,15 @@ public class ANCServiceImpl implements ANCService {
 				&& !examinationDetailsOBJ.get("headToToeExamination").isJsonNull()) {
 			PhyHeadToToeExamination headToToeExamination = InputMapper.gson()
 					.fromJson(examinationDetailsOBJ.get("headToToeExamination"), PhyHeadToToeExamination.class);
-			headToToeExmnSuccessFlag = ancNurseServiceImpl.updatePhyHeadToToeExamination(headToToeExamination);
+			headToToeExmnSuccessFlag = commonNurseServiceImpl.updatePhyHeadToToeExamination(headToToeExamination);
 		}
-		// Save Gastro Intestinal Examination Details
-		/**
-		 * Removed from anc. Only applicable for generalOPD. date: 05-02-2018
-		 */
-		// if (examinationDetailsOBJ != null &&
-		// examinationDetailsOBJ.has("gastroIntestinalExamination")
-		// &&
-		// !examinationDetailsOBJ.get("gastroIntestinalExamination").isJsonNull())
-		// {
-		// SysGastrointestinalExamination gastrointestinalExamination =
-		// InputMapper.gson().fromJson(
-		// examinationDetailsOBJ.get("gastroIntestinalExamination"),
-		// SysGastrointestinalExamination.class);
-		// gastroIntsExmnSuccessFlag = ancNurseServiceImpl
-		// .updateSysGastrointestinalExamination(gastrointestinalExamination);
-		// }
+
 		// Save Cardio Vascular Examination Details
 		if (examinationDetailsOBJ != null && examinationDetailsOBJ.has("cardioVascularExamination")
 				&& !examinationDetailsOBJ.get("cardioVascularExamination").isJsonNull()) {
 			SysCardiovascularExamination cardiovascularExamination = InputMapper.gson().fromJson(
 					examinationDetailsOBJ.get("cardioVascularExamination"), SysCardiovascularExamination.class);
-			cardiExmnSuccessFlag = ancNurseServiceImpl.updateSysCardiovascularExamination(cardiovascularExamination);
+			cardiExmnSuccessFlag = commonNurseServiceImpl.updateSysCardiovascularExamination(cardiovascularExamination);
 		}
 
 		// Save Respiratory Examination Details
@@ -1340,7 +1283,8 @@ public class ANCServiceImpl implements ANCService {
 				&& !examinationDetailsOBJ.get("respiratorySystemExamination").isJsonNull()) {
 			SysRespiratoryExamination sysRespiratoryExamination = InputMapper.gson().fromJson(
 					examinationDetailsOBJ.get("respiratorySystemExamination"), SysRespiratoryExamination.class);
-			respiratoryExmnSuccessFlag = ancNurseServiceImpl.updateSysRespiratoryExamination(sysRespiratoryExamination);
+			respiratoryExmnSuccessFlag = commonNurseServiceImpl
+					.updateSysRespiratoryExamination(sysRespiratoryExamination);
 		}
 
 		// Save Central Nervous Examination Details
@@ -1348,7 +1292,7 @@ public class ANCServiceImpl implements ANCService {
 				&& !examinationDetailsOBJ.get("centralNervousSystemExamination").isJsonNull()) {
 			SysCentralNervousExamination sysCentralNervousExamination = InputMapper.gson().fromJson(
 					examinationDetailsOBJ.get("centralNervousSystemExamination"), SysCentralNervousExamination.class);
-			centralNrvsExmnSuccessFlag = ancNurseServiceImpl
+			centralNrvsExmnSuccessFlag = commonNurseServiceImpl
 					.updateSysCentralNervousExamination(sysCentralNervousExamination);
 		}
 
@@ -1358,7 +1302,7 @@ public class ANCServiceImpl implements ANCService {
 			SysMusculoskeletalSystemExamination sysMusculoskeletalSystemExamination = InputMapper.gson().fromJson(
 					examinationDetailsOBJ.get("musculoskeletalSystemExamination"),
 					SysMusculoskeletalSystemExamination.class);
-			muskelstlExmnSuccessFlag = ancNurseServiceImpl
+			muskelstlExmnSuccessFlag = commonNurseServiceImpl
 					.updateSysMusculoskeletalSystemExamination(sysMusculoskeletalSystemExamination);
 		}
 
@@ -1368,7 +1312,7 @@ public class ANCServiceImpl implements ANCService {
 			SysGenitourinarySystemExamination sysGenitourinarySystemExamination = InputMapper.gson().fromJson(
 					examinationDetailsOBJ.get("genitoUrinarySystemExamination"),
 					SysGenitourinarySystemExamination.class);
-			genitorinaryExmnSuccessFlag = ancNurseServiceImpl
+			genitorinaryExmnSuccessFlag = commonNurseServiceImpl
 					.updateSysGenitourinarySystemExamination(sysGenitourinarySystemExamination);
 		}
 
@@ -1387,7 +1331,7 @@ public class ANCServiceImpl implements ANCService {
 		}
 		return exmnSuccessFlag;
 	}
-	
+
 	public String getBenANCNurseData(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
 
@@ -1398,7 +1342,7 @@ public class ANCServiceImpl implements ANCService {
 		resMap.put("vitals", getBeneficiaryVitalDetails(benRegID, benVisitID));
 
 		resMap.put("examination", getANCExaminationDetailsData(benRegID, benVisitID));
-		
+
 		return resMap.toString();
 	}
 
@@ -1414,12 +1358,12 @@ public class ANCServiceImpl implements ANCService {
 		resMap.put("prescription", commonDoctorServiceImpl.getPrescribedDrugs(benRegID, benVisitID));
 
 		resMap.put("Refer", commonDoctorServiceImpl.getReferralDetails(benRegID, benVisitID));
-		
-		resMap.put("LabReport", new Gson().toJson(labTechnicianServiceImpl.getLabResultDataForBen(benRegID, benVisitID)));
-		
+
+		resMap.put("LabReport",
+				new Gson().toJson(labTechnicianServiceImpl.getLabResultDataForBen(benRegID, benVisitID)));
+
 		resMap.put("GraphData", new Gson().toJson(commonNurseServiceImpl.getGraphicalTrendData(benRegID, "anc")));
-		
-		
+
 		return resMap.toString();
 	}
 
@@ -1455,34 +1399,6 @@ public class ANCServiceImpl implements ANCService {
 				findingSuccessFlag = 1;
 			}
 
-			// // Fetch Benficiary details to check/create prescription
-			// existence
-			// if (requestOBJ.has("investigation") &&
-			// !requestOBJ.get("investigation").isJsonNull()) {
-			// WrapperBenInvestigationANC wrapperBenInvestigationANC =
-			// InputMapper.gson()
-			// .fromJson(requestOBJ.get("investigation"),
-			// WrapperBenInvestigationANC.class);
-			//
-			// if (wrapperBenInvestigationANC != null) {
-			// prescriptionID =
-			// commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
-			// wrapperBenInvestigationANC.getBeneficiaryRegID(),
-			// wrapperBenInvestigationANC.getBenVisitID(),
-			// wrapperBenInvestigationANC.getProviderServiceMapID(),
-			// wrapperBenInvestigationANC.getCreatedBy(),
-			// wrapperBenInvestigationANC.getExternalInvestigations());
-			//
-			// createdBy = wrapperBenInvestigationANC.getCreatedBy();
-			//
-			// wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
-			// investigationSuccessFlag =
-			// commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
-			// }
-			// } else {
-			// investigationSuccessFlag = new Long(1);
-			// }
-
 			// new code for investigation update (always new insert if there)
 			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull()) {
 				WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
@@ -1505,7 +1421,7 @@ public class ANCServiceImpl implements ANCService {
 
 					wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
 					investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
-				}else{
+				} else {
 					investigationSuccessFlag = new Long(1);
 				}
 			} else {
@@ -1605,8 +1521,8 @@ public class ANCServiceImpl implements ANCService {
 					pharmaFalg = (short) 0;
 				}
 
-				int l = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdate(tmpBenFlowID, tmpbeneficiaryRegID,
-						tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
+				int l = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdate(tmpBenFlowID,
+						tmpbeneficiaryRegID, tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
 
 				updateSuccessFlag = investigationSuccessFlag;
 			}

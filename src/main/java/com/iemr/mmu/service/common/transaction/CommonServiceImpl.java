@@ -94,10 +94,10 @@ public class CommonServiceImpl implements CommonService {
 	private String getANC_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
-		caseSheetData.put("ancNurseData",
+		caseSheetData.put("nurseData",
 				ancServiceImpl.getBenANCNurseData(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
 
-		caseSheetData.put("ancDoctorData", ancServiceImpl
+		caseSheetData.put("doctorData", ancServiceImpl
 				.getBenCaseRecordFromDoctorANC(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
 
 		caseSheetData.put("BeneficiaryData",
@@ -113,10 +113,10 @@ public class CommonServiceImpl implements CommonService {
 	private String getGenOPD_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
-		caseSheetData.put("generalOPDNurseData", generalOPDServiceImpl
+		caseSheetData.put("nurseData", generalOPDServiceImpl
 				.getBenGeneralOPDNurseData(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
 
-		caseSheetData.put("generalOPDDoctorData", generalOPDServiceImpl
+		caseSheetData.put("doctorData", generalOPDServiceImpl
 				.getBenCaseRecordFromDoctorGeneralOPD(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
 
 		caseSheetData.put("BeneficiaryData",
@@ -128,10 +128,10 @@ public class CommonServiceImpl implements CommonService {
 	private String getNCDcare_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
-		caseSheetData.put("ncdCareNurseData", ncdCareServiceImpl
+		caseSheetData.put("nurseData", ncdCareServiceImpl
 				.getBenNCDCareNurseData(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
 
-		caseSheetData.put("ncdCareDoctorData", ncdCareServiceImpl
+		caseSheetData.put("doctorData", ncdCareServiceImpl
 				.getBenCaseRecordFromDoctorNCDCare(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
 
 		caseSheetData.put("BeneficiaryData",
@@ -143,10 +143,10 @@ public class CommonServiceImpl implements CommonService {
 	private String getPNC_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
-		caseSheetData.put("pncNurseData",
+		caseSheetData.put("nurseData",
 				pncServiceImpl.getBenPNCNurseData(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
 
-		caseSheetData.put("pncDoctorData", pncServiceImpl
+		caseSheetData.put("doctorData", pncServiceImpl
 				.getBenCaseRecordFromDoctorPNC(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
 
 		caseSheetData.put("BeneficiaryData",
@@ -158,10 +158,10 @@ public class CommonServiceImpl implements CommonService {
 	private String getQC_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
-		caseSheetData.put("QCNurseData", quickConsultationServiceImpl
+		caseSheetData.put("nurseData", quickConsultationServiceImpl
 				.getBenQuickConsultNurseData(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
 
-		caseSheetData.put("QCDoctorData", quickConsultationServiceImpl
+		caseSheetData.put("doctorData", quickConsultationServiceImpl
 				.getBenCaseRecordFromDoctorQuickConsult(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
 
 		caseSheetData.put("BeneficiaryData",

@@ -227,7 +227,7 @@ public class BeneficiaryFlowStatus {
 
 	public BeneficiaryFlowStatus(Long benFlowID, Long benRegID, Timestamp visitDate, String benName, String age,
 			Integer ageVal, Short genderID, String genderName, String villageName, String districtName,
-			Long beneficiaryID, String servicePoint, String VisitReason, String VisitCategory) {
+			Long beneficiaryID, String servicePoint, String VisitReason, String VisitCategory, Long benVisitID) {
 		this.benFlowID = benFlowID;
 		this.beneficiaryRegID = benRegID;
 		this.serviceDate = visitDate;
@@ -243,7 +243,21 @@ public class BeneficiaryFlowStatus {
 		this.servicePointName = servicePoint;
 		this.VisitReason = VisitReason;
 		this.VisitCategory = VisitCategory;
+		this.benVisitID = benVisitID;
 
+	}
+	
+	public static BeneficiaryFlowStatus getBeneficiaryFlowStatusForLeftPanel(ArrayList<Object[]> objList) {
+		BeneficiaryFlowStatus obj = null;
+		if (objList != null && objList.size() > 0) {
+			for (Object[] objArr : objList) {
+				obj = new BeneficiaryFlowStatus((Long) objArr[0], (Long) objArr[1], (Timestamp) objArr[2],
+						(String) objArr[3], (String) objArr[4], (Integer) objArr[5], (Short) objArr[6],
+						(String) objArr[7], (String) objArr[8], (String) objArr[9], (Long) objArr[10],
+						(String) objArr[11], (String) objArr[12], (String) objArr[13], (Long)objArr[14]);
+			}
+		}
+		return obj;
 	}
 
 	public Boolean getPassToNurse() {
@@ -302,18 +316,7 @@ public class BeneficiaryFlowStatus {
 		this.createdBy = createdBy;
 	}
 
-	public static BeneficiaryFlowStatus getBeneficiaryFlowStatusForLeftPanel(ArrayList<Object[]> objList) {
-		BeneficiaryFlowStatus obj = null;
-		if (objList != null && objList.size() > 0) {
-			for (Object[] objArr : objList) {
-				obj = new BeneficiaryFlowStatus((Long) objArr[0], (Long) objArr[1], (Timestamp) objArr[2],
-						(String) objArr[3], (String) objArr[4], (Integer) objArr[5], (Short) objArr[6],
-						(String) objArr[7], (String) objArr[8], (String) objArr[9], (Long) objArr[10],
-						(String) objArr[11], (String) objArr[12], (String) objArr[13]);
-			}
-		}
-		return obj;
-	}
+	
 
 	public Long getBenFlowID() {
 		return benFlowID;

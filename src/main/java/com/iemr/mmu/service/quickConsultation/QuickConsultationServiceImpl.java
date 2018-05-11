@@ -18,7 +18,6 @@ import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 import com.iemr.mmu.data.quickConsultation.ExternalLabTestOrder;
-import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
@@ -49,7 +48,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
 	private LabTechnicianServiceImpl labTechnicianServiceImpl;
-	
+
 	@Autowired
 	public void setLabTechnicianServiceImpl(LabTechnicianServiceImpl labTechnicianServiceImpl) {
 		this.labTechnicianServiceImpl = labTechnicianServiceImpl;
@@ -148,19 +147,6 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		return null;
 	}
 
-	@Deprecated
-	@Override
-	public Long saveBeneficiaryPrescription(JsonObject caseSheet) throws Exception {
-
-		PrescriptionDetail prescriptionDetail = InputMapper.gson().fromJson(caseSheet, PrescriptionDetail.class);
-
-		PrescriptionDetail prescription = prescriptionDetailRepo.save(prescriptionDetail);
-		if (null != prescription && prescription.getPrescriptionID() > 0) {
-			return prescriptionDetail.getPrescriptionID();
-		}
-		return null;
-	}
-
 	// Prescription for ANC...
 	/* @Deprecated */
 	public Long saveBenPrescriptionForANC(PrescriptionDetail prescription) {
@@ -188,32 +174,12 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		 * prescribedDrug.getPrescribedDrugID(); } }
 		 */
 
-		
 		Integer r = commonNurseServiceImpl.saveBenPrescribedDrugsList(prescriptionDetails);
 		if (r > 0 && r != null) {
 			prescribedDrugSuccessFlag = new Long(r);
 		}
 
 		return prescribedDrugSuccessFlag;
-	}
-
-	@Deprecated
-	@Override
-	public Long saveBeneficiaryLabTestOrderDetails(JsonObject caseSheet, Long prescriptionID) {
-
-		ArrayList<LabTestOrderDetail> labTestOrderDetails = LabTestOrderDetail.getLabTestOrderDetailList(caseSheet,
-				prescriptionID);
-
-		List<LabTestOrderDetail> labTestOrders = (List<LabTestOrderDetail>) labTestOrderDetailRepo
-				.save(labTestOrderDetails);
-
-		if (null != labTestOrders && labTestOrders.size() >= 0) {
-			for (LabTestOrderDetail labTestOrder : labTestOrders) {
-				return labTestOrder.getLabTestOrderID();
-			}
-		}
-
-		return null;
 	}
 
 	@Override

@@ -111,7 +111,7 @@ public class TestCSServices
 		cSServiceImpl.setcSNurseServiceImpl(cSNurseServiceImpl);
 		cSServiceImpl.setcSDoctorServiceImpl(cSDoctorServiceImpl);
 		cSServiceImpl.setCsOncologistServiceImpl(csOncologistServiceImpl);
-		cSServiceImpl.setRegistrarServiceImpl(registrarServiceImpl);
+		//cSServiceImpl.setRegistrarServiceImpl(registrarServiceImpl);
 		
 		commonNurseServiceImpl.setBenVisitDetailRepo(benVisitDetailRepoMock);
 		commonNurseServiceImpl.setRegistrarRepoBenData(registrarRepoBenDataMock);

@@ -1877,11 +1877,12 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			if (recordsAvailable > 0) {
 				response = benMenstrualDetailsRepo.updateMenstrualDetails(
 						benMenstrualDetails.getMenstrualCycleStatusID(), benMenstrualDetails.getMenstrualCycleStatus(),
-						benMenstrualDetails.getRegularity(), benMenstrualDetails.getMenstrualCyclelengthID(), benMenstrualDetails.getCycleLength(),
-						benMenstrualDetails.getMenstrualFlowDurationID(), benMenstrualDetails.getBloodFlowDuration(),
-						benMenstrualDetails.getMenstrualProblemID(), benMenstrualDetails.getProblemName(),
-						benMenstrualDetails.getlMPDate(), benMenstrualDetails.getModifiedBy(), processed,
-						benMenstrualDetails.getBeneficiaryRegID(), benMenstrualDetails.getBenVisitID());
+						benMenstrualDetails.getRegularity(), benMenstrualDetails.getMenstrualCyclelengthID(),
+						benMenstrualDetails.getCycleLength(), benMenstrualDetails.getMenstrualFlowDurationID(),
+						benMenstrualDetails.getBloodFlowDuration(), benMenstrualDetails.getMenstrualProblemID(),
+						benMenstrualDetails.getProblemName(), benMenstrualDetails.getlMPDate(),
+						benMenstrualDetails.getModifiedBy(), processed, benMenstrualDetails.getBeneficiaryRegID(),
+						benMenstrualDetails.getBenVisitID());
 			} else {
 				benMenstrualDetails.setCreatedBy(benMenstrualDetails.getModifiedBy());
 				BenMenstrualDetails menstrualDetails = benMenstrualDetailsRepo.save(benMenstrualDetails);

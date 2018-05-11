@@ -3,14 +3,11 @@ package com.iemr.mmu.service.common.master;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.iemr.mmu.service.doctor.DoctorServiceImpl;
-
 @Service
 public class CommonMasterServiceImpl implements CommonMaterService{
 
 	private ANCMasterDataServiceImpl ancMasterDataServiceImpl;
 	private NurseMasterDataServiceImpl nurseMasterDataServiceImpl;
-	private DoctorServiceImpl doctorServiceImpl;
 	private DoctorMasterDataServiceImpl doctorMasterDataServiceImpl;
 	private RegistrarServiceMasterDataImpl registrarServiceMasterDataImpl;
 	private NCDScreeningMasterServiceImpl ncdScreeningServiceImpl;
@@ -44,10 +41,6 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 		this.nurseMasterDataServiceImpl = nurseMasterDataServiceImpl;
 	}
 	
-	@Autowired
-	public void setDoctorServiceImpl(DoctorServiceImpl doctorServiceImpl) {
-		this.doctorServiceImpl = doctorServiceImpl;
-	}
 	
 	@Autowired
 	public void setDoctorMasterDataServiceImpl(DoctorMasterDataServiceImpl doctorMasterDataServiceImpl) {

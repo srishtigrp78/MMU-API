@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.iemr.mmu.data.anc.ANCDiagnosis;
 import com.iemr.mmu.data.anc.WrapperAncFindings;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
@@ -26,14 +25,11 @@ import com.iemr.mmu.data.registrar.WrapperRegWorklist;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.doctor.BenReferDetailsRepo;
 import com.iemr.mmu.repo.doctor.DocWorkListRepo;
-import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
-import com.iemr.mmu.repo.nurse.anc.ANCDiagnosisRepo;
 import com.iemr.mmu.repo.quickConsultation.BenChiefComplaintRepo;
 import com.iemr.mmu.repo.quickConsultation.BenClinicalObservationsRepo;
 import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
-import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
@@ -47,9 +43,6 @@ public class CommonDoctorServiceImpl {
 
 	private BenClinicalObservationsRepo benClinicalObservationsRepo;
 	private BenChiefComplaintRepo benChiefComplaintRepo;
-	private ANCDiagnosisRepo ancDiagnosisRepo;
-	private NurseServiceImpl nurseServiceImpl;
-	private BenVisitDetailRepo benVisitDetailRepo;
 	private DocWorkListRepo docWorkListRepo;
 	private BenReferDetailsRepo benReferDetailsRepo;
 	private LabTestOrderDetailRepo labTestOrderDetailRepo;
@@ -58,13 +51,7 @@ public class CommonDoctorServiceImpl {
 
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
 
-	private CommonNurseServiceImpl commonNurseServiceImpl;
-
-	@Autowired
-	public void setCommonNurseServiceImpl(CommonNurseServiceImpl commonNurseServiceImpl) {
-		this.commonNurseServiceImpl = commonNurseServiceImpl;
-	}
-
+	
 	@Autowired
 	public void setBeneficiaryFlowStatusRepo(BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo) {
 		this.beneficiaryFlowStatusRepo = beneficiaryFlowStatusRepo;
@@ -95,20 +82,6 @@ public class CommonDoctorServiceImpl {
 		this.docWorkListRepo = docWorkListRepo;
 	}
 
-	@Autowired
-	public void setBenVisitDetailRepo(BenVisitDetailRepo benVisitDetailRepo) {
-		this.benVisitDetailRepo = benVisitDetailRepo;
-	}
-
-	@Autowired
-	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
-		this.nurseServiceImpl = nurseServiceImpl;
-	}
-
-	@Autowired
-	public void setAncDiagnosisRepo(ANCDiagnosisRepo ancDiagnosisRepo) {
-		this.ancDiagnosisRepo = ancDiagnosisRepo;
-	}
 
 	@Autowired
 	public void setBenChiefComplaintRepo(BenChiefComplaintRepo benChiefComplaintRepo) {
@@ -224,56 +197,15 @@ public class CommonDoctorServiceImpl {
 		return benChiefComplaintList;
 	}
 
-	// for now using from ancDoctorService only, because not there in Gen-OPD
-	@Deprecated
-	public Long saveBenDiagnosis(JsonObject obj) throws IEMRException {
-		Long ID = null;
-		ANCDiagnosis ancDiagnosis = InputMapper.gson().fromJson(obj, ANCDiagnosis.class);
-		ANCDiagnosis res = ancDiagnosisRepo.save(ancDiagnosis);
-		if (null != res && res.getID() > 0) {
-			ID = res.getID();
-		}
-		return ID;
-	}
-
-	/* Moved to common Nurse Services */
-	@Deprecated
-	public Long savePrescriptionDetailsAndGetPrescriptionID(Long benRegID, Long benVisitID, Integer psmID,
-			String createdBy) {
-		PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
-		prescriptionDetail.setBeneficiaryRegID(benRegID);
-		prescriptionDetail.setBenVisitID(benVisitID);
-		prescriptionDetail.setProviderServiceMapID(psmID);
-		prescriptionDetail.setCreatedBy(createdBy);
-
-		Long prescriptionID = nurseServiceImpl.saveBenPrescription(prescriptionDetail);
-		return prescriptionID;
-	}
-
-	@Deprecated
-	public String updateBenVisitStatusFlag(Long benVisitID, String c) {
-		return updateBenStatus(benVisitID, c);
-	}
-
-	@Deprecated
-	public String updateBenStatus(Long benVisitID, String c) {
-		Map<String, String> resMap = new HashMap<>();
-		Integer i = benVisitDetailRepo.updateBenFlowStatus(c, benVisitID);
-		if (i != null && i > 0) {
-			resMap.put("status", "Updated Successfully");
-		}
-		return new Gson().toJson(resMap);
-	}
-
 	public String getDocWorkList() {
 		List<Object[]> docWorkListData = docWorkListRepo.getDocWorkList();
-		// System.out.println("hello");
 		return WrapperRegWorklist.getDocWorkListData(docWorkListData);
 	}
 
 	// New doc worklist service
 	public String getDocWorkListNew(Integer providerServiceMapId) {
-		ArrayList<BeneficiaryFlowStatus> docWorkList = beneficiaryFlowStatusRepo.getDocWorkListNew(providerServiceMapId);
+		ArrayList<BeneficiaryFlowStatus> docWorkList = beneficiaryFlowStatusRepo
+				.getDocWorkListNew(providerServiceMapId);
 		return new Gson().toJson(docWorkList);
 	}
 
@@ -452,7 +384,6 @@ public class CommonDoctorServiceImpl {
 				processed = "N";
 			}
 			if (recordsAvailable > 0) {
-				// anthropometryDetail.setModifiedBy(anthropometryDetail.getCreatedBy());
 				r = benClinicalObservationsRepo.updateBenClinicalObservations(
 						benClinicalObservations.getClinicalObservation(), benClinicalObservations.getOtherSymptoms(),
 						benClinicalObservations.getSignificantFindings(), benClinicalObservations.getIsForHistory(),
@@ -467,18 +398,6 @@ public class CommonDoctorServiceImpl {
 		}
 		return r;
 	}
-
-	/*
-	 * public Long checkPrescriptionAvailable(Long beneficiaryRegID, Long
-	 * benVisitID, Integer providerServiceMapID, String createdBy) { Long
-	 * prescriptionID = null; ArrayList<Object[]>
-	 * res=prescriptionDetailRepo.getBenPrescription(beneficiaryRegID,
-	 * benVisitID); if(null != res && res.size()>0){ Object[] obj= res.get(0);
-	 * prescriptionID = (Long)obj[0]; }else{ prescriptionID =
-	 * commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
-	 * beneficiaryRegID, benVisitID, providerServiceMapID, createdBy, ""); }
-	 * return prescriptionID; }
-	 */
 
 	public Long updateBenReferDetails(JsonObject referObj) throws IEMRException {
 		Long ID = null;

@@ -475,9 +475,9 @@ public class TestCommonServices
 		//Mocking Update Repo's
 		/*when(commonNurseServiceImpl.updateBenChiefComplaints(Matchers.anyListOf(BenChiefComplaint.class))).thenReturn(1);*/
 		
-		when(benMenstrualDetailsRepoMock.updateMenstrualDetails(Matchers.anyShort(),Matchers.anyString(), Matchers.anyShort(), Matchers.anyString(), Matchers.anyShort(),
-				Matchers.anyString(), Matchers.anyShort(), Matchers.anyString(), Matchers.any(), Matchers.anyString(), Matchers.anyString(), Matchers.anyLong(), 
-				Matchers.anyLong())).thenReturn(1);
+//		when(benMenstrualDetailsRepoMock.updateMenstrualDetails(Matchers.anyShort(),Matchers.anyString(), Matchers.anyShort(), Matchers.anyString(), Matchers.anyShort(),
+//				Matchers.anyString(), Matchers.anyShort(), Matchers.anyString(), Matchers.any(), Matchers.anyString(), Matchers.anyString(), Matchers.anyLong(), 
+//				Matchers.anyLong())).thenReturn(1);
 
 		when(childVaccineDetail1RepoMock.updateChildANCImmunization(Matchers.any(), Matchers.anyString(), Matchers.anyString(), Matchers.anyLong(), 
 				Matchers.anyLong(), Matchers.anyString(), Matchers.anyString())).thenReturn(1);

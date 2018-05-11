@@ -103,10 +103,10 @@ public class TestGeneralOPDServices
 		generalOPDServiceImpl.setCommonDoctorServiceImpl(TestCommonServices.commonDoctorServiceImpl);
 		generalOPDServiceImpl.setGeneralOPDNurseServiceImpl(generalOPDNurseServiceImpl);
 
-		generalOPDNurseServiceImpl.setBenChildDevelopmentHistoryRepo(benChildDevelopmentHistoryRepoMock);
-		generalOPDNurseServiceImpl.setChildFeedingDetailsRepo(childFeedingDetailsRepoMock);
-		generalOPDNurseServiceImpl.setPerinatalHistoryRepo(perinatalHistoryRepoMock);
-		generalOPDNurseServiceImpl.setSysGastrointestinalExaminationRepo(sysGastrointestinalExaminationRepoMock);
+//		generalOPDNurseServiceImpl.setBenChildDevelopmentHistoryRepo(benChildDevelopmentHistoryRepoMock);
+//		generalOPDNurseServiceImpl.setChildFeedingDetailsRepo(childFeedingDetailsRepoMock);
+//		generalOPDNurseServiceImpl.setPerinatalHistoryRepo(perinatalHistoryRepoMock);
+//		generalOPDNurseServiceImpl.setSysGastrointestinalExaminationRepo(sysGastrointestinalExaminationRepoMock);
 
 		feedingHistoryDataPveRes =
 				"{\"data\":[],\"columns\":[{\"keyName\":\"captureDate\",\"columnName\":\"Date of Capture\"},{\"keyName\":\"childID\",\"columnName\":\"Child ID\"},{\"keyName\":\"benMotherID\",\"columnName\":\"Beneficiary Mother ID\"},{\"keyName\":\"typeOfFeed\",\"columnName\":\"Type Of Feed\"},{\"keyName\":\"compFeedStartAge\",\"columnName\":\"Comp Feed Start Age\"},{\"keyName\":\"noOfCompFeedPerDay\",\"columnName\":\"NoOf Comp Feed Per Day\"},{\"keyName\":\"foodIntoleranceStatus\",\"columnName\":\"Food Intolerance Status\"},{\"keyName\":\"typeofFoodIntolerance\",\"columnName\":\"Type of Food Intolerance\"}]}";

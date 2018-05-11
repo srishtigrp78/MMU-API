@@ -14,7 +14,7 @@ public interface ANCService {
 
 	String getBenANCDetailsFrmNurseANC(Long benRegID, Long benVisitID);
 
-	int UpdateANCVisitDetails(JsonObject jsnOBJ) throws Exception;
+	//int UpdateANCVisitDetails(JsonObject jsnOBJ) throws Exception;
 
 	String getBeneficiaryVitalDetails(Long beneficiaryRegID, Long benVisitID);
 

@@ -10,14 +10,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -40,9 +34,6 @@ import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
-import com.iemr.mmu.service.doctor.DoctorServiceImpl;
-import com.iemr.mmu.service.nurse.NurseServiceImpl;
-import com.iemr.mmu.service.registrar.RegistrarServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
@@ -51,12 +42,11 @@ public class CSServiceImpl implements CSService {
 	@Value("${registrarQuickSearchByIdUrl}")
 	private String registrarQuickSearchByIdUrl;
 
-	private NurseServiceImpl nurseServiceImpl;
 	private CSNurseServiceImpl cSNurseServiceImpl;
 	private CSDoctorServiceImpl cSDoctorServiceImpl;
-	private RegistrarServiceImpl registrarServiceImpl;
+
 	private CSOncologistServiceImpl csOncologistServiceImpl;
-	private DoctorServiceImpl doctorServiceImpl;
+
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private CSCarestreamServiceImpl cSCarestreamServiceImpl;
 	private RegistrarRepoBenData registrarRepoBenData;
@@ -89,16 +79,6 @@ public class CSServiceImpl implements CSService {
 	}
 
 	@Autowired
-	public void setDoctorServiceImpl(DoctorServiceImpl doctorServiceImpl) {
-		this.doctorServiceImpl = doctorServiceImpl;
-	}
-
-	@Autowired
-	public void setRegistrarServiceImpl(RegistrarServiceImpl registrarServiceImpl) {
-		this.registrarServiceImpl = registrarServiceImpl;
-	}
-
-	@Autowired
 	public void setcSDoctorServiceImpl(CSDoctorServiceImpl cSDoctorServiceImpl) {
 		this.cSDoctorServiceImpl = cSDoctorServiceImpl;
 	}
@@ -106,11 +86,6 @@ public class CSServiceImpl implements CSService {
 	@Autowired
 	public void setcSNurseServiceImpl(CSNurseServiceImpl cSNurseServiceImpl) {
 		this.cSNurseServiceImpl = cSNurseServiceImpl;
-	}
-
-	@Autowired
-	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
-		this.nurseServiceImpl = nurseServiceImpl;
 	}
 
 	@Autowired
@@ -183,17 +158,6 @@ public class CSServiceImpl implements CSService {
 
 					Integer i = commonNurseServiceImpl.updateBeneficiaryStatus('N', getBenRegID(requestOBJ));
 
-					// if (requestOBJ != null &&
-					// requestOBJ.has("sendToDoctorWorklist")
-					// && !requestOBJ.get("sendToDoctorWorklist").isJsonNull())
-					// {
-					// if (requestOBJ.get("sendToDoctorWorklist").getAsBoolean()
-					// == false) {
-					// String s =
-					// commonNurseServiceImpl.updateBenStatus(benVisitID, "Z");
-					// }
-					// }
-
 					nurseDataSuccessFlag = examinationSuccessFlag;
 
 					/**
@@ -253,13 +217,7 @@ public class CSServiceImpl implements CSService {
 	 * @return success or failure flag for visitDetails data saving
 	 */
 	public Long saveBenVisitDetails(BeneficiaryVisitDetail benVisitDetailsOBJ) throws Exception {
-		// BeneficiaryVisitDetail benVisitDetailsOBJ =
-		// InputMapper.gson().fromJson(requestOBJ.get("visitDetails"),
-		// BeneficiaryVisitDetail.class);
-
 		Long benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
-		// Long benVisitID =
-		// nurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
 		return benVisitID;
 	}
 
@@ -683,24 +641,8 @@ public class CSServiceImpl implements CSService {
 		Long docDataSuccessFlag = null;
 
 		if (requestOBJ != null) {
-			// Examination page moved to Nurse screen, So commenting : On
-			// 26-02-18 by Navya
-			// Long examinationSuccessFlag =
-			// saveBenExaminationDetails(requestOBJ);
-
 			Long diagnosisSuccessFlag = saveBenDiagnosisDetails(requestOBJ);
 
-			/*
-			 * 
-			 * if ((examinationSuccessFlag != null && examinationSuccessFlag >
-			 * 0) && (diagnosisSuccessFlag != null && diagnosisSuccessFlag > 0))
-			 * {
-			 * 
-			 * String s =
-			 * commonNurseServiceImpl.updateBenStatus(getBenVisitID(requestOBJ),
-			 * "D"); if (s != null && s.length() > 0) docDataSuccessFlag =
-			 * examinationSuccessFlag; }
-			 */
 			if (diagnosisSuccessFlag != null && diagnosisSuccessFlag > 0) {
 
 				Long tmpBenFlowID = null;
@@ -723,10 +665,6 @@ public class CSServiceImpl implements CSService {
 				int l = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
 						tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, oncologistFlag);
 
-				// String s =
-				// commonNurseServiceImpl.updateBenStatus(getBenVisitID(requestOBJ),
-				// "D");
-				// if (s != null && s.length() > 0)
 				docDataSuccessFlag = diagnosisSuccessFlag;
 			}
 		} else {
@@ -739,13 +677,6 @@ public class CSServiceImpl implements CSService {
 	private Long getBenVisitID(JsonObject requestOBJ) throws Exception {
 		Long benVisitID = null;
 		if (requestOBJ != null && requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
-
-			// JsonObject signsDetailsOBJ =
-			// requestOBJ.getAsJsonObject("signsDetails");
-			//
-			// WrapperCancerSymptoms wrapperCancerSymptoms =
-			// InputMapper.gson().fromJson(signsDetailsOBJ,
-			// WrapperCancerSymptoms.class);
 
 			JsonObject tmpOBJ = requestOBJ.get("diagnosis").getAsJsonObject();
 			if (tmpOBJ != null && tmpOBJ.has("benVisitID") && !tmpOBJ.get("benVisitID").isJsonNull()) {
@@ -762,8 +693,6 @@ public class CSServiceImpl implements CSService {
 	 * @return success or failure flag for Examination data saving
 	 */
 
-	// Examination page moved to Nurse screen, So passing visitId when calling
-	// from saveNurseData: On 26-02-18 by Navya
 	public Long saveBenExaminationDetails(JsonObject requestOBJ, Long benVisitID, String Authorization)
 			throws Exception {
 		Long signSympSuccessFlag = null;
@@ -1015,7 +944,6 @@ public class CSServiceImpl implements CSService {
 			throws Exception {
 
 		Map<String, Object> caseSheetData = cSNurseServiceImpl.getBenNurseDataForCaseSheet(benRegID, benVisitID);
-		// getBenDetailsByBenRegID(benRegID, Authorization);
 		caseSheetData.putAll(cSDoctorServiceImpl.getBenDoctorEnteredDataForCaseSheet(benRegID, benVisitID));
 
 		caseSheetData.put("BeneficiaryData", getBenDetails(benFlowID, benRegID));
@@ -1025,35 +953,12 @@ public class CSServiceImpl implements CSService {
 		return new Gson().toJson(caseSheetData);
 	}
 
-	//Same method we have copied to commonServices, in future we can remove this from here..
+	// Same method we have copied to commonServices, in future we can remove
+	// this from here..
 	private BeneficiaryFlowStatus getBenDetails(Long benFlowID, Long benRegID) {
 		ArrayList<Object[]> tmpOBJ = beneficiaryFlowStatusRepo.getBenDetailsForLeftSidePanel(benRegID, benFlowID);
 		BeneficiaryFlowStatus obj = BeneficiaryFlowStatus.getBeneficiaryFlowStatusForLeftPanel(tmpOBJ);
 		return obj;
-	}
-
-	// method not required
-	@Deprecated
-	private void getBenDetailsByBenRegID(Long benRegID, String Authorization) throws Exception {
-		String s = null;
-		Map<String, Object> requestMap = new HashMap<>();
-		requestMap.put("beneficiaryRegID", benRegID);
-		String requestObj = new Gson().toJson(requestMap);
-
-		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-		headers.add("Content-Type", "application/json");
-		headers.add("AUTHORIZATION", Authorization);
-
-		RestTemplate restTemplate = new RestTemplate();
-		HttpEntity<Object> request = new HttpEntity<Object>(requestObj, headers);
-		ResponseEntity<String> response = restTemplate.exchange(registrarQuickSearchByIdUrl, HttpMethod.POST, request,
-				String.class);
-		if (response.hasBody()) {
-			s = response.getBody();
-		}
-
-		BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(s, BeneficiaryFlowStatus.class);
-		System.out.println("hello");
 	}
 
 	/// -------End of Fetch Case-sheet data ----------------------------------

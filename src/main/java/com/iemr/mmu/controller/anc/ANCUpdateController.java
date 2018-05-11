@@ -1,8 +1,5 @@
 package com.iemr.mmu.controller.anc;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,16 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
-import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 
 /**
  * 
@@ -42,43 +36,6 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 	@Autowired
 	public void setAncServiceImpl(ANCServiceImpl ancServiceImpl) {
 		this.ancServiceImpl = ancServiceImpl;
-	}
-	
-	/**
-	 * 
-	 * @param requestObj
-	 * @return success or failure response
-	 * @objective Replace ANC visit Details entered by Nurse with
-	 *            the details entered by Doctor
-	 */
-
-	@CrossOrigin
-	@ApiOperation(value = "update ANC Visit screen Nurse Data in Doctor screen", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/update/visitDetailsScreen" }, method = { RequestMethod.POST })
-	public String updateANCVisitNurse( @RequestBody String requestObj) {
-
-		OutputResponse response = new OutputResponse();
-		logger.info("updateANCVisitNurse request:" + requestObj);
-
-		JsonObject jsnOBJ = new JsonObject();
-		JsonParser jsnParser = new JsonParser();
-		JsonElement jsnElmnt = jsnParser.parse(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
-
-		try {
-			int result = ancServiceImpl.UpdateANCVisitDetails(jsnOBJ);
-			if (result > 0) {
-				response.setResponse("ANC Visit Data updated successfully.");
-			} else {
-				response.setError(500, "Failed to update ANC Visit Nurse Data");
-			}
-			logger.info("updateANCVisitNurse response:" + response);
-		} catch (Exception e) {
-			response.setError(e);
-			logger.error("Error in updateANCVisitNurse :" + e);
-		}
-
-		return response.toString();
 	}
 	
 	/**
