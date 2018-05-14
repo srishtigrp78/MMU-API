@@ -180,7 +180,7 @@ public class ANCFetchController {
 		return response.toString();
 	}
 	
-	@CrossOrigin()
+/*	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary ANC Past History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenANCPastHistory" }, method = { RequestMethod.POST })
 	public String getBenANCPastHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
@@ -474,7 +474,7 @@ public class ANCFetchController {
 			logger.error("Error in getBenANCImmunizationHistory:" + e);
 		}
 		return response.toString();
-	}
+	}*/
 
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Doctor Entered Details", consumes = "application/json", produces = "application/json")

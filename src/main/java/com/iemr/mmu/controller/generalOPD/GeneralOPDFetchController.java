@@ -35,7 +35,7 @@ public class GeneralOPDFetchController {
 		this.generalOPDServiceImpl = generalOPDServiceImpl;
 	}
 
-	@CrossOrigin()
+/*	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Past History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenPastHistory" }, method = { RequestMethod.POST })
 	public String getBenPastHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
@@ -405,7 +405,7 @@ public class GeneralOPDFetchController {
 			logger.error("Error in getBenDevelopmentHistory:" + e);
 		}
 		return response.toString();
-	}
+	}*/
 
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Visit details from Nurse General OPD", consumes = "application/json", produces = "application/json")

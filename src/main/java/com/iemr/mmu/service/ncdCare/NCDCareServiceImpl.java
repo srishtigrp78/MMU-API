@@ -520,7 +520,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 		return resMap.toString();
 	}
 
-	// ------- Fetch beneficiary all past history data ------------------
+	/*// ------- Fetch beneficiary all past history data ------------------
 	public String getPastHistoryData(Long beneficiaryRegID) {
 		return commonNurseServiceImpl.fetchBenPastMedicalHistory(beneficiaryRegID);
 	}
@@ -604,7 +604,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 		return commonNurseServiceImpl.fetchBenDevelopmentHistory(beneficiaryRegID);
 	}
 	/// ------- End of Fetch beneficiary all Development history data ------
-
+*/
 	/// --------------- start of saving doctor data ------------------------
 	@Transactional(rollbackFor = Exception.class)
 	public Long saveDoctorData(JsonObject requestOBJ) throws Exception {

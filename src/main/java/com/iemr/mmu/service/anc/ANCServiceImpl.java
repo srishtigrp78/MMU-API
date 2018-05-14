@@ -959,7 +959,7 @@ public class ANCServiceImpl implements ANCService {
 
 	// ---------- ENd of Fetch ANC (Nurse)--------------------------------------
 
-	// ------- Fetch beneficiary all past history data ------------------
+	/*// ------- Fetch beneficiary all past history data ------------------
 	public String getANCPastHistoryData(Long beneficiaryRegID) {
 		return commonNurseServiceImpl.fetchBenPastMedicalHistory(beneficiaryRegID);
 	}
@@ -1030,7 +1030,7 @@ public class ANCServiceImpl implements ANCService {
 		return commonNurseServiceImpl.fetchBenOptionalVaccineHistory(beneficiaryRegID);
 	}
 	/// ------- End of Fetch beneficiary all Child Vaccine history data ------
-
+*/
 	// -------Update (Nurse data from Doctor screen)----------------------
 
 	/***

@@ -599,7 +599,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 		return exmnSuccessFlag;
 
-	}
+	}/*
 	/// --------------- End of saving nurse data ------------------------
 
 	// ------- Fetch beneficiary all past history data ------------------
@@ -686,7 +686,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		return commonNurseServiceImpl.fetchBenDevelopmentHistory(beneficiaryRegID);
 	}
 	/// ------- End of Fetch beneficiary all Development history data ------
-
+*/
 	/// --------------- start of saving doctor data ------------------------
 	@Override
 	@Transactional(rollbackFor = Exception.class)

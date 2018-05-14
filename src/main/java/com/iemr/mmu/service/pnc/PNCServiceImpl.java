@@ -866,7 +866,7 @@ public class PNCServiceImpl implements PNCService {
 		return new Gson().toJson(examinationDetailsMap);
 	}
 
-	// ------- Fetch beneficiary all past history data ------------------
+	/*// ------- Fetch beneficiary all past history data ------------------
 	public String getPastHistoryData(Long beneficiaryRegID) {
 		return commonNurseServiceImpl.fetchBenPastMedicalHistory(beneficiaryRegID);
 	}
@@ -950,7 +950,7 @@ public class PNCServiceImpl implements PNCService {
 		return commonNurseServiceImpl.fetchBenDevelopmentHistory(beneficiaryRegID);
 	}
 	/// ------- End of Fetch beneficiary all Development history data ------
-
+*/
 	/**
 	 * 
 	 * @param requestOBJ

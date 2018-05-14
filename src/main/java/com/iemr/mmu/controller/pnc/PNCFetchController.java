@@ -177,7 +177,7 @@ public class PNCFetchController
 		}
 		return response.toString();
 	}
-	@CrossOrigin()
+	/*@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Past History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenPastHistory" }, method = { RequestMethod.POST })
 	public String getBenPastHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
@@ -547,7 +547,7 @@ public class PNCFetchController
 			logger.error("Error in getBenDevelopmentHistory:" + e);
 		}
 		return response.toString();
-	}
+	}*/
 	
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Doctor Entered Details", consumes = "application/json", produces = "application/json")
