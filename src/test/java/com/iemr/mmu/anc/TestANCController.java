@@ -13,7 +13,6 @@ import org.mockito.InjectMocks;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.controller.anc.ANCCreateController;
 import com.iemr.mmu.controller.anc.ANCFetchController;
-import com.iemr.mmu.controller.generalOPD.GeneralOPDCreateController;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
 
 public class TestANCController
@@ -54,28 +53,28 @@ public class TestANCController
 			
 			when(ancServiceImplMock.getANCExaminationDetailsData(beneficiaryRegID, benVisitID)).thenReturn("");
 			
-			when(ancServiceImplMock.getANCPastHistoryData(beneficiaryRegID)).thenReturn("");
-			
-			when(ancServiceImplMock.getANCPersonalTobaccoHistoryData(beneficiaryRegID)).thenReturn("");
-			
-			when(ancServiceImplMock.getANCPersonalAlcoholHistoryData(beneficiaryRegID)).thenReturn("");
-			
-			when(ancServiceImplMock.getANCPersonalAllergyHistoryData(beneficiaryRegID)).thenReturn("");
-			
-			when(ancServiceImplMock.getANCMedicationHistoryData(beneficiaryRegID)).thenReturn("");
-			
-			when(ancServiceImplMock.getANCFamilyHistoryData(beneficiaryRegID)).thenReturn("");
-			
-			when(ancServiceImplMock.getANCMenstrualHistoryData(beneficiaryRegID)).thenReturn("");
-			
-			when(ancServiceImplMock.getANCObstetricHistoryData(beneficiaryRegID)).thenReturn("");
-			
-			when(ancServiceImplMock.getANCComorbidHistoryData(beneficiaryRegID)).thenReturn("");
-			
-			when(ancServiceImplMock.getANCChildVaccineHistoryData(beneficiaryRegID)).thenReturn("");
-			
-			when(ancServiceImplMock.getANCImmunizationHistoryData(beneficiaryRegID)).thenReturn("");
-			
+//			when(ancServiceImplMock.getANCPastHistoryData(beneficiaryRegID)).thenReturn("");
+//			
+//			when(ancServiceImplMock.getANCPersonalTobaccoHistoryData(beneficiaryRegID)).thenReturn("");
+//			
+//			when(ancServiceImplMock.getANCPersonalAlcoholHistoryData(beneficiaryRegID)).thenReturn("");
+//			
+//			when(ancServiceImplMock.getANCPersonalAllergyHistoryData(beneficiaryRegID)).thenReturn("");
+//			
+//			when(ancServiceImplMock.getANCMedicationHistoryData(beneficiaryRegID)).thenReturn("");
+//			
+//			when(ancServiceImplMock.getANCFamilyHistoryData(beneficiaryRegID)).thenReturn("");
+//			
+//			when(ancServiceImplMock.getANCMenstrualHistoryData(beneficiaryRegID)).thenReturn("");
+//			
+//			when(ancServiceImplMock.getANCObstetricHistoryData(beneficiaryRegID)).thenReturn("");
+//			
+//			when(ancServiceImplMock.getANCComorbidHistoryData(beneficiaryRegID)).thenReturn("");
+//			
+//			when(ancServiceImplMock.getANCChildVaccineHistoryData(beneficiaryRegID)).thenReturn("");
+//			
+//			when(ancServiceImplMock.getANCImmunizationHistoryData(beneficiaryRegID)).thenReturn("");
+//			
 		} catch (Exception e)
 		{
 			// TODO Auto-generated catch block
@@ -167,131 +166,135 @@ public class TestANCController
 				response.equals("{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
 	}
 	
-	@Test
-	public void getBenANCPastHistoryPveTest(){
-		String response = fetchControllerSpy.getBenANCPastHistory(fetchObjPve);
-		
-		System.out.println("response "+response);
-		
-		
-		assertTrue("",
-				response.equals("{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
-	}
-	
-	
-	@Test
-	public void getBenANCTobaccoHistoryPveTest(){
-		String response = fetchControllerSpy.getBenANCTobaccoHistory(fetchObjPve);
-		
-		System.out.println("response "+response);
-		
-		
-		assertTrue("",
-				response.equals("{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
-	}
-	
-	@Test
-	public void getBenANCAlcoholHistoryPveTest(){
-		String response = fetchControllerSpy.getBenANCAlcoholHistory(fetchObjPve);
-		
-		System.out.println("response "+response);
-		
-		
-		assertTrue("",
-				response.equals("{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
-	}
-	
-	
-	@Test
-	public void getBenANCAllergyHistoryPveTest(){
-		String response = fetchControllerSpy.getBenANCAllergyHistory(fetchObjPve);
-		
-		System.out.println("response "+response);
-		
-		
-		assertTrue("",
-				response.equals("{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
-	}
-	
-	@Test
-	public void getBenANCMedicationHistoryPveTest(){
-		String response = fetchControllerSpy.getBenANCMedicationHistory(fetchObjPve);
-		
-		System.out.println("response "+response);
-		
-		
-		assertTrue("",
-				response.equals("{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
-	}
-	
-	@Test
-	public void getBenANCFamilyHistoryPveTest(){
-		String response = fetchControllerSpy.getBenANCFamilyHistory(fetchObjPve);
-		
-		System.out.println("response "+response);
-		
-		
-		assertTrue("",
-				response.equals("{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
-	}
-	
-	@Test
-	public void getBenANCMenstrualHistoryPveTest(){
-		String response = fetchControllerSpy.getBenANCMenstrualHistory(fetchObjPve);
-		
-		System.out.println("response "+response);
-		
-		
-		assertTrue("",
-				response.equals("{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
-	}
-	
-	
-	@Test
-	public void getBenANCPastObstetricHistoryPveTest(){
-		String response = fetchControllerSpy.getBenANCPastObstetricHistory(fetchObjPve);
-		
-		System.out.println("response "+response);
-		
-		
-		assertTrue("",
-				response.equals("{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
-	}
-	
-	
-	@Test
-	public void getBenANCComorbidityConditionHistoryPveTest(){
-		String response = fetchControllerSpy.getBenANCComorbidityConditionHistory(fetchObjPve);
-		
-		System.out.println("response "+response);
-		
-		
-		assertTrue("",
-				response.equals("{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
-	}
-	
-	
-	@Test
-	public void getBenANCOptionalVaccineHistoryPveTest(){
-		String response = fetchControllerSpy.getBenANCOptionalVaccineHistory(fetchObjPve);
-		
-		System.out.println("response "+response);
-		
-		
-		assertTrue("",
-				response.equals("{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
-	}
-	
-	
-	@Test
-	public void getBenANCImmunizationHistoryPveTest(){
-		String response = fetchControllerSpy.getBenANCImmunizationHistory(fetchObjPve);
-		
-		System.out.println("response "+response);
-		
-		
-		assertTrue("",
-				response.equals("{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
-	}
+	// @Test
+	// public void getBenANCPastHistoryPveTest(){
+	// String response = fetchControllerSpy.getBenANCPastHistory(fetchObjPve);
+	//
+	// System.out.println("response "+response);
+	//
+	//
+	// assertTrue("",
+	// response.equals("{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+	// }
+	//
+	//
+	// @Test
+	// public void getBenANCTobaccoHistoryPveTest(){
+	// String response = fetchControllerSpy.getBenANCTobaccoHistory(fetchObjPve);
+	//
+	// System.out.println("response "+response);
+	//
+	//
+	// assertTrue("",
+	// response.equals("{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+	// }
+	//
+	// @Test
+	// public void getBenANCAlcoholHistoryPveTest(){
+	// String response = fetchControllerSpy.getBenANCAlcoholHistory(fetchObjPve);
+	//
+	// System.out.println("response "+response);
+	//
+	//
+	// assertTrue("",
+	// response.equals("{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+	// }
+	//
+	//
+	// @Test
+	// public void getBenANCAllergyHistoryPveTest(){
+	// String response = fetchControllerSpy.getBenANCAllergyHistory(fetchObjPve);
+	//
+	// System.out.println("response "+response);
+	//
+	//
+	// assertTrue("",
+	// response.equals("{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+	// }
+	//
+	// @Test
+	// public void getBenANCMedicationHistoryPveTest(){
+	// String response = fetchControllerSpy.getBenANCMedicationHistory(fetchObjPve);
+	//
+	// System.out.println("response "+response);
+	//
+	//
+	// assertTrue("",
+	// response.equals("{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+	// }
+	//
+	// @Test
+	// public void getBenANCFamilyHistoryPveTest(){
+	// String response = fetchControllerSpy.getBenANCFamilyHistory(fetchObjPve);
+	//
+	// System.out.println("response "+response);
+	//
+	//
+	// assertTrue("",
+	// response.equals("{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+	// }
+	//
+	// @Test
+	// public void getBenANCMenstrualHistoryPveTest(){
+	// String response = fetchControllerSpy.getBenANCMenstrualHistory(fetchObjPve);
+	//
+	// System.out.println("response "+response);
+	//
+	//
+	// assertTrue("",
+	// response.equals("{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+	// }
+	//
+	//
+	// @Test
+	// public void getBenANCPastObstetricHistoryPveTest(){
+	// String response =
+	// fetchControllerSpy.getBenANCPastObstetricHistory(fetchObjPve);
+	//
+	// System.out.println("response "+response);
+	//
+	//
+	// assertTrue("",
+	// response.equals("{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+	// }
+	//
+	//
+	// @Test
+	// public void getBenANCComorbidityConditionHistoryPveTest(){
+	// String response =
+	// fetchControllerSpy.getBenANCComorbidityConditionHistory(fetchObjPve);
+	//
+	// System.out.println("response "+response);
+	//
+	//
+	// assertTrue("",
+	// response.equals("{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+	// }
+	//
+	//
+	// @Test
+	// public void getBenANCOptionalVaccineHistoryPveTest(){
+	// String response =
+	// fetchControllerSpy.getBenANCOptionalVaccineHistory(fetchObjPve);
+	//
+	// System.out.println("response "+response);
+	//
+	//
+	// assertTrue("",
+	// response.equals("{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+	// }
+	//
+	//
+	// @Test
+	// public void getBenANCImmunizationHistoryPveTest(){
+	// String response =
+	// fetchControllerSpy.getBenANCImmunizationHistory(fetchObjPve);
+	//
+	// System.out.println("response "+response);
+	//
+	//
+	// assertTrue("",
+	// response.equals("{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+	// }
 }
 
