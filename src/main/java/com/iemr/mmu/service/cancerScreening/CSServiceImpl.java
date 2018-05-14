@@ -915,7 +915,7 @@ public class CSServiceImpl implements CSService {
 	/// ------- End of Create/save (Doctor)---------------------------
 
 	// -------Fetch Case-sheet data ----------------------------------
-
+	@Deprecated
 	public String getCancerCasesheetData(JSONObject obj, String Authorization) throws Exception {
 		String caseSheetData = null;
 		if (obj.length() > 1) {
@@ -940,6 +940,7 @@ public class CSServiceImpl implements CSService {
 		return caseSheetData;
 	}
 
+	@Deprecated
 	public String getBenDataForCaseSheet(Long benFlowID, Long benRegID, Long benVisitID, String Authorization)
 			throws Exception {
 
@@ -951,6 +952,36 @@ public class CSServiceImpl implements CSService {
 				cSNurseServiceImpl.getCancerExaminationImageAnnotationCasesheet(benRegID, benVisitID));
 
 		return new Gson().toJson(caseSheetData);
+	}
+	
+	public String getBenNurseDataForCaseSheet(Long benRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("benVisitDetail", cSNurseServiceImpl.getBeneficiaryVisitDetails(benRegID, benVisitID));
+
+		resMap.put("familyDiseaseHistory", cSNurseServiceImpl.getBenFamilyHisData(benRegID, benVisitID));
+
+		resMap.put("patientObstetricHistory", cSNurseServiceImpl.getBenObstetricDetailsData(benRegID, benVisitID));
+
+		resMap.put("patientPersonalHistory", cSNurseServiceImpl.getBenPersonalCancerHistoryData(benRegID, benVisitID));
+
+		resMap.put("benPersonalDietHistory", cSNurseServiceImpl.getBenPersonalCancerDietHistoryData(benRegID, benVisitID));
+
+		resMap.put("currentVitals", cSNurseServiceImpl.getBenCancerVitalDetailData(benRegID, benVisitID));
+
+		resMap.put("abdominalExamination", cSNurseServiceImpl.getBenCancerAbdominalExaminationData(benRegID, benVisitID));
+
+		resMap.put("breastExamination", cSNurseServiceImpl.getBenCancerBreastExaminationData(benRegID, benVisitID));
+
+		resMap.put("gynecologicalExamination", cSNurseServiceImpl.getBenCancerGynecologicalExaminationData(benRegID, benVisitID));
+
+		resMap.put("signsAndSymptoms", cSNurseServiceImpl.getBenCancerSignAndSymptomsData(benRegID, benVisitID));
+
+		resMap.put("BenCancerLymphNodeDetails", cSNurseServiceImpl.getBenCancerLymphNodeDetailsData(benRegID, benVisitID));
+
+		resMap.put("oralExamination", cSNurseServiceImpl.getBenCancerOralExaminationData(benRegID, benVisitID));
+
+		return new Gson().toJson(resMap);
 	}
 
 	// Same method we have copied to commonServices, in future we can remove

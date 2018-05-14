@@ -647,6 +647,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 		return resList;
 	}
 
+	@Deprecated
 	public Map<String, Object> getBenNurseDataForCaseSheet(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
 
@@ -677,7 +678,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 		return resMap;
 	}
 
-	private BeneficiaryVisitDetail getBeneficiaryVisitDetails(Long benRegID, Long benVisitID) {
+	public BeneficiaryVisitDetail getBeneficiaryVisitDetails(Long benRegID, Long benVisitID) {
 		List<Objects[]> beneficiaryVisitDetail = benVisitDetailRepo.getBeneficiaryVisitDetails(benRegID, benVisitID);
 		BeneficiaryVisitDetail beneficiaryVisit = null;
 		if (null != beneficiaryVisitDetail) {

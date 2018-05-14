@@ -11,6 +11,8 @@ import com.google.gson.Gson;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
+import com.iemr.mmu.service.cancerScreening.CSNurseServiceImpl;
+import com.iemr.mmu.service.cancerScreening.CSServiceImpl;
 import com.iemr.mmu.service.generalOPD.GeneralOPDServiceImpl;
 import com.iemr.mmu.service.ncdCare.NCDCareServiceImpl;
 import com.iemr.mmu.service.pnc.PNCServiceImpl;
@@ -26,6 +28,18 @@ public class CommonServiceImpl implements CommonService {
 	private NCDCareServiceImpl ncdCareServiceImpl;
 	private QuickConsultationServiceImpl quickConsultationServiceImpl;
 	private CommonNurseServiceImpl commonNurseServiceImpl;
+	private CSNurseServiceImpl cSNurseServiceImpl;
+	private CSServiceImpl csServiceImpl;
+	
+	@Autowired
+	public void setCsServiceImpl(CSServiceImpl csServiceImpl) {
+		this.csServiceImpl = csServiceImpl;
+	}
+	
+	@Autowired
+	public void setcSNurseServiceImpl(CSNurseServiceImpl cSNurseServiceImpl) {
+		this.cSNurseServiceImpl = cSNurseServiceImpl;
+	}
 
 	@Autowired
 	public void setCommonNurseServiceImpl(CommonNurseServiceImpl commonNurseServiceImpl) {
@@ -88,6 +102,10 @@ public class CommonServiceImpl implements CommonService {
 				caseSheetData = getQC_PrintData(benFlowOBJ);
 			}
 				break;
+			case "Cancer Screening": {
+				caseSheetData = getCancerScreening_PrintData(benFlowOBJ);
+			}
+				break;
 			default: {
 				caseSheetData = "Invalid VisitCategory";
 			}
@@ -111,8 +129,22 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData.toString();
 	}
 
-	private String getCancerScreening_PrintData() {
-		return null;
+	private String getCancerScreening_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
+		Map<String, Object> caseSheetData = new HashMap<>();
+
+		caseSheetData.put("nurseData", csServiceImpl.getBenNurseDataForCaseSheet(benFlowOBJ.getBeneficiaryRegID(),
+				benFlowOBJ.getBenVisitID()));
+		caseSheetData.put("doctorData", csServiceImpl.getBenCaseRecordFromDoctorCS(benFlowOBJ.getBeneficiaryRegID(),
+				benFlowOBJ.getBenVisitID()));
+
+		caseSheetData.put("BeneficiaryData",
+				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
+		
+		caseSheetData.put("ImageAnnotatedData",
+				new Gson().toJson(cSNurseServiceImpl.getCancerExaminationImageAnnotationCasesheet(benFlowOBJ.getBeneficiaryRegID(),
+						benFlowOBJ.getBenVisitID())));
+
+		return caseSheetData.toString();
 	}
 
 	private String getGenOPD_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
