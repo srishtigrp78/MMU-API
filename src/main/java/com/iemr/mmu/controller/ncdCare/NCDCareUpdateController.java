@@ -68,9 +68,9 @@ public class NCDCareUpdateController
 			if (result > 0) {
 				Map<String, Integer> resMap = new HashMap<String, Integer>();
 				resMap.put("result", result);
-				response.setResponse("NCD Care History Data updated successfully.");
+				response.setResponse("History data updated successfully");
 			} else {
-				response.setError(500, "Failed to update NCD Care History Data");
+				response.setError(500, "Failed to update history data");
 			}
 			logger.info("updateHistoryNurse response:" + response);
 		} catch (Exception e) {
@@ -105,9 +105,9 @@ public class NCDCareUpdateController
 		try {
 			int result = ncdCareServiceImpl.updateBenVitalDetails(jsnOBJ);
 			if (result > 0) {
-				response.setResponse("NCD Care Vital Data updated successfully.");
+				response.setResponse("Vital data updated successfully");
 			} else {
-				response.setError(500, "Failed to update NCD Care Vital Data");
+				response.setError(500, "Failed to update vital data");
 			}
 			logger.info("updateVitalNurse response:" + response);
 		} catch (Exception e) {
@@ -134,9 +134,9 @@ public class NCDCareUpdateController
 		try {
 			Long result = ncdCareServiceImpl.updateNCDCareDoctorData(jsnOBJ);
 			if (null != result && result > 0) {
-				response.setResponse("NCDCare Doctor Data updated successfully.");
+				response.setResponse("Doctor data updated successfully");
 			} else {
-				response.setError(500, "Failed to update NCDCare Doctor Data");
+				response.setError(500, "Failed to update doctor data");
 			}
 			logger.info("updateNCDCareDoctorData response:" + response);
 		} catch (Exception e) {

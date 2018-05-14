@@ -65,13 +65,13 @@ public class PNCUpdateController
 		try {
 			int result = pncServiceImpl.updateBenPNCDetails(jsnOBJ);
 			if (result > 0) {
-				response.setResponse("PNC Care Data updated successfully.");
+				response.setResponse("PNC Care data updated successfully");
 			} else {
-				response.setError(500, "Failed to update PNC care Nurse Data");
+				response.setError(500, "Failed to update PNC Care data");
 			}
 			logger.info("updatePNCCareNurse response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while updating beneficiary PNC care data");
 			logger.error("Error in updatePNCCareNurse :" + e);
 		}
 
@@ -102,13 +102,13 @@ public class PNCUpdateController
 		try {
 			int result = pncServiceImpl.updateBenHistoryDetails(jsnOBJ);
 			if (result > 0) {
-				response.setResponse("PNC History Data updated successfully.");
+				response.setResponse("History data updated successfully");
 			} else {
-				response.setError(500, "Failed to update PNC History Nurse Data");
+				response.setError(500, "Failed to update History data");
 			}
 			logger.info("updateHistoryNurse response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while updating beneficiary history data");
 			logger.error("Error in updateHistoryNurse :" + e);
 		}
 
@@ -139,13 +139,13 @@ public class PNCUpdateController
 		try {
 			int result = pncServiceImpl.updateBenVitalDetails(jsnOBJ);
 			if (result > 0) {
-				response.setResponse("PNC Vital Data updated Successfully.");
+				response.setResponse("Vital data updated successfully");
 			} else {
-				response.setError(500, "Failed to update PNC Vital Nurse Data");
+				response.setError(500, "Failed to update vital data");
 			}
 			logger.info("updateVitalNurse response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while updating beneficiary vital data");
 			logger.error("Error in updateVitalNurse :" + e);
 		}
 
@@ -176,13 +176,13 @@ public class PNCUpdateController
 		try {
 			int result = pncServiceImpl.updateBenExaminationDetails(jsnOBJ);
 			if (result > 0) {
-				response.setResponse("PNC Examination Data updated successfully.");
+				response.setResponse("Examination data updated successfully");
 			} else {
-				response.setError(500, "Failed to update PNC Examination Nurse Data");
+				response.setError(500, "Failed to update examination data");
 			}
 			logger.info("updatePNCExaminationNurse response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while updating beneficiary examination data");
 			logger.error("Error in updatePNCExaminationNurse :" + e);
 		}
 
@@ -205,13 +205,13 @@ public class PNCUpdateController
 		try {
 			Long result = pncServiceImpl.updatePNCDoctorData(jsnOBJ);
 			if (null != result && result > 0) {
-				response.setResponse("PNC Doctor Data updated successfully.");
+				response.setResponse("Doctor data updated successfully");
 			} else {
-				response.setError(500, "Failed to update PNC Doctor Data");
+				response.setError(500, "Failed to update doctor data");
 			}
 			logger.info("updatePNCDoctorData response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while updating beneficiary doctor data");
 			logger.error("Error in updatePNCDoctorData :" + e);
 		}
 

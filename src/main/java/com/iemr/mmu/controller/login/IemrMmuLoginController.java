@@ -42,7 +42,7 @@ public class IemrMmuLoginController {
 			response.setResponse(responseData);
 		} catch (Exception e) {
 			// e.printStackTrace();
-			response.setError(e);
+			response.setError(5000, "Error while getting service points and van data");
 			logger.error("get User SP and van details failed with " + e.getMessage(), e);
 
 		}
@@ -63,7 +63,7 @@ public class IemrMmuLoginController {
 			response.setResponse(responseData);
 		} catch (Exception e) {
 			// e.printStackTrace();
-			response.setError(e);
+			response.setError(5000, "Error while getting service points and villages");
 			logger.error("get villages with servicepoint failed with " + e.getMessage(), e);
 
 		}
@@ -84,11 +84,11 @@ public class IemrMmuLoginController {
 						obj.getInt("providerServiceMapID"));
 				response.setResponse(responseData);
 			} else {
-				response.setError(5000, "Please provide userID and ProviderServiceMapID");
+				response.setError(5000, "Invalid request");
 			}
 		} catch (Exception e) {
 			// e.printStackTrace();
-			response.setError(e);
+			response.setError(5000, "Error while getting van and service points data");
 			logger.error("getUserVanSpDetails failed with " + e.getMessage(), e);
 
 		}

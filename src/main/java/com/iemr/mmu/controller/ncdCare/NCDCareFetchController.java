@@ -57,12 +57,12 @@ public class NCDCareFetchController
 				String res = ncdCareServiceImpl.getBenVisitDetailsFrmNurseNCDCare(benRegID, benVisitID);
 				response.setResponse(res);
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenDataFrmNurseScrnToDocScrnVisitDetails response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting beneficiary visit data");
 			logger.error("Error in getBenDataFrmNurseScrnToDocScrnVisitDetails:" + e);
 		}
 		return response.toString();
@@ -86,11 +86,11 @@ public class NCDCareFetchController
 				String s = ncdCareServiceImpl.getBenNCDCareHistoryDetails(benRegID, benVisitID);
 				response.setResponse(s);
 			} else {
-				response.setError(5000, "Invalid Request Data !!!");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenNCDCareHistoryDetails response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting beneficiary history data");
 			logger.error("Error in getBenNCDCareHistoryDetails:" + e);
 		}
 		return response.toString();
@@ -113,12 +113,12 @@ public class NCDCareFetchController
 				String res = ncdCareServiceImpl.getBeneficiaryVitalDetails(benRegID, benVisitID);
 				response.setResponse(res);
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenVitalDetailsFrmNurseNCDCare response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting beneficiary vital data");
 			logger.error("Error in getBenVitalDetailsFrmNurseNCDCare:" + e);
 		}
 		return response.toString();
@@ -139,8 +139,8 @@ public class NCDCareFetchController
 				response.setResponse(s);
 
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenPastHistory response:" + response);
 		} catch (Exception e) {
@@ -165,8 +165,8 @@ public class NCDCareFetchController
 				response.setResponse(s);
 
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenTobaccoHistory response:" + response);
 		} catch (Exception e) {
@@ -191,8 +191,8 @@ public class NCDCareFetchController
 				response.setResponse(s);
 
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenAlcoholHistory response:" + response);
 		} catch (Exception e) {
@@ -217,8 +217,8 @@ public class NCDCareFetchController
 				response.setResponse(s);
 
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenAllergyHistory response:" + response);
 		} catch (Exception e) {
@@ -244,8 +244,8 @@ public class NCDCareFetchController
 				response.setResponse(s);
 
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenMedicationHistory response:" + response);
 		} catch (Exception e) {
@@ -270,8 +270,8 @@ public class NCDCareFetchController
 				response.setResponse(s);
 
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenFamilyHistory response:" + response);
 		} catch (Exception e) {
@@ -297,8 +297,8 @@ public class NCDCareFetchController
 				response.setResponse(s);
 
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenMenstrualHistory response:" + response);
 		} catch (Exception e) {
@@ -324,8 +324,8 @@ public class NCDCareFetchController
 				response.setResponse(s);
 
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenPastObstetricHistory response:" + response);
 		} catch (Exception e) {
@@ -351,8 +351,8 @@ public class NCDCareFetchController
 				response.setResponse(s);
 
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenComorbidityConditionHistory response:" + response);
 		} catch (Exception e) {
@@ -378,8 +378,8 @@ public class NCDCareFetchController
 				response.setResponse(s);
 
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenOptionalVaccineHistory response:" + response);
 		} catch (Exception e) {
@@ -405,8 +405,8 @@ public class NCDCareFetchController
 				response.setResponse(s);
 
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenImmunizationHistory response:" + response);
 		} catch (Exception e) {
@@ -432,8 +432,8 @@ public class NCDCareFetchController
 				response.setResponse(s);
 
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenPerinatalHistory response:" + response);
 		} catch (Exception e) {
@@ -458,8 +458,8 @@ public class NCDCareFetchController
 				response.setResponse(s);
 
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenFeedingHistory response:" + response);
 		} catch (Exception e) {
@@ -485,8 +485,8 @@ public class NCDCareFetchController
 				response.setResponse(s);
 
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenDevelopmentHistory response:" + response);
 		} catch (Exception e) {
@@ -514,12 +514,12 @@ public class NCDCareFetchController
 				String res = ncdCareServiceImpl.getBenCaseRecordFromDoctorNCDCare(benRegID, benVisitID);
 				response.setResponse(res);
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenCaseRecordFromDoctorNCDCare response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting beneficiary doctor data");
 			logger.error("Error in getBenCaseRecordFromDoctorNCDCare:" + e);
 		}
 		return response.toString();

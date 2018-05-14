@@ -59,18 +59,18 @@ public class ANCCreateController {
 			if (jsnOBJ != null) {
 				Long ancRes = ancServiceImpl.saveANCNurseData(jsnOBJ);
 				if (null != ancRes && ancRes > 0) {
-					response.setResponse("ANC Nurse entered data stored successfully.");
+					response.setResponse("ANC nurse data saved successfully");
 				} else {
-					response.setError(5000,"Failed to store ANC Details.");
+					response.setError(5000,"Failed to save ANC data");
 				}
 
 			} else {
-				response.setError(5000, "Invalid Request.");
+				response.setError(5000, "Invalid request");
 			}
 
 		} catch (Exception e) {
 			logger.error("Exception occurs in ANC nurse data saving :" + e);
-			response.setError(e);
+			response.setError(5000, "Error while saving nurse data");
 		}
 		return response.toString();
 	}
@@ -90,19 +90,19 @@ public class ANCCreateController {
 			if (jsnOBJ != null) {
 				Long r = ancServiceImpl.saveANCDoctorData(jsnOBJ);
 				if (r != null && r > 0) {
-					response.setResponse("ANC Doc data saved successfully.");
+					response.setResponse("ANC doctor data saved successfully");
 				} else {
 					// soething went wrong
-					response.setError(5000, "Something went Wrong !!!");
+					response.setError(5000, "Failed to save doctor data");
 				}
 			} else {
 				// data is null
-				response.setError(5000, "Invalid Request !!!");
+				response.setError(5000, "Invalid request");
 			}
 
 		} catch (Exception e) {
 			logger.error("Exception occurs in ANC doctor data saving :" + e);
-			response.setError(e);
+			response.setError(5000, "Error while saving doctor data");
 		}
 		return response.toString();
 	}

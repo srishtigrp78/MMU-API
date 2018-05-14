@@ -58,11 +58,11 @@ public class QuickConsultFetchController {
 				String s = quickConsultationServiceImpl.getBenDataFrmNurseToDocVisitDetailsScreen(benRegID, benVisitID);
 				response.setResponse(s);
 			} else {
-
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenDataFrmNurseScrnToDocScrnVisitDetails response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting visit data");
 			logger.error("Error in getBenDataFrmNurseScrnToDocScrnVisitDetails:" + e);
 		}
 		return response.toString();
@@ -86,12 +86,12 @@ public class QuickConsultFetchController {
 				String res = quickConsultationServiceImpl.getBeneficiaryVitalDetails(benRegID, benVisitID);
 				response.setResponse(res);
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenVitalDetailsFrmNurse response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting vital data");
 			logger.error("Error in getBenVitalDetailsFrmNurse:" + e);
 		}
 		return response.toString();
@@ -115,12 +115,12 @@ public class QuickConsultFetchController {
 				String res = quickConsultationServiceImpl.getBenCaseRecordFromDoctorQuickConsult(benRegID, benVisitID);
 				response.setResponse(res);
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenCaseRecordFromDoctorQuickConsult response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting doctor data");
 			logger.error("Error in getBenCaseRecordFromDoctorQuickConsult:" + e);
 		}
 		return response.toString();

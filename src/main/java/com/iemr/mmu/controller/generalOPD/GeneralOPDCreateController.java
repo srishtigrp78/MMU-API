@@ -53,17 +53,17 @@ public class GeneralOPDCreateController {
 			if (jsnOBJ != null) {
 				Long genOPDRes = generalOPDServiceImpl.saveNurseData(jsnOBJ);
 				if (null != genOPDRes && genOPDRes > 0) {
-					response.setResponse("General OPD Nurse Entered Details stored successfully.");
+					response.setResponse("General OPD nurse data saved successfully");
 				} else {
-					response.setResponse("Failed to store General OPD Details.");
+					response.setResponse("Failed to save General OPD nurse data");
 				}
 
 			} else {
-				response.setResponse("Invalid Request!");
+				response.setResponse("Invalid request");
 			}
 		} catch (Exception e) {
 			logger.error("Exception occurs while saving General OPD nurse data :" + e);
-			response.setError(e);
+			response.setError(5000, "Error in nurse data saving");
 		}
 		return response.toString();
 	}
@@ -84,17 +84,17 @@ public class GeneralOPDCreateController {
 			if (jsnOBJ != null) {
 				Long genOPDRes = generalOPDServiceImpl.saveDoctorData(jsnOBJ);
 				if (null != genOPDRes && genOPDRes > 0) {
-					response.setResponse("General OPD doctor Entered Details stored successfully.");
+					response.setResponse("General OPD doctor data saved successfully");
 				} else {
-					response.setResponse("Failed to store General OPD doctor Details.");
+					response.setResponse("Failed to save General OPD doctor data");
 				}
 
 			} else {
-				response.setResponse("Invalid Request!");
+				response.setResponse("Invalid request");
 			}
 		} catch (Exception e) {
 			logger.error("Exception occurs while saving General OPD doctor data :" + e);
-			response.setError(e);
+			response.setError(5000, "Error in doctor data saving");
 		}
 		return response.toString();
 	}
