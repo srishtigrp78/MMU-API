@@ -157,7 +157,7 @@ public class InsertRegistrarController {
 			return s;
 		} catch (Exception e) {
 			logger.error("Error in registration" + e);
-			response.setError(e);
+			response.setError(5000, "Error in registration; please contact administrator");
 			return response.toString();
 		}
 

@@ -128,7 +128,7 @@ public class UpdateRegistrarController {
 			}
 		} catch (Exception e) {
 			logger.error("Error while creating re-visit " + e);
-			response.setError(e);
+			response.setError(5000, "Error while moving beneficiary to nurse worklist");
 		}
 		return response.toString();
 	}
@@ -146,9 +146,9 @@ public class UpdateRegistrarController {
 					response.setResponse("Beneficiary details updated successfully");
 				else
 					response.setResponse(
-							"Beneficiary details updated successfully but already present in nurse work-list");
+							"Beneficiary details updated successfully but already present in nurse work list");
 			} else {
-				response.setError(5000, "Error in update beneficiary details");
+				response.setError(5000, "Error while updating beneficiary details");
 			}
 		} catch (Exception e) {
 

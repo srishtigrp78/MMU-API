@@ -700,7 +700,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 				if (i == 1)
 					response1.setResponse("Beneficiary successfully registered. Beneficiary ID is : " + beneficiaryID);
 			} else {
-				response1.setError(5000, "Error in registration. Please contact administrator.");
+				response1.setError(5000, "Error in registration; please contact administrator");
 				// log error that beneficiaryID generated but flow part is not
 				// done successfully.
 			}

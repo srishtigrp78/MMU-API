@@ -47,6 +47,7 @@ public class FetchCommonController {
 		this.commonNurseServiceImpl = commonNurseServiceImpl;
 	}
 
+	@Deprecated
 	@CrossOrigin()
 	@ApiOperation(value = "provides doctor worklist", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getDocWorklist" }, method = { RequestMethod.GET })
@@ -73,7 +74,7 @@ public class FetchCommonController {
 			response.setResponse(s);
 		} catch (Exception e) {
 			logger.error("Error in getDocWorkList:" + e);
-			response.setError(e);
+			response.setError(5000, "Error while getting doctor worklist");
 		}
 		return response.toString();
 	}
@@ -105,11 +106,11 @@ public class FetchCommonController {
 			if (s != null)
 				response.setResponse(s);
 			else
-				response.setError(5000, "Error while fetching Nurse worklist");
+				response.setError(5000, "Error while getting nurse worklist");
 		} catch (Exception e) {
 			// e.printStackTrace();
 			logger.error("Error in getNurseWorklist:" + e);
-			response.setError(e);
+			response.setError(5000, "Error while getting nurse worklist");
 		}
 		return response.toString();
 	}
@@ -128,14 +129,14 @@ public class FetchCommonController {
 				if (s != null)
 					response.setResponse(s);
 				else
-					response.setError(5000, "Error while fetching previous significant findings");
+					response.setError(5000, "Error while getting previous significant findings");
 			} else {
 				response.setError(5000, "Invalid data!");
 			}
 		} catch (Exception e) {
 			// e.printStackTrace();
 			logger.error("Error while fetching previous significant findings" + e);
-			response.setError(e);
+			response.setError(5000, "Error while getting previous significant findings");
 		}
 		return response.toString();
 	}
@@ -150,11 +151,11 @@ public class FetchCommonController {
 			if (s != null)
 				response.setResponse(s);
 			else
-				response.setError(5000, "Error while fetching Lab worklist");
+				response.setError(5000, "Error while getting lab technician worklist");
 		} catch (Exception e) {
 			// e.printStackTrace();
 			logger.error("Error in getLabWorklist:" + e);
-			response.setError(e);
+			response.setError(5000, "Error while getting lab technician worklist");
 		}
 		return response.toString();
 	}
@@ -170,11 +171,11 @@ public class FetchCommonController {
 			if (s != null)
 				response.setResponse(s);
 			else
-				response.setError(5000, "Error while fetching radiologist worklist");
+				response.setError(5000, "Error while getting radiologist worklist");
 		} catch (Exception e) {
 			// e.printStackTrace();
 			logger.error("Error in getLabWorklist:" + e);
-			response.setError(e);
+			response.setError(5000, "Error while getting radiologist worklist");
 		}
 		return response.toString();
 	}
@@ -190,11 +191,11 @@ public class FetchCommonController {
 			if (s != null)
 				response.setResponse(s);
 			else
-				response.setError(5000, "Error while fetching oncologist worklist");
+				response.setError(5000, "Error while getting oncologist worklist");
 		} catch (Exception e) {
 			// e.printStackTrace();
 			logger.error("Error in getLabWorklist:" + e);
-			response.setError(e);
+			response.setError(5000, "Error while getting oncologist worklist");
 		}
 		return response.toString();
 	}
@@ -210,11 +211,11 @@ public class FetchCommonController {
 			if (s != null)
 				response.setResponse(s);
 			else
-				response.setError(5000, "Error while fetching pharma worklist");
+				response.setError(5000, "Error while getting pharma worklist");
 		} catch (Exception e) {
 			// e.printStackTrace();
 			logger.error("Error in getLabWorklist:" + e);
-			response.setError(e);
+			response.setError(5000, "Error while getting pharma worklist");
 		}
 		return response.toString();
 	}
@@ -231,16 +232,15 @@ public class FetchCommonController {
 				String casesheetData = commonServiceImpl.getCaseSheetPrintDataForBeneficiary(obj, Authorization);
 				response.setResponse(casesheetData);
 			} else
-				response.setError(5000, "Invalid request.");
+				response.setError(5000, "Invalid request");
 		} catch (Exception e) {
 			logger.error("" + e);
 		}
 
 		return response.toString();
 	}
-	
-	
-	//Start of Fetch Previous History...
+
+	// Start of Fetch Previous History...
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Past History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenPastHistory" }, method = { RequestMethod.POST })
@@ -257,11 +257,11 @@ public class FetchCommonController {
 
 			} else {
 				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenPastHistory response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting illness and surgery history");
 			logger.error("Error in getBenPastHistory:" + e);
 		}
 		return response.toString();
@@ -270,8 +270,7 @@ public class FetchCommonController {
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Tobacco History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenTobaccoHistory" }, method = { RequestMethod.POST })
-	public String getBenTobaccoHistory(
-			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenTobaccoHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("getBenTobaccoHistory request:" + comingRequest);
@@ -284,11 +283,11 @@ public class FetchCommonController {
 
 			} else {
 				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenTobaccoHistory response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting tobacco history");
 			logger.error("Error in getBenTobaccoHistory:" + e);
 		}
 		return response.toString();
@@ -297,8 +296,7 @@ public class FetchCommonController {
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Alcohol History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenAlcoholHistory" }, method = { RequestMethod.POST })
-	public String getBenAlcoholHistory(
-			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenAlcoholHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("getBenAlcoholHistory request:" + comingRequest);
@@ -311,11 +309,11 @@ public class FetchCommonController {
 
 			} else {
 				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenAlcoholHistory response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting alcohol history");
 			logger.error("Error in getBenAlcoholHistory:" + e);
 		}
 		return response.toString();
@@ -338,11 +336,11 @@ public class FetchCommonController {
 
 			} else {
 				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenAllergyHistory response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting allergy history");
 			logger.error("Error in getBenAllergyHistory:" + e);
 		}
 		return response.toString();
@@ -365,11 +363,11 @@ public class FetchCommonController {
 
 			} else {
 				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenMedicationHistory response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting medication history");
 			logger.error("Error in getBenMedicationHistory:" + e);
 		}
 		return response.toString();
@@ -378,8 +376,7 @@ public class FetchCommonController {
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Family History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenFamilyHistory" }, method = { RequestMethod.POST })
-	public String getBenFamilyHistory(
-			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenFamilyHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("getBenFamilyHistory request:" + comingRequest);
@@ -392,11 +389,11 @@ public class FetchCommonController {
 
 			} else {
 				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenFamilyHistory response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting family history");
 			logger.error("Error in getBenFamilyHistory:" + e);
 		}
 		return response.toString();
@@ -419,11 +416,11 @@ public class FetchCommonController {
 
 			} else {
 				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenMenstrualHistory response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting menstrual history");
 			logger.error("Error in getBenMenstrualHistory:" + e);
 		}
 		return response.toString();
@@ -446,11 +443,11 @@ public class FetchCommonController {
 
 			} else {
 				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenPastObstetricHistory response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting obstetric history");
 			logger.error("Error in getBenPastObstetricHistory:" + e);
 		}
 		return response.toString();
@@ -473,11 +470,11 @@ public class FetchCommonController {
 
 			} else {
 				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenComorbidityConditionHistory response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting comodbidity history");
 			logger.error("Error in getBenComorbidityConditionHistory:" + e);
 		}
 		return response.toString();
@@ -500,11 +497,11 @@ public class FetchCommonController {
 
 			} else {
 				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenOptionalVaccineHistory response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting optional vaccination history");
 			logger.error("Error in getBenOptionalVaccineHistory:" + e);
 		}
 		return response.toString();
@@ -527,16 +524,16 @@ public class FetchCommonController {
 
 			} else {
 				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenImmunizationHistory response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting child vaccine(immunization) history");
 			logger.error("Error in getBenImmunizationHistory:" + e);
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Perinatal History Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenPerinatalHistory" }, method = { RequestMethod.POST })
@@ -554,11 +551,11 @@ public class FetchCommonController {
 
 			} else {
 				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenPerinatalHistory response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting perinatal history");
 			logger.error("Error in getBenPerinatalHistory:" + e);
 		}
 		return response.toString();
@@ -580,11 +577,11 @@ public class FetchCommonController {
 
 			} else {
 				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenFeedingHistory response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting child feeding history");
 			logger.error("Error in getBenFeedingHistory:" + e);
 		}
 		return response.toString();
@@ -607,15 +604,15 @@ public class FetchCommonController {
 
 			} else {
 				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenDevelopmentHistory response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting child development history");
 			logger.error("Error in getBenDevelopmentHistory:" + e);
 		}
 		return response.toString();
 	}
 
-	//End of Fetch Previous History...
+	// End of Fetch Previous History...
 }

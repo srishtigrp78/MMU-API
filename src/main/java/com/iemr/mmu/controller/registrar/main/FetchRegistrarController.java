@@ -238,7 +238,7 @@ public class FetchRegistrarController {
 			}
 		} catch (Exception e) {
 			logger.error("Error in Quick Search" + e);
-			response.setError(e);
+			response.setError(5000, "Error while searching beneficiary");
 			return response.toString();
 		}
 
@@ -262,7 +262,7 @@ public class FetchRegistrarController {
 			}
 		} catch (Exception e) {
 			logger.error("Error in Quick Search" + e);
-			response.setError(e);
+			response.setError(5000, "Error while searching beneficiary");
 			return response.toString();
 		}
 
@@ -296,7 +296,7 @@ public class FetchRegistrarController {
 			logger.info("getBenDetailsByRegID response :" + response);
 		} catch (Exception e) {
 			logger.error("Error in getBenDetailsByRegID :" + e);
-			response.setError(e);
+			response.setError(5000, "Error while getting beneficiary details" );
 		}
 		return response.toString();
 	}
@@ -313,7 +313,7 @@ public class FetchRegistrarController {
 			return returnOBJ;
 		} catch (Exception e) {
 			logger.error("Error ben image fetch" + e);
-			response.setError(e);
+			response.setError(5000, "Error while getting beneficiary image");
 			return response.toString();
 		}
 

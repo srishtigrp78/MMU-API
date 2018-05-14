@@ -44,16 +44,16 @@ public class RegistrarMasterController {
 				if (obj.getInt("spID") > 0) {
 					response.setResponse(registrarServiceMasterDataImpl.getRegMasterData());
 				} else {
-					response.setError(500, "Invalid Service-Point...");
+					response.setError(5000, "Invalid service point");
 				}
 			} else {
-				response.setError(500, "Bad Request... Service-Point is not there in request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("masterDataForRegistration response :" + response);
 
 		} catch (Exception e) {
 			logger.error("Error in masterDataForRegistration :" + e);
-			response.setError(e);
+			response.setError(5000, "Error while getting master data for registration");
 		}
 		return response.toString();
 	}
