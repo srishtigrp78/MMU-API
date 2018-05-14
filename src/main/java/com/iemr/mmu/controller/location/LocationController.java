@@ -40,7 +40,7 @@ public class LocationController {
 		if (s != null)
 			response.setResponse(s);
 		else
-			response.setError(5000, "No State Master Data Available !!!");
+			response.setError(5000, "Error while getting states");
 		logger.info("stateMaster" + response.toString());
 		return response.toString();
 	}
@@ -55,7 +55,7 @@ public class LocationController {
 		if (s != null)
 			response.setResponse(s);
 		else
-			response.setError(5000, "No Zone Master Data Available !!!");
+			response.setError(5000, "Error while getting zones");
 		logger.info("zoneMaster" + response.toString());
 		return response.toString();
 	}
@@ -69,7 +69,7 @@ public class LocationController {
 		if (s != null)
 			response.setResponse(s);
 		else
-			response.setError(5000, "No District Master Data Available for stateID : " + stateID);
+			response.setError(5000, "Error while getting districts");
 		logger.info("districtMaster" + response.toString());
 		return response.toString();
 	}
@@ -83,7 +83,7 @@ public class LocationController {
 		if (s != null)
 			response.setResponse(s);
 		else
-			response.setError(5000, "No District Block Master Data Available for districtID : " + districtID);
+			response.setError(5000, "Error while getting district blocks");
 		logger.info("districtBlockMaster" + response.toString());
 		return response.toString();
 	}
@@ -97,7 +97,7 @@ public class LocationController {
 		if (s != null)
 			response.setResponse(s);
 		else
-			response.setError(5000, "No District Block Master Data Available for blockID : " + blockID);
+			response.setError(5000, "Error while getting villages");
 		logger.info("village master" + response.toString());
 		return response.toString();
 	}
@@ -152,11 +152,11 @@ public class LocationController {
 
 				response.setResponse(s);
 			} else {
-				response.setError(5000, "Invalid Input.");
+				response.setError(5000, "Invalid request");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.setError(e);
+			response.setError(5000, "Error while getting location data");
 		}
 		return response.toString();
 	}

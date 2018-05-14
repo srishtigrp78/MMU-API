@@ -86,13 +86,13 @@ public class CancerScreeningUpdateController {
 		try {
 			int result = cSServiceImpl.UpdateCSHistoryNurseData(jsnOBJ);
 			if (result > 0) {
-				response.setResponse("Beneficiary history data updated successfully.");
+				response.setResponse("history data updated successfully");
 			} else {
-				response.setError(500, "Failed to update CS History Nurse Data");
+				response.setError(500, "Failed to update history data");
 			}
 			logger.info("updateCSHistoryNurse response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while updating beneficiary history data");
 			logger.error("Error in updateCSHistoryNurse :" + e);
 		}
 
@@ -126,13 +126,13 @@ public class CancerScreeningUpdateController {
 					BenCancerVitalDetail.class);
 			int responseObj = cSServiceImpl.updateBenVitalDetail(benCancerVitalDetail);
 			if (responseObj > 0) {
-				response.setResponse("Beneficiary Vital Details updated Successfully");
+				response.setResponse("Vital data updated successfully");
 			} else {
-				response.setError(500, "Failed to update Beneficiary Vital Details");
+				response.setError(500, "Failed to update vital data");
 			}
 			logger.info("upodateBenVitalDetail response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while updating beneficiary vital data");
 			logger.error("Error in upodateBenVitalDetail:" + e);
 		}
 
@@ -155,13 +155,13 @@ public class CancerScreeningUpdateController {
 		try {
 			int responseObj = cSServiceImpl.updateBenExaminationDetail(jsnOBJ);
 			if (responseObj > 0) {
-				response.setResponse("Beneficiary Examination Details updated Successfully");
+				response.setResponse("Examination data updated successfully");
 			} else {
-				response.setError(500, "Failed to update Beneficiary Examination Details");
+				response.setError(500, "Failed to update examination data");
 			}
 			logger.info("upodateBenExaminationDetail response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while updating beneficiary examination data");
 			logger.error("Error in upodateBenExaminationDetail:" + e);
 		}
 
@@ -183,13 +183,13 @@ public class CancerScreeningUpdateController {
 			CancerDiagnosis cancerDiagnosis = InputMapper.gson().fromJson(requestObj, CancerDiagnosis.class);
 			int result = cSServiceImpl.updateCancerDiagnosisDetailsByOncologist(cancerDiagnosis);
 			if (result > 0) {
-				response.setResponse("Cancer Diagnosis Details updated By Oncologist Successfully");
+				response.setResponse("Diagnosis data updated by Oncologist successfully");
 			} else {
-				response.setError(5000, "Failed to update Cancer Diagnosis Details By Oncologist");
+				response.setError(5000, "Failed to update diagnosis data by Oncologist");
 			}
 			logger.info("updateCancerDiagnosisDetailsByOncologist response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while updating beneficiary diagnosis data");
 			logger.error("Error in updateCancerDiagnosisDetailsByOncologist :" + e);
 		}
 
@@ -212,13 +212,13 @@ public class CancerScreeningUpdateController {
 		try {
 			Long result = cSServiceImpl.updateCancerScreeningDoctorData(jsnOBJ);
 			if (null != result && result > 0) {
-				response.setResponse("CancerScreening Doctor Data updated successfully.");
+				response.setResponse("Doctor data updated successfully");
 			} else {
-				response.setError(500, "Failed to update CancerScreening Doctor Data");
+				response.setError(500, "Failed to update doctor data");
 			}
 			logger.info("updateCancerScreeningDoctorData response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while updating beneficiary doctor data");
 			logger.error("Error in updateCancerScreeningDoctorData :" + e);
 		}
 

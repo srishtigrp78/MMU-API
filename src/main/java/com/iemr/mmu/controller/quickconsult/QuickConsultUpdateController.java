@@ -59,13 +59,13 @@ public class QuickConsultUpdateController {
 			
 			Long result = quickConsultationServiceImpl.updateGeneralOPDQCDoctorData(quickConsultDoctorOBJ);
 			if (null != result && result > 0) {
-				response.setResponse("GeneralOPD(QC) Doctor Data updated successfully.");
+				response.setResponse("General OPD(QC) doctor data updated successfully");
 			} else {
-				response.setError(500, "Failed to update GeneralOPD(QC) Doctor Data");
+				response.setError(500, "Failed to update doctor data");
 			}
 			logger.info("updateGeneralOPDQCDoctorData response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while updating beneficiary doctor data");
 			logger.error("Error in updateGeneralOPDQCDoctorData :" + e);
 		}
 

@@ -57,11 +57,11 @@ public class NCDFetchController {
 				String screeningDetails = ncdScreeningServiceImpl.getNCDScreeningDetails(benRegID, benVisitID);
 				response.setResponse(screeningDetails);
 			} else {
-				response.setError(5000, "Error in parsing request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getNCDScreeningDetails response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting NCD Screening data");
 			logger.error("Error in getNCDScreeningDetails:" + e);
 		}
 		return response.toString();

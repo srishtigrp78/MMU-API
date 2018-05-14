@@ -61,7 +61,7 @@ public class LabtechnicianFetchController {
 			}
 		} catch (Exception e) {
 			logger.error("Exception in beneficiary prescribed procedure fetching" + e);
-			response.setError(e);
+			response.setError(5000, "Error while getting prescribed procedure data");
 		}
 		return response.toString();
 	}

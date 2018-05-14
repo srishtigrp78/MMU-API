@@ -57,18 +57,18 @@ public class PNCCreateController
 			if (jsnOBJ != null) {
 				Long ancRes = pncServiceImpl.savePNCNurseData(jsnOBJ);
 				if (null != ancRes && ancRes > 0) {
-					response.setResponse("PNC Nurse Entered Details stored successfully.");
+					response.setResponse("PNC nurse data saved successfully");
 				} else {
-					response.setResponse("Failed to store PNC Details.");
+					response.setResponse("Failed to save PNC nurse data");
 				}
 
 			} else {
-				response.setError(5000, "Invalid Request !!!");
+				response.setError(5000, "Invalid request");
 			}
 
 		} catch (Exception e) {
 			logger.error("Exception occurs in PNC nurse data saving :" + e);
-			response.setError(e);
+			response.setError(5000, "Error while saving nurse data");
 		}
 		return response.toString();
 	}
@@ -88,19 +88,19 @@ public class PNCCreateController
 			if (jsnOBJ != null) {
 				Long r = pncServiceImpl.savePNCDoctorData(jsnOBJ);
 				if (r != null && r > 0) {
-					response.setResponse("PNC Doc data saved successfully.");
+					response.setResponse("PNC doctor data saved successfully");
 				} else {
 					// soething went wrong
-					response.setError(5000, "Something went Wrong !!!");
+					response.setError(5000, "Failed to save PNC doctor data");
 				}
 			} else {
 				// data is null
-				response.setError(5000, "Invalid Request !!!");
+				response.setError(5000, "Invalid request");
 			}
 
 		} catch (Exception e) {
 			logger.error("Exception occurs in PNC doctor data saving :" + e);
-			response.setError(e);
+			response.setError(5000, "Error while saving doctor data");
 		}
 		return response.toString();
 	}

@@ -56,12 +56,12 @@ public class ANCFetchController {
 				String res = ancServiceImpl.getBenVisitDetailsFrmNurseANC(benRegID, benVisitID);
 				response.setResponse(res);
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenDataFrmNurseScrnToDocScrnVisitDetails response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting beneficiary visit data");
 			logger.error("Error in getBenDataFrmNurseScrnToDocScrnVisitDetails:" + e);
 		}
 		return response.toString();
@@ -85,12 +85,12 @@ public class ANCFetchController {
 				String res = ancServiceImpl.getBenANCDetailsFrmNurseANC(benRegID, benVisitID);
 				response.setResponse(res);
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenANCDetailsFrmNurseANC response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting beneficiary ANC care data");
 			logger.error("Error in getBenANCDetailsFrmNurseANC:" + e);
 		}
 		return response.toString();
@@ -114,11 +114,11 @@ public class ANCFetchController {
 				String s = ancServiceImpl.getBenANCHistoryDetails(benRegID, benVisitID);
 				response.setResponse(s);
 			} else {
-				response.setError(5000, "Invalid Request Data !!!");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenANCHistoryDetails response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting beneficiary history data");
 			logger.error("Error in getBenANCHistoryDetails:" + e);
 		}
 		return response.toString();
@@ -141,12 +141,12 @@ public class ANCFetchController {
 				String res = ancServiceImpl.getBeneficiaryVitalDetails(benRegID, benVisitID);
 				response.setResponse(res);
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenANCVitalDetailsFrmNurseANC response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting beneficiary vital data");
 			logger.error("Error in getBenANCVitalDetailsFrmNurseANC:" + e);
 		}
 		return response.toString();
@@ -170,11 +170,11 @@ public class ANCFetchController {
 				String s = ancServiceImpl.getANCExaminationDetailsData(benRegID, benVisitID);
 				response.setResponse(s);
 			} else {
-				response.setError(5000, "Invalid Request Data !!!");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenExaminationDetailsANC response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting beneficiary examination data");
 			logger.error("Error in getBenExaminationDetailsANC:" + e);
 		}
 		return response.toString();
@@ -195,8 +195,8 @@ public class ANCFetchController {
 				response.setResponse(s);
 
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenANCPastHistory response:" + response);
 		} catch (Exception e) {
@@ -222,8 +222,8 @@ public class ANCFetchController {
 				response.setResponse(s);
 
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenANCTobaccoHistory response:" + response);
 		} catch (Exception e) {
@@ -249,8 +249,8 @@ public class ANCFetchController {
 				response.setResponse(s);
 
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenANCAlcoholHistory response:" + response);
 		} catch (Exception e) {
@@ -276,8 +276,8 @@ public class ANCFetchController {
 				response.setResponse(s);
 
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenANCAllergyHistory response:" + response);
 		} catch (Exception e) {
@@ -303,8 +303,8 @@ public class ANCFetchController {
 				response.setResponse(s);
 
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenANCMedicationHistory response:" + response);
 		} catch (Exception e) {
@@ -330,8 +330,8 @@ public class ANCFetchController {
 				response.setResponse(s);
 
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenANCFamilyHistory response:" + response);
 		} catch (Exception e) {
@@ -357,8 +357,8 @@ public class ANCFetchController {
 				response.setResponse(s);
 
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenANCMenstrualHistory response:" + response);
 		} catch (Exception e) {
@@ -384,8 +384,8 @@ public class ANCFetchController {
 				response.setResponse(s);
 
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenANCPastObstetricHistory response:" + response);
 		} catch (Exception e) {
@@ -411,8 +411,8 @@ public class ANCFetchController {
 				response.setResponse(s);
 
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenANCComorbidityConditionHistory response:" + response);
 		} catch (Exception e) {
@@ -438,8 +438,8 @@ public class ANCFetchController {
 				response.setResponse(s);
 
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenANCOptionalVaccineHistory response:" + response);
 		} catch (Exception e) {
@@ -465,8 +465,8 @@ public class ANCFetchController {
 				response.setResponse(s);
 
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenANCImmunizationHistory response:" + response);
 		} catch (Exception e) {
@@ -494,12 +494,12 @@ public class ANCFetchController {
 				String res = ancServiceImpl.getBenCaseRecordFromDoctorANC(benRegID, benVisitID);
 				response.setResponse(res);
 			} else {
-				logger.info("Invalid Request Data.");
-				response.setError(5000, "Invalid Request Data !!!");
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
 			logger.info("getBenCaseRecordFromDoctorANC response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while getting beneficiary doctor data");
 			logger.error("Error in getBenCaseRecordFromDoctorANC:" + e);
 		}
 		return response.toString();

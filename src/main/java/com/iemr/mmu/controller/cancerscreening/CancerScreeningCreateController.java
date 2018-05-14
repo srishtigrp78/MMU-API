@@ -61,22 +61,22 @@ public class CancerScreeningCreateController {
 				Long nurseDataSaveSuccessFlag = cSServiceImpl.saveCancerScreeningNurseData(jsnOBJ, Authorization);
 				if (nurseDataSaveSuccessFlag != null && nurseDataSaveSuccessFlag > 0) {
 					if (nurseDataSaveSuccessFlag == 1)
-						response.setResponse("Nurse data saved successfully.");
+						response.setResponse("Nurse data saved successfully");
 					else if (nurseDataSaveSuccessFlag == 2)
-						response.setResponse("Nurse data saved and MAMMOGRAM order created successfully.");
+						response.setResponse("Nurse data saved and MAMMOGRAM order created successfully");
 					else
 						response.setResponse(
-								"Nurse data saved successfully but 'Error in mammogram order creation', please contact administrator.");
+								"Nurse data saved successfully but 'error in mammogram order creation';please contact administrator");
 				} else {
-					response.setError(5000, "Something went wrong !!!");
+					response.setError(5000, "Something went wrong");
 				}
 			} else {
-				response.setError(5000, "Invalid Request !!!");
+				response.setError(5000, "Invalid request");
 			}
 
 		} catch (Exception e) {
 			logger.error("Exception occurs in cancer screening nurse data saving :" + e);
-			response.setError(e);
+			response.setError(5000, "Error while saving beneficiary nurse data");
 		}
 		return response.toString();
 	}
@@ -102,17 +102,17 @@ public class CancerScreeningCreateController {
 			if (jsnOBJ != null) {
 				Long csDocDataSaveSuccessFlag = cSServiceImpl.saveCancerScreeningDoctorData(jsnOBJ);
 				if (csDocDataSaveSuccessFlag != null && csDocDataSaveSuccessFlag > 0) {
-					response.setResponse("Doc data saved successfully.");
+					response.setResponse("Doctor data saved successfully");
 				} else {
-					response.setError(5000, "Something went wrong !!!");
+					response.setError(5000, "Failed to save doctor data");
 				}
 			} else {
-				response.setError(5000, "Invalid Request !!!");
+				response.setError(5000, "Invalid request");
 			}
 
 		} catch (Exception e) {
 			logger.error("Exception occurs in cancer screening doctor saving :" + e);
-			response.setError(e);
+			response.setError(5000, "Error while saving beneficiary doctor data");
 		}
 		return response.toString();
 	}

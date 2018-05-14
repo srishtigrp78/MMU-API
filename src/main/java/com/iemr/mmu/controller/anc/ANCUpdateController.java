@@ -62,13 +62,13 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 		try {
 			int result = ancServiceImpl.updateBenANCDetails(jsnOBJ);
 			if (result > 0) {
-				response.setResponse("ANC Care Data updated successfully.");
+				response.setResponse("ANC Care data updated successfully");
 			} else {
-				response.setError(500, "Failed to update ANC care Nurse Data");
+				response.setError(500, "Failed to update ANC Care data");
 			}
 			logger.info("updateANCCareNurse response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while updating beneficiary ANC care data");
 			logger.error("Error in updateANCCareNurse :" + e);
 		}
 
@@ -99,13 +99,13 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 		try {
 			int result = ancServiceImpl.updateBenANCHistoryDetails(jsnOBJ);
 			if (result > 0) {
-				response.setResponse("ANC History Data updated successfully.");
+				response.setResponse("History data updated successfully");
 			} else {
-				response.setError(500, "Failed to update ANC History Nurse Data");
+				response.setError(500, "Failed to update history data");
 			}
 			logger.info("updateANCHistoryNurse response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while updating beneficiary history data");
 			logger.error("Error in updateANCHistoryNurse :" + e);
 		}
 
@@ -136,13 +136,13 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 		try {
 			int result = ancServiceImpl.updateBenANCVitalDetails(jsnOBJ);
 			if (result > 0) {
-				response.setResponse("ANC Vital Data updated successfully.");
+				response.setResponse("Vital data updated successfully");
 			} else {
-				response.setError(500, "Failed to update ANC Vital Nurse Data");
+				response.setError(500, "Failed to update vital data");
 			}
 			logger.info("updateANCVitalNurse response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while updating beneficiary vital data");
 			logger.error("Error in updateANCVitalNurse :" + e);
 		}
 
@@ -173,13 +173,13 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 		try {
 			int result = ancServiceImpl.updateBenANCExaminationDetails(jsnOBJ);
 			if (result > 0) {
-				response.setResponse("ANC Examination Data updated successfully.");
+				response.setResponse("Examination data updated successfully");
 			} else {
-				response.setError(500, "Failed to update ANC Examination Nurse Data");
+				response.setError(500, "Failed to update examination data");
 			}
 			logger.info("updateANCExaminationNurse response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while updating beneficiary examination data");
 			logger.error("Error in updateANCExaminationNurse :" + e);
 		}
 
@@ -202,13 +202,13 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 		try {
 			Long result = ancServiceImpl.updateANCDoctorData(jsnOBJ);
 			if (null != result && result > 0) {
-				response.setResponse("ANC Doctor Data updated successfully.");
+				response.setResponse("Doctor data updated successfully");
 			} else {
-				response.setError(500, "Failed to update ANC Doctor Data");
+				response.setError(500, "Failed to update doctor data");
 			}
 			logger.info("updateANCDoctorData response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Error while updating beneficiary doctor data");
 			logger.error("Error in updateANCDoctorData :" + e);
 		}
 

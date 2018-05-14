@@ -53,17 +53,17 @@ public class LabtechnicianCreateController {
 			if (jsnOBJ != null) {
 				Integer labResultSaveRes = labTechnicianServiceImpl.saveLabTestResult(jsnOBJ);
 				if (null != labResultSaveRes && labResultSaveRes > 0) {
-					response.setResponse("Lab Test Results stored successfully.");
+					response.setResponse("Lab test results saved successfully");
 				} else {
-					response.setResponse("Failed to store Lab Test Results .");
+					response.setResponse("Failed to save Lab test results");
 				}
 
 			} else {
-				response.setResponse("Invalid Request!");
+				response.setResponse("Invalid request");
 			}
 		} catch (Exception e) {
 			logger.error("Exception occurs while saving Lab Test Results  :" + e);
-			response.setError(e);
+			response.setError(5000, "Error while saving Lab test results");
 		}
 		return response.toString();
 	}
