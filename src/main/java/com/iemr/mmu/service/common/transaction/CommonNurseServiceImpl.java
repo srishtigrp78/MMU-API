@@ -812,7 +812,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		columns.add(columnMap);
 
 		columnMap = new HashMap<>();
-		columnMap.put("columnName", "Year Of Illness");
+		columnMap.put("columnName", "Year of Illness");
 		columnMap.put("keyName", "Year_Of_Illness");
 		columns.add(columnMap);
 
@@ -827,7 +827,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		columns.add(columnMap);
 
 		columnMap = new HashMap<>();
-		columnMap.put("columnName", "Year Of Surgery");
+		columnMap.put("columnName", "Year of Surgery");
 		columnMap.put("keyName", "Year_Of_Surgery");
 		columns.add(columnMap);
 
@@ -2412,27 +2412,27 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		columns.add(column);
 
 		column = new HashMap<>();
-		column.put("columnName", "Place Of Delivery");
+		column.put("columnName", "Place of Delivery");
 		column.put("keyName", "placeOfDelivery");
 		columns.add(column);
 
 		column = new HashMap<>();
-		column.put("columnName", "Other Place Of Delivery");
+		column.put("columnName", "Other Place of Delivery");
 		column.put("keyName", "otherPlaceOfDelivery");
 		columns.add(column);
 
 		column = new HashMap<>();
-		column.put("columnName", "Type Of Delivery");
+		column.put("columnName", "Type of Delivery");
 		column.put("keyName", "typeOfDelivery");
 		columns.add(column);
 
 		column = new HashMap<>();
-		column.put("columnName", "Complication At Birth");
+		column.put("columnName", "Complication at Birth");
 		column.put("keyName", "complicationAtBirth");
 		columns.add(column);
 
 		column = new HashMap<>();
-		column.put("columnName", "Other Complication At Birth");
+		column.put("columnName", "Other Complication at Birth");
 		column.put("keyName", "otherComplicationAtBirth");
 		columns.add(column);
 
@@ -2484,7 +2484,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		columns.add(column);
 
 		column = new HashMap<>();
-		column.put("columnName", "Type Of Feed");
+		column.put("columnName", "Type of Feed");
 		column.put("keyName", "typeOfFeed");
 		columns.add(column);
 
@@ -2494,7 +2494,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		columns.add(column);
 
 		column = new HashMap<>();
-		column.put("columnName", "NoOf Comp Feed Per Day");
+		column.put("columnName", "No of Comp Feed Per Day");
 		column.put("keyName", "noOfCompFeedPerDay");
 		columns.add(column);
 
