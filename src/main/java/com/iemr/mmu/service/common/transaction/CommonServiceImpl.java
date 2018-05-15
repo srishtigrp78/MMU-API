@@ -301,4 +301,13 @@ public class CommonServiceImpl implements CommonService {
 	public String getBenDevelopmentHistoryData(Long beneficiaryRegID) {
 		return commonNurseServiceImpl.fetchBenDevelopmentHistory(beneficiaryRegID);
 	}
+	
+	
+	// ------- Fetch beneficiary previous visit details for case-record  ---------------
+	/**
+	 * date : 15-05-2018
+	 */
+		public String getBenPreviousVisitDataForCaseRecord(Long beneficiaryRegID) {
+			return null;
+		}
 }

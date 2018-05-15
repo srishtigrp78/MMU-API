@@ -615,4 +615,19 @@ public class FetchCommonController {
 	}
 
 	// End of Fetch Previous History...
+
+	/***
+	 * fetch ben previous visit details for case-record.
+	 */
+	@CrossOrigin()
+	@ApiOperation(value = "get ben previous visit details such as benid, chief complaints, diagonosis and snomedCT code", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenPreviousVisitDetailsForCaseRecord" }, method = { RequestMethod.POST })
+	public String getBenPreviousVisitDetailsForCaseRecord(@RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenDevelopmentHistory request:" + comingRequest);
+
+		return response.toString();
+	}
+
 }
