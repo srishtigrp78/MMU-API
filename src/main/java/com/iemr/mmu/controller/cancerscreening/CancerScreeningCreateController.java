@@ -39,8 +39,9 @@ public class CancerScreeningCreateController {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * @Objective Save Cancer Screening data for nurse.
+	 * @param JSON requestObj 
+	 * @return success or failure response
 	 */
 
 	@CrossOrigin
@@ -50,7 +51,7 @@ public class CancerScreeningCreateController {
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
-			logger.info("Request object for cancer screening nurse data saving :" + requestObj);
+			logger.info("Request object for CS nurse data saving :" + requestObj);
 
 			JsonObject jsnOBJ = new JsonObject();
 			JsonParser jsnParser = new JsonParser();
@@ -61,29 +62,30 @@ public class CancerScreeningCreateController {
 				Long nurseDataSaveSuccessFlag = cSServiceImpl.saveCancerScreeningNurseData(jsnOBJ, Authorization);
 				if (nurseDataSaveSuccessFlag != null && nurseDataSaveSuccessFlag > 0) {
 					if (nurseDataSaveSuccessFlag == 1)
-						response.setResponse("Nurse data saved successfully");
+						response.setResponse("Data saved successfully");
 					else if (nurseDataSaveSuccessFlag == 2)
-						response.setResponse("Nurse data saved and MAMMOGRAM order created successfully");
+						response.setResponse("Data saved and MAMMOGRAM order created successfully");
 					else
 						response.setResponse(
-								"Nurse data saved successfully but 'error in mammogram order creation';please contact administrator");
+								"Data saved successfully but 'error in mammogram order creation';please contact administrator");
 				} else {
-					response.setError(5000, "Something went wrong");
+					response.setError(5000, "Unable to save data");
 				}
 			} else {
 				response.setError(5000, "Invalid request");
 			}
 
 		} catch (Exception e) {
-			logger.error("Exception occurs in cancer screening nurse data saving :" + e);
-			response.setError(5000, "Error while saving beneficiary nurse data");
+			logger.error("Error while saving beneficiary nurse data :" + e);
+			response.setError(5000, "Unable to save data");
 		}
 		return response.toString();
 	}
 
 	/**
-	 * 
-	 * @return
+	 * @Objective Save Cancer Screening data for doctor.
+	 * @param JSON requestObj 
+	 * @return success or failure response
 	 */
 
 	@CrossOrigin
@@ -92,7 +94,7 @@ public class CancerScreeningCreateController {
 	public String saveBenCancerScreeningDoctorData(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		try {
-			logger.info("Request object for cancer screening doctor data saving :" + requestObj);
+			logger.info("Request object for CS doctor data saving :" + requestObj);
 
 			JsonObject jsnOBJ = new JsonObject();
 			JsonParser jsnParser = new JsonParser();
@@ -102,17 +104,17 @@ public class CancerScreeningCreateController {
 			if (jsnOBJ != null) {
 				Long csDocDataSaveSuccessFlag = cSServiceImpl.saveCancerScreeningDoctorData(jsnOBJ);
 				if (csDocDataSaveSuccessFlag != null && csDocDataSaveSuccessFlag > 0) {
-					response.setResponse("Doctor data saved successfully");
+					response.setResponse("Data saved successfully");
 				} else {
-					response.setError(5000, "Failed to save doctor data");
+					response.setError(5000, "Unable to save data");
 				}
 			} else {
 				response.setError(5000, "Invalid request");
 			}
 
 		} catch (Exception e) {
-			logger.error("Exception occurs in cancer screening doctor saving :" + e);
-			response.setError(5000, "Error while saving beneficiary doctor data");
+			logger.error("Error while saving beneficiary doctor data :" + e);
+			response.setError(5000, "Unable to save data");
 		}
 		return response.toString();
 	}

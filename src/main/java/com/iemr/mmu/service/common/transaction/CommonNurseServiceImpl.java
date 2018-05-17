@@ -1519,6 +1519,9 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 				benVisitID);
 
 		BenPersonalHabit personalHabits = BenPersonalHabit.getPersonalDetails(personalDetails);
+		if(null == personalHabits){
+			personalHabits = new BenPersonalHabit();
+		}
 		ArrayList<BenAllergyHistory> allergyList = BenAllergyHistory.getBenAllergicHistory(allergyDetails);
 		if (null != allergyList && allergyList.size() > 0) {
 			personalHabits.setAllergyStatus(allergyList.get(0).getAllergyStatus());

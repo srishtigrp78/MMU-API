@@ -21,6 +21,7 @@ import io.swagger.annotations.ApiOperation;
 /***
  * 
  * @author NE298657
+ * @Objective Saving General OPD data for Nurse and Doctor.
  *
  */
 
@@ -37,6 +38,11 @@ public class GeneralOPDCreateController {
 		this.generalOPDServiceImpl = generalOPDServiceImpl;
 	}
 
+	/**
+	 * @Objective Save General OPD data for nurse.
+	 * @param requestObj
+	 * @return success or failure response
+	 */
 	@CrossOrigin
 	@ApiOperation(value = "Save General OPD nurse data..", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
@@ -53,21 +59,26 @@ public class GeneralOPDCreateController {
 			if (jsnOBJ != null) {
 				Long genOPDRes = generalOPDServiceImpl.saveNurseData(jsnOBJ);
 				if (null != genOPDRes && genOPDRes > 0) {
-					response.setResponse("General OPD nurse data saved successfully");
+					response.setResponse("Data saved successfully");
 				} else {
-					response.setResponse("Failed to save General OPD nurse data");
+					response.setResponse("Unable to save data");
 				}
 
 			} else {
 				response.setResponse("Invalid request");
 			}
 		} catch (Exception e) {
-			logger.error("Exception occurs while saving General OPD nurse data :" + e);
-			response.setError(5000, "Error in nurse data saving");
+			logger.error("Error in nurse data saving :" + e);
+			response.setError(5000, "Unable to save data");
 		}
 		return response.toString();
 	}
 
+	/**
+	 * @Objective Save General OPD data for doctor.
+	 * @param requestObj
+	 * @return success or failure response
+	 */
 	@CrossOrigin
 	@ApiOperation(value = "Save General OPD doctor data..", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/doctorData" }, method = { RequestMethod.POST })
@@ -84,17 +95,17 @@ public class GeneralOPDCreateController {
 			if (jsnOBJ != null) {
 				Long genOPDRes = generalOPDServiceImpl.saveDoctorData(jsnOBJ);
 				if (null != genOPDRes && genOPDRes > 0) {
-					response.setResponse("General OPD doctor data saved successfully");
+					response.setResponse("Data saved successfully");
 				} else {
-					response.setResponse("Failed to save General OPD doctor data");
+					response.setResponse("Unable to save data");
 				}
 
 			} else {
 				response.setResponse("Invalid request");
 			}
 		} catch (Exception e) {
-			logger.error("Exception occurs while saving General OPD doctor data :" + e);
-			response.setError(5000, "Error in doctor data saving");
+			logger.error("Error in doctor data saving :" + e);
+			response.setError(5000, "Unable to save data");
 		}
 		return response.toString();
 	}

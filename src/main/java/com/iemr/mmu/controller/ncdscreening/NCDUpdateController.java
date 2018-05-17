@@ -54,15 +54,15 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 			if (jsonObject != null) {
 				Integer r = ncdScreeningServiceImpl.updateNurseNCDScreeningDetails(jsonObject);
 				if (r != null && r == 1) {
-					response.setResponse("NCD Screening data updated successfully");
+					response.setResponse("Data updated successfully");
 				} else {
-					response.setError(5000, "Failed to update NCD Screening data");
+					response.setError(5000, "Unable to modify data");
 				}
 			} else {
 				response.setError(5000, "Invalid request");
 			}
 		} catch (Exception e) {
-			response.setError(5000, "Error while updating beneficiary NCD Screening data");
+			response.setError(5000, "Unable to modify data");
 			logger.error("Error in updating beneficiary NCD screening data: " + e);
 		}
 		logger.info("Update NCDScreening Details response:" + response);

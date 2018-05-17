@@ -54,9 +54,9 @@ public class NCDCareCreateController
 			if (jsnOBJ != null) {
 				Long ncdCareRes = ncdCareServiceImpl.saveNCDCareNurseData(jsnOBJ);
 				if (null != ncdCareRes && ncdCareRes > 0) {
-					response.setResponse("NCD Care nurse data saved successfully");
+					response.setResponse("Data saved successfully");
 				} else {
-					response.setResponse("Failed to save NCD Care data");
+					response.setResponse("Unable to save data");
 				}
 
 			} else {
@@ -65,7 +65,7 @@ public class NCDCareCreateController
 
 		} catch (Exception e) {
 			logger.error("Exception occurs in NCD Care nurse data saving :" + e);
-			response.setError(5000, "Error in nurse data saving");
+			response.setError(5000, "Unable to save data");
 		}
 		return response.toString();
 	}
@@ -86,9 +86,9 @@ public class NCDCareCreateController
 			if (jsnOBJ != null) {
 				Long ncdCareRes = ncdCareServiceImpl.saveDoctorData(jsnOBJ);
 				if (null != ncdCareRes && ncdCareRes > 0) {
-					response.setResponse("NCD Care doctor data saved successfully");
+					response.setResponse("Data saved successfully");
 				} else {
-					response.setResponse("Failed to save NCD Care doctor data");
+					response.setResponse("Unable to save data");
 				}
 
 			} else {
@@ -96,7 +96,7 @@ public class NCDCareCreateController
 			}
 		} catch (Exception e) {
 			logger.error("Exception occurs while saving NCD Care doctor data :" + e);
-			response.setError(5000, "Error in doctor data saving");
+			response.setError(5000, "Unable to save data");
 		}
 		return response.toString();
 	}

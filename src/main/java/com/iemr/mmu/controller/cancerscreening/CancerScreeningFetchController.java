@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiParam;
 /**
  * 
  * @author NA874500
- * @Objective Updating Cancer screening data for Nurse.
+ * @Objective Fetch Cancer screening nurse data.
  * @Date 18-01-2018
  *
  */
@@ -42,7 +42,9 @@ public class CancerScreeningFetchController {
 	}
 
 	/**
-	 * Fething beneficiary data filled by Nurse for Doctor screen...
+	 * @Objective Fetching beneficiary visit details enterted by nurse.
+	 * @param benRegID and benVisitID
+	 * @return visit details in JSON format
 	 */
 
 	@CrossOrigin()
@@ -51,7 +53,8 @@ public class CancerScreeningFetchController {
 	public String getBenDataFrmNurseScrnToDocScrnVisitDetails(
 			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
-		logger.info("getBenDataFrmNurseScrnToDocScrnVisitDetails request:" + comingRequest);
+
+		logger.info("Request object for CS visit data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
@@ -63,21 +66,27 @@ public class CancerScreeningFetchController {
 			} else {
 				response.setError(5000, "Invalid request");
 			}
-			logger.info("getBenDataFrmNurseScrnToDocScrnVisitDetails response:" + response);
+			logger.info("CS visit data fetching Response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Error while getting beneficiary visit data");
-			logger.error("Error in getBenDataFrmNurseScrnToDocScrnVisitDetails:" + e);
+			logger.error("Error while getting beneficiary visit data :" + e);
 		}
 		return response.toString();
 	}
 
+	/**
+	 * @Objective Fetching beneficiary history details enterted by nurse.
+	 * @param benRegID and benVisitID
+	 * @return history details in JSON format
+	 */
+	
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Cancer History details from Nurse screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenDataFrmNurseToDocHistoryScreen" }, method = { RequestMethod.POST })
 	public String getBenDataFrmNurseScrnToDocScrnHistory(
 			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
-		logger.info("getBenDataFrmNurseScrnToDocScrnHistory request:" + comingRequest);
+		logger.info("Request object for CS history data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
@@ -89,22 +98,29 @@ public class CancerScreeningFetchController {
 			} else {
 				response.setError(5000, "Invalid request");
 			}
-			logger.info("getBenDataFrmNurseScrnToDocScrnHistory response:" + response);
+			logger.info("CS history data fetching Response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Error while getting beneficiary history data");
-			logger.error("Error in getBenDataFrmNurseScrnToDocScrnHistory:" + e);
+			logger.error("Error while getting beneficiary history data :" + e);
 		}
 		// System.out.println(response.toString());
 		return response.toString();
 	}
 
+	
+	/**
+	 * @Objective Fetching beneficiary vital details enterted by nurse.
+	 * @param benRegID and benVisitID
+	 * @return vital details in JSON format
+	 */
+	
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Vital details from Nurse screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenDataFrmNurseToDocVitalScreen" }, method = { RequestMethod.POST })
 	public String getBenDataFrmNurseScrnToDocScrnVital(
 			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
-		logger.info("getBenDataFrmNurseToDocVitalScreen request:" + comingRequest);
+		logger.info("Request object for CS vital data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
@@ -116,21 +132,27 @@ public class CancerScreeningFetchController {
 			} else {
 				response.setError(5000, "Invalid request");
 			}
-			logger.info("getBenDataFrmNurseToDocVitalScreen response:" + response);
+			logger.info("CS vital data fetching Response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Error while getting beneficiary vital data");
-			logger.error("Error in getBenDataFrmNurseToDocVitalScreen:" + e);
+			logger.error("Error while getting beneficiary vital data :" + e);
 		}
 		return response.toString();
 	}
 
+	/**
+	 * @Objective Fetching beneficiary examination details enterted by nurse.
+	 * @param benRegID and benVisitID
+	 * @return examination details in JSON format
+	 */
+	
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Examination details from Nurse screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenDataFrmNurseToDocExaminationScreen" }, method = { RequestMethod.POST })
 	public String getBenDataFrmNurseScrnToDocScrnExamination(
 			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
-		logger.info("getBenDataFrmNurseScrnToDocScrnExamination request:" + comingRequest);
+		logger.info("Request object for CS examination data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
@@ -142,40 +164,20 @@ public class CancerScreeningFetchController {
 			} else {
 				response.setError(5000, "Invalid request");
 			}
-			logger.info("getBenDataFrmNurseScrnToDocScrnExamination response:" + response);
+			logger.info("CS examination data fetching Response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Error while getting beneficiary examination data");
-			logger.error("Error in getBenDataFrmNurseScrnToDocScrnExamination:" + e);
+			logger.error("Error while getting beneficiary examination data :" + e);
 		}
 		return response.toString();
 	}
 
-	@Deprecated
-	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary data for case sheet", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBeneficiaryDataEnteredByNurseAndDoctor" }, method = { RequestMethod.POST })
-	public String getBenDataForCaseSheet(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest,
-			@RequestHeader(value = "Authorization") String Authorization) {
-		OutputResponse response = new OutputResponse();
-		logger.info("getBenDataForCaseSheet request:" + comingRequest);
-		try {
-			JSONObject obj = new JSONObject(comingRequest);
-			String caseSheetData = cSServiceImpl.getCancerCasesheetData(obj, Authorization);
-			if (caseSheetData != null) {
-				response.setResponse(caseSheetData);
-			} else {
-				response.setError(5000, "Data not found !!!");
-			}
-
-			logger.info("getBenDataForCaseSheet response:" + response);
-		} catch (Exception e) {
-			response.setError(e);
-			logger.error("Error in getBenDataForCaseSheet:" + e);
-		}
-		return response.toString();
-	}
-
+	/**
+	 * @Objective Fetch beneficiary previous family history details enterted by nurse.
+	 * @param benRegID 
+	 * @return previous family history details in JSON format
+	 */
+	
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Cancer Family History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenCancerFamilyHistory" }, method = { RequestMethod.POST })
@@ -183,7 +185,7 @@ public class CancerScreeningFetchController {
 			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenCancerFamilyHistory request:" + comingRequest);
+		logger.info("Request object for CS family history data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -195,14 +197,20 @@ public class CancerScreeningFetchController {
 				logger.info("Invalid Request Data.");
 				response.setError(5000, "Invalid request");
 			}
-			logger.info("getBenCancerFamilyHistory response:" + response);
+			logger.info("CS family history data fetching Response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Error while getting beneficiary 'family' history data");
-			logger.error("Error in getBenCancerFamilyHistory:" + e);
+			response.setError(5000, "Error while getting beneficiary family history data");
+			logger.error("Error while getting beneficiary family history data:" + e);
 		}
 		return response.toString();
 	}
 
+	/**
+	 * @Objective Fetch beneficiary previous personal history details enterted by nurse.
+	 * @param benRegID 
+	 * @return previous personal history details in JSON format
+	 */
+	
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Cancer Personal History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenCancerPersonalHistory" }, method = { RequestMethod.POST })
@@ -210,7 +218,7 @@ public class CancerScreeningFetchController {
 			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenCancerPersonalHistory request:" + comingRequest);
+		logger.info("Request object for CS personal history data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -222,14 +230,20 @@ public class CancerScreeningFetchController {
 				logger.info("Invalid Request Data.");
 				response.setError(5000, "Invalid request");
 			}
-			logger.info("getBenCancerPersonalHistory response:" + response);
+			logger.info("CS personal history data fetching Response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Error while getting beneficiary 'personal' history data");
-			logger.error("Error in getBenCancerPersonalHistory:" + e);
+			response.setError(5000, "Error while getting beneficiary personal history data");
+			logger.error("Error while getting beneficiary personal history data :" + e);
 		}
 		return response.toString();
 	}
 
+	/**
+	 * @Objective Fetch beneficiary previous personal diet history details enterted by nurse.
+	 * @param benRegID 
+	 * @return previous personal history details in JSON format
+	 */
+	
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Cancer Personal Diet History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenCancerPersonalDietHistory" }, method = { RequestMethod.POST })
@@ -237,7 +251,7 @@ public class CancerScreeningFetchController {
 			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenCancerPersonalDietHistory request:" + comingRequest);
+		logger.info("Request object for CS personal diet history data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -249,14 +263,20 @@ public class CancerScreeningFetchController {
 				logger.info("Invalid Request Data.");
 				response.setError(5000, "Invalid request");
 			}
-			logger.info("getBenCancerPersonalDietHistory response:" + response);
+			logger.info("CS personal diet history data fetching Response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Error while getting beneficiary 'personal diet' history data");
-			logger.error("Error in getBenCancerPersonalDietHistory:" + e);
+			response.setError(5000, "Error while getting beneficiary personal diet history data");
+			logger.error("Error while getting beneficiary personal diet history data :" + e);
 		}
 		return response.toString();
 	}
 
+	/**
+	 * @Objective Fetch beneficiary previous obstetric history details enterted by nurse.
+	 * @param benRegID 
+	 * @return previous obstetric history details in JSON format
+	 */
+	
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Cancer Obstetric History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenCancerObstetricHistory" }, method = { RequestMethod.POST })
@@ -264,7 +284,7 @@ public class CancerScreeningFetchController {
 			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenCancerObstetricHistory request:" + comingRequest);
+		logger.info("Request object for CS obstetric history data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -276,21 +296,27 @@ public class CancerScreeningFetchController {
 				logger.info("Invalid Request Data.");
 				response.setError(5000, "Invalid request");
 			}
-			logger.info("getBenCancerObstetricHistory response:" + response);
+			logger.info("CS obstetric history data fetching Response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Error while getting beneficiary 'obstetric' history data");
-			logger.error("Error in getBenCancerObstetricHistory:" + e);
+			response.setError(5000, "Error while getting beneficiary obstetric history data");
+			logger.error("Error while getting beneficiary obstetric history data:" + e);
 		}
 		return response.toString();
 	}
 
+	/**
+	 * @Objective Fetch beneficiary diagnosis details enterted by doctor.
+	 * @param benRegID 
+	 * @return diagnosis details in JSON format
+	 */
+	
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Diagnosis details from Doctor screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenDataFrmDoctorDiagnosisScreen" }, method = { RequestMethod.POST })
 	public String getBenDataFrmDoctorDiagnosisScreen(
 			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
-		logger.info("getBenDataFrmDoctorDiagnosisScreen request:" + comingRequest);
+		logger.info("Request object for CS diagnosis data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("benVisitID")) {
@@ -302,14 +328,20 @@ public class CancerScreeningFetchController {
 			} else {
 				response.setError(5000, "Invalid request");
 			}
-			logger.info("getBenDataFrmDoctorDiagnosisScreen response:" + response);
+			logger.info("CS diagnosis data fetching Response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Error while getting beneficiary diagnosis data");
-			logger.error("Error in getBenDataFrmDoctorDiagnosisScreen:" + e);
+			logger.error("Error while getting beneficiary diagnosis data :" + e);
 		}
 		return response.toString();
 	}
 
+	/**
+	 * @Objective Fetch beneficiary diagnosis details enterted by doctor.
+	 * @param benRegID 
+	 * @return doctor details in JSON format
+	 */
+	
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Doctor Entered Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenCaseRecordFromDoctorCS" }, method = { RequestMethod.POST })
@@ -318,7 +350,7 @@ public class CancerScreeningFetchController {
 			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenCaseRecordFromDoctorCS request:" + comingRequest);
+		logger.info("Request object for CS doctor data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("benVisitID")) {
@@ -331,10 +363,10 @@ public class CancerScreeningFetchController {
 				logger.info("Invalid Request Data.");
 				response.setError(5000, "Invalid request");
 			}
-			logger.info("getBenCaseRecordFromDoctorCS response:" + response);
+			logger.info("CS doctor data fetching Response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Error while getting beneficiary doctor data");
-			logger.error("Error in getBenCaseRecordFromDoctorCS:" + e);
+			logger.error("Error while getting beneficiary doctor data :" + e);
 		}
 		return response.toString();
 	}

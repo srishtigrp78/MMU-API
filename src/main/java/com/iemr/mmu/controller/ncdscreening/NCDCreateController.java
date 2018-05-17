@@ -56,15 +56,15 @@ public class NCDCreateController {
 			if (jsonObject != null) {
 				Integer r = ncdScreeningServiceImpl.saveNCDScreeningNurseData(jsonObject);
 				if (r != null && r > 0) {
-					response.setResponse("NCD Screening nurse data saved successfully");
+					response.setResponse("Data saved successfully");
 				} else {
-					response.setError(5000, "Failed to save NCD Screening data");
+					response.setError(5000, "Unable to save data");
 				}
 			} else {
 				response.setError(5000, "Invalid request");
 			}
 		} catch (Exception e) {
-			response.setError(5000, "Error while saving NCD Screening data");
+			response.setError(5000, "Unable to save data");
 			logger.error("Error in beneficiary Visit details and NCD screening data: " + e);
 		}
 		logger.info("Save NCDScreening Details response:" + response);

@@ -68,13 +68,13 @@ public class NCDCareUpdateController
 			if (result > 0) {
 				Map<String, Integer> resMap = new HashMap<String, Integer>();
 				resMap.put("result", result);
-				response.setResponse("History data updated successfully");
+				response.setResponse("Data updated successfully");
 			} else {
-				response.setError(500, "Failed to update history data");
+				response.setError(500, "Unable to modify data");
 			}
 			logger.info("updateHistoryNurse response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000,"Unable to modify data");
 			logger.error("Error in updateHistoryNurse :" + e);
 		}
 
@@ -105,13 +105,13 @@ public class NCDCareUpdateController
 		try {
 			int result = ncdCareServiceImpl.updateBenVitalDetails(jsnOBJ);
 			if (result > 0) {
-				response.setResponse("Vital data updated successfully");
+				response.setResponse("Data updated successfully");
 			} else {
-				response.setError(500, "Failed to update vital data");
+				response.setError(500, "Unable to modify data");
 			}
 			logger.info("updateVitalNurse response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(5000, "Unable to modify data");
 			logger.error("Error in updateVitalNurse :" + e);
 		}
 
@@ -134,13 +134,13 @@ public class NCDCareUpdateController
 		try {
 			Long result = ncdCareServiceImpl.updateNCDCareDoctorData(jsnOBJ);
 			if (null != result && result > 0) {
-				response.setResponse("Doctor data updated successfully");
+				response.setResponse("Data updated successfully");
 			} else {
-				response.setError(500, "Failed to update doctor data");
+				response.setError(500, "Unable to modify data");
 			}
 			logger.info("updateNCDCareDoctorData response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
+			response.setError(500, "Unable to modify data");
 			logger.error("Error in updateNCDCareDoctorData :" + e);
 		}
 

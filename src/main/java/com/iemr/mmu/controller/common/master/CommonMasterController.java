@@ -33,7 +33,10 @@ public class CommonMasterController {
 	public void setCommonMasterServiceImpl(CommonMasterServiceImpl commonMasterServiceImpl) {
 		this.commonMasterServiceImpl = commonMasterServiceImpl;
 	}
-
+	/**
+	 * @Objective provides list of visit reasons and visit categories
+	 * @return list of visit reasons and visit categories
+	 */
 	@ApiOperation(value = "Master Data for Visit Reasons & Categories", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/get/visitReasonAndCategories", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
 	public String getVisitReasonAndCategories() {
@@ -43,7 +46,12 @@ public class CommonMasterController {
 		logger.info("visitReasonAndCategories" + response.toString());
 		return response.toString();
 	}
-
+	
+	/**
+	 * 
+	 * @param visitCategoryID
+	 * @return nurse master data for the provided visitCategoryID
+	 */
 	@ApiOperation(value = "Master Data API for Nurse", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/nurse/masterData/{visitCategoryID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
 	public String NurseMasterData(@PathVariable("visitCategoryID") Integer visitCategoryID) {
@@ -54,6 +62,11 @@ public class CommonMasterController {
 		return response.toString();
 	}
 
+	/**
+	 * 
+	 * @param visitCategoryID
+	 * @return doctor master data for the provided visitCategoryID
+	 */
 	@ApiOperation(value = "Master Data API for Doctor", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/doctor/masterData/{visitCategoryID}/{providerServiceMapID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
 	public String DoctorMasterData(@PathVariable("visitCategoryID") Integer visitCategoryID,

@@ -56,13 +56,13 @@ public class GeneralOPDUpdateController {
 		try {
 			int result = generalOPDServiceImpl.UpdateVisitDetails(jsnOBJ);
 			if (result > 0) {
-				response.setResponse("Visit data updated successfully");
+				response.setResponse("Data updated successfully");
 			} else {
-				response.setError(500, "Failed to update visit data");
+				response.setError(500, "Unable to modify data");
 			}
 			logger.info("updateVisitNurse response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Error while updating beneficiary visit data");
+			response.setError(5000, "Unable to modify data");
 			logger.error("Error in updateVisitNurse :" + e);
 		}
 
@@ -93,13 +93,13 @@ public class GeneralOPDUpdateController {
 		try {
 			int result = generalOPDServiceImpl.updateBenHistoryDetails(jsnOBJ);
 			if (result > 0) {
-				response.setResponse("History data updated successfully");
+				response.setResponse("Data updated successfully");
 			} else {
-				response.setError(500, "Failed to update history data");
+				response.setError(500, "Unable to modify data");
 			}
 			logger.info("updateHistoryNurse response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Error while updating beneficiary history data");
+			response.setError(5000, "Unable to modify data");
 			logger.error("Error in updateHistoryNurse :" + e);
 		}
 
@@ -130,13 +130,13 @@ public class GeneralOPDUpdateController {
 		try {
 			int result = generalOPDServiceImpl.updateBenVitalDetails(jsnOBJ);
 			if (result > 0) {
-				response.setResponse("Vital data updated successfully");
+				response.setResponse("Data updated successfully");
 			} else {
-				response.setError(500, "Failed to update vital data");
+				response.setError(500, "Unable to modify data");
 			}
 			logger.info("updateVitalNurse response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Error while updating beneficiary vital data");
+			response.setError(5000, "Unable to modify data");
 			logger.error("Error in updateVitalNurse :" + e);
 		}
 
@@ -167,13 +167,13 @@ public class GeneralOPDUpdateController {
 		try {
 			int result = generalOPDServiceImpl.updateBenExaminationDetails(jsnOBJ);
 			if (result > 0) {
-				response.setResponse("Examination data updated successfully");
+				response.setResponse("Data updated successfully");
 			} else {
-				response.setError(500, "Failed to update examination data");
+				response.setError(500, "Unable to modify data");
 			}
 			logger.info("updateGeneralOPDExaminationNurse response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Error while updating beneficiary examination data");
+			response.setError(5000, "Unable to modify data");
 			logger.error("Error in updateGeneralOPDExaminationNurse :" + e);
 		}
 
@@ -196,13 +196,13 @@ public class GeneralOPDUpdateController {
 		try {
 			Long result = generalOPDServiceImpl.updateGeneralOPDDoctorData(jsnOBJ);
 			if (null != result && result > 0) {
-				response.setResponse("Doctor data updated successfully");
+				response.setResponse("Data updated successfully");
 			} else {
-				response.setError(500, "Failed to update doctor data");
+				response.setError(500, "Unable to modify data");
 			}
 			logger.info("updateGeneralOPDDoctorData response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Error while updating beneficiary doctor data");
+			response.setError(5000, "Unable to modify data");
 			logger.error("Error in updateGeneralOPDDoctorData :" + e);
 		}
 

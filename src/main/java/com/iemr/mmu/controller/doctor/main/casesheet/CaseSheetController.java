@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiParam;
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/casesheet", headers = "Authorization")
-/** Objective: Provides Nurse and doctor entered details for casesheet */
+/** Objective: Provides beneficiary previous visit history details */
 public class CaseSheetController {
 
 	private InputMapper inputMapper = new InputMapper();
@@ -35,7 +35,11 @@ public class CaseSheetController {
 		this.caseSheetServiceImpl = caseSheetServiceImpl;
 	}
 
-	
+	/**
+	 * @Objective Fetch Beneficiary previous visit details.
+	 * @param benRegID
+	 * @return beneficiary visit details in Json Format 
+	 */
 	
 	@CrossOrigin()
 	@ApiOperation(value = "Get casesheet History of Beneficiary", consumes = "application/json", produces = "application/json")
@@ -43,7 +47,7 @@ public class CaseSheetController {
 	public String getBeneficiaryCaseSheetHistory(
 			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
-		logger.info("getBenDataForCaseSheet request:" + comingRequest);
+		logger.info("Request object for fetching beneficiary previous visit history :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() >= 1) {
@@ -55,10 +59,10 @@ public class CaseSheetController {
 			} else {
 
 			}
-			logger.info("getBenDataForCaseSheet response:" + response);
+			logger.info("beneficiary previous visit history fetching Response:" + response);
 		} catch (Exception e) {
-			response.setError(e);
-			logger.error("Error in getBenDataForCaseSheet:" + e);
+			response.setError(5000, "Error while fetching beneficiary previous visit history details");
+			logger.error("Error while fetching beneficiary previous visit history :" + e);
 		}
 		return response.toString();
 	}

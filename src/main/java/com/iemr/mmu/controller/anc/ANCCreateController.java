@@ -21,10 +21,11 @@ import io.swagger.annotations.ApiOperation;
 /**
  * 
  * @author NA874500
- * @Objective Saving ANC data for Nurse.
+ * @Objective Saving ANC data for Nurse and Doctor.
  * @Date 19-01-2018
  *
  */
+
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/ANC", headers = "Authorization")
@@ -39,10 +40,11 @@ public class ANCCreateController {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * @Objective Save ANC data for nurse.
+	 * @param JSON requestObj 
+	 * @return success or failure response
 	 */
-
+	
 	@CrossOrigin
 	@ApiOperation(value = "Save ANC nurse data..", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
@@ -59,9 +61,9 @@ public class ANCCreateController {
 			if (jsnOBJ != null) {
 				Long ancRes = ancServiceImpl.saveANCNurseData(jsnOBJ);
 				if (null != ancRes && ancRes > 0) {
-					response.setResponse("ANC nurse data saved successfully");
+					response.setResponse("Data saved successfully");
 				} else {
-					response.setError(5000,"Failed to save ANC data");
+					response.setError(5000,"Unable to save data");
 				}
 
 			} else {
@@ -69,12 +71,17 @@ public class ANCCreateController {
 			}
 
 		} catch (Exception e) {
-			logger.error("Exception occurs in ANC nurse data saving :" + e);
-			response.setError(5000, "Error while saving nurse data");
+			logger.error("Error while saving nurse data:" + e);
+			response.setError(5000, "Unable to save data");
 		}
 		return response.toString();
 	}
 
+	/**
+	 * @Objective Save ANC data for doctor.
+	 * @param JSON requestObj 
+	 * @return success or failure response
+	 */
 	@CrossOrigin
 	@ApiOperation(value = "Save ANC doctor data..", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/doctorData" }, method = { RequestMethod.POST })
@@ -90,10 +97,10 @@ public class ANCCreateController {
 			if (jsnOBJ != null) {
 				Long r = ancServiceImpl.saveANCDoctorData(jsnOBJ);
 				if (r != null && r > 0) {
-					response.setResponse("ANC doctor data saved successfully");
+					response.setResponse("Data saved successfully");
 				} else {
 					// soething went wrong
-					response.setError(5000, "Failed to save doctor data");
+					response.setError(5000, "Unable to save data");
 				}
 			} else {
 				// data is null
@@ -101,8 +108,8 @@ public class ANCCreateController {
 			}
 
 		} catch (Exception e) {
-			logger.error("Exception occurs in ANC doctor data saving :" + e);
-			response.setError(5000, "Error while saving doctor data");
+			logger.error("Error while saving doctor data:" + e);
+			response.setError(5000, "Unable to save data");
 		}
 		return response.toString();
 	}

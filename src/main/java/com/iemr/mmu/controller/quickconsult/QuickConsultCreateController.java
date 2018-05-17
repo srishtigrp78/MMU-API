@@ -63,17 +63,17 @@ public class QuickConsultCreateController {
 			if (jsnOBJ != null) {
 				Integer r = quickConsultationServiceImpl.quickConsultNurseDataInsert(jsnOBJ);
 				if (r == 1) {
-					response.setResponse("General OPD(QC) nurse data saved successfully");
+					response.setResponse("Data saved successfully");
 				} else {
 					// Handle error and required msg...
-					response.setError(500, "Failed to save nurse data");
+					response.setError(500, "Unable to save data");
 				}
 			} else {
 				response.setError(5000, "Invalid request");
 			}
 		} catch (Exception e) {
 			logger.error("Error in beneficiary Visit details and Vitals data in Nurse (QC): " + e);
-			response.setError(5000, "Error while saving nurse data");
+			response.setError(5000, "Unable to save data");
 		}
 		return response.toString();
 	}
@@ -110,14 +110,14 @@ public class QuickConsultCreateController {
 			Integer i = quickConsultationServiceImpl.quickConsultDoctorDataInsert(quickConsultDoctorOBJ);
 
 			if (i != null && i > 0) {
-				response.setResponse("General OPD(QC) doctor data saved successfully");
+				response.setResponse("Data saved successfully");
 			} else {
-				response.setError(5000, "Failed to save doctor data");
+				response.setError(5000, "Unable to save data");
 			}
 			logger.info("saveQuickConsultationDetail for doctor response:" + response);
 		} catch (Exception e) {
 			logger.error("Error in saveQuickConsultationDetail doctor:" + e);
-			response.setError(5000, "Error while saving doctor data");
+			response.setError(5000, "Unable to save data");
 		}
 
 		return response.toString();

@@ -28,7 +28,7 @@ import io.swagger.annotations.ApiParam;
 /**
  * 
  * @author NA874500
- * @Objective Updating Cancer screening data for Nurse.
+ * @Objective Update Cancer screening data for Nurse.
  * @Date 17-01-2018
  *
  */
@@ -76,7 +76,7 @@ public class CancerScreeningUpdateController {
 
 		OutputResponse response = new OutputResponse();
 		inputMapper = new InputMapper();
-		logger.info("updateCSHistoryNurse request:" + requestObj);
+		logger.info("Request object for CS history data updating :" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -86,14 +86,14 @@ public class CancerScreeningUpdateController {
 		try {
 			int result = cSServiceImpl.UpdateCSHistoryNurseData(jsnOBJ);
 			if (result > 0) {
-				response.setResponse("history data updated successfully");
+				response.setResponse("Data updated successfully");
 			} else {
-				response.setError(500, "Failed to update history data");
+				response.setError(500, "Unable to modify data");
 			}
-			logger.info("updateCSHistoryNurse response:" + response);
+			logger.info("CS history data update Response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Error while updating beneficiary history data");
-			logger.error("Error in updateCSHistoryNurse :" + e);
+			response.setError(5000, "Unable to modify data");
+			logger.error("Error while updating beneficiary history data :" + e);
 		}
 
 		return response.toString();
@@ -119,25 +119,33 @@ public class CancerScreeningUpdateController {
 					+ " \"hbA1C\":\"Short\",\"hemoglobin\":\"Short\",\"modifiedBy\":\"String\"}") @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("upodateBenVitalDetail request:" + requestObj);
+		logger.info("Request object for CS vital data updating :" + requestObj);
 
 		try {
 			BenCancerVitalDetail benCancerVitalDetail = InputMapper.gson().fromJson(requestObj,
 					BenCancerVitalDetail.class);
 			int responseObj = cSServiceImpl.updateBenVitalDetail(benCancerVitalDetail);
 			if (responseObj > 0) {
-				response.setResponse("Vital data updated successfully");
+				response.setResponse("Data updated successfully");
 			} else {
-				response.setError(500, "Failed to update vital data");
+				response.setError(500, "Unable to modify data");
 			}
-			logger.info("upodateBenVitalDetail response:" + response);
+			logger.info("CS vital data update Response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Error while updating beneficiary vital data");
-			logger.error("Error in upodateBenVitalDetail:" + e);
+			response.setError(5000, "Unable to modify data");
+			logger.error("Error while updating beneficiary vital data :" + e);
 		}
 
 		return response.toString();
 	}
+	
+	/**
+	 * 
+	 * @param requestObj
+	 * @return success or failure response
+	 * @objective Replace Cancer Screening examination Details entered by Nurse with
+	 *            the details entered by Doctor
+	 */
 	
 	@CrossOrigin
 	@ApiOperation(value = "update Ben Examination Detail", consumes = "application/json", produces = "application/json")
@@ -145,7 +153,7 @@ public class CancerScreeningUpdateController {
 	public String upodateBenExaminationDetail(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("upodateBenExaminationDetail request:" + requestObj);
+		logger.info("Request object for CS examination data updating :" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -155,18 +163,26 @@ public class CancerScreeningUpdateController {
 		try {
 			int responseObj = cSServiceImpl.updateBenExaminationDetail(jsnOBJ);
 			if (responseObj > 0) {
-				response.setResponse("Examination data updated successfully");
+				response.setResponse("Data updated successfully");
 			} else {
-				response.setError(500, "Failed to update examination data");
+				response.setError(500, "Unable to modify data");
 			}
-			logger.info("upodateBenExaminationDetail response:" + response);
+			logger.info("CS examination data update Response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Error while updating beneficiary examination data");
-			logger.error("Error in upodateBenExaminationDetail:" + e);
+			response.setError(5000, "Unable to modify data");
+			logger.error("Error while updating beneficiary examination data :" + e);
 		}
 
 		return response.toString();
 	}
+	
+	/**
+	 * 
+	 * @param requestObj
+	 * @return success or failure response
+	 * @objective update Cancer Diagnosis Details By Oncologist
+	 * 
+	 */
 	
 	@CrossOrigin
 	@ApiOperation(value = "update Cancer Diagnosis Details By Oncologist", consumes = "application/json", produces = "application/json")
@@ -177,24 +193,32 @@ public class CancerScreeningUpdateController {
 
 		response = new OutputResponse();
 		inputMapper = new InputMapper();
-		logger.info("updateCancerDiagnosisDetailsByOncologist request:" + requestObj);
+		logger.info("Request object for CS diagnosis data updating :" + requestObj);
 
 		try {
 			CancerDiagnosis cancerDiagnosis = InputMapper.gson().fromJson(requestObj, CancerDiagnosis.class);
 			int result = cSServiceImpl.updateCancerDiagnosisDetailsByOncologist(cancerDiagnosis);
 			if (result > 0) {
-				response.setResponse("Diagnosis data updated by Oncologist successfully");
+				response.setResponse("Data updated successfully");
 			} else {
-				response.setError(5000, "Failed to update diagnosis data by Oncologist");
+				response.setError(5000, "Unable to modify data");
 			}
-			logger.info("updateCancerDiagnosisDetailsByOncologist response:" + response);
+			logger.info("CS diagnosis data update Response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Error while updating beneficiary diagnosis data");
-			logger.error("Error in updateCancerDiagnosisDetailsByOncologist :" + e);
+			response.setError(5000, "Unable to modify data");
+			logger.error("Error while updating beneficiary diagnosis data :" + e);
 		}
 
 		return response.toString();
 	}
+	
+	/**
+	 * 
+	 * @param requestObj
+	 * @return success or failure response
+	 * @objective Replace Doctor Data entered by doctor,in the next visit
+	 * 
+	 */
 	
 	@CrossOrigin
 	@ApiOperation(value = "update CancerScreening Doctor Data", consumes = "application/json", produces = "application/json")
@@ -202,7 +226,7 @@ public class CancerScreeningUpdateController {
 	public String updateCancerScreeningDoctorData( @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("updateCancerScreeningDoctorData request:" + requestObj);
+		logger.info("Request object for CS doctor data updating :" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -212,14 +236,14 @@ public class CancerScreeningUpdateController {
 		try {
 			Long result = cSServiceImpl.updateCancerScreeningDoctorData(jsnOBJ);
 			if (null != result && result > 0) {
-				response.setResponse("Doctor data updated successfully");
+				response.setResponse("Data updated successfully");
 			} else {
-				response.setError(500, "Failed to update doctor data");
+				response.setError(500, "Unable to modify data");
 			}
-			logger.info("updateCancerScreeningDoctorData response:" + response);
+			logger.info("CS doctor data update Response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Error while updating beneficiary doctor data");
-			logger.error("Error in updateCancerScreeningDoctorData :" + e);
+			response.setError(5000, "Unable to modify data");
+			logger.error("Error while updating beneficiary doctor data :" + e);
 		}
 
 		return response.toString();

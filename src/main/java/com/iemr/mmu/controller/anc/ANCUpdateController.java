@@ -20,7 +20,7 @@ import io.swagger.annotations.ApiOperation;
 /**
  * 
  * @author NA874500
- * @Objective Saving ANC data for Nurse.
+ * @Objective Update ANC data for nurse and doctor.
  * @Date 24-01-2018
  *
  */
@@ -52,7 +52,7 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 	public String updateANCCareNurse( @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("updateANCCareNurse request:" + requestObj);
+		logger.info("Request object for ANC Care data updating :" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -62,14 +62,14 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 		try {
 			int result = ancServiceImpl.updateBenANCDetails(jsnOBJ);
 			if (result > 0) {
-				response.setResponse("ANC Care data updated successfully");
+				response.setResponse("Data updated successfully");
 			} else {
-				response.setError(500, "Failed to update ANC Care data");
+				response.setError(500, "Unable to modify data");
 			}
-			logger.info("updateANCCareNurse response:" + response);
+			logger.info("ANC Care data update Response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Error while updating beneficiary ANC care data");
-			logger.error("Error in updateANCCareNurse :" + e);
+			response.setError(5000, "Unable to modify data");
+			logger.error("Error while updating beneficiary ANC care data :" + e);
 		}
 
 		return response.toString();
@@ -89,7 +89,7 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 	public String updateANCHistoryNurse( @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("updateANCHistoryNurse request:" + requestObj);
+		logger.info("Request object for ANC history data updating :" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -99,14 +99,14 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 		try {
 			int result = ancServiceImpl.updateBenANCHistoryDetails(jsnOBJ);
 			if (result > 0) {
-				response.setResponse("History data updated successfully");
+				response.setResponse("Data updated successfully");
 			} else {
-				response.setError(500, "Failed to update history data");
+				response.setError(500, "Unable to modify data");
 			}
-			logger.info("updateANCHistoryNurse response:" + response);
+			logger.info("ANC history data update Response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Error while updating beneficiary history data");
-			logger.error("Error in updateANCHistoryNurse :" + e);
+			response.setError(5000, "Unable to modify data");
+			logger.error("Error while updating beneficiary history data :" + e);
 		}
 
 		return response.toString();
@@ -126,7 +126,7 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 	public String updateANCVitalNurse( @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("updateANCVitalNurse request:" + requestObj);
+		logger.info("Request object for ANC Vital data updating :" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -136,14 +136,14 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 		try {
 			int result = ancServiceImpl.updateBenANCVitalDetails(jsnOBJ);
 			if (result > 0) {
-				response.setResponse("Vital data updated successfully");
+				response.setResponse("Data updated successfully");
 			} else {
-				response.setError(500, "Failed to update vital data");
+				response.setError(500, "Unable to modify data");
 			}
-			logger.info("updateANCVitalNurse response:" + response);
+			logger.info("ANC vital data update Response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Error while updating beneficiary vital data");
-			logger.error("Error in updateANCVitalNurse :" + e);
+			response.setError(5000, "Unable to modify data");
+			logger.error("Error while updating beneficiary vital data :" + e);
 		}
 
 		return response.toString();
@@ -163,7 +163,7 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 	public String updateANCExaminationNurse( @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("updateANCExaminationNurse request:" + requestObj);
+		logger.info("Request object for ANC examination data updating :" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -173,26 +173,33 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 		try {
 			int result = ancServiceImpl.updateBenANCExaminationDetails(jsnOBJ);
 			if (result > 0) {
-				response.setResponse("Examination data updated successfully");
+				response.setResponse("Data updated successfully");
 			} else {
-				response.setError(500, "Failed to update examination data");
+				response.setError(500, "Unable to modify data");
 			}
-			logger.info("updateANCExaminationNurse response:" + response);
+			logger.info("ANC examination data update Response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Error while updating beneficiary examination data");
-			logger.error("Error in updateANCExaminationNurse :" + e);
+			response.setError(5000, "Unable to modify data");
+			logger.error("Error while updating beneficiary examination data :" + e);
 		}
 
 		return response.toString();
 	}
 	
+	/**
+	 * 
+	 * @param requestObj
+	 * @return success or failure response
+	 * @objective Replace ANC Doctor Data entered by doctor,in the next visit
+	 * 
+	 */
 	@CrossOrigin
 	@ApiOperation(value = "update ANC Doctor Data", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/doctorData" }, method = { RequestMethod.POST })
 	public String updateANCDoctorData( @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("updateANCDoctorData request:" + requestObj);
+		logger.info("Request object for ANC doctor data updating :" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -202,14 +209,14 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 		try {
 			Long result = ancServiceImpl.updateANCDoctorData(jsnOBJ);
 			if (null != result && result > 0) {
-				response.setResponse("Doctor data updated successfully");
+				response.setResponse("Data updated successfully");
 			} else {
-				response.setError(500, "Failed to update doctor data");
+				response.setError(500, "Unable to modify data");
 			}
-			logger.info("updateANCDoctorData response:" + response);
+			logger.info("ANC doctor data update Response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Error while updating beneficiary doctor data");
-			logger.error("Error in updateANCDoctorData :" + e);
+			response.setError(5000, "Unable to modify data");
+			logger.error("Error while updating beneficiary doctor data :" + e);
 		}
 
 		return response.toString();

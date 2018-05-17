@@ -65,13 +65,13 @@ public class PNCUpdateController
 		try {
 			int result = pncServiceImpl.updateBenPNCDetails(jsnOBJ);
 			if (result > 0) {
-				response.setResponse("PNC Care data updated successfully");
+				response.setResponse("Data updated successfully");
 			} else {
-				response.setError(500, "Failed to update PNC Care data");
+				response.setError(500, "Unable to modify data");
 			}
 			logger.info("updatePNCCareNurse response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Error while updating beneficiary PNC care data");
+			response.setError(5000, "Unable to modify data");
 			logger.error("Error in updatePNCCareNurse :" + e);
 		}
 
@@ -102,13 +102,13 @@ public class PNCUpdateController
 		try {
 			int result = pncServiceImpl.updateBenHistoryDetails(jsnOBJ);
 			if (result > 0) {
-				response.setResponse("History data updated successfully");
+				response.setResponse("Data updated successfully");
 			} else {
-				response.setError(500, "Failed to update History data");
+				response.setError(500, "Unable to modify data");
 			}
 			logger.info("updateHistoryNurse response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Error while updating beneficiary history data");
+			response.setError(5000, "Unable to modify data");
 			logger.error("Error in updateHistoryNurse :" + e);
 		}
 
@@ -139,13 +139,13 @@ public class PNCUpdateController
 		try {
 			int result = pncServiceImpl.updateBenVitalDetails(jsnOBJ);
 			if (result > 0) {
-				response.setResponse("Vital data updated successfully");
+				response.setResponse("Data updated successfully");
 			} else {
-				response.setError(500, "Failed to update vital data");
+				response.setError(500, "Unable to modify data");
 			}
 			logger.info("updateVitalNurse response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Error while updating beneficiary vital data");
+			response.setError(5000, "Unable to modify data");
 			logger.error("Error in updateVitalNurse :" + e);
 		}
 
@@ -176,13 +176,13 @@ public class PNCUpdateController
 		try {
 			int result = pncServiceImpl.updateBenExaminationDetails(jsnOBJ);
 			if (result > 0) {
-				response.setResponse("Examination data updated successfully");
+				response.setResponse("Data updated successfully");
 			} else {
-				response.setError(500, "Failed to update examination data");
+				response.setError(500, "Unable to modify data");
 			}
 			logger.info("updatePNCExaminationNurse response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Error while updating beneficiary examination data");
+			response.setError(5000, "Unable to modify data");
 			logger.error("Error in updatePNCExaminationNurse :" + e);
 		}
 
@@ -205,13 +205,13 @@ public class PNCUpdateController
 		try {
 			Long result = pncServiceImpl.updatePNCDoctorData(jsnOBJ);
 			if (null != result && result > 0) {
-				response.setResponse("Doctor data updated successfully");
+				response.setResponse("Data updated successfully");
 			} else {
-				response.setError(500, "Failed to update doctor data");
+				response.setError(500, "Unable to modify data");
 			}
 			logger.info("updatePNCDoctorData response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Error while updating beneficiary doctor data");
+			response.setError(5000, "Unable to modify data");
 			logger.error("Error in updatePNCDoctorData :" + e);
 		}
 
