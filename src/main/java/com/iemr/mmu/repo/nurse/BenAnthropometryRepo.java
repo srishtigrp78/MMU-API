@@ -35,9 +35,9 @@ public interface BenAnthropometryRepo extends CrudRepository<BenAnthropometryDet
 			@Param("modifiedBy") String modifiedBy, @Param("processed") String processed,
 			@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("benVisitID") Long benVisitID);
 
-	@Query(nativeQuery = true, value = "select a.weight_Kg, Date(a.createdDate) from t_phy_anthropometry a "
-			+ " where a.beneficiaryRegID = :beneficiaryRegID AND a.weight_Kg > 0 ORDER BY a.createdDate DESC  limit 6 ")
+	@Query("select a.weight_Kg, Date(a.createdDate) from BenAnthropometryDetail a "
+			+ " where a.benVisitID in :visitIDList ")
 	public ArrayList<Object[]> getBenAnthropometryDetailForGraphtrends(
-			@Param("beneficiaryRegID") Long beneficiaryRegID);
+			@Param("visitIDList") ArrayList<Long> visitIDList);
 
 }

@@ -1,5 +1,6 @@
 package com.iemr.mmu.service.common.transaction;
 
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -43,6 +44,7 @@ import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
+import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
@@ -52,6 +54,7 @@ import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.data.registrar.WrapperRegWorklist;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.nurse.BenAnthropometryRepo;
+import com.iemr.mmu.repo.nurse.BenCancerVitalDetailRepo;
 import com.iemr.mmu.repo.nurse.BenPhysicalVitalRepo;
 import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
 import com.iemr.mmu.repo.nurse.anc.BenAdherenceRepo;
@@ -118,6 +121,13 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	private ChildFeedingDetailsRepo childFeedingDetailsRepo;
 	private PerinatalHistoryRepo perinatalHistoryRepo;
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
+
+	private BenCancerVitalDetailRepo benCancerVitalDetailRepo;
+
+	@Autowired
+	public void setBenCancerVitalDetailRepo(BenCancerVitalDetailRepo benCancerVitalDetailRepo) {
+		this.benCancerVitalDetailRepo = benCancerVitalDetailRepo;
+	}
 
 	@Autowired
 	public void setBeneficiaryFlowStatusRepo(BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo) {
@@ -583,33 +593,29 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		 * 
 		 * Short systolicBP_1stReading =
 		 * benPhysicalVitalDetail.getSystolicBP_1stReading(); Short
-		 * diastolicBP_1stReading =
-		 * benPhysicalVitalDetail.getDiastolicBP_1stReading(); if
-		 * (systolicBP_1stReading != null && diastolicBP_1stReading != null) {
+		 * diastolicBP_1stReading = benPhysicalVitalDetail.getDiastolicBP_1stReading();
+		 * if (systolicBP_1stReading != null && diastolicBP_1stReading != null) {
 		 * averageSystolicList.add(systolicBP_1stReading);
 		 * averageDiastolicList.add(diastolicBP_1stReading); }
 		 * 
 		 * Short systolicBP_2ndReading =
 		 * benPhysicalVitalDetail.getSystolicBP_2ndReading(); Short
-		 * diastolicBP_2ndReading =
-		 * benPhysicalVitalDetail.getDiastolicBP_2ndReading(); if
-		 * (systolicBP_2ndReading != null && diastolicBP_2ndReading != null) {
+		 * diastolicBP_2ndReading = benPhysicalVitalDetail.getDiastolicBP_2ndReading();
+		 * if (systolicBP_2ndReading != null && diastolicBP_2ndReading != null) {
 		 * averageSystolicList.add(systolicBP_2ndReading);
 		 * averageDiastolicList.add(diastolicBP_2ndReading); }
 		 * 
 		 * Short systolicBP_3rdReading =
 		 * benPhysicalVitalDetail.getSystolicBP_3rdReading(); Short
-		 * diastolicBP_3rdReading =
-		 * benPhysicalVitalDetail.getDiastolicBP_3rdReading(); if
-		 * (systolicBP_3rdReading != null && diastolicBP_3rdReading != null) {
+		 * diastolicBP_3rdReading = benPhysicalVitalDetail.getDiastolicBP_3rdReading();
+		 * if (systolicBP_3rdReading != null && diastolicBP_3rdReading != null) {
 		 * averageSystolicList.add(systolicBP_3rdReading);
 		 * averageDiastolicList.add(diastolicBP_3rdReading); }
 		 * 
-		 * Short averageSystolic = (short)
-		 * ((averageSystolicList.stream().mapToInt(i -> i.shortValue()).sum()) /
-		 * averageSystolicList.size()); Short averageDiastolic = (short)
-		 * ((averageDiastolicList.stream().mapToInt(i -> i.shortValue()).sum())
-		 * / averageDiastolicList.size());
+		 * Short averageSystolic = (short) ((averageSystolicList.stream().mapToInt(i ->
+		 * i.shortValue()).sum()) / averageSystolicList.size()); Short averageDiastolic
+		 * = (short) ((averageDiastolicList.stream().mapToInt(i ->
+		 * i.shortValue()).sum()) / averageDiastolicList.size());
 		 * 
 		 * benPhysicalVitalDetail.setAverageSystolicBP(averageSystolic);
 		 * benPhysicalVitalDetail.setAverageDiastolicBP(averageDiastolic);
@@ -1446,12 +1452,11 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		/** Later we will enable these two if needed **/
 		/*
-		 * column = new HashMap<String, Object>(); column.put("columnName",
-		 * "Status"); column.put("keyName", "status"); columns.add(column);
+		 * column = new HashMap<String, Object>(); column.put("columnName", "Status");
+		 * column.put("keyName", "status"); columns.add(column);
 		 * 
 		 * column = new HashMap<String, Object>(); column.put("columnName",
-		 * "Received Date"); column.put("keyName", "receivedDate");
-		 * columns.add(column);
+		 * "Received Date"); column.put("keyName", "receivedDate"); columns.add(column);
 		 */
 
 		column = new HashMap<String, Object>();
@@ -1519,7 +1524,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 				benVisitID);
 
 		BenPersonalHabit personalHabits = BenPersonalHabit.getPersonalDetails(personalDetails);
-		if(null == personalHabits){
+		if (null == personalHabits) {
 			personalHabits = new BenPersonalHabit();
 		}
 		ArrayList<BenAllergyHistory> allergyList = BenAllergyHistory.getBenAllergicHistory(allergyDetails);
@@ -2730,6 +2735,37 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	public Map<String, Object> getGraphicalTrendData(Long benRegID, String visitCategory) {
 		Map<String, Object> returnOBJ = new HashMap<>();
 
+		ArrayList<Object[]> benLastSixVisitDetails = benVisitDetailRepo.getLastSixVisitDetailsForBeneficiary(benRegID);
+
+		ArrayList<Long> benVisitIdListCancer = new ArrayList<>();
+		ArrayList<Long> benVisitIdListOther = new ArrayList<>();
+
+		if (benLastSixVisitDetails != null && benLastSixVisitDetails.size() > 0) {
+			for (Object[] objArr : benLastSixVisitDetails) {
+				String vc = (String) objArr[1];
+				if (vc != null && vc.equalsIgnoreCase("Cancer Screening")) {
+					BigInteger a = (BigInteger) objArr[0];
+					benVisitIdListCancer.add(a.longValue());
+				} else {
+					BigInteger a = (BigInteger) objArr[0];
+					benVisitIdListOther.add(a.longValue());
+				}
+			}
+		}
+
+		ArrayList<Object[]> benAnthro = new ArrayList<>();
+		ArrayList<Object[]> benVital = new ArrayList<>();
+		ArrayList<BenCancerVitalDetail> benCancerVital = new ArrayList<>();
+
+		if (benVisitIdListCancer.size() > 0) {
+			benCancerVital = benCancerVitalDetailRepo.getBenCancerVitalDetailForGraph(benVisitIdListCancer);
+		}
+
+		if (benVisitIdListOther.size() > 0) {
+			benAnthro = benAnthropometryRepo.getBenAnthropometryDetailForGraphtrends(benVisitIdListOther);
+			benVital = benPhysicalVitalRepo.getBenPhysicalVitalDetailForGraphTrends(benVisitIdListOther);
+		}
+
 		ArrayList<Map<String, Object>> weightList = new ArrayList<>();
 		ArrayList<Map<String, Object>> bpList = new ArrayList<>();
 		ArrayList<Map<String, Object>> bgList = new ArrayList<>();
@@ -2738,48 +2774,146 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		Map<String, Object> bpObj;
 		Map<String, Object> bgOBJ;
 
-		if (visitCategory.equalsIgnoreCase("cancerScreening")) {
+		if ((benAnthro != null && benAnthro.size() > 0) || (benCancerVital != null && benCancerVital.size() > 0)) {
+			for (Object[] objArr : benAnthro) {
+				weightOBJ = new HashMap<>();
+				weightOBJ.put("weight", objArr[0]);
+				weightOBJ.put("date", objArr[1]);
 
-		} else {
-			ArrayList<Object[]> benAnthro = benAnthropometryRepo.getBenAnthropometryDetailForGraphtrends(benRegID);
-			ArrayList<Object[]> benVital = benPhysicalVitalRepo.getBenPhysicalVitalDetailForGraphTrends(benRegID);
-
-			if (benAnthro != null && benAnthro.size() > 0) {
-				for (Object[] objArr : benAnthro) {
-					weightOBJ = new HashMap<>();
-					weightOBJ.put("weight", objArr[0]);
-					weightOBJ.put("date", objArr[1]);
-
-					weightList.add(weightOBJ);
-				}
+				weightList.add(weightOBJ);
 			}
 
-			if (benVital != null && benVital.size() > 0) {
-				for (Object[] objArr : benVital) {
-					if (objArr[0] != null && (Short) objArr[0] > 0 && objArr[1] != null && (Short) objArr[1] > 0) {
-						bpObj = new HashMap<>();
-						bpObj.put("avgSysBP", objArr[0]);
-						bpObj.put("avgDysBP", objArr[1]);
-						bpObj.put("date", objArr[5]);
+			for (BenCancerVitalDetail obj : benCancerVital) {
+				weightOBJ = new HashMap<>();
+				weightOBJ.put("weight", obj.getWeight_Kg());
+				weightOBJ.put("date", Date.valueOf(obj.getCreatedDate().toLocalDateTime().toLocalDate()));
 
-						bpList.add(bpObj);
-					}
-					if (objArr[2] != null || objArr[3] != null || objArr[4] != null) {
-						bgOBJ = new HashMap<>();
-						bgOBJ.put("bg_fasting", objArr[2]);
-						bgOBJ.put("bg_random", objArr[3]);
-						bgOBJ.put("bg_2hr_pp", objArr[4]);
-						bgOBJ.put("date", objArr[5]);
-
-						bgList.add(bgOBJ);
-					}
-				}
+				weightList.add(weightOBJ);
 			}
-
-			returnOBJ.put("weightList", weightList);
-			returnOBJ.put("bpList", bpList);
-			returnOBJ.put("bgList", bgList);
 		}
+
+		if ((benVital != null && benVital.size() > 0) || (benCancerVital != null && benCancerVital.size() > 0)) {
+			for (Object[] objArr : benVital) {
+				if (objArr[0] != null && (Short) objArr[0] > 0 && objArr[1] != null && (Short) objArr[1] > 0) {
+					bpObj = new HashMap<>();
+					bpObj.put("avgSysBP", objArr[0]);
+					bpObj.put("avgDysBP", objArr[1]);
+					bpObj.put("date", objArr[5]);
+
+					bpList.add(bpObj);
+				}
+
+				if (objArr[2] != null || objArr[3] != null || objArr[4] != null) {
+					bgOBJ = new HashMap<>();
+					bgOBJ.put("bg_fasting", objArr[2]);
+					bgOBJ.put("bg_random", objArr[3]);
+					bgOBJ.put("bg_2hr_pp", objArr[4]);
+					bgOBJ.put("date", objArr[5]);
+
+					bgList.add(bgOBJ);
+				}
+			}
+
+			for (BenCancerVitalDetail obj : benCancerVital) {
+				if (obj.getSystolicBP_1stReading() != null || obj.getSystolicBP_2ndReading() != null
+						|| obj.getSystolicBP_3rdReading() != null || obj.getDiastolicBP_1stReading() != null
+						|| obj.getDiastolicBP_2ndReading() != null || obj.getDiastolicBP_3rdReading() != null) {
+					short sysBP1 = (obj.getSystolicBP_1stReading() != null && obj.getSystolicBP_1stReading() > 0)
+							? obj.getSystolicBP_1stReading()
+							: 0;
+
+					short sysBP2 = (obj.getSystolicBP_2ndReading() != null && obj.getSystolicBP_2ndReading() > 0)
+							? obj.getSystolicBP_2ndReading()
+							: 0;
+
+					short sysBP3 = (obj.getSystolicBP_3rdReading() != null && obj.getSystolicBP_3rdReading() > 0)
+							? obj.getSystolicBP_3rdReading()
+							: 0;
+
+					short dysBP1 = (obj.getDiastolicBP_1stReading() != null && obj.getDiastolicBP_1stReading() > 0)
+							? obj.getDiastolicBP_1stReading()
+							: 0;
+
+					short dysBP2 = (obj.getDiastolicBP_2ndReading() != null && obj.getDiastolicBP_2ndReading() > 0)
+							? obj.getDiastolicBP_2ndReading()
+							: 0;
+
+					short dysBP3 = (obj.getDiastolicBP_3rdReading() != null && obj.getDiastolicBP_3rdReading() > 0)
+							? obj.getDiastolicBP_3rdReading()
+							: 0;
+
+					bpObj = new HashMap<>();
+					bpObj.put("avgSysBP", ((sysBP1 + sysBP2 + sysBP3) / 3));
+					bpObj.put("avgDysBP", ((dysBP1 + dysBP2 + dysBP3) / 3));
+					bpObj.put("date", Date.valueOf(obj.getCreatedDate().toLocalDateTime().toLocalDate()));
+
+					bpList.add(bpObj);
+				}
+
+				if (obj.getBloodGlucose_Fasting() != null || obj.getBloodGlucose_Random() != null
+						|| obj.getBloodGlucose_2HrPostPrandial() != null) {
+					bgOBJ = new HashMap<>();
+					bgOBJ.put("bg_fasting", obj.getBloodGlucose_Fasting());
+					bgOBJ.put("bg_random", obj.getBloodGlucose_Random());
+					bgOBJ.put("bg_2hr_pp", obj.getBloodGlucose_2HrPostPrandial());
+					bgOBJ.put("date", Date.valueOf(obj.getCreatedDate().toLocalDateTime().toLocalDate()));
+
+					bgList.add(bgOBJ);
+				}
+
+			}
+
+		}
+
+		returnOBJ.put("weightList", weightList);
+		returnOBJ.put("bpList", bpList);
+		returnOBJ.put("bgList", bgList);
+
+		// if (visitCategory.equalsIgnoreCase("cancerScreening")) {
+		//
+		// } else {
+		// ArrayList<Object[]> benAnthro =
+		// benAnthropometryRepo.getBenAnthropometryDetailForGraphtrends(benRegID);
+		// ArrayList<Object[]> benVital =
+		// benPhysicalVitalRepo.getBenPhysicalVitalDetailForGraphTrends(benRegID);
+		//
+		// if (benAnthro != null && benAnthro.size() > 0) {
+		// for (Object[] objArr : benAnthro) {
+		// weightOBJ = new HashMap<>();
+		// weightOBJ.put("weight", objArr[0]);
+		// weightOBJ.put("date", objArr[1]);
+		//
+		// weightList.add(weightOBJ);
+		// }
+		// }
+		//
+		// if (benVital != null && benVital.size() > 0) {
+		// for (Object[] objArr : benVital) {
+		// if (objArr[0] != null && (Short) objArr[0] > 0 && objArr[1] != null &&
+		// (Short) objArr[1] > 0) {
+		// bpObj = new HashMap<>();
+		// bpObj.put("avgSysBP", objArr[0]);
+		// bpObj.put("avgDysBP", objArr[1]);
+		// bpObj.put("date", objArr[5]);
+		//
+		// bpList.add(bpObj);
+		// }
+		// if (objArr[2] != null || objArr[3] != null || objArr[4] != null) {
+		// bgOBJ = new HashMap<>();
+		// bgOBJ.put("bg_fasting", objArr[2]);
+		// bgOBJ.put("bg_random", objArr[3]);
+		// bgOBJ.put("bg_2hr_pp", objArr[4]);
+		// bgOBJ.put("date", objArr[5]);
+		//
+		// bgList.add(bgOBJ);
+		// }
+		// }
+		// }
+		//
+		// returnOBJ.put("weightList", weightList);
+		// returnOBJ.put("bpList", bpList);
+		// returnOBJ.put("bgList", bgList);
+		// }
 		return returnOBJ;
 	}
 }

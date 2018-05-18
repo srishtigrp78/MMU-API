@@ -1,5 +1,6 @@
 package com.iemr.mmu.repo.nurse;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -52,5 +53,10 @@ public interface BenVisitDetailRepo extends CrudRepository<BeneficiaryVisitDetai
 
 	@Query(" SELECT COUNT(benVisitID) FROM BeneficiaryVisitDetail WHERE beneficiaryRegID = :benRegID GROUP BY beneficiaryRegID ")
 	public Short getVisitCountForBeneficiary(@Param("benRegID") Long benRegID);
+
+	@Query(nativeQuery = true, value = " SELECT v.benVisitID, v.visitCategory FROM t_benvisitdetail v "
+			+ " WHERE v.beneficiaryRegID = :benRegID "
+			+ " AND v.visitCategory IS NOT NULL ORDER BY v.createdDate DESC limit 6 ")
+	public ArrayList<Object[]> getLastSixVisitDetailsForBeneficiary(@Param("benRegID") Long benRegID);
 
 }

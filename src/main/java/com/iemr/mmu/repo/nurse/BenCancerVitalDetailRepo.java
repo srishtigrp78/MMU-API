@@ -1,6 +1,7 @@
 package com.iemr.mmu.repo.nurse;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -51,5 +52,8 @@ public interface BenCancerVitalDetailRepo extends CrudRepository<BenCancerVitalD
 
 	@Query("SELECT processed from BenCancerVitalDetail where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
 	public String getCancerVitalStatus(@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
+	
+	@Query(" SELECT bvd from BenCancerVitalDetail bvd WHERE bvd.benVisitID IN :visitIDList ")
+	public ArrayList<BenCancerVitalDetail> getBenCancerVitalDetailForGraph(@Param("visitIDList") ArrayList<Long> visitIDList);
 
 }
