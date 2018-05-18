@@ -20,7 +20,7 @@ import io.swagger.annotations.ApiOperation;
 /**
  * 
  * @author NA874500
- * @Objective Saving NCD Care data for Nurse.
+ * @Objective Saving NCD Care data for Nurse and Doctor.
  * @Date 21-3-2018
  */
 @CrossOrigin
@@ -38,6 +38,11 @@ public class NCDCareCreateController
 		this.ncdCareServiceImpl = ncdCareServiceImpl;
 	}
 	
+	/**
+	 * @Objective Save NCD Care data for nurse.
+	 * @param JSON requestObj 
+	 * @return success or failure response
+	 */
 	@CrossOrigin
 	@ApiOperation(value = "Save NCD Care nurse data..", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
@@ -64,12 +69,17 @@ public class NCDCareCreateController
 			}
 
 		} catch (Exception e) {
-			logger.error("Exception occurs in NCD Care nurse data saving :" + e);
+			logger.error("Error while saving NCD Care nurse data :" + e);
 			response.setError(5000, "Unable to save data");
 		}
 		return response.toString();
 	}
 	
+	/**
+	 * @Objective Save NCD Care data for doctor.
+	 * @param JSON requestObj 
+	 * @return success or failure response
+	 */
 	@CrossOrigin
 	@ApiOperation(value = "Save NCD Care doctor data..", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/doctorData" }, method = { RequestMethod.POST })
@@ -95,7 +105,7 @@ public class NCDCareCreateController
 				response.setResponse("Invalid request");
 			}
 		} catch (Exception e) {
-			logger.error("Exception occurs while saving NCD Care doctor data :" + e);
+			logger.error("Error while saving NCD Care doctor data :" + e);
 			response.setError(5000, "Unable to save data");
 		}
 		return response.toString();

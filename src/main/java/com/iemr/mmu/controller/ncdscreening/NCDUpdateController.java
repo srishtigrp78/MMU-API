@@ -20,7 +20,7 @@ import io.swagger.annotations.ApiOperation;
 /**
  * 
  * @author NA874500
- * @Objective Fetching Cancer Screening Data for caseSheet.
+ * @Objective Updating NCD Screening nurse data.
  * @Date 24-01-2018
  *
  */
@@ -37,6 +37,14 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 		this.ncdScreeningServiceImpl = ncdScreeningServiceImpl;
 	}
 	
+	/**
+	 * 
+	 * @param requestObj
+	 * @return success or failure response
+	 * @objective Replace NCD Screening Data entered by Nurse
+	 * 
+	 * NOT using as of now
+	 */
 	@CrossOrigin
 	@ApiOperation(value = "update Beneficiary NCD Screening Detail", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/nurseData" }, method = { RequestMethod.POST })

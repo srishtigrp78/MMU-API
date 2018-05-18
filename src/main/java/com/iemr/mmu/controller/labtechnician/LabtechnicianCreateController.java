@@ -20,6 +20,7 @@ import io.swagger.annotations.ApiOperation;
 /***
  * 
  * @author NE298657
+ * @Objective Saving lab test results given by LabTechnician
  *
  */
 
@@ -37,6 +38,11 @@ public class LabtechnicianCreateController {
 		this.labTechnicianServiceImpl = labTechnicianServiceImpl;
 	}
 	
+	/**
+	 * @Objective Save lab test results given by LabTechnician
+	 * @param JSON requestObj 
+	 * @return success or failure response
+	 */
 	@CrossOrigin
 	@ApiOperation(value = "Save Lab Test Result Entered by LabTechnician..", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/LabTestResult" }, method = { RequestMethod.POST })
@@ -62,7 +68,7 @@ public class LabtechnicianCreateController {
 				response.setResponse("Invalid request");
 			}
 		} catch (Exception e) {
-			logger.error("Exception occurs while saving Lab Test Results  :" + e);
+			logger.error("Error while saving lab test results  :" + e);
 			response.setError(5000, "Unable to save data");
 		}
 		return response.toString();
