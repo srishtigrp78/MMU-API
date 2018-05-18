@@ -24,6 +24,7 @@ import io.swagger.annotations.ApiOperation;
 /***
  * 
  * @author NE298657
+ * @Objective Updating General OPD nurse and doctor data
  *
  */
 @RestController
@@ -40,13 +41,17 @@ public class GeneralOPDUpdateController {
 		this.generalOPDServiceImpl = generalOPDServiceImpl;
 	}
 
+	/**
+	 * 
+	 * Not using this API as of now
+	 */
 	@CrossOrigin
 	@ApiOperation(value = "update General OPD Visit screen Nurse Data in Doctor screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/visitDetailsScreen" }, method = { RequestMethod.POST })
 	public String updateVisitNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("updateVisitNurse request:" + requestObj);
+		logger.info("Request object for visit data updating :" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -60,10 +65,10 @@ public class GeneralOPDUpdateController {
 			} else {
 				response.setError(500, "Unable to modify data");
 			}
-			logger.info("updateVisitNurse response:" + response);
+			logger.info("Visit data update response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Unable to modify data");
-			logger.error("Error in updateVisitNurse :" + e);
+			logger.error("Error while updating visit data :" + e);
 		}
 
 		return response.toString();
@@ -83,8 +88,8 @@ public class GeneralOPDUpdateController {
 	public String updateHistoryNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("updateHistoryNurse request:" + requestObj);
-
+		logger.info("Request object for history data updating :" + requestObj);
+		
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
 		JsonElement jsnElmnt = jsnParser.parse(requestObj);
@@ -97,10 +102,10 @@ public class GeneralOPDUpdateController {
 			} else {
 				response.setError(500, "Unable to modify data");
 			}
-			logger.info("updateHistoryNurse response:" + response);
+			logger.info("History data update response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Unable to modify data");
-			logger.error("Error in updateHistoryNurse :" + e);
+			logger.error("Error while updating history data :" + e);
 		}
 
 		return response.toString();
@@ -120,7 +125,7 @@ public class GeneralOPDUpdateController {
 	public String updateVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("updateVitalNurse request:" + requestObj);
+		logger.info("Request object for vital data updating :" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -134,10 +139,10 @@ public class GeneralOPDUpdateController {
 			} else {
 				response.setError(500, "Unable to modify data");
 			}
-			logger.info("updateVitalNurse response:" + response);
+			logger.info("Vital data update response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Unable to modify data");
-			logger.error("Error in updateVitalNurse :" + e);
+			logger.error("Error while updating vital data :" + e);
 		}
 
 		return response.toString();
@@ -157,7 +162,7 @@ public class GeneralOPDUpdateController {
 	public String updateGeneralOPDExaminationNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("updateGeneralOPDExaminationNurse request:" + requestObj);
+		logger.info("Request object for examination data updating :" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -171,22 +176,28 @@ public class GeneralOPDUpdateController {
 			} else {
 				response.setError(500, "Unable to modify data");
 			}
-			logger.info("updateGeneralOPDExaminationNurse response:" + response);
+			logger.info("Examination data update response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Unable to modify data");
-			logger.error("Error in updateGeneralOPDExaminationNurse :" + e);
+			logger.error("Error while updating examination data :" + e);
 		}
 
 		return response.toString();
 	}
 	
+	/**
+	 * 
+	 * @param requestObj
+	 * @return success or failure response
+	 * @objective Replace General OPD doctor data for the doctor next visit
+	 */
 	@CrossOrigin
 	@ApiOperation(value = "update GeneralOPD Doctor Data", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/doctorData" }, method = { RequestMethod.POST })
 	public String updateGeneralOPDDoctorData( @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("updateGeneralOPDDoctorData request:" + requestObj);
+		logger.info("Request object for doctor data updating :" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -200,10 +211,10 @@ public class GeneralOPDUpdateController {
 			} else {
 				response.setError(500, "Unable to modify data");
 			}
-			logger.info("updateGeneralOPDDoctorData response:" + response);
+			logger.info("Doctor data update response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Unable to modify data");
-			logger.error("Error in updateGeneralOPDDoctorData :" + e);
+			logger.error("Error while updating General OPD doctor data:" + e);
 		}
 
 		return response.toString();

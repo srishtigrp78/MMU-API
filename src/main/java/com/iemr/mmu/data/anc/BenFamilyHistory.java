@@ -57,6 +57,9 @@ public class BenFamilyHistory {
 	@Column(name = "IsGeneticDisorder")
 	private Boolean isGeneticDisorder;
 
+	@Transient
+	private String IsGeneticDisorder;
+	
 	@Expose
 	@Column(name = "GeneticDisorder")
 	private String geneticDisorder;
@@ -65,6 +68,9 @@ public class BenFamilyHistory {
 	@Column(name = "IsConsanguineousMarrige")
 	private Boolean isConsanguineousMarrige;
 
+	@Transient
+	private String IsConsanguineousMarrige;
+	
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -320,9 +326,15 @@ public class BenFamilyHistory {
 		this.familyMember = familyMember;
 		this.diseaseType = diseaseType;
 		this.otherDiseaseType = otherDiseaseType;
-		this.isGeneticDisorder = isGeneticDisorder;
+		if(null != isGeneticDisorder && isGeneticDisorder)
+			this.IsGeneticDisorder = "Yes";
+		else
+			this.IsGeneticDisorder = "No";
 		this.geneticDisorder = geneticDisorder;
-		this.isConsanguineousMarrige = isConsanguineousMarrige;
+		if(null != isConsanguineousMarrige && isConsanguineousMarrige)
+			this.IsConsanguineousMarrige = "Yes";
+		else
+			this.IsConsanguineousMarrige = "No";
 	}
 
 	public ArrayList<BenFamilyHistory> getBenFamilyHistory() {

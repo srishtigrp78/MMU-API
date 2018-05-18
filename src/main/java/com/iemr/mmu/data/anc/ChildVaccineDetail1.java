@@ -57,6 +57,10 @@ public class ChildVaccineDetail1 {
 
 	@Transient
 	@Expose
+	private String Status;
+	
+	@Transient
+	@Expose
 	private List vaccines;
 	
 	@Expose
@@ -335,7 +339,10 @@ public class ChildVaccineDetail1 {
 		this.captureDate = createdDate;
 		this.defaultReceivingAge = defaultReceivingAge;
 		this.vaccineName = vaccineName;
-		this.status = status;
+		if(null!= status && status)
+			this.Status = "Yes";
+		else
+			this.Status = "No";
 	}
 	
 	public ChildVaccineDetail1(String defaultReceivingAge) {

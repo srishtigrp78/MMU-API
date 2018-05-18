@@ -168,6 +168,11 @@ public class GeneralOPDFetchController {
 		return response.toString();
 	}
 	
+	/**
+	 * @Objective Fetching beneficiary doctor details.
+	 * @param comingRequest
+	 * @return doctor details in JSON format
+	 */
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Doctor Entered Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenCaseRecordFromDoctorGeneralOPD" }, method = { RequestMethod.POST })

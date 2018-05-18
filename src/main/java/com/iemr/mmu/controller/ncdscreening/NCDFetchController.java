@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiParam;
 /**
  * 
  * @author NA874500
- * @Objective Fetching Cancer Screening Data for caseSheet.
+ * @Objective Fetching NCD Screening nurse data.
  * @Date 24-01-2018
  *
  */
@@ -39,6 +39,11 @@ public class NCDFetchController {
 		this.ncdScreeningServiceImpl = ncdScreeningServiceImpl;
 	}
 	
+	/**
+	 * @Objective Fetching NCD Screening nurse data.
+	 * @param benRegID and benVisitID
+	 * @return NCD Screening nurse data in JSON format
+	 */
 	@CrossOrigin()
 	@ApiOperation(value = "Get NCD Screening Visit Details", consumes = "application/json", produces = "application/json")
 
@@ -47,7 +52,7 @@ public class NCDFetchController {
 			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("getNCDScreeningDetails:" + comingRequest);
+		logger.info("Request obj to fetch nurse data :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
@@ -59,10 +64,10 @@ public class NCDFetchController {
 			} else {
 				response.setError(5000, "Invalid request");
 			}
-			logger.info("getNCDScreeningDetails response:" + response);
+			logger.info("NCD Screening nurse data fetch response :" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Error while getting NCD Screening data");
-			logger.error("Error in getNCDScreeningDetails:" + e);
+			logger.error("Error while getting NCD Screening data :" + e);
 		}
 		return response.toString();
 	}

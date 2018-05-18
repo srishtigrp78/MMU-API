@@ -190,7 +190,7 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 	 * 
 	 * @param requestObj
 	 * @return success or failure response
-	 * @objective Replace ANC Doctor Data entered by doctor,in the next visit
+	 * @objective Replace ANC doctor data for the doctor next visit
 	 * 
 	 */
 	@CrossOrigin

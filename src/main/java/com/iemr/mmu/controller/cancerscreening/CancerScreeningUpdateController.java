@@ -216,7 +216,7 @@ public class CancerScreeningUpdateController {
 	 * 
 	 * @param requestObj
 	 * @return success or failure response
-	 * @objective Replace Doctor Data entered by doctor,in the next visit
+	 * @objective Replace doctor data for the doctor next visit
 	 * 
 	 */
 	

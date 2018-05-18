@@ -802,6 +802,11 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		columns.add(columnMap);
 
 		columnMap = new HashMap<>();
+		columnMap.put("columnName", "");
+		columnMap.put("keyName", "");
+		columns.add(columnMap);
+		
+		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Illness Type");
 		columnMap.put("keyName", "Illness_Type");
 		columns.add(columnMap);
@@ -829,6 +834,11 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Year of Surgery");
 		columnMap.put("keyName", "Year_Of_Surgery");
+		columns.add(columnMap);
+		
+		columnMap = new HashMap<>();
+		columnMap.put("columnName", "");
+		columnMap.put("keyName", "");
 		columns.add(columnMap);
 
 		resMap.put("columns", columns);
@@ -1036,11 +1046,6 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Other Allergic Reaction");
 		column.put("keyName", "otherAllergicReaction");
-		columns.add(column);
-
-		column = new HashMap<String, Object>();
-		column.put("columnName", "Remarks");
-		column.put("keyName", "remarks");
 		columns.add(column);
 
 		ArrayList<BenAllergyHistory> personalHabits = new ArrayList<BenAllergyHistory>();

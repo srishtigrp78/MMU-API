@@ -20,7 +20,7 @@ import io.swagger.annotations.ApiOperation;
 /**
  * 
  * @author NA874500
- * @Objective Fetching Cancer Screening Data for caseSheet.
+ * @Objective Saving NCD Screening nurse data.
  * @Date 24-01-2018
  *
  */
@@ -37,13 +37,18 @@ public class NCDCreateController {
 		this.ncdScreeningServiceImpl = ncdScreeningServiceImpl;
 	}
 
+	/**
+	 * @Objective Save NCD Screening data for nurse.
+	 * @param JSON requestObj 
+	 * @return success or failure response
+	 */
 	@CrossOrigin
 	@ApiOperation(value = "save Beneficiary NCD Screening Detail", consumes = "application/json", produces = "application/json")
 
 	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
 	public String saveBeneficiaryNCDScreeningDetails(@RequestBody String requestObj) {
 
-		logger.info("Save NCDScreening Details request:" + requestObj);
+		logger.info("Request object for NCD Screening nurse data saving :" + requestObj);
 		OutputResponse response = new OutputResponse();
 
 		JsonObject jsonObject = new JsonObject();
@@ -65,9 +70,8 @@ public class NCDCreateController {
 			}
 		} catch (Exception e) {
 			response.setError(5000, "Unable to save data");
-			logger.error("Error in beneficiary Visit details and NCD screening data: " + e);
+			logger.error("Error while storing NCD Screening nurse data: " + e);
 		}
-		logger.info("Save NCDScreening Details response:" + response);
 		return response.toString();
 	}
 }

@@ -20,6 +20,7 @@ import io.swagger.annotations.ApiOperation;
 /***
  * 
  * @author NE298657
+ * @Objective Fetching lab tests prescribed by doctor
  *
  */
 
@@ -36,13 +37,18 @@ public class LabtechnicianFetchController {
 		this.labTechnicianServiceImpl = labTechnicianServiceImpl;
 	}
 
+	/**
+	 * @Objective Fetching beneficiary lab tests prescribed by doctor.
+	 * @param requestOBJ
+	 * @return lab tests prescribed by doctor
+	 */
 	@CrossOrigin
 	@ApiOperation(value = "getBeneficiaryPrescribedProcedure..", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/get/prescribedProceduresList" }, method = { RequestMethod.POST })
 	public String getBeneficiaryPrescribedProcedure(@RequestBody String requestOBJ) {
 		OutputResponse response = new OutputResponse();
 		try {
-			logger.info("get request for ben prescribed test " + requestOBJ);
+			logger.info("Request obj to fetch lab tests :" + requestOBJ);
 			JsonObject jsnOBJ = new JsonObject();
 			JsonParser jsnParser = new JsonParser();
 			JsonElement jsnElmnt = jsnParser.parse(requestOBJ);
@@ -60,7 +66,7 @@ public class LabtechnicianFetchController {
 				response.setError(5000, "Invalid request");
 			}
 		} catch (Exception e) {
-			logger.error("Exception in beneficiary prescribed procedure fetching" + e);
+			logger.error("Error while getting prescribed procedure data:" + e);
 			response.setError(5000, "Error while getting prescribed procedure data");
 		}
 		return response.toString();

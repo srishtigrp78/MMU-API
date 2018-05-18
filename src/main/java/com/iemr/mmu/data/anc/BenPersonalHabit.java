@@ -177,7 +177,7 @@ public class BenPersonalHabit {
 	private Date alcohol_use_duration;
 
 	@Transient
-	private Boolean riskySexualPracticeStatus;
+	private String riskySexualPracticeStatus;
 
 	public String getAllergyStatus() {
 		return allergyStatus;
@@ -568,10 +568,10 @@ public class BenPersonalHabit {
 		this.otherTobaccoUseType = otherTobaccoUseType;
 		this.numberperDay = numberperDay;
 		this.tobacco_use_duration = tobaccoUseDuration;
-		if (riskySexualPracticesStatus == '0') {
-			this.riskySexualPracticeStatus = false;
+		if (null != riskySexualPracticesStatus && riskySexualPracticesStatus == '0') {
+			this.riskySexualPracticeStatus = "No";
 		} else {
-			this.riskySexualPracticeStatus = true;
+			this.riskySexualPracticeStatus = "Yes";
 		}
 	}
 
@@ -588,10 +588,10 @@ public class BenPersonalHabit {
 		this.alcoholIntakeFrequency = alcoholIntakeFrequency;
 		this.avgAlcoholConsumption = avgAlcoholConsumption;
 		this.alcohol_use_duration = alcoholDuration;
-		if (riskySexualPracticesStatus == '0') {
-			this.riskySexualPracticeStatus = false;
+		if (null != riskySexualPracticesStatus && riskySexualPracticesStatus == '0') {
+			this.riskySexualPracticeStatus = "No";
 		} else {
-			this.riskySexualPracticeStatus = true;
+			this.riskySexualPracticeStatus = "Yes";
 		}
 	}
 

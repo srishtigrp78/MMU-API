@@ -24,6 +24,7 @@ import io.swagger.annotations.ApiOperation;
 /**
  * 
  * @author NA874500
+ * @Objective Updating NCD Care nurse and doctor data 
  *
  */
 
@@ -56,7 +57,7 @@ public class NCDCareUpdateController
 	public String updateHistoryNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("updateHistoryNurse request:" + requestObj);
+		logger.info("Request object for history data updating :" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -72,10 +73,10 @@ public class NCDCareUpdateController
 			} else {
 				response.setError(500, "Unable to modify data");
 			}
-			logger.info("updateHistoryNurse response:" + response);
+			logger.info("History data update Response:" + response);
 		} catch (Exception e) {
 			response.setError(5000,"Unable to modify data");
-			logger.error("Error in updateHistoryNurse :" + e);
+			logger.error("Error while updating history data :" + e);
 		}
 
 		return response.toString();
@@ -95,7 +96,7 @@ public class NCDCareUpdateController
 	public String updateVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("updateVitalNurse request:" + requestObj);
+		logger.info("Request object for vital data updating :" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -109,22 +110,28 @@ public class NCDCareUpdateController
 			} else {
 				response.setError(500, "Unable to modify data");
 			}
-			logger.info("updateVitalNurse response:" + response);
+			logger.info("Vital data update Response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Unable to modify data");
-			logger.error("Error in updateVitalNurse :" + e);
+			logger.error("Error while updating vital data :" + e);
 		}
 
 		return response.toString();
 	}
 	
+	/**
+	 * 
+	 * @param requestObj
+	 * @return success or failure response
+	 * @objective Replace NCD Care doctor data for the doctor next visit
+	 */
 	@CrossOrigin
 	@ApiOperation(value = "update NCDCare Doctor Data", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/doctorData" }, method = { RequestMethod.POST })
 	public String updateNCDCareDoctorData( @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("updateNCDCareDoctorData request:" + requestObj);
+		logger.info("Request object for doctor data updating :" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -138,10 +145,10 @@ public class NCDCareUpdateController
 			} else {
 				response.setError(500, "Unable to modify data");
 			}
-			logger.info("updateNCDCareDoctorData response:" + response);
+			logger.info("Doctor data update Response:" + response);
 		} catch (Exception e) {
 			response.setError(500, "Unable to modify data");
-			logger.error("Error in updateNCDCareDoctorData :" + e);
+			logger.error("Error while updating doctor data :" + e);
 		}
 
 		return response.toString();

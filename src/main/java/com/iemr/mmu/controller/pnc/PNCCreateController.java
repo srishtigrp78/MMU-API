@@ -20,6 +20,7 @@ import io.swagger.annotations.ApiOperation;
 /**
  * 
  * @author NA874500
+ * @Objective Saving PNC nurse and doctor data
  *
  */
 @CrossOrigin
@@ -37,8 +38,9 @@ public class PNCCreateController
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * @Objective Saving PNC nurse data
+	 * @param requestObj
+	 * @return success or failure response
 	 */
 
 	@CrossOrigin
@@ -67,12 +69,18 @@ public class PNCCreateController
 			}
 
 		} catch (Exception e) {
-			logger.error("Exception occurs in PNC nurse data saving :" + e);
+			logger.error("Error while saving nurse data :" + e);
 			response.setError(5000, "Unable to save data");
 		}
 		return response.toString();
 	}
 
+	/**
+	 * @Objective Saving PNC doctor data
+	 * @param requestObj
+	 * @return success or failure response
+	 */
+	
 	@CrossOrigin
 	@ApiOperation(value = "Save PNC doctor data..", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/doctorData" }, method = { RequestMethod.POST })
@@ -99,7 +107,7 @@ public class PNCCreateController
 			}
 
 		} catch (Exception e) {
-			logger.error("Exception occurs in PNC doctor data saving :" + e);
+			logger.error("Error while saving doctor data :" + e);
 			response.setError(5000, "Unable to save data");
 		}
 		return response.toString();
