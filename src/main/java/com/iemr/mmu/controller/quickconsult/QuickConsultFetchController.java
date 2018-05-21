@@ -37,18 +37,20 @@ public class QuickConsultFetchController {
 	public void setQuickConsultationServiceImpl(QuickConsultationServiceImpl quickConsultationServiceImpl) {
 		this.quickConsultationServiceImpl = quickConsultationServiceImpl;
 	}
-	
-	/**
-	 * Fething beneficiary data filled by Nurse for Doctor screen...
-	 */
 
+	/**
+	 * @Objective Fething beneficiary visit data filled by Nurse for Doctor screen...
+	 * @param benRegID and benVisitID
+	 * @return visit details in JSON format
+	 */
+	
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Visit details from Nurse screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenDataFrmNurseToDocVisitDetailsScreen" }, method = { RequestMethod.POST })
 	public String getBenDataFrmNurseScrnToDocScrnVisitDetails(
 			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
-		logger.info("getBenDataFrmNurseScrnToDocScrnVisitDetails request:" + comingRequest);
+		logger.info("Quick consult visit data fetch request :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
@@ -60,14 +62,19 @@ public class QuickConsultFetchController {
 			} else {
 				response.setError(5000, "Invalid request");
 			}
-			logger.info("getBenDataFrmNurseScrnToDocScrnVisitDetails response:" + response);
+			logger.info("Quick consult visit data fetch response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Error while getting visit data");
-			logger.error("Error in getBenDataFrmNurseScrnToDocScrnVisitDetails:" + e);
+			logger.error("Error while fetching quick consult visit data:" + e);
 		}
 		return response.toString();
 	}
 	
+	/**
+	 * @Objective Fething beneficiary vital data filled by Nurse for Doctor screen...
+	 * @param benRegID and benVisitID
+	 * @return visit details in JSON format
+	 */
 	
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary vital details from Nurse GeneralOPD", consumes = "application/json", produces = "application/json")
@@ -76,7 +83,7 @@ public class QuickConsultFetchController {
 			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenVitalDetailsFrmNurse request:" + comingRequest);
+		logger.info("Quick consult vital data fetch request :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID") && obj.has("benVisitID")) {
@@ -89,14 +96,19 @@ public class QuickConsultFetchController {
 				logger.info("Invalid request");
 				response.setError(5000, "Invalid request");
 			}
-			logger.info("getBenVitalDetailsFrmNurse response:" + response);
+			logger.info("Quick consult vital data fetch response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Error while getting vital data");
-			logger.error("Error in getBenVitalDetailsFrmNurse:" + e);
+			logger.error("Error while fetching quick consult vital data:" + e);
 		}
 		return response.toString();
 	}
 	
+	/**
+	 * @Objective Fething beneficiary doctor data
+	 * @param benRegID and benVisitID
+	 * @return visit details in JSON format
+	 */
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Doctor Entered Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenCaseRecordFromDoctorQuickConsult" }, method = { RequestMethod.POST })
@@ -105,7 +117,7 @@ public class QuickConsultFetchController {
 			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenCaseRecordFromDoctorQuickConsult request:" + comingRequest);
+		logger.info("Quick consult doctor data fetch request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("benVisitID")) {
@@ -118,10 +130,10 @@ public class QuickConsultFetchController {
 				logger.info("Invalid request");
 				response.setError(5000, "Invalid request");
 			}
-			logger.info("getBenCaseRecordFromDoctorQuickConsult response:" + response);
+			logger.info("Quick consult doctor data fetch response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Error while getting doctor data");
-			logger.error("Error in getBenCaseRecordFromDoctorQuickConsult:" + e);
+			logger.error("Error while fetching quick consult doctor data:" + e);
 		}
 		return response.toString();
 	}

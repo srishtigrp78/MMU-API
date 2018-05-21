@@ -38,13 +38,22 @@ public class QuickConsultUpdateController {
 		this.quickConsultationServiceImpl = quickConsultationServiceImpl;
 	}
 	
+	
+	/**
+	 * 
+	 * @param requestObj
+	 * @return success or failure response
+	 * @objective Replace General OPD doctor data for the doctor next visit
+	 * 
+	 */
+	
 	@CrossOrigin
 	@ApiOperation(value = "update GeneralOPD(QuickConsult) Doctor Data", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/doctorData" }, method = { RequestMethod.POST })
 	public String updateGeneralOPDQCDoctorData( @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("updateGeneralOPDQCDoctorData request:" + requestObj);
+		logger.info("Quick consult doctor data update request:" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -63,10 +72,10 @@ public class QuickConsultUpdateController {
 			} else {
 				response.setError(500, "Unable to modify data");
 			}
-			logger.info("updateGeneralOPDQCDoctorData response:" + response);
+			logger.info("Quick consult doctor data update response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Unable to modify data");
-			logger.error("Error in updateGeneralOPDQCDoctorData :" + e);
+			logger.error("Error while updating quick consult doctor data :" + e);
 		}
 
 		return response.toString();

@@ -53,7 +53,7 @@ public class QuickConsultCreateController {
 	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
 	public String saveBenQuickConsultDataNurse(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
-		logger.info("Save quick consult nurse data request (QC): " + requestObj);
+		logger.info("Quick consult nurse data save request : " + requestObj);
 		try {
 			JsonObject jsnOBJ = new JsonObject();
 			JsonParser jsnParser = new JsonParser();
@@ -72,7 +72,7 @@ public class QuickConsultCreateController {
 				response.setError(5000, "Invalid request");
 			}
 		} catch (Exception e) {
-			logger.error("Error in beneficiary Visit details and Vitals data in Nurse (QC): " + e);
+			logger.error("Error while saving quick consult nurse data: " + e);
 			response.setError(5000, "Unable to save data");
 		}
 		return response.toString();
@@ -100,7 +100,7 @@ public class QuickConsultCreateController {
 					+ "\"createdBy\":\"String\"}}") @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("saveQuickConsultationDetail for doctor request:" + requestObj);
+		logger.info("Quick consult doctor data save request:" + requestObj);
 
 		try {
 			WrapperQuickConsultation wrapperQuickConsultation = InputMapper.gson().fromJson(requestObj,
@@ -114,9 +114,9 @@ public class QuickConsultCreateController {
 			} else {
 				response.setError(5000, "Unable to save data");
 			}
-			logger.info("saveQuickConsultationDetail for doctor response:" + response);
+			logger.info("Quick consult doctor data save response:" + response);
 		} catch (Exception e) {
-			logger.error("Error in saveQuickConsultationDetail doctor:" + e);
+			logger.error("Error while saving quick consult doctor data:" + e);
 			response.setError(5000, "Unable to save data");
 		}
 
