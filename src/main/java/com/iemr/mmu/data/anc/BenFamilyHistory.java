@@ -59,7 +59,7 @@ public class BenFamilyHistory {
 
 	@Transient
 	private String IsGeneticDisorder;
-	
+
 	@Expose
 	@Column(name = "GeneticDisorder")
 	private String geneticDisorder;
@@ -70,7 +70,7 @@ public class BenFamilyHistory {
 
 	@Transient
 	private String IsConsanguineousMarrige;
-	
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -326,12 +326,12 @@ public class BenFamilyHistory {
 		this.familyMember = familyMember;
 		this.diseaseType = diseaseType;
 		this.otherDiseaseType = otherDiseaseType;
-		if(null != isGeneticDisorder && isGeneticDisorder)
+		if (null != isGeneticDisorder && isGeneticDisorder)
 			this.IsGeneticDisorder = "Yes";
 		else
 			this.IsGeneticDisorder = "No";
 		this.geneticDisorder = geneticDisorder;
-		if(null != isConsanguineousMarrige && isConsanguineousMarrige)
+		if (null != isConsanguineousMarrige && isConsanguineousMarrige)
 			this.IsConsanguineousMarrige = "Yes";
 		else
 			this.IsConsanguineousMarrige = "No";
@@ -372,8 +372,9 @@ public class BenFamilyHistory {
 					}
 				}
 				benFamilyHistory.setFamilyMember(familyMembers);
-				if (benFamilyHistory.getDiseaseTypeID() != null && benFamilyHistory.getFamilyMember() != null
-						&& benFamilyHistory.getFamilyMember().length() > 1)
+				// code changed by Neeraj on 18-05-2018
+				if (benFamilyHistory.getDiseaseTypeID() != null || benFamilyHistory.getFamilyMember() != null
+						|| geneticDisorder != null || isGeneticDisorder != null || isConsanguineousMarrige != null)
 					benFamilyHistoryList.add(benFamilyHistory);
 			}
 		}

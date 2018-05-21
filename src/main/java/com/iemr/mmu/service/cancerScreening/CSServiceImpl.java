@@ -161,8 +161,7 @@ public class CSServiceImpl implements CSService {
 					nurseDataSuccessFlag = examinationSuccessFlag;
 
 					/**
-					 * We have to write new code to update ben status flow new
-					 * logic
+					 * We have to write new code to update ben status flow new logic
 					 */
 					int j = updateBenStatusFlagAfterNurseSaveSuccess(benVisitDetailsOBJ, benVisitID, benFlowID,
 							isReferedToMammogram, docVisitReq);
@@ -605,6 +604,7 @@ public class CSServiceImpl implements CSService {
 	public String getBenDataFrmNurseToDocVitalScreen(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
 		resMap.put("benVitalDetails", cSNurseServiceImpl.getBenCancerVitalDetailData(benRegID, benVisitID));
+		resMap.put("GraphData", commonNurseServiceImpl.getGraphicalTrendData(benRegID, "cancer screening"));
 		return new Gson().toJson(resMap);
 	}
 
@@ -953,7 +953,7 @@ public class CSServiceImpl implements CSService {
 
 		return new Gson().toJson(caseSheetData);
 	}
-	
+
 	public String getBenNurseDataForCaseSheet(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
 
@@ -965,19 +965,23 @@ public class CSServiceImpl implements CSService {
 
 		resMap.put("patientPersonalHistory", cSNurseServiceImpl.getBenPersonalCancerHistoryData(benRegID, benVisitID));
 
-		resMap.put("benPersonalDietHistory", cSNurseServiceImpl.getBenPersonalCancerDietHistoryData(benRegID, benVisitID));
+		resMap.put("benPersonalDietHistory",
+				cSNurseServiceImpl.getBenPersonalCancerDietHistoryData(benRegID, benVisitID));
 
 		resMap.put("currentVitals", cSNurseServiceImpl.getBenCancerVitalDetailData(benRegID, benVisitID));
 
-		resMap.put("abdominalExamination", cSNurseServiceImpl.getBenCancerAbdominalExaminationData(benRegID, benVisitID));
+		resMap.put("abdominalExamination",
+				cSNurseServiceImpl.getBenCancerAbdominalExaminationData(benRegID, benVisitID));
 
 		resMap.put("breastExamination", cSNurseServiceImpl.getBenCancerBreastExaminationData(benRegID, benVisitID));
 
-		resMap.put("gynecologicalExamination", cSNurseServiceImpl.getBenCancerGynecologicalExaminationData(benRegID, benVisitID));
+		resMap.put("gynecologicalExamination",
+				cSNurseServiceImpl.getBenCancerGynecologicalExaminationData(benRegID, benVisitID));
 
 		resMap.put("signsAndSymptoms", cSNurseServiceImpl.getBenCancerSignAndSymptomsData(benRegID, benVisitID));
 
-		resMap.put("BenCancerLymphNodeDetails", cSNurseServiceImpl.getBenCancerLymphNodeDetailsData(benRegID, benVisitID));
+		resMap.put("BenCancerLymphNodeDetails",
+				cSNurseServiceImpl.getBenCancerLymphNodeDetailsData(benRegID, benVisitID));
 
 		resMap.put("oralExamination", cSNurseServiceImpl.getBenCancerOralExaminationData(benRegID, benVisitID));
 
