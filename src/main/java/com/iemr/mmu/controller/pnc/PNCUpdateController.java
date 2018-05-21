@@ -73,7 +73,7 @@ public class PNCUpdateController
 			logger.info("PNC Care data update response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Unable to modify data");
-			logger.error("Error in updatePNCCareNurse :" + e);
+			logger.error("Error while updating PNC Care :" + e);
 		}
 
 		return response.toString();
@@ -110,7 +110,7 @@ public class PNCUpdateController
 			logger.info("History data update response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Unable to modify data");
-			logger.error("Error in updateHistoryNurse :" + e);
+			logger.error("Error while updating history data :" + e);
 		}
 
 		return response.toString();
@@ -147,7 +147,7 @@ public class PNCUpdateController
 			logger.info("Vital data update response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Unable to modify data");
-			logger.error("Error in updateVitalNurse :" + e);
+			logger.error("Error while updating vital data :" + e);
 		}
 
 		return response.toString();
@@ -184,7 +184,7 @@ public class PNCUpdateController
 			logger.info("Examination data update response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Unable to modify data");
-			logger.error("Error in updatePNCExaminationNurse :" + e);
+			logger.error("Error while updating examination data :" + e);
 		}
 
 		return response.toString();
@@ -213,7 +213,7 @@ public class PNCUpdateController
 			logger.info("Doctor data update response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Unable to modify data");
-			logger.error("Error in updatePNCDoctorData :" + e);
+			logger.error("Error while updating doctor data :" + e);
 		}
 
 		return response.toString();

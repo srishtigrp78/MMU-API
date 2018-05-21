@@ -528,7 +528,7 @@ public class BenPersonalHabit {
 					if (null != alcoholInfo.get("duration")) {
 						duration = Integer.parseInt(alcoholInfo.get("duration").toString());
 					}
-					benPersonalHabit.setAlcoholDuration(Utility.convertToDateFormat(timePeriodUnit, timePeriodAgo));
+					benPersonalHabit.setAlcoholDuration(Utility.convertToDateFormat(durationUnit, duration));
 				}
 
 				if (benPersonalHabit.getTobaccoUseTypeID() != null || benPersonalHabit.getAlcoholTypeID() != null)
