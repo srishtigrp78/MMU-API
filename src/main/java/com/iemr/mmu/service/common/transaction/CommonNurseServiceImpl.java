@@ -1121,11 +1121,6 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		column.put("keyName", "captureDate");
 		columns.add(column);
 
-		column = new HashMap<>();
-		column.put("columnName", "Family Member");
-		column.put("keyName", "familyMember");
-		columns.add(column);
-
 		/*
 		 * column = new HashMap<String, Object>(); column.put("columnName",
 		 * "Disease Type ID"); column.put("keyName", "diseaseTypeID");
@@ -1142,6 +1137,11 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		column.put("keyName", "otherDiseaseType");
 		columns.add(column);
 
+		column = new HashMap<>();
+		column.put("columnName", "Family Member");
+		column.put("keyName", "familyMember");
+		columns.add(column);
+		
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Is Genetic Disorder");
 		column.put("keyName", "isGeneticDisorder");

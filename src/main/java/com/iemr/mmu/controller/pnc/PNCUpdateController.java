@@ -24,6 +24,7 @@ import io.swagger.annotations.ApiOperation;
 /**
  * 
  * @author NA874500
+ * @Objective Updating PNC nurse and doctor data 
  *
  */
 @CrossOrigin
@@ -55,7 +56,7 @@ public class PNCUpdateController
 	public String updatePNCCareNurse( @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("updatePNCCareNurse request:" + requestObj);
+		logger.info("PNC Care data update request:" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -69,7 +70,7 @@ public class PNCUpdateController
 			} else {
 				response.setError(500, "Unable to modify data");
 			}
-			logger.info("updatePNCCareNurse response:" + response);
+			logger.info("PNC Care data update response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Unable to modify data");
 			logger.error("Error in updatePNCCareNurse :" + e);
@@ -92,7 +93,7 @@ public class PNCUpdateController
 	public String updateHistoryNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("updateHistoryNurse request:" + requestObj);
+		logger.info("History data update request:" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -106,7 +107,7 @@ public class PNCUpdateController
 			} else {
 				response.setError(500, "Unable to modify data");
 			}
-			logger.info("updateHistoryNurse response:" + response);
+			logger.info("History data update response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Unable to modify data");
 			logger.error("Error in updateHistoryNurse :" + e);
@@ -129,7 +130,7 @@ public class PNCUpdateController
 	public String updateVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("updateVitalNurse request:" + requestObj);
+		logger.info("Vital data update request:" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -143,7 +144,7 @@ public class PNCUpdateController
 			} else {
 				response.setError(500, "Unable to modify data");
 			}
-			logger.info("updateVitalNurse response:" + response);
+			logger.info("Vital data update response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Unable to modify data");
 			logger.error("Error in updateVitalNurse :" + e);
@@ -166,7 +167,7 @@ public class PNCUpdateController
 	public String updateGeneralOPDExaminationNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("updateGeneralOPDExaminationNurse request:" + requestObj);
+		logger.info("Examination data update request:" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -180,7 +181,7 @@ public class PNCUpdateController
 			} else {
 				response.setError(500, "Unable to modify data");
 			}
-			logger.info("updatePNCExaminationNurse response:" + response);
+			logger.info("Examination data update response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Unable to modify data");
 			logger.error("Error in updatePNCExaminationNurse :" + e);
@@ -195,7 +196,7 @@ public class PNCUpdateController
 	public String updatePNCDoctorData( @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("updatePNCDoctorData request:" + requestObj);
+		logger.info("Doctor data update request:" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -209,7 +210,7 @@ public class PNCUpdateController
 			} else {
 				response.setError(500, "Unable to modify data");
 			}
-			logger.info("updatePNCDoctorData response:" + response);
+			logger.info("Doctor data update response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Unable to modify data");
 			logger.error("Error in updatePNCDoctorData :" + e);
