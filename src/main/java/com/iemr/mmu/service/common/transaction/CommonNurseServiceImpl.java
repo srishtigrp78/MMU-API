@@ -1035,7 +1035,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Allergy Name");
-		column.put("keyName", "allergenName");
+		column.put("keyName", "allergyName");
 		columns.add(column);
 
 		/*
@@ -1144,7 +1144,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Is Genetic Disorder");
-		column.put("keyName", "isGeneticDisorder");
+		column.put("keyName", "IsGeneticDisorder");
 		columns.add(column);
 
 		column = new HashMap<String, Object>();
@@ -1154,7 +1154,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Is Consanguineous Marrige");
-		column.put("keyName", "isConsanguineousMarrige");
+		column.put("keyName", "IsConsanguineousMarrige");
 		columns.add(column);
 
 		ArrayList<BenFamilyHistory> familyHistory = new ArrayList<BenFamilyHistory>();
@@ -2418,6 +2418,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		Map<String, Object> response = new HashMap<String, Object>();
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
 		Map<String, Object> column = new HashMap<String, Object>();
+		
 
 		column = new HashMap<>();
 		column.put("columnName", "Date of Capture");
@@ -2554,40 +2555,40 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		column.put("keyName", "grossMotorMilestone");
 		columns.add(column);
 
-		column = new HashMap<>();
+		/*column = new HashMap<>();
 		column.put("columnName", "Is GMM Attained");
 		column.put("keyName", "isGMMAttained");
-		columns.add(column);
+		columns.add(column);*/
 
 		column = new HashMap<>();
 		column.put("columnName", "Fine Motor Milestone");
 		column.put("keyName", "fineMotorMilestone");
 		columns.add(column);
 
-		column = new HashMap<>();
+		/*column = new HashMap<>();
 		column.put("columnName", "Is FMM Attained");
 		column.put("keyName", "isFMMAttained");
 		columns.add(column);
-
+*/
 		column = new HashMap<>();
 		column.put("columnName", "Social Milestone");
 		column.put("keyName", "socialMilestone");
 		columns.add(column);
 
-		column = new HashMap<>();
+		/*column = new HashMap<>();
 		column.put("columnName", "Is SM Attained");
 		column.put("keyName", "isSMAttained");
-		columns.add(column);
+		columns.add(column);*/
 
 		column = new HashMap<>();
 		column.put("columnName", "Language Milestone");
 		column.put("keyName", "languageMilestone");
 		columns.add(column);
 
-		column = new HashMap<>();
+		/*column = new HashMap<>();
 		column.put("columnName", "Is LM Attained");
 		column.put("keyName", "isLMAttained");
-		columns.add(column);
+		columns.add(column);*/
 
 		column = new HashMap<>();
 		column.put("columnName", "Development Problem");
