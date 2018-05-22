@@ -66,7 +66,7 @@ public class CancerScreeningCreateController {
 					else if (nurseDataSaveSuccessFlag == 2)
 						response.setResponse("Data saved and MAMMOGRAM order created successfully");
 					else
-						response.setError(500,
+						response.setError(9999,
 								"Data saved successfully but 'error in mammogram order creation';please contact administrator");
 				} else {
 					response.setError(5000, "Unable to save data");
