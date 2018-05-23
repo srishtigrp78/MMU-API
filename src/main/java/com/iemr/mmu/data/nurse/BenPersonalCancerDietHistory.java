@@ -58,6 +58,13 @@ public class BenPersonalCancerDietHistory {
 	@Expose
 	@Column(name = "IsRadiationExposure")
 	private Boolean ssRadiationExposure;
+	
+	@Transient
+	private String IsRadiationExposure;
+	
+	@Transient
+	private String IsThyroidDisorder;
+	
 	@Expose
 	@Column(name = "IsThyroidDisorder")
 	private Boolean isThyroidDisorder;
@@ -157,8 +164,15 @@ public class BenPersonalCancerDietHistory {
 		this.intakeOfOutsidePreparedMeal = intakeOfOutsidePreparedMeal;
 		this.typeOfOilConsumed = typeOfOilConsumed;
 		this.physicalActivityType = physicalActivityType;
-		this.ssRadiationExposure = ssRadiationExposure;
-		this.isThyroidDisorder = isThyroidDisorder;
+		if(null != ssRadiationExposure && ssRadiationExposure)
+			this.IsRadiationExposure = "Yes";
+		else
+			this.IsRadiationExposure = "No";
+		if(null != isThyroidDisorder && isThyroidDisorder)
+			this.IsThyroidDisorder = "Yes";
+		else
+			this.IsThyroidDisorder = "No";
+		
 		this.captureDate = captureDate;
 	}
 

@@ -795,17 +795,17 @@ public class CSNurseServiceImpl implements CSNurseService {
 
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Filtered Cigarette");
-		columnMap.put("keyName", "isFilteredCigaerette");
+		columnMap.put("keyName", "IsFilteredCigaerette");
 		columns.add(columnMap);
 
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Exposure to Cigarette");
-		columnMap.put("keyName", "isCigaretteExposure");
+		columnMap.put("keyName", "IsCigaretteExposure");
 		columns.add(columnMap);
 
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Betel Nut Chewing");
-		columnMap.put("keyName", "isBetelNutChewing");
+		columnMap.put("keyName", "IsBetelNutChewing");
 		columns.add(columnMap);
 
 		columnMap = new HashMap<>();
@@ -820,7 +820,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Alcohol Consumed(within 12 months)");
-		columnMap.put("keyName", "ssAlcoholUsed");
+		columnMap.put("keyName", "IsAlcoholUsed");
 		columns.add(columnMap);
 
 		columnMap = new HashMap<>();
@@ -907,12 +907,12 @@ public class CSNurseServiceImpl implements CSNurseService {
 
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "History of exposure to radiation");
-		columnMap.put("keyName", "ssRadiationExposure");
+		columnMap.put("keyName", "IsRadiationExposure");
 		columns.add(columnMap);
 
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "History of any thyroid disorder");
-		columnMap.put("keyName", "isThyroidDisorder");
+		columnMap.put("keyName", "IsThyroidDisorder");
 		columns.add(columnMap);
 
 		resMap.put("columns", columns);
@@ -961,7 +961,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Urine pregnancy test");
-		columnMap.put("keyName", "isUrinePregTest");
+		columnMap.put("keyName", "IsUrinePregTest");
 		columns.add(columnMap);
 
 		columnMap = new HashMap<>();
@@ -976,17 +976,17 @@ public class CSNurseServiceImpl implements CSNurseService {
 
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Abortions");
-		columnMap.put("keyName", "isAbortion");
+		columnMap.put("keyName", "IsAbortion");
 		columns.add(columnMap);
 
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Oral Contraceptives used in 5 years");
-		columnMap.put("keyName", "isOralContraceptiveUsed");
+		columnMap.put("keyName", "IsOralContraceptiveUsed");
 		columns.add(columnMap);
 
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Hormone replacement Therapy in 5yrs");
-		columnMap.put("keyName", "isHormoneReplacementTherapy");
+		columnMap.put("keyName", "IsHormoneReplacementTherapy");
 		columns.add(columnMap);
 
 		columnMap = new HashMap<>();
@@ -996,7 +996,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Regularity of Menstrual Cycle");
-		columnMap.put("keyName", "isMenstrualCycleRegular");
+		columnMap.put("keyName", "IsMenstrualCycleRegular");
 		columns.add(columnMap);
 
 		columnMap = new HashMap<>();
@@ -1016,12 +1016,12 @@ public class CSNurseServiceImpl implements CSNurseService {
 
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Dysmenorrhea");
-		columnMap.put("keyName", "isDysmenorrhea");
+		columnMap.put("keyName", "IsDysmenorrhea");
 		columns.add(columnMap);
 
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Inter menstrual bleeding");
-		columnMap.put("keyName", "isInterMenstrualBleeding");
+		columnMap.put("keyName", "IsInterMenstrualBleeding");
 		columns.add(columnMap);
 
 		columnMap = new HashMap<>();
@@ -1031,12 +1031,12 @@ public class CSNurseServiceImpl implements CSNurseService {
 
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Post-menopausal Bleeding");
-		columnMap.put("keyName", "isPostMenopauseBleeding");
+		columnMap.put("keyName", "IsPostMenopauseBleeding");
 		columns.add(columnMap);
 
 		columnMap = new HashMap<>();
 		columnMap.put("columnName", "Foul Smelling Discharge");
-		columnMap.put("keyName", "isFoulSmellingDischarge");
+		columnMap.put("keyName", "IsFoulSmellingDischarge");
 		columns.add(columnMap);
 
 		resMap.put("columns", columns);

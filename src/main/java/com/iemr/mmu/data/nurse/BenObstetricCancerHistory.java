@@ -35,6 +35,10 @@ public class BenObstetricCancerHistory {
 	@Expose
 	@Column(name = "IsUrinePregTest")
 	private Boolean isUrinePregTest;
+	
+	@Transient
+	private String IsUrinePregTest;
+	
 	@Expose
 	@Column(name = "Pregnant_No")
 	private String pregnant_No;
@@ -44,18 +48,34 @@ public class BenObstetricCancerHistory {
 	@Expose
 	@Column(name = "IsAbortion")
 	private Boolean isAbortion;
+	
+	@Transient
+	private String IsAbortion;
+	
 	@Expose
 	@Column(name = "IsOralContraceptiveUsed")
 	private Boolean isOralContraceptiveUsed;
+	
+	@Transient
+	private String IsOralContraceptiveUsed;
+	
 	@Expose
 	@Column(name = "IsHormoneReplacementTherapy")
 	private Boolean isHormoneReplacementTherapy;
+	
+	@Transient
+	private String IsHormoneReplacementTherapy;
+	
 	@Expose
 	@Column(name = "Menarche_Age")
 	private Integer menarche_Age;
 	@Expose
 	@Column(name = "IsMenstrualCycleRegular")
 	private Boolean isMenstrualCycleRegular;
+	
+	@Transient
+	private String IsMenstrualCycleRegular;
+	
 	@Expose
 	@Column(name = "MenstrualCycleLength")
 	private Integer menstrualCycleLength;
@@ -68,18 +88,35 @@ public class BenObstetricCancerHistory {
 	@Expose
 	@Column(name = "IsDysmenorrhea")
 	private Boolean isDysmenorrhea;
+	
+	@Transient
+	private String IsDysmenorrhea;
+	
 	@Expose
 	@Column(name = "IsInterMenstrualBleeding")
 	private Boolean isInterMenstrualBleeding;
+	
+	@Transient
+	private String IsInterMenstrualBleeding;
+	
 	@Expose
 	@Column(name = "MenopauseAge")
 	private Integer menopauseAge;
 	@Expose
 	@Column(name = "IsPostMenopauseBleeding")
 	private Boolean isPostMenopauseBleeding;
+	
+	@Transient
+	private String IsPostMenopauseBleeding;
+	
+	
 	@Expose
 	@Column(name = "isFoulSmellingDischarge")
 	private Boolean isFoulSmellingDischarge;
+	
+	@Transient
+	private String IsFoulSmellingDischarge;
+	
 	@Expose
 	@Column(name = "Deleted", insertable = false)
 	private Boolean deleted;
@@ -137,22 +174,62 @@ public class BenObstetricCancerHistory {
 			Boolean isPostMenopauseBleeding, Boolean isFoulSmellingDischarge, Date captureDate) {
 
 		this.pregnancyStatus = pregnancyStatus;
-		this.isUrinePregTest = isUrinePregTest;
+		
+		if(null != isUrinePregTest && isUrinePregTest)
+			this.IsUrinePregTest = "Yes";
+		else
+			this.IsUrinePregTest = "No";
+		
 		this.pregnant_No = pregnant_No;
 		this.noOfLivingChild = noOfLivingChild;
-		this.isAbortion = isAbortion;
-		this.isOralContraceptiveUsed = isOralContraceptiveUsed;
-		this.isHormoneReplacementTherapy = isHormoneReplacementTherapy;
+		
+		if(null != isAbortion && isAbortion)
+			this.IsAbortion = "Yes";
+		else
+			this.IsAbortion = "No";
+		
+		if(null != isOralContraceptiveUsed && isOralContraceptiveUsed)
+			this.IsOralContraceptiveUsed = "Yes";
+		else
+			this.IsOralContraceptiveUsed = "No";
+		
+		if(null != isHormoneReplacementTherapy && isHormoneReplacementTherapy)
+			this.IsHormoneReplacementTherapy = "Yes";
+		else
+			this.IsHormoneReplacementTherapy = "No";
+		
 		this.menarche_Age = menarche_Age;
-		this.isMenstrualCycleRegular = isMenstrualCycleRegular;
+		
+		if(null != isMenstrualCycleRegular && isMenstrualCycleRegular)
+			this.IsMenstrualCycleRegular = "Yes";
+		else
+			this.IsMenstrualCycleRegular = "No";
+		
 		this.menstrualCycleLength = menstrualCycleLength;
 		this.menstrualFlowDuration = menstrualFlowDuration;
 		this.menstrualFlowType = menstrualFlowType;
-		this.isDysmenorrhea = isDysmenorrhea;
-		this.isInterMenstrualBleeding = isInterMenstrualBleeding;
+		
+		if(null != isDysmenorrhea && isDysmenorrhea)
+			this.IsDysmenorrhea = "Yes";
+		else
+			this.IsDysmenorrhea = "No";
+		
+		if(null != isInterMenstrualBleeding && isInterMenstrualBleeding)
+			this.IsInterMenstrualBleeding = "Yes";
+		else
+			this.IsInterMenstrualBleeding = "No";
+		
 		this.menopauseAge = menopauseAge;
-		this.isPostMenopauseBleeding = isPostMenopauseBleeding;
-		this.isFoulSmellingDischarge = isFoulSmellingDischarge;
+		
+		if(null != isPostMenopauseBleeding && isPostMenopauseBleeding)
+			this.IsPostMenopauseBleeding = "Yes";
+		else
+			this.IsPostMenopauseBleeding = "No";
+		
+		if(null != isFoulSmellingDischarge && isFoulSmellingDischarge)
+			this.IsFoulSmellingDischarge = "Yes";
+		else
+			this.IsFoulSmellingDischarge = "No";
 		this.captureDate = captureDate;
 
 	}

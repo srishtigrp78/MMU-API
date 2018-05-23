@@ -49,12 +49,24 @@ public class BenPersonalCancerHistory {
 	@Expose
 	@Column(name = "IsFilteredCigaerette")
 	private Boolean isFilteredCigaerette;
+	
+	@Transient
+	private String IsFilteredCigaerette;
+	
 	@Expose
 	@Column(name = "IsCigaretteExposure")
 	private Boolean isCigaretteExposure;
+	
+	@Transient
+	private String IsCigaretteExposure;
+	
 	@Expose
 	@Column(name = "IsBetelNutChewing")
 	private Boolean isBetelNutChewing;
+	
+	@Transient
+	private String IsBetelNutChewing;
+	
 	@Expose
 	@Column(name = "DurationOfBetelQuid")
 	private Integer durationOfBetelQuid;
@@ -64,6 +76,10 @@ public class BenPersonalCancerHistory {
 	@Expose
 	@Column(name = "IsAlcoholUsed")
 	private Boolean ssAlcoholUsed;
+	
+	@Transient
+	private String IsAlcoholUsed;
+	
 	@Expose
 	@Column(name = "FrequencyOfAlcoholUsed")
 	private String frequencyOfAlcoholUsed;
@@ -162,12 +178,30 @@ public class BenPersonalCancerHistory {
 		this.endAge_year = endAge_year;
 		this.typeOfTobaccoProduct = typeOfTobaccoProduct;
 		this.quantityPerDay = quantityPerDay;
-		this.isFilteredCigaerette = isFilteredCigaerette;
-		this.isCigaretteExposure = isCigaretteExposure;
-		this.isBetelNutChewing = isBetelNutChewing;
+		
+		if(null != isFilteredCigaerette && isFilteredCigaerette)
+			this.IsFilteredCigaerette = "Yes";
+		else
+			this.IsFilteredCigaerette = "No";
+		
+		if(null != isCigaretteExposure && isCigaretteExposure)
+			this.IsCigaretteExposure = "Yes";
+		else
+			this.IsCigaretteExposure = "No";
+		
+		if(null != isBetelNutChewing && isBetelNutChewing)
+			this.IsBetelNutChewing = "Yes";
+		else
+			this.IsBetelNutChewing = "No";
+		
 		this.durationOfBetelQuid = durationOfBetelQuid;
 		this.alcoholUse = alcoholUse;
-		this.ssAlcoholUsed = ssAlcoholUsed;
+		
+		if(null != ssAlcoholUsed && ssAlcoholUsed)
+			this.IsAlcoholUsed = "Yes";
+		else
+			this.IsAlcoholUsed = "No";
+		
 		this.frequencyOfAlcoholUsed = frequencyOfAlcoholUsed;
 		this.captureDate = captureDate;
 	}
