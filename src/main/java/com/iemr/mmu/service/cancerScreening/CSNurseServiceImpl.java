@@ -1034,10 +1034,10 @@ public class CSNurseServiceImpl implements CSNurseService {
 		columnMap.put("keyName", "IsPostMenopauseBleeding");
 		columns.add(columnMap);
 
-		columnMap = new HashMap<>();
-		columnMap.put("columnName", "Foul Smelling Discharge");
-		columnMap.put("keyName", "IsFoulSmellingDischarge");
-		columns.add(columnMap);
+//		columnMap = new HashMap<>();
+//		columnMap.put("columnName", "Foul Smelling Discharge");
+//		columnMap.put("keyName", "IsFoulSmellingDischarge");
+//		columns.add(columnMap);
 
 		resMap.put("columns", columns);
 		resMap.put("data", benObstetricCancerHistoryArrayList);
