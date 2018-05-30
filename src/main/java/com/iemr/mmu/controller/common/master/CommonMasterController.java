@@ -53,11 +53,13 @@ public class CommonMasterController {
 	 * @return nurse master data for the provided visitCategoryID
 	 */
 	@ApiOperation(value = "Master Data API for Nurse", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = "/nurse/masterData/{visitCategoryID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
-	public String NurseMasterData(@PathVariable("visitCategoryID") Integer visitCategoryID) {
-		logger.info("Nurse master Data for categoryID:" + visitCategoryID);
+	@RequestMapping(value = "/nurse/masterData/{visitCategoryID}/{providerServiceMapID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
+	public String NurseMasterData(@PathVariable("visitCategoryID") Integer visitCategoryID,
+			@PathVariable("providerServiceMapID") Integer providerServiceMapID) {
+		logger.info("Nurse master Data for categoryID:" + visitCategoryID + " and providerServiceMapID:"
+				+ providerServiceMapID);;
 		OutputResponse response = new OutputResponse();
-		response.setResponse(commonMasterServiceImpl.getMasterDataForNurse(visitCategoryID));
+		response.setResponse(commonMasterServiceImpl.getMasterDataForNurse(visitCategoryID, providerServiceMapID));
 		logger.info("Nurse master Data for categoryID:" + response.toString());
 		return response.toString();
 	}

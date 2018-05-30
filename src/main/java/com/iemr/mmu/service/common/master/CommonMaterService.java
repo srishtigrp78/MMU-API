@@ -4,7 +4,8 @@ public interface CommonMaterService {
 
 	public String getVisitReasonAndCategories();
 	
-	public String getMasterDataForNurse(Integer visitCategoryID); 
+	public String getMasterDataForNurse(Integer visitCategoryID, Integer providerServiceMapID); 
 	
-	public String getMasterDataForDoctor(Integer visitCategoryID, Integer providerServiceMapID); 
+	public String getMasterDataForDoctor(Integer visitCategoryID, Integer providerServiceMapID);
+
 }

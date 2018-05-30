@@ -2,6 +2,6 @@ package com.iemr.mmu.service.common.master;
 
 public interface QCMasterDataService {
 
-	String getQuickConsultMasterData();
+	String getQuickConsultMasterData(Integer providerServiceMapID);
 
 }

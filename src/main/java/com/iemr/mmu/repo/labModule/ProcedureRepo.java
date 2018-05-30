@@ -17,8 +17,8 @@ public interface ProcedureRepo extends CrudRepository<ProcedureData, Integer>
 	public ArrayList<Object[]> getProcedures(@Param("procedureType") String procedureType);*/
 	
 	@Query("select procedureID, procedureName, procedureDesc, procedureType, gender, providerServiceMapID from ProcedureData"
-			+ " where deleted = false order by procedureName")
-	public ArrayList<Object[]> getProcedureMasterData();
+			+ " where deleted = false and providerServiceMapID = :providerServiceMapID order by procedureName")
+	public ArrayList<Object[]> getProcedureMasterData(@Param("providerServiceMapID") Integer providerServiceMapID);
 	
 	
 }

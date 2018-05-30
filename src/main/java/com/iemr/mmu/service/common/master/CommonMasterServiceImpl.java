@@ -59,7 +59,7 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 	}
 	
 	@Override
-	public String getMasterDataForNurse(Integer visitCategoryID) {
+	public String getMasterDataForNurse(Integer visitCategoryID, Integer providerServiceMapID) {
 		String nurseMasterData = null;
 		if(null!=visitCategoryID){
 			switch(visitCategoryID){
@@ -76,24 +76,24 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 				case 3 :{
 					// 3 : NCD care
 					//TODO: NCD Care Master Data call - tmprlly calling ANC master Data
-					nurseMasterData = ancMasterDataServiceImpl.getCommonNurseMasterDataForGenopdAncNcdcarePnc();
+					nurseMasterData = ancMasterDataServiceImpl.getCommonNurseMasterDataForGenopdAncNcdcarePnc(providerServiceMapID);
 				}
 				break;
 				case 4 :{
 					// 4 : ANC
-					nurseMasterData = ancMasterDataServiceImpl.getCommonNurseMasterDataForGenopdAncNcdcarePnc();
+					nurseMasterData = ancMasterDataServiceImpl.getCommonNurseMasterDataForGenopdAncNcdcarePnc(providerServiceMapID);
 				}
 				break;
 				case 5 :{
 					// 5 : PNC
 					//TODO: PNC Master Data call - tmprlly calling ANC master Data
-					nurseMasterData = ancMasterDataServiceImpl.getCommonNurseMasterDataForGenopdAncNcdcarePnc();
+					nurseMasterData = ancMasterDataServiceImpl.getCommonNurseMasterDataForGenopdAncNcdcarePnc(providerServiceMapID);
 				}
 				break;
 				case 6 :{
 					// 6 : General OPD
 					//TODO: General OPD Master Data call - tmprlly calling ANC master Data
-					nurseMasterData = ancMasterDataServiceImpl.getCommonNurseMasterDataForGenopdAncNcdcarePnc();
+					nurseMasterData = ancMasterDataServiceImpl.getCommonNurseMasterDataForGenopdAncNcdcarePnc(providerServiceMapID);
 				}
 				break;
 				case 7 :{
@@ -152,7 +152,7 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 				break;
 				case 7 :{
 					// 7 : General OPD (QC)
-					doctorMasterData =  qCMasterDataServiceImpl.getQuickConsultMasterData();
+					doctorMasterData =  qCMasterDataServiceImpl.getQuickConsultMasterData(providerServiceMapID);
 				}
 				break;
 				default :{

@@ -386,7 +386,7 @@ public class ANCMasterDataServiceImpl {
 		this.complicationTypesRepo = complicationTypesRepo;
 	}
 	
-	public String getCommonNurseMasterDataForGenopdAncNcdcarePnc() {
+	public String getCommonNurseMasterDataForGenopdAncNcdcarePnc(Integer providerServiceMapID) {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 			
 		ArrayList<Object[]> allergicReactionTypes = allergicReactionTypesRepo.getAllergicReactionTypes();
@@ -455,7 +455,7 @@ public class ANCMasterDataServiceImpl {
 		ArrayList<Object[]> quantityOfAlcoholIntake = personalHabitTypeRepo.getPersonalHabitTypeMaster("Average Quantity of Alcohol consumption");
 		ArrayList<Object[]> familyMemberTypes = familyMemberMasterRepo.getFamilyMemberTypeMaster();
 		ArrayList<Object[]> labTests = labTestMasterRepo.getLabTestMaster();
-		ArrayList<Object[]> procedures = procedureRepo.getProcedureMasterData();
+		ArrayList<Object[]> procedures = procedureRepo.getProcedureMasterData(providerServiceMapID);
 		
 		//PNC specific master data
 		ArrayList<Object[]> healthStatuses = newbornHealthStatusRepo.getnewBornHealthStatuses();
