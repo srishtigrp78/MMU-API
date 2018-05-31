@@ -153,42 +153,43 @@ public class BeneficiaryFlowStatus {
 	@Expose
 	@Column(name = "registrationDate")
 	private Timestamp registrationDate;
+	
+	@Expose
+	@Column(name = "visitDate")
+	private Timestamp benVisitDate;
+	
+	@Expose
+	@Column(name = "consultationDate")
+	private Timestamp consultationDate;
+	
+	@Expose
+	@Column(name = "visitSession")
+	private Integer visitSession;
+	
+	@Expose
+	@Column(name = "servicePointID")
+	private Integer servicePointID;
 
-	public Timestamp getRegistrationDate() {
-		return registrationDate;
-	}
+	@Expose
+	@Column(name = "districtID")
+	private Integer districtID;
 
-	public void setRegistrationDate(Timestamp registrationDate) {
-		this.registrationDate = registrationDate;
-	}
+	@Expose
+	@Column(name = "villageID")
+	private Integer villageID;
+	
+	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+	
+	@Expose
+	@Column(name = "vanNo")
+	private String vanNo;
 
-	public Integer getProviderServiceMapId() {
-		return providerServiceMapId;
-	}
-
-	public void setProviderServiceMapId(Integer providerServiceMapId) {
-		this.providerServiceMapId = providerServiceMapId;
-	}
-
-	public String getServicePointName() {
-		return servicePointName;
-	}
-
-	public void setServicePointName(String servicePointName) {
-		this.servicePointName = servicePointName;
-	}
 
 	@Expose
 	@Column(name = "providerServiceMapID")
 	private Integer providerServiceMapId;
-
-	public Integer getProviderServiceMapID() {
-		return providerServiceMapId;
-	}
-
-	public void setProviderServiceMapID(Integer providerServiceMapId) {
-		this.providerServiceMapId = providerServiceMapId;
-	}
 
 	@Expose
 	@Column(name = "village")
@@ -246,7 +247,7 @@ public class BeneficiaryFlowStatus {
 		this.benVisitID = benVisitID;
 
 	}
-	
+
 	public static BeneficiaryFlowStatus getBeneficiaryFlowStatusForLeftPanel(ArrayList<Object[]> objList) {
 		BeneficiaryFlowStatus obj = null;
 		if (objList != null && objList.size() > 0) {
@@ -254,10 +255,42 @@ public class BeneficiaryFlowStatus {
 				obj = new BeneficiaryFlowStatus((Long) objArr[0], (Long) objArr[1], (Timestamp) objArr[2],
 						(String) objArr[3], (String) objArr[4], (Integer) objArr[5], (Short) objArr[6],
 						(String) objArr[7], (String) objArr[8], (String) objArr[9], (Long) objArr[10],
-						(String) objArr[11], (String) objArr[12], (String) objArr[13], (Long)objArr[14]);
+						(String) objArr[11], (String) objArr[12], (String) objArr[13], (Long) objArr[14]);
 			}
 		}
 		return obj;
+	}
+
+	public Integer getProviderServiceMapID() {
+		return providerServiceMapId;
+	}
+
+	public void setProviderServiceMapID(Integer providerServiceMapId) {
+		this.providerServiceMapId = providerServiceMapId;
+	}
+
+	public Timestamp getRegistrationDate() {
+		return registrationDate;
+	}
+
+	public void setRegistrationDate(Timestamp registrationDate) {
+		this.registrationDate = registrationDate;
+	}
+
+	public Integer getProviderServiceMapId() {
+		return providerServiceMapId;
+	}
+
+	public void setProviderServiceMapId(Integer providerServiceMapId) {
+		this.providerServiceMapId = providerServiceMapId;
+	}
+
+	public String getServicePointName() {
+		return servicePointName;
+	}
+
+	public void setServicePointName(String servicePointName) {
+		this.servicePointName = servicePointName;
 	}
 
 	public Boolean getPassToNurse() {
@@ -315,8 +348,6 @@ public class BeneficiaryFlowStatus {
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
-
-	
 
 	public Long getBenFlowID() {
 		return benFlowID;
