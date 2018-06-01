@@ -1,6 +1,7 @@
 package com.iemr.mmu.service.benFlowStatus;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -77,7 +78,7 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 		try {
 			i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterNurseActivity(benFlowID, benRegID, benVisitID,
 					visitReason, visitCategory, nurseFlag, docFlag, labIteration, radiologistFlag, oncologistFlag);
-			System.out.println("hello");
+			//System.out.println("hello");
 		} catch (Exception e) {
 			// e.printStackTrace();
 			logger.error("Error in ben flow creation = " + e);
@@ -100,12 +101,25 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 			throws Exception {
 
 		BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(requestOBJ, BeneficiaryFlowStatus.class);
+		
+		if (obj.getI_bendemographics().getDistrictID() != null)
+			obj.setDistrictID(obj.getI_bendemographics().getDistrictID());	
 		if (obj.getI_bendemographics().getDistrictName() != null)
 			obj.setDistrictName(obj.getI_bendemographics().getDistrictName());
+		
+		if (obj.getI_bendemographics().getDistrictBranchID() != null)
+			obj.setVillageID(obj.getI_bendemographics().getDistrictBranchID());
 		if (obj.getI_bendemographics().getDistrictBranchName() != null)
 			obj.setVillageName(obj.getI_bendemographics().getDistrictBranchName());
+		
+		if (obj.getI_bendemographics().getServicePointID() != null)
+			obj.setServicePointID(obj.getI_bendemographics().getServicePointID());
+		if (obj.getI_bendemographics().getServicePointName() != null)
+			obj.setServicePointName(obj.getI_bendemographics().getServicePointName());
+		
 		if (beneficiaryRegID != null && obj.getBeneficiaryRegID() == null)
 			obj.setBeneficiaryRegID(beneficiaryRegID);
+		
 		if (beneficiaryID != null && obj.getBeneficiaryID() == null)
 			obj.setBeneficiaryID(beneficiaryID);
 
@@ -119,8 +133,7 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 		if (obj.getGenderName() == null)
 			obj.setGenderName(obj.getM_gender().getGenderName());
 
-		if (obj.getI_bendemographics().getServicePointName() != null)
-			obj.setServicePointName(obj.getI_bendemographics().getServicePointName());
+		
 
 		String ageDetails = "";
 		int age_val = 0;
@@ -177,6 +190,13 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 		obj.setDoctorFlag((short) 0);
 		obj.setPharmacist_flag((short) 0);
 		obj.setAgentId(obj.getCreatedBy());
+
+		if (obj.getCreatedDate() != null)
+			obj.setRegistrationDate(obj.getCreatedDate());
+		else
+			obj.setRegistrationDate(new Timestamp(System.currentTimeMillis()));
+		
+		
 		return obj;
 	}
 

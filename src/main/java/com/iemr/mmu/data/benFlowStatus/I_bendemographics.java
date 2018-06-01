@@ -2,7 +2,7 @@ package com.iemr.mmu.data.benFlowStatus;
 
 public class I_bendemographics {
 
-	private Integer districtId;
+	private Integer districtID;
 	private String districtName;
 
 	private Integer districtBranchID;
@@ -11,28 +11,12 @@ public class I_bendemographics {
 	private Integer servicePointID;
 	private String servicePointName;
 
-	public Integer getServicePointID() {
-		return servicePointID;
+	public Integer getDistrictID() {
+		return districtID;
 	}
 
-	public void setServicePointID(Integer servicePointID) {
-		this.servicePointID = servicePointID;
-	}
-
-	public String getServicePointName() {
-		return servicePointName;
-	}
-
-	public void setServicePointName(String servicePointName) {
-		this.servicePointName = servicePointName;
-	}
-
-	public Integer getDistrictId() {
-		return districtId;
-	}
-
-	public void setDistrictId(Integer districtId) {
-		this.districtId = districtId;
+	public void setDistrictID(Integer districtID) {
+		this.districtID = districtID;
 	}
 
 	public String getDistrictName() {
@@ -57,6 +41,22 @@ public class I_bendemographics {
 
 	public void setDistrictBranchName(String districtBranchName) {
 		this.districtBranchName = districtBranchName;
+	}
+
+	public Integer getServicePointID() {
+		return servicePointID;
+	}
+
+	public void setServicePointID(Integer servicePointID) {
+		this.servicePointID = servicePointID;
+	}
+
+	public String getServicePointName() {
+		return servicePointName;
+	}
+
+	public void setServicePointName(String servicePointName) {
+		this.servicePointName = servicePointName;
 	}
 
 }

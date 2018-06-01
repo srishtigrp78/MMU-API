@@ -153,19 +153,27 @@ public class BeneficiaryFlowStatus {
 	@Expose
 	@Column(name = "registrationDate")
 	private Timestamp registrationDate;
-	
+
 	@Expose
 	@Column(name = "visitDate")
 	private Timestamp benVisitDate;
-	
+
 	@Expose
 	@Column(name = "consultationDate")
 	private Timestamp consultationDate;
 	
 	@Expose
+	@Column(name = "consultantID")
+	private Integer consultantID;
+	
+	@Expose
+	@Column(name = "consultantName")
+	private String consultantName;
+
+	@Expose
 	@Column(name = "visitSession")
 	private Integer visitSession;
-	
+
 	@Expose
 	@Column(name = "servicePointID")
 	private Integer servicePointID;
@@ -177,15 +185,14 @@ public class BeneficiaryFlowStatus {
 	@Expose
 	@Column(name = "villageID")
 	private Integer villageID;
-	
+
 	@Expose
 	@Column(name = "vanID")
 	private Integer vanID;
-	
+
 	@Expose
 	@Column(name = "vanNo")
 	private String vanNo;
-
 
 	@Expose
 	@Column(name = "providerServiceMapID")
@@ -259,6 +266,88 @@ public class BeneficiaryFlowStatus {
 			}
 		}
 		return obj;
+	}
+	
+	
+
+	public Integer getConsultantID() {
+		return consultantID;
+	}
+
+	public void setConsultantID(Integer consultantID) {
+		this.consultantID = consultantID;
+	}
+
+	public String getConsultantName() {
+		return consultantName;
+	}
+
+	public void setConsultantName(String consultantName) {
+		this.consultantName = consultantName;
+	}
+
+	public Timestamp getBenVisitDate() {
+		return benVisitDate;
+	}
+
+	public void setBenVisitDate(Timestamp benVisitDate) {
+		this.benVisitDate = benVisitDate;
+	}
+
+	public Timestamp getConsultationDate() {
+		return consultationDate;
+	}
+
+	public void setConsultationDate(Timestamp consultationDate) {
+		this.consultationDate = consultationDate;
+	}
+
+	public Integer getVisitSession() {
+		return visitSession;
+	}
+
+	public void setVisitSession(Integer visitSession) {
+		this.visitSession = visitSession;
+	}
+
+	public Integer getServicePointID() {
+		return servicePointID;
+	}
+
+	public void setServicePointID(Integer servicePointID) {
+		this.servicePointID = servicePointID;
+	}
+
+	public Integer getDistrictID() {
+		return districtID;
+	}
+
+	public void setDistrictID(Integer districtID) {
+		this.districtID = districtID;
+	}
+
+	public Integer getVillageID() {
+		return villageID;
+	}
+
+	public void setVillageID(Integer villageID) {
+		this.villageID = villageID;
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
+	public String getVanNo() {
+		return vanNo;
+	}
+
+	public void setVanNo(String vanNo) {
+		this.vanNo = vanNo;
 	}
 
 	public Integer getProviderServiceMapID() {
