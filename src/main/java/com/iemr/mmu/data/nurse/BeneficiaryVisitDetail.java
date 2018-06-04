@@ -27,6 +27,10 @@ public class BeneficiaryVisitDetail {
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
+	
+	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
 //	@Expose
 //	@OneToOne(fetch = FetchType.LAZY)
 //	@JoinColumn(updatable = false, insertable = false, name = "BeneficiaryRegID")
@@ -135,6 +139,8 @@ public class BeneficiaryVisitDetail {
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
+	
+	
 
 	public BeneficiaryVisitDetail() {
 		super();
@@ -219,6 +225,24 @@ public class BeneficiaryVisitDetail {
 		this.healthFacilityType = healthFacilityType;
 		this.healthFacilityLocation = healthFacilityLocation;
 		this.reportFilePath = reportFilePath;
+		this.serviceProviderName = serviceProviderName;
+	}
+	
+	
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
+	}
+
+	public String getServiceProviderName() {
+		return serviceProviderName;
+	}
+
+	public void setServiceProviderName(String serviceProviderName) {
 		this.serviceProviderName = serviceProviderName;
 	}
 

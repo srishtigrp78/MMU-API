@@ -58,5 +58,11 @@ public interface BenVisitDetailRepo extends CrudRepository<BeneficiaryVisitDetai
 			+ " WHERE v.beneficiaryRegID = :benRegID "
 			+ " AND v.visitCategory IS NOT NULL ORDER BY v.createdDate DESC limit 6 ")
 	public ArrayList<Object[]> getLastSixVisitDetailsForBeneficiary(@Param("benRegID") Long benRegID);
+	
+	// updating record with visitcode.
+	@Transactional
+	@Modifying
+	@Query("UPDATE BeneficiaryVisitDetail set visitCode = :visitCode where benVisitID = :benVisitID ")
+	public Integer updateVisitCode(@Param("visitCode") Long visitCode);
 
 }
