@@ -161,11 +161,11 @@ public class BeneficiaryFlowStatus {
 	@Expose
 	@Column(name = "consultationDate")
 	private Timestamp consultationDate;
-	
+
 	@Expose
 	@Column(name = "consultantID")
 	private Integer consultantID;
-	
+
 	@Expose
 	@Column(name = "consultantName")
 	private String consultantName;
@@ -235,10 +235,11 @@ public class BeneficiaryFlowStatus {
 
 	public BeneficiaryFlowStatus(Long benFlowID, Long benRegID, Timestamp visitDate, String benName, String age,
 			Integer ageVal, Short genderID, String genderName, String villageName, String districtName,
-			Long beneficiaryID, String servicePoint, String VisitReason, String VisitCategory, Long benVisitID) {
+			Long beneficiaryID, String servicePoint, String VisitReason, String VisitCategory, Long benVisitID,
+			Timestamp regDate, Timestamp benVisitDate) {
 		this.benFlowID = benFlowID;
 		this.beneficiaryRegID = benRegID;
-		this.serviceDate = visitDate;
+		this.serviceDate = benVisitDate;
 		this.beneficiaryName = benName;
 		this.age = age;
 		this.ageVal = ageVal;
@@ -246,7 +247,7 @@ public class BeneficiaryFlowStatus {
 		this.genderName = genderName;
 		this.villageName = villageName;
 		this.districtName = districtName;
-		this.createdDate = visitDate;
+		this.createdDate = regDate;
 		this.beneficiaryID = beneficiaryID;
 		this.servicePointName = servicePoint;
 		this.VisitReason = VisitReason;
@@ -262,13 +263,12 @@ public class BeneficiaryFlowStatus {
 				obj = new BeneficiaryFlowStatus((Long) objArr[0], (Long) objArr[1], (Timestamp) objArr[2],
 						(String) objArr[3], (String) objArr[4], (Integer) objArr[5], (Short) objArr[6],
 						(String) objArr[7], (String) objArr[8], (String) objArr[9], (Long) objArr[10],
-						(String) objArr[11], (String) objArr[12], (String) objArr[13], (Long) objArr[14]);
+						(String) objArr[11], (String) objArr[12], (String) objArr[13], (Long) objArr[14],
+						(Timestamp) objArr[15], (Timestamp) objArr[16]);
 			}
 		}
 		return obj;
 	}
-	
-	
 
 	public Integer getConsultantID() {
 		return consultantID;
