@@ -80,7 +80,7 @@ public class QCMasterDataServiceImpl implements QCMasterDataService{
 	}
 	
 	@Override
-	public String getQuickConsultMasterData(Integer providerServiceMapID) {
+	public String getQuickConsultMasterData(Integer providerServiceMapID, String gender) {
 		
 		Map<String, Object> resMap = new HashMap<String, Object>();
 		ArrayList<Object[]> ccList = chiefComplaintMasterRepo.getChiefComplaintMaster();
@@ -89,7 +89,7 @@ public class QCMasterDataServiceImpl implements QCMasterDataService{
 		ArrayList<Object[]> dfmList = drugFormMasterRepo.getDrugFormMaster();
 		ArrayList<Object[]> dfrmList = drugFrequencyMasterRepo.getDrugFrequencyMaster();
 		ArrayList<Object[]> ltmList = labTestMasterRepo.getLabTestMaster();
-		ArrayList<Object[]> procedures = procedureRepo.getProcedureMasterData(providerServiceMapID);
+		ArrayList<Object[]> procedures = procedureRepo.getProcedureMasterData(providerServiceMapID, gender);
 		ArrayList<TempMasterDrug> tempMasterDrugList = tempMasterDrugRepo.findByDeletedFalseOrderByDrugDisplayNameAsc();
 		resMap.put("chiefComplaintMaster", ChiefComplaintMaster.getChiefComplaintMasters(ccList));
 		resMap.put("drugDoseMaster", DrugDoseMaster.getDrugDoseMasters(ddmList));

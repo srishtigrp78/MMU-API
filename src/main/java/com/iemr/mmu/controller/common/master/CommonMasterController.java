@@ -53,13 +53,14 @@ public class CommonMasterController {
 	 * @return nurse master data for the provided visitCategoryID
 	 */
 	@ApiOperation(value = "Master Data API for Nurse", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = "/nurse/masterData/{visitCategoryID}/{providerServiceMapID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
+	@RequestMapping(value = "/nurse/masterData/{visitCategoryID}/{providerServiceMapID}/{gender}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
 	public String NurseMasterData(@PathVariable("visitCategoryID") Integer visitCategoryID,
-			@PathVariable("providerServiceMapID") Integer providerServiceMapID) {
+			@PathVariable("providerServiceMapID") Integer providerServiceMapID,
+			@PathVariable("gender") String gender) {
 		logger.info("Nurse master Data for categoryID:" + visitCategoryID + " and providerServiceMapID:"
 				+ providerServiceMapID);;
 		OutputResponse response = new OutputResponse();
-		response.setResponse(commonMasterServiceImpl.getMasterDataForNurse(visitCategoryID, providerServiceMapID));
+		response.setResponse(commonMasterServiceImpl.getMasterDataForNurse(visitCategoryID, providerServiceMapID, gender));
 		logger.info("Nurse master Data for categoryID:" + response.toString());
 		return response.toString();
 	}
@@ -70,13 +71,14 @@ public class CommonMasterController {
 	 * @return doctor master data for the provided visitCategoryID
 	 */
 	@ApiOperation(value = "Master Data API for Doctor", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = "/doctor/masterData/{visitCategoryID}/{providerServiceMapID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
+	@RequestMapping(value = "/doctor/masterData/{visitCategoryID}/{providerServiceMapID}/{gender}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
 	public String DoctorMasterData(@PathVariable("visitCategoryID") Integer visitCategoryID,
-			@PathVariable("providerServiceMapID") Integer providerServiceMapID) {
+			@PathVariable("providerServiceMapID") Integer providerServiceMapID,
+			@PathVariable("gender") String gender) {
 		logger.info("Doctor master Data for categoryID:" + visitCategoryID + " and providerServiceMapID:"
 				+ providerServiceMapID);
 		OutputResponse response = new OutputResponse();
-		response.setResponse(commonMasterServiceImpl.getMasterDataForDoctor(visitCategoryID, providerServiceMapID));
+		response.setResponse(commonMasterServiceImpl.getMasterDataForDoctor(visitCategoryID, providerServiceMapID, gender));
 		logger.info("Doctor master Data for categoryID:" + response.toString());
 		return response.toString();
 	}

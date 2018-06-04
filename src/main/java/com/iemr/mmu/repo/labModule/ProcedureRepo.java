@@ -10,15 +10,18 @@ import org.springframework.stereotype.Repository;
 import com.iemr.mmu.data.labModule.ProcedureData;
 
 @Repository
-public interface ProcedureRepo extends CrudRepository<ProcedureData, Integer>
-{
-	/*@Query("select procedureID, procedureName, procedureDesc, gender, providerServiceMapID from ProcedureData"
-			+ " where procedureType =:procedureType and deleted = false order by procedureName")
-	public ArrayList<Object[]> getProcedures(@Param("procedureType") String procedureType);*/
-	
+public interface ProcedureRepo extends CrudRepository<ProcedureData, Integer> {
+	/*
+	 * @Query("select procedureID, procedureName, procedureDesc, gender, providerServiceMapID from ProcedureData"
+	 * +
+	 * " where procedureType =:procedureType and deleted = false order by procedureName"
+	 * ) public ArrayList<Object[]> getProcedures(@Param("procedureType") String
+	 * procedureType);
+	 */
+
 	@Query("select procedureID, procedureName, procedureDesc, procedureType, gender, providerServiceMapID from ProcedureData"
-			+ " where deleted = false and providerServiceMapID = :providerServiceMapID order by procedureName")
-	public ArrayList<Object[]> getProcedureMasterData(@Param("providerServiceMapID") Integer providerServiceMapID);
-	
-	
+			+ " where deleted = false and providerServiceMapID = :providerServiceMapID  and (gender=:gender or gender='Unisex') order by procedureName")
+	public ArrayList<Object[]> getProcedureMasterData(@Param("providerServiceMapID") Integer providerServiceMapID,
+			@Param("gender") String gender);
+
 }

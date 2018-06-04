@@ -386,7 +386,7 @@ public class ANCMasterDataServiceImpl {
 		this.complicationTypesRepo = complicationTypesRepo;
 	}
 	
-	public String getCommonNurseMasterDataForGenopdAncNcdcarePnc(Integer providerServiceMapID) {
+	public String getCommonNurseMasterDataForGenopdAncNcdcarePnc(Integer visitCategoryID ,Integer providerServiceMapID, String gender) {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 			
 		ArrayList<Object[]> allergicReactionTypes = allergicReactionTypesRepo.getAllergicReactionTypes();
@@ -455,10 +455,13 @@ public class ANCMasterDataServiceImpl {
 		ArrayList<Object[]> quantityOfAlcoholIntake = personalHabitTypeRepo.getPersonalHabitTypeMaster("Average Quantity of Alcohol consumption");
 		ArrayList<Object[]> familyMemberTypes = familyMemberMasterRepo.getFamilyMemberTypeMaster();
 		ArrayList<Object[]> labTests = labTestMasterRepo.getLabTestMaster();
-		ArrayList<Object[]> procedures = procedureRepo.getProcedureMasterData(providerServiceMapID);
+		ArrayList<Object[]> procedures = procedureRepo.getProcedureMasterData(providerServiceMapID, gender);
 		
 		//PNC specific master data
-		ArrayList<Object[]> healthStatuses = newbornHealthStatusRepo.getnewBornHealthStatuses();
+		if(visitCategoryID==5){
+			ArrayList<Object[]> healthStatuses = newbornHealthStatusRepo.getnewBornHealthStatuses();
+			resMap.put("newbornHealthStatuses", NewbornHealthStatus.getNewbornHealthStatuses(healthStatuses));
+		}
 		
 		ArrayList<Object[]> optionalVaccinations = optionalVaccinationsRepo.getOptionalVaccinations();
 		
@@ -512,8 +515,7 @@ public class ANCMasterDataServiceImpl {
 		resMap.put("familyMemberTypes", FamilyMemberType.getFamilyMemberTypeMasterData(familyMemberTypes));
 		
 		resMap.put("labTests", LabTestMaster.getLabTestMasters(labTests));
-		
-		resMap.put("newbornHealthStatuses", NewbornHealthStatus.getNewbornHealthStatuses(healthStatuses));
+
 		resMap.put("procedures", ProcedureData.getProcedures(procedures));
 		resMap.put("vaccineMasterData", OptionalVaccinations.getOptionalVaccinations(optionalVaccinations));
 		
@@ -521,7 +523,7 @@ public class ANCMasterDataServiceImpl {
 	}
 	
 	
-	public String getCommonDoctorMasterDataForGenopdAncNcdcarePnc(int psmID) {
+	public String getCommonDoctorMasterDataForGenopdAncNcdcarePnc(Integer visitCategoryID ,int psmID) {
 		Map<String, Object> resMap = new HashMap<>();
 		ArrayList<Object[]> ccList = chiefComplaintMasterRepo.getChiefComplaintMaster();
 		ArrayList<Object[]> ddmList = drugDoseMasterRepo.getDrugDoseMaster();
@@ -533,7 +535,6 @@ public class ANCMasterDataServiceImpl {
 		
 		Institute institute = new Institute();
 		ArrayList<Object[]> instituteDetails = instituteRepo.getInstituteDetails(psmID);
-		ArrayList<TempMasterDrug> tempMasterDrugList = tempMasterDrugRepo.findByDeletedFalseOrderByDrugDisplayNameAsc();
 		
 		resMap.put("chiefComplaintMaster", ChiefComplaintMaster.getChiefComplaintMasters(ccList));
 		resMap.put("drugDoseMaster", DrugDoseMaster.getDrugDoseMasters(ddmList));
@@ -545,11 +546,15 @@ public class ANCMasterDataServiceImpl {
 		resMap.put("additionalServices", ServiceMaster.getServiceMaster(additionalServices));
 
 		//NCD Care specific master data
-		resMap.put("ncdCareConditions", NCDScreeningCondition.getNCDScreeningCondition((ArrayList<Object[]>) 
-				ncdScreeningMasterServiceImpl.getNCDScreeningConditions()));
-		resMap.put("ncdCareTypes", NCDCareType.getNCDCareTypes((ArrayList<Object[]>) 
-				ncdCareTypeRepo.getNCDCareTypes()));
-		resMap.put("tempDrugMaster", TempMasterDrug.getTempDrugMasterList(tempMasterDrugList));
+		if(visitCategoryID==3){
+			ArrayList<TempMasterDrug> tempMasterDrugList = tempMasterDrugRepo.findByDeletedFalseOrderByDrugDisplayNameAsc();
+			
+			resMap.put("ncdCareConditions", NCDScreeningCondition.getNCDScreeningCondition((ArrayList<Object[]>) 
+					ncdScreeningMasterServiceImpl.getNCDScreeningConditions()));
+			resMap.put("ncdCareTypes", NCDCareType.getNCDCareTypes((ArrayList<Object[]>) 
+					ncdCareTypeRepo.getNCDCareTypes()));
+			resMap.put("tempDrugMaster", TempMasterDrug.getTempDrugMasterList(tempMasterDrugList));
+		}
 
 		return new Gson().toJson(resMap);
 	}

@@ -59,7 +59,7 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 	}
 	
 	@Override
-	public String getMasterDataForNurse(Integer visitCategoryID, Integer providerServiceMapID) {
+	public String getMasterDataForNurse(Integer visitCategoryID, Integer providerServiceMapID, String gender) {
 		String nurseMasterData = null;
 		if(null!=visitCategoryID){
 			switch(visitCategoryID){
@@ -76,24 +76,24 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 				case 3 :{
 					// 3 : NCD care
 					//TODO: NCD Care Master Data call - tmprlly calling ANC master Data
-					nurseMasterData = ancMasterDataServiceImpl.getCommonNurseMasterDataForGenopdAncNcdcarePnc(providerServiceMapID);
+					nurseMasterData = ancMasterDataServiceImpl.getCommonNurseMasterDataForGenopdAncNcdcarePnc(visitCategoryID, providerServiceMapID, gender);
 				}
 				break;
 				case 4 :{
 					// 4 : ANC
-					nurseMasterData = ancMasterDataServiceImpl.getCommonNurseMasterDataForGenopdAncNcdcarePnc(providerServiceMapID);
+					nurseMasterData = ancMasterDataServiceImpl.getCommonNurseMasterDataForGenopdAncNcdcarePnc(visitCategoryID, providerServiceMapID, gender);
 				}
 				break;
 				case 5 :{
 					// 5 : PNC
 					//TODO: PNC Master Data call - tmprlly calling ANC master Data
-					nurseMasterData = ancMasterDataServiceImpl.getCommonNurseMasterDataForGenopdAncNcdcarePnc(providerServiceMapID);
+					nurseMasterData = ancMasterDataServiceImpl.getCommonNurseMasterDataForGenopdAncNcdcarePnc(visitCategoryID, providerServiceMapID, gender);
 				}
 				break;
 				case 6 :{
 					// 6 : General OPD
 					//TODO: General OPD Master Data call - tmprlly calling ANC master Data
-					nurseMasterData = ancMasterDataServiceImpl.getCommonNurseMasterDataForGenopdAncNcdcarePnc(providerServiceMapID);
+					nurseMasterData = ancMasterDataServiceImpl.getCommonNurseMasterDataForGenopdAncNcdcarePnc(visitCategoryID, providerServiceMapID, gender);
 				}
 				break;
 				case 7 :{
@@ -111,7 +111,7 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 		return nurseMasterData;
 	}
 	@Override
-	public String getMasterDataForDoctor(Integer visitCategoryID, Integer providerServiceMapID) {
+	public String getMasterDataForDoctor(Integer visitCategoryID, Integer providerServiceMapID, String gender) {
 		String doctorMasterData = null;
 		if(null!=visitCategoryID){
 			switch(visitCategoryID){
@@ -130,29 +130,29 @@ public class CommonMasterServiceImpl implements CommonMaterService{
 				case 3 :{
 					// 3 : NCD care
 					//TODO: NCD Care Master Data call
-					doctorMasterData = ancMasterDataServiceImpl.getCommonDoctorMasterDataForGenopdAncNcdcarePnc(providerServiceMapID);
+					doctorMasterData = ancMasterDataServiceImpl.getCommonDoctorMasterDataForGenopdAncNcdcarePnc(visitCategoryID, providerServiceMapID);
 				}
 				break;
 				case 4 :{
 					// 4 : ANC
-					doctorMasterData = ancMasterDataServiceImpl.getCommonDoctorMasterDataForGenopdAncNcdcarePnc(providerServiceMapID);
+					doctorMasterData = ancMasterDataServiceImpl.getCommonDoctorMasterDataForGenopdAncNcdcarePnc(visitCategoryID, providerServiceMapID);
 				}
 				break;
 				case 5 :{
 					// 5 : PNC
 					//TODO:  PNC Master Data call - tmprlly calling ANC master Data
-					doctorMasterData = ancMasterDataServiceImpl.getCommonDoctorMasterDataForGenopdAncNcdcarePnc(providerServiceMapID);
+					doctorMasterData = ancMasterDataServiceImpl.getCommonDoctorMasterDataForGenopdAncNcdcarePnc(visitCategoryID, providerServiceMapID);
 				}
 				break;
 				case 6 :{
 					// 6 : General OPD
 					//TODO: General OPD Master Data call - tmprlly calling ANC master Data
-					doctorMasterData = ancMasterDataServiceImpl.getCommonDoctorMasterDataForGenopdAncNcdcarePnc(providerServiceMapID);
+					doctorMasterData = ancMasterDataServiceImpl.getCommonDoctorMasterDataForGenopdAncNcdcarePnc(visitCategoryID, providerServiceMapID);
 				}
 				break;
 				case 7 :{
 					// 7 : General OPD (QC)
-					doctorMasterData =  qCMasterDataServiceImpl.getQuickConsultMasterData(providerServiceMapID);
+					doctorMasterData =  qCMasterDataServiceImpl.getQuickConsultMasterData(providerServiceMapID, gender);
 				}
 				break;
 				default :{
