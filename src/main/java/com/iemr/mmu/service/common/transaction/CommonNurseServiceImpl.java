@@ -322,47 +322,54 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		response = benVisitDetailRepo.save(beneficiaryVisitDetail);
 
 		if (response != null) {
-			String visitCode = "";
-
-			int month = LocalDateTime.now().getMonthValue();
-			String m = "";
-			if (month <= 9)
-				m = "0" + month;
-			
-			int day = LocalDateTime.now().getDayOfMonth();
-			String d = "";
-			if (day <= 9)
-				d = "0" + day;
-
-			int vanID = 101;
-			String van = "";
-			int sessionID = 2;
-
-			
-			int sessionLength = (int) (Math.log10(sessionID) + 1);
-			int vanIdLength = (int) (Math.log10(vanID) + 1);
-
-			if (vanIdLength < 2)
-				van = "0000" + vanID;
-			else if (vanIdLength < 3)
-				van = "000" + vanID;
-			else if (vanIdLength < 4)
-				van = "00" + vanID;
-			else if (vanIdLength < 5)
-				van = "0" + vanID;
-
-			Long visitID = response.getBenVisitID();
-			String visit = "";
-			int visitIdLength = (int) (Math.log10(visitID) + 1);
-			for (int i = 0; i < 8 - visitIdLength; i++) {
-				visit += "0";
-			}
-			visit += visitID;
-			// benVisitDetailRepo.updateVisitCode(visitCode)
+			Long visitCode = updateVisitCode(response, 10);
 			return response.getBenVisitID();
 		} else
 			return null;
 
+	}
+
+	private Long updateVisitCode(BeneficiaryVisitDetail response, int v) {
+		String visitCode = "";
+
+		// current month
+		int month = LocalDateTime.now().getMonthValue();
+		String monthString = "";
+		if (month <= 9)
+			monthString = "0" + month;
+
+		// current date
+		int day = LocalDateTime.now().getDayOfMonth();
+		String dayString = "";
+		if (day <= 9)
+			dayString = "0" + day;
+
+		// van & session ID, later will come from UI
+		String vanIDString = "";
+		int vanID = 101;
+		int sessionID = 2;
+		int sessionLength = (int) (Math.log10(sessionID) + 1);
+		int vanIdLength = (int) (Math.log10(vanID) + 1);
+
+		for (int i = 0; i < 5 - vanIdLength; i++) {
+			vanIDString += "0";
+		}
+		vanIDString += vanID;
+
+		// Long visitID = response.getBenVisitID();
+		Long visitID = Long.valueOf(2345);
+		String visitIDString = "";
+		int visitIdLength = (int) (Math.log10(visitID) + 1);
+		for (int i = 0; i < 8 - visitIdLength; i++) {
+			visitIDString += "0";
+		}
+		visitIDString += visitID;
+
+		// Generating VISIT CODE
+		visitCode += sessionID + dayString + monthString + vanIDString + visitIDString;
+
+		 benVisitDetailRepo.updateVisitCode(Long.valueOf(visitCode), response.getBenVisitID());
+		return Long.valueOf(visitCode);
 	}
 
 	/**

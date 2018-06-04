@@ -63,6 +63,6 @@ public interface BenVisitDetailRepo extends CrudRepository<BeneficiaryVisitDetai
 	@Transactional
 	@Modifying
 	@Query("UPDATE BeneficiaryVisitDetail set visitCode = :visitCode where benVisitID = :benVisitID ")
-	public Integer updateVisitCode(@Param("visitCode") Long visitCode);
+	public Integer updateVisitCode(@Param("visitCode") Long visitCode, @Param("benVisitID") Long benVisitID);
 
 }
