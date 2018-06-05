@@ -191,9 +191,10 @@ public class LabResultEntry {
 					tmpOBJ.setProcedureID(obj.getProcedureID());
 					tmpOBJ.setProcedureName(obj.getProcedureData().getProcedureName());
 					tmpOBJ.setProcedureType(obj.getProcedureData().getProcedureType());
+					tmpOBJ.setCreatedDate(obj.getCreatedDate());
 
 					compDetails = new HashMap<String, Object>();
-					compDetails.put("resultEntryDate", obj.getCreatedDate());
+					//compDetails.put("resultEntryDate", obj.getCreatedDate());
 					compDetails.put("testComponentID", obj.getTestComponentID());
 					compDetails.put("componentName", obj.getTestComponentMaster().getTestComponentName());
 					compDetails.put("testResultValue", obj.getTestResultValue());
@@ -209,7 +210,7 @@ public class LabResultEntry {
 
 				} else {
 					compDetails = new HashMap<String, Object>();
-					compDetails.put("resultEntryDate", obj.getCreatedDate());
+					//compDetails.put("resultEntryDate", obj.getCreatedDate());
 					compDetails.put("testComponentID", obj.getTestComponentID());
 					compDetails.put("componentName", obj.getTestComponentMaster().getTestComponentName());
 					compDetails.put("testResultValue", obj.getTestResultValue());
