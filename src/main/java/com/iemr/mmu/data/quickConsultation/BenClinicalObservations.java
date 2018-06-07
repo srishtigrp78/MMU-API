@@ -33,6 +33,10 @@ public class BenClinicalObservations {
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
+	
+	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
 
 	@Expose
 	@Column(name = "ClinicalObservation")
@@ -287,6 +291,14 @@ public class BenClinicalObservations {
 		this.isForHistory = isForHistory;
 	}
 
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
+	}
+
 	
 	// public static BenClinicalObservations
 	// getBenClinicalObservationsList(JsonObject emrgCasesheet) {
@@ -340,4 +352,5 @@ public class BenClinicalObservations {
 	// return resArray;
 	// }
 
+	
 }

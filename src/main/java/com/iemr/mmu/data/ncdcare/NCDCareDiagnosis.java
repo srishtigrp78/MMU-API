@@ -36,6 +36,10 @@ public class NCDCareDiagnosis
 	private Integer providerServiceMapID;
 	
 	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
+	
+	@Expose
 	@Column(name = "PrescriptionID")
 	private Long prescriptionID;
 	
@@ -319,6 +323,14 @@ public class NCDCareDiagnosis
 			}
 		}
 		return cOBJ;
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 	
 }

@@ -36,6 +36,10 @@ public class ChildFeedingDetails {
 	private Integer providerServiceMapID;
 	
 	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
+	
+	@Expose
 	@Column(name = "ChildID")
 	private Long childID;
 
@@ -343,6 +347,13 @@ public class ChildFeedingDetails {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
+	}
 	
 }

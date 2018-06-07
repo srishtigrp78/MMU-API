@@ -33,6 +33,10 @@ public class SysMusculoskeletalSystemExamination {
 	private Integer providerServiceMapID;
 	
 	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
+	
+	@Expose
 	@Column(name = "Joint_TypeOfJoint")
 	private String joint_TypeOfJoint;
 
@@ -343,6 +347,14 @@ public class SysMusculoskeletalSystemExamination {
 
 	public void setReservedForChange(String reservedForChange) {
 		this.reservedForChange = reservedForChange;
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 
 }

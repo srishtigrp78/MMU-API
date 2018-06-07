@@ -38,6 +38,10 @@ public class BenChildDevelopmentHistory {
 	private Integer providerServiceMapID;
 	
 	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
+	
+	@Expose
 	@Column(name = "GrossMotorMilestone")
 	private String grossMotorMilestone;
 	
@@ -492,6 +496,14 @@ public class BenChildDevelopmentHistory {
 	public BenChildDevelopmentHistory() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 	
 }

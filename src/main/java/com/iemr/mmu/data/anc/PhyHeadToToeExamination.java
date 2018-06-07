@@ -33,6 +33,10 @@ public class PhyHeadToToeExamination {
 	private Integer providerServiceMapID;
 	
 	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
+	
+	@Expose
 	@Column(name = "HeadtoToeExam")
 	private String headtoToeExam;
 
@@ -374,6 +378,14 @@ public class PhyHeadToToeExamination {
 
 	public void setID(Long iD) {
 		ID = iD;
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 	
 }

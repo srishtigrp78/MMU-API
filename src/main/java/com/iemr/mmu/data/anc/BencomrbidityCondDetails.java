@@ -37,6 +37,10 @@ public class BencomrbidityCondDetails {
 	private Integer providerServiceMapID;
 	
 	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
+	
+	@Expose
 	@Column(name = "ComorbidConditionID")
 	private Short comorbidConditionID;
 	
@@ -376,6 +380,16 @@ public class BencomrbidityCondDetails {
 	public BencomrbidityCondDetails() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 	
 }

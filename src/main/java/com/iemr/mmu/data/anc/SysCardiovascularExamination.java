@@ -33,6 +33,10 @@ public class SysCardiovascularExamination {
 	private Integer providerServiceMapID;
 	
 	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
+	
+	@Expose
 	@Column(name = "JugularVenousPulse_JVP")
 	private String jugularVenousPulse_JVP;
 	
@@ -302,6 +306,14 @@ public class SysCardiovascularExamination {
 
 	public void setID(Long iD) {
 		ID = iD;
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 	
 }

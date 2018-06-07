@@ -40,10 +40,13 @@ public class CancerDiagnosis {
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
 	
-	
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
+	
+	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
 	
 	@Expose
 	@Column(name = "ProvisionalDiagnosisPrimaryDoctor")
@@ -336,6 +339,14 @@ public class CancerDiagnosis {
 
 	public void setReservedForChange(String reservedForChange) {
 		this.reservedForChange = reservedForChange;
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 	
 }

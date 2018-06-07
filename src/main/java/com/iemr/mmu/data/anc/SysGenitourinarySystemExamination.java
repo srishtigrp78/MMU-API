@@ -33,6 +33,10 @@ public class SysGenitourinarySystemExamination {
 	private Integer providerServiceMapID;
 	
 	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
+	
+	@Expose
 	@Column(name = "RenalAngle")
 	private String renalAngle;
 	
@@ -242,6 +246,14 @@ public class SysGenitourinarySystemExamination {
 
 	public void setID(Long iD) {
 		ID = iD;
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 	
 }

@@ -28,9 +28,14 @@ public class PrescriptionDetail {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
+	
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
+	
+	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
 	
 	@Expose
 	@Column(name = "DiagnosisProvided")
@@ -334,5 +339,13 @@ public class PrescriptionDetail {
 			}
 		}
 		return cOBJ;
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 }

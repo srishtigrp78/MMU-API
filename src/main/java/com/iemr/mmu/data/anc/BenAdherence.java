@@ -31,6 +31,9 @@ public class BenAdherence {
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
 	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
+	@Expose
 	@Column(name = "ToDrugs")
 	private Boolean toDrugs;
 	@Expose
@@ -288,6 +291,14 @@ public class BenAdherence {
 
 	public void setReservedForChange(String reservedForChange) {
 		this.reservedForChange = reservedForChange;
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 
 }

@@ -36,6 +36,10 @@ public class BenMenstrualDetails {
 	private Integer providerServiceMapID;
 	
 	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
+	
+	@Expose
 	@Column(name = "MenstrualCycleStatusID")
 	private Short menstrualCycleStatusID;
 
@@ -399,6 +403,14 @@ public class BenMenstrualDetails {
 	public BenMenstrualDetails() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 	
 }
