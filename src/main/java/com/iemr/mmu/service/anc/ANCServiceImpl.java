@@ -126,16 +126,17 @@ public class ANCServiceImpl implements ANCService {
 			}
 
 			if (benVisitID != null && benVisitID > 0) {
+				
 				// call method to save ANC data
-				ancSaveSuccessFlag = saveBenANCDetails(requestOBJ.getAsJsonObject("ancDetails"), benVisitID);
+				ancSaveSuccessFlag = saveBenANCDetails(requestOBJ.getAsJsonObject("ancDetails"), benVisitID, benVisitCode);
 				// call method to save History data
 				historySaveSuccessFlag = saveBenANCHistoryDetails(requestOBJ.getAsJsonObject("historyDetails"),
-						benVisitID);
+						benVisitID, benVisitCode);
 				// call method to save Vital data
-				vitalSaveSuccessFlag = saveBenANCVitalDetails(requestOBJ.getAsJsonObject("vitalDetails"), benVisitID);
+				vitalSaveSuccessFlag = saveBenANCVitalDetails(requestOBJ.getAsJsonObject("vitalDetails"), benVisitID, benVisitCode);
 				// call method to save Examination data
 				examtnSaveSuccessFlag = saveBenANCExaminationDetails(requestOBJ.getAsJsonObject("examinationDetails"),
-						benVisitID);
+						benVisitID, benVisitCode);
 
 				// Code moved above if statement
 				// JsonObject tmpOBJ =
@@ -143,14 +144,16 @@ public class ANCServiceImpl implements ANCService {
 				// JsonObject tmpOBJ1 =
 				// tmpOBJ.get("visitDetails").getAsJsonObject();
 
-				i = commonNurseServiceImpl.updateBeneficiaryStatus('N', tmpOBJ.get("beneficiaryRegID").getAsLong());
+				//i = commonNurseServiceImpl.updateBeneficiaryStatus('N', tmpOBJ.get("beneficiaryRegID").getAsLong());
 			} else {
 				// Error in visit details saving or it is null
 			}
 			if ((null != ancSaveSuccessFlag && ancSaveSuccessFlag > 0)
 					&& (null != historySaveSuccessFlag && historySaveSuccessFlag > 0)
 					&& (null != vitalSaveSuccessFlag && vitalSaveSuccessFlag > 0)
-					&& (null != examtnSaveSuccessFlag && examtnSaveSuccessFlag > 0) && (i != null)) {
+					&& (null != examtnSaveSuccessFlag && examtnSaveSuccessFlag > 0)) {
+				// removed on 07-06-2018 not using this logic anymore
+				//&& (i != null)
 
 				saveSuccessFlag = ancSaveSuccessFlag;
 
@@ -444,7 +447,7 @@ public class ANCServiceImpl implements ANCService {
 	 * @return success or failure flag for visitDetails data saving
 	 * @throws ParseException
 	 */
-	public Long saveBenANCDetails(JsonObject ancDetailsOBJ, Long benVisitID) throws Exception {
+	public Long saveBenANCDetails(JsonObject ancDetailsOBJ, Long benVisitID, Long benVisitCode) throws Exception {
 		Long ancSuccessFlag = null;
 		Long ancCareSuccessFlag = null;
 		Long ancImunizationSuccessFlag = null;
@@ -455,6 +458,7 @@ public class ANCServiceImpl implements ANCService {
 					ANCCareDetails.class);
 			if (null != ancCareDetailsOBJ) {
 				ancCareDetailsOBJ.setBenVisitID(benVisitID);
+				ancCareDetailsOBJ.setVisitCode(benVisitCode);
 				ancCareSuccessFlag = ancNurseServiceImpl.saveBenAncCareDetails(ancCareDetailsOBJ);
 			}
 		}
@@ -481,7 +485,7 @@ public class ANCServiceImpl implements ANCService {
 	 * @param requestOBJ
 	 * @return success or failure flag for history data saving
 	 */
-	public Long saveBenANCHistoryDetails(JsonObject ancHistoryOBJ, Long benVisitID) throws Exception {
+	public Long saveBenANCHistoryDetails(JsonObject ancHistoryOBJ, Long benVisitID, Long benVisitCode) throws Exception {
 		Long pastHistorySuccessFlag = null;
 		Long comrbidSuccessFlag = null;
 		Long medicationSuccessFlag = null;
@@ -500,6 +504,7 @@ public class ANCServiceImpl implements ANCService {
 					BenMedHistory.class);
 			if (null != benMedHistory) {
 				benMedHistory.setBenVisitID(benVisitID);
+				benMedHistory.setVisitCode(benVisitCode);
 				pastHistorySuccessFlag = commonNurseServiceImpl.saveBenPastHistory(benMedHistory);
 				// pastHistorySuccessFlag =
 				// ancNurseServiceImpl.saveBenANCPastHistory(benMedHistory);
@@ -666,7 +671,7 @@ public class ANCServiceImpl implements ANCService {
 	 * @param requestOBJ
 	 * @return success or failure flag for visitDetails data saving
 	 */
-	public Long saveBenANCVitalDetails(JsonObject vitalDetailsOBJ, Long benVisitID) throws Exception {
+	public Long saveBenANCVitalDetails(JsonObject vitalDetailsOBJ, Long benVisitID, Long benVisitCode) throws Exception {
 		Long vitalSuccessFlag = null;
 		Long anthropometrySuccessFlag = null;
 		Long phyVitalSuccessFlag = null;
@@ -679,11 +684,13 @@ public class ANCServiceImpl implements ANCService {
 
 			if (null != benAnthropometryDetail) {
 				benAnthropometryDetail.setBenVisitID(benVisitID);
+				benAnthropometryDetail.setVisitCode(benVisitCode);
 				anthropometrySuccessFlag = commonNurseServiceImpl
 						.saveBeneficiaryPhysicalAnthropometryDetails(benAnthropometryDetail);
 			}
 			if (null != benPhysicalVitalDetail) {
 				benPhysicalVitalDetail.setBenVisitID(benVisitID);
+				benPhysicalVitalDetail.setVisitCode(benVisitCode);
 				phyVitalSuccessFlag = commonNurseServiceImpl
 						.saveBeneficiaryPhysicalVitalDetails(benPhysicalVitalDetail);
 			}
@@ -702,7 +709,7 @@ public class ANCServiceImpl implements ANCService {
 	 * @param requestOBJ
 	 * @return success or failure flag for visitDetails data saving
 	 */
-	public Long saveBenANCExaminationDetails(JsonObject examinationDetailsOBJ, Long benVisitID) throws Exception {
+	public Long saveBenANCExaminationDetails(JsonObject examinationDetailsOBJ, Long benVisitID, Long benVisitCode) throws Exception {
 
 		Long exmnSuccessFlag = null;
 
@@ -723,6 +730,7 @@ public class ANCServiceImpl implements ANCService {
 					.fromJson(examinationDetailsOBJ.get("generalExamination"), PhyGeneralExamination.class);
 			if (null != generalExamination) {
 				generalExamination.setBenVisitID(benVisitID);
+				generalExamination.setVisitCode(benVisitCode);
 				genExmnSuccessFlag = commonNurseServiceImpl.savePhyGeneralExamination(generalExamination);
 				// genExmnSuccessFlag =
 				// ancNurseServiceImpl.savePhyGeneralExamination(generalExamination);

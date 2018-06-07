@@ -149,17 +149,17 @@ public class CSServiceImpl implements CSService {
 				}
 
 				// call method to save history data
-				Long historySaveSuccessFlag = saveBenHistoryDetails(requestOBJ, benVisitID);
+				Long historySaveSuccessFlag = saveBenHistoryDetails(requestOBJ, benVisitID, benVisitCode);
 				// call method to save Examination data
-				Long examinationSuccessFlag = saveBenExaminationDetails(requestOBJ, benVisitID, Authorization);
+				Long examinationSuccessFlag = saveBenExaminationDetails(requestOBJ, benVisitID, Authorization, benVisitCode);
 				// call method to save vitals data
-				Long vitalSaveSuccessFlag = saveBenVitalsDetails(requestOBJ, benVisitID);
+				Long vitalSaveSuccessFlag = saveBenVitalsDetails(requestOBJ, benVisitID, benVisitCode);
 
 				if ((historySaveSuccessFlag != null && historySaveSuccessFlag > 0)
 						&& (examinationSuccessFlag != null && examinationSuccessFlag > 0)
 						&& (vitalSaveSuccessFlag != null && vitalSaveSuccessFlag > 0)) {
 
-					Integer i = commonNurseServiceImpl.updateBeneficiaryStatus('N', getBenRegID(requestOBJ));
+				//	Integer i = commonNurseServiceImpl.updateBeneficiaryStatus('N', getBenRegID(requestOBJ));
 
 					nurseDataSuccessFlag = examinationSuccessFlag;
 
@@ -230,7 +230,7 @@ public class CSServiceImpl implements CSService {
 	 * @return success or failure flag for history data saving
 	 * @throws Exception
 	 */
-	public Long saveBenHistoryDetails(JsonObject requestOBJ, Long benVisitID) throws Exception {
+	public Long saveBenHistoryDetails(JsonObject requestOBJ, Long benVisitID, Long benVisitCode) throws Exception {
 		Integer benFamilyHistoryDataSavingSuccessFlag = null;
 		Long benPersonalHistorySaveSuccessFlag = null;
 		Long benPersonalDietHistorySaveSuccessFlag = null;
@@ -253,6 +253,7 @@ public class CSServiceImpl implements CSService {
 					if (benFamilyCancerHistoryArray != null && benFamilyCancerHistoryList.size() > 0) {
 						for (BenFamilyCancerHistory obj : benFamilyCancerHistoryArray) {
 							obj.setBenVisitID(benVisitID);
+							obj.setVisitCode(benVisitCode);
 						}
 						benFamilyHistoryDataSavingSuccessFlag = cSNurseServiceImpl
 								.saveBenFamilyCancerHistory(benFamilyCancerHistoryList);
@@ -281,7 +282,9 @@ public class CSServiceImpl implements CSService {
 				if (benPersonalCancerHistory != null && benPersonalCancerDietHistory != null) {
 
 					benPersonalCancerHistory.setBenVisitID(benVisitID);
+					benPersonalCancerHistory.setVisitCode(benVisitCode);
 					benPersonalCancerDietHistory.setBenVisitID(benVisitID);
+					benPersonalCancerDietHistory.setVisitCode(benVisitCode);
 
 					benPersonalHistorySaveSuccessFlag = cSNurseServiceImpl
 							.saveBenPersonalCancerHistory(benPersonalCancerHistory);
@@ -301,6 +304,7 @@ public class CSServiceImpl implements CSService {
 						.fromJson(historyOBJ.get("pastObstetricHistory"), BenObstetricCancerHistory.class);
 
 				benObstetricCancerHistory.setBenVisitID(benVisitID);
+				benObstetricCancerHistory.setVisitCode(benVisitCode);
 				benObstetricSaveSuccessFlag = cSNurseServiceImpl
 						.saveBenObstetricCancerHistory(benObstetricCancerHistory);
 			} else {
