@@ -202,6 +202,9 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 			BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(jsnOBJ.get("visitDetails"),
 					BeneficiaryVisitDetail.class);
 			Long benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
+			
+			//07-06-2018 visit code
+			Long benVisitCode = commonNurseServiceImpl.updateVisitCode(benVisitID, 101, 1);
 
 			// Getting benflowID for ben status update
 			Long benFlowID = null;
@@ -232,7 +235,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 					 * logic
 					 */
 
-					int j = updateBenStatusFlagAfterNurseSaveSuccess(benVisitDetailsOBJ, benVisitID, benFlowID);
+					int j = updateBenStatusFlagAfterNurseSaveSuccess(benVisitDetailsOBJ, benVisitID, benFlowID, benVisitCode);
 
 				} else {
 
@@ -246,14 +249,14 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 
 	// method for updating ben flow status flag for nurse
 	private int updateBenStatusFlagAfterNurseSaveSuccess(BeneficiaryVisitDetail benVisitDetailsOBJ, Long benVisitID,
-			Long benFlowID) {
+			Long benFlowID, Long benVisitCode) {
 		short nurseFlag = (short) 9;
 		short docFlag = (short) 1;
 		short labIteration = (short) 0;
 
 		int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitID, benVisitDetailsOBJ.getVisitReason(),
-				benVisitDetailsOBJ.getVisitCategory(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0);
+				benVisitDetailsOBJ.getVisitCategory(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0, benVisitCode);
 
 		return i;
 	}

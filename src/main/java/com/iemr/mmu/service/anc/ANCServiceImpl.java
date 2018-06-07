@@ -105,8 +105,11 @@ public class ANCServiceImpl implements ANCService {
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
 			// Call method to save visit details data
 			Long benVisitID = saveBenVisitDetails(requestOBJ.getAsJsonObject("visitDetails"));
-			// check if visit details data saved successfully
-
+			
+			//07-06-2018 visit code
+			Long benVisitCode = commonNurseServiceImpl.updateVisitCode(benVisitID, 101, 1);
+			
+			
 			Long ancSaveSuccessFlag = null;
 			Long historySaveSuccessFlag = null;
 			Long vitalSaveSuccessFlag = null;
@@ -157,7 +160,7 @@ public class ANCServiceImpl implements ANCService {
 
 				int J = updateBenFlowNurseAfterNurseActivityANC(
 						requestOBJ.getAsJsonObject("visitDetails").getAsJsonObject("investigation"), tmpOBJ, benVisitID,
-						benFlowID);
+						benFlowID, benVisitCode);
 
 				// End of update ben status flow new logic
 
@@ -169,7 +172,7 @@ public class ANCServiceImpl implements ANCService {
 	}
 
 	private int updateBenFlowNurseAfterNurseActivityANC(JsonObject investigationDataCheck, JsonObject tmpOBJ,
-			Long benVisitID, Long benFlowID) {
+			Long benVisitID, Long benFlowID, Long visitCode) {
 		short nurseFlag;
 		short docFlag;
 		short labIteration;
@@ -190,7 +193,7 @@ public class ANCServiceImpl implements ANCService {
 
 		int rs = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				tmpOBJ.get("beneficiaryRegID").getAsLong(), benVisitID, tmpOBJ.get("visitReason").getAsString(),
-				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0);
+				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0, visitCode);
 
 		return rs;
 	}

@@ -322,14 +322,14 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		response = benVisitDetailRepo.save(beneficiaryVisitDetail);
 
 		if (response != null) {
-			Long visitCode = updateVisitCode(response, 10);
+			// Long visitCode = updateVisitCode(response, 10);
 			return response.getBenVisitID();
 		} else
 			return null;
 
 	}
 
-	private Long updateVisitCode(BeneficiaryVisitDetail response, int v) {
+	public Long updateVisitCode(Long visitID, Integer vanID, Integer sessionID) {
 		String visitCode = "";
 
 		// current month
@@ -344,20 +344,14 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		if (day <= 9)
 			dayString = "0" + day;
 
-		// van & session ID, later will come from UI
+		// van & session ID
 		String vanIDString = "";
-		int vanID = 101;
-		int sessionID = 2;
-		int sessionLength = (int) (Math.log10(sessionID) + 1);
 		int vanIdLength = (int) (Math.log10(vanID) + 1);
 
 		for (int i = 0; i < 5 - vanIdLength; i++) {
 			vanIDString += "0";
 		}
 		vanIDString += vanID;
-
-		// Long visitID = response.getBenVisitID();
-		Long visitID = Long.valueOf(2345);
 		String visitIDString = "";
 		int visitIdLength = (int) (Math.log10(visitID) + 1);
 		for (int i = 0; i < 8 - visitIdLength; i++) {
@@ -368,8 +362,11 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		// Generating VISIT CODE
 		visitCode += sessionID + dayString + monthString + vanIDString + visitIDString;
 
-		 benVisitDetailRepo.updateVisitCode(Long.valueOf(visitCode), response.getBenVisitID());
-		return Long.valueOf(visitCode);
+		int i = benVisitDetailRepo.updateVisitCode(Long.valueOf(visitCode), visitID);
+		if (i > 0)
+			return Long.valueOf(visitCode);
+		else
+			return Long.valueOf(0);
 	}
 
 	/**

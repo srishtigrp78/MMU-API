@@ -71,6 +71,9 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 						.valueOf(ncdScreening.getNextScreeningDate().replaceAll("T", " ").replaceAll("Z", " ")));
 
 			Long visitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(beneficiaryVisitDetail);
+			
+			//07-06-2018 visit code
+			Long benVisitCode = commonNurseServiceImpl.updateVisitCode(visitID, 101, 1);
 
 			if (null != visitID) {
 
@@ -83,7 +86,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 
 					int i = updateBenFlowNurseAfterNurseActivityANC(beneficiaryVisitDetail.getBeneficiaryRegID(),
 							visitID, benFlowID, beneficiaryVisitDetail.getVisitReason(),
-							beneficiaryVisitDetail.getVisitCategory(), ncdScreening.getIsScreeningComplete());
+							beneficiaryVisitDetail.getVisitCategory(), ncdScreening.getIsScreeningComplete(), benVisitCode);
 
 					result = 1;
 				}
@@ -93,7 +96,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 	}
 
 	private int updateBenFlowNurseAfterNurseActivityANC(Long benRegID, Long benVisitID, Long benFlowID,
-			String visitReason, String visitCategory, Boolean isScreeningDone) {
+			String visitReason, String visitCategory, Boolean isScreeningDone, Long benVisitCode) {
 		short nurseFlag;
 		short docFlag = (short) 0;
 		short labIteration = (short) 0;
@@ -104,7 +107,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 			nurseFlag = (short) 100;
 
 		int rs = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID, benRegID, benVisitID,
-				visitReason, visitCategory, nurseFlag, docFlag, labIteration, (short) 0, (short) 0);
+				visitReason, visitCategory, nurseFlag, docFlag, labIteration, (short) 0, (short) 0, benVisitCode);
 
 		return rs;
 	}

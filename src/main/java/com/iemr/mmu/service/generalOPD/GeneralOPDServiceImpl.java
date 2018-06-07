@@ -103,6 +103,9 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
 			// Call method to save visit details data
 			Long benVisitID = saveBenVisitDetails(requestOBJ.getAsJsonObject("visitDetails"));
+			
+			//07-06-2018 visit code
+			Long benVisitCode = commonNurseServiceImpl.updateVisitCode(benVisitID, 101, 1);
 
 			// temporary object for ben flow part. for getting visit reason and
 			// category and ben reg id
@@ -143,7 +146,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				 * We have to write new code to update ben status flow new logic
 				 */
 
-				int i = updateBenStatusFlagAfterNurseSaveSuccess(tmpOBJ, benVisitID, benFlowID);
+				int i = updateBenStatusFlagAfterNurseSaveSuccess(tmpOBJ, benVisitID, benFlowID, benVisitCode);
 
 			}
 		} else {
@@ -153,14 +156,14 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	}
 
 	// method for updating ben flow status flag for nurse
-	private int updateBenStatusFlagAfterNurseSaveSuccess(JsonObject tmpOBJ, Long benVisitID, Long benFlowID) {
+	private int updateBenStatusFlagAfterNurseSaveSuccess(JsonObject tmpOBJ, Long benVisitID, Long benFlowID, Long benVisitCode) {
 		short nurseFlag = (short) 9;
 		short docFlag = (short) 1;
 		short labIteration = (short) 0;
 
 		int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				tmpOBJ.get("beneficiaryRegID").getAsLong(), benVisitID, tmpOBJ.get("visitReason").getAsString(),
-				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0);
+				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0, benVisitCode);
 
 		return i;
 	}

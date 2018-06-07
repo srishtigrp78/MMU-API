@@ -80,6 +80,9 @@ public class NCDCareServiceImpl implements NCDCareService {
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
 			// Call method to save visit details data
 			Long benVisitID = saveBenVisitDetails(requestOBJ.getAsJsonObject("visitDetails"));
+			
+			//07-06-2018 visit code
+			Long benVisitCode = commonNurseServiceImpl.updateVisitCode(benVisitID, 101, 1);
 
 			// check if visit details data saved successfully
 			Long historySaveSuccessFlag = null;
@@ -116,7 +119,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 				 */
 				int J = updateBenFlowNurseAfterNurseActivityANC(
 						requestOBJ.getAsJsonObject("visitDetails").getAsJsonObject("investigation"), tmpOBJ, benVisitID,
-						benFlowID);
+						benFlowID, benVisitCode);
 			}
 		} else {
 			// Can't create BenVisitID
@@ -126,7 +129,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 
 	// method for updating ben flow status flag for nurse
 	private int updateBenFlowNurseAfterNurseActivityANC(JsonObject investigationDataCheck, JsonObject tmpOBJ,
-			Long benVisitID, Long benFlowID) {
+			Long benVisitID, Long benFlowID, Long benVisitCode) {
 		short nurseFlag;
 		short docFlag;
 		short labIteration;
@@ -147,7 +150,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 
 		int rs = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				tmpOBJ.get("beneficiaryRegID").getAsLong(), benVisitID, tmpOBJ.get("visitReason").getAsString(),
-				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0);
+				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0, benVisitCode);
 
 		return rs;
 	}

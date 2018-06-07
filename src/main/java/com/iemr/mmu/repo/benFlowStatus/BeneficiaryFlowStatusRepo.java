@@ -28,7 +28,7 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	@Query("UPDATE BeneficiaryFlowStatus t set t.benVisitID = :benVisitID, t.VisitReason = :visitReason, "
 			+ " t.VisitCategory = :visitCategory, t.nurseFlag = :nurseFlag, t.doctorFlag = :docFlag, "
 			+ " t.labIteration = :labIteration, t.lab_technician_flag = 0, t.radiologist_flag = :radiologistFlag, "
-			+ " t.oncologist_flag = :oncologistFlag, t.benVisitDate = now() "
+			+ " t.oncologist_flag = :oncologistFlag, t.benVisitDate = now(), t.benVisitCode = :benVisitCode "
 			+ "  WHERE t.benFlowID = :benFlowID AND t.beneficiaryRegID = :benRegID "
 			+ " AND nurseFlag = 1  ")
 	public int updateBenFlowStatusAfterNurseActivity(@Param("benFlowID") Long benFlowID,
@@ -36,7 +36,7 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			@Param("visitReason") String visitReason, @Param("visitCategory") String visitCategory,
 			@Param("nurseFlag") Short nurseFlag, @Param("docFlag") Short docFlag,
 			@Param("labIteration") Short labIteration, @Param("radiologistFlag") Short radiologistFlag,
-			@Param("oncologistFlag") Short oncologistFlag);
+			@Param("oncologistFlag") Short oncologistFlag, @Param("benVisitCode") Long benVisitCode);
 
 	@Query("SELECT  t.benFlowID, t.beneficiaryRegID, t.visitDate, t.benName, t.age, t.ben_age_val, t.genderID, t.genderName, "
 			+ " t.villageName, t.districtName, t.beneficiaryID, t.servicePointName, t.VisitReason, t.VisitCategory, t.benVisitID,  "

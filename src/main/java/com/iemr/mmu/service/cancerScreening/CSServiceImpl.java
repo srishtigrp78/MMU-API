@@ -110,6 +110,9 @@ public class CSServiceImpl implements CSService {
 					BeneficiaryVisitDetail.class);
 
 			Long benVisitID = saveBenVisitDetails(benVisitDetailsOBJ);
+			
+			//07-06-2018 visit code
+			Long benVisitCode = commonNurseServiceImpl.updateVisitCode(benVisitID, 101, 1);
 
 			// Getting benflowID for ben status update
 			Long benFlowID = null;
@@ -164,7 +167,7 @@ public class CSServiceImpl implements CSService {
 					 * We have to write new code to update ben status flow new logic
 					 */
 					int j = updateBenStatusFlagAfterNurseSaveSuccess(benVisitDetailsOBJ, benVisitID, benFlowID,
-							isReferedToMammogram, docVisitReq);
+							isReferedToMammogram, docVisitReq, benVisitCode);
 
 				}
 
@@ -178,7 +181,7 @@ public class CSServiceImpl implements CSService {
 
 	// method for updating ben flow status flag for nurse
 	private int updateBenStatusFlagAfterNurseSaveSuccess(BeneficiaryVisitDetail benVisitDetailsOBJ, Long benVisitID,
-			Long benFlowID, Boolean isReferedToMammogram, Boolean docVisitReq) {
+			Long benFlowID, Boolean isReferedToMammogram, Boolean docVisitReq, Long benVisitCode) {
 		short nurseFlag = (short) 9;
 		short docFlag = (short) 0;
 		short labIteration = (short) 0;
@@ -199,7 +202,7 @@ public class CSServiceImpl implements CSService {
 		int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitID, benVisitDetailsOBJ.getVisitReason(),
 				benVisitDetailsOBJ.getVisitCategory(), nurseFlag, docFlag, labIteration, radiologistFlag,
-				oncologistFlag);
+				oncologistFlag, benVisitCode);
 
 		return i;
 	}
