@@ -32,6 +32,14 @@ public class ExternalLabTestOrder {
 	private Long benVisitID;
 	
 	@Expose
+	@Column(name = "ProviderServiceMapID")
+	private Integer providerServiceMapID;
+	
+	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
+	
+	@Expose
 	@Column(name = "TestName")
 	private String testName;
 	
@@ -337,6 +345,22 @@ public class ExternalLabTestOrder {
 		
 
 		return externalLabTestOrder;
+	}
+
+	public Integer getProviderServiceMapID() {
+		return providerServiceMapID;
+	}
+
+	public void setProviderServiceMapID(Integer providerServiceMapID) {
+		this.providerServiceMapID = providerServiceMapID;
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 
 }

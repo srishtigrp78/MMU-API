@@ -38,6 +38,10 @@ public class BenPersonalHabit {
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
+	
+	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
 
 	@Expose
 	@Column(name = "DietaryType")
@@ -686,6 +690,14 @@ public class BenPersonalHabit {
 
 		}
 		return personalDetails;
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 
 }

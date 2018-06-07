@@ -33,6 +33,10 @@ public class SysGastrointestinalExamination {
 	private Integer providerServiceMapID;
 	
 	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
+	
+	@Expose
 	@Column(name = "Inspection")
 	private String inspection;
 
@@ -326,6 +330,14 @@ public class SysGastrointestinalExamination {
 
 	public void setID(Long iD) {
 		ID = iD;
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 	
 }

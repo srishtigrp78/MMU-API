@@ -42,6 +42,10 @@ public class BeneficiaryChiefComplaint {
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
+	
+	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
 
 	@Expose
 	@Column(name = "ChiefComplaintID")

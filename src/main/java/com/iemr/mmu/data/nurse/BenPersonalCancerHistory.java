@@ -28,9 +28,15 @@ public class BenPersonalCancerHistory {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
+	
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
+	
+	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
+	
 	@Expose
 	@Column(name = "TobaccoUse")
 	private String tobaccoUse;
@@ -436,6 +442,14 @@ public class BenPersonalCancerHistory {
 
 	public void setReservedForChange(String reservedForChange) {
 		this.reservedForChange = reservedForChange;
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 
 }

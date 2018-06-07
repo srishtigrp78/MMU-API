@@ -28,6 +28,9 @@ public class CancerExaminationImageAnnotation {
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
 	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
+	@Expose
 	@Column(name = "CancerImageID")
 	private Integer cancerImageID;
 	@Expose
@@ -276,6 +279,14 @@ public class CancerExaminationImageAnnotation {
 
 	public void setReservedForChange(String reservedForChange) {
 		this.reservedForChange = reservedForChange;
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 
 }

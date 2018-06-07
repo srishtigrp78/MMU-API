@@ -33,6 +33,10 @@ public class BenChiefComplaint {
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
+	
+	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
 
 	@Expose
 	@Column(name = "ChiefComplaintID")
@@ -357,6 +361,16 @@ public class BenChiefComplaint {
 		}
 
 		return resArray;
+	}
+
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 
 }

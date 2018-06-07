@@ -29,9 +29,15 @@ public class BenFamilyCancerHistory {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
+	
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
+	
+	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
+	
 	@Expose
 	@Column(name = "CancerDiseaseType")
 	private String cancerDiseaseType;
@@ -274,6 +280,14 @@ public class BenFamilyCancerHistory {
 
 	public void setCaptureDate(Date captureDate) {
 		this.captureDate = captureDate;
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 
 }

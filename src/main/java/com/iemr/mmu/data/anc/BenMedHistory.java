@@ -37,6 +37,10 @@ public class BenMedHistory {
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
+	
+	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
 
 	@Expose
 	@Column(name = "YearofIllness")
@@ -516,6 +520,14 @@ public class BenMedHistory {
 
 	public void setBenMedHistoryID(Long benMedHistoryID) {
 		this.benMedHistoryID = benMedHistoryID;
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 
 }

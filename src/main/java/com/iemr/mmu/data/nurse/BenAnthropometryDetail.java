@@ -26,9 +26,15 @@ public class BenAnthropometryDetail {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
+	
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
+	
+	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
+	
 	@Expose
 	@Column(name = "Weight_Kg")
 	private Double weight_Kg;
@@ -257,6 +263,14 @@ public class BenAnthropometryDetail {
 
 	public void setID(Long iD) {
 		ID = iD;
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 	
 }

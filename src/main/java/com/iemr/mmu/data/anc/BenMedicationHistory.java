@@ -35,6 +35,10 @@ public class BenMedicationHistory {
 	private Integer providerServiceMapID;
 	
 	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
+	
+	@Expose
 	@Column(name = "CurrentMedication")
 	private String currentMedication;
 	
@@ -281,6 +285,14 @@ public class BenMedicationHistory {
 	public BenMedicationHistory() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 	
 }
