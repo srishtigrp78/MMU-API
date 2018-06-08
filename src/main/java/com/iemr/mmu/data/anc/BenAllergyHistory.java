@@ -369,6 +369,7 @@ public class BenAllergyHistory {
 
 				benAllergyHistory.setBeneficiaryRegID(beneficiaryRegID);
 				benAllergyHistory.setBenVisitID(benVisitID);
+				benAllergyHistory.setVisitCode(visitCode);
 				benAllergyHistory.setProviderServiceMapID(providerServiceMapID);
 				benAllergyHistory.setAllergyStatus(allergyStatus);
 				benAllergyHistory.setCreatedBy(createdBy);
@@ -400,6 +401,7 @@ public class BenAllergyHistory {
 
 				benAllergyHistory.setBeneficiaryRegID(beneficiaryRegID);
 				benAllergyHistory.setBenVisitID(benVisitID);
+				benAllergyHistory.setVisitCode(visitCode);
 				benAllergyHistory.setProviderServiceMapID(providerServiceMapID);
 				benAllergyHistory.setCreatedBy(createdBy);
 

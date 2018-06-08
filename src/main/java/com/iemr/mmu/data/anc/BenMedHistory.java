@@ -412,6 +412,7 @@ public class BenMedHistory {
 
 			benMedHistory.setBeneficiaryRegID(beneficiaryRegID);
 			benMedHistory.setBenVisitID(benVisitID);
+			benMedHistory.setVisitCode(visitCode);
 			benMedHistory.setProviderServiceMapID(providerServiceMapID);
 			benMedHistory.setCreatedBy(createdBy);
 			if (null != pastIllness && pastIllness.size() > i) {

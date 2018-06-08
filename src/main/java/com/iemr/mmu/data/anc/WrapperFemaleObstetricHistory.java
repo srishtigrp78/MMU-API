@@ -38,6 +38,7 @@ public class WrapperFemaleObstetricHistory {
 				FemaleObstetricHistory tmpOBJ = new FemaleObstetricHistory();
 				tmpOBJ.setBeneficiaryRegID(beneficiaryRegID);
 				tmpOBJ.setBenVisitID(benVisitID);
+				tmpOBJ.setVisitCode(visitCode);
 				tmpOBJ.setProviderServiceMapID(providerServiceMapID);
 				tmpOBJ.setCreatedBy(createdBy);
 				tmpOBJ.setTotalNoOfPreg(totalNoOfPreg);

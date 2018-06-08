@@ -490,6 +490,7 @@ public class BenPersonalHabit {
 
 				benPersonalHabit.setBeneficiaryRegID(beneficiaryRegID);
 				benPersonalHabit.setBenVisitID(benVisitID);
+				benPersonalHabit.setVisitCode(visitCode);
 				benPersonalHabit.setProviderServiceMapID(providerServiceMapID);
 				benPersonalHabit.setCreatedBy(createdBy);
 				benPersonalHabit.setDietaryType(dietaryType);
@@ -545,6 +546,7 @@ public class BenPersonalHabit {
 
 				benPersonalHabit.setBeneficiaryRegID(beneficiaryRegID);
 				benPersonalHabit.setBenVisitID(benVisitID);
+				benPersonalHabit.setVisitCode(visitCode);
 				benPersonalHabit.setProviderServiceMapID(providerServiceMapID);
 				benPersonalHabit.setCreatedBy(createdBy);
 

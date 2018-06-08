@@ -349,6 +349,7 @@ public class BenFamilyHistory {
 				BenFamilyHistory benFamilyHistory = new BenFamilyHistory();
 				benFamilyHistory.setBeneficiaryRegID(beneficiaryRegID);
 				benFamilyHistory.setBenVisitID(benVisitID);
+				benFamilyHistory.setVisitCode(visitCode);
 				benFamilyHistory.setProviderServiceMapID(providerServiceMapID);
 				benFamilyHistory.setCreatedBy(createdBy);
 

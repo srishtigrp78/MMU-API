@@ -96,6 +96,7 @@ public class WrapperImmunizationHistory {
 			ChildVaccineDetail1 vaccineDetail = new ChildVaccineDetail1();
 			vaccineDetail.setBeneficiaryRegID(beneficiaryRegID);
 			vaccineDetail.setBenVisitID(benVisitID);
+			vaccineDetail.setVisitCode(visitCode);
 			vaccineDetail.setProviderServiceMapID(providerServiceMapID);
 			vaccineDetail.setCreatedBy(createdBy);
 			vaccineDetail.setModifiedBy(modifiedBy);

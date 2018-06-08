@@ -102,11 +102,17 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		Long saveSuccessFlag = null;
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
 			// Call method to save visit details data
-			Long benVisitID = saveBenVisitDetails(requestOBJ.getAsJsonObject("visitDetails"));
+			Map<String, Long> visitIdAndCodeMap = saveBenVisitDetails(requestOBJ.getAsJsonObject("visitDetails"));
 			
-			//07-06-2018 visit code
-			Long benVisitCode = commonNurseServiceImpl.updateVisitCode(benVisitID, 101, 1);
+			Long benVisitID = null;
+			Long benVisitCode = null;
 
+			if (visitIdAndCodeMap != null && visitIdAndCodeMap.size() > 0 && visitIdAndCodeMap.containsKey("visitID")
+					&& visitIdAndCodeMap.containsKey("visitCode")) {
+				benVisitID = visitIdAndCodeMap.get("visitID");
+				benVisitCode = visitIdAndCodeMap.get("visitCode");
+			}
+			
 			// temporary object for ben flow part. for getting visit reason and
 			// category and ben reg id
 			JsonObject tmpOBJ = requestOBJ.getAsJsonObject("visitDetails").getAsJsonObject("visitDetails");
@@ -120,16 +126,16 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				// call method to save History data
 				if (requestOBJ.has("historyDetails") && !requestOBJ.get("historyDetails").isJsonNull())
 					historySaveSuccessFlag = saveBenGeneralOPDHistoryDetails(
-							requestOBJ.getAsJsonObject("historyDetails"), benVisitID);
+							requestOBJ.getAsJsonObject("historyDetails"), benVisitID, benVisitCode);
 
 				// call method to save vital data
 				if (requestOBJ.has("vitalDetails") && !requestOBJ.get("vitalDetails").isJsonNull())
-					vitalSaveSuccessFlag = saveBenVitalDetails(requestOBJ.getAsJsonObject("vitalDetails"), benVisitID);
+					vitalSaveSuccessFlag = saveBenVitalDetails(requestOBJ.getAsJsonObject("vitalDetails"), benVisitID, benVisitCode);
 
 				// call method to save examination data
 				if (requestOBJ.has("examinationDetails") && !requestOBJ.get("examinationDetails").isJsonNull())
 					examtnSaveSuccessFlag = saveBenExaminationDetails(requestOBJ.getAsJsonObject("examinationDetails"),
-							benVisitID);
+							benVisitID, benVisitCode);
 
 				int i = commonNurseServiceImpl.updateBeneficiaryStatus('N', tmpOBJ.get("beneficiaryRegID").getAsLong());
 			} else {
@@ -169,7 +175,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	}
 
 	@Override
-	public Long saveBenVisitDetails(JsonObject visitDetailsOBJ) throws Exception {
+	public Map<String, Long> saveBenVisitDetails(JsonObject visitDetailsOBJ) throws Exception {
+		Map<String, Long> visitIdAndCodeMap = new HashMap<>();
 		Long benVisitID = null;
 		if (visitDetailsOBJ != null && visitDetailsOBJ.has("visitDetails")
 				&& !visitDetailsOBJ.get("visitDetails").isJsonNull()) {
@@ -178,7 +185,10 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					BeneficiaryVisitDetail.class);
 			benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
 
-			if (benVisitID != null && benVisitID > 0) {
+			// 07-06-2018 visit code
+			Long benVisitCode = commonNurseServiceImpl.generateVisitCode(benVisitID, 101, 1);
+						
+			if (benVisitID != null && benVisitID > 0 && benVisitCode != null && benVisitCode > 0) {
 				if (visitDetailsOBJ.has("chiefComplaints") && !visitDetailsOBJ.get("chiefComplaints").isJsonNull()) {
 					BenChiefComplaint[] benChiefComplaintArray = InputMapper.gson()
 							.fromJson(visitDetailsOBJ.get("chiefComplaints"), BenChiefComplaint[].class);
@@ -187,18 +197,21 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					if (null != benChiefComplaintList && benChiefComplaintList.size() > 0) {
 						for (BenChiefComplaint benChiefComplaint : benChiefComplaintList) {
 							benChiefComplaint.setBenVisitID(benVisitID);
+							benChiefComplaint.setVisitCode(benVisitCode);
 						}
 					}
 					// Save Beneficiary Chief Complaints
 					commonNurseServiceImpl.saveBenChiefComplaints(benChiefComplaintList);
 				}
 			}
+			visitIdAndCodeMap.put("visitID", benVisitID);
+			visitIdAndCodeMap.put("visitCode", benVisitCode);
 		}
-		return benVisitID;
+		return visitIdAndCodeMap;
 	}
 
 	@Override
-	public Long saveBenGeneralOPDHistoryDetails(JsonObject generalOPDHistoryOBJ, Long benVisitID) throws Exception {
+	public Long saveBenGeneralOPDHistoryDetails(JsonObject generalOPDHistoryOBJ, Long benVisitID, Long benVisitCode) throws Exception {
 		Long pastHistorySuccessFlag = null;
 		Long comrbidSuccessFlag = null;
 		Long medicationSuccessFlag = null;
@@ -220,6 +233,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					BenMedHistory.class);
 			if (null != benMedHistory) {
 				benMedHistory.setBenVisitID(benVisitID);
+				benMedHistory.setVisitCode(benVisitCode);
 				pastHistorySuccessFlag = commonNurseServiceImpl.saveBenPastHistory(benMedHistory);
 			}
 
@@ -234,6 +248,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					.fromJson(generalOPDHistoryOBJ.get("comorbidConditions"), WrapperComorbidCondDetails.class);
 			if (null != wrapperComorbidCondDetails) {
 				wrapperComorbidCondDetails.setBenVisitID(benVisitID);
+				wrapperComorbidCondDetails.setVisitCode(benVisitCode);
 				comrbidSuccessFlag = commonNurseServiceImpl.saveBenComorbidConditions(wrapperComorbidCondDetails);
 			}
 		} else {
@@ -247,6 +262,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					.fromJson(generalOPDHistoryOBJ.get("medicationHistory"), WrapperMedicationHistory.class);
 			if (null != wrapperMedicationHistory) {
 				wrapperMedicationHistory.setBenVisitID(benVisitID);
+				wrapperMedicationHistory.setVisitCode(benVisitCode);
 				medicationSuccessFlag = commonNurseServiceImpl.saveBenMedicationHistory(wrapperMedicationHistory);
 			}
 
@@ -262,6 +278,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 			if (wrapperFemaleObstetricHistory != null) {
 				wrapperFemaleObstetricHistory.setBenVisitID(benVisitID);
+				wrapperFemaleObstetricHistory.setVisitCode(benVisitCode);
 				obstetricSuccessFlag = commonNurseServiceImpl.saveFemaleObstetricHistory(wrapperFemaleObstetricHistory);
 			} else {
 				// Female Obstetric Details not provided.
@@ -278,6 +295,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					.fromJson(generalOPDHistoryOBJ.get("menstrualHistory"), BenMenstrualDetails.class);
 			if (null != menstrualDetails) {
 				menstrualDetails.setBenVisitID(benVisitID);
+				menstrualDetails.setVisitCode(benVisitCode);
 				menstrualHistorySuccessFlag = commonNurseServiceImpl.saveBenMenstrualHistory(menstrualDetails);
 			}
 
@@ -292,6 +310,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					BenFamilyHistory.class);
 			if (null != benFamilyHistory) {
 				benFamilyHistory.setBenVisitID(benVisitID);
+				benFamilyHistory.setVisitCode(benVisitCode);
 				familyHistorySuccessFlag = commonNurseServiceImpl.saveBenFamilyHistory(benFamilyHistory);
 			}
 		} else {
@@ -306,6 +325,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					BenPersonalHabit.class);
 			if (null != personalHabit) {
 				personalHabit.setBenVisitID(benVisitID);
+				personalHabit.setVisitCode(benVisitCode);
 				personalHistorySuccessFlag = commonNurseServiceImpl.savePersonalHistory(personalHabit);
 			}
 
@@ -313,6 +333,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					.fromJson(generalOPDHistoryOBJ.get("personalHistory"), BenAllergyHistory.class);
 			if (null != benAllergyHistory) {
 				benAllergyHistory.setBenVisitID(benVisitID);
+				benAllergyHistory.setVisitCode(benVisitCode);
 				allergyHistorySuccessFlag = commonNurseServiceImpl.saveAllergyHistory(benAllergyHistory);
 			}
 
@@ -328,6 +349,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					.fromJson(generalOPDHistoryOBJ.get("childVaccineDetails"), WrapperChildOptionalVaccineDetail.class);
 			if (null != wrapperChildVaccineDetail) {
 				wrapperChildVaccineDetail.setBenVisitID(benVisitID);
+				wrapperChildVaccineDetail.setVisitCode(benVisitCode);
 				childVaccineSuccessFlag = commonNurseServiceImpl
 						.saveChildOptionalVaccineDetail(wrapperChildVaccineDetail);
 			} else {
@@ -345,6 +367,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					.fromJson(generalOPDHistoryOBJ.get("immunizationHistory"), WrapperImmunizationHistory.class);
 			if (null != wrapperImmunizationHistory) {
 				wrapperImmunizationHistory.setBenVisitID(benVisitID);
+				wrapperImmunizationHistory.setVisitCode(benVisitCode);
 				immunizationSuccessFlag = commonNurseServiceImpl.saveImmunizationHistory(wrapperImmunizationHistory);
 			} else {
 
@@ -363,6 +386,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 			if (null != benChildDevelopmentHistory) {
 				benChildDevelopmentHistory.setBenVisitID(benVisitID);
+				benChildDevelopmentHistory.setVisitCode(benVisitCode);
 				developmentHistorySuccessFlag = commonNurseServiceImpl
 						.saveChildDevelopmentHistory(benChildDevelopmentHistory);
 			}
@@ -379,6 +403,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 			if (null != childFeedingDetails) {
 				childFeedingDetails.setBenVisitID(benVisitID);
+				childFeedingDetails.setVisitCode(benVisitCode);
 				childFeedingSuccessFlag = commonNurseServiceImpl.saveChildFeedingHistory(childFeedingDetails);
 			}
 
@@ -395,6 +420,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 			if (null != perinatalHistory) {
 				perinatalHistory.setBenVisitID(benVisitID);
+				perinatalHistory.setVisitCode(benVisitCode);
 				perinatalHistorySuccessFlag = commonNurseServiceImpl.savePerinatalHistory(perinatalHistory);
 			}
 
@@ -425,7 +451,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	}
 
 	@Override
-	public Long saveBenVitalDetails(JsonObject vitalDetailsOBJ, Long benVisitID) throws Exception {
+	public Long saveBenVitalDetails(JsonObject vitalDetailsOBJ, Long benVisitID, Long benVisitCode) throws Exception {
 		Long vitalSuccessFlag = null;
 		Long anthropometrySuccessFlag = null;
 		Long phyVitalSuccessFlag = null;
@@ -438,11 +464,13 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 			if (null != benAnthropometryDetail) {
 				benAnthropometryDetail.setBenVisitID(benVisitID);
+				benAnthropometryDetail.setVisitCode(benVisitCode);
 				anthropometrySuccessFlag = commonNurseServiceImpl
 						.saveBeneficiaryPhysicalAnthropometryDetails(benAnthropometryDetail);
 			}
 			if (null != benPhysicalVitalDetail) {
 				benPhysicalVitalDetail.setBenVisitID(benVisitID);
+				benPhysicalVitalDetail.setVisitCode(benVisitCode);
 				phyVitalSuccessFlag = commonNurseServiceImpl
 						.saveBeneficiaryPhysicalVitalDetails(benPhysicalVitalDetail);
 			}
@@ -459,7 +487,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	}
 
 	@Override
-	public Long saveBenExaminationDetails(JsonObject examinationDetailsOBJ, Long benVisitID) throws Exception {
+	public Long saveBenExaminationDetails(JsonObject examinationDetailsOBJ, Long benVisitID, Long benVisitCode) throws Exception {
 
 		Long genExmnSuccessFlag = null;
 		Long headToToeExmnSuccessFlag = null;
@@ -477,6 +505,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					.fromJson(examinationDetailsOBJ.get("generalExamination"), PhyGeneralExamination.class);
 			if (null != generalExamination) {
 				generalExamination.setBenVisitID(benVisitID);
+				generalExamination.setVisitCode(benVisitCode);
 				genExmnSuccessFlag = commonNurseServiceImpl.savePhyGeneralExamination(generalExamination);
 			}
 
@@ -491,6 +520,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					.fromJson(examinationDetailsOBJ.get("headToToeExamination"), PhyHeadToToeExamination.class);
 			if (null != headToToeExamination) {
 				headToToeExamination.setBenVisitID(benVisitID);
+				headToToeExamination.setVisitCode(benVisitCode);
 				headToToeExmnSuccessFlag = commonNurseServiceImpl.savePhyHeadToToeExamination(headToToeExamination);
 			}
 
@@ -505,6 +535,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					examinationDetailsOBJ.get("gastroIntestinalExamination"), SysGastrointestinalExamination.class);
 			if (null != gastrointestinalExamination) {
 				gastrointestinalExamination.setBenVisitID(benVisitID);
+				gastrointestinalExamination.setVisitCode(benVisitCode);
 				gastroIntsExmnSuccessFlag = commonNurseServiceImpl
 						.saveSysGastrointestinalExamination(gastrointestinalExamination);
 
@@ -520,6 +551,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					examinationDetailsOBJ.get("cardioVascularExamination"), SysCardiovascularExamination.class);
 			if (null != cardiovascularExamination) {
 				cardiovascularExamination.setBenVisitID(benVisitID);
+				cardiovascularExamination.setVisitCode(benVisitCode);
 				cardiExmnSuccessFlag = commonNurseServiceImpl
 						.saveSysCardiovascularExamination(cardiovascularExamination);
 
@@ -535,6 +567,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					examinationDetailsOBJ.get("respiratorySystemExamination"), SysRespiratoryExamination.class);
 			if (null != sysRespiratoryExamination) {
 				sysRespiratoryExamination.setBenVisitID(benVisitID);
+				sysRespiratoryExamination.setVisitCode(benVisitCode);
 				respiratoryExmnSuccessFlag = commonNurseServiceImpl
 						.saveSysRespiratoryExamination(sysRespiratoryExamination);
 			}
@@ -549,6 +582,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					examinationDetailsOBJ.get("centralNervousSystemExamination"), SysCentralNervousExamination.class);
 			if (null != sysCentralNervousExamination) {
 				sysCentralNervousExamination.setBenVisitID(benVisitID);
+				sysCentralNervousExamination.setVisitCode(benVisitCode);
 				centralNrvsExmnSuccessFlag = commonNurseServiceImpl
 						.saveSysCentralNervousExamination(sysCentralNervousExamination);
 			}
@@ -564,6 +598,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					SysMusculoskeletalSystemExamination.class);
 			if (null != sysMusculoskeletalSystemExamination) {
 				sysMusculoskeletalSystemExamination.setBenVisitID(benVisitID);
+				sysMusculoskeletalSystemExamination.setVisitCode(benVisitCode);
 				muskelstlExmnSuccessFlag = commonNurseServiceImpl
 						.saveSysMusculoskeletalSystemExamination(sysMusculoskeletalSystemExamination);
 
@@ -580,6 +615,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					SysGenitourinarySystemExamination.class);
 			if (null != sysGenitourinarySystemExamination) {
 				sysGenitourinarySystemExamination.setBenVisitID(benVisitID);
+				sysGenitourinarySystemExamination.setVisitCode(benVisitCode);
 				genitorinaryExmnSuccessFlag = commonNurseServiceImpl
 						.saveSysGenitourinarySystemExamination(sysGenitourinarySystemExamination);
 
