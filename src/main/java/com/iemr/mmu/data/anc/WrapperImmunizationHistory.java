@@ -1,16 +1,14 @@
 package com.iemr.mmu.data.anc;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.map.HashedMap;
-
 public class WrapperImmunizationHistory {
 	private Long beneficiaryRegID;
 	private Long benVisitID;
+	private Long visitCode;
 	private Integer providerServiceMapID;
 	private String createdBy;
 	private String modifiedBy;
@@ -41,6 +39,38 @@ public class WrapperImmunizationHistory {
 		this.benVisitID = benVisitID;
 	}
 
+	public Long getBeneficiaryRegID() {
+		return beneficiaryRegID;
+	}
+
+	public void setBeneficiaryRegID(Long beneficiaryRegID) {
+		this.beneficiaryRegID = beneficiaryRegID;
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
+	}
+
+	public Integer getProviderServiceMapID() {
+		return providerServiceMapID;
+	}
+
+	public void setProviderServiceMapID(Integer providerServiceMapID) {
+		this.providerServiceMapID = providerServiceMapID;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
 	public ArrayList<ChildVaccineDetail1> getBenChildVaccineDetails() {
 
 		ArrayList<ChildVaccineDetail1> childVaccineDetailList = new ArrayList<ChildVaccineDetail1>();
@@ -54,6 +84,7 @@ public class WrapperImmunizationHistory {
 							(Boolean) vaccine.get("status"));
 					vaccineDetail.setBeneficiaryRegID(beneficiaryRegID);
 					vaccineDetail.setBenVisitID(benVisitID);
+					vaccineDetail.setVisitCode(visitCode);
 					vaccineDetail.setProviderServiceMapID(providerServiceMapID);
 					vaccineDetail.setCreatedBy(createdBy);
 					vaccineDetail.setModifiedBy(modifiedBy);

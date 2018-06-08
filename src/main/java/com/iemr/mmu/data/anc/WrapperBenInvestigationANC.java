@@ -8,6 +8,7 @@ import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
 public class WrapperBenInvestigationANC {
 	private Long beneficiaryRegID;
 	private Long benVisitID;
+	private Long visitCode;
 	private Integer providerServiceMapID;
 	private Long prescriptionID;
 	private String externalInvestigations;
@@ -43,6 +44,15 @@ public class WrapperBenInvestigationANC {
 
 	public void setBenVisitID(Long benVisitID) {
 		this.benVisitID = benVisitID;
+	}
+		
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 
 	public Integer getProviderServiceMapID() {

@@ -6,6 +6,7 @@ import java.util.Map;
 public class WrapperCancerExamImgAnotasn {
 	private Long beneficiaryRegID;
 	private Long visitID;
+	private Long visitCode;
 	private Integer providerServiceMapID;
 	private Integer imageID;
 	private ArrayList<Map<String, Object>> markers;
@@ -23,6 +24,15 @@ public class WrapperCancerExamImgAnotasn {
 		this.imageID = imageID;
 		this.markers = markers;
 		this.createdBy = createdBy;
+	}
+
+	
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 
 	public Long getBeneficiaryRegID() {

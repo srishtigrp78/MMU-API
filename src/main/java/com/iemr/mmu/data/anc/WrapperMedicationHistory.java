@@ -10,6 +10,7 @@ public class WrapperMedicationHistory {
 
 	private Long beneficiaryRegID;
 	private Long benVisitID;
+	private Long visitCode;
 	private Integer providerServiceMapID;
 	private String createdBy;
 
@@ -39,6 +40,31 @@ public class WrapperMedicationHistory {
 		this.benVisitID = benVisitID;
 	}
 
+	
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
+	}
+
+	public Integer getProviderServiceMapID() {
+		return providerServiceMapID;
+	}
+
+	public void setProviderServiceMapID(Integer providerServiceMapID) {
+		this.providerServiceMapID = providerServiceMapID;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
 	public ArrayList<BenMedicationHistory> getBenMedicationHistoryDetails() {
 		ArrayList<BenMedicationHistory> medicationHistoryListTMP = new ArrayList<>();
 		for (BenMedicationHistory medicationHistory : medicationHistoryList) {
@@ -48,6 +74,7 @@ public class WrapperMedicationHistory {
 
 				medicationHistory.setBeneficiaryRegID(beneficiaryRegID);
 				medicationHistory.setBenVisitID(benVisitID);
+				medicationHistory.setVisitCode(visitCode);
 				medicationHistory.setProviderServiceMapID(providerServiceMapID);
 				medicationHistory.setCreatedBy(createdBy);
 

@@ -110,9 +110,9 @@ public class CSServiceImpl implements CSService {
 					BeneficiaryVisitDetail.class);
 
 			Long benVisitID = saveBenVisitDetails(benVisitDetailsOBJ);
-			
-			//07-06-2018 visit code
-			Long benVisitCode = commonNurseServiceImpl.updateVisitCode(benVisitID, 101, 1);
+
+			// 07-06-2018 visit code
+			Long benVisitCode = commonNurseServiceImpl.generateVisitCode(benVisitID, 101, 1);
 
 			// Getting benflowID for ben status update
 			Long benFlowID = null;
@@ -151,7 +151,8 @@ public class CSServiceImpl implements CSService {
 				// call method to save history data
 				Long historySaveSuccessFlag = saveBenHistoryDetails(requestOBJ, benVisitID, benVisitCode);
 				// call method to save Examination data
-				Long examinationSuccessFlag = saveBenExaminationDetails(requestOBJ, benVisitID, Authorization, benVisitCode);
+				Long examinationSuccessFlag = saveBenExaminationDetails(requestOBJ, benVisitID, Authorization,
+						benVisitCode);
 				// call method to save vitals data
 				Long vitalSaveSuccessFlag = saveBenVitalsDetails(requestOBJ, benVisitID, benVisitCode);
 
@@ -159,7 +160,8 @@ public class CSServiceImpl implements CSService {
 						&& (examinationSuccessFlag != null && examinationSuccessFlag > 0)
 						&& (vitalSaveSuccessFlag != null && vitalSaveSuccessFlag > 0)) {
 
-				//	Integer i = commonNurseServiceImpl.updateBeneficiaryStatus('N', getBenRegID(requestOBJ));
+					// Integer i = commonNurseServiceImpl.updateBeneficiaryStatus('N',
+					// getBenRegID(requestOBJ));
 
 					nurseDataSuccessFlag = examinationSuccessFlag;
 
@@ -338,13 +340,14 @@ public class CSServiceImpl implements CSService {
 	 * @return success or failure flag for vitals data saving
 	 * @throws Exception
 	 */
-	public Long saveBenVitalsDetails(JsonObject requestOBJ, Long benVisitID) throws Exception {
+	public Long saveBenVitalsDetails(JsonObject requestOBJ, Long benVisitID, Long benVisitCode) throws Exception {
 		Long benVitalSaveSuccessFlag = null;
 		if (requestOBJ != null && requestOBJ.has("vitalsDetails") && !requestOBJ.get("vitalsDetails").isJsonNull()) {
 			BenCancerVitalDetail benCancerVitalDetail = InputMapper.gson().fromJson(requestOBJ.get("vitalsDetails"),
 					BenCancerVitalDetail.class);
 			if (benCancerVitalDetail != null) {
 				benCancerVitalDetail.setBenVisitID(benVisitID);
+				benCancerVitalDetail.setVisitCode(benVisitCode);
 				benVitalSaveSuccessFlag = cSNurseServiceImpl.saveBenVitalDetail(benCancerVitalDetail);
 			}
 		} else {
@@ -700,8 +703,8 @@ public class CSServiceImpl implements CSService {
 	 * @return success or failure flag for Examination data saving
 	 */
 
-	public Long saveBenExaminationDetails(JsonObject requestOBJ, Long benVisitID, String Authorization)
-			throws Exception {
+	public Long saveBenExaminationDetails(JsonObject requestOBJ, Long benVisitID, String Authorization,
+			Long benVisitCode) throws Exception {
 		Long signSympSuccessFlag = null;
 		Long lymphNodeSuccessFlag = null;
 		Long oralDetailsSuccessFlag = null;
@@ -725,7 +728,7 @@ public class CSServiceImpl implements CSService {
 
 				if (null != wrapperCancerSymptoms.getCancerSignAndSymptoms()) {
 					Long ID = cSNurseServiceImpl.saveCancerSignAndSymptomsData(
-							wrapperCancerSymptoms.getCancerSignAndSymptoms(), benVisitID);
+							wrapperCancerSymptoms.getCancerSignAndSymptoms(), benVisitID, benVisitCode);
 					if (ID > 0 && ID != null) {
 						// SignAndSymptoms Details stored successfully..
 						signSympSuccessFlag = ID;
@@ -740,7 +743,7 @@ public class CSServiceImpl implements CSService {
 				if (null != wrapperCancerSymptoms.getCancerLymphNodeDetails()
 						&& wrapperCancerSymptoms.getCancerLymphNodeDetails().size() > 0) {
 					Long ID = cSNurseServiceImpl.saveLymphNodeDetails(wrapperCancerSymptoms.getCancerLymphNodeDetails(),
-							benVisitID);
+							benVisitID, benVisitCode);
 					if (null != ID && ID > 0) {
 						// LymphNode Details stored successfully..
 						lymphNodeSuccessFlag = ID;
@@ -763,6 +766,7 @@ public class CSServiceImpl implements CSService {
 				CancerOralExamination cancerOralExamination = InputMapper.gson()
 						.fromJson(examinationOBJ.get("oralDetails"), CancerOralExamination.class);
 				cancerOralExamination.setBenVisitID(benVisitID);
+				cancerOralExamination.setVisitCode(benVisitCode);
 				Long ID = cSNurseServiceImpl.saveCancerOralExaminationData(cancerOralExamination);
 				if (ID != null && ID > 0) {
 					// oralDetails stored successfully...
@@ -782,6 +786,7 @@ public class CSServiceImpl implements CSService {
 				CancerBreastExamination cancerBreastExamination = InputMapper.gson()
 						.fromJson(examinationOBJ.get("breastDetails"), CancerBreastExamination.class);
 				cancerBreastExamination.setBenVisitID(benVisitID);
+				cancerBreastExamination.setVisitCode(benVisitCode);
 				Long ID = cSNurseServiceImpl.saveCancerBreastExaminationData(cancerBreastExamination);
 				if (ID != null && ID > 0) {
 					// breastDetails stored successfully...
@@ -816,6 +821,7 @@ public class CSServiceImpl implements CSService {
 				CancerAbdominalExamination cancerAbdominalExamination = InputMapper.gson()
 						.fromJson(examinationOBJ.get("abdominalDetails"), CancerAbdominalExamination.class);
 				cancerAbdominalExamination.setBenVisitID(benVisitID);
+				cancerAbdominalExamination.setVisitCode(benVisitCode);
 				Long ID = cSNurseServiceImpl.saveCancerAbdominalExaminationData(cancerAbdominalExamination);
 				if (ID != null && ID > 0) {
 					// abdominalDetails stored successfully...
@@ -835,6 +841,7 @@ public class CSServiceImpl implements CSService {
 				CancerGynecologicalExamination cancerGynecologicalExamination = InputMapper.gson()
 						.fromJson(examinationOBJ.get("gynecologicalDetails"), CancerGynecologicalExamination.class);
 				cancerGynecologicalExamination.setBenVisitID(benVisitID);
+				cancerGynecologicalExamination.setVisitCode(benVisitCode);
 				Long ID = cSNurseServiceImpl.saveCancerGynecologicalExaminationData(cancerGynecologicalExamination);
 				if (ID != null && ID > 0) {
 					// gynecologicalDetails stored successfully...
@@ -858,7 +865,7 @@ public class CSServiceImpl implements CSService {
 						.asList(wrapperCancerExamImgAnotasn);
 				if (null != wrapperCancerExamImgAnotasnList && wrapperCancerExamImgAnotasnList.size() > 0) {
 					Long r = cSNurseServiceImpl.saveDocExaminationImageAnnotation(wrapperCancerExamImgAnotasnList,
-							benVisitID);
+							benVisitID, benVisitCode);
 					if (r != null && r > 0) {
 						// imageCoordinates stored successfully...
 						imgCoordinatesSuccessFlag = r;

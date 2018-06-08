@@ -103,13 +103,19 @@ public class ANCServiceImpl implements ANCService {
 		Long saveSuccessFlag = null;
 		// check if visit details data is not null
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
+
 			// Call method to save visit details data
-			Long benVisitID = saveBenVisitDetails(requestOBJ.getAsJsonObject("visitDetails"));
-			
-			//07-06-2018 visit code
-			Long benVisitCode = commonNurseServiceImpl.updateVisitCode(benVisitID, 101, 1);
-			
-			
+			Map<String, Long> visitIdAndCodeMap = saveBenVisitDetails(requestOBJ.getAsJsonObject("visitDetails"));
+
+			Long benVisitID = null;
+			Long benVisitCode = null;
+
+			if (visitIdAndCodeMap != null && visitIdAndCodeMap.size() > 0 && visitIdAndCodeMap.containsKey("visitID")
+					&& visitIdAndCodeMap.containsKey("visitCode")) {
+				benVisitID = visitIdAndCodeMap.get("visitID");
+				benVisitCode = visitIdAndCodeMap.get("visitCode");
+			}
+
 			Long ancSaveSuccessFlag = null;
 			Long historySaveSuccessFlag = null;
 			Long vitalSaveSuccessFlag = null;
@@ -126,14 +132,16 @@ public class ANCServiceImpl implements ANCService {
 			}
 
 			if (benVisitID != null && benVisitID > 0) {
-				
+
 				// call method to save ANC data
-				ancSaveSuccessFlag = saveBenANCDetails(requestOBJ.getAsJsonObject("ancDetails"), benVisitID, benVisitCode);
+				ancSaveSuccessFlag = saveBenANCDetails(requestOBJ.getAsJsonObject("ancDetails"), benVisitID,
+						benVisitCode);
 				// call method to save History data
 				historySaveSuccessFlag = saveBenANCHistoryDetails(requestOBJ.getAsJsonObject("historyDetails"),
 						benVisitID, benVisitCode);
 				// call method to save Vital data
-				vitalSaveSuccessFlag = saveBenANCVitalDetails(requestOBJ.getAsJsonObject("vitalDetails"), benVisitID, benVisitCode);
+				vitalSaveSuccessFlag = saveBenANCVitalDetails(requestOBJ.getAsJsonObject("vitalDetails"), benVisitID,
+						benVisitCode);
 				// call method to save Examination data
 				examtnSaveSuccessFlag = saveBenANCExaminationDetails(requestOBJ.getAsJsonObject("examinationDetails"),
 						benVisitID, benVisitCode);
@@ -144,7 +152,8 @@ public class ANCServiceImpl implements ANCService {
 				// JsonObject tmpOBJ1 =
 				// tmpOBJ.get("visitDetails").getAsJsonObject();
 
-				//i = commonNurseServiceImpl.updateBeneficiaryStatus('N', tmpOBJ.get("beneficiaryRegID").getAsLong());
+				// i = commonNurseServiceImpl.updateBeneficiaryStatus('N',
+				// tmpOBJ.get("beneficiaryRegID").getAsLong());
 			} else {
 				// Error in visit details saving or it is null
 			}
@@ -153,7 +162,7 @@ public class ANCServiceImpl implements ANCService {
 					&& (null != vitalSaveSuccessFlag && vitalSaveSuccessFlag > 0)
 					&& (null != examtnSaveSuccessFlag && examtnSaveSuccessFlag > 0)) {
 				// removed on 07-06-2018 not using this logic anymore
-				//&& (i != null)
+				// && (i != null)
 
 				saveSuccessFlag = ancSaveSuccessFlag;
 
@@ -196,7 +205,8 @@ public class ANCServiceImpl implements ANCService {
 
 		int rs = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				tmpOBJ.get("beneficiaryRegID").getAsLong(), benVisitID, tmpOBJ.get("visitReason").getAsString(),
-				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0, visitCode);
+				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0,
+				visitCode);
 
 		return rs;
 	}
@@ -252,7 +262,8 @@ public class ANCServiceImpl implements ANCService {
 							wrapperBenInvestigationANC.getBenVisitID(),
 							wrapperBenInvestigationANC.getProviderServiceMapID(),
 							wrapperBenInvestigationANC.getCreatedBy(),
-							wrapperBenInvestigationANC.getExternalInvestigations());
+							wrapperBenInvestigationANC.getExternalInvestigations(),
+							wrapperBenInvestigationANC.getVisitCode());
 
 					// bvID = wrapperBenInvestigationANC.getBenVisitID();
 
@@ -373,7 +384,8 @@ public class ANCServiceImpl implements ANCService {
 	 * @param requestOBJ
 	 * @return success or failure flag for visitDetails data saving
 	 */
-	public Long saveBenVisitDetails(JsonObject visitDetailsOBJ) throws Exception {
+	public Map<String, Long> saveBenVisitDetails(JsonObject visitDetailsOBJ) throws Exception {
+		Map<String, Long> visitIdAndCodeMap = new HashMap<>();
 		Long benVisitID = null;
 		int investigationSuccessFlag = 0;
 		int adherenceSuccessFlag = 0;
@@ -385,10 +397,10 @@ public class ANCServiceImpl implements ANCService {
 					BeneficiaryVisitDetail.class);
 			benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
 
-			// benVisitID =
-			// nurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
+			// 07-06-2018 visit code
+			Long benVisitCode = commonNurseServiceImpl.generateVisitCode(benVisitID, 101, 1);
 
-			if (benVisitID != null && benVisitID > 0) {
+			if (benVisitID != null && benVisitID > 0 && benVisitCode != null && benVisitCode > 0) {
 				if (visitDetailsOBJ.has("chiefComplaints") && !visitDetailsOBJ.get("chiefComplaints").isJsonNull()) {
 					// Save Ben Chief Complaints
 					BenChiefComplaint[] benChiefComplaintArray = InputMapper.gson()
@@ -398,6 +410,7 @@ public class ANCServiceImpl implements ANCService {
 					if (null != benChiefComplaintList && benChiefComplaintList.size() > 0) {
 						for (BenChiefComplaint benChiefComplaint : benChiefComplaintList) {
 							benChiefComplaint.setBenVisitID(benVisitID);
+							benChiefComplaint.setVisitCode(benVisitCode);
 						}
 					}
 					chiefComplaintsSuccessFlag = commonNurseServiceImpl.saveBenChiefComplaints(benChiefComplaintList);
@@ -407,6 +420,7 @@ public class ANCServiceImpl implements ANCService {
 					BenAdherence benAdherence = InputMapper.gson().fromJson(visitDetailsOBJ.get("adherence"),
 							BenAdherence.class);
 					benAdherence.setBenVisitID(benVisitID);
+					benAdherence.setVisitCode(benVisitCode);
 					adherenceSuccessFlag = commonNurseServiceImpl.saveBenAdherenceDetails(benAdherence);
 				}
 				if (visitDetailsOBJ.has("investigation") && !visitDetailsOBJ.get("investigation").isJsonNull()
@@ -420,6 +434,7 @@ public class ANCServiceImpl implements ANCService {
 
 					if (wrapperBenInvestigationANC != null) {
 						wrapperBenInvestigationANC.setBenVisitID(benVisitID);
+						wrapperBenInvestigationANC.setVisitCode(benVisitCode);
 						investigationSuccessFlag = commonNurseServiceImpl
 								.saveBenInvestigationDetails(wrapperBenInvestigationANC);
 
@@ -437,8 +452,12 @@ public class ANCServiceImpl implements ANCService {
 
 				// TODO Save Ben Upload Files
 			}
+
+			visitIdAndCodeMap.put("visitID", benVisitID);
+			visitIdAndCodeMap.put("visitCode", benVisitCode);
 		}
-		return benVisitID;
+
+		return visitIdAndCodeMap;
 	}
 
 	/**
@@ -468,6 +487,7 @@ public class ANCServiceImpl implements ANCService {
 					.fromJson(ancDetailsOBJ.get("ancImmunization"), WrapperAncImmunization.class);
 			if (null != wrapperAncImmunizationOBJ) {
 				wrapperAncImmunizationOBJ.setBenVisitID(benVisitID);
+				wrapperAncImmunizationOBJ.setVisitCode(benVisitCode);
 				ancImunizationSuccessFlag = ancNurseServiceImpl.saveAncImmunizationDetails(wrapperAncImmunizationOBJ);
 			}
 
@@ -485,7 +505,8 @@ public class ANCServiceImpl implements ANCService {
 	 * @param requestOBJ
 	 * @return success or failure flag for history data saving
 	 */
-	public Long saveBenANCHistoryDetails(JsonObject ancHistoryOBJ, Long benVisitID, Long benVisitCode) throws Exception {
+	public Long saveBenANCHistoryDetails(JsonObject ancHistoryOBJ, Long benVisitID, Long benVisitCode)
+			throws Exception {
 		Long pastHistorySuccessFlag = null;
 		Long comrbidSuccessFlag = null;
 		Long medicationSuccessFlag = null;
@@ -519,6 +540,7 @@ public class ANCServiceImpl implements ANCService {
 					.fromJson(ancHistoryOBJ.get("comorbidConditions"), WrapperComorbidCondDetails.class);
 			if (null != wrapperComorbidCondDetails) {
 				wrapperComorbidCondDetails.setBenVisitID(benVisitID);
+				wrapperComorbidCondDetails.setVisitCode(benVisitCode);
 				comrbidSuccessFlag = commonNurseServiceImpl.saveBenComorbidConditions(wrapperComorbidCondDetails);
 				// comrbidSuccessFlag =
 				// ancNurseServiceImpl.saveBenANCComorbidConditions(wrapperComorbidCondDetails);
@@ -532,6 +554,7 @@ public class ANCServiceImpl implements ANCService {
 					.fromJson(ancHistoryOBJ.get("medicationHistory"), WrapperMedicationHistory.class);
 			if (null != wrapperMedicationHistory) {
 				wrapperMedicationHistory.setBenVisitID(benVisitID);
+				wrapperMedicationHistory.setVisitCode(benVisitCode);
 				medicationSuccessFlag = commonNurseServiceImpl.saveBenMedicationHistory(wrapperMedicationHistory);
 
 				// medicationSuccessFlag =
@@ -547,6 +570,7 @@ public class ANCServiceImpl implements ANCService {
 					BenPersonalHabit.class);
 			if (null != personalHabit) {
 				personalHabit.setBenVisitID(benVisitID);
+				personalHabit.setVisitCode(benVisitCode);
 
 				personalHistorySuccessFlag = commonNurseServiceImpl.savePersonalHistory(personalHabit);
 				// personalHistorySuccessFlag =
@@ -557,6 +581,7 @@ public class ANCServiceImpl implements ANCService {
 					BenAllergyHistory.class);
 			if (null != benAllergyHistory) {
 				benAllergyHistory.setBenVisitID(benVisitID);
+				benAllergyHistory.setVisitCode(benVisitCode);
 
 				allergyHistorySuccessFlag = commonNurseServiceImpl.saveAllergyHistory(benAllergyHistory);
 				// allergyHistorySuccessFlag =
@@ -572,6 +597,7 @@ public class ANCServiceImpl implements ANCService {
 					BenFamilyHistory.class);
 			if (null != benFamilyHistory) {
 				benFamilyHistory.setBenVisitID(benVisitID);
+				benFamilyHistory.setVisitCode(benVisitCode);
 				familyHistorySuccessFlag = commonNurseServiceImpl.saveBenFamilyHistory(benFamilyHistory);
 				// familyHistorySuccessFlag =
 				// ancNurseServiceImpl.saveANCBenFamilyHistory(benFamilyHistory);
@@ -585,6 +611,7 @@ public class ANCServiceImpl implements ANCService {
 					BenMenstrualDetails.class);
 			if (null != menstrualDetails) {
 				menstrualDetails.setBenVisitID(benVisitID);
+				menstrualDetails.setVisitCode(benVisitCode);
 				menstrualHistorySuccessFlag = commonNurseServiceImpl.saveBenMenstrualHistory(menstrualDetails);
 				// menstrualHistorySuccessFlag =
 				// ancNurseServiceImpl.saveBenANCMenstrualHistory(menstrualDetails);
@@ -600,6 +627,7 @@ public class ANCServiceImpl implements ANCService {
 
 			if (wrapperFemaleObstetricHistory != null) {
 				wrapperFemaleObstetricHistory.setBenVisitID(benVisitID);
+				wrapperFemaleObstetricHistory.setVisitCode(benVisitCode);
 				obstetricSuccessFlag = commonNurseServiceImpl.saveFemaleObstetricHistory(wrapperFemaleObstetricHistory);
 				// obstetricSuccessFlag =
 				// ancNurseServiceImpl.saveFemaleObstetricHistory(wrapperFemaleObstetricHistory);
@@ -619,6 +647,7 @@ public class ANCServiceImpl implements ANCService {
 					.fromJson(ancHistoryOBJ.get("immunizationHistory"), WrapperImmunizationHistory.class);
 			if (null != wrapperImmunizationHistory) {
 				wrapperImmunizationHistory.setBenVisitID(benVisitID);
+				wrapperImmunizationHistory.setVisitCode(benVisitCode);
 				immunizationSuccessFlag = commonNurseServiceImpl.saveImmunizationHistory(wrapperImmunizationHistory);
 				// immunizationSuccessFlag =
 				// ancNurseServiceImpl.saveANCImmunizationHistory(wrapperImmunizationHistory);
@@ -638,6 +667,7 @@ public class ANCServiceImpl implements ANCService {
 					.fromJson(ancHistoryOBJ.get("childVaccineDetails"), WrapperChildOptionalVaccineDetail.class);
 			if (null != wrapperChildVaccineDetail) {
 				wrapperChildVaccineDetail.setBenVisitID(benVisitID);
+				wrapperChildVaccineDetail.setVisitCode(benVisitCode);
 				childVaccineSuccessFlag = commonNurseServiceImpl
 						.saveChildOptionalVaccineDetail(wrapperChildVaccineDetail);
 				// childVaccineSuccessFlag =
@@ -671,7 +701,8 @@ public class ANCServiceImpl implements ANCService {
 	 * @param requestOBJ
 	 * @return success or failure flag for visitDetails data saving
 	 */
-	public Long saveBenANCVitalDetails(JsonObject vitalDetailsOBJ, Long benVisitID, Long benVisitCode) throws Exception {
+	public Long saveBenANCVitalDetails(JsonObject vitalDetailsOBJ, Long benVisitID, Long benVisitCode)
+			throws Exception {
 		Long vitalSuccessFlag = null;
 		Long anthropometrySuccessFlag = null;
 		Long phyVitalSuccessFlag = null;
@@ -709,7 +740,8 @@ public class ANCServiceImpl implements ANCService {
 	 * @param requestOBJ
 	 * @return success or failure flag for visitDetails data saving
 	 */
-	public Long saveBenANCExaminationDetails(JsonObject examinationDetailsOBJ, Long benVisitID, Long benVisitCode) throws Exception {
+	public Long saveBenANCExaminationDetails(JsonObject examinationDetailsOBJ, Long benVisitID, Long benVisitCode)
+			throws Exception {
 
 		Long exmnSuccessFlag = null;
 
@@ -745,6 +777,7 @@ public class ANCServiceImpl implements ANCService {
 					.fromJson(examinationDetailsOBJ.get("headToToeExamination"), PhyHeadToToeExamination.class);
 			if (null != headToToeExamination) {
 				headToToeExamination.setBenVisitID(benVisitID);
+				headToToeExamination.setVisitCode(benVisitCode);
 				headToToeExmnSuccessFlag = commonNurseServiceImpl.savePhyHeadToToeExamination(headToToeExamination);
 				// headToToeExmnSuccessFlag =
 				// ancNurseServiceImpl.savePhyHeadToToeExamination(headToToeExamination);
@@ -755,21 +788,7 @@ public class ANCServiceImpl implements ANCService {
 		/**
 		 * Removed from anc. Only applicable for generalOPD. date: 07-02-2018
 		 */
-		/*
-		 * if (examinationDetailsOBJ != null &&
-		 * examinationDetailsOBJ.has("gastroIntestinalExamination") &&
-		 * !examinationDetailsOBJ.get("gastroIntestinalExamination").isJsonNull(
-		 * )) { SysGastrointestinalExamination gastrointestinalExamination =
-		 * InputMapper.gson().fromJson(
-		 * examinationDetailsOBJ.get("gastroIntestinalExamination"),
-		 * SysGastrointestinalExamination.class); if (null !=
-		 * gastrointestinalExamination) {
-		 * gastrointestinalExamination.setBenVisitID(benVisitID);
-		 * gastroIntsExmnSuccessFlag = ancNurseServiceImpl
-		 * .saveSysGastrointestinalExamination(gastrointestinalExamination);
-		 * 
-		 * } }
-		 */
+
 		// Save Cardio Vascular Examination Details
 		if (examinationDetailsOBJ != null && examinationDetailsOBJ.has("cardioVascularExamination")
 				&& !examinationDetailsOBJ.get("cardioVascularExamination").isJsonNull()) {
@@ -777,6 +796,7 @@ public class ANCServiceImpl implements ANCService {
 					examinationDetailsOBJ.get("cardioVascularExamination"), SysCardiovascularExamination.class);
 			if (null != cardiovascularExamination) {
 				cardiovascularExamination.setBenVisitID(benVisitID);
+				cardiovascularExamination.setVisitCode(benVisitCode);
 				cardiExmnSuccessFlag = commonNurseServiceImpl
 						.saveSysCardiovascularExamination(cardiovascularExamination);
 				// cardiExmnSuccessFlag =
@@ -792,6 +812,7 @@ public class ANCServiceImpl implements ANCService {
 					examinationDetailsOBJ.get("respiratorySystemExamination"), SysRespiratoryExamination.class);
 			if (null != sysRespiratoryExamination) {
 				sysRespiratoryExamination.setBenVisitID(benVisitID);
+				sysRespiratoryExamination.setVisitCode(benVisitCode);
 				respiratoryExmnSuccessFlag = commonNurseServiceImpl
 						.saveSysRespiratoryExamination(sysRespiratoryExamination);
 				// respiratoryExmnSuccessFlag = ancNurseServiceImpl
@@ -806,6 +827,7 @@ public class ANCServiceImpl implements ANCService {
 					examinationDetailsOBJ.get("centralNervousSystemExamination"), SysCentralNervousExamination.class);
 			if (null != sysCentralNervousExamination) {
 				sysCentralNervousExamination.setBenVisitID(benVisitID);
+				sysCentralNervousExamination.setVisitCode(benVisitCode);
 				centralNrvsExmnSuccessFlag = commonNurseServiceImpl
 						.saveSysCentralNervousExamination(sysCentralNervousExamination);
 				// centralNrvsExmnSuccessFlag = ancNurseServiceImpl
@@ -821,6 +843,7 @@ public class ANCServiceImpl implements ANCService {
 					SysMusculoskeletalSystemExamination.class);
 			if (null != sysMusculoskeletalSystemExamination) {
 				sysMusculoskeletalSystemExamination.setBenVisitID(benVisitID);
+				sysMusculoskeletalSystemExamination.setVisitCode(benVisitCode);
 				muskelstlExmnSuccessFlag = commonNurseServiceImpl
 						.saveSysMusculoskeletalSystemExamination(sysMusculoskeletalSystemExamination);
 				// muskelstlExmnSuccessFlag = ancNurseServiceImpl
@@ -837,6 +860,7 @@ public class ANCServiceImpl implements ANCService {
 					SysGenitourinarySystemExamination.class);
 			if (null != sysGenitourinarySystemExamination) {
 				sysGenitourinarySystemExamination.setBenVisitID(benVisitID);
+				sysGenitourinarySystemExamination.setVisitCode(benVisitCode);
 				genitorinaryExmnSuccessFlag = commonNurseServiceImpl
 						.saveSysGenitourinarySystemExamination(sysGenitourinarySystemExamination);
 				// genitorinaryExmnSuccessFlag = ancNurseServiceImpl
@@ -852,6 +876,7 @@ public class ANCServiceImpl implements ANCService {
 					.fromJson(examinationDetailsOBJ.get("obstetricExamination"), SysObstetricExamination.class);
 			if (null != sysObstetricExamination) {
 				sysObstetricExamination.setBenVisitID(benVisitID);
+				sysObstetricExamination.setVisitCode(benVisitCode);
 				obstetricExmnSuccessFlag = ancNurseServiceImpl.saveSysObstetricExamination(sysObstetricExamination);
 
 			}
@@ -949,8 +974,7 @@ public class ANCServiceImpl implements ANCService {
 		/* Only for General OPD, Can remove from here */
 		/*
 		 * examinationDetailsMap.put("gastrointestinalExamination",
-		 * ancNurseServiceImpl.getSysGastrointestinalExamination(benRegID,
-		 * benVisitID));
+		 * ancNurseServiceImpl.getSysGastrointestinalExamination(benRegID, benVisitID));
 		 */
 		examinationDetailsMap.put("cardiovascularExamination",
 				commonNurseServiceImpl.getCardiovascularExamination(benRegID, benVisitID));
@@ -970,78 +994,68 @@ public class ANCServiceImpl implements ANCService {
 
 	// ---------- ENd of Fetch ANC (Nurse)--------------------------------------
 
-	/*// ------- Fetch beneficiary all past history data ------------------
-	public String getANCPastHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenPastMedicalHistory(beneficiaryRegID);
-	}
-	/// ------- End of Fetch beneficiary all past history data ----------
-
-	// ------- Fetch beneficiary all Comorbid conditions history data
-	// ------------------
-	public String getANCComorbidHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenComorbidityHistory(beneficiaryRegID);
-	}
-	/// ------- End of Fetch beneficiary all Comorbid conditions history data
-	/// --------
-
-	// ------- Fetch beneficiary all Medication history data -----------
-	public String getANCMedicationHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenPersonalMedicationHistory(beneficiaryRegID);
-	}
-	/// ------- End of Fetch beneficiary all Medication history data --
-
-	// ------- Fetch beneficiary all Personal Tobacco history data
-	// ---------------
-	public String getANCPersonalTobaccoHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenPersonalTobaccoHistory(beneficiaryRegID);
-	}
-	/// ------- End of Fetch beneficiary all Personal Tobacco history data------
-
-	// ------- Fetch beneficiary all Personal Alcohol history data
-	// ---------------
-	public String getANCPersonalAlcoholHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenPersonalAlcoholHistory(beneficiaryRegID);
-	}
-	/// ------- End of Fetch beneficiary all Personal Alcohol history data
-	/// ------
-
-	// ------- Fetch beneficiary all Personal Allergy history data
-	// ---------------
-	public String getANCPersonalAllergyHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenPersonalAllergyHistory(beneficiaryRegID);
-	}
-	/// ------- End of Fetch beneficiary all Personal Allergy history data------
-
-	// ------- Fetch beneficiary all Family history data ---------------
-	public String getANCFamilyHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenPersonalFamilyHistory(beneficiaryRegID);
-	}
-	/// ------- End of Fetch beneficiary all Family history data ------
-
-	// ------- Fetch beneficiary all Menstrual history data -----------
-	public String getANCMenstrualHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenMenstrualHistory(beneficiaryRegID);
-	}
-	/// ------- End of Fetch beneficiary all Menstrual history data --
-
-	// ------- Fetch beneficiary all past obstetric history data ---------------
-	public String getANCObstetricHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenPastObstetricHistory(beneficiaryRegID);
-	}
-	/// ------- End of Fetch beneficiary all past obstetric history data ------
-
-	// ------- Fetch beneficiary all Immunization history data ---------------
-	public String getANCImmunizationHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenImmunizationHistory(beneficiaryRegID);
-	}
-	/// ------- End of Fetch beneficiary all Immunization history data ------
-
-	// ------- Fetch beneficiary all Child Vaccine history data ---------------
-	public String getANCChildVaccineHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenOptionalVaccineHistory(beneficiaryRegID);
-	}
-	/// ------- End of Fetch beneficiary all Child Vaccine history data ------
-*/
+	/*
+	 * // ------- Fetch beneficiary all past history data ------------------ public
+	 * String getANCPastHistoryData(Long beneficiaryRegID) { return
+	 * commonNurseServiceImpl.fetchBenPastMedicalHistory(beneficiaryRegID); } ///
+	 * ------- End of Fetch beneficiary all past history data ----------
+	 * 
+	 * // ------- Fetch beneficiary all Comorbid conditions history data //
+	 * ------------------ public String getANCComorbidHistoryData(Long
+	 * beneficiaryRegID) { return
+	 * commonNurseServiceImpl.fetchBenComorbidityHistory(beneficiaryRegID); } ///
+	 * ------- End of Fetch beneficiary all Comorbid conditions history data ///
+	 * --------
+	 * 
+	 * // ------- Fetch beneficiary all Medication history data ----------- public
+	 * String getANCMedicationHistoryData(Long beneficiaryRegID) { return
+	 * commonNurseServiceImpl.fetchBenPersonalMedicationHistory(beneficiaryRegID); }
+	 * /// ------- End of Fetch beneficiary all Medication history data --
+	 * 
+	 * // ------- Fetch beneficiary all Personal Tobacco history data //
+	 * --------------- public String getANCPersonalTobaccoHistoryData(Long
+	 * beneficiaryRegID) { return
+	 * commonNurseServiceImpl.fetchBenPersonalTobaccoHistory(beneficiaryRegID); }
+	 * /// ------- End of Fetch beneficiary all Personal Tobacco history data------
+	 * 
+	 * // ------- Fetch beneficiary all Personal Alcohol history data //
+	 * --------------- public String getANCPersonalAlcoholHistoryData(Long
+	 * beneficiaryRegID) { return
+	 * commonNurseServiceImpl.fetchBenPersonalAlcoholHistory(beneficiaryRegID); }
+	 * /// ------- End of Fetch beneficiary all Personal Alcohol history data ///
+	 * ------
+	 * 
+	 * // ------- Fetch beneficiary all Personal Allergy history data //
+	 * --------------- public String getANCPersonalAllergyHistoryData(Long
+	 * beneficiaryRegID) { return
+	 * commonNurseServiceImpl.fetchBenPersonalAllergyHistory(beneficiaryRegID); }
+	 * /// ------- End of Fetch beneficiary all Personal Allergy history data------
+	 * 
+	 * // ------- Fetch beneficiary all Family history data --------------- public
+	 * String getANCFamilyHistoryData(Long beneficiaryRegID) { return
+	 * commonNurseServiceImpl.fetchBenPersonalFamilyHistory(beneficiaryRegID); } ///
+	 * ------- End of Fetch beneficiary all Family history data ------
+	 * 
+	 * // ------- Fetch beneficiary all Menstrual history data ----------- public
+	 * String getANCMenstrualHistoryData(Long beneficiaryRegID) { return
+	 * commonNurseServiceImpl.fetchBenMenstrualHistory(beneficiaryRegID); } ///
+	 * ------- End of Fetch beneficiary all Menstrual history data --
+	 * 
+	 * // ------- Fetch beneficiary all past obstetric history data ---------------
+	 * public String getANCObstetricHistoryData(Long beneficiaryRegID) { return
+	 * commonNurseServiceImpl.fetchBenPastObstetricHistory(beneficiaryRegID); } ///
+	 * ------- End of Fetch beneficiary all past obstetric history data ------
+	 * 
+	 * // ------- Fetch beneficiary all Immunization history data ---------------
+	 * public String getANCImmunizationHistoryData(Long beneficiaryRegID) { return
+	 * commonNurseServiceImpl.fetchBenImmunizationHistory(beneficiaryRegID); } ///
+	 * ------- End of Fetch beneficiary all Immunization history data ------
+	 * 
+	 * // ------- Fetch beneficiary all Child Vaccine history data ---------------
+	 * public String getANCChildVaccineHistoryData(Long beneficiaryRegID) { return
+	 * commonNurseServiceImpl.fetchBenOptionalVaccineHistory(beneficiaryRegID); }
+	 * /// ------- End of Fetch beneficiary all Child Vaccine history data ------
+	 */
 	// -------Update (Nurse data from Doctor screen)----------------------
 
 	/***

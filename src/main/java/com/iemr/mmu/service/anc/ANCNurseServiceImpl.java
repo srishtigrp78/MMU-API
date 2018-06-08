@@ -158,6 +158,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 			ancWomenVaccineDetail = new ANCWomenVaccineDetail();
 			ancWomenVaccineDetail.setBeneficiaryRegID(wrapperAncImmunizationOBJ.getBeneficiaryRegID());
 			ancWomenVaccineDetail.setBenVisitID(wrapperAncImmunizationOBJ.getBenVisitID());
+			ancWomenVaccineDetail.setVisitCode(wrapperAncImmunizationOBJ.getVisitCode());
 			ancWomenVaccineDetail.setProviderServiceMapID(wrapperAncImmunizationOBJ.getProviderServiceMapID());
 			ancWomenVaccineDetail.setCreatedBy(wrapperAncImmunizationOBJ.getCreatedBy());
 			ancWomenVaccineDetail.setID(wrapperAncImmunizationOBJ.gettT1ID());

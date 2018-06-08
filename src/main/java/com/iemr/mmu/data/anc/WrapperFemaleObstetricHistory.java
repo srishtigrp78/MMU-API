@@ -6,6 +6,7 @@ public class WrapperFemaleObstetricHistory {
 
 	private Long beneficiaryRegID;
 	private Long benVisitID;
+	private Long visitCode;
 	private Integer providerServiceMapID;
 	private String createdBy;
 	private Short totalNoOfPreg;
@@ -26,6 +27,7 @@ public class WrapperFemaleObstetricHistory {
 
 				femaleObstetricHistory.setBeneficiaryRegID(beneficiaryRegID);
 				femaleObstetricHistory.setBenVisitID(benVisitID);
+				femaleObstetricHistory.setVisitCode(visitCode);
 				femaleObstetricHistory.setProviderServiceMapID(providerServiceMapID);
 				femaleObstetricHistory.setCreatedBy(createdBy);
 				femaleObstetricHistory.setTotalNoOfPreg(totalNoOfPreg);
@@ -88,6 +90,16 @@ public class WrapperFemaleObstetricHistory {
 
 	public void setBenVisitID(Long benVisitID) {
 		this.benVisitID = benVisitID;
+	}
+	
+	
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 
 	public Integer getProviderServiceMapID() {

@@ -10,6 +10,7 @@ public class WrapperComorbidCondDetails {
 
 	private Long beneficiaryRegID;
 	private Long benVisitID;
+	private Long visitCode;
 	private Integer providerServiceMapID;
 	private String createdBy;
 
@@ -40,6 +41,30 @@ public class WrapperComorbidCondDetails {
 		this.benVisitID = benVisitID;
 	}
 
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
+	}
+
+	public Integer getProviderServiceMapID() {
+		return providerServiceMapID;
+	}
+
+	public void setProviderServiceMapID(Integer providerServiceMapID) {
+		this.providerServiceMapID = providerServiceMapID;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
 	public ArrayList<BencomrbidityCondDetails> getComrbidityConds() {
 		ArrayList<BencomrbidityCondDetails> comorbidityConcurrentConditionsListTMP = new ArrayList<>();
 		for (BencomrbidityCondDetails comrbidityCond : comorbidityConcurrentConditionsList) {
@@ -49,6 +74,7 @@ public class WrapperComorbidCondDetails {
 
 				comrbidityCond.setBeneficiaryRegID(beneficiaryRegID);
 				comrbidityCond.setBenVisitID(benVisitID);
+				comrbidityCond.setVisitCode(visitCode);
 				comrbidityCond.setProviderServiceMapID(providerServiceMapID);
 				comrbidityCond.setCreatedBy(createdBy);
 				comrbidityCond.setYear(Utility.convertToDateFormat(timePeriodUnit, timePeriodAgo));

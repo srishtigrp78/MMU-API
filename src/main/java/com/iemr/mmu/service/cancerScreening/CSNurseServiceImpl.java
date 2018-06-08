@@ -1045,10 +1045,11 @@ public class CSNurseServiceImpl implements CSNurseService {
 		return new Gson().toJson(resMap);
 	}
 
-	public Long saveLymphNodeDetails(List<CancerLymphNodeDetails> cancerLymphNodeDetails, Long benVisitID) {
+	public Long saveLymphNodeDetails(List<CancerLymphNodeDetails> cancerLymphNodeDetails, Long benVisitID, Long benVisitCode) {
 		Long responseData = null;
 		for (CancerLymphNodeDetails cancerLymphNodeDetail : cancerLymphNodeDetails) {
 			cancerLymphNodeDetail.setBenVisitID(benVisitID);
+			cancerLymphNodeDetail.setVisitCode(benVisitCode);
 		}
 
 		List<CancerLymphNodeDetails> response = (List<CancerLymphNodeDetails>) cancerLymphNodeExaminationRepo
@@ -1063,8 +1064,9 @@ public class CSNurseServiceImpl implements CSNurseService {
 		return responseData;
 	}
 
-	public Long saveCancerSignAndSymptomsData(CancerSignAndSymptoms cancerSignAndSymptoms, Long benVisitID) {
+	public Long saveCancerSignAndSymptomsData(CancerSignAndSymptoms cancerSignAndSymptoms, Long benVisitID, Long benVisitCode) {
 		cancerSignAndSymptoms.setBenVisitID(benVisitID);
+		cancerSignAndSymptoms.setVisitCode(benVisitCode);
 		Long response = saveCancerSignAndSymptomsData(cancerSignAndSymptoms);
 
 		return response;
@@ -1143,12 +1145,13 @@ public class CSNurseServiceImpl implements CSNurseService {
 	}
 
 	public Long saveDocExaminationImageAnnotation(List<WrapperCancerExamImgAnotasn> wrapperCancerExamImgAnotasnList,
-			Long benVisitID) {
+			Long benVisitID, Long benVisitCode) {
 		// System.out.println("hello");
 		Long x = null;
 		for (WrapperCancerExamImgAnotasn wrapperCancerExamImgAnotasn : wrapperCancerExamImgAnotasnList) {
 			wrapperCancerExamImgAnotasn.setVisitID(benVisitID);
-		}
+			wrapperCancerExamImgAnotasn.setVisitCode(benVisitCode);
+			}
 		List<CancerExaminationImageAnnotation> objList = (List<CancerExaminationImageAnnotation>) cancerExaminationImageAnnotationRepo
 				.save(getCancerExaminationImageAnnotationList(wrapperCancerExamImgAnotasnList));
 		if (objList != null && objList.size() > 0) {
@@ -1170,6 +1173,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 							CancerExaminationImageAnnotation cancerExaminationImageAnnotation = new CancerExaminationImageAnnotation();
 							cancerExaminationImageAnnotation.setBeneficiaryRegID(obj.getBeneficiaryRegID());
 							cancerExaminationImageAnnotation.setBenVisitID(obj.getVisitID());
+							cancerExaminationImageAnnotation.setVisitCode(obj.getVisitCode());
 							cancerExaminationImageAnnotation.setProviderServiceMapID(obj.getProviderServiceMapID());
 							cancerExaminationImageAnnotation.setCreatedBy(obj.getCreatedBy());
 							cancerExaminationImageAnnotation.setCancerImageID(obj.getImageID());
