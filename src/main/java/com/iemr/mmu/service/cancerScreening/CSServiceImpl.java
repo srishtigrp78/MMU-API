@@ -109,11 +109,17 @@ public class CSServiceImpl implements CSService {
 			BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(requestOBJ.get("visitDetails"),
 					BeneficiaryVisitDetail.class);
 
-			Long benVisitID = saveBenVisitDetails(benVisitDetailsOBJ);
+			Map<String, Long> visitIdAndCodeMap = saveBenVisitDetails(benVisitDetailsOBJ);
 
-			// 07-06-2018 visit code
-			Long benVisitCode = commonNurseServiceImpl.generateVisitCode(benVisitID, 101, 1);
+			Long benVisitID = null;
+			Long benVisitCode = null;
 
+			if (visitIdAndCodeMap != null && visitIdAndCodeMap.size() > 0 && visitIdAndCodeMap.containsKey("visitID")
+					&& visitIdAndCodeMap.containsKey("visitCode")) {
+				benVisitID = visitIdAndCodeMap.get("visitID");
+				benVisitCode = visitIdAndCodeMap.get("visitCode");
+			}
+			
 			// Getting benflowID for ben status update
 			Long benFlowID = null;
 			if (requestOBJ.has("benFlowID")) {
@@ -220,9 +226,17 @@ public class CSServiceImpl implements CSService {
 	 * @param requestOBJ
 	 * @return success or failure flag for visitDetails data saving
 	 */
-	public Long saveBenVisitDetails(BeneficiaryVisitDetail benVisitDetailsOBJ) throws Exception {
+	public Map<String, Long> saveBenVisitDetails(BeneficiaryVisitDetail benVisitDetailsOBJ) throws Exception {
+		Map<String, Long> visitIdAndCodeMap = new HashMap<>();
 		Long benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
-		return benVisitID;
+		
+		// 11-06-2018 visit code
+		Long benVisitCode = commonNurseServiceImpl.generateVisitCode(benVisitID, 101, 1);
+		
+		visitIdAndCodeMap.put("visitID", benVisitID);
+		visitIdAndCodeMap.put("visitCode", benVisitCode);
+		
+		return visitIdAndCodeMap;
 	}
 
 	/**
