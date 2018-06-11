@@ -72,14 +72,15 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 
 			Long visitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(beneficiaryVisitDetail);
 			
-			//07-06-2018 visit code
-			Long benVisitCode = commonNurseServiceImpl.updateVisitCode(visitID, 101, 1);
+			// 11-06-2018 visit code
+			Long benVisitCode = commonNurseServiceImpl.generateVisitCode(visitID, 101, 1);
 
 			if (null != visitID) {
 
-				Long vitalSuccessFlag = saveNCDScreeningVitalDetails(jsonObject, visitID);
+				Long vitalSuccessFlag = saveNCDScreeningVitalDetails(jsonObject, visitID, benVisitCode);
 				Long saveNCDScreeningDetails = null;
 				ncdScreening.setBenVisitID(visitID);
+				ncdScreening.setVisitCode(benVisitCode);
 				saveNCDScreeningDetails = ncdScreeningNurseServiceImpl.saveNCDScreeningDetails(ncdScreening);
 
 				if (null != vitalSuccessFlag && null != saveNCDScreeningDetails) {
@@ -112,7 +113,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		return rs;
 	}
 
-	public Long saveNCDScreeningVitalDetails(JsonObject jsonObject, Long benVisitID) throws Exception {
+	public Long saveNCDScreeningVitalDetails(JsonObject jsonObject, Long benVisitID, Long benVisitCode) throws Exception {
 
 		Long vitalSuccessFlag = null;
 		JsonElement ncdScreeningDetails = jsonObject.get("ncdScreeningDetails");
@@ -127,12 +128,14 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		Long saveAnthropometryDetail = null;
 		if (null != anthropometryDetail) {
 			anthropometryDetail.setBenVisitID(benVisitID);
+			anthropometryDetail.setVisitCode(benVisitCode);
 			saveAnthropometryDetail = commonNurseServiceImpl
 					.saveBeneficiaryPhysicalAnthropometryDetails(anthropometryDetail);
 		}
 		Long savePhysicalVitalDetails = null;
 		if (null != physicalVitalDetail) {
 			physicalVitalDetail.setBenVisitID(benVisitID);
+			physicalVitalDetail.setVisitCode(benVisitCode);
 			savePhysicalVitalDetails = commonNurseServiceImpl.saveBeneficiaryPhysicalVitalDetails(physicalVitalDetail);
 		}
 

@@ -79,10 +79,17 @@ public class NCDCareServiceImpl implements NCDCareService {
 		// check if visit details data is not null
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
 			// Call method to save visit details data
-			Long benVisitID = saveBenVisitDetails(requestOBJ.getAsJsonObject("visitDetails"));
+			Map<String, Long> visitIdAndCodeMap = saveBenVisitDetails(requestOBJ.getAsJsonObject("visitDetails"));
 			
 			//07-06-2018 visit code
-			Long benVisitCode = commonNurseServiceImpl.updateVisitCode(benVisitID, 101, 1);
+			Long benVisitID = null;
+			Long benVisitCode = null;
+
+			if (visitIdAndCodeMap != null && visitIdAndCodeMap.size() > 0 && visitIdAndCodeMap.containsKey("visitID")
+					&& visitIdAndCodeMap.containsKey("visitCode")) {
+				benVisitID = visitIdAndCodeMap.get("visitID");
+				benVisitCode = visitIdAndCodeMap.get("visitCode");
+			}
 
 			// check if visit details data saved successfully
 			Long historySaveSuccessFlag = null;
@@ -101,10 +108,10 @@ public class NCDCareServiceImpl implements NCDCareService {
 			if (benVisitID != null && benVisitID > 0) {
 				// call method to save History data
 				historySaveSuccessFlag = saveBenNCDCareHistoryDetails(requestOBJ.getAsJsonObject("historyDetails"),
-						benVisitID);
+						benVisitID, benVisitCode);
 				// call method to save Vital data
 				vitalSaveSuccessFlag = saveBenNCDCareVitalDetails(requestOBJ.getAsJsonObject("vitalDetails"),
-						benVisitID);
+						benVisitID, benVisitCode);
 
 				i = commonNurseServiceImpl.updateBeneficiaryStatus('N', tmpOBJ.get("beneficiaryRegID").getAsLong());
 			} else {
@@ -160,7 +167,8 @@ public class NCDCareServiceImpl implements NCDCareService {
 	 * @param requestOBJ
 	 * @return success or failure flag for visitDetails data saving
 	 */
-	public Long saveBenVisitDetails(JsonObject visitDetailsOBJ) throws Exception {
+	public Map<String, Long> saveBenVisitDetails(JsonObject visitDetailsOBJ) throws Exception {
+		Map<String, Long> visitIdAndCodeMap = new HashMap<>();
 		Long benVisitID = null;
 		int adherenceSuccessFlag = 0;
 		int investigationSuccessFlag = 0;
@@ -171,15 +179,16 @@ public class NCDCareServiceImpl implements NCDCareService {
 					BeneficiaryVisitDetail.class);
 			benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
 
-			// benVisitID =
-			// nurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
+			// 11-06-2018 visit code
+			Long benVisitCode = commonNurseServiceImpl.generateVisitCode(benVisitID, 101, 1);
 
-			if (benVisitID != null && benVisitID > 0) {
+			if (benVisitID != null && benVisitID > 0 && benVisitCode != null && benVisitCode > 0) {
 				if (visitDetailsOBJ.has("adherence") && !visitDetailsOBJ.get("adherence").isJsonNull()) {
 					// Save Ben Adherence
 					BenAdherence benAdherence = InputMapper.gson().fromJson(visitDetailsOBJ.get("adherence"),
 							BenAdherence.class);
 					benAdherence.setBenVisitID(benVisitID);
+					benAdherence.setVisitCode(benVisitCode);
 					adherenceSuccessFlag = commonNurseServiceImpl.saveBenAdherenceDetails(benAdherence);
 				}
 				if (visitDetailsOBJ.has("investigation") && !visitDetailsOBJ.get("investigation").isJsonNull()) {
@@ -189,6 +198,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 
 					if (wrapperBenInvestigationANC != null) {
 						wrapperBenInvestigationANC.setBenVisitID(benVisitID);
+						wrapperBenInvestigationANC.setVisitCode(benVisitCode);
 						investigationSuccessFlag = commonNurseServiceImpl
 								.saveBenInvestigationDetails(wrapperBenInvestigationANC);
 
@@ -201,8 +211,11 @@ public class NCDCareServiceImpl implements NCDCareService {
 					// Adherence and Investigation Details stored successfully.
 				}
 			}
+			
+			visitIdAndCodeMap.put("visitID", benVisitID);
+			visitIdAndCodeMap.put("visitCode", benVisitCode);
 		}
-		return benVisitID;
+		return visitIdAndCodeMap;
 	}
 
 	/**
@@ -210,7 +223,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 	 * @param requestOBJ
 	 * @return success or failure flag for visitDetails data saving
 	 */
-	public Long saveBenNCDCareHistoryDetails(JsonObject ncdCareHistoryOBJ, Long benVisitID) throws Exception {
+	public Long saveBenNCDCareHistoryDetails(JsonObject ncdCareHistoryOBJ, Long benVisitID, Long benVisitCode) throws Exception {
 		Long pastHistorySuccessFlag = null;
 		Long comrbidSuccessFlag = null;
 		Long medicationSuccessFlag = null;
@@ -232,6 +245,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 					BenMedHistory.class);
 			if (null != benMedHistory) {
 				benMedHistory.setBenVisitID(benVisitID);
+				benMedHistory.setVisitCode(benVisitCode);
 				pastHistorySuccessFlag = commonNurseServiceImpl.saveBenPastHistory(benMedHistory);
 			}
 
@@ -246,6 +260,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 					.fromJson(ncdCareHistoryOBJ.get("comorbidConditions"), WrapperComorbidCondDetails.class);
 			if (null != wrapperComorbidCondDetails) {
 				wrapperComorbidCondDetails.setBenVisitID(benVisitID);
+				wrapperComorbidCondDetails.setVisitCode(benVisitCode);
 				comrbidSuccessFlag = commonNurseServiceImpl.saveBenComorbidConditions(wrapperComorbidCondDetails);
 			}
 		} else {
@@ -260,6 +275,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 			if (null != wrapperMedicationHistory
 					&& wrapperMedicationHistory.getBenMedicationHistoryDetails().size() > 0) {
 				wrapperMedicationHistory.setBenVisitID(benVisitID);
+				wrapperMedicationHistory.setVisitCode(benVisitCode);
 				medicationSuccessFlag = commonNurseServiceImpl.saveBenMedicationHistory(wrapperMedicationHistory);
 			} else {
 				medicationSuccessFlag = new Long(1);
@@ -277,6 +293,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 
 			if (wrapperFemaleObstetricHistory != null) {
 				wrapperFemaleObstetricHistory.setBenVisitID(benVisitID);
+				wrapperFemaleObstetricHistory.setVisitCode(benVisitCode);
 				obstetricSuccessFlag = commonNurseServiceImpl.saveFemaleObstetricHistory(wrapperFemaleObstetricHistory);
 			} else {
 				// Female Obstetric Details not provided.
@@ -293,6 +310,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 					.fromJson(ncdCareHistoryOBJ.get("menstrualHistory"), BenMenstrualDetails.class);
 			if (null != menstrualDetails) {
 				menstrualDetails.setBenVisitID(benVisitID);
+				menstrualDetails.setVisitCode(benVisitCode);
 				menstrualHistorySuccessFlag = commonNurseServiceImpl.saveBenMenstrualHistory(menstrualDetails);
 			}
 
@@ -307,6 +325,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 					BenFamilyHistory.class);
 			if (null != benFamilyHistory) {
 				benFamilyHistory.setBenVisitID(benVisitID);
+				benFamilyHistory.setVisitCode(benVisitCode);
 				familyHistorySuccessFlag = commonNurseServiceImpl.saveBenFamilyHistory(benFamilyHistory);
 			}
 		} else {
@@ -321,6 +340,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 					BenPersonalHabit.class);
 			if (null != personalHabit) {
 				personalHabit.setBenVisitID(benVisitID);
+				personalHabit.setVisitCode(benVisitCode);
 				personalHistorySuccessFlag = commonNurseServiceImpl.savePersonalHistory(personalHabit);
 			}
 
@@ -328,6 +348,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 					BenAllergyHistory.class);
 			if (null != benAllergyHistory) {
 				benAllergyHistory.setBenVisitID(benVisitID);
+				benAllergyHistory.setVisitCode(benVisitCode);
 				allergyHistorySuccessFlag = commonNurseServiceImpl.saveAllergyHistory(benAllergyHistory);
 			}
 
@@ -343,6 +364,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 					.fromJson(ncdCareHistoryOBJ.get("childVaccineDetails"), WrapperChildOptionalVaccineDetail.class);
 			if (null != wrapperChildVaccineDetail) {
 				wrapperChildVaccineDetail.setBenVisitID(benVisitID);
+				wrapperChildVaccineDetail.setVisitCode(benVisitCode);
 				childVaccineSuccessFlag = commonNurseServiceImpl
 						.saveChildOptionalVaccineDetail(wrapperChildVaccineDetail);
 			} else {
@@ -360,6 +382,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 					.fromJson(ncdCareHistoryOBJ.get("immunizationHistory"), WrapperImmunizationHistory.class);
 			if (null != wrapperImmunizationHistory) {
 				wrapperImmunizationHistory.setBenVisitID(benVisitID);
+				wrapperImmunizationHistory.setVisitCode(benVisitCode);
 				immunizationSuccessFlag = commonNurseServiceImpl.saveImmunizationHistory(wrapperImmunizationHistory);
 			} else {
 
@@ -378,6 +401,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 
 			if (null != benChildDevelopmentHistory) {
 				benChildDevelopmentHistory.setBenVisitID(benVisitID);
+				benChildDevelopmentHistory.setVisitCode(benVisitCode);
 				developmentHistorySuccessFlag = commonNurseServiceImpl
 						.saveChildDevelopmentHistory(benChildDevelopmentHistory);
 			}
@@ -394,6 +418,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 
 			if (null != childFeedingDetails) {
 				childFeedingDetails.setBenVisitID(benVisitID);
+				childFeedingDetails.setVisitCode(benVisitCode);
 				childFeedingSuccessFlag = commonNurseServiceImpl.saveChildFeedingHistory(childFeedingDetails);
 			}
 
@@ -410,6 +435,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 
 			if (null != perinatalHistory) {
 				perinatalHistory.setBenVisitID(benVisitID);
+				perinatalHistory.setVisitCode(benVisitCode);
 				perinatalHistorySuccessFlag = commonNurseServiceImpl.savePerinatalHistory(perinatalHistory);
 			}
 
@@ -444,7 +470,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 	 * @param requestOBJ
 	 * @return success or failure flag for visitDetails data saving
 	 */
-	public Long saveBenNCDCareVitalDetails(JsonObject vitalDetailsOBJ, Long benVisitID) throws Exception {
+	public Long saveBenNCDCareVitalDetails(JsonObject vitalDetailsOBJ, Long benVisitID, Long benVisitCode) throws Exception {
 		Long vitalSuccessFlag = null;
 		Long anthropometrySuccessFlag = null;
 		Long phyVitalSuccessFlag = null;
@@ -457,11 +483,13 @@ public class NCDCareServiceImpl implements NCDCareService {
 
 			if (null != benAnthropometryDetail) {
 				benAnthropometryDetail.setBenVisitID(benVisitID);
+				benAnthropometryDetail.setVisitCode(benVisitCode);
 				anthropometrySuccessFlag = commonNurseServiceImpl
 						.saveBeneficiaryPhysicalAnthropometryDetails(benAnthropometryDetail);
 			}
 			if (null != benPhysicalVitalDetail) {
 				benPhysicalVitalDetail.setBenVisitID(benVisitID);
+				benPhysicalVitalDetail.setVisitCode(benVisitCode);
 				phyVitalSuccessFlag = commonNurseServiceImpl
 						.saveBeneficiaryPhysicalVitalDetails(benPhysicalVitalDetail);
 			}

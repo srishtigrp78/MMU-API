@@ -391,6 +391,7 @@ public class PNCServiceImpl implements PNCService {
 	 * @return success or failure flag for visitDetails data saving
 	 */
 	public Long saveBenVisitDetails(JsonObject visitDetailsOBJ) throws Exception {
+		Map<String, Long> visitIdAndCodeMap = new HashMap<>();
 		Long benVisitID = null;
 		if (visitDetailsOBJ != null && visitDetailsOBJ.has("visitDetails")
 				&& !visitDetailsOBJ.get("visitDetails").isJsonNull()) {
@@ -399,8 +400,8 @@ public class PNCServiceImpl implements PNCService {
 					BeneficiaryVisitDetail.class);
 			benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
 
-			// benVisitID =
-			// nurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
+			// 11-06-2018 visit code
+			Long benVisitCode = commonNurseServiceImpl.generateVisitCode(benVisitID, 101, 1);
 
 			if (benVisitID != null && benVisitID > 0) {
 				if (visitDetailsOBJ.has("chiefComplaints") && !visitDetailsOBJ.get("chiefComplaints").isJsonNull()) {
@@ -412,6 +413,7 @@ public class PNCServiceImpl implements PNCService {
 					if (null != benChiefComplaintList && benChiefComplaintList.size() > 0) {
 						for (BenChiefComplaint benChiefComplaint : benChiefComplaintList) {
 							benChiefComplaint.setBenVisitID(benVisitID);
+							benChiefComplaint.setVisitCode(benVisitCode);
 						}
 					}
 					commonNurseServiceImpl.saveBenChiefComplaints(benChiefComplaintList);

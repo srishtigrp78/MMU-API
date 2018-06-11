@@ -202,10 +202,10 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 			BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(jsnOBJ.get("visitDetails"),
 					BeneficiaryVisitDetail.class);
 			Long benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
+		
+			// 11-06-2018 visit code
+			Long benVisitCode = commonNurseServiceImpl.generateVisitCode(benVisitID, 101, 1);
 			
-			//07-06-2018 visit code
-			Long benVisitCode = commonNurseServiceImpl.updateVisitCode(benVisitID, 101, 1);
-
 			// Getting benflowID for ben status update
 			Long benFlowID = null;
 			if (jsnOBJ.has("benFlowID")) {
@@ -216,11 +216,13 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 				BenAnthropometryDetail benAnthropometryDetail = InputMapper.gson().fromJson(jsnOBJ.get("vitalsDetails"),
 						BenAnthropometryDetail.class);
 				benAnthropometryDetail.setBenVisitID(benVisitID);
+				benAnthropometryDetail.setVisitCode(benVisitCode);
 				Long benAnthropometryID = commonNurseServiceImpl
 						.saveBeneficiaryPhysicalAnthropometryDetails(benAnthropometryDetail);
 				BenPhysicalVitalDetail benPhysicalVitalDetail = InputMapper.gson().fromJson(jsnOBJ.get("vitalsDetails"),
 						BenPhysicalVitalDetail.class);
 				benPhysicalVitalDetail.setBenVisitID(benVisitID);
+				benPhysicalVitalDetail.setVisitCode(benVisitCode);
 				Long benPhysicalVitalID = commonNurseServiceImpl
 						.saveBeneficiaryPhysicalVitalDetails(benPhysicalVitalDetail);
 				if (benAnthropometryID != null && benAnthropometryID > 0 && benPhysicalVitalID != null
