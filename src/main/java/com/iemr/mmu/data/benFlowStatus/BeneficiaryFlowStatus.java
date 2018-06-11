@@ -39,7 +39,7 @@ public class BeneficiaryFlowStatus {
 
 	@Expose
 	@Column(name = "beneficiary_visit_code")
-	private Long benVisitCode;
+	private Long visitCode;
 
 	@Expose
 	@Column(name = "visit_reason")
@@ -463,11 +463,11 @@ public class BeneficiaryFlowStatus {
 	}
 
 	public Long getBenVisitCode() {
-		return benVisitCode;
+		return visitCode;
 	}
 
 	public void setBenVisitCode(Long benVisitCode) {
-		this.benVisitCode = benVisitCode;
+		this.visitCode = benVisitCode;
 	}
 
 	public String getVisitReason() {

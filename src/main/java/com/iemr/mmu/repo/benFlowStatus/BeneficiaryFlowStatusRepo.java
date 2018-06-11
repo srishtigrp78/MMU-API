@@ -28,7 +28,7 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	@Query("UPDATE BeneficiaryFlowStatus t set t.benVisitID = :benVisitID, t.VisitReason = :visitReason, "
 			+ " t.VisitCategory = :visitCategory, t.nurseFlag = :nurseFlag, t.doctorFlag = :docFlag, "
 			+ " t.labIteration = :labIteration, t.lab_technician_flag = 0, t.radiologist_flag = :radiologistFlag, "
-			+ " t.oncologist_flag = :oncologistFlag, t.benVisitDate = now(), t.benVisitCode = :benVisitCode "
+			+ " t.oncologist_flag = :oncologistFlag, t.benVisitDate = now(), t.visitCode = :benVisitCode "
 			+ "  WHERE t.benFlowID = :benFlowID AND t.beneficiaryRegID = :benRegID "
 			+ " AND nurseFlag = 1  ")
 	public int updateBenFlowStatusAfterNurseActivity(@Param("benFlowID") Long benFlowID,
