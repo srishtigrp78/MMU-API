@@ -40,6 +40,7 @@ import com.iemr.mmu.data.anc.WrapperMedicationHistory;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
+import com.iemr.mmu.data.nurse.NurseUtilityClass;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
@@ -103,9 +104,10 @@ public class ANCServiceImpl implements ANCService {
 		Long saveSuccessFlag = null;
 		// check if visit details data is not null
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
-
+			NurseUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestOBJ, NurseUtilityClass.class);
 			// Call method to save visit details data
-			Map<String, Long> visitIdAndCodeMap = saveBenVisitDetails(requestOBJ.getAsJsonObject("visitDetails"));
+			Map<String, Long> visitIdAndCodeMap = saveBenVisitDetails(requestOBJ.getAsJsonObject("visitDetails"),
+					nurseUtilityClass);
 
 			Long benVisitID = null;
 			Long benVisitCode = null;
@@ -127,9 +129,12 @@ public class ANCServiceImpl implements ANCService {
 
 			// Getting benflowID for ben status update
 			Long benFlowID = null;
-			if (requestOBJ.has("benFlowID")) {
-				benFlowID = requestOBJ.get("benFlowID").getAsLong();
-			}
+			// if (requestOBJ.has("benFlowID")) {
+			// benFlowID = requestOBJ.get("benFlowID").getAsLong();
+			// }
+
+			// Above if block code replaced by below line
+			benFlowID = nurseUtilityClass.getBenFlowID();
 
 			if (benVisitID != null && benVisitID > 0) {
 
@@ -384,7 +389,8 @@ public class ANCServiceImpl implements ANCService {
 	 * @param requestOBJ
 	 * @return success or failure flag for visitDetails data saving
 	 */
-	public Map<String, Long> saveBenVisitDetails(JsonObject visitDetailsOBJ) throws Exception {
+	public Map<String, Long> saveBenVisitDetails(JsonObject visitDetailsOBJ, NurseUtilityClass nurseUtilityClass)
+			throws Exception {
 		Map<String, Long> visitIdAndCodeMap = new HashMap<>();
 		Long benVisitID = null;
 		int investigationSuccessFlag = 0;
@@ -398,7 +404,8 @@ public class ANCServiceImpl implements ANCService {
 			benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
 
 			// 07-06-2018 visit code
-			Long benVisitCode = commonNurseServiceImpl.generateVisitCode(benVisitID, 101, 1);
+			Long benVisitCode = commonNurseServiceImpl.generateVisitCode(benVisitID, nurseUtilityClass.getVanID(),
+					nurseUtilityClass.getSessionID());
 
 			if (benVisitID != null && benVisitID > 0 && benVisitCode != null && benVisitCode > 0) {
 				if (visitDetailsOBJ.has("chiefComplaints") && !visitDetailsOBJ.get("chiefComplaints").isJsonNull()) {

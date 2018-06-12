@@ -30,6 +30,7 @@ import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
+import com.iemr.mmu.data.nurse.NurseUtilityClass;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
@@ -106,10 +107,12 @@ public class CSServiceImpl implements CSService {
 		// check if visit details data is not null
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
 			// Call method to save visit details data
+
+			NurseUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestOBJ, NurseUtilityClass.class);
 			BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(requestOBJ.get("visitDetails"),
 					BeneficiaryVisitDetail.class);
 
-			Map<String, Long> visitIdAndCodeMap = saveBenVisitDetails(benVisitDetailsOBJ);
+			Map<String, Long> visitIdAndCodeMap = saveBenVisitDetails(benVisitDetailsOBJ, nurseUtilityClass);
 
 			Long benVisitID = null;
 			Long benVisitCode = null;
@@ -119,12 +122,15 @@ public class CSServiceImpl implements CSService {
 				benVisitID = visitIdAndCodeMap.get("visitID");
 				benVisitCode = visitIdAndCodeMap.get("visitCode");
 			}
-			
+
 			// Getting benflowID for ben status update
 			Long benFlowID = null;
-			if (requestOBJ.has("benFlowID")) {
-				benFlowID = requestOBJ.get("benFlowID").getAsLong();
-			}
+			// if (requestOBJ.has("benFlowID")) {
+			// benFlowID = requestOBJ.get("benFlowID").getAsLong();
+			// }
+
+			// Above if block code replaced by below line
+			benFlowID = nurseUtilityClass.getBenFlowID();
 
 			// check if visit details data saved successfully
 			if (benVisitID != null && benVisitID > 0) {
@@ -226,16 +232,18 @@ public class CSServiceImpl implements CSService {
 	 * @param requestOBJ
 	 * @return success or failure flag for visitDetails data saving
 	 */
-	public Map<String, Long> saveBenVisitDetails(BeneficiaryVisitDetail benVisitDetailsOBJ) throws Exception {
+	public Map<String, Long> saveBenVisitDetails(BeneficiaryVisitDetail benVisitDetailsOBJ,
+			NurseUtilityClass nurseUtilityClass) throws Exception {
 		Map<String, Long> visitIdAndCodeMap = new HashMap<>();
 		Long benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
-		
+
 		// 11-06-2018 visit code
-		Long benVisitCode = commonNurseServiceImpl.generateVisitCode(benVisitID, 101, 1);
-		
+		Long benVisitCode = commonNurseServiceImpl.generateVisitCode(benVisitID, nurseUtilityClass.getVanID(),
+				nurseUtilityClass.getSessionID());
+
 		visitIdAndCodeMap.put("visitID", benVisitID);
 		visitIdAndCodeMap.put("visitCode", benVisitCode);
-		
+
 		return visitIdAndCodeMap;
 	}
 

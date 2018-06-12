@@ -337,13 +337,14 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		String monthString = "";
 		if (month <= 9)
 			monthString = "0" + month;
-
+		else monthString += month;
 		// current date
 		int day = LocalDateTime.now().getDayOfMonth();
 		String dayString = "";
 		if (day <= 9)
 			dayString = "0" + day;
-
+		else
+			dayString += day;
 		// van & session ID
 		String vanIDString = "";
 		int vanIdLength = (int) (Math.log10(vanID) + 1);

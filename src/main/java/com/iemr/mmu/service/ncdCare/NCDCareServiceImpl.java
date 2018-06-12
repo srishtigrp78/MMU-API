@@ -32,6 +32,7 @@ import com.iemr.mmu.data.ncdcare.NCDCareDiagnosis;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
+import com.iemr.mmu.data.nurse.NurseUtilityClass;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
@@ -46,12 +47,12 @@ public class NCDCareServiceImpl implements NCDCareService {
 	private NCDCareDoctorServiceImpl ncdCareDoctorServiceImpl;
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
 	private LabTechnicianServiceImpl labTechnicianServiceImpl;
-	
+
 	@Autowired
 	public void setLabTechnicianServiceImpl(LabTechnicianServiceImpl labTechnicianServiceImpl) {
 		this.labTechnicianServiceImpl = labTechnicianServiceImpl;
 	}
-	
+
 	@Autowired
 	public void setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl) {
 		this.commonBenStatusFlowServiceImpl = commonBenStatusFlowServiceImpl;
@@ -78,10 +79,12 @@ public class NCDCareServiceImpl implements NCDCareService {
 		Long saveSuccessFlag = null;
 		// check if visit details data is not null
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
+			NurseUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestOBJ, NurseUtilityClass.class);
 			// Call method to save visit details data
-			Map<String, Long> visitIdAndCodeMap = saveBenVisitDetails(requestOBJ.getAsJsonObject("visitDetails"));
-			
-			//07-06-2018 visit code
+			Map<String, Long> visitIdAndCodeMap = saveBenVisitDetails(requestOBJ.getAsJsonObject("visitDetails"),
+					nurseUtilityClass);
+
+			// 07-06-2018 visit code
 			Long benVisitID = null;
 			Long benVisitCode = null;
 
@@ -101,9 +104,12 @@ public class NCDCareServiceImpl implements NCDCareService {
 			JsonObject tmpOBJ = requestOBJ.getAsJsonObject("visitDetails").getAsJsonObject("visitDetails");
 			// Getting benflowID for ben status update
 			Long benFlowID = null;
-			if (requestOBJ.has("benFlowID")) {
-				benFlowID = requestOBJ.get("benFlowID").getAsLong();
-			}
+			// if (requestOBJ.has("benFlowID")) {
+			// benFlowID = requestOBJ.get("benFlowID").getAsLong();
+			// }
+
+			// Above if block code replaced by below line
+			benFlowID = nurseUtilityClass.getBenFlowID();
 
 			if (benVisitID != null && benVisitID > 0) {
 				// call method to save History data
@@ -157,7 +163,8 @@ public class NCDCareServiceImpl implements NCDCareService {
 
 		int rs = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				tmpOBJ.get("beneficiaryRegID").getAsLong(), benVisitID, tmpOBJ.get("visitReason").getAsString(),
-				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0, benVisitCode);
+				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0,
+				benVisitCode);
 
 		return rs;
 	}
@@ -167,7 +174,8 @@ public class NCDCareServiceImpl implements NCDCareService {
 	 * @param requestOBJ
 	 * @return success or failure flag for visitDetails data saving
 	 */
-	public Map<String, Long> saveBenVisitDetails(JsonObject visitDetailsOBJ) throws Exception {
+	public Map<String, Long> saveBenVisitDetails(JsonObject visitDetailsOBJ, NurseUtilityClass nurseUtilityClass)
+			throws Exception {
 		Map<String, Long> visitIdAndCodeMap = new HashMap<>();
 		Long benVisitID = null;
 		int adherenceSuccessFlag = 0;
@@ -180,7 +188,8 @@ public class NCDCareServiceImpl implements NCDCareService {
 			benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
 
 			// 11-06-2018 visit code
-			Long benVisitCode = commonNurseServiceImpl.generateVisitCode(benVisitID, 101, 1);
+			Long benVisitCode = commonNurseServiceImpl.generateVisitCode(benVisitID, nurseUtilityClass.getVanID(),
+					nurseUtilityClass.getSessionID());
 
 			if (benVisitID != null && benVisitID > 0 && benVisitCode != null && benVisitCode > 0) {
 				if (visitDetailsOBJ.has("adherence") && !visitDetailsOBJ.get("adherence").isJsonNull()) {
@@ -211,7 +220,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 					// Adherence and Investigation Details stored successfully.
 				}
 			}
-			
+
 			visitIdAndCodeMap.put("visitID", benVisitID);
 			visitIdAndCodeMap.put("visitCode", benVisitCode);
 		}
@@ -223,7 +232,8 @@ public class NCDCareServiceImpl implements NCDCareService {
 	 * @param requestOBJ
 	 * @return success or failure flag for visitDetails data saving
 	 */
-	public Long saveBenNCDCareHistoryDetails(JsonObject ncdCareHistoryOBJ, Long benVisitID, Long benVisitCode) throws Exception {
+	public Long saveBenNCDCareHistoryDetails(JsonObject ncdCareHistoryOBJ, Long benVisitID, Long benVisitCode)
+			throws Exception {
 		Long pastHistorySuccessFlag = null;
 		Long comrbidSuccessFlag = null;
 		Long medicationSuccessFlag = null;
@@ -470,7 +480,8 @@ public class NCDCareServiceImpl implements NCDCareService {
 	 * @param requestOBJ
 	 * @return success or failure flag for visitDetails data saving
 	 */
-	public Long saveBenNCDCareVitalDetails(JsonObject vitalDetailsOBJ, Long benVisitID, Long benVisitCode) throws Exception {
+	public Long saveBenNCDCareVitalDetails(JsonObject vitalDetailsOBJ, Long benVisitID, Long benVisitCode)
+			throws Exception {
 		Long vitalSuccessFlag = null;
 		Long anthropometrySuccessFlag = null;
 		Long phyVitalSuccessFlag = null;
@@ -551,91 +562,78 @@ public class NCDCareServiceImpl implements NCDCareService {
 		return resMap.toString();
 	}
 
-	/*// ------- Fetch beneficiary all past history data ------------------
-	public String getPastHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenPastMedicalHistory(beneficiaryRegID);
-	}
-	/// ------- End of Fetch beneficiary all past history data ----------
-
-	// ------- Fetch beneficiary all Personal Tobacco history data-----------
-	public String getPersonalTobaccoHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenPersonalTobaccoHistory(beneficiaryRegID);
-	}
-	/// ------- End of Fetch beneficiary all Personal Tobacco history data------
-
-	// ------- Fetch beneficiary all Personal Alcohol history data -----------
-	public String getPersonalAlcoholHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenPersonalAlcoholHistory(beneficiaryRegID);
-	}
-	/// ------- End of Fetch beneficiary all Personal Alcohol history data-----
-
-	// ------- Fetch beneficiary all Personal Allergy history data -----------
-	public String getPersonalAllergyHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenPersonalAllergyHistory(beneficiaryRegID);
-	}
-	/// ------- End of Fetch beneficiary all Personal Allergy history data------
-
-	// ------- Fetch beneficiary all Medication history data -----------
-	public String getMedicationHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenPersonalMedicationHistory(beneficiaryRegID);
-	}
-	/// ------- End of Fetch beneficiary all Medication history data --
-
-	// ------- Fetch beneficiary all Family history data ---------------
-	public String getFamilyHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenPersonalFamilyHistory(beneficiaryRegID);
-	}
-	/// ------- End of Fetch beneficiary all Family history data ------
-
-	// ------- Fetch beneficiary all Menstrual history data -----------
-	public String getMenstrualHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenMenstrualHistory(beneficiaryRegID);
-	}
-	/// ------- End of Fetch beneficiary all Menstrual history data --
-
-	// ------- Fetch beneficiary all past obstetric history data ---------------
-	public String getObstetricHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenPastObstetricHistory(beneficiaryRegID);
-	}
-
-	/// ------- End of Fetch beneficiary all past obstetric history data ------
-
-	// ------- Fetch beneficiary all Comorbid conditions history data----------
-	public String getComorbidHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenComorbidityHistory(beneficiaryRegID);
-	}
-	/// -----End of Fetch beneficiary all Comorbid conditions history data ----
-
-	// ------- Fetch beneficiary all Child Vaccine history data ---------------
-	public String getChildVaccineHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenOptionalVaccineHistory(beneficiaryRegID);
-	}
-	/// ------- End of Fetch beneficiary all Child Vaccine history data ------
-
-	// ------- Fetch beneficiary all Immunization history data ---------------
-	public String getImmunizationHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenImmunizationHistory(beneficiaryRegID);
-	}
-	/// ------- End of Fetch beneficiary all Immunization history data ------
-
-	// ------- Fetch beneficiary all Perinatal history data ---------------
-	public String getBenPerinatalHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenPerinatalHistory(beneficiaryRegID);
-	}
-	/// ------- End of Fetch beneficiary all Perinatal history data ------
-
-	// ------- Fetch beneficiary all Feeding history data ---------------
-	public String getBenFeedingHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenFeedingHistory(beneficiaryRegID);
-	}
-	/// ------- End of Fetch beneficiary all Feeding history data ------
-
-	// ------- Fetch beneficiary all Development history data ---------------
-	public String getBenDevelopmentHistoryData(Long beneficiaryRegID) {
-		return commonNurseServiceImpl.fetchBenDevelopmentHistory(beneficiaryRegID);
-	}
-	/// ------- End of Fetch beneficiary all Development history data ------
-*/
+	/*
+	 * // ------- Fetch beneficiary all past history data ------------------ public
+	 * String getPastHistoryData(Long beneficiaryRegID) { return
+	 * commonNurseServiceImpl.fetchBenPastMedicalHistory(beneficiaryRegID); } ///
+	 * ------- End of Fetch beneficiary all past history data ----------
+	 * 
+	 * // ------- Fetch beneficiary all Personal Tobacco history data-----------
+	 * public String getPersonalTobaccoHistoryData(Long beneficiaryRegID) { return
+	 * commonNurseServiceImpl.fetchBenPersonalTobaccoHistory(beneficiaryRegID); }
+	 * /// ------- End of Fetch beneficiary all Personal Tobacco history data------
+	 * 
+	 * // ------- Fetch beneficiary all Personal Alcohol history data -----------
+	 * public String getPersonalAlcoholHistoryData(Long beneficiaryRegID) { return
+	 * commonNurseServiceImpl.fetchBenPersonalAlcoholHistory(beneficiaryRegID); }
+	 * /// ------- End of Fetch beneficiary all Personal Alcohol history data-----
+	 * 
+	 * // ------- Fetch beneficiary all Personal Allergy history data -----------
+	 * public String getPersonalAllergyHistoryData(Long beneficiaryRegID) { return
+	 * commonNurseServiceImpl.fetchBenPersonalAllergyHistory(beneficiaryRegID); }
+	 * /// ------- End of Fetch beneficiary all Personal Allergy history data------
+	 * 
+	 * // ------- Fetch beneficiary all Medication history data ----------- public
+	 * String getMedicationHistoryData(Long beneficiaryRegID) { return
+	 * commonNurseServiceImpl.fetchBenPersonalMedicationHistory(beneficiaryRegID); }
+	 * /// ------- End of Fetch beneficiary all Medication history data --
+	 * 
+	 * // ------- Fetch beneficiary all Family history data --------------- public
+	 * String getFamilyHistoryData(Long beneficiaryRegID) { return
+	 * commonNurseServiceImpl.fetchBenPersonalFamilyHistory(beneficiaryRegID); } ///
+	 * ------- End of Fetch beneficiary all Family history data ------
+	 * 
+	 * // ------- Fetch beneficiary all Menstrual history data ----------- public
+	 * String getMenstrualHistoryData(Long beneficiaryRegID) { return
+	 * commonNurseServiceImpl.fetchBenMenstrualHistory(beneficiaryRegID); } ///
+	 * ------- End of Fetch beneficiary all Menstrual history data --
+	 * 
+	 * // ------- Fetch beneficiary all past obstetric history data ---------------
+	 * public String getObstetricHistoryData(Long beneficiaryRegID) { return
+	 * commonNurseServiceImpl.fetchBenPastObstetricHistory(beneficiaryRegID); }
+	 * 
+	 * /// ------- End of Fetch beneficiary all past obstetric history data ------
+	 * 
+	 * // ------- Fetch beneficiary all Comorbid conditions history data----------
+	 * public String getComorbidHistoryData(Long beneficiaryRegID) { return
+	 * commonNurseServiceImpl.fetchBenComorbidityHistory(beneficiaryRegID); } ///
+	 * -----End of Fetch beneficiary all Comorbid conditions history data ----
+	 * 
+	 * // ------- Fetch beneficiary all Child Vaccine history data ---------------
+	 * public String getChildVaccineHistoryData(Long beneficiaryRegID) { return
+	 * commonNurseServiceImpl.fetchBenOptionalVaccineHistory(beneficiaryRegID); }
+	 * /// ------- End of Fetch beneficiary all Child Vaccine history data ------
+	 * 
+	 * // ------- Fetch beneficiary all Immunization history data ---------------
+	 * public String getImmunizationHistoryData(Long beneficiaryRegID) { return
+	 * commonNurseServiceImpl.fetchBenImmunizationHistory(beneficiaryRegID); } ///
+	 * ------- End of Fetch beneficiary all Immunization history data ------
+	 * 
+	 * // ------- Fetch beneficiary all Perinatal history data ---------------
+	 * public String getBenPerinatalHistoryData(Long beneficiaryRegID) { return
+	 * commonNurseServiceImpl.fetchBenPerinatalHistory(beneficiaryRegID); } ///
+	 * ------- End of Fetch beneficiary all Perinatal history data ------
+	 * 
+	 * // ------- Fetch beneficiary all Feeding history data --------------- public
+	 * String getBenFeedingHistoryData(Long beneficiaryRegID) { return
+	 * commonNurseServiceImpl.fetchBenFeedingHistory(beneficiaryRegID); } ///
+	 * ------- End of Fetch beneficiary all Feeding history data ------
+	 * 
+	 * // ------- Fetch beneficiary all Development history data ---------------
+	 * public String getBenDevelopmentHistoryData(Long beneficiaryRegID) { return
+	 * commonNurseServiceImpl.fetchBenDevelopmentHistory(beneficiaryRegID); } ///
+	 * ------- End of Fetch beneficiary all Development history data ------
+	 */
 	/// --------------- start of saving doctor data ------------------------
 	@Transactional(rollbackFor = Exception.class)
 	public Long saveDoctorData(JsonObject requestOBJ) throws Exception {
@@ -673,13 +671,12 @@ public class NCDCareServiceImpl implements NCDCareService {
 			}
 
 			/*
-			 * if (requestOBJ.has("refer") &&
-			 * !requestOBJ.get("refer").isJsonNull()) { PrescriptionDetail
-			 * prescriptionDetail =
+			 * if (requestOBJ.has("refer") && !requestOBJ.get("refer").isJsonNull()) {
+			 * PrescriptionDetail prescriptionDetail =
 			 * InputMapper.gson().fromJson(requestOBJ.get("refer"),
 			 * PrescriptionDetail.class); // Save Prescription prescriptionID =
-			 * commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
-			 * }else{ //prescriptionID = 0; }
+			 * commonNurseServiceImpl.saveBenPrescription(prescriptionDetail); }else{
+			 * //prescriptionID = 0; }
 			 */
 
 			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull()) {
@@ -703,7 +700,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 
 					wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
 					investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
-				}else{
+				} else {
 					investigationSuccessFlag = new Long(1);
 				}
 			} else {
@@ -869,8 +866,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 	/**
 	 * 
 	 * @param requestOBJ
-	 * @return success or failure flag for General OPD History updating by
-	 *         Doctor
+	 * @return success or failure flag for General OPD History updating by Doctor
 	 */
 	@Transactional(rollbackFor = Exception.class)
 	public int updateBenHistoryDetails(JsonObject historyOBJ) throws Exception {
@@ -1088,7 +1084,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 
 		return resMap.toString();
 	}
-	
+
 	public String getBenCaseRecordFromDoctorNCDCare(Long benRegID, Long benVisitID) {
 		Map<String, Object> resMap = new HashMap<>();
 
@@ -1101,11 +1097,12 @@ public class NCDCareServiceImpl implements NCDCareService {
 		resMap.put("prescription", commonDoctorServiceImpl.getPrescribedDrugs(benRegID, benVisitID));
 
 		resMap.put("Refer", commonDoctorServiceImpl.getReferralDetails(benRegID, benVisitID));
-		
-		resMap.put("LabReport", new Gson().toJson(labTechnicianServiceImpl.getLabResultDataForBen(benRegID, benVisitID)));
-		
+
+		resMap.put("LabReport",
+				new Gson().toJson(labTechnicianServiceImpl.getLabResultDataForBen(benRegID, benVisitID)));
+
 		resMap.put("GraphData", new Gson().toJson(commonNurseServiceImpl.getGraphicalTrendData(benRegID, "ncdCare")));
-		
+
 		return resMap.toString();
 	}
 
@@ -1163,7 +1160,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 
 					wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
 					investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
-				}else{
+				} else {
 					investigationSuccessFlag = new Long(1);
 				}
 			} else {

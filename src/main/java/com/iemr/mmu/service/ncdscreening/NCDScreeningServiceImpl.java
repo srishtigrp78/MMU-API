@@ -14,6 +14,7 @@ import com.iemr.mmu.data.ncdScreening.NCDScreening;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
+import com.iemr.mmu.data.nurse.NurseUtilityClass;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
@@ -57,8 +58,8 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 			// JsonElement visitDetails = jsonObject.get("visitDetails");
 			// JsonElement ncdScreeningDetails =
 			// jsonObject.get("ncdScreeningDetails");
-
-			Long benFlowID = jsonObject.get("benFlowID").getAsLong();
+			NurseUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(jsonObject, NurseUtilityClass.class);
+			Long benFlowID = nurseUtilityClass.getBenFlowID();
 
 			BeneficiaryVisitDetail beneficiaryVisitDetail = InputMapper.gson().fromJson(jsonObject.get("visitDetails"),
 					BeneficiaryVisitDetail.class);
@@ -71,9 +72,10 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 						.valueOf(ncdScreening.getNextScreeningDate().replaceAll("T", " ").replaceAll("Z", " ")));
 
 			Long visitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(beneficiaryVisitDetail);
-			
+
 			// 11-06-2018 visit code
-			Long benVisitCode = commonNurseServiceImpl.generateVisitCode(visitID, 101, 1);
+			Long benVisitCode = commonNurseServiceImpl.generateVisitCode(visitID, nurseUtilityClass.getVanID(),
+					nurseUtilityClass.getSessionID());
 
 			if (null != visitID) {
 
@@ -87,7 +89,8 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 
 					int i = updateBenFlowNurseAfterNurseActivityANC(beneficiaryVisitDetail.getBeneficiaryRegID(),
 							visitID, benFlowID, beneficiaryVisitDetail.getVisitReason(),
-							beneficiaryVisitDetail.getVisitCategory(), ncdScreening.getIsScreeningComplete(), benVisitCode);
+							beneficiaryVisitDetail.getVisitCategory(), ncdScreening.getIsScreeningComplete(),
+							benVisitCode);
 
 					result = 1;
 				}
@@ -113,7 +116,8 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		return rs;
 	}
 
-	public Long saveNCDScreeningVitalDetails(JsonObject jsonObject, Long benVisitID, Long benVisitCode) throws Exception {
+	public Long saveNCDScreeningVitalDetails(JsonObject jsonObject, Long benVisitID, Long benVisitCode)
+			throws Exception {
 
 		Long vitalSuccessFlag = null;
 		JsonElement ncdScreeningDetails = jsonObject.get("ncdScreeningDetails");
@@ -166,7 +170,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 
 		Integer updateNCDScreeningDetails = ncdScreeningNurseServiceImpl.updateNCDScreeningDetails(ncdScreening);
 		Integer updateANCAnthropometryDetails = commonNurseServiceImpl
-				.updateANCAnthropometryDetails(anthropometryDetail);	
+				.updateANCAnthropometryDetails(anthropometryDetail);
 		Integer updateANCPhysicalVitalDetails = commonNurseServiceImpl
 				.updateANCPhysicalVitalDetails(physicalVitalDetail);
 
@@ -174,12 +178,12 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 				&& null != updateNCDScreeningDetails) {
 
 			short nurseFlag = (short) 0;
-			
+
 			if (ncdScreening.getIsScreeningComplete() != null && ncdScreening.getIsScreeningComplete() == true)
 				nurseFlag = (short) 9;
 			else
 				nurseFlag = (short) 100;
-			
+
 			int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseUpdateNCD_Screening(
 					ncdScreening.getBenFlowID(), ncdScreening.getBeneficiaryRegID(), nurseFlag);
 

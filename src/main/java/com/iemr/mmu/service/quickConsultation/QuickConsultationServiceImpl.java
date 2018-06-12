@@ -15,6 +15,7 @@ import com.google.gson.JsonObject;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
+import com.iemr.mmu.data.nurse.NurseUtilityClass;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 import com.iemr.mmu.data.quickConsultation.ExternalLabTestOrder;
@@ -165,9 +166,8 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 				.getBenPrescribedDrugDetailList(caseSheet, prescriptionID);
 
 		/*
-		 * List<PrescribedDrugDetail> prescribedDrugs =
-		 * (List<PrescribedDrugDetail>) prescribedDrugDetailRepo
-		 * .save(prescriptionDetails);
+		 * List<PrescribedDrugDetail> prescribedDrugs = (List<PrescribedDrugDetail>)
+		 * prescribedDrugDetailRepo .save(prescriptionDetails);
 		 * 
 		 * if (null != prescribedDrugs && prescribedDrugs.size() > 0) { for
 		 * (PrescribedDrugDetail prescribedDrug : prescribedDrugs) { return
@@ -199,18 +199,24 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		Integer returnOBJ = 0;
 		if (jsnOBJ != null && jsnOBJ.has("visitDetails") && !jsnOBJ.get("visitDetails").isJsonNull()) {
 
+			NurseUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(jsnOBJ, NurseUtilityClass.class);
+
 			BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(jsnOBJ.get("visitDetails"),
 					BeneficiaryVisitDetail.class);
 			Long benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
-		
+
 			// 11-06-2018 visit code
-			Long benVisitCode = commonNurseServiceImpl.generateVisitCode(benVisitID, 101, 1);
-			
+			Long benVisitCode = commonNurseServiceImpl.generateVisitCode(benVisitID, nurseUtilityClass.getVanID(),
+					nurseUtilityClass.getSessionID());
+
 			// Getting benflowID for ben status update
 			Long benFlowID = null;
-			if (jsnOBJ.has("benFlowID")) {
-				benFlowID = jsnOBJ.get("benFlowID").getAsLong();
-			}
+			// if (jsnOBJ.has("benFlowID")) {
+			// benFlowID = jsnOBJ.get("benFlowID").getAsLong();
+			// }
+
+			// Above if block code replaced by below line
+			benFlowID = nurseUtilityClass.getBenFlowID();
 
 			if (benVisitID != null && benVisitID > 0) {
 				BenAnthropometryDetail benAnthropometryDetail = InputMapper.gson().fromJson(jsnOBJ.get("vitalsDetails"),
@@ -233,11 +239,11 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 					returnOBJ = 1;
 
 					/**
-					 * We have to write new code to update ben status flow new
-					 * logic
+					 * We have to write new code to update ben status flow new logic
 					 */
 
-					int j = updateBenStatusFlagAfterNurseSaveSuccess(benVisitDetailsOBJ, benVisitID, benFlowID, benVisitCode);
+					int j = updateBenStatusFlagAfterNurseSaveSuccess(benVisitDetailsOBJ, benVisitID, benFlowID,
+							benVisitCode);
 
 				} else {
 
@@ -258,7 +264,8 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 
 		int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitID, benVisitDetailsOBJ.getVisitReason(),
-				benVisitDetailsOBJ.getVisitCategory(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0, benVisitCode);
+				benVisitDetailsOBJ.getVisitCategory(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0,
+				benVisitCode);
 
 		return i;
 	}
