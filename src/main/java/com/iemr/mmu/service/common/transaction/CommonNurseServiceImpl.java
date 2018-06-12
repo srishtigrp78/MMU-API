@@ -333,18 +333,20 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		String visitCode = "";
 
 		// current month
-		int month = LocalDateTime.now().getMonthValue();
-		String monthString = "";
-		if (month <= 9)
-			monthString = "0" + month;
-		else monthString += month;
+		// int month = LocalDateTime.now().getMonthValue();
+		// String monthString = "";
+		// if (month <= 9)
+		// monthString = "0" + month;
+		// else monthString += month;
+		
 		// current date
-		int day = LocalDateTime.now().getDayOfMonth();
-		String dayString = "";
-		if (day <= 9)
-			dayString = "0" + day;
-		else
-			dayString += day;
+		// int day = LocalDateTime.now().getDayOfMonth();
+		// String dayString = "";
+		// if (day <= 9)
+		// dayString = "0" + day;
+		// else
+		// dayString += day;
+		
 		// van & session ID
 		String vanIDString = "";
 		int vanIdLength = (int) (Math.log10(vanID) + 1);
@@ -361,7 +363,9 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		visitIDString += visitID;
 
 		// Generating VISIT CODE
-		visitCode += sessionID + dayString + monthString + vanIDString + visitIDString;
+		//visitCode += sessionID + dayString + monthString + vanIDString + visitIDString;
+		//changed logic 14 digit visit code, removed day & month 
+		visitCode += sessionID + vanIDString + visitIDString;
 
 		 int i = benVisitDetailRepo.updateVisitCode(Long.valueOf(visitCode), visitID);
 		 if (i > 0)
