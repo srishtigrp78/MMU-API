@@ -12,7 +12,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import com.iemr.mmu.data.masterdata.registrar.GenderMaster;
 
 /***
@@ -726,6 +725,5 @@ public class BeneficiaryFlowStatus {
 	public void setBenPhoneMaps(List<BenPhoneMaps> benPhoneMaps) {
 		this.benPhoneMaps = benPhoneMaps;
 	}
-	
 
 }
