@@ -15,7 +15,7 @@ import com.google.gson.JsonObject;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
-import com.iemr.mmu.data.nurse.NurseUtilityClass;
+import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 import com.iemr.mmu.data.quickConsultation.ExternalLabTestOrder;
@@ -199,7 +199,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		Integer returnOBJ = 0;
 		if (jsnOBJ != null && jsnOBJ.has("visitDetails") && !jsnOBJ.get("visitDetails").isJsonNull()) {
 
-			NurseUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(jsnOBJ, NurseUtilityClass.class);
+			CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(jsnOBJ, CommonUtilityClass.class);
 
 			BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(jsnOBJ.get("visitDetails"),
 					BeneficiaryVisitDetail.class);

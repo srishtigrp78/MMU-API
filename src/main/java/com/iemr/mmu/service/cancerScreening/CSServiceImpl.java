@@ -30,7 +30,7 @@ import com.iemr.mmu.data.nurse.BenObstetricCancerHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
-import com.iemr.mmu.data.nurse.NurseUtilityClass;
+import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
@@ -108,7 +108,7 @@ public class CSServiceImpl implements CSService {
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
 			// Call method to save visit details data
 
-			NurseUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestOBJ, NurseUtilityClass.class);
+			CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
 			BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(requestOBJ.get("visitDetails"),
 					BeneficiaryVisitDetail.class);
 
@@ -233,7 +233,7 @@ public class CSServiceImpl implements CSService {
 	 * @return success or failure flag for visitDetails data saving
 	 */
 	public Map<String, Long> saveBenVisitDetails(BeneficiaryVisitDetail benVisitDetailsOBJ,
-			NurseUtilityClass nurseUtilityClass) throws Exception {
+			CommonUtilityClass nurseUtilityClass) throws Exception {
 		Map<String, Long> visitIdAndCodeMap = new HashMap<>();
 		Long benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
 

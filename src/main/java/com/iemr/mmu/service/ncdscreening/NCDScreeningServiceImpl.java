@@ -14,7 +14,7 @@ import com.iemr.mmu.data.ncdScreening.NCDScreening;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
-import com.iemr.mmu.data.nurse.NurseUtilityClass;
+import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
@@ -58,7 +58,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 			// JsonElement visitDetails = jsonObject.get("visitDetails");
 			// JsonElement ncdScreeningDetails =
 			// jsonObject.get("ncdScreeningDetails");
-			NurseUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(jsonObject, NurseUtilityClass.class);
+			CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(jsonObject, CommonUtilityClass.class);
 			Long benFlowID = nurseUtilityClass.getBenFlowID();
 
 			BeneficiaryVisitDetail beneficiaryVisitDetail = InputMapper.gson().fromJson(jsonObject.get("visitDetails"),

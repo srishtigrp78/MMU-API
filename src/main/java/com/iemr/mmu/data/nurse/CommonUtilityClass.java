@@ -1,16 +1,16 @@
 package com.iemr.mmu.data.nurse;
 
-public class NurseUtilityClass {
+public class CommonUtilityClass {
 	private Long benFlowID;
 	private Long beneficiaryID;
 	private Integer sessionID;
 	private Integer parkingPlaceID;
 	private Integer vanID;
-	
-	// private Long beneficiaryRegID;
-	// private Integer providerServiceMapID;
-	// private Long benVisitID;
-	// private Long visitCode;
+
+	private Long beneficiaryRegID;
+	private Integer providerServiceMapID;
+	private Long benVisitID;
+	private Long visitCode;
 
 	public Long getBenFlowID() {
 		return benFlowID;
@@ -50,6 +50,38 @@ public class NurseUtilityClass {
 
 	public void setVanID(Integer vanID) {
 		this.vanID = vanID;
+	}
+
+	public Long getBeneficiaryRegID() {
+		return beneficiaryRegID;
+	}
+
+	public void setBeneficiaryRegID(Long beneficiaryRegID) {
+		this.beneficiaryRegID = beneficiaryRegID;
+	}
+
+	public Integer getProviderServiceMapID() {
+		return providerServiceMapID;
+	}
+
+	public void setProviderServiceMapID(Integer providerServiceMapID) {
+		this.providerServiceMapID = providerServiceMapID;
+	}
+
+	public Long getBenVisitID() {
+		return benVisitID;
+	}
+
+	public void setBenVisitID(Long benVisitID) {
+		this.benVisitID = benVisitID;
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 
 }

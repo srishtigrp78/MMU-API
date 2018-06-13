@@ -40,7 +40,7 @@ import com.iemr.mmu.data.anc.WrapperMedicationHistory;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
-import com.iemr.mmu.data.nurse.NurseUtilityClass;
+import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
@@ -104,7 +104,7 @@ public class ANCServiceImpl implements ANCService {
 		Long saveSuccessFlag = null;
 		// check if visit details data is not null
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
-			NurseUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestOBJ, NurseUtilityClass.class);
+			CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
 			// Call method to save visit details data
 			Map<String, Long> visitIdAndCodeMap = saveBenVisitDetails(requestOBJ.getAsJsonObject("visitDetails"),
 					nurseUtilityClass);
@@ -389,7 +389,7 @@ public class ANCServiceImpl implements ANCService {
 	 * @param requestOBJ
 	 * @return success or failure flag for visitDetails data saving
 	 */
-	public Map<String, Long> saveBenVisitDetails(JsonObject visitDetailsOBJ, NurseUtilityClass nurseUtilityClass)
+	public Map<String, Long> saveBenVisitDetails(JsonObject visitDetailsOBJ, CommonUtilityClass nurseUtilityClass)
 			throws Exception {
 		Map<String, Long> visitIdAndCodeMap = new HashMap<>();
 		Long benVisitID = null;
