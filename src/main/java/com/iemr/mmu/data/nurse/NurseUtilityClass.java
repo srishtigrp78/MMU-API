@@ -6,6 +6,11 @@ public class NurseUtilityClass {
 	private Integer sessionID;
 	private Integer parkingPlaceID;
 	private Integer vanID;
+	
+	// private Long beneficiaryRegID;
+	// private Integer providerServiceMapID;
+	// private Long benVisitID;
+	// private Long visitCode;
 
 	public Long getBenFlowID() {
 		return benFlowID;
