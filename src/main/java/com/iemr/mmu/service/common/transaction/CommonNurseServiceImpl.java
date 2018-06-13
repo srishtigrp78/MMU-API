@@ -2580,7 +2580,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		if (null != feedingHistoryDetail) {
 			for (Object[] obj : feedingHistoryDetail) {
 				ChildFeedingDetails history = new ChildFeedingDetails((Date) obj[0], (Long) obj[1], (Long) obj[2],
-						(String) obj[3], (String) obj[4], (Character) obj[5], (Character) obj[6], (String) obj[7]);
+						(String) obj[3], (String) obj[4], (String) obj[5], (String) obj[6], (String) obj[7]);
 				feedingHistoryDetails.add(history);
 			}
 		}

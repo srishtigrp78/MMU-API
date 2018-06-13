@@ -57,11 +57,11 @@ public class ChildFeedingDetails {
 	
 	@Expose
 	@Column(name = "NoOfCompFeedPerDay")
-	private Character noOfCompFeedPerDay;
+	private String noOfCompFeedPerDay;
 
 	@Expose
 	@Column(name = "FoodIntoleranceStatus")
-	private Character foodIntoleranceStatus;
+	private String foodIntoleranceStatus;
 
 	@Expose
 	@Column(name = "TypeofFoodIntolerance")
@@ -174,19 +174,19 @@ public class ChildFeedingDetails {
 		this.compFeedStartAge = compFeedStartAge;
 	}
 
-	public Character getNoOfCompFeedPerDay() {
+	public String getNoOfCompFeedPerDay() {
 		return noOfCompFeedPerDay;
 	}
 
-	public void setNoOfCompFeedPerDay(Character noOfCompFeedPerDay) {
+	public void setNoOfCompFeedPerDay(String noOfCompFeedPerDay) {
 		this.noOfCompFeedPerDay = noOfCompFeedPerDay;
 	}
 
-	public Character getFoodIntoleranceStatus() {
+	public String getFoodIntoleranceStatus() {
 		return foodIntoleranceStatus;
 	}
 
-	public void setFoodIntoleranceStatus(Character foodIntoleranceStatus) {
+	public void setFoodIntoleranceStatus(String foodIntoleranceStatus) {
 		this.foodIntoleranceStatus = foodIntoleranceStatus;
 	}
 
@@ -299,8 +299,8 @@ public class ChildFeedingDetails {
 	}
 
 	public ChildFeedingDetails(Date createdDate, Long childID, Long benMotherID, String typeOfFeed, 
-			String compFeedStartAge,  Character noOfCompFeedPerDay,
-			Character foodIntoleranceStatus, String typeofFoodIntolerance) {
+			String compFeedStartAge,  String noOfCompFeedPerDay,
+			String foodIntoleranceStatus, String typeofFoodIntolerance) {
 		super();
 		this.captureDate = createdDate;
 		this.childID = childID;
@@ -313,8 +313,8 @@ public class ChildFeedingDetails {
 	}
 
 	public ChildFeedingDetails(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, Long childID,
-			Long benMotherID, String typeOfFeed, String compFeedStartAge, Character noOfCompFeedPerDay,
-			Character foodIntoleranceStatus, String typeofFoodIntolerance) {
+			Long benMotherID, String typeOfFeed, String compFeedStartAge, String noOfCompFeedPerDay,
+			String foodIntoleranceStatus, String typeofFoodIntolerance) {
 		super();
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
@@ -333,7 +333,7 @@ public class ChildFeedingDetails {
 		if(null != feedingHistoryDetails && feedingHistoryDetails.size()>0){
 			for(Object[] obj:feedingHistoryDetails){
 				feedingDetails = new ChildFeedingDetails((Long)obj[0], (Long)obj[1], (Integer)obj[2], (Long)obj[3], 
-						(Long)obj[4], (String)obj[5], (String)obj[6], (Character)obj[7], (Character)obj[8], (String)obj[9]);
+						(Long)obj[4], (String)obj[5], (String)obj[6], (String)obj[7], (String)obj[8], (String)obj[9]);
 			}
 		}
 		return feedingDetails;
