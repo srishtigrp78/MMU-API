@@ -1447,7 +1447,7 @@ public class ANCServiceImpl implements ANCService {
 							wrapperBenInvestigationANC.getBenVisitID(),
 							wrapperBenInvestigationANC.getProviderServiceMapID(),
 							wrapperBenInvestigationANC.getCreatedBy(),
-							wrapperBenInvestigationANC.getExternalInvestigations());
+							wrapperBenInvestigationANC.getExternalInvestigations(), Long.valueOf("00000000000000"));
 
 					// bvID = wrapperBenInvestigationANC.getBenVisitID();
 

@@ -243,7 +243,7 @@ public class PNCServiceImpl implements PNCService {
 							wrapperBenInvestigationANC.getBenVisitID(),
 							wrapperBenInvestigationANC.getProviderServiceMapID(),
 							wrapperBenInvestigationANC.getCreatedBy(),
-							wrapperBenInvestigationANC.getExternalInvestigations());
+							wrapperBenInvestigationANC.getExternalInvestigations(), Long.valueOf("00000000000000"));
 
 					// bvID = wrapperBenInvestigationANC.getBenVisitID();
 
@@ -1399,7 +1399,7 @@ public class PNCServiceImpl implements PNCService {
 							wrapperBenInvestigationANC.getBenVisitID(),
 							wrapperBenInvestigationANC.getProviderServiceMapID(),
 							wrapperBenInvestigationANC.getCreatedBy(),
-							wrapperBenInvestigationANC.getExternalInvestigations());
+							wrapperBenInvestigationANC.getExternalInvestigations(), Long.valueOf("00000000000000"));
 
 					// bvID = wrapperBenInvestigationANC.getBenVisitID();
 
