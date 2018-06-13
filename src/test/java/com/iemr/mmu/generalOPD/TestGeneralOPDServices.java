@@ -158,7 +158,7 @@ public class TestGeneralOPDServices
 									.thenReturn(new SysGastrointestinalExamination());
 			
 			when(childFeedingDetailsRepoMock.updateFeedingDetails( Matchers.anyLong(), Matchers.anyLong(), Matchers.anyString(), Matchers.anyString(), 
-					Matchers.anyChar(), Matchers.anyChar(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), 
+					Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), 
 					Matchers.anyLong(), Matchers.anyLong())).thenReturn(1);
 			 
 			when(perinatalHistoryRepoMock.updatePerinatalDetails(Matchers.anyShort(), Matchers.anyString(), Matchers.anyString(), Matchers.anyShort(), 
