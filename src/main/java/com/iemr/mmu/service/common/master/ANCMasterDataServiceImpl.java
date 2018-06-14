@@ -544,16 +544,17 @@ public class ANCMasterDataServiceImpl {
 		resMap.put("counsellingTypes", CounsellingType.getCounsellingType(counsellingTypes));
 		resMap.put("higherHealthCare", institute.getinstituteDetails(instituteDetails));
 		resMap.put("additionalServices", ServiceMaster.getServiceMaster(additionalServices));
+		
+		ArrayList<TempMasterDrug> tempMasterDrugList = tempMasterDrugRepo.findByDeletedFalseOrderByDrugDisplayNameAsc();
+		resMap.put("tempDrugMaster", TempMasterDrug.getTempDrugMasterList(tempMasterDrugList));
 
 		//NCD Care specific master data
-		if(visitCategoryID==3){
-			ArrayList<TempMasterDrug> tempMasterDrugList = tempMasterDrugRepo.findByDeletedFalseOrderByDrugDisplayNameAsc();
-			
+		if(visitCategoryID==3){			
 			resMap.put("ncdCareConditions", NCDScreeningCondition.getNCDScreeningCondition((ArrayList<Object[]>) 
 					ncdScreeningMasterServiceImpl.getNCDScreeningConditions()));
 			resMap.put("ncdCareTypes", NCDCareType.getNCDCareTypes((ArrayList<Object[]>) 
 					ncdCareTypeRepo.getNCDCareTypes()));
-			resMap.put("tempDrugMaster", TempMasterDrug.getTempDrugMasterList(tempMasterDrugList));
+			
 		}
 
 		return new Gson().toJson(resMap);

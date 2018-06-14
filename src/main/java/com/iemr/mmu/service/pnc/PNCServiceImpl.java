@@ -207,6 +207,8 @@ public class PNCServiceImpl implements PNCService {
 
 		if (requestOBJ != null) {
 
+			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
+
 			JsonArray testList = null;
 			JsonArray drugList = null;
 			if (requestOBJ.has("investigation")) {
@@ -243,7 +245,8 @@ public class PNCServiceImpl implements PNCService {
 							wrapperBenInvestigationANC.getBenVisitID(),
 							wrapperBenInvestigationANC.getProviderServiceMapID(),
 							wrapperBenInvestigationANC.getCreatedBy(),
-							wrapperBenInvestigationANC.getExternalInvestigations(), Long.valueOf("00000000000000"));
+							wrapperBenInvestigationANC.getExternalInvestigations(),
+							wrapperBenInvestigationANC.getVisitCode());
 
 					// bvID = wrapperBenInvestigationANC.getBenVisitID();
 
@@ -277,11 +280,17 @@ public class PNCServiceImpl implements PNCService {
 						}
 						for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
 							tmpObj.setPrescriptionID(prescriptionID);
-							// tmpObj.setCreatedBy(createdBy);
-							if (tmpOBJ.has("beneficiaryRegID") && null != tmpOBJ.get("beneficiaryRegID"))
-								tmpObj.setBeneficiaryRegID(tmpOBJ.get("beneficiaryRegID").getAsLong());
-							if (tmpOBJ.has("benVisitID") && null != tmpOBJ.get("benVisitID"))
-								tmpObj.setBenVisitID(tmpOBJ.get("benVisitID").getAsLong());
+
+							// if (tmpOBJ.has("beneficiaryRegID") && null != tmpOBJ.get("beneficiaryRegID"))
+							// tmpObj.setBeneficiaryRegID(tmpOBJ.get("beneficiaryRegID").getAsLong());
+							// if (tmpOBJ.has("benVisitID") && null != tmpOBJ.get("benVisitID"))
+							// tmpObj.setBenVisitID(tmpOBJ.get("benVisitID").getAsLong());
+
+							tmpObj.setBeneficiaryRegID(commonUtilityClass.getBeneficiaryRegID());
+							tmpObj.setBenVisitID(commonUtilityClass.getBenVisitID());
+							tmpObj.setVisitCode(commonUtilityClass.getVisitCode());
+							tmpObj.setProviderServiceMapID(commonUtilityClass.getProviderServiceMapID());
+
 							if (tmpOBJ.has("createdBy") && null != tmpOBJ.get("createdBy"))
 								tmpObj.setCreatedBy(tmpOBJ.get("createdBy").getAsString());
 
@@ -324,10 +333,10 @@ public class PNCServiceImpl implements PNCService {
 				short docFlag;
 				short labFalg;
 
-				Long tmpBenFlowID = requestOBJ.get("benFlowID").getAsLong();
-				Long tmpBeneficiaryID = requestOBJ.get("beneficiaryID").getAsLong();
-				Long tmpBenVisitID = requestOBJ.getAsJsonObject("diagnosis").get("benVisitID").getAsLong();
-				Long tmpbeneficiaryRegID = requestOBJ.getAsJsonObject("diagnosis").get("beneficiaryRegID").getAsLong();
+				Long tmpBenFlowID = commonUtilityClass.getBenFlowID();
+				Long tmpBeneficiaryID = commonUtilityClass.getBeneficiaryID();
+				Long tmpBenVisitID = commonUtilityClass.getBenVisitID();
+				Long tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
 
 				// new logic on 25-04-2018
 				if (testList != null && !testList.isJsonNull() && testList.size() > 0) {

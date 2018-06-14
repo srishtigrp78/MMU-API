@@ -14,6 +14,7 @@ import javax.persistence.Transient;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.nurse.CommonUtilityClass;
 
 @Entity
 @Table(name = "t_prescribeddrug")
@@ -35,11 +36,11 @@ public class PrescribedDrugDetail {
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
-	
+
 	@Expose
 	@Column(name = "PrescriptionID")
 	private Long prescriptionID;
@@ -83,7 +84,7 @@ public class PrescribedDrugDetail {
 	@Expose
 	@Column(name = "DuartionUnit")
 	private String drugDurationUnit;
-	
+
 	@Expose
 	@Column(name = "RelationToFood")
 	private String relationToFood;
@@ -397,7 +398,7 @@ public class PrescribedDrugDetail {
 	}
 
 	public static ArrayList<PrescribedDrugDetail> getBenPrescribedDrugDetailList(JsonObject emrgCasesheet,
-			Long prescriptionID) {
+			Long prescriptionID, CommonUtilityClass commonUtilityClass) {
 		ArrayList<PrescribedDrugDetail> resArray = new ArrayList<PrescribedDrugDetail>();
 		PrescribedDrugDetail prescribedDrugDetail = null;
 		if (emrgCasesheet.has("prescribedDrugs") && !emrgCasesheet.get("prescribedDrugs").isJsonNull()
@@ -429,10 +430,10 @@ public class PrescribedDrugDetail {
 
 				if (obj.has("drugDuration") && !obj.get("drugDuration").isJsonNull())
 					prescribedDrugDetail.setDuration(obj.get("drugDuration").getAsString());
-				
+
 				if (obj.has("drugDurationUnit") && !obj.get("drugDurationUnit").isJsonNull())
 					prescribedDrugDetail.setDrugDurationUnit(obj.get("drugDurationUnit").getAsString());
-				
+
 				if (obj.has("relationToFood") && !obj.get("relationToFood").isJsonNull())
 					prescribedDrugDetail.setRelationToFood(obj.get("relationToFood").getAsString());
 
@@ -442,11 +443,16 @@ public class PrescribedDrugDetail {
 				if (emrgCasesheet.has("createdBy") && !emrgCasesheet.get("createdBy").isJsonNull())
 					prescribedDrugDetail.setCreatedBy(emrgCasesheet.get("createdBy").getAsString());
 
-				if (emrgCasesheet.has("beneficiaryRegID") && !emrgCasesheet.get("beneficiaryRegID").isJsonNull())
-					prescribedDrugDetail.setBeneficiaryRegID(emrgCasesheet.get("beneficiaryRegID").getAsLong());
-
-				if (emrgCasesheet.has("benVisitID") && !emrgCasesheet.get("benVisitID").isJsonNull())
-					prescribedDrugDetail.setBenVisitID(emrgCasesheet.get("benVisitID").getAsLong());
+//				if (emrgCasesheet.has("beneficiaryRegID") && !emrgCasesheet.get("beneficiaryRegID").isJsonNull())
+//					prescribedDrugDetail.setBeneficiaryRegID(emrgCasesheet.get("beneficiaryRegID").getAsLong());
+//
+//				if (emrgCasesheet.has("benVisitID") && !emrgCasesheet.get("benVisitID").isJsonNull())
+//					prescribedDrugDetail.setBenVisitID(emrgCasesheet.get("benVisitID").getAsLong());
+				
+				prescribedDrugDetail.setBeneficiaryRegID(commonUtilityClass.getBeneficiaryRegID());
+				prescribedDrugDetail.setBenVisitID(commonUtilityClass.getBenVisitID());
+				prescribedDrugDetail.setVisitCode(commonUtilityClass.getVisitCode());
+				prescribedDrugDetail.setProviderServiceMapID(commonUtilityClass.getProviderServiceMapID());
 
 				if (obj.has("drug") && !obj.get("drug").isJsonNull() && obj.size() > 0
 						&& obj.get("drug").isJsonObject()) {
@@ -456,15 +462,12 @@ public class PrescribedDrugDetail {
 							&& !tmpDugDeailsOBJ.get("drugDisplayName").isJsonNull()) {
 						prescribedDrugDetail.setDrugID(tmpDugDeailsOBJ.get("drugID").getAsInt());
 						prescribedDrugDetail.setGenericDrugName(tmpDugDeailsOBJ.get("drugDisplayName").getAsString());
-						
+
 						resArray.add(prescribedDrugDetail);
 					}
 
 				}
 
-				
-
-				
 			}
 		}
 
@@ -473,7 +476,8 @@ public class PrescribedDrugDetail {
 
 	public PrescribedDrugDetail(Long prescribedDrugID, Long prescriptionID, String drugForm,
 			String drugTradeOrBrandName, Integer drugID, String genericDrugName, String drugStrength, String dose,
-			String route, String frequency, String drugDuration, String drugDurationUnit, String relationToFood, String specialInstruction) {
+			String route, String frequency, String drugDuration, String drugDurationUnit, String relationToFood,
+			String specialInstruction) {
 		super();
 		this.prescribedDrugID = prescribedDrugID;
 		this.prescriptionID = prescriptionID;

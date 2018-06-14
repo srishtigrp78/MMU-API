@@ -125,7 +125,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 			// if (requestOBJ.has("benFlowID")) {
 			// benFlowID = requestOBJ.get("benFlowID").getAsLong();
 			// }
-			
+
 			// Above if block code replaced by below line
 			benFlowID = nurseUtilityClass.getBenFlowID();
 
@@ -742,6 +742,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		Long bvID = null;
 
 		if (requestOBJ != null) {
+			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
 
 			JsonArray testList = null;
 			JsonArray drugList = null;
@@ -813,13 +814,17 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					if (prescribedDrugDetailList.size() > 0) {
 						for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
 							tmpObj.setPrescriptionID(prescriptionID);
-							// tmpObj.setCreatedBy(createdBy);
+					
+							tmpObj.setBeneficiaryRegID(commonUtilityClass.getBeneficiaryRegID());
+							tmpObj.setBenVisitID(commonUtilityClass.getBenVisitID());
+							tmpObj.setVisitCode(commonUtilityClass.getVisitCode());
+							tmpObj.setProviderServiceMapID(commonUtilityClass.getProviderServiceMapID());
 							if (tmpOBJ.has("createdBy") && null != tmpOBJ.get("createdBy"))
 								tmpObj.setCreatedBy(tmpOBJ.get("createdBy").getAsString());
-							if (tmpOBJ.has("beneficiaryRegID") && null != tmpOBJ.get("beneficiaryRegID"))
-								tmpObj.setBeneficiaryRegID(tmpOBJ.get("beneficiaryRegID").getAsLong());
-							if (tmpOBJ.has("benVisitID") && null != tmpOBJ.get("benVisitID"))
-								tmpObj.setBenVisitID(tmpOBJ.get("benVisitID").getAsLong());
+							// if (tmpOBJ.has("beneficiaryRegID") && null != tmpOBJ.get("beneficiaryRegID"))
+							// tmpObj.setBeneficiaryRegID(tmpOBJ.get("beneficiaryRegID").getAsLong());
+							// if (tmpOBJ.has("benVisitID") && null != tmpOBJ.get("benVisitID"))
+							// tmpObj.setBenVisitID(tmpOBJ.get("benVisitID").getAsLong());
 							Map<String, String> drug = tmpObj.getDrug();
 							if (null != drug && drug.size() > 0 && drug.containsKey("drugID")
 									&& drug.containsKey("drugDisplayName")) {
@@ -861,10 +866,10 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				short docFlag;
 				short labFalg;
 
-				Long tmpBenFlowID = requestOBJ.get("benFlowID").getAsLong();
-				Long tmpBeneficiaryID = requestOBJ.get("beneficiaryID").getAsLong();
-				Long tmpBenVisitID = requestOBJ.getAsJsonObject("diagnosis").get("benVisitID").getAsLong();
-				Long tmpbeneficiaryRegID = requestOBJ.getAsJsonObject("diagnosis").get("beneficiaryRegID").getAsLong();
+				Long tmpBenFlowID = commonUtilityClass.getBenFlowID();
+				Long tmpBeneficiaryID = commonUtilityClass.getBeneficiaryID();
+				Long tmpBenVisitID = commonUtilityClass.getBenVisitID();
+				Long tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
 
 				// new logic on 25-04-2018
 				if (testList != null && !testList.isJsonNull() && testList.size() > 0) {

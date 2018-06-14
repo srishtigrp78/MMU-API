@@ -160,10 +160,11 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	}
 
 	@Override
-	public Long saveBeneficiaryPrescribedDrugDetail(JsonObject caseSheet, Long prescriptionID) {
+	public Long saveBeneficiaryPrescribedDrugDetail(JsonObject caseSheet, Long prescriptionID,
+			CommonUtilityClass commonUtilityClass) {
 		Long prescribedDrugSuccessFlag = null;
 		ArrayList<PrescribedDrugDetail> prescriptionDetails = PrescribedDrugDetail
-				.getBenPrescribedDrugDetailList(caseSheet, prescriptionID);
+				.getBenPrescribedDrugDetailList(caseSheet, prescriptionID, commonUtilityClass);
 
 		/*
 		 * List<PrescribedDrugDetail> prescribedDrugs = (List<PrescribedDrugDetail>)
@@ -273,6 +274,10 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	@Override
 	public Integer quickConsultDoctorDataInsert(JsonObject quickConsultDoctorOBJ) throws Exception {
 		Integer returnOBJ = 0;
+
+		CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(quickConsultDoctorOBJ,
+				CommonUtilityClass.class);
+
 		Long benChiefComplaintID = saveBeneficiaryChiefComplaint(quickConsultDoctorOBJ);
 		Long clinicalObservationID = saveBeneficiaryClinicalObservations(quickConsultDoctorOBJ);
 		Long prescriptionID = commonNurseServiceImpl.saveBeneficiaryPrescription(quickConsultDoctorOBJ);
@@ -290,7 +295,8 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 				if (drugList != null && !drugList.isJsonNull() && drugList.size() > 0) {
 					JsonObject tmp = drugList.get(0).getAsJsonObject();
 					if (tmp.get("drug") != null && !tmp.get("drug").isJsonNull())
-						prescribedDrugID = saveBeneficiaryPrescribedDrugDetail(quickConsultDoctorOBJ, prescriptionID);
+						prescribedDrugID = saveBeneficiaryPrescribedDrugDetail(quickConsultDoctorOBJ, prescriptionID,
+								commonUtilityClass);
 				}
 			}
 			/// prescribedDrugID =
@@ -391,6 +397,10 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		Long updateSuccessFlag = null;
 		Long prescriptionID = null;
 		Integer diagnosisSuccessFlag = null;
+
+		CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(quickConsultDoctorOBJ,
+				CommonUtilityClass.class);
+
 		Long benChiefComplaintID = saveBeneficiaryChiefComplaint(quickConsultDoctorOBJ);
 		Integer clinicalObservationID = updateBeneficiaryClinicalObservations(quickConsultDoctorOBJ);
 
@@ -431,7 +441,8 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		Long labTestOrderSuccessFlag = null;
 
 		if (isMedicinePrescribed == true) {
-			prescribedDrugSuccessFlag = saveBeneficiaryPrescribedDrugDetail(quickConsultDoctorOBJ, prescriptionID);
+			prescribedDrugSuccessFlag = saveBeneficiaryPrescribedDrugDetail(quickConsultDoctorOBJ, prescriptionID,
+					commonUtilityClass);
 		} else {
 			prescribedDrugSuccessFlag = new Long(1);
 		}

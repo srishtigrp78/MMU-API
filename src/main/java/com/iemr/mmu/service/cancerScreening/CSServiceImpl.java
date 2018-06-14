@@ -673,6 +673,7 @@ public class CSServiceImpl implements CSService {
 		Long docDataSuccessFlag = null;
 
 		if (requestOBJ != null) {
+			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
 			Long diagnosisSuccessFlag = saveBenDiagnosisDetails(requestOBJ);
 
 			if (diagnosisSuccessFlag != null && diagnosisSuccessFlag > 0) {
@@ -684,10 +685,10 @@ public class CSServiceImpl implements CSService {
 
 				if (requestOBJ.getAsJsonObject("diagnosis") != null
 						&& !requestOBJ.getAsJsonObject("diagnosis").isJsonNull()) {
-					tmpBenFlowID = requestOBJ.getAsJsonObject("diagnosis").get("benFlowID").getAsLong();
-					tmpbeneficiaryRegID = requestOBJ.getAsJsonObject("diagnosis").get("beneficiaryRegID").getAsLong();
-					tmpBeneficiaryID = requestOBJ.getAsJsonObject("diagnosis").get("beneficiaryID").getAsLong();
-					tmpBenVisitID = requestOBJ.getAsJsonObject("diagnosis").get("benVisitID").getAsLong();
+					tmpBenFlowID = commonUtilityClass.getBenFlowID();
+					tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
+					tmpBeneficiaryID = commonUtilityClass.getBeneficiaryID();
+					tmpBenVisitID = commonUtilityClass.getBenVisitID();
 				}
 
 				short docFlag = (short) 9;
