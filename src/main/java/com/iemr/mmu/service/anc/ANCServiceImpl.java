@@ -231,6 +231,8 @@ public class ANCServiceImpl implements ANCService {
 
 		if (requestOBJ != null) {
 
+			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
+
 			JsonArray testList = null;
 			JsonArray drugList = null;
 			if (requestOBJ.has("investigation")) {
@@ -307,6 +309,8 @@ public class ANCServiceImpl implements ANCService {
 								tmpObj.setBeneficiaryRegID(tmpOBJ.get("beneficiaryRegID").getAsLong());
 							if (tmpOBJ.has("benVisitID") && null != tmpOBJ.get("benVisitID"))
 								tmpObj.setBenVisitID(tmpOBJ.get("benVisitID").getAsLong());
+							if (tmpOBJ.has("visitCode") && null != tmpOBJ.get("visitCode"))
+								tmpObj.setVisitCode(tmpOBJ.get("visitCode").getAsLong());
 							if (tmpOBJ.has("createdBy") && null != tmpOBJ.get("createdBy"))
 								tmpObj.setCreatedBy(tmpOBJ.get("createdBy").getAsString());
 							if (tmpOBJ.has("providerServiceMapID") && null != tmpOBJ.get("providerServiceMapID"))

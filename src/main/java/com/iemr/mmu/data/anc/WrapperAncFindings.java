@@ -9,6 +9,7 @@ import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 public class WrapperAncFindings {
 	private Long beneficiaryRegID;
 	private Long benVisitID;
+	private Long visitCode;
 	private Integer providerServiceMapID;
 	private String createdBy;
 	private String modifiedBy;
@@ -32,6 +33,17 @@ public class WrapperAncFindings {
 		this.significantFindings = significantFindings;
 		this.complaints = complaints;
 	}
+	
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
+	}
+
 
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
