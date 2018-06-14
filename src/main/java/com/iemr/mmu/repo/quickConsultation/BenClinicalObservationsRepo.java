@@ -21,7 +21,7 @@ public interface BenClinicalObservationsRepo extends CrudRepository<BenClinicalO
 	public ArrayList<Object[]> getPreviousSignificantFindings(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	
 	@Query(" SELECT beneficiaryRegID, benVisitID, providerServiceMapID, clinicalObservation, "
-			+ "otherSymptoms, significantFindings, isForHistory from BenClinicalObservations ba "
+			+ "otherSymptoms, significantFindings, isForHistory, visitCode from BenClinicalObservations ba "
 			+ "WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID AND ba.deleted = false")
 	public ArrayList<Object[]> getFindingsData(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);

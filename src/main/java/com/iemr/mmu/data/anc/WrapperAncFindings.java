@@ -127,10 +127,11 @@ public class WrapperAncFindings {
 
 	public WrapperAncFindings(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			String clinicalObservation, String otherSymptoms, String significantFindings,
-			ArrayList<BenChiefComplaint> chiefComplaints, Boolean isForHistory) {
+			ArrayList<BenChiefComplaint> chiefComplaints, Boolean isForHistory, Long visitCode) {
 		super();
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
+		this.visitCode = visitCode;
 		this.providerServiceMapID = providerServiceMapID;
 		this.clinicalObservation = clinicalObservation;
 		this.otherSymptoms = otherSymptoms;
@@ -146,13 +147,13 @@ public class WrapperAncFindings {
 		if(null != clinicalObservationsList && clinicalObservationsList.size()>0){
 			for (Object[] obj : clinicalObservationsList) {
 				cOBJ = new WrapperAncFindings((Long)obj[0], (Long)obj[1], (Integer)obj[2], (String)obj[3], 
-						(String)obj[4], (String)obj[5], chiefcmplts, (Boolean)obj[6]);
+						(String)obj[4], (String)obj[5], chiefcmplts, (Boolean)obj[6], (Long)obj[7]);
 						
 			}
 		}else if (null != chiefcmplts && chiefcmplts.size()>0){
 			BenChiefComplaint cmplint = chiefcmplts.get(0);
 			cOBJ = new WrapperAncFindings(cmplint.getBeneficiaryRegID(), cmplint.getBenVisitID(), cmplint.getProviderServiceMapID(), null, 
-					null, null, chiefcmplts, null);
+					null, null, chiefcmplts, null, cmplint.getVisitCode());
 		}
 		return cOBJ;
 	}

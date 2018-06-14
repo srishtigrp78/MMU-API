@@ -110,11 +110,12 @@ public class BenChiefComplaint {
 	
 	public BenChiefComplaint(Long benChiefComplaintID, Long beneficiaryRegID, Long benVisitID,
 			Integer providerServiceMapID, Integer chiefComplaintID, String chiefComplaint, Integer duration,
-			String unitOfDuration, String description) {
+			String unitOfDuration, String description, Long visitCode) {
 		super();
 		this.benChiefComplaintID = benChiefComplaintID;
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
+		this.visitCode = visitCode;
 		this.providerServiceMapID = providerServiceMapID;
 		this.chiefComplaintID = chiefComplaintID;
 		this.chiefComplaint = chiefComplaint;
@@ -129,7 +130,7 @@ public class BenChiefComplaint {
 		BenChiefComplaint cOBJ = null;
 		for(Object[] obj:resList){		
 			cOBJ = new BenChiefComplaint((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (Integer)obj[4],
-					(String)obj[5], (Integer)obj[6], (String)obj[7], (String)obj[8]);
+					(String)obj[5], (Integer)obj[6], (String)obj[7], (String)obj[8], (Long)obj[9]);
 			resArray.add(cOBJ);
 		}
 		return resArray;
