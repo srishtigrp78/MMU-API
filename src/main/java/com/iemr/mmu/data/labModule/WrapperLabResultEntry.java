@@ -6,6 +6,7 @@ public class WrapperLabResultEntry {
 
 	private Long beneficiaryRegID;
 	private Long visitID;
+	private Long visitCode;
 	private Integer providerServiceMapID;
 	private String createdBy;
 	private List<LabResultEntry> labTestResults;
@@ -62,6 +63,16 @@ public class WrapperLabResultEntry {
 
 	public void setVisitID(Long visitID) {
 		this.visitID = visitID;
+	}
+	
+	
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 
 	public Integer getProviderServiceMapID() {

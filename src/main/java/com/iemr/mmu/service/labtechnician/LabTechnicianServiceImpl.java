@@ -356,6 +356,7 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 
 							labCompResult.setBeneficiaryRegID(wrapperLabResults.getBeneficiaryRegID());
 							labCompResult.setBenVisitID(wrapperLabResults.getVisitID());
+							labCompResult.setVisitCode(wrapperLabResults.getVisitCode());
 							labCompResult.setProviderServiceMapID(wrapperLabResults.getProviderServiceMapID());
 							labCompResult.setCreatedBy(wrapperLabResults.getCreatedBy());
 
