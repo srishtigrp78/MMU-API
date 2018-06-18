@@ -371,7 +371,7 @@ public class BenMenstrualDetails {
 	public BenMenstrualDetails(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			Short menstrualCycleStatusID, String menstrualCycleStatus, String regularity, Short menstrualCyclelengthID, String cycleLength,
 			Short menstrualFlowDurationID, String bloodFlowDuration, Short menstrualProblemID, String problemName,
-			Timestamp lMPDate) {
+			Timestamp lMPDate, Long visitCode) {
 		super();
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
@@ -386,6 +386,7 @@ public class BenMenstrualDetails {
 		this.problemName = problemName;
 		this.lMPDate = lMPDate;
 		this.menstrualCycleStatus = menstrualCycleStatus;
+		this.visitCode = visitCode;
 	}
 	
 	public static BenMenstrualDetails getBenMenstrualDetails(ArrayList<Object[]> menstrualHistoryDetails){
@@ -394,7 +395,7 @@ public class BenMenstrualDetails {
 			for(Object[] obj:menstrualHistoryDetails){
 				menstrualDetails = new BenMenstrualDetails((Long)obj[0], (Long)obj[1], (Integer)obj[2], 
 						(Short)obj[3], (String)obj[4], (String)obj[5], (Short)obj[6], (String)obj[7], (Short)obj[8], (String)obj[9], (Short)obj[10], 
-						(String)obj[11], (Timestamp)obj[12]);
+						(String)obj[11], (Timestamp)obj[12], (Long)obj[13]);
 			}
 		}
 		return menstrualDetails;

@@ -102,7 +102,7 @@ public class WrapperMedicationHistory {
 
 				Integer timePeriodAgo = Integer.parseInt(timePeriod.get("timePeriodAgo").toString());
 				BenMedicationHistory medicationHistory = new BenMedicationHistory((String) obj[3], timePeriodAgo,
-						timePeriod.get("timePeriodUnit").toString());
+						timePeriod.get("timePeriodUnit").toString(), (Long) obj[6]);
 
 				WMH.medicationHistoryList.add(medicationHistory);
 			}

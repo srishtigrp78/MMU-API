@@ -103,6 +103,7 @@ public class WrapperChildOptionalVaccineDetail {
 			WCO.beneficiaryRegID = (Long) obj1[0];
 			WCO.benVisitID = (Long) obj1[1];
 			WCO.providerServiceMapID = (Integer) obj1[2];
+			WCO.visitCode = (Long) obj1[9];
 			for (Object[] obj : childOptionalVaccineDetail) {
 
 				ChildOptionalVaccineDetail obstetricHistory = new ChildOptionalVaccineDetail((String) obj[3],

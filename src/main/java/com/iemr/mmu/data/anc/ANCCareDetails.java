@@ -172,7 +172,7 @@ public class ANCCareDetails {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ANCCareDetails(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, Short visitNo,
+	public ANCCareDetails(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, Long visitCode, Short visitNo,
 			String comolaintType, String duration, String description, 
 			Date lastMenstrualPeriod_LMP, Short gestationalAgeOrPeriodofAmenorrhea_POA, Short trimesterNumber,
 			Date expectedDateofDelivery, Boolean primiGravida, Short gravida_G,
@@ -182,6 +182,7 @@ public class ANCCareDetails {
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
 		this.providerServiceMapID = providerServiceMapID;
+		this.visitCode = visitCode;
 		this.visitNo = visitNo;
 		this.comolaintType = comolaintType;
 		this.duration = duration;
@@ -203,17 +204,16 @@ public class ANCCareDetails {
 		ArrayList<ANCCareDetails> resArray = new ArrayList<ANCCareDetails>();
 		ANCCareDetails cOBJ = null;
 		for (Object[] obj : resList) {
-			cOBJ = new ANCCareDetails((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (Short)obj[4], (String)obj[5], 
-					(String)obj[6], (String)obj[7], (Date)obj[8], (Short)obj[9], 
-					(Short)obj[10], (Date)obj[11], (Boolean)obj[12], (Short)obj[13], (Short)obj[14], (Short)obj[15],
-					(Short)obj[16], (Short)obj[17], (String)obj[18]);
+			cOBJ = new ANCCareDetails((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (Long)obj[4], (Short)obj[5], (String)obj[6], 
+					(String)obj[7], (String)obj[8], (Date)obj[9], (Short)obj[10], (Short)obj[11], (Date)obj[12], (Boolean)obj[13], 
+					(Short)obj[14], (Short)obj[15], (Short)obj[16], (Short)obj[17], (Short)obj[18], (String)obj[19]);
 			
-			Date Ldate=(Date)obj[8];
+			Date Ldate=(Date)obj[9];
 			if(null != Ldate){
 				cOBJ.setLmpDate(Ldate.toString());
 			}
 			
-			Date EDate=(Date)obj[11];
+			Date EDate=(Date)obj[12];
 			if(null != EDate){
 				cOBJ.setExpDelDt(EDate.toString());
 			}

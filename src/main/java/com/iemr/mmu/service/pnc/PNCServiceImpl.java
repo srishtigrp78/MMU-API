@@ -138,21 +138,21 @@ public class PNCServiceImpl implements PNCService {
 				// call method to save History data
 				if (requestOBJ.has("historyDetails") && !requestOBJ.get("historyDetails").isJsonNull())
 					historySaveSuccessFlag = saveBenPNCHistoryDetails(requestOBJ.getAsJsonObject("historyDetails"),
-							benVisitID);
+							benVisitID, benVisitCode);
 
 				// call method to save ANC data
 				if (requestOBJ.has("pNCDeatils") && !requestOBJ.get("pNCDeatils").isJsonNull())
-					pncSaveSuccessFlag = saveBenPNCDetails(requestOBJ, benVisitID);
+					pncSaveSuccessFlag = saveBenPNCDetails(requestOBJ, benVisitID, benVisitCode);
 
 				// call method to save Vital data
 				if (requestOBJ.has("vitalDetails") && !requestOBJ.get("vitalDetails").isJsonNull())
 					vitalSaveSuccessFlag = saveBenPNCVitalDetails(requestOBJ.getAsJsonObject("vitalDetails"),
-							benVisitID);
+							benVisitID, benVisitCode);
 
 				// call method to save examination data
 				if (requestOBJ.has("examinationDetails") && !requestOBJ.get("examinationDetails").isJsonNull())
 					examtnSaveSuccessFlag = saveBenExaminationDetails(requestOBJ.getAsJsonObject("examinationDetails"),
-							benVisitID);
+							benVisitID, benVisitCode);
 
 				i = commonNurseServiceImpl.updateBeneficiaryStatus('N', tmpOBJ.get("beneficiaryRegID").getAsLong());
 			} else {
@@ -465,7 +465,7 @@ public class PNCServiceImpl implements PNCService {
 	 * @param requestOBJ
 	 * @return success or failure flag for visitDetails data saving
 	 */
-	public Long saveBenPNCHistoryDetails(JsonObject pncHistoryOBJ, Long benVisitID) throws Exception {
+	public Long saveBenPNCHistoryDetails(JsonObject pncHistoryOBJ, Long benVisitID, Long benVisitCode) throws Exception {
 		Long pastHistorySuccessFlag = null;
 		Long comrbidSuccessFlag = null;
 		Long medicationSuccessFlag = null;
@@ -482,6 +482,7 @@ public class PNCServiceImpl implements PNCService {
 					BenMedHistory.class);
 			if (null != benMedHistory) {
 				benMedHistory.setBenVisitID(benVisitID);
+				benMedHistory.setVisitCode(benVisitCode);
 				pastHistorySuccessFlag = commonNurseServiceImpl.saveBenPastHistory(benMedHistory);
 				// pastHistorySuccessFlag =
 				// ancNurseServiceImpl.saveBenANCPastHistory(benMedHistory);
@@ -498,6 +499,7 @@ public class PNCServiceImpl implements PNCService {
 					.fromJson(pncHistoryOBJ.get("comorbidConditions"), WrapperComorbidCondDetails.class);
 			if (null != wrapperComorbidCondDetails) {
 				wrapperComorbidCondDetails.setBenVisitID(benVisitID);
+				wrapperComorbidCondDetails.setVisitCode(benVisitCode);
 				comrbidSuccessFlag = commonNurseServiceImpl.saveBenComorbidConditions(wrapperComorbidCondDetails);
 				// comrbidSuccessFlag =
 				// ancNurseServiceImpl.saveBenANCComorbidConditions(wrapperComorbidCondDetails);
@@ -514,6 +516,7 @@ public class PNCServiceImpl implements PNCService {
 			if (null != wrapperMedicationHistory
 					&& wrapperMedicationHistory.getBenMedicationHistoryDetails().size() > 0) {
 				wrapperMedicationHistory.setBenVisitID(benVisitID);
+				wrapperMedicationHistory.setVisitCode(benVisitCode);
 				medicationSuccessFlag = commonNurseServiceImpl.saveBenMedicationHistory(wrapperMedicationHistory);
 
 				// medicationSuccessFlag =
@@ -532,7 +535,7 @@ public class PNCServiceImpl implements PNCService {
 					BenPersonalHabit.class);
 			if (null != personalHabit) {
 				personalHabit.setBenVisitID(benVisitID);
-
+				personalHabit.setVisitCode(benVisitCode);
 				personalHistorySuccessFlag = commonNurseServiceImpl.savePersonalHistory(personalHabit);
 				// personalHistorySuccessFlag =
 				// ancNurseServiceImpl.saveANCPersonalHistory(personalHabit);
@@ -542,7 +545,7 @@ public class PNCServiceImpl implements PNCService {
 					BenAllergyHistory.class);
 			if (null != benAllergyHistory) {
 				benAllergyHistory.setBenVisitID(benVisitID);
-
+				benAllergyHistory.setVisitCode(benVisitCode);
 				allergyHistorySuccessFlag = commonNurseServiceImpl.saveAllergyHistory(benAllergyHistory);
 				// allergyHistorySuccessFlag =
 				// ancNurseServiceImpl.saveANCAllergyHistory(benAllergyHistory);
@@ -560,6 +563,7 @@ public class PNCServiceImpl implements PNCService {
 					BenFamilyHistory.class);
 			if (null != benFamilyHistory) {
 				benFamilyHistory.setBenVisitID(benVisitID);
+				benFamilyHistory.setVisitCode(benVisitCode);
 				familyHistorySuccessFlag = commonNurseServiceImpl.saveBenFamilyHistory(benFamilyHistory);
 				// familyHistorySuccessFlag =
 				// ancNurseServiceImpl.saveANCBenFamilyHistory(benFamilyHistory);
@@ -575,6 +579,7 @@ public class PNCServiceImpl implements PNCService {
 					BenMenstrualDetails.class);
 			if (null != menstrualDetails) {
 				menstrualDetails.setBenVisitID(benVisitID);
+				menstrualDetails.setVisitCode(benVisitCode);
 				menstrualHistorySuccessFlag = commonNurseServiceImpl.saveBenMenstrualHistory(menstrualDetails);
 				// menstrualHistorySuccessFlag =
 				// ancNurseServiceImpl.saveBenANCMenstrualHistory(menstrualDetails);
@@ -592,6 +597,7 @@ public class PNCServiceImpl implements PNCService {
 
 			if (wrapperFemaleObstetricHistory != null) {
 				wrapperFemaleObstetricHistory.setBenVisitID(benVisitID);
+				wrapperFemaleObstetricHistory.setVisitCode(benVisitCode);
 				obstetricSuccessFlag = commonNurseServiceImpl.saveFemaleObstetricHistory(wrapperFemaleObstetricHistory);
 				// obstetricSuccessFlag =
 				// ancNurseServiceImpl.saveFemaleObstetricHistory(wrapperFemaleObstetricHistory);
@@ -622,7 +628,7 @@ public class PNCServiceImpl implements PNCService {
 	 * @param requestOBJ
 	 * @return success or failure flag for PNCDetails data saving
 	 */
-	public Long saveBenPNCDetails(JsonObject pncDetailsOBJ, Long benVisitID) throws Exception {
+	public Long saveBenPNCDetails(JsonObject pncDetailsOBJ, Long benVisitID, Long benVisitCode) throws Exception {
 
 		Long pncSuccessFlag = null;
 		if (pncDetailsOBJ != null && pncDetailsOBJ.has("pNCDeatils") && !pncDetailsOBJ.get("pNCDeatils").isJsonNull()) {
@@ -630,6 +636,7 @@ public class PNCServiceImpl implements PNCService {
 			PNCCare pncCareDetailsOBJ = InputMapper.gson().fromJson(pncDetailsOBJ.get("pNCDeatils"), PNCCare.class);
 			if (null != pncCareDetailsOBJ) {
 				pncCareDetailsOBJ.setBenVisitID(benVisitID);
+				pncCareDetailsOBJ.setVisitCode(benVisitCode);
 				pncSuccessFlag = pncNurseServiceImpl.saveBenPncCareDetails(pncCareDetailsOBJ);
 
 			}
@@ -644,7 +651,7 @@ public class PNCServiceImpl implements PNCService {
 	 * @param requestOBJ
 	 * @return success or failure flag for vitalDetails data saving
 	 */
-	public Long saveBenPNCVitalDetails(JsonObject vitalDetailsOBJ, Long benVisitID) throws Exception {
+	public Long saveBenPNCVitalDetails(JsonObject vitalDetailsOBJ, Long benVisitID, Long benVisitCode) throws Exception {
 		Long vitalSuccessFlag = null;
 		Long anthropometrySuccessFlag = null;
 		Long phyVitalSuccessFlag = null;
@@ -657,11 +664,13 @@ public class PNCServiceImpl implements PNCService {
 
 			if (null != benAnthropometryDetail) {
 				benAnthropometryDetail.setBenVisitID(benVisitID);
+				benAnthropometryDetail.setVisitCode(benVisitCode);
 				anthropometrySuccessFlag = commonNurseServiceImpl
 						.saveBeneficiaryPhysicalAnthropometryDetails(benAnthropometryDetail);
 			}
 			if (null != benPhysicalVitalDetail) {
 				benPhysicalVitalDetail.setBenVisitID(benVisitID);
+				benPhysicalVitalDetail.setVisitCode(benVisitCode);
 				phyVitalSuccessFlag = commonNurseServiceImpl
 						.saveBeneficiaryPhysicalVitalDetails(benPhysicalVitalDetail);
 			}
@@ -680,7 +689,7 @@ public class PNCServiceImpl implements PNCService {
 	 * @param requestOBJ
 	 * @return success or failure flag for examinationDetails data saving
 	 */
-	public Long saveBenExaminationDetails(JsonObject examinationDetailsOBJ, Long benVisitID) throws Exception {
+	public Long saveBenExaminationDetails(JsonObject examinationDetailsOBJ, Long benVisitID, Long benVisitCode) throws Exception {
 
 		Long genExmnSuccessFlag = null;
 		Long headToToeExmnSuccessFlag = null;
@@ -698,6 +707,7 @@ public class PNCServiceImpl implements PNCService {
 					.fromJson(examinationDetailsOBJ.get("generalExamination"), PhyGeneralExamination.class);
 			if (null != generalExamination) {
 				generalExamination.setBenVisitID(benVisitID);
+				generalExamination.setVisitCode(benVisitCode);
 				genExmnSuccessFlag = commonNurseServiceImpl.savePhyGeneralExamination(generalExamination);
 			}
 
@@ -712,6 +722,7 @@ public class PNCServiceImpl implements PNCService {
 					.fromJson(examinationDetailsOBJ.get("headToToeExamination"), PhyHeadToToeExamination.class);
 			if (null != headToToeExamination) {
 				headToToeExamination.setBenVisitID(benVisitID);
+				headToToeExamination.setVisitCode(benVisitCode);
 				headToToeExmnSuccessFlag = commonNurseServiceImpl.savePhyHeadToToeExamination(headToToeExamination);
 			}
 
@@ -726,6 +737,7 @@ public class PNCServiceImpl implements PNCService {
 					examinationDetailsOBJ.get("gastroIntestinalExamination"), SysGastrointestinalExamination.class);
 			if (null != gastrointestinalExamination) {
 				gastrointestinalExamination.setBenVisitID(benVisitID);
+				gastrointestinalExamination.setVisitCode(benVisitCode);
 				gastroIntsExmnSuccessFlag = commonNurseServiceImpl
 						.saveSysGastrointestinalExamination(gastrointestinalExamination);
 
@@ -741,6 +753,7 @@ public class PNCServiceImpl implements PNCService {
 					examinationDetailsOBJ.get("cardioVascularExamination"), SysCardiovascularExamination.class);
 			if (null != cardiovascularExamination) {
 				cardiovascularExamination.setBenVisitID(benVisitID);
+				cardiovascularExamination.setVisitCode(benVisitCode);
 				cardiExmnSuccessFlag = commonNurseServiceImpl
 						.saveSysCardiovascularExamination(cardiovascularExamination);
 
@@ -756,6 +769,7 @@ public class PNCServiceImpl implements PNCService {
 					examinationDetailsOBJ.get("respiratorySystemExamination"), SysRespiratoryExamination.class);
 			if (null != sysRespiratoryExamination) {
 				sysRespiratoryExamination.setBenVisitID(benVisitID);
+				sysRespiratoryExamination.setVisitCode(benVisitCode);
 				respiratoryExmnSuccessFlag = commonNurseServiceImpl
 						.saveSysRespiratoryExamination(sysRespiratoryExamination);
 			}
@@ -770,6 +784,7 @@ public class PNCServiceImpl implements PNCService {
 					examinationDetailsOBJ.get("centralNervousSystemExamination"), SysCentralNervousExamination.class);
 			if (null != sysCentralNervousExamination) {
 				sysCentralNervousExamination.setBenVisitID(benVisitID);
+				sysCentralNervousExamination.setVisitCode(benVisitCode);
 				centralNrvsExmnSuccessFlag = commonNurseServiceImpl
 						.saveSysCentralNervousExamination(sysCentralNervousExamination);
 			}
@@ -785,6 +800,7 @@ public class PNCServiceImpl implements PNCService {
 					SysMusculoskeletalSystemExamination.class);
 			if (null != sysMusculoskeletalSystemExamination) {
 				sysMusculoskeletalSystemExamination.setBenVisitID(benVisitID);
+				sysMusculoskeletalSystemExamination.setVisitCode(benVisitCode);
 				muskelstlExmnSuccessFlag = commonNurseServiceImpl
 						.saveSysMusculoskeletalSystemExamination(sysMusculoskeletalSystemExamination);
 
@@ -801,6 +817,7 @@ public class PNCServiceImpl implements PNCService {
 					SysGenitourinarySystemExamination.class);
 			if (null != sysGenitourinarySystemExamination) {
 				sysGenitourinarySystemExamination.setBenVisitID(benVisitID);
+				sysGenitourinarySystemExamination.setVisitCode(benVisitCode);
 				genitorinaryExmnSuccessFlag = commonNurseServiceImpl
 						.saveSysGenitourinarySystemExamination(sysGenitourinarySystemExamination);
 

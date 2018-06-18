@@ -102,7 +102,7 @@ public class WrapperComorbidCondDetails {
 
 				Integer timePeriodAgo = Integer.parseInt(timePeriod.get("timePeriodAgo").toString());
 				BencomrbidityCondDetails comrbidityConds = new BencomrbidityCondDetails((Short) obj[3], (String) obj[4],
-						(String) obj[6], (Boolean) obj[7], timePeriodAgo, timePeriod.get("timePeriodUnit").toString());
+						(String) obj[6], (Boolean) obj[7], timePeriodAgo, timePeriod.get("timePeriodUnit").toString(), (Long) obj[9]);
 
 				WCD.comorbidityConcurrentConditionsList.add(comrbidityConds);
 

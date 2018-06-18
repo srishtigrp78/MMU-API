@@ -271,11 +271,12 @@ public class BenMedicationHistory {
 		this.medication_year = year;
 	}
 
-	public BenMedicationHistory(String currentMedication, Integer timePeriodAgo, String timePeriodUnit) {
+	public BenMedicationHistory(String currentMedication, Integer timePeriodAgo, String timePeriodUnit, Long visitCode) {
 		super();
 		this.currentMedication = currentMedication;
 		this.timePeriodAgo = timePeriodAgo;
 		this.timePeriodUnit = timePeriodUnit;
+		this.visitCode = visitCode;
 	}
 
 	public void setID(Long iD) {

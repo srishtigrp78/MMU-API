@@ -447,7 +447,7 @@ public class BenChildDevelopmentHistory {
 	public BenChildDevelopmentHistory(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			String grossMotorMilestone, Boolean isGMMAttained, String fineMotorMilestone, Boolean isFMMAttained,
 			String socialMilestone, Boolean isSMAttained, String languageMilestone, Boolean isLMAttained,
-			String developmentProblem) {
+			String developmentProblem, Long visitCode) {
 		super();
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
@@ -461,6 +461,7 @@ public class BenChildDevelopmentHistory {
 		this.languageMilestone = languageMilestone;
 		this.isLMAttained = isLMAttained;
 		this.developmentProblem = developmentProblem;
+		this.visitCode = visitCode;
 	}
 	
 	public static BenChildDevelopmentHistory getBenChildDevelopmentDetails(ArrayList<Object[]> developmentHistoryDetails){
@@ -468,7 +469,7 @@ public class BenChildDevelopmentHistory {
 		if(null != developmentHistoryDetails && developmentHistoryDetails.size()>0){
 			for(Object[] obj:developmentHistoryDetails){
 				developmentDetails = new BenChildDevelopmentHistory((Long)obj[0], (Long)obj[1], (Integer)obj[2], (String)obj[3], (Boolean)obj[4], 
-						(String)obj[5], (Boolean)obj[6], (String)obj[7], (Boolean)obj[8], (String)obj[9], (Boolean)obj[10], (String)obj[11]);
+						(String)obj[5], (Boolean)obj[6], (String)obj[7], (Boolean)obj[8], (String)obj[9], (Boolean)obj[10], (String)obj[11], (Long)obj[12]);
 				
 				String grossMotorMilestones = developmentDetails.getGrossMotorMilestone();
 				developmentDetails.setGrossMotorMilestones(Arrays.asList(grossMotorMilestones.split(",")));

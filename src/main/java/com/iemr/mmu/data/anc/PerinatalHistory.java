@@ -350,7 +350,7 @@ public class PerinatalHistory {
 	public PerinatalHistory(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			Short deliveryPlaceID, String placeOfDelivery, String otherPlaceOfDelivery, Short deliveryTypeID,
 			String typeOfDelivery, Short complicationAtBirthID, String complicationAtBirth,
-			String otherComplicationAtBirth, String gestation, Double birthWeight_kg) {
+			String otherComplicationAtBirth, String gestation, Double birthWeight_kg, Long visitCode) {
 		super();
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
@@ -365,6 +365,7 @@ public class PerinatalHistory {
 		this.otherComplicationAtBirth = otherComplicationAtBirth;
 		this.gestation = gestation;
 		this.birthWeight_kg = birthWeight_kg;
+		this.visitCode = visitCode;
 	}
 	
 	public static PerinatalHistory getBenPerinatalDetails(ArrayList<Object[]> perinatalHistoryDetails){
@@ -372,9 +373,7 @@ public class PerinatalHistory {
 		if(null != perinatalHistoryDetails && perinatalHistoryDetails.size()>0){
 			for(Object[] obj:perinatalHistoryDetails){
 				perinatalDetails = new PerinatalHistory((Long)obj[0], (Long)obj[1], (Integer)obj[2], (Short)obj[3], (String)obj[4], (String)obj[5],
-						(Short)obj[6], (String)obj[7], (Short)obj[8], (String)obj[9], (String)obj[10], (String)obj[11], (Double)obj[12]);
-				
-			
+						(Short)obj[6], (String)obj[7], (Short)obj[8], (String)obj[9], (String)obj[10], (String)obj[11], (Double)obj[12], (Long)obj[13]);
 			}
 		}
 		return perinatalDetails;

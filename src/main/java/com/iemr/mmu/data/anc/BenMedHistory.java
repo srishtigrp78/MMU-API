@@ -166,7 +166,7 @@ public class BenMedHistory {
 
 	public BenMedHistory(Timestamp yearofIllness, Integer illnessTypeID, String illnessType, String otherIllnessType,
 			Integer surgeryID, String surgeryType, Timestamp yearofSurgery, String otherSurgeryType,
-			Timestamp createdDate) {
+			Timestamp createdDate, Long visitCode) {
 		super();
 		this.yearofIllness = yearofIllness;
 		this.illnessTypeID = illnessTypeID;
@@ -177,6 +177,7 @@ public class BenMedHistory {
 		this.yearofSurgery = yearofSurgery;
 		this.otherSurgeryType = otherSurgeryType;
 		this.createdDate = createdDate;
+		this.visitCode = visitCode;
 	}
 
 	public Long getBeneficiaryRegID() {
@@ -479,7 +480,7 @@ public class BenMedHistory {
 			for (Object[] obj : pastHistory) {
 				BenMedHistory benMedHistory = new BenMedHistory((Timestamp) obj[3], (Integer) obj[4], (String) obj[5],
 						(String) obj[6], (Integer) obj[7], (String) obj[8], (Timestamp) obj[9], (String) obj[10],
-						(Timestamp) obj1[11]);
+						(Timestamp) obj1[11], (Long) obj[12]);
 
 				Map<String, Object> illness = new HashMap<String, Object>();
 				Map<String, Object> timePeriod = null;
