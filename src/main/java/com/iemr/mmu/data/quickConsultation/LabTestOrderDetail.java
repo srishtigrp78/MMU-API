@@ -325,6 +325,7 @@ public class LabTestOrderDetail {
 			Object[] obj1 = resList.get(0);
 			testOrders.setBeneficiaryRegID((Long) obj1[0]);
 			testOrders.setBenVisitID((Long) obj1[1]);
+			testOrders.setVisitCode((Long) obj1[6]);
 			testOrders.setProviderServiceMapID((Integer) obj1[2]);
 			ArrayList<LabTestOrderDetail> laboratoryList = new ArrayList<LabTestOrderDetail>();
 			for (Object[] obj : resList) {

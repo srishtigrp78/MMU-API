@@ -16,12 +16,14 @@ import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 @Repository
 public interface PrescriptionDetailRepo extends CrudRepository<PrescriptionDetail, Long> {
 
-	@Query(" SELECT prescriptionID, beneficiaryRegID, benVisitID, providerServiceMapID, diagnosisProvided, instruction, externalInvestigation "
+	@Query(" SELECT prescriptionID, beneficiaryRegID, benVisitID, providerServiceMapID, diagnosisProvided, "
+			+ " instruction, externalInvestigation, visitCode "
 			+ "from PrescriptionDetail ba WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID AND ba.deleted = false")
 	public ArrayList<Object[]> getBenPrescription(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 
-	@Query(" SELECT prescriptionID, beneficiaryRegID, benVisitID, providerServiceMapID, diagnosisProvided, instruction "
+	@Query(" SELECT prescriptionID, beneficiaryRegID, benVisitID, providerServiceMapID, diagnosisProvided, instruction, "
+			+ " visitCode "
 			+ "from PrescriptionDetail ba WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID AND ba.deleted = false")
 	public ArrayList<Object[]> getGeneralOPDDiagnosisDetails(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);

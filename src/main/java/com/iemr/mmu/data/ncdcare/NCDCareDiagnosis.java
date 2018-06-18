@@ -304,7 +304,7 @@ public class NCDCareDiagnosis
 	}
 
 	public NCDCareDiagnosis(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, Long prescriptionID,
-			String ncdCareCondition, String ncdComplication, String ncdCareType) {
+			String ncdCareCondition, String ncdComplication, String ncdCareType, Long visitCode) {
 		super();
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
@@ -313,13 +313,15 @@ public class NCDCareDiagnosis
 		this.ncdScreeningCondition = ncdCareCondition;
 		this.ncdComplication = ncdComplication;
 		this.ncdCareType = ncdCareType;
+		this.visitCode = visitCode;
 	}
 	
 	public static NCDCareDiagnosis getNCDCareDiagnosisDetails(ArrayList<Object[]> resList) {
 		NCDCareDiagnosis cOBJ = null;
 		if(null != resList && resList.size()>0){
 			for (Object[] obj : resList) {
-				cOBJ = new NCDCareDiagnosis((Long)obj[0], (Long)obj[1], (Integer)obj[2], (Long)obj[3], (String)obj[4], (String)obj[5], (String)obj[6]);
+				cOBJ = new NCDCareDiagnosis((Long)obj[0], (Long)obj[1], (Integer)obj[2], (Long)obj[3], 
+						(String)obj[4], (String)obj[5], (String)obj[6], (Long)obj[7]);
 			}
 		}
 		return cOBJ;

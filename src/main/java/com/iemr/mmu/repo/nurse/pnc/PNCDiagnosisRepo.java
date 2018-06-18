@@ -17,7 +17,8 @@ import com.iemr.mmu.data.pnc.PNCDiagnosis;
 public interface PNCDiagnosisRepo extends CrudRepository<PNCDiagnosis, Long>{
 
 	@Query(" SELECT beneficiaryRegID, benVisitID, providerServiceMapID, prescriptionID, provisionalDiagnosis, "
-			+ "confirmatoryDiagnosis, isMaternalDeath, placeOfDeath, dateOfDeath, causeOfDeath from PNCDiagnosis ba "
+			+ "confirmatoryDiagnosis, isMaternalDeath, placeOfDeath, dateOfDeath, causeOfDeath, visitCode "
+			+ " from PNCDiagnosis ba "
 			+ "WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID AND ba.deleted = false ")
 	public ArrayList<Object[]> getPNCDiagnosisDetails(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);

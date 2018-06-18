@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
-import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 
 @Entity
 @Table(name = "t_ancdiagnosis")
@@ -34,7 +33,7 @@ public class ANCDiagnosis {
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
@@ -42,7 +41,7 @@ public class ANCDiagnosis {
 	@Expose
 	@Column(name = "PrescriptionID")
 	private Long prescriptionID;
-	
+
 	@Expose
 	@Column(name = "HighRiskStatus")
 	private String highRiskStatus;
@@ -62,7 +61,7 @@ public class ANCDiagnosis {
 	@Expose
 	@Column(name = "PlaceOfDeath")
 	private String placeOfDeath;
-	
+
 	@Expose
 	@Column(name = "DateOfDeath")
 	private Date dateOfDeath;
@@ -70,7 +69,7 @@ public class ANCDiagnosis {
 	@Expose
 	@Column(name = "CauseOfDeath")
 	private String causeOfDeath;
-	
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -98,27 +97,27 @@ public class ANCDiagnosis {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	public Long getID() {
 		return ID;
 	}
@@ -311,9 +310,9 @@ public class ANCDiagnosis {
 		this.prescriptionID = prescriptionID;
 	}
 
-	public ANCDiagnosis(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, Long prescriptionID,
-			String highRiskStatus, String highRiskCondition, String complicationOfCurrentPregnancy,
-			Boolean isMaternalDeath, String placeOfDeath, Date dateOfDeath, String causeOfDeath) {
+	public ANCDiagnosis(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
+			Long prescriptionID, String highRiskStatus, String highRiskCondition, String complicationOfCurrentPregnancy,
+			Boolean isMaternalDeath, String placeOfDeath, Date dateOfDeath, String causeOfDeath, Long visitCode) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -327,16 +326,18 @@ public class ANCDiagnosis {
 		this.placeOfDeath = placeOfDeath;
 		this.dateOfDeath = dateOfDeath;
 		this.causeOfDeath = causeOfDeath;
+		this.visitCode = visitCode;
 	}
-	
+
 	public static ANCDiagnosis getANCDiagnosisDetails(ArrayList<Object[]> resList) {
 		ArrayList<ANCDiagnosis> resArray = new ArrayList<ANCDiagnosis>();
 		ANCDiagnosis cOBJ = null;
-		if(null != resList && resList.size()>0){
+		if (null != resList && resList.size() > 0) {
 			for (Object[] obj : resList) {
-				cOBJ = new ANCDiagnosis((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (Long)obj[4], (String)obj[5], (String)obj[6], (String)obj[7], 
-						(Boolean)obj[8], (String)obj[9], (Date)obj[10], (String)obj[11]);
-				
+				cOBJ = new ANCDiagnosis((Long) obj[0], (Long) obj[1], (Long) obj[2], (Integer) obj[3], (Long) obj[4],
+						(String) obj[5], (String) obj[6], (String) obj[7], (Boolean) obj[8], (String) obj[9],
+						(Date) obj[10], (String) obj[11], (Long) obj[12]);
+
 			}
 		}
 		return cOBJ;
@@ -349,5 +350,5 @@ public class ANCDiagnosis {
 	public void setVisitCode(Long visitCode) {
 		this.visitCode = visitCode;
 	}
-	
+
 }

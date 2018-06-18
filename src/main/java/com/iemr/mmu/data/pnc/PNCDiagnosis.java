@@ -309,7 +309,7 @@ public class PNCDiagnosis {
 
 	public PNCDiagnosis(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, Long prescriptionID,
 			String provisionalDiagnosis, String confirmatoryDiagnosis, Boolean isMaternalDeath, String placeOfDeath,
-			Date dateOfDeath, String causeOfDeath) {
+			Date dateOfDeath, String causeOfDeath, Long visitCode) {
 		super();
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
@@ -321,6 +321,7 @@ public class PNCDiagnosis {
 		this.placeOfDeath = placeOfDeath;
 		this.dateOfDeath = dateOfDeath;
 		this.causeOfDeath = causeOfDeath;
+		this.visitCode = visitCode;
 	}
 	
 	public static PNCDiagnosis getPNCDiagnosisDetails(ArrayList<Object[]> resList) {
@@ -329,7 +330,7 @@ public class PNCDiagnosis {
 		if(null != resList && resList.size()>0){
 			for (Object[] obj : resList) {
 				cOBJ = new PNCDiagnosis((Long)obj[0], (Long)obj[1], (Integer)obj[2], (Long)obj[3], (String)obj[4], 
-						(String)obj[5], (Boolean)obj[6], (String)obj[7], (Date)obj[8], (String)obj[9]);
+						(String)obj[5], (Boolean)obj[6], (String)obj[7], (Date)obj[8], (String)obj[9], (Long)obj[10]);
 				
 			}
 		}

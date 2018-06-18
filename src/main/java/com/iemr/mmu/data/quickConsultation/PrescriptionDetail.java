@@ -20,43 +20,43 @@ public class PrescriptionDetail {
 	@Expose
 	@Column(name = "PrescriptionID", insertable = false, updatable = false)
 	private Long prescriptionID;
-	
+
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
-	
+
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
-	
+
 	@Expose
 	@Column(name = "DiagnosisProvided")
 	private String diagnosisProvided;
-	
+
 	@Expose
 	@Column(name = "Instruction")
 	private String instruction;
-	
+
 	@Expose
 	@Column(name = "ConfirmatoryDiagnosis")
 	private String confirmatoryDiagnosis;
-	
+
 	@Expose
 	@Column(name = "ExternalInvestigation")
 	private String externalInvestigation;
-	
+
 	@Expose
 	@Column(name = "Remarks")
 	private String remarks;
-	
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -84,31 +84,30 @@ public class PrescriptionDetail {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	@Transient
 	private ArrayList<PrescribedDrugDetail> prescribedDrugs;
-	
-	
+
 	public ArrayList<PrescribedDrugDetail> getPrescribedDrugs() {
 		return prescribedDrugs;
 	}
@@ -221,7 +220,7 @@ public class PrescriptionDetail {
 	public Long getPrescriptionID() {
 		return prescriptionID;
 	}
-	
+
 	public String getConfirmatoryDiagnosis() {
 		return confirmatoryDiagnosis;
 	}
@@ -278,8 +277,7 @@ public class PrescriptionDetail {
 		this.reservedForChange = reservedForChange;
 	}
 
-	public void setPrescriptionID(Long prescriptionID)
-	{
+	public void setPrescriptionID(Long prescriptionID) {
 		this.prescriptionID = prescriptionID;
 	}
 
@@ -290,10 +288,9 @@ public class PrescriptionDetail {
 	public void setExternalInvestigation(String externalInvestigation) {
 		this.externalInvestigation = externalInvestigation;
 	}
-	
-	
+
 	public PrescriptionDetail(Long prescriptionID, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
-			String diagnosisProvided, String instruction, String externalInvestigation) {
+			String diagnosisProvided, String instruction, String externalInvestigation, Long visitCode) {
 		super();
 		this.prescriptionID = prescriptionID;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -302,11 +299,11 @@ public class PrescriptionDetail {
 		this.diagnosisProvided = diagnosisProvided;
 		this.instruction = instruction;
 		this.externalInvestigation = externalInvestigation;
+		this.visitCode = visitCode;
 	}
 
-	
 	public PrescriptionDetail(Long prescriptionID, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
-			String diagnosisProvided, String instruction) {
+			String diagnosisProvided, String instruction, Long visitCode) {
 		super();
 		this.prescriptionID = prescriptionID;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -314,28 +311,31 @@ public class PrescriptionDetail {
 		this.providerServiceMapID = providerServiceMapID;
 		this.diagnosisProvided = diagnosisProvided;
 		this.instruction = instruction;
+		this.visitCode = visitCode;
 	}
 
 	public static PrescriptionDetail getPrescriptions(ArrayList<Object[]> resList) {
-		PrescriptionDetail cOBJ=null;
+		PrescriptionDetail cOBJ = null;
 		if (resList != null && resList.size() > 0) {
-			
+
 			for (Object[] obj : resList) {
-				
-				cOBJ = new PrescriptionDetail((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (String)obj[4], (String)obj[5], (String)obj[6]);
-				
+
+				cOBJ = new PrescriptionDetail((Long) obj[0], (Long) obj[1], (Long) obj[2], (Integer) obj[3],
+						(String) obj[4], (String) obj[5], (String) obj[6], (Long) obj[7]);
+
 			}
 		}
 		return cOBJ;
 	}
-	
+
 	public static PrescriptionDetail getGeneralOPDDiagnosis(ArrayList<Object[]> resList) {
-		PrescriptionDetail cOBJ=null;
+		PrescriptionDetail cOBJ = null;
 		if (resList != null && resList.size() > 0) {
-			
+
 			for (Object[] obj : resList) {
-				
-				cOBJ = new PrescriptionDetail((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (String)obj[4], (String)obj[5]);
+
+				cOBJ = new PrescriptionDetail((Long) obj[0], (Long) obj[1], (Long) obj[2], (Integer) obj[3],
+						(String) obj[4], (String) obj[5], (Long) obj[6]);
 			}
 		}
 		return cOBJ;
