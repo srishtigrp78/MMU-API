@@ -178,7 +178,7 @@ public class BeneficiaryVisitDetail {
 		this.visitFlowStatusFlag = visitFlowStatusFlag;
 	}
 
-	public BeneficiaryVisitDetail(Long benVisitID, Long beneficiaryRegID, Integer providerServiceMapID,
+	public BeneficiaryVisitDetail(Long benVisitID, Long beneficiaryRegID, Long visitCode, Integer providerServiceMapID,
 			Timestamp visitDateTime, Short visitNo, Short visitReasonID, String visitReason, Integer visitCategoryID,
 			String visitCategory, String pregnancyStatus, String rCHID, String healthFacilityType,
 			String healthFacilityLocation, String reportFilePath, Boolean deleted, String processed, String createdBy,
@@ -186,6 +186,7 @@ public class BeneficiaryVisitDetail {
 		super();
 		this.benVisitID = benVisitID;
 		this.beneficiaryRegID = beneficiaryRegID;
+		this.visitCode = visitCode;
 		this.providerServiceMapID = providerServiceMapID;
 		this.visitDateTime = visitDateTime;
 		this.visitNo = visitNo;

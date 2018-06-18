@@ -314,7 +314,7 @@ public class ChildFeedingDetails {
 
 	public ChildFeedingDetails(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, Long childID,
 			Long benMotherID, String typeOfFeed, String compFeedStartAge, String noOfCompFeedPerDay,
-			String foodIntoleranceStatus, String typeofFoodIntolerance) {
+			String foodIntoleranceStatus, String typeofFoodIntolerance, Long visitCode) {
 		super();
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
@@ -326,6 +326,7 @@ public class ChildFeedingDetails {
 		this.noOfCompFeedPerDay = noOfCompFeedPerDay;
 		this.foodIntoleranceStatus = foodIntoleranceStatus;
 		this.typeofFoodIntolerance = typeofFoodIntolerance;
+		this.visitCode = visitCode;
 	}
 	
 	public static ChildFeedingDetails getBenFeedingDetails(ArrayList<Object[]> feedingHistoryDetails){
@@ -333,7 +334,7 @@ public class ChildFeedingDetails {
 		if(null != feedingHistoryDetails && feedingHistoryDetails.size()>0){
 			for(Object[] obj:feedingHistoryDetails){
 				feedingDetails = new ChildFeedingDetails((Long)obj[0], (Long)obj[1], (Integer)obj[2], (Long)obj[3], 
-						(Long)obj[4], (String)obj[5], (String)obj[6], (String)obj[7], (String)obj[8], (String)obj[9]);
+						(Long)obj[4], (String)obj[5], (String)obj[6], (String)obj[7], (String)obj[8], (String)obj[9], (Long)obj[10]);
 			}
 		}
 		return feedingDetails;

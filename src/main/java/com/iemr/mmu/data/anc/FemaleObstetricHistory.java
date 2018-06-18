@@ -574,7 +574,7 @@ public class FemaleObstetricHistory {
 			Short pregOutcomeID, String pregOutcome, Short postpartumComplicationID, String postpartumComplicationType,
 			String otherPostpartumCompType, Short postNatalComplicationID, String postNatalComplication,
 			String otherPostNatalComplication, String congenitalAnomalies, Short newBornComplicationID,
-			String newBornComplication, String otherNewBornComplication) {
+			String newBornComplication, String otherNewBornComplication, Long visitCode) {
 		super();
 		this.pregOrder = pregOrder;
 		this.pregComplicationID = pregComplicationID;
@@ -602,6 +602,7 @@ public class FemaleObstetricHistory {
 		this.newBornComplicationID = newBornComplicationID;
 		this.newBornComplication = newBornComplication;
 		this.otherNewBornComplication = otherNewBornComplication;
+		this.visitCode = visitCode;
 	}
 
 	public void setObstetricHistoryID(Long obstetricHistoryID) {

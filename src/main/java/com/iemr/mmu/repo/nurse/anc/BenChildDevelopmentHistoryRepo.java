@@ -22,7 +22,7 @@ public interface BenChildDevelopmentHistoryRepo extends CrudRepository<BenChildD
 	public ArrayList<Object[]> getBenDevelopmentHistoryDetail(@Param("beneficiaryRegID") Long beneficiaryRegID);
 
 	@Query("select beneficiaryRegID, benVisitID, providerServiceMapID, grossMotorMilestone, isGMMAttained, fineMotorMilestone, "
-			+ "isFMMAttained, socialMilestone, isSMAttained, languageMilestone, isLMAttained, developmentProblem  "
+			+ "isFMMAttained, socialMilestone, isSMAttained, languageMilestone, isLMAttained, developmentProblem, visitCode  "
 			+ "from BenChildDevelopmentHistory a where a.beneficiaryRegID = :beneficiaryRegID and a.benVisitID = :benVisitID AND deleted=false")
 
 	public ArrayList<Object[]> getBenDevelopmentDetails(@Param("beneficiaryRegID") Long beneficiaryRegID,

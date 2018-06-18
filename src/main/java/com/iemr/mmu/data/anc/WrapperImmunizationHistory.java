@@ -114,6 +114,7 @@ public class WrapperImmunizationHistory {
 			WIH.beneficiaryRegID = (Long) obj1[0];
 			WIH.benVisitID = (Long) obj1[1];
 			WIH.providerServiceMapID = (Integer) obj1[2];
+			WIH.visitCode = (Long) obj1[6];
 			List<Map<String, Object>> vaccinesList = new ArrayList<Map<String, Object>>();
 			ChildVaccineDetail1 childVaccine = null;
 			Map<String, Object> vaccines = new HashMap<String, Object>();

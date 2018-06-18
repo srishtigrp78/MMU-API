@@ -179,6 +179,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 			ancWomenVaccineDetail.setBeneficiaryRegID(wrapperAncImmunizationOBJ.getBeneficiaryRegID());
 			ancWomenVaccineDetail.setBenVisitID(wrapperAncImmunizationOBJ.getBenVisitID());
 			ancWomenVaccineDetail.setProviderServiceMapID(wrapperAncImmunizationOBJ.getProviderServiceMapID());
+			ancWomenVaccineDetail.setVisitCode(wrapperAncImmunizationOBJ.getVisitCode());
 			ancWomenVaccineDetail.setCreatedBy(wrapperAncImmunizationOBJ.getCreatedBy());
 			ancWomenVaccineDetail.setID(wrapperAncImmunizationOBJ.gettT2ID());
 			ancWomenVaccineDetail.setVaccineName("TT-2");
@@ -198,6 +199,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 			ancWomenVaccineDetail.setBeneficiaryRegID(wrapperAncImmunizationOBJ.getBeneficiaryRegID());
 			ancWomenVaccineDetail.setBenVisitID(wrapperAncImmunizationOBJ.getBenVisitID());
 			ancWomenVaccineDetail.setProviderServiceMapID(wrapperAncImmunizationOBJ.getProviderServiceMapID());
+			ancWomenVaccineDetail.setVisitCode(wrapperAncImmunizationOBJ.getVisitCode());
 			ancWomenVaccineDetail.setCreatedBy(wrapperAncImmunizationOBJ.getCreatedBy());
 			ancWomenVaccineDetail.setID(wrapperAncImmunizationOBJ.gettT3ID());
 			ancWomenVaccineDetail.setVaccineName("TT-Booster");

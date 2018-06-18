@@ -23,7 +23,7 @@ public interface ChildOptionalVaccineDetailRepo extends CrudRepository<ChildOpti
 	
 	
 	@Query("select beneficiaryRegID, benVisitID, providerServiceMapID, defaultReceivingAge, vaccineName, status, receivedDate, actualReceivingAge, "
-			+ "receivedFacilityName from ChildOptionalVaccineDetail a where a.beneficiaryRegID = :beneficiaryRegID and a.benVisitID = :benVisitID AND deleted = false")
+			+ "receivedFacilityName, visitCode from ChildOptionalVaccineDetail a where a.beneficiaryRegID = :beneficiaryRegID and a.benVisitID = :benVisitID AND deleted = false")
 	public ArrayList<Object[]> getBenOptionalVaccineDetail(@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("benVisitID") Long benVisitID);
 	
 	@Modifying

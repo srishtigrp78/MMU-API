@@ -361,7 +361,7 @@ public class BencomrbidityCondDetails {
 	}
 	
 	public BencomrbidityCondDetails(Short comorbidConditionID, String comorbidCondition, String otherComorbidCondition,
-			Boolean isForHistory, Integer timePeriodAgo, String timePeriodUnit) {
+			Boolean isForHistory, Integer timePeriodAgo, String timePeriodUnit, Long visitCode) {
 		super();
 		this.comorbidConditionID = comorbidConditionID;
 		this.comorbidCondition = comorbidCondition;
@@ -369,6 +369,7 @@ public class BencomrbidityCondDetails {
 		this.isForHistory = isForHistory;
 		this.timePeriodAgo = timePeriodAgo;
 		this.timePeriodUnit = timePeriodUnit;
+		this.visitCode = visitCode;
 	}
 
 

@@ -480,7 +480,7 @@ public class PNCCare {
 			String deliveryComplication, String otherDeliveryComplication, Short pregOutcomeID, String pregOutcome,
 			Short postNatalComplicationID, String postNatalComplication, String otherPostNatalComplication,
 			Short gestationID, String gestationName, Double birthWeightOfNewborn, Integer newBornHealthStatusID,
-			String newBornHealthStatus) {
+			String newBornHealthStatus, Long visitCode) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -506,6 +506,7 @@ public class PNCCare {
 		this.birthWeightOfNewborn = birthWeightOfNewborn;
 		this.newBornHealthStatusID = newBornHealthStatusID;
 		this.newBornHealthStatus = newBornHealthStatus;
+		this.visitCode = visitCode;
 	}
 
 	public static PNCCare getPNCCareDetails(ArrayList<Object[]> resList) {
@@ -516,7 +517,7 @@ public class PNCCare {
 			cOBJ = new PNCCare((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (Short)obj[4], (Short)obj[5], (String)obj[6], 
 					(Short)obj[7], (String)obj[8], (String)obj[9], (Date)obj[10], (Short)obj[11], (String)obj[12], (String)obj[13], (Short)obj[14], 
 					(String)obj[15], (Short)obj[16], (String)obj[17], (String)obj[18], (Short)obj[19], (String)obj[20], (Double)obj[21], (Integer)obj[22],
-					(String)obj[23]);
+					(String)obj[23], (Long)obj[24]);
 			
 		}
 		return cOBJ;

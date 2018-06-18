@@ -101,13 +101,14 @@ public class BenAdherence {
 	public BenAdherence() {
 	}
 
-	public BenAdherence(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, Boolean toDrugs,
+	public BenAdherence(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, Long visitCode, Boolean toDrugs,
 			String drugReason, Boolean toReferral, String referralReason, String progress) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
 		this.providerServiceMapID = providerServiceMapID;
+		this.visitCode = visitCode;
 		this.toDrugs = toDrugs;
 		this.drugReason = drugReason;
 		this.toReferral = toReferral;
@@ -119,8 +120,8 @@ public class BenAdherence {
 		ArrayList<BenAdherence> resArray = new ArrayList<BenAdherence>();
 		BenAdherence cOBJ = null;
 		for(Object[] obj:resList){		
-			cOBJ = new BenAdherence((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (Boolean)obj[4], (String)obj[5],
-					(Boolean)obj[6], (String)obj[7], (String)obj[8]);
+			cOBJ = new BenAdherence((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (Long)obj[4], (Boolean)obj[5], 
+					(String)obj[6], (Boolean)obj[7], (String)obj[8], (String)obj[9]);
 		}
 		return cOBJ;
 	}

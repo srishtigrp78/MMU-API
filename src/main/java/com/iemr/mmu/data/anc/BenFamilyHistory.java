@@ -387,7 +387,7 @@ public class BenFamilyHistory {
 	}
 
 	public BenFamilyHistory(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
-			Boolean isGeneticDisorder, String geneticDisorder, Boolean isConsanguineousMarrige) {
+			Boolean isGeneticDisorder, String geneticDisorder, Boolean isConsanguineousMarrige, Long visitCode) {
 		super();
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
@@ -395,6 +395,7 @@ public class BenFamilyHistory {
 		this.isGeneticDisorder = isGeneticDisorder;
 		this.geneticDisorder = geneticDisorder;
 		this.isConsanguineousMarrige = isConsanguineousMarrige;
+		this.visitCode = visitCode;
 	}
 
 	public BenFamilyHistory(String familyMember, Short diseaseTypeID, String diseaseType, String otherDiseaseType) {
@@ -411,7 +412,7 @@ public class BenFamilyHistory {
 			Object[] obj1 = familyHistory.get(0);
 
 			benfamilyHistory = new BenFamilyHistory((Long) obj1[0], (Long) obj1[1], (Integer) obj1[2],
-					(Boolean) obj1[7], (String) obj1[8], (Boolean) obj1[9]);
+					(Boolean) obj1[7], (String) obj1[8], (Boolean) obj1[9], (Long) obj1[10]);
 
 			List<Map<String, Object>> familyDiseaseList = new ArrayList<Map<String, Object>>();
 

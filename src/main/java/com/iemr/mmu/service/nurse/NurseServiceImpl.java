@@ -50,7 +50,8 @@ public class NurseServiceImpl implements NurseService {
 		List<BeneficiaryVisitDetail> benVisitDetailsList = new ArrayList<BeneficiaryVisitDetail>();
 		for (BeneficiaryVisitDetail benVisitDetailsOBJ : benVisitDetailsOBJs) {
 			BeneficiaryVisitDetail benVisitDetailsOBJ1 = new BeneficiaryVisitDetail(benVisitDetailsOBJ.getBenVisitID(),
-					benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitDetailsOBJ.getProviderServiceMapID(),
+					benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitDetailsOBJ.getVisitCode(),
+					benVisitDetailsOBJ.getProviderServiceMapID(),
 					benVisitDetailsOBJ.getVisitDateTime(), benVisitDetailsOBJ.getVisitNo(),
 					benVisitDetailsOBJ.getVisitReasonID(), benVisitDetailsOBJ.getVisitReason(),
 					benVisitDetailsOBJ.getVisitCategoryID(), benVisitDetailsOBJ.getVisitCategory(),

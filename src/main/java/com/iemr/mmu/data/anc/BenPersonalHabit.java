@@ -618,7 +618,7 @@ public class BenPersonalHabit {
 	public BenPersonalHabit(String tobaccoUseTypeID, String tobaccoUseType, String otherTobaccoUseType,
 			Short numberperDay, Timestamp tobaccoUseDuration, String alcoholTypeID, String alcoholType,
 			String otherAlcoholType, String alcoholIntakeFrequency, String avgAlcoholConsumption,
-			Timestamp alcoholDuration, Timestamp createdDate) {
+			Timestamp alcoholDuration, Timestamp createdDate, Long visitCode) {
 		super();
 		this.tobaccoUseTypeID = tobaccoUseTypeID;
 		this.tobaccoUseType = tobaccoUseType;
@@ -632,6 +632,7 @@ public class BenPersonalHabit {
 		this.avgAlcoholConsumption = avgAlcoholConsumption;
 		this.alcoholDuration = alcoholDuration;
 		this.createdDate = createdDate;
+		this.visitCode = visitCode;
 	}
 
 	public static BenPersonalHabit getPersonalDetails(ArrayList<Object[]> personalHistoryDetails) {
@@ -647,7 +648,7 @@ public class BenPersonalHabit {
 			for (Object[] obj : personalHistoryDetails) {
 				BenPersonalHabit personalHabits = new BenPersonalHabit((String) obj[6], (String) obj[7],
 						(String) obj[8], (Short) obj[9], (Timestamp) obj[10], (String) obj[12], (String) obj[13],
-						(String) obj[14], (String) obj[15], (String) obj[16], (Timestamp) obj[17], (Timestamp) obj[19]);
+						(String) obj[14], (String) obj[15], (String) obj[16], (Timestamp) obj[17], (Timestamp) obj[19], (Long) obj[20]);
 
 				Map<String, Object> timePeriod = null;
 				Integer timePeriodAgo = null;

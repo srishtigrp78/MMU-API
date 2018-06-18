@@ -147,7 +147,7 @@ public class BenAllergyHistory {
 	}
 
 	public BenAllergyHistory(String allergyStatus, String allergyType, String allergenName,
-			String allergicReactionTypeID, String allergicReactionType, String otherAllergicReaction, String remarks) {
+			String allergicReactionTypeID, String allergicReactionType, String otherAllergicReaction, String remarks, Long visitCode) {
 		super();
 		this.allergyStatus = allergyStatus;
 		this.allergyType = allergyType;
@@ -156,6 +156,7 @@ public class BenAllergyHistory {
 		this.allergicReactionType = allergicReactionType;
 		this.otherAllergicReaction = otherAllergicReaction;
 		this.remarks = remarks;
+		this.visitCode = visitCode;
 	}
 
 	public Long getBeneficiaryRegID() {
@@ -420,7 +421,7 @@ public class BenAllergyHistory {
 			for (Object[] obj : allergyDetails) {
 
 				BenAllergyHistory allergyHistory = new BenAllergyHistory((String) obj[3], (String) obj[4],
-						(String) obj[5], (String) obj[6], (String) obj[7], (String) obj[8], (String) obj[9]);
+						(String) obj[5], (String) obj[6], (String) obj[7], (String) obj[8], (String) obj[9], (Long) obj[10]);
 
 				String allergicReactionTypeID = allergyHistory.getAllergicReactionTypeID();
 				String[] allergicReactionTypeIDs = null;
