@@ -613,7 +613,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 					wrapperCancerExamImgAnotasnOBJ.setProviderServiceMapID(obj.getProviderServiceMapID());
 					wrapperCancerExamImgAnotasnOBJ.setCreatedBy(obj.getCreatedBy());
 					wrapperCancerExamImgAnotasnOBJ.setImageID(obj.getCancerImageID());
-
+					wrapperCancerExamImgAnotasnOBJ.setVisitCode(obj.getVisitCode());
 					markerList = new ArrayList<>();
 					markerMap.put("xCord", obj.getxCoordinate());
 					markerMap.put("yCord", obj.getyCoordinate());
@@ -1150,10 +1150,9 @@ public class CSNurseServiceImpl implements CSNurseService {
 		Long x = null;
 		for (WrapperCancerExamImgAnotasn wrapperCancerExamImgAnotasn : wrapperCancerExamImgAnotasnList) {
 			wrapperCancerExamImgAnotasn.setVisitID(benVisitID);
-			wrapperCancerExamImgAnotasn.setVisitCode(benVisitCode);
 			}
 		List<CancerExaminationImageAnnotation> objList = (List<CancerExaminationImageAnnotation>) cancerExaminationImageAnnotationRepo
-				.save(getCancerExaminationImageAnnotationList(wrapperCancerExamImgAnotasnList));
+				.save(getCancerExaminationImageAnnotationList(wrapperCancerExamImgAnotasnList, benVisitCode));
 		if (objList != null && objList.size() > 0) {
 			x = (long) objList.size();
 		}
@@ -1161,7 +1160,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 	}
 
 	public List<CancerExaminationImageAnnotation> getCancerExaminationImageAnnotationList(
-			List<WrapperCancerExamImgAnotasn> wrapperCancerExamImgAnotasnList) {
+			List<WrapperCancerExamImgAnotasn> wrapperCancerExamImgAnotasnList, Long visitCode) {
 		List<CancerExaminationImageAnnotation> objList = new ArrayList<>();
 
 		if (wrapperCancerExamImgAnotasnList.size() > 0) {
@@ -1173,7 +1172,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 							CancerExaminationImageAnnotation cancerExaminationImageAnnotation = new CancerExaminationImageAnnotation();
 							cancerExaminationImageAnnotation.setBeneficiaryRegID(obj.getBeneficiaryRegID());
 							cancerExaminationImageAnnotation.setBenVisitID(obj.getVisitID());
-							cancerExaminationImageAnnotation.setVisitCode(obj.getVisitCode());
+							cancerExaminationImageAnnotation.setVisitCode(visitCode);
 							cancerExaminationImageAnnotation.setProviderServiceMapID(obj.getProviderServiceMapID());
 							cancerExaminationImageAnnotation.setCreatedBy(obj.getCreatedBy());
 							cancerExaminationImageAnnotation.setCancerImageID(obj.getImageID());

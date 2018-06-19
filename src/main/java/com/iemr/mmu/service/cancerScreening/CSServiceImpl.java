@@ -565,12 +565,16 @@ public class CSServiceImpl implements CSService {
 
 			WrapperCancerExamImgAnotasn[] wrapperCancerExamImgAnotasn = InputMapper.gson()
 					.fromJson(jsnOBJ.get("imageCoordinates"), WrapperCancerExamImgAnotasn[].class);
-
+			
+			Long visitCode = null;
+			if(jsnOBJ.has("visitCode") && !jsnOBJ.get("visitCode").isJsonNull()){
+				visitCode = jsnOBJ.get("visitCode").getAsLong();
+			}
 			List<WrapperCancerExamImgAnotasn> wrapperCancerExamImgAnotasnList = Arrays
 					.asList(wrapperCancerExamImgAnotasn);
 			if (null != wrapperCancerExamImgAnotasnList) {
 				int r = cSNurseServiceImpl.updateCancerExamImgAnotasnDetails(
-						cSNurseServiceImpl.getCancerExaminationImageAnnotationList(wrapperCancerExamImgAnotasnList));
+						cSNurseServiceImpl.getCancerExaminationImageAnnotationList(wrapperCancerExamImgAnotasnList, visitCode));
 				if (r > 0) {
 					// imageCoordinates stored successfully...
 					imgCoordinatesSuccessFlag = r;
