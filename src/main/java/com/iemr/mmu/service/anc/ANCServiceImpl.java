@@ -920,76 +920,76 @@ public class ANCServiceImpl implements ANCService {
 	// ----------Fetch ANC (Nurse) --------------------------------------
 
 	@Override
-	public String getBenVisitDetailsFrmNurseANC(Long benRegID, Long benVisitID) {
+	public String getBenVisitDetailsFrmNurseANC(Long benRegID,  Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
 
-		BeneficiaryVisitDetail visitDetail = commonNurseServiceImpl.getCSVisitDetails(benRegID, benVisitID);
+		BeneficiaryVisitDetail visitDetail = commonNurseServiceImpl.getCSVisitDetails(benRegID, visitCode);
 
 		resMap.put("ANCNurseVisitDetail", new Gson().toJson(visitDetail));
 
-		resMap.put("BenAdherence", commonNurseServiceImpl.getBenAdherence(benRegID, benVisitID));
+		resMap.put("BenAdherence", commonNurseServiceImpl.getBenAdherence(benRegID, visitCode));
 
-		resMap.put("BenChiefComplaints", commonNurseServiceImpl.getBenChiefComplaints(benRegID, benVisitID));
+		resMap.put("BenChiefComplaints", commonNurseServiceImpl.getBenChiefComplaints(benRegID, visitCode));
 		// resMap.put("BenChiefComplaints",
 		// ancNurseServiceImpl.getBenChiefComplaints(benRegID, benVisitID));
 
-		resMap.put("Investigation", commonNurseServiceImpl.getLabTestOrders(benRegID, benVisitID));
+		resMap.put("Investigation", commonNurseServiceImpl.getLabTestOrders(benRegID, visitCode));
 
 		return resMap.toString();
 	}
 
 	@Override
-	public String getBenANCDetailsFrmNurseANC(Long benRegID, Long benVisitID) {
+	public String getBenANCDetailsFrmNurseANC(Long benRegID, Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
 
-		resMap.put("ANCCareDetail", ancNurseServiceImpl.getANCCareDetails(benRegID, benVisitID));
+		resMap.put("ANCCareDetail", ancNurseServiceImpl.getANCCareDetails(benRegID, visitCode));
 
-		resMap.put("ANCWomenVaccineDetails", ancNurseServiceImpl.getANCWomenVaccineDetails(benRegID, benVisitID));
+		resMap.put("ANCWomenVaccineDetails", ancNurseServiceImpl.getANCWomenVaccineDetails(benRegID, visitCode));
 
 		return resMap.toString();
 	}
 
 	@Override
-	public String getBenANCHistoryDetails(Long benRegID, Long benVisitID) {
+	public String getBenANCHistoryDetails(Long benRegID, Long visitCode) {
 		Map<String, Object> HistoryDetailsMap = new HashMap<String, Object>();
 
-		HistoryDetailsMap.put("PastHistory", commonNurseServiceImpl.getPastHistoryData(benRegID, benVisitID));
+		HistoryDetailsMap.put("PastHistory", commonNurseServiceImpl.getPastHistoryData(benRegID, visitCode));
 		HistoryDetailsMap.put("ComorbidityConditions",
-				commonNurseServiceImpl.getComorbidityConditionsHistory(benRegID, benVisitID));
-		HistoryDetailsMap.put("MedicationHistory", commonNurseServiceImpl.getMedicationHistory(benRegID, benVisitID));
-		HistoryDetailsMap.put("PersonalHistory", commonNurseServiceImpl.getPersonalHistory(benRegID, benVisitID));
-		HistoryDetailsMap.put("FamilyHistory", commonNurseServiceImpl.getFamilyHistory(benRegID, benVisitID));
-		HistoryDetailsMap.put("MenstrualHistory", commonNurseServiceImpl.getMenstrualHistory(benRegID, benVisitID));
+				commonNurseServiceImpl.getComorbidityConditionsHistory(benRegID, visitCode));
+		HistoryDetailsMap.put("MedicationHistory", commonNurseServiceImpl.getMedicationHistory(benRegID, visitCode));
+		HistoryDetailsMap.put("PersonalHistory", commonNurseServiceImpl.getPersonalHistory(benRegID, visitCode));
+		HistoryDetailsMap.put("FamilyHistory", commonNurseServiceImpl.getFamilyHistory(benRegID, visitCode));
+		HistoryDetailsMap.put("MenstrualHistory", commonNurseServiceImpl.getMenstrualHistory(benRegID, visitCode));
 		HistoryDetailsMap.put("FemaleObstetricHistory",
-				commonNurseServiceImpl.getFemaleObstetricHistory(benRegID, benVisitID));
+				commonNurseServiceImpl.getFemaleObstetricHistory(benRegID, visitCode));
 		HistoryDetailsMap.put("ImmunizationHistory",
-				commonNurseServiceImpl.getImmunizationHistory(benRegID, benVisitID));
+				commonNurseServiceImpl.getImmunizationHistory(benRegID, visitCode));
 		HistoryDetailsMap.put("childOptionalVaccineHistory",
-				commonNurseServiceImpl.getChildOptionalVaccineHistory(benRegID, benVisitID));
+				commonNurseServiceImpl.getChildOptionalVaccineHistory(benRegID, visitCode));
 
 		return new Gson().toJson(HistoryDetailsMap);
 	}
 
 	@Override
-	public String getBeneficiaryVitalDetails(Long beneficiaryRegID, Long benVisitID) {
+	public String getBeneficiaryVitalDetails(Long beneficiaryRegID, Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
 
 		resMap.put("benAnthropometryDetail",
-				commonNurseServiceImpl.getBeneficiaryPhysicalAnthropometryDetails(beneficiaryRegID, benVisitID));
+				commonNurseServiceImpl.getBeneficiaryPhysicalAnthropometryDetails(beneficiaryRegID, visitCode));
 		resMap.put("benPhysicalVitalDetail",
-				commonNurseServiceImpl.getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, benVisitID));
+				commonNurseServiceImpl.getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, visitCode));
 
 		return resMap.toString();
 	}
 
 	@Override
-	public String getANCExaminationDetailsData(Long benRegID, Long benVisitID) {
+	public String getANCExaminationDetailsData(Long benRegID, Long visitCode) {
 		Map<String, Object> examinationDetailsMap = new HashMap<String, Object>();
 
 		examinationDetailsMap.put("generalExamination",
-				commonNurseServiceImpl.getGeneralExaminationData(benRegID, benVisitID));
+				commonNurseServiceImpl.getGeneralExaminationData(benRegID, visitCode));
 		examinationDetailsMap.put("headToToeExamination",
-				commonNurseServiceImpl.getHeadToToeExaminationData(benRegID, benVisitID));
+				commonNurseServiceImpl.getHeadToToeExaminationData(benRegID, visitCode));
 
 		/* Only for General OPD, Can remove from here */
 		/*
@@ -997,17 +997,17 @@ public class ANCServiceImpl implements ANCService {
 		 * ancNurseServiceImpl.getSysGastrointestinalExamination(benRegID, benVisitID));
 		 */
 		examinationDetailsMap.put("cardiovascularExamination",
-				commonNurseServiceImpl.getCardiovascularExamination(benRegID, benVisitID));
+				commonNurseServiceImpl.getCardiovascularExamination(benRegID,  visitCode));
 		examinationDetailsMap.put("respiratoryExamination",
-				commonNurseServiceImpl.getRespiratoryExamination(benRegID, benVisitID));
+				commonNurseServiceImpl.getRespiratoryExamination(benRegID,  visitCode));
 		examinationDetailsMap.put("centralNervousExamination",
-				commonNurseServiceImpl.getSysCentralNervousExamination(benRegID, benVisitID));
+				commonNurseServiceImpl.getSysCentralNervousExamination(benRegID,  visitCode));
 		examinationDetailsMap.put("musculoskeletalExamination",
-				commonNurseServiceImpl.getMusculoskeletalExamination(benRegID, benVisitID));
+				commonNurseServiceImpl.getMusculoskeletalExamination(benRegID, visitCode));
 		examinationDetailsMap.put("genitourinaryExamination",
-				commonNurseServiceImpl.getGenitourinaryExamination(benRegID, benVisitID));
+				commonNurseServiceImpl.getGenitourinaryExamination(benRegID,  visitCode));
 		examinationDetailsMap.put("obstetricExamination",
-				ancNurseServiceImpl.getSysObstetricExamination(benRegID, benVisitID));
+				ancNurseServiceImpl.getSysObstetricExamination(benRegID,  visitCode));
 
 		return new Gson().toJson(examinationDetailsMap);
 	}
@@ -1377,35 +1377,35 @@ public class ANCServiceImpl implements ANCService {
 		return exmnSuccessFlag;
 	}
 
-	public String getBenANCNurseData(Long benRegID, Long benVisitID) {
+	public String getBenANCNurseData(Long benRegID, Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
 
-		resMap.put("anc", getBenANCDetailsFrmNurseANC(benRegID, benVisitID));
+		resMap.put("anc", getBenANCDetailsFrmNurseANC(benRegID,  visitCode));
 
-		resMap.put("history", getBenANCHistoryDetails(benRegID, benVisitID));
+		resMap.put("history", getBenANCHistoryDetails(benRegID,  visitCode));
 
-		resMap.put("vitals", getBeneficiaryVitalDetails(benRegID, benVisitID));
+		resMap.put("vitals", getBeneficiaryVitalDetails(benRegID,  visitCode));
 
-		resMap.put("examination", getANCExaminationDetailsData(benRegID, benVisitID));
+		resMap.put("examination", getANCExaminationDetailsData(benRegID,  visitCode));
 
 		return resMap.toString();
 	}
 
-	public String getBenCaseRecordFromDoctorANC(Long benRegID, Long benVisitID) {
+	public String getBenCaseRecordFromDoctorANC(Long benRegID, Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
 
-		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, benVisitID));
+		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, visitCode));
 
-		resMap.put("diagnosis", ancDoctorServiceImpl.getANCDiagnosisDetails(benRegID, benVisitID));
+		resMap.put("diagnosis", ancDoctorServiceImpl.getANCDiagnosisDetails(benRegID, visitCode));
 
-		resMap.put("investigation", commonDoctorServiceImpl.getInvestigationDetails(benRegID, benVisitID));
+		resMap.put("investigation", commonDoctorServiceImpl.getInvestigationDetails(benRegID, visitCode));
 
-		resMap.put("prescription", commonDoctorServiceImpl.getPrescribedDrugs(benRegID, benVisitID));
+		resMap.put("prescription", commonDoctorServiceImpl.getPrescribedDrugs(benRegID,  visitCode));
 
-		resMap.put("Refer", commonDoctorServiceImpl.getReferralDetails(benRegID, benVisitID));
+		resMap.put("Refer", commonDoctorServiceImpl.getReferralDetails(benRegID, visitCode));
 
 		resMap.put("LabReport",
-				new Gson().toJson(labTechnicianServiceImpl.getLabResultDataForBen(benRegID, benVisitID)));
+				new Gson().toJson(labTechnicianServiceImpl.getLabResultDataForBen(benRegID,  visitCode)));
 
 		resMap.put("GraphData", new Gson().toJson(commonNurseServiceImpl.getGraphicalTrendData(benRegID, "anc")));
 

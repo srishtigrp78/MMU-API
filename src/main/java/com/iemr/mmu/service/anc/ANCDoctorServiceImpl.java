@@ -34,8 +34,8 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 		return ID;
 	}
 
-	public String getANCDiagnosisDetails(Long beneficiaryRegID, Long benVisitID) {
-		ArrayList<Object[]> resList = ancDiagnosisRepo.getANCDiagnosisDetails(beneficiaryRegID, benVisitID);
+	public String getANCDiagnosisDetails(Long beneficiaryRegID, Long visitCode) {
+		ArrayList<Object[]> resList = ancDiagnosisRepo.getANCDiagnosisDetails(beneficiaryRegID, visitCode);
 		ANCDiagnosis ancDiagnosisDetails = ANCDiagnosis.getANCDiagnosisDetails(resList);
 		return new Gson().toJson(ancDiagnosisDetails);
 	}

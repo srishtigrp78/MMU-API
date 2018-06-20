@@ -15,10 +15,10 @@ import com.iemr.mmu.data.doctor.CancerOralExamination;
 @Repository
 public interface CancerOralExaminationRepo extends CrudRepository<CancerOralExamination, Long> {
 	
-	@Query(" SELECT c from CancerOralExamination c WHERE c.beneficiaryRegID = :benRegID AND c.benVisitID = :benVisitID "
-			+ " AND c.deleted = false")
+	@Query(" SELECT c from CancerOralExamination c WHERE c.beneficiaryRegID = :benRegID "
+			+ " AND c.deleted = false AND c.visitCode = :visitCode")
 	public CancerOralExamination getBenCancerOralExaminationDetails(@Param("benRegID") Long benRegID,
-	@Param("benVisitID") Long benVisitID);
+	@Param("visitCode") Long  visitCode);
 	
 	@Query("SELECT processed from CancerOralExamination where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
 	public String getCancerOralExaminationStatus(@Param("benRegID") Long benRegID,

@@ -15,10 +15,10 @@ import com.iemr.mmu.data.doctor.CancerLymphNodeDetails;
 @Repository
 public interface CancerLymphNodeExaminationRepo extends CrudRepository<CancerLymphNodeDetails, Long> {
 
-	@Query(" SELECT c from CancerLymphNodeDetails c WHERE c.beneficiaryRegID = :benRegID AND c.benVisitID = :benVisitID "
-			+ "AND c.deleted = false")
+	@Query(" SELECT c from CancerLymphNodeDetails c WHERE c.beneficiaryRegID = :benRegID "
+			+ "AND c.deleted = false AND c.visitCode = :visitCode")
 	public List<CancerLymphNodeDetails> getBenCancerLymphNodeDetails(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 
 	@Query("SELECT ID, processed from CancerLymphNodeDetails where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID AND deleted = false")
 	public ArrayList<Object[]> getCancerLymphNodeDetailsStatus(@Param("benRegID") Long benRegID,

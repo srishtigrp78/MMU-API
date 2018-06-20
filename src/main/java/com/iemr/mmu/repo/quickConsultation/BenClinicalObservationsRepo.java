@@ -22,9 +22,9 @@ public interface BenClinicalObservationsRepo extends CrudRepository<BenClinicalO
 	
 	@Query(" SELECT beneficiaryRegID, benVisitID, providerServiceMapID, clinicalObservation, "
 			+ "otherSymptoms, significantFindings, isForHistory, visitCode from BenClinicalObservations ba "
-			+ "WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID AND ba.deleted = false")
+			+ "WHERE ba.beneficiaryRegID = :benRegID AND ba.deleted = false AND ba.visitCode = :visitCode")
 	public ArrayList<Object[]> getFindingsData(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 	@Query("SELECT processed from BenClinicalObservations where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
 	public String getBenClinicalObservationStatus(@Param("benRegID") Long benRegID,

@@ -49,7 +49,7 @@ public class NCDFetchController {
 
 	@RequestMapping(value = { "/get/nurseData" }, method = { RequestMethod.POST })
 	public String getNCDScreenigDetails(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("Request obj to fetch nurse data :" + comingRequest);
@@ -57,9 +57,9 @@ public class NCDFetchController {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
 				Long benRegID = obj.getLong("benRegID");
-				Long benVisitID = obj.getLong("benVisitID");
+				Long visitCode = obj.getLong("visitCode");
 
-				String screeningDetails = ncdScreeningServiceImpl.getNCDScreeningDetails(benRegID, benVisitID);
+				String screeningDetails = ncdScreeningServiceImpl.getNCDScreeningDetails(benRegID, visitCode);
 				response.setResponse(screeningDetails);
 			} else {
 				response.setError(5000, "Invalid request");

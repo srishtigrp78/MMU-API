@@ -51,7 +51,7 @@ public class CancerScreeningFetchController {
 	@ApiOperation(value = "Get Beneficiary Visit details from Nurse screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenDataFrmNurseToDocVisitDetailsScreen" }, method = { RequestMethod.POST })
 	public String getBenDataFrmNurseScrnToDocScrnVisitDetails(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("Request object for CS visit data fetching :" + comingRequest);
@@ -59,9 +59,8 @@ public class CancerScreeningFetchController {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
 				Long benRegID = obj.getLong("benRegID");
-				Long benVisitID = obj.getLong("benVisitID");
-
-				String s = cSServiceImpl.getBenDataFrmNurseToDocVisitDetailsScreen(benRegID, benVisitID);
+				Long visitCode = obj.getLong("visitCode");
+				String s = cSServiceImpl.getBenDataFrmNurseToDocVisitDetailsScreen(benRegID, visitCode);
 				response.setResponse(s);
 			} else {
 				response.setError(5000, "Invalid request");
@@ -84,16 +83,15 @@ public class CancerScreeningFetchController {
 	@ApiOperation(value = "Get Beneficiary Cancer History details from Nurse screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenDataFrmNurseToDocHistoryScreen" }, method = { RequestMethod.POST })
 	public String getBenDataFrmNurseScrnToDocScrnHistory(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for CS history data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
 				Long benRegID = obj.getLong("benRegID");
-				Long benVisitID = obj.getLong("benVisitID");
-
-				String s = cSServiceImpl.getBenDataFrmNurseToDocHistoryScreen(benRegID, benVisitID);
+				Long visitCode = obj.getLong("visitCode");
+				String s = cSServiceImpl.getBenDataFrmNurseToDocHistoryScreen(benRegID, visitCode);
 				response.setResponse(s);
 			} else {
 				response.setError(5000, "Invalid request");
@@ -118,16 +116,16 @@ public class CancerScreeningFetchController {
 	@ApiOperation(value = "Get Beneficiary Vital details from Nurse screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenDataFrmNurseToDocVitalScreen" }, method = { RequestMethod.POST })
 	public String getBenDataFrmNurseScrnToDocScrnVital(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for CS vital data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
 				Long benRegID = obj.getLong("benRegID");
-				Long benVisitID = obj.getLong("benVisitID");
-
-				String s = cSServiceImpl.getBenDataFrmNurseToDocVitalScreen(benRegID, benVisitID);
+				Long visitCode = obj.getLong("visitCode");
+				
+				String s = cSServiceImpl.getBenDataFrmNurseToDocVitalScreen(benRegID, visitCode);
 				response.setResponse(s);
 			} else {
 				response.setError(5000, "Invalid request");
@@ -150,16 +148,15 @@ public class CancerScreeningFetchController {
 	@ApiOperation(value = "Get Beneficiary Examination details from Nurse screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenDataFrmNurseToDocExaminationScreen" }, method = { RequestMethod.POST })
 	public String getBenDataFrmNurseScrnToDocScrnExamination(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for CS examination data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
 				Long benRegID = obj.getLong("benRegID");
-				Long benVisitID = obj.getLong("benVisitID");
-
-				String s = cSServiceImpl.getBenDataFrmNurseToDocExaminationScreen(benRegID, benVisitID);
+				Long visitCode = obj.getLong("visitCode");
+				String s = cSServiceImpl.getBenDataFrmNurseToDocExaminationScreen(benRegID, visitCode);
 				response.setResponse(s);
 			} else {
 				response.setError(5000, "Invalid request");
@@ -314,16 +311,16 @@ public class CancerScreeningFetchController {
 	@ApiOperation(value = "Get Beneficiary Diagnosis details from Doctor screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenDataFrmDoctorDiagnosisScreen" }, method = { RequestMethod.POST })
 	public String getBenDataFrmDoctorDiagnosisScreen(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for CS diagnosis data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
-			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("benVisitID")) {
+			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
 				Long benRegID = obj.getLong("benRegID");
-				Long benVisitID = obj.getLong("benVisitID");
+				Long visitCode = obj.getLong("visitCode");
 
-				String s = cSServiceImpl.getBenDoctorDiagnosisData(benRegID, benVisitID);
+				String s = cSServiceImpl.getBenDoctorDiagnosisData(benRegID, visitCode);
 				response.setResponse(s);
 			} else {
 				response.setError(5000, "Invalid request");
@@ -347,17 +344,16 @@ public class CancerScreeningFetchController {
 	@RequestMapping(value = { "/getBenCaseRecordFromDoctorCS" }, method = { RequestMethod.POST })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenCaseRecordFromDoctorCS(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("Request object for CS doctor data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
-			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("benVisitID")) {
+			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
 				Long benRegID = obj.getLong("benRegID");
-				Long benVisitID = obj.getLong("benVisitID");
-
-				String res = cSServiceImpl.getBenCaseRecordFromDoctorCS(benRegID, benVisitID);
+				Long visitCode = obj.getLong("visitCode");
+				String res = cSServiceImpl.getBenCaseRecordFromDoctorCS(benRegID, visitCode);
 				response.setResponse(res);
 			} else {
 				logger.info("Invalid Request Data.");

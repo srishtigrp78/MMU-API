@@ -15,9 +15,9 @@ import com.iemr.mmu.data.anc.SysMusculoskeletalSystemExamination;
 public interface SysMusculoskeletalSystemExaminationRepo
 		extends CrudRepository<SysMusculoskeletalSystemExamination, Long> {
 	
-	@Query(" SELECT u FROM SysMusculoskeletalSystemExamination u WHERE u.beneficiaryRegID = :benRegID AND u.benVisitID = :benVisitID ")
+	@Query(" SELECT u FROM SysMusculoskeletalSystemExamination u WHERE u.beneficiaryRegID = :benRegID AND u.visitCode = :visitCode")
 	public SysMusculoskeletalSystemExamination getSysMusculoskeletalSystemExamination(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			 @Param("visitCode") Long  visitCode);
 	
 
 	@Query("SELECT processed from SysMusculoskeletalSystemExamination where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")

@@ -607,9 +607,9 @@ public class CSServiceImpl implements CSService {
 	/// ------- End of Update (Nurse data from Doctor screen)-----------
 
 	// ------- Fetch (Nurse data to Doctor screen) ----------------
-	public String getBenDataFrmNurseToDocVisitDetailsScreen(Long benRegID, Long benVisitID) {
+	public String getBenDataFrmNurseToDocVisitDetailsScreen(Long benRegID, Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
-		BeneficiaryVisitDetail benVisitDetailsOBJ = commonNurseServiceImpl.getCSVisitDetails(benRegID, benVisitID);
+		BeneficiaryVisitDetail benVisitDetailsOBJ = commonNurseServiceImpl.getCSVisitDetails(benRegID, visitCode);
 
 		if (null != benVisitDetailsOBJ) {
 
@@ -619,52 +619,52 @@ public class CSServiceImpl implements CSService {
 		return new Gson().toJson(resMap);
 	}
 
-	public String getBenDataFrmNurseToDocHistoryScreen(Long benRegID, Long benVisitID) {
+	public String getBenDataFrmNurseToDocHistoryScreen(Long benRegID, Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.serializeNulls();
 		Gson gson = gsonBuilder.create();
 
-		resMap.put("benFamilyHistory", cSNurseServiceImpl.getBenFamilyHisData(benRegID, benVisitID));
+		resMap.put("benFamilyHistory", cSNurseServiceImpl.getBenFamilyHisData(benRegID, visitCode));
 
-		resMap.put("benObstetricHistory", cSNurseServiceImpl.getBenObstetricDetailsData(benRegID, benVisitID));
+		resMap.put("benObstetricHistory", cSNurseServiceImpl.getBenObstetricDetailsData(benRegID, visitCode));
 
-		resMap.put("benPersonalHistory", cSNurseServiceImpl.getBenPersonalCancerHistoryData(benRegID, benVisitID));
+		resMap.put("benPersonalHistory", cSNurseServiceImpl.getBenPersonalCancerHistoryData(benRegID, visitCode));
 
 		resMap.put("benPersonalDietHistory",
-				cSNurseServiceImpl.getBenPersonalCancerDietHistoryData(benRegID, benVisitID));
+				cSNurseServiceImpl.getBenPersonalCancerDietHistoryData(benRegID, visitCode));
 
 		return gson.toJson(resMap);
 	}
 
-	public String getBenDataFrmNurseToDocVitalScreen(Long benRegID, Long benVisitID) {
+	public String getBenDataFrmNurseToDocVitalScreen(Long benRegID, Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
-		resMap.put("benVitalDetails", cSNurseServiceImpl.getBenCancerVitalDetailData(benRegID, benVisitID));
+		resMap.put("benVitalDetails", cSNurseServiceImpl.getBenCancerVitalDetailData(benRegID, visitCode));
 		resMap.put("GraphData", commonNurseServiceImpl.getGraphicalTrendData(benRegID, "cancer screening"));
 		return new Gson().toJson(resMap);
 	}
 
-	public String getBenDataFrmNurseToDocExaminationScreen(Long benRegID, Long benVisitID) {
+	public String getBenDataFrmNurseToDocExaminationScreen(Long benRegID, Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
 		// TODO
 
 		resMap.put("abdominalExamination",
-				cSNurseServiceImpl.getBenCancerAbdominalExaminationData(benRegID, benVisitID));
+				cSNurseServiceImpl.getBenCancerAbdominalExaminationData(benRegID, visitCode));
 
-		resMap.put("breastExamination", cSNurseServiceImpl.getBenCancerBreastExaminationData(benRegID, benVisitID));
+		resMap.put("breastExamination", cSNurseServiceImpl.getBenCancerBreastExaminationData(benRegID, visitCode));
 
 		resMap.put("gynecologicalExamination",
-				cSNurseServiceImpl.getBenCancerGynecologicalExaminationData(benRegID, benVisitID));
+				cSNurseServiceImpl.getBenCancerGynecologicalExaminationData(benRegID, visitCode));
 
-		resMap.put("signsAndSymptoms", cSNurseServiceImpl.getBenCancerSignAndSymptomsData(benRegID, benVisitID));
+		resMap.put("signsAndSymptoms", cSNurseServiceImpl.getBenCancerSignAndSymptomsData(benRegID, visitCode));
 
 		resMap.put("BenCancerLymphNodeDetails",
-				cSNurseServiceImpl.getBenCancerLymphNodeDetailsData(benRegID, benVisitID));
+				cSNurseServiceImpl.getBenCancerLymphNodeDetailsData(benRegID, visitCode));
 
-		resMap.put("oralExamination", cSNurseServiceImpl.getBenCancerOralExaminationData(benRegID, benVisitID));
+		resMap.put("oralExamination", cSNurseServiceImpl.getBenCancerOralExaminationData(benRegID, visitCode));
 
 		resMap.put("imageCoordinates",
-				cSNurseServiceImpl.getCancerExaminationImageAnnotationCasesheet(benRegID, benVisitID));
+				cSNurseServiceImpl.getCancerExaminationImageAnnotationCasesheet(benRegID, visitCode));
 
 		return new Gson().toJson(resMap);
 	}
@@ -963,16 +963,18 @@ public class CSServiceImpl implements CSService {
 			Long benRegID = null;
 			Long benVisitID = null;
 			Long benFlowID = null;
+			Long visitCode = null;
 			try {
 				benRegID = obj.getLong("benRegID");
 				benVisitID = obj.getLong("benVisitID");
 				benFlowID = obj.getLong("benFlowID");
+				visitCode = obj.getLong("visitCode");
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
-			caseSheetData = getBenDataForCaseSheet(benFlowID, benRegID, benVisitID, Authorization);
+			caseSheetData = getBenDataForCaseSheet(benFlowID, benRegID, visitCode, Authorization);
 
 		} else {
 
@@ -982,49 +984,49 @@ public class CSServiceImpl implements CSService {
 	}
 
 	@Deprecated
-	public String getBenDataForCaseSheet(Long benFlowID, Long benRegID, Long benVisitID, String Authorization)
+	public String getBenDataForCaseSheet(Long benFlowID, Long benRegID, Long visitCode, String Authorization)
 			throws Exception {
-
-		Map<String, Object> caseSheetData = cSNurseServiceImpl.getBenNurseDataForCaseSheet(benRegID, benVisitID);
-		caseSheetData.putAll(cSDoctorServiceImpl.getBenDoctorEnteredDataForCaseSheet(benRegID, benVisitID));
+		
+		Map<String, Object> caseSheetData = cSNurseServiceImpl.getBenNurseDataForCaseSheet(benRegID, visitCode);
+		caseSheetData.putAll(cSDoctorServiceImpl.getBenDoctorEnteredDataForCaseSheet(benRegID, visitCode));
 
 		caseSheetData.put("BeneficiaryData", getBenDetails(benFlowID, benRegID));
 		caseSheetData.put("ImageAnnotatedData",
-				cSNurseServiceImpl.getCancerExaminationImageAnnotationCasesheet(benRegID, benVisitID));
+				cSNurseServiceImpl.getCancerExaminationImageAnnotationCasesheet(benRegID, visitCode));
 
 		return new Gson().toJson(caseSheetData);
 	}
 
-	public String getBenNurseDataForCaseSheet(Long benRegID, Long benVisitID) {
+	public String getBenNurseDataForCaseSheet(Long benRegID, Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
 
-		resMap.put("benVisitDetail", cSNurseServiceImpl.getBeneficiaryVisitDetails(benRegID, benVisitID));
+		resMap.put("benVisitDetail", cSNurseServiceImpl.getBeneficiaryVisitDetails(benRegID, visitCode));
 
-		resMap.put("familyDiseaseHistory", cSNurseServiceImpl.getBenFamilyHisData(benRegID, benVisitID));
+		resMap.put("familyDiseaseHistory", cSNurseServiceImpl.getBenFamilyHisData(benRegID, visitCode));
 
-		resMap.put("patientObstetricHistory", cSNurseServiceImpl.getBenObstetricDetailsData(benRegID, benVisitID));
+		resMap.put("patientObstetricHistory", cSNurseServiceImpl.getBenObstetricDetailsData(benRegID, visitCode));
 
-		resMap.put("patientPersonalHistory", cSNurseServiceImpl.getBenPersonalCancerHistoryData(benRegID, benVisitID));
+		resMap.put("patientPersonalHistory", cSNurseServiceImpl.getBenPersonalCancerHistoryData(benRegID, visitCode));
 
 		resMap.put("benPersonalDietHistory",
-				cSNurseServiceImpl.getBenPersonalCancerDietHistoryData(benRegID, benVisitID));
+				cSNurseServiceImpl.getBenPersonalCancerDietHistoryData(benRegID, visitCode));
 
-		resMap.put("currentVitals", cSNurseServiceImpl.getBenCancerVitalDetailData(benRegID, benVisitID));
+		resMap.put("currentVitals", cSNurseServiceImpl.getBenCancerVitalDetailData(benRegID, visitCode));
 
 		resMap.put("abdominalExamination",
-				cSNurseServiceImpl.getBenCancerAbdominalExaminationData(benRegID, benVisitID));
+				cSNurseServiceImpl.getBenCancerAbdominalExaminationData(benRegID, visitCode));
 
-		resMap.put("breastExamination", cSNurseServiceImpl.getBenCancerBreastExaminationData(benRegID, benVisitID));
+		resMap.put("breastExamination", cSNurseServiceImpl.getBenCancerBreastExaminationData(benRegID, visitCode));
 
 		resMap.put("gynecologicalExamination",
-				cSNurseServiceImpl.getBenCancerGynecologicalExaminationData(benRegID, benVisitID));
+				cSNurseServiceImpl.getBenCancerGynecologicalExaminationData(benRegID, visitCode));
 
-		resMap.put("signsAndSymptoms", cSNurseServiceImpl.getBenCancerSignAndSymptomsData(benRegID, benVisitID));
+		resMap.put("signsAndSymptoms", cSNurseServiceImpl.getBenCancerSignAndSymptomsData(benRegID, visitCode));
 
 		resMap.put("BenCancerLymphNodeDetails",
-				cSNurseServiceImpl.getBenCancerLymphNodeDetailsData(benRegID, benVisitID));
+				cSNurseServiceImpl.getBenCancerLymphNodeDetailsData(benRegID, visitCode));
 
-		resMap.put("oralExamination", cSNurseServiceImpl.getBenCancerOralExaminationData(benRegID, benVisitID));
+		resMap.put("oralExamination", cSNurseServiceImpl.getBenCancerOralExaminationData(benRegID, visitCode));
 
 		return new Gson().toJson(resMap);
 	}
@@ -1078,17 +1080,17 @@ public class CSServiceImpl implements CSService {
 	}
 
 	// Fetch CS Doctor Details START....
-	public String getBenDoctorDiagnosisData(Long benRegID, Long benVisitID) {
+	public String getBenDoctorDiagnosisData(Long benRegID, Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
-		resMap.put("benDiagnosisDetails", cSDoctorServiceImpl.getBenCancerDiagnosisData(benRegID, benVisitID));
+		resMap.put("benDiagnosisDetails", cSDoctorServiceImpl.getBenCancerDiagnosisData(benRegID, visitCode));
 		return new Gson().toJson(resMap);
 	}
 	// Fetch CS Doctor Details END....
 
-	public String getBenCaseRecordFromDoctorCS(Long benRegID, Long benVisitID) {
+	public String getBenCaseRecordFromDoctorCS(Long benRegID, Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
 
-		resMap.put("diagnosis", cSDoctorServiceImpl.getBenCancerDiagnosisData(benRegID, benVisitID));
+		resMap.put("diagnosis", cSDoctorServiceImpl.getBenCancerDiagnosisData(benRegID, visitCode));
 
 		return new Gson().toJson(resMap);
 	}

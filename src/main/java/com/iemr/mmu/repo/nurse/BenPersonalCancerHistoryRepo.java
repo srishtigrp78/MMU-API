@@ -14,9 +14,9 @@ import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
 @Repository
 public interface BenPersonalCancerHistoryRepo extends CrudRepository<BenPersonalCancerHistory, Long> {
 
-	@Query(" SELECT bph from BenPersonalCancerHistory bph  WHERE bph.beneficiaryRegID = :benRegID AND bph.benVisitID = :benVisitID AND bph.deleted = false")
+	@Query(" SELECT bph from BenPersonalCancerHistory bph  WHERE bph.beneficiaryRegID = :benRegID AND bph.deleted = false AND bph.visitCode = :visitCode")
 	public BenPersonalCancerHistory getBenPersonalHistory(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 
 	@Transactional
 	@Modifying

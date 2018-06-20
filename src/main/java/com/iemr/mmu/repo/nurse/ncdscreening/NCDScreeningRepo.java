@@ -15,8 +15,8 @@ import com.iemr.mmu.data.ncdScreening.NCDScreening;
 @Repository
 public interface NCDScreeningRepo extends CrudRepository<NCDScreening, Long> {
 
-	@Query(" SELECT ba FROM NCDScreening ba WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID ")
-	public NCDScreening getNCDScreeningDetails(@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
+	@Query(" SELECT ba FROM NCDScreening ba WHERE ba.beneficiaryRegID = :benRegID AND ba.visitCode = :visitCode ")
+	public NCDScreening getNCDScreeningDetails(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 
 	@Transactional
 	@Modifying

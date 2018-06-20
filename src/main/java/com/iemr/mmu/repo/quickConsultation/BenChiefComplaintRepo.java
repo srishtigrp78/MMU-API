@@ -17,10 +17,10 @@ public interface BenChiefComplaintRepo extends CrudRepository<BenChiefComplaint,
 
 	@Query(" SELECT benChiefComplaintID, beneficiaryRegID, benVisitID, providerServiceMapID, chiefComplaintID, chiefComplaint, "
 			+ "duration, unitOfDuration, description, visitCode "
-			+ "from BenChiefComplaint ba WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID "
-			+ " AND ba.deleted = false AND ba.chiefComplaintID is not null ")
+			+ "from BenChiefComplaint ba WHERE ba.beneficiaryRegID = :benRegID "
+			+ " AND ba.deleted = false AND ba.chiefComplaintID is not null AND ba.visitCode = :visitCode")
 	public ArrayList<Object[]> getBenChiefComplaints(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 
 	@Modifying
 	@Transactional

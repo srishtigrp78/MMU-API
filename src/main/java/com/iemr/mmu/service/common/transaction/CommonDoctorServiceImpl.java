@@ -274,30 +274,30 @@ public class CommonDoctorServiceImpl {
 		return ID;
 	}
 
-	public String getFindingsDetails(Long beneficiaryRegID, Long benVisitID) {
+	public String getFindingsDetails(Long beneficiaryRegID, Long visitCode) {
 		ArrayList<Object[]> clinicalObservationsList = benClinicalObservationsRepo.getFindingsData(beneficiaryRegID,
-				benVisitID);
+				visitCode);
 		ArrayList<Object[]> chiefComplaintsList = benChiefComplaintRepo.getBenChiefComplaints(beneficiaryRegID,
-				benVisitID);
+				visitCode);
 
 		WrapperAncFindings findings = WrapperAncFindings.getFindingsData(clinicalObservationsList, chiefComplaintsList);
 		return new Gson().toJson(findings);
 	}
 
-	public String getInvestigationDetails(Long beneficiaryRegID, Long benVisitID) {
-		ArrayList<Object[]> labTestOrders = labTestOrderDetailRepo.getLabTestOrderDetails(beneficiaryRegID, benVisitID);
+	public String getInvestigationDetails(Long beneficiaryRegID, Long visitCode) {
+		ArrayList<Object[]> labTestOrders = labTestOrderDetailRepo.getLabTestOrderDetails(beneficiaryRegID, visitCode);
 		WrapperBenInvestigationANC labTestOrdersList = LabTestOrderDetail.getLabTestOrderDetails(labTestOrders);
 
 		return new Gson().toJson(labTestOrdersList);
 	}
 
-	public String getPrescribedDrugs(Long beneficiaryRegID, Long benVisitID) {
-		ArrayList<Object[]> prescriptions = prescriptionDetailRepo.getBenPrescription(beneficiaryRegID, benVisitID);
+	public String getPrescribedDrugs(Long beneficiaryRegID, Long visitCode) {
+		ArrayList<Object[]> prescriptions = prescriptionDetailRepo.getBenPrescription(beneficiaryRegID, visitCode);
 
 		PrescriptionDetail prescriptionData = PrescriptionDetail.getPrescriptions(prescriptions);
 		if (null != prescriptionData) {
 			ArrayList<Object[]> resList = prescribedDrugDetailRepo.getBenPrescribedDrugDetails(beneficiaryRegID,
-					benVisitID);
+					visitCode);
 
 			ArrayList<PrescribedDrugDetail> prescribedDrugs = PrescribedDrugDetail.getprescribedDrugs(resList);
 			prescriptionData.setPrescribedDrugs(prescribedDrugs);
@@ -313,8 +313,8 @@ public class CommonDoctorServiceImpl {
 		return prescriptionData;
 	}
 
-	public String getReferralDetails(Long beneficiaryRegID, Long benVisitID) {
-		ArrayList<Object[]> resList = benReferDetailsRepo.getBenReferDetails(beneficiaryRegID, benVisitID);
+	public String getReferralDetails(Long beneficiaryRegID, Long visitCode) {
+		ArrayList<Object[]> resList = benReferDetailsRepo.getBenReferDetails(beneficiaryRegID, visitCode);
 
 		BenReferDetails referDetails = BenReferDetails.getBenReferDetails(resList);
 

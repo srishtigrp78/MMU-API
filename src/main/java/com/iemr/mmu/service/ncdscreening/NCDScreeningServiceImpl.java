@@ -195,11 +195,11 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 	}
 
 	@Override
-	public String getNCDScreeningDetails(Long beneficiaryRegID, Long benVisitID) {
-		String ncdScreeningDetails = ncdScreeningNurseServiceImpl.getNCDScreeningDetails(beneficiaryRegID, benVisitID);
+	public String getNCDScreeningDetails(Long beneficiaryRegID, Long visitCode) {
+		String ncdScreeningDetails = ncdScreeningNurseServiceImpl.getNCDScreeningDetails(beneficiaryRegID, visitCode);
 		String anthropometryDetails = commonNurseServiceImpl
-				.getBeneficiaryPhysicalAnthropometryDetails(beneficiaryRegID, benVisitID);
-		String vitalDetails = commonNurseServiceImpl.getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, benVisitID);
+				.getBeneficiaryPhysicalAnthropometryDetails(beneficiaryRegID, visitCode);
+		String vitalDetails = commonNurseServiceImpl.getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, visitCode);
 
 		Map<String, Object> res = new HashMap<String, Object>();
 

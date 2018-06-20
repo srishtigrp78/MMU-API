@@ -46,14 +46,14 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 		return cancerDiagnosis;
 	}
 
-	public Map<String, Object> getBenDoctorEnteredDataForCaseSheet(Long benRegID, Long benVisitID) {
+	public Map<String, Object> getBenDoctorEnteredDataForCaseSheet(Long benRegID, Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
-		resMap.put("diagnosis", getBenCancerDiagnosisData(benRegID, benVisitID));
+		resMap.put("diagnosis", getBenCancerDiagnosisData(benRegID, visitCode));
 		return resMap;
 	}
 
-	public CancerDiagnosis getBenCancerDiagnosisData(Long benRegID, Long benVisitID) {
-		CancerDiagnosis cancerDiagnosis = cancerDiagnosisRepo.getBenCancerDiagnosisDetails(benRegID, benVisitID);
+	public CancerDiagnosis getBenCancerDiagnosisData(Long benRegID, Long visitCode) {
+		CancerDiagnosis cancerDiagnosis = cancerDiagnosisRepo.getBenCancerDiagnosisDetails(benRegID, visitCode);
 		if (null != cancerDiagnosis && null != cancerDiagnosis.getInstitute()) {
 			cancerDiagnosis.setReferredToInstituteName(cancerDiagnosis.getInstitute().getInstitutionName());
 		}

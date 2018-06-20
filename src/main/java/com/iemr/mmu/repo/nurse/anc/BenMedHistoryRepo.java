@@ -24,8 +24,8 @@ public interface BenMedHistoryRepo extends CrudRepository<BenMedHistory, Long> {
 	
 	@Query(" SELECT beneficiaryRegID, benVisitID, providerServiceMapID, yearofIllness, illnessTypeID,  illnessType, otherIllnessType, "
 			+ " surgeryID , surgeryType, yearofSurgery, otherSurgeryType, createdDate, visitCode  FROM BenMedHistory "
-			+ " WHERE beneficiaryRegID = :benRegID AND benVisitID = :benVisitID AND deleted = false")
-	public ArrayList<Object[]> getBenPastHistory(@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
+			+ " WHERE beneficiaryRegID = :benRegID AND deleted = false AND visitCode = :visitCode")
+	public ArrayList<Object[]> getBenPastHistory(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 	
 	@Modifying
 	@Transactional

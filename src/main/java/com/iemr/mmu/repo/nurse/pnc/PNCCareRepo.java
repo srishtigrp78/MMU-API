@@ -21,9 +21,9 @@ public interface PNCCareRepo extends CrudRepository<PNCCare, Integer>{
 			+ "deliveryPlace, otherDeliveryPlace, dateOfDelivery, deliveryComplicationID, deliveryComplication, otherDeliveryComplication, "
 			+ "pregOutcomeID, pregOutcome, postNatalComplicationID, postNatalComplication, otherPostNatalComplication, gestationID, gestationName,"
 			+ " birthWeightOfNewborn, newBornHealthStatusID, newBornHealthStatus, visitCode "
-			+ "from PNCCare ba WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID ")
+			+ "from PNCCare ba WHERE ba.beneficiaryRegID = :benRegID AND ba.visitCode = :visitCode ")
 	public ArrayList<Object[]> getPNCCareDetails(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 	@Query(" SELECT processed from PNCCare where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
 	public String getBenPNCCareDetailsStatus(@Param("benRegID") Long benRegID,

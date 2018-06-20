@@ -348,9 +348,9 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	}
 
 	// ------- Start Fetch (Nurse data to Doctor screen) ----------------
-	public String getBenDataFrmNurseToDocVisitDetailsScreen(Long benRegID, Long benVisitID) {
+	public String getBenDataFrmNurseToDocVisitDetailsScreen(Long benRegID, Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
-		BeneficiaryVisitDetail benVisitDetailsOBJ = commonNurseServiceImpl.getCSVisitDetails(benRegID, benVisitID);
+		BeneficiaryVisitDetail benVisitDetailsOBJ = commonNurseServiceImpl.getCSVisitDetails(benRegID, visitCode);
 
 		if (null != benVisitDetailsOBJ) {
 
@@ -360,13 +360,13 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		return new Gson().toJson(resMap);
 	}
 
-	public String getBeneficiaryVitalDetails(Long beneficiaryRegID, Long benVisitID) {
+	public String getBeneficiaryVitalDetails(Long beneficiaryRegID, Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
 
 		resMap.put("benAnthropometryDetail",
-				commonNurseServiceImpl.getBeneficiaryPhysicalAnthropometryDetails(beneficiaryRegID, benVisitID));
+				commonNurseServiceImpl.getBeneficiaryPhysicalAnthropometryDetails(beneficiaryRegID, visitCode));
 		resMap.put("benPhysicalVitalDetail",
-				commonNurseServiceImpl.getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, benVisitID));
+				commonNurseServiceImpl.getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, visitCode));
 
 		return resMap.toString();
 	}
@@ -381,13 +381,13 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	}
 	// ------- END of Fetch (Nurse data to Doctor screen) ----------------
 
-	public String getBenCaseRecordFromDoctorQuickConsult(Long benRegID, Long benVisitID) {
+	public String getBenCaseRecordFromDoctorQuickConsult(Long benRegID, Long visitCode) {
 
 		List<Object> resList = new ArrayList<Object>();
-		resList.add(commonDoctorServiceImpl.getFindingsDetails(benRegID, benVisitID));
-		resList.add(commonDoctorServiceImpl.getInvestigationDetails(benRegID, benVisitID));
-		resList.add(commonDoctorServiceImpl.getPrescribedDrugs(benRegID, benVisitID));
-		resList.add(new Gson().toJson(labTechnicianServiceImpl.getLabResultDataForBen(benRegID, benVisitID)));
+		resList.add(commonDoctorServiceImpl.getFindingsDetails(benRegID, visitCode));
+		resList.add(commonDoctorServiceImpl.getInvestigationDetails(benRegID, visitCode));
+		resList.add(commonDoctorServiceImpl.getPrescribedDrugs(benRegID, visitCode));
+		resList.add(new Gson().toJson(labTechnicianServiceImpl.getLabResultDataForBen(benRegID, visitCode)));
 
 		return resList.toString();
 	}

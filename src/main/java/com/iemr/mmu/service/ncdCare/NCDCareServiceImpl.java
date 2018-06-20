@@ -514,39 +514,39 @@ public class NCDCareServiceImpl implements NCDCareService {
 		return vitalSuccessFlag;
 	}
 
-	public String getBenVisitDetailsFrmNurseNCDCare(Long benRegID, Long benVisitID) {
+	public String getBenVisitDetailsFrmNurseNCDCare(Long benRegID, Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
 
-		BeneficiaryVisitDetail visitDetail = commonNurseServiceImpl.getCSVisitDetails(benRegID, benVisitID);
+		BeneficiaryVisitDetail visitDetail = commonNurseServiceImpl.getCSVisitDetails(benRegID, visitCode);
 
 		resMap.put("NCDCareNurseVisitDetail", new Gson().toJson(visitDetail));
 
-		resMap.put("BenAdherence", commonNurseServiceImpl.getBenAdherence(benRegID, benVisitID));
+		resMap.put("BenAdherence", commonNurseServiceImpl.getBenAdherence(benRegID, visitCode));
 
-		resMap.put("Investigation", commonNurseServiceImpl.getLabTestOrders(benRegID, benVisitID));
+		resMap.put("Investigation", commonNurseServiceImpl.getLabTestOrders(benRegID, visitCode));
 
 		return resMap.toString();
 	}
 
-	public String getBenNCDCareHistoryDetails(Long benRegID, Long benVisitID) {
+	public String getBenNCDCareHistoryDetails(Long benRegID, Long visitCode) {
 		Map<String, Object> HistoryDetailsMap = new HashMap<String, Object>();
 
-		HistoryDetailsMap.put("PastHistory", commonNurseServiceImpl.getPastHistoryData(benRegID, benVisitID));
+		HistoryDetailsMap.put("PastHistory", commonNurseServiceImpl.getPastHistoryData(benRegID, visitCode));
 		HistoryDetailsMap.put("ComorbidityConditions",
-				commonNurseServiceImpl.getComorbidityConditionsHistory(benRegID, benVisitID));
-		HistoryDetailsMap.put("MedicationHistory", commonNurseServiceImpl.getMedicationHistory(benRegID, benVisitID));
-		HistoryDetailsMap.put("PersonalHistory", commonNurseServiceImpl.getPersonalHistory(benRegID, benVisitID));
-		HistoryDetailsMap.put("FamilyHistory", commonNurseServiceImpl.getFamilyHistory(benRegID, benVisitID));
-		HistoryDetailsMap.put("MenstrualHistory", commonNurseServiceImpl.getMenstrualHistory(benRegID, benVisitID));
+				commonNurseServiceImpl.getComorbidityConditionsHistory(benRegID, visitCode));
+		HistoryDetailsMap.put("MedicationHistory", commonNurseServiceImpl.getMedicationHistory(benRegID, visitCode));
+		HistoryDetailsMap.put("PersonalHistory", commonNurseServiceImpl.getPersonalHistory(benRegID, visitCode));
+		HistoryDetailsMap.put("FamilyHistory", commonNurseServiceImpl.getFamilyHistory(benRegID, visitCode));
+		HistoryDetailsMap.put("MenstrualHistory", commonNurseServiceImpl.getMenstrualHistory(benRegID, visitCode));
 		HistoryDetailsMap.put("FemaleObstetricHistory",
-				commonNurseServiceImpl.getFemaleObstetricHistory(benRegID, benVisitID));
+				commonNurseServiceImpl.getFemaleObstetricHistory(benRegID, visitCode));
 		HistoryDetailsMap.put("ImmunizationHistory",
-				commonNurseServiceImpl.getImmunizationHistory(benRegID, benVisitID));
+				commonNurseServiceImpl.getImmunizationHistory(benRegID, visitCode));
 		HistoryDetailsMap.put("childOptionalVaccineHistory",
-				commonNurseServiceImpl.getChildOptionalVaccineHistory(benRegID, benVisitID));
-		HistoryDetailsMap.put("DevelopmentHistory", commonNurseServiceImpl.getDevelopmentHistory(benRegID, benVisitID));
-		HistoryDetailsMap.put("PerinatalHistory", commonNurseServiceImpl.getPerinatalHistory(benRegID, benVisitID));
-		HistoryDetailsMap.put("FeedingHistory", commonNurseServiceImpl.getFeedingHistory(benRegID, benVisitID));
+				commonNurseServiceImpl.getChildOptionalVaccineHistory(benRegID, visitCode));
+		HistoryDetailsMap.put("DevelopmentHistory", commonNurseServiceImpl.getDevelopmentHistory(benRegID, visitCode));
+		HistoryDetailsMap.put("PerinatalHistory", commonNurseServiceImpl.getPerinatalHistory(benRegID, visitCode));
+		HistoryDetailsMap.put("FeedingHistory", commonNurseServiceImpl.getFeedingHistory(benRegID, visitCode));
 
 		return new Gson().toJson(HistoryDetailsMap);
 	}

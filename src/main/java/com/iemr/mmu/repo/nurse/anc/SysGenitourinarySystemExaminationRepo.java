@@ -14,9 +14,9 @@ import com.iemr.mmu.data.anc.SysGenitourinarySystemExamination;
 @Repository
 public interface SysGenitourinarySystemExaminationRepo extends CrudRepository<SysGenitourinarySystemExamination, Long> {
 	
-	@Query(" SELECT u FROM SysGenitourinarySystemExamination u WHERE u.beneficiaryRegID = :benRegID AND u.benVisitID = :benVisitID ")
+	@Query(" SELECT u FROM SysGenitourinarySystemExamination u WHERE u.beneficiaryRegID = :benRegID AND u.visitCode = :visitCode ")
 	public SysGenitourinarySystemExamination getSysGenitourinarySystemExaminationData(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 
 	@Query("SELECT processed from SysGenitourinarySystemExamination where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")

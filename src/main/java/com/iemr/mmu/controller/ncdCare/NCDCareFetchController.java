@@ -50,7 +50,7 @@ public class NCDCareFetchController
 	@RequestMapping(value = { "/getBenVisitDetailsFrmNurseNCDCare" }, method = { RequestMethod.POST })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenVisitDetailsFrmNurseNCDCare(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("Request object for NCD Care visit data fetching :" + comingRequest);
@@ -58,9 +58,9 @@ public class NCDCareFetchController
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
 				Long benRegID = obj.getLong("benRegID");
-				Long benVisitID = obj.getLong("benVisitID");
+				Long visitCode = obj.getLong("visitCode");
 
-				String res = ncdCareServiceImpl.getBenVisitDetailsFrmNurseNCDCare(benRegID, benVisitID);
+				String res = ncdCareServiceImpl.getBenVisitDetailsFrmNurseNCDCare(benRegID, visitCode);
 				response.setResponse(res);
 			} else {
 				logger.info("Invalid request");
@@ -84,17 +84,17 @@ public class NCDCareFetchController
 	@RequestMapping(value = { "/getBenNCDCareHistoryDetails" }, method = { RequestMethod.POST })
 
 	public String getBenNCDCareHistoryDetails(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("Request object for NCD Care history data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
-			if (obj.has("benRegID") && obj.has("benVisitID")) {
+			if (obj.has("benRegID") && obj.has("visitCode")) {
 				Long benRegID = obj.getLong("benRegID");
-				Long benVisitID = obj.getLong("benVisitID");
+				Long visitCode = obj.getLong("visitCode");
 
-				String s = ncdCareServiceImpl.getBenNCDCareHistoryDetails(benRegID, benVisitID);
+				String s = ncdCareServiceImpl.getBenNCDCareHistoryDetails(benRegID, visitCode);
 				response.setResponse(s);
 			} else {
 				response.setError(5000, "Invalid request");
@@ -117,17 +117,17 @@ public class NCDCareFetchController
 	@ApiOperation(value = "Get Beneficiary NCD Care vital details from Nurse NCD Care", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenVitalDetailsFrmNurseNCDCare" }, method = { RequestMethod.POST })
 	public String getBenVitalDetailsFrmNurseNCDCare(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("Request object for NCD Care vital data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
-			if (obj.has("benRegID") && obj.has("benVisitID")) {
+			if (obj.has("benRegID") && obj.has("visitCode")) {
 				Long benRegID = obj.getLong("benRegID");
-				Long benVisitID = obj.getLong("benVisitID");
+				Long visitCode = obj.getLong("visitCode");
 
-				String res = ncdCareServiceImpl.getBeneficiaryVitalDetails(benRegID, benVisitID);
+				String res = ncdCareServiceImpl.getBeneficiaryVitalDetails(benRegID, visitCode);
 				response.setResponse(res);
 			} else {
 				logger.info("Invalid request");
@@ -151,17 +151,17 @@ public class NCDCareFetchController
 	@RequestMapping(value = { "/getBenCaseRecordFromDoctorNCDCare" }, method = { RequestMethod.POST })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenCaseRecordFromDoctorNCDCare(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("Request object for NCD Care doctor data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
-			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("benVisitID")) {
+			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
 				Long benRegID = obj.getLong("benRegID");
-				Long benVisitID = obj.getLong("benVisitID");
+				Long visitCode = obj.getLong("visitCode");
 
-				String res = ncdCareServiceImpl.getBenCaseRecordFromDoctorNCDCare(benRegID, benVisitID);
+				String res = ncdCareServiceImpl.getBenCaseRecordFromDoctorNCDCare(benRegID, visitCode);
 				response.setResponse(res);
 			} else {
 				logger.info("Invalid request");

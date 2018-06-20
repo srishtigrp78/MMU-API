@@ -61,10 +61,6 @@ public interface ANCNurseService {
 
 	// String getLabTestOrders(Long beneficiaryRegID, Long benVisitID);
 
-	String getANCCareDetails(Long beneficiaryRegID, Long benVisitID);
-
-	String getANCWomenVaccineDetails(Long beneficiaryRegID, Long benVisitID);
-
 	// Integer saveAncDocFindings(WrapperAncFindings wrapperAncFindings);
 
 	// Integer saveBenANCPrescription(List<PrescribedDrugDetail>
@@ -192,6 +188,10 @@ public interface ANCNurseService {
 	// genitourinarySystemExamination);
 
 	public int updateSysObstetricExamination(SysObstetricExamination obstetricExamination);
+
+	String getANCCareDetails(Long beneficiaryRegID, Long visitCode);
+
+	String getANCWomenVaccineDetails(Long beneficiaryRegID, Long visitCode);
 
 	// public int updatePhyHeadToToeExamination(PhyHeadToToeExamination
 	// headToToeExamination);

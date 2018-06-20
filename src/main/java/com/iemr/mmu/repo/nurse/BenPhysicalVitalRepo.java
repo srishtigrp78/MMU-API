@@ -15,9 +15,9 @@ import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 @Repository
 public interface BenPhysicalVitalRepo extends CrudRepository<BenPhysicalVitalDetail, Long> {
 
-	@Query("select v from BenPhysicalVitalDetail v where v.beneficiaryRegID = :beneficiaryRegID and  v.benVisitID = :benVisitID")
+	@Query("select v from BenPhysicalVitalDetail v where v.beneficiaryRegID = :beneficiaryRegID and v.visitCode = :visitCode")
 	public BenPhysicalVitalDetail getBenPhysicalVitalDetail(@Param("beneficiaryRegID") Long beneficiaryRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 
 	@Query("SELECT processed from BenPhysicalVitalDetail where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
 	public String getBenPhysicalVitalStatus(@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);

@@ -10,5 +10,5 @@ import com.iemr.mmu.data.labtechnician.V_benLabTestOrderedDetails;
 @Repository
 public interface V_benLabTestOrderedDetailsRepo extends CrudRepository<V_benLabTestOrderedDetails, Long> {
 	ArrayList<V_benLabTestOrderedDetails> findDistinctByBeneficiaryRegIDAndBenVisitIDAndProcedureTypeAndProcedureIDNotInOrderByProcedureIDAscTestComponentIDAscResultValueAsc(
-			Long benRegID, Long benVisitID, String procedureType, ArrayList<Integer> ids);
+			Long benRegID, Long visitCode, String procedureType, ArrayList<Integer> ids);
 }

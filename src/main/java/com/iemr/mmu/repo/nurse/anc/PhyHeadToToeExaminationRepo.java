@@ -14,9 +14,9 @@ import com.iemr.mmu.data.anc.PhyHeadToToeExamination;
 @Repository
 public interface PhyHeadToToeExaminationRepo extends CrudRepository<PhyHeadToToeExamination, Long> {
 	
-	@Query(" SELECT u FROM PhyHeadToToeExamination u WHERE u.beneficiaryRegID = :benRegID AND u.benVisitID = :benVisitID ")
+	@Query(" SELECT u FROM PhyHeadToToeExamination u WHERE u.beneficiaryRegID = :benRegID AND u.visitCode = :visitCode")
 	public PhyHeadToToeExamination getPhyHeadToToeExaminationData(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			 @Param("visitCode") Long visitCode);
 	
 
 	@Query("SELECT processed from PhyHeadToToeExamination where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")

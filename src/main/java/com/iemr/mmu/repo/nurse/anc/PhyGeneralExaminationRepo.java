@@ -15,9 +15,9 @@ import com.iemr.mmu.data.anc.PhyGeneralExamination;
 @Repository
 public interface PhyGeneralExaminationRepo extends CrudRepository<PhyGeneralExamination, Long> {
 
-	@Query(" SELECT u FROM PhyGeneralExamination u WHERE u.beneficiaryRegID = :benRegID AND u.benVisitID = :benVisitID ")
+	@Query(" SELECT u FROM PhyGeneralExamination u WHERE u.beneficiaryRegID = :benRegID AND visitCode = :visitCode")
 	public PhyGeneralExamination getPhyGeneralExaminationData(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 
 
 	@Query("SELECT processed from PhyGeneralExamination where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")

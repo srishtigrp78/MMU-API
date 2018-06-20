@@ -23,9 +23,9 @@ public interface BenFamilyCancerHistoryRepo extends CrudRepository<BenFamilyCanc
 			@Param("familyMember") String familyMember, @Param("modifiedBy") String modifiedBy, @Param("iD") Long iD,
 			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
 
-	@Query(" SELECT bfh from BenFamilyCancerHistory bfh WHERE bfh.beneficiaryRegID = :benRegID AND bfh.benVisitID = :benVisitID AND bfh.deleted = false")
+	@Query(" SELECT bfh from BenFamilyCancerHistory bfh WHERE bfh.beneficiaryRegID = :benRegID AND bfh.deleted = false AND bfh.visitCode = :visitCode")
 	public List<BenFamilyCancerHistory> getBenFamilyHistory(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			 @Param("visitCode") Long visitCode);
 
 	// @Query(" SELECT bfh from BenFamilyCancerHistory bfh WHERE
 	// bfh.beneficiaryRegID = :benRegID AND bfh.benVisitID = :benVisitID "

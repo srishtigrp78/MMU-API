@@ -477,9 +477,9 @@ public class CSNurseServiceImpl implements CSNurseService {
 	}
 
 	@Override
-	public List<BenFamilyCancerHistory> getBenFamilyHisData(Long benRegID, Long benVisitID) {
+	public List<BenFamilyCancerHistory> getBenFamilyHisData(Long benRegID, Long visitCode) {
 		List<BenFamilyCancerHistory> benFamilyCancerHistoryList = benFamilyCancerHistoryRepo
-				.getBenFamilyHistory(benRegID, benVisitID);
+				.getBenFamilyHistory(benRegID, visitCode);
 		if (benFamilyCancerHistoryList.size() > 0) {
 			for (BenFamilyCancerHistory obj : benFamilyCancerHistoryList) {
 				String s = obj.getFamilyMember();
@@ -499,16 +499,16 @@ public class CSNurseServiceImpl implements CSNurseService {
 	}
 
 	@Override
-	public BenObstetricCancerHistory getBenObstetricDetailsData(Long benRegID, Long benVisitID) {
+	public BenObstetricCancerHistory getBenObstetricDetailsData(Long benRegID, Long visitCode) {
 		BenObstetricCancerHistory benObstetricCancerHistoryData = benObstetricCancerHistoryRepo
-				.getBenObstetricCancerHistory(benRegID, benVisitID);
+				.getBenObstetricCancerHistory(benRegID, visitCode);
 		return benObstetricCancerHistoryData;
 	}
 
 	@Override
-	public BenPersonalCancerHistory getBenPersonalCancerHistoryData(Long benRegID, Long benVisitID) {
+	public BenPersonalCancerHistory getBenPersonalCancerHistoryData(Long benRegID, Long visitCode) {
 		BenPersonalCancerHistory benPersonalCancerHistory = benPersonalCancerHistoryRepo.getBenPersonalHistory(benRegID,
-				benVisitID);
+				visitCode);
 		if (null != benPersonalCancerHistory) {
 			List<String> typeOfTobaccoProductList = new ArrayList<>();
 			String s = benPersonalCancerHistory.getTypeOfTobaccoProduct();
@@ -525,9 +525,9 @@ public class CSNurseServiceImpl implements CSNurseService {
 	}
 
 	@Override
-	public BenPersonalCancerDietHistory getBenPersonalCancerDietHistoryData(Long benRegID, Long benVisitID) {
+	public BenPersonalCancerDietHistory getBenPersonalCancerDietHistoryData(Long benRegID, Long visitCode) {
 		BenPersonalCancerDietHistory benPersonalCancerDietHistory = benPersonalCancerDietHistoryRepo
-				.getBenPersonaDietHistory(benRegID, benVisitID);
+				.getBenPersonaDietHistory(benRegID, visitCode);
 
 		if (null != benPersonalCancerDietHistory) {
 			String s = benPersonalCancerDietHistory.getTypeOfOilConsumed();
@@ -545,54 +545,54 @@ public class CSNurseServiceImpl implements CSNurseService {
 	}
 
 	@Override
-	public BenCancerVitalDetail getBenCancerVitalDetailData(Long benRegID, Long benVisitID) {
+	public BenCancerVitalDetail getBenCancerVitalDetailData(Long benRegID, Long visitCode) {
 		BenCancerVitalDetail benCancerVitalDetail = benCancerVitalDetailRepo.getBenCancerVitalDetail(benRegID,
-				benVisitID);
+				visitCode);
 		return benCancerVitalDetail;
 	}
 
-	public CancerAbdominalExamination getBenCancerAbdominalExaminationData(Long benRegID, Long benVisitID) {
+	public CancerAbdominalExamination getBenCancerAbdominalExaminationData(Long benRegID, Long visitCode) {
 		CancerAbdominalExamination cancerAbdominalExamination = cancerAbdominalExaminationRepo
-				.getBenCancerAbdominalExaminationDetails(benRegID, benVisitID);
+				.getBenCancerAbdominalExaminationDetails(benRegID, visitCode);
 		return cancerAbdominalExamination;
 	}
 
-	public CancerBreastExamination getBenCancerBreastExaminationData(Long benRegID, Long benVisitID) {
+	public CancerBreastExamination getBenCancerBreastExaminationData(Long benRegID, Long visitCode) {
 		CancerBreastExamination cancerBreastExamination = cancerBreastExaminationRepo
-				.getBenCancerBreastExaminationDetails(benRegID, benVisitID);
+				.getBenCancerBreastExaminationDetails(benRegID, visitCode);
 		return cancerBreastExamination;
 	}
 
-	public CancerGynecologicalExamination getBenCancerGynecologicalExaminationData(Long benRegID, Long benVisitID) {
+	public CancerGynecologicalExamination getBenCancerGynecologicalExaminationData(Long benRegID, Long visitCode) {
 		CancerGynecologicalExamination cancerGynecologicalExamination = cancerGynecologicalExaminationRepo
-				.getBenCancerGynecologicalExaminationDetails(benRegID, benVisitID);
+				.getBenCancerGynecologicalExaminationDetails(benRegID, visitCode);
 		return cancerGynecologicalExamination;
 	}
 
-	public CancerSignAndSymptoms getBenCancerSignAndSymptomsData(Long benRegID, Long benVisitID) {
+	public CancerSignAndSymptoms getBenCancerSignAndSymptomsData(Long benRegID, Long visitCode) {
 		CancerSignAndSymptoms cancerSignAndSymptoms = cancerSignAndSymptomsRepo
-				.getBenCancerSignAndSymptomsDetails(benRegID, benVisitID);
+				.getBenCancerSignAndSymptomsDetails(benRegID, visitCode);
 		return cancerSignAndSymptoms;
 	}
 
-	public List<CancerLymphNodeDetails> getBenCancerLymphNodeDetailsData(Long benRegID, Long benVisitID) {
+	public List<CancerLymphNodeDetails> getBenCancerLymphNodeDetailsData(Long benRegID, Long  visitCode) {
 		List<CancerLymphNodeDetails> cancerLymphNodeDetails = cancerLymphNodeExaminationRepo
-				.getBenCancerLymphNodeDetails(benRegID, benVisitID);
+				.getBenCancerLymphNodeDetails(benRegID, visitCode);
 		return cancerLymphNodeDetails;
 	}
 
-	public CancerOralExamination getBenCancerOralExaminationData(Long benRegID, Long benVisitID) {
+	public CancerOralExamination getBenCancerOralExaminationData(Long benRegID, Long visitCode) {
 		CancerOralExamination cancerOralExamination = cancerOralExaminationRepo
-				.getBenCancerOralExaminationDetails(benRegID, benVisitID);
+				.getBenCancerOralExaminationDetails(benRegID, visitCode);
 		return cancerOralExamination;
 	}
 
 	public ArrayList<WrapperCancerExamImgAnotasn> getCancerExaminationImageAnnotationCasesheet(Long benRegID,
-			Long benVisitID) {
+			Long visitCode) {
 		ArrayList<WrapperCancerExamImgAnotasn> resList = new ArrayList<>();
 		// System.out.println("hello");
 		List<CancerExaminationImageAnnotation> cancerExaminationImageAnnotationList = cancerExaminationImageAnnotationRepo
-				.getCancerExaminationImageAnnotationList(benRegID, benVisitID);
+				.getCancerExaminationImageAnnotationList(benRegID, visitCode);
 
 		if (cancerExaminationImageAnnotationList.size() > 0) {
 			int a = 0;
@@ -609,7 +609,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 				if (a != b) {
 					wrapperCancerExamImgAnotasnOBJ = new WrapperCancerExamImgAnotasn();
 					wrapperCancerExamImgAnotasnOBJ.setBeneficiaryRegID(benRegID);
-					wrapperCancerExamImgAnotasnOBJ.setVisitID(benVisitID);
+					wrapperCancerExamImgAnotasnOBJ.setVisitID(obj.getBenVisitID());
 					wrapperCancerExamImgAnotasnOBJ.setProviderServiceMapID(obj.getProviderServiceMapID());
 					wrapperCancerExamImgAnotasnOBJ.setCreatedBy(obj.getCreatedBy());
 					wrapperCancerExamImgAnotasnOBJ.setImageID(obj.getCancerImageID());
@@ -648,38 +648,38 @@ public class CSNurseServiceImpl implements CSNurseService {
 	}
 
 	@Deprecated
-	public Map<String, Object> getBenNurseDataForCaseSheet(Long benRegID, Long benVisitID) {
+	public Map<String, Object> getBenNurseDataForCaseSheet(Long benRegID, Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
 
-		resMap.put("benVisitDetail", getBeneficiaryVisitDetails(benRegID, benVisitID));
+		resMap.put("benVisitDetail", getBeneficiaryVisitDetails(benRegID, visitCode));
 
-		resMap.put("familyDiseaseHistory", getBenFamilyHisData(benRegID, benVisitID));
+		resMap.put("familyDiseaseHistory", getBenFamilyHisData(benRegID, visitCode));
 
-		resMap.put("patientObstetricHistory", getBenObstetricDetailsData(benRegID, benVisitID));
+		resMap.put("patientObstetricHistory", getBenObstetricDetailsData(benRegID, visitCode));
 
-		resMap.put("patientPersonalHistory", getBenPersonalCancerHistoryData(benRegID, benVisitID));
+		resMap.put("patientPersonalHistory", getBenPersonalCancerHistoryData(benRegID, visitCode));
 
-		resMap.put("benPersonalDietHistory", getBenPersonalCancerDietHistoryData(benRegID, benVisitID));
+		resMap.put("benPersonalDietHistory", getBenPersonalCancerDietHistoryData(benRegID, visitCode));
 
-		resMap.put("currentVitals", getBenCancerVitalDetailData(benRegID, benVisitID));
+		resMap.put("currentVitals", getBenCancerVitalDetailData(benRegID, visitCode));
 
-		resMap.put("abdominalExamination", getBenCancerAbdominalExaminationData(benRegID, benVisitID));
+		resMap.put("abdominalExamination", getBenCancerAbdominalExaminationData(benRegID, visitCode));
 
-		resMap.put("breastExamination", getBenCancerBreastExaminationData(benRegID, benVisitID));
+		resMap.put("breastExamination", getBenCancerBreastExaminationData(benRegID, visitCode));
 
-		resMap.put("gynecologicalExamination", getBenCancerGynecologicalExaminationData(benRegID, benVisitID));
+		resMap.put("gynecologicalExamination", getBenCancerGynecologicalExaminationData(benRegID, visitCode));
 
-		resMap.put("signsAndSymptoms", getBenCancerSignAndSymptomsData(benRegID, benVisitID));
+		resMap.put("signsAndSymptoms", getBenCancerSignAndSymptomsData(benRegID, visitCode));
 
-		resMap.put("BenCancerLymphNodeDetails", getBenCancerLymphNodeDetailsData(benRegID, benVisitID));
+		resMap.put("BenCancerLymphNodeDetails", getBenCancerLymphNodeDetailsData(benRegID, visitCode));
 
-		resMap.put("oralExamination", getBenCancerOralExaminationData(benRegID, benVisitID));
+		resMap.put("oralExamination", getBenCancerOralExaminationData(benRegID, visitCode));
 
 		return resMap;
 	}
 
-	public BeneficiaryVisitDetail getBeneficiaryVisitDetails(Long benRegID, Long benVisitID) {
-		List<Objects[]> beneficiaryVisitDetail = benVisitDetailRepo.getBeneficiaryVisitDetails(benRegID, benVisitID);
+	public BeneficiaryVisitDetail getBeneficiaryVisitDetails(Long benRegID, Long visitCode) {
+		List<Objects[]> beneficiaryVisitDetail = benVisitDetailRepo.getBeneficiaryVisitDetails(benRegID, visitCode);
 		BeneficiaryVisitDetail beneficiaryVisit = null;
 		if (null != beneficiaryVisitDetail) {
 			for (Object[] obj : beneficiaryVisitDetail) {

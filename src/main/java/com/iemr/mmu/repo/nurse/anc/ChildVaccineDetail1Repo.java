@@ -21,8 +21,9 @@ public interface ChildVaccineDetail1Repo extends CrudRepository<ChildVaccineDeta
 	public ArrayList<Object[]> getBenChildVaccineDetails(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	
 	@Query("select beneficiaryRegID, benVisitID, providerServiceMapID, defaultReceivingAge, vaccineName, status, visitCode"
-			+ " from ChildVaccineDetail1 a where a.beneficiaryRegID = :beneficiaryRegID and a.benVisitID = :benVisitID")
-	public ArrayList<Object[]> getBenChildVaccineDetails(@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("benVisitID") Long benVisitID);
+			+ " from ChildVaccineDetail1 a where a.beneficiaryRegID = :beneficiaryRegID and a.visitCode = :visitCode")
+	public ArrayList<Object[]> getBenChildVaccineDetails(@Param("beneficiaryRegID") Long beneficiaryRegID, 
+			@Param("visitCode") Long visitCode);
 
 	
 	@Query(" SELECT defaultReceivingAge, vaccineName, processed from ChildVaccineDetail1 where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")

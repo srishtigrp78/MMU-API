@@ -14,9 +14,9 @@ import com.iemr.mmu.data.anc.SysRespiratoryExamination;
 @Repository
 public interface SysRespiratoryExaminationRepo extends CrudRepository<SysRespiratoryExamination, Long>{
 	
-	@Query(" SELECT u FROM SysRespiratoryExamination u WHERE u.beneficiaryRegID = :benRegID AND u.benVisitID = :benVisitID ")
+	@Query(" SELECT u FROM SysRespiratoryExamination u WHERE u.beneficiaryRegID = :benRegID AND u.visitCode = :visitCode")
 	public SysRespiratoryExamination getSysRespiratoryExaminationData(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long  visitCode);
 	
 
 	@Query("SELECT processed from SysRespiratoryExamination where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")

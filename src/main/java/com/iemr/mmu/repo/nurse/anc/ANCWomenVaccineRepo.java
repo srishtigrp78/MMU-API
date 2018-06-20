@@ -17,9 +17,9 @@ import com.iemr.mmu.data.anc.ANCWomenVaccineDetail;
 public interface ANCWomenVaccineRepo extends CrudRepository<ANCWomenVaccineDetail, Long>{
 	
 	@Query(" SELECT ID, beneficiaryRegID, benVisitID, providerServiceMapID, vaccineName, status, receivedDate, receivedFacilityName, visitCode "
-			+ "from ANCWomenVaccineDetail ba WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID ")
+			+ "from ANCWomenVaccineDetail ba WHERE ba.beneficiaryRegID = :benRegID AND ba.visitCode = :visitCode")
 	public ArrayList<Object[]> getANCWomenVaccineDetails(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			 @Param("visitCode") Long visitCode);
 	
 	@Query(" SELECT vaccineName, processed from ANCWomenVaccineDetail where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID AND deleted = false")
 	public ArrayList<Object[]> getBenANCWomenVaccineStatus(@Param("benRegID") Long benRegID,

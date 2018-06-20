@@ -14,9 +14,9 @@ import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 @Repository
 public interface BenAnthropometryRepo extends CrudRepository<BenAnthropometryDetail, Long> {
 
-	@Query("select a from BenAnthropometryDetail a where a.beneficiaryRegID = :beneficiaryRegID and  a.benVisitID = :benVisitID")
+	@Query("select a from BenAnthropometryDetail a where a.beneficiaryRegID = :beneficiaryRegID and  a.visitCode = :visitCode")
 	public BenAnthropometryDetail getBenAnthropometryDetail(@Param("beneficiaryRegID") Long beneficiaryRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 
 	@Query("SELECT processed from BenAnthropometryDetail where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
 	public String getBenAnthropometryStatus(@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);

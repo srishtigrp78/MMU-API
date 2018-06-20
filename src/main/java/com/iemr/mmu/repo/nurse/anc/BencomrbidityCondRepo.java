@@ -22,8 +22,8 @@ public interface BencomrbidityCondRepo extends CrudRepository<BencomrbidityCondD
 	
 	@Query(" SELECT beneficiaryRegID, benVisitID, providerServiceMapID, comorbidConditionID, comorbidCondition, year, otherComorbidCondition, "
 			+ " isForHistory, createdDate, visitCode  FROM BencomrbidityCondDetails "
-			+ " WHERE beneficiaryRegID = :benRegID AND benVisitID = :benVisitID AND deleted = false")
-	public ArrayList<Object[]> getBencomrbidityCondDetails(@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
+			+ " WHERE beneficiaryRegID = :benRegID AND deleted = false AND visitCode= :visitCode")
+	public ArrayList<Object[]> getBencomrbidityCondDetails(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 
 	@Modifying
 	@Transactional

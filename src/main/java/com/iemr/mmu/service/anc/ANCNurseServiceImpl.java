@@ -228,23 +228,23 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
-	public SysObstetricExamination getSysObstetricExamination(Long benRegID, Long benVisitID) {
+	public SysObstetricExamination getSysObstetricExamination(Long benRegID, Long visitCode) {
 		SysObstetricExamination sysObstetricExaminationData = sysObstetricExaminationRepo
-				.getSysObstetricExaminationData(benRegID, benVisitID);
+				.getSysObstetricExaminationData(benRegID, visitCode);
 
 		return sysObstetricExaminationData;
 	}
 
 	@Override
-	public String getANCCareDetails(Long beneficiaryRegID, Long benVisitID) {
-		ArrayList<Object[]> resList = ancCareRepo.getANCCareDetails(beneficiaryRegID, benVisitID);
+	public String getANCCareDetails(Long beneficiaryRegID, Long visitCode) {
+		ArrayList<Object[]> resList = ancCareRepo.getANCCareDetails(beneficiaryRegID, visitCode);
 		ANCCareDetails ancCareDetails = ANCCareDetails.getANCCareDetails(resList);
 		return new Gson().toJson(ancCareDetails);
 	}
 
 	@Override
-	public String getANCWomenVaccineDetails(Long beneficiaryRegID, Long benVisitID) {
-		ArrayList<Object[]> resList = ancWomenVaccineRepo.getANCWomenVaccineDetails(beneficiaryRegID, benVisitID);
+	public String getANCWomenVaccineDetails(Long beneficiaryRegID, Long visitCode) {
+		ArrayList<Object[]> resList = ancWomenVaccineRepo.getANCWomenVaccineDetails(beneficiaryRegID, visitCode);
 		WrapperAncImmunization ancWomenVaccineDetails = ANCWomenVaccineDetail.getANCWomenVaccineDetails(resList);
 		return new Gson().toJson(ancWomenVaccineDetails);
 	}

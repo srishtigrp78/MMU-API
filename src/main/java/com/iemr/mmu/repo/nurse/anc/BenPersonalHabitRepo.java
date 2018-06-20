@@ -36,9 +36,9 @@ public interface BenPersonalHabitRepo extends CrudRepository<BenPersonalHabit, I
 	@Query(" SELECT beneficiaryRegID, benVisitID, providerServiceMapID, dietaryType, physicalActivityType, tobaccoUseStatus, tobaccoUseTypeID, "
 			+ "tobaccoUseType, otherTobaccoUseType, numberperDay, tobaccoUseDuration, alcoholIntakeStatus, alcoholTypeID, "
 			+ "alcoholType, otherAlcoholType, alcoholIntakeFrequency, avgAlcoholConsumption, alcoholDuration, riskySexualPracticesStatus, createdDate, visitCode   "
-			+ "FROM BenPersonalHabit WHERE beneficiaryRegID = :benRegID AND benVisitID = :benVisitID AND deleted = false")
+			+ "FROM BenPersonalHabit WHERE beneficiaryRegID = :benRegID AND deleted = false AND visitCode = :visitCode")
 	public ArrayList<Object[]> getBenPersonalHabitDetail(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 
 	@Modifying
 	@Transactional

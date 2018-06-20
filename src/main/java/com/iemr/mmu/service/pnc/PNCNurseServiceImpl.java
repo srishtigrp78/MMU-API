@@ -43,8 +43,8 @@ public class PNCNurseServiceImpl implements PNCNurseService{
 	}
 	
 	@Override
-	public String getPNCCareDetails(Long beneficiaryRegID, Long benVisitID) {
-		ArrayList<Object[]> resList = pncCareRepo.getPNCCareDetails(beneficiaryRegID, benVisitID);
+	public String getPNCCareDetails(Long beneficiaryRegID, Long visitCode) {
+		ArrayList<Object[]> resList = pncCareRepo.getPNCCareDetails(beneficiaryRegID, visitCode);
 		PNCCare pncCareDetails = PNCCare.getPNCCareDetails(resList);
 		return new Gson().toJson(pncCareDetails);
 	}

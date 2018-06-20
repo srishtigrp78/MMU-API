@@ -16,9 +16,9 @@ import com.iemr.mmu.data.doctor.CancerExaminationImageAnnotation;
 public interface CancerExaminationImageAnnotationRepo extends CrudRepository<CancerExaminationImageAnnotation, Long> {
 
 	@Query(" SELECT t FROM CancerExaminationImageAnnotation t  "
-			+ "  WHERE t.beneficiaryRegID =:benRegID AND t.benVisitID =:benVisitID AND deleted = false ORDER BY t.cancerImageID  ")
+			+ "  WHERE t.beneficiaryRegID =:benRegID AND deleted = false AND t.visitCode = :visitCode ORDER BY t.cancerImageID  ")
 	public List<CancerExaminationImageAnnotation> getCancerExaminationImageAnnotationList(
-			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
+			@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 
 	@Query("SELECT ID, processed from CancerExaminationImageAnnotation where beneficiaryRegID=:benRegID "
 			+ "  AND benVisitID = :benVisitID AND deleted = false AND cancerImageID IN (:imgIDList)")

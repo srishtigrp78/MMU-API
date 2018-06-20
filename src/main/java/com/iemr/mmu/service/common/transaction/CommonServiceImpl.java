@@ -118,10 +118,10 @@ public class CommonServiceImpl implements CommonService {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData",
-				ancServiceImpl.getBenANCNurseData(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitID()));
+				ancServiceImpl.getBenANCNurseData(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitCode()));
 
 		caseSheetData.put("doctorData", ancServiceImpl.getBenCaseRecordFromDoctorANC(benFlowOBJ.getBeneficiaryRegID(),
-				benFlowOBJ.getBenVisitID()));
+				benFlowOBJ.getBenVisitCode()));
 
 		caseSheetData.put("BeneficiaryData",
 				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
@@ -133,16 +133,16 @@ public class CommonServiceImpl implements CommonService {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData", csServiceImpl.getBenNurseDataForCaseSheet(benFlowOBJ.getBeneficiaryRegID(),
-				benFlowOBJ.getBenVisitID()));
+				benFlowOBJ.getBenVisitCode()));
 		caseSheetData.put("doctorData", csServiceImpl.getBenCaseRecordFromDoctorCS(benFlowOBJ.getBeneficiaryRegID(),
-				benFlowOBJ.getBenVisitID()));
+				benFlowOBJ.getBenVisitCode()));
 
 		caseSheetData.put("BeneficiaryData",
 				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
 		
 		caseSheetData.put("ImageAnnotatedData",
 				new Gson().toJson(cSNurseServiceImpl.getCancerExaminationImageAnnotationCasesheet(benFlowOBJ.getBeneficiaryRegID(),
-						benFlowOBJ.getBenVisitID())));
+						 benFlowOBJ.getBenVisitCode())));
 
 		return caseSheetData.toString();
 	}

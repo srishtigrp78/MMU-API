@@ -14,10 +14,10 @@ import com.iemr.mmu.data.doctor.CancerGynecologicalExamination;
 @Repository
 public interface CancerGynecologicalExaminationRepo extends CrudRepository<CancerGynecologicalExamination, Long> {
 	
-	@Query(" SELECT c from CancerGynecologicalExamination c WHERE c.beneficiaryRegID = :benRegID AND c.benVisitID = :benVisitID "
-			+ "AND c.deleted = false")
+	@Query(" SELECT c from CancerGynecologicalExamination c WHERE c.beneficiaryRegID = :benRegID "
+			+ "AND c.deleted = false And c.visitCode = :visitCode")
 	public CancerGynecologicalExamination getBenCancerGynecologicalExaminationDetails(@Param("benRegID") Long benRegID,
-	@Param("benVisitID") Long benVisitID);
+	@Param("visitCode") Long visitCode);
 	
 	@Query("SELECT processed from CancerGynecologicalExamination where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
 	public String getCancerGynecologicalExaminationStatus(@Param("benRegID") Long benRegID,

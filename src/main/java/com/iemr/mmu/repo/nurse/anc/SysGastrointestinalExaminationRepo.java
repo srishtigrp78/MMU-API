@@ -12,9 +12,9 @@ import com.iemr.mmu.data.anc.SysGastrointestinalExamination;
 @Repository
 public interface SysGastrointestinalExaminationRepo extends CrudRepository<SysGastrointestinalExamination, Long> {
 	
-	@Query(" SELECT u FROM SysGastrointestinalExamination u WHERE u.beneficiaryRegID = :benRegID AND u.benVisitID = :benVisitID ")
+	@Query(" SELECT u FROM SysGastrointestinalExamination u WHERE u.beneficiaryRegID = :benRegID AND u.visitCode = :visitCode")
 	public SysGastrointestinalExamination getSSysGastrointestinalExamination(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			 @Param("visitCode") Long visitCode);
 	
 
 	@Query("SELECT processed from SysGastrointestinalExamination where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")

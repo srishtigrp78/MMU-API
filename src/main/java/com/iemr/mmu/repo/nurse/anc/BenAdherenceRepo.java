@@ -15,9 +15,9 @@ import com.iemr.mmu.data.anc.BenAdherence;
 public interface BenAdherenceRepo extends CrudRepository<BenAdherence, Long> {
 
 	@Query(" SELECT ID, beneficiaryRegID, benVisitID, providerServiceMapID, visitCode, toDrugs, drugReason, toReferral, referralReason, progress "
-			+ "from BenAdherence ba WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID ")
+			+ "from BenAdherence ba WHERE ba.beneficiaryRegID = :benRegID AND ba.visitCode= :visitCode")
 	public ArrayList<Object[]> getBenAdherence(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 	@Query(" SELECT processed from BenAdherence where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID AND ID=:ID")
 	public String getBenAdherenceDetailsStatus(@Param("benRegID") Long benRegID,

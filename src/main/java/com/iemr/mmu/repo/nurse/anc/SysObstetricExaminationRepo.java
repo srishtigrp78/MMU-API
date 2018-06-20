@@ -14,9 +14,9 @@ import com.iemr.mmu.data.anc.SysObstetricExamination;
 @Repository
 public interface SysObstetricExaminationRepo extends CrudRepository<SysObstetricExamination, Long> {
 	
-	@Query(" SELECT u FROM SysObstetricExamination u WHERE u.beneficiaryRegID = :benRegID AND u.benVisitID = :benVisitID ")
+	@Query(" SELECT u FROM SysObstetricExamination u WHERE u.beneficiaryRegID = :benRegID AND u.visitCode = :visitCode")
 	public SysObstetricExamination getSysObstetricExaminationData(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 
 	@Query("SELECT processed from SysObstetricExamination where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")

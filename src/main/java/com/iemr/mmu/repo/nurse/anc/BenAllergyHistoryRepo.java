@@ -22,9 +22,9 @@ public interface BenAllergyHistoryRepo extends CrudRepository<BenAllergyHistory,
 
 	@Query(" SELECT beneficiaryRegID, benVisitID, providerServiceMapID, allergyStatus, allergyType, allergyName, allergicReactionTypeID, "
 			+ "allergicReactionType, otherAllergicReaction, remarks, visitCode  FROM BenAllergyHistory "
-			+ " WHERE beneficiaryRegID = :benRegID AND benVisitID = :benVisitID AND deleted = false")
+			+ " WHERE beneficiaryRegID = :benRegID AND deleted = false AND visitCode = :visitCode")
 	public ArrayList<Object[]> getBenPersonalAllergyDetail(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			 @Param("visitCode") Long visitCode);
 
 	@Modifying
 	@Transactional

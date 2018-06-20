@@ -30,14 +30,15 @@ public interface CSNurseService {
 
 	int updateBenVitalDetail(BenCancerVitalDetail benCancerVitalDetail);
 
-	List<BenFamilyCancerHistory> getBenFamilyHisData(Long benRegID, Long benVisitID);
+	List<BenFamilyCancerHistory> getBenFamilyHisData(Long benRegID, Long visitCode);
 
-	BenObstetricCancerHistory getBenObstetricDetailsData(Long benRegID, Long benVisitID);
+	BenObstetricCancerHistory getBenObstetricDetailsData(Long benRegID, Long visitCode);
 
-	BenPersonalCancerHistory getBenPersonalCancerHistoryData(Long benRegID, Long benVisitID);
+	BenPersonalCancerDietHistory getBenPersonalCancerDietHistoryData(Long benRegID, Long visitCode);
 
-	BenPersonalCancerDietHistory getBenPersonalCancerDietHistoryData(Long benRegID, Long benVisitID);
+	BenCancerVitalDetail getBenCancerVitalDetailData(Long benRegID, Long visitCode);
 
-	BenCancerVitalDetail getBenCancerVitalDetailData(Long benRegID, Long benVisitID);
+	BenPersonalCancerHistory getBenPersonalCancerHistoryData(Long benRegID, Long visitCode);
+
 
 }

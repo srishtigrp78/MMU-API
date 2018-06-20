@@ -40,7 +40,7 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 		this.v_benLabTestOrderedDetailsRepo = v_benLabTestOrderedDetailsRepo;
 	}
 
-	public String getBenePrescribedProcedureDetails(Long benRegID, Long benVisitID) {
+	public String getBenePrescribedProcedureDetails(Long benRegID, Long visitCode) {
 		Map<String, Object> returnOBJ = new HashMap<>();
 
 		ArrayList<Object> radiologyList;
@@ -48,7 +48,7 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 
 		ArrayList<Integer> resultEnteredProcList = new ArrayList<>();
 
-		ArrayList<LabResultEntry> procedureResults = getLabResultDataForBen(benRegID, benVisitID);
+		ArrayList<LabResultEntry> procedureResults = getLabResultDataForBen(benRegID, visitCode);
 
 		if (procedureResults != null && procedureResults.size() > 0) {
 			for (LabResultEntry obj : procedureResults) {
@@ -59,11 +59,11 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 
 		ArrayList<V_benLabTestOrderedDetails> orderedLabTestListLab = v_benLabTestOrderedDetailsRepo
 				.findDistinctByBeneficiaryRegIDAndBenVisitIDAndProcedureTypeAndProcedureIDNotInOrderByProcedureIDAscTestComponentIDAscResultValueAsc(
-						benRegID, benVisitID, "Laboratory", resultEnteredProcList);
+						benRegID, visitCode, "Laboratory", resultEnteredProcList);
 
 		ArrayList<V_benLabTestOrderedDetails> orderedLabTestListRadio = v_benLabTestOrderedDetailsRepo
 				.findDistinctByBeneficiaryRegIDAndBenVisitIDAndProcedureTypeAndProcedureIDNotInOrderByProcedureIDAscTestComponentIDAscResultValueAsc(
-						benRegID, benVisitID, "Radiology", resultEnteredProcList);
+						benRegID, visitCode, "Radiology", resultEnteredProcList);
 
 		radiologyList = getPrescribedLabTestInJsonFormatRadiology(orderedLabTestListRadio);
 		laboratoryList = getPrescribedLabTestInJsonFormatlaboratory(orderedLabTestListLab);
@@ -182,9 +182,9 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 		return returnOBJ;
 	}
 
-	public ArrayList<LabResultEntry> getLabResultDataForBen(Long benRegID, Long benVisitID) {
+	public ArrayList<LabResultEntry> getLabResultDataForBen(Long benRegID, Long visitCode) {
 		ArrayList<LabResultEntry> procedureResults = new ArrayList<>();
-		procedureResults = labResultEntryRepo.findByBeneficiaryRegIDAndBenVisitIDOrderByProcedureIDAsc(benRegID, benVisitID);
+		procedureResults = labResultEntryRepo.findByBeneficiaryRegIDAndBenVisitIDOrderByProcedureIDAsc(benRegID, visitCode);
 		procedureResults = LabResultEntry.getLabResultEntry(procedureResults);
 		return procedureResults;
 	}

@@ -29,8 +29,8 @@ public class NCDScreeningNurseServiceImpl implements NCDScreeningNurseService {
 	}
 
 	@Override
-	public String getNCDScreeningDetails(Long beneficiaryRegID, Long benVisitID) {
-		NCDScreening ncdScreeningDetails = ncdScreeningRepo.getNCDScreeningDetails(beneficiaryRegID, benVisitID);
+	public String getNCDScreeningDetails(Long beneficiaryRegID, Long visitCode) {
+		NCDScreening ncdScreeningDetails = ncdScreeningRepo.getNCDScreeningDetails(beneficiaryRegID, visitCode);
 		if (ncdScreeningDetails.getNextScreeningDateDB() != null)
 			ncdScreeningDetails.setNextScreeningDate(ncdScreeningDetails.getNextScreeningDateDB().toString());
 

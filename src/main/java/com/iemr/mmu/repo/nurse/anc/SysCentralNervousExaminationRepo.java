@@ -14,9 +14,9 @@ import com.iemr.mmu.data.anc.SysCentralNervousExamination;
 @Repository
 public interface SysCentralNervousExaminationRepo extends CrudRepository<SysCentralNervousExamination, Long> {
 
-	@Query(" SELECT u FROM SysCentralNervousExamination u WHERE u.beneficiaryRegID = :benRegID AND u.benVisitID = :benVisitID ")
+	@Query(" SELECT u FROM SysCentralNervousExamination u WHERE u.beneficiaryRegID = :benRegID AND u.visitCode = :visitCode")
 	public SysCentralNervousExamination getSysCentralNervousExaminationData(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			 @Param("visitCode") Long visitCode);
 	
 	@Query("SELECT processed from SysCentralNervousExamination where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
 	public String getBenCentralNervousExaminationStatus(@Param("benRegID") Long benRegID,

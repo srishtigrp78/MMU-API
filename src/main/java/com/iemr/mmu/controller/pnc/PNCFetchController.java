@@ -47,7 +47,7 @@ public class PNCFetchController
 	@RequestMapping(value = { "/getBenVisitDetailsFrmNursePNC" }, method = { RequestMethod.POST })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenVisitDetailsFrmNursePNC(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("PNC visit data fetch request:" + comingRequest);
@@ -55,9 +55,9 @@ public class PNCFetchController
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
 				Long benRegID = obj.getLong("benRegID");
-				Long benVisitID = obj.getLong("benVisitID");
+				Long visitCode = obj.getLong("visitCode");
 
-				String res = pncServiceImpl.getBenVisitDetailsFrmNursePNC(benRegID, benVisitID);
+				String res = pncServiceImpl.getBenVisitDetailsFrmNursePNC(benRegID, visitCode);
 				response.setResponse(res);
 			} else {
 				logger.info("Invalid request");
@@ -81,17 +81,17 @@ public class PNCFetchController
 	@RequestMapping(value = { "/getBenPNCDetailsFrmNursePNC" }, method = { RequestMethod.POST })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenPNCDetailsFrmNursePNC(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("PNC Care data fetch request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
-			if (obj.has("benRegID") && obj.has("benVisitID")) {
+			if (obj.has("benRegID") && obj.has("visitCode")) {
 				Long benRegID = obj.getLong("benRegID");
-				Long benVisitID = obj.getLong("benVisitID");
+				Long visitCode = obj.getLong("visitCode");
 
-				String res = pncServiceImpl.getBenPNCDetailsFrmNursePNC(benRegID, benVisitID);
+				String res = pncServiceImpl.getBenPNCDetailsFrmNursePNC(benRegID, visitCode);
 				response.setResponse(res);
 			} else {
 				logger.info("Invalid request");
@@ -115,17 +115,17 @@ public class PNCFetchController
 	@RequestMapping(value = { "/getBenHistoryDetails" }, method = { RequestMethod.POST })
 
 	public String getBenHistoryDetails(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("History data fetch request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
-			if (obj.has("benRegID") && obj.has("benVisitID")) {
+			if (obj.has("benRegID") && obj.has("visitCode")) {
 				Long benRegID = obj.getLong("benRegID");
-				Long benVisitID = obj.getLong("benVisitID");
+				Long visitCode = obj.getLong("visitCode");
 
-				String s = pncServiceImpl.getBenHistoryDetails(benRegID, benVisitID);
+				String s = pncServiceImpl.getBenHistoryDetails(benRegID, visitCode);
 				response.setResponse(s);
 			} else {
 				response.setError(5000, "Invalid request");
@@ -147,17 +147,17 @@ public class PNCFetchController
 	@ApiOperation(value = "Get Beneficiary vital details from Nurse PNC", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenVitalDetailsFrmNurse" }, method = { RequestMethod.POST })
 	public String getBenVitalDetailsFrmNurse(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("vital data fetch request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
-			if (obj.has("benRegID") && obj.has("benVisitID")) {
+			if (obj.has("benRegID") && obj.has("visitCode")) {
 				Long benRegID = obj.getLong("benRegID");
-				Long benVisitID = obj.getLong("benVisitID");
+				Long visitCode = obj.getLong("visitCode");
 
-				String res = pncServiceImpl.getBeneficiaryVitalDetails(benRegID, benVisitID);
+				String res = pncServiceImpl.getBeneficiaryVitalDetails(benRegID, visitCode);
 				response.setResponse(res);
 			} else {
 				logger.info("Invalid request");
@@ -181,17 +181,17 @@ public class PNCFetchController
 	@RequestMapping(value = { "/getBenExaminationDetailsPNC" }, method = { RequestMethod.POST })
 
 	public String getBenExaminationDetailsPNC(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("PNC examination data fetch request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
-			if (obj.has("benRegID") && obj.has("benVisitID")) {
+			if (obj.has("benRegID") && obj.has("visitCode")) {
 				Long benRegID = obj.getLong("benRegID");
-				Long benVisitID = obj.getLong("benVisitID");
+				Long visitCode = obj.getLong("visitCode");
 
-				String s = pncServiceImpl.getPNCExaminationDetailsData(benRegID, benVisitID);
+				String s = pncServiceImpl.getPNCExaminationDetailsData(benRegID, visitCode);
 				response.setResponse(s);
 			} else {
 				response.setError(5000, "Invalid request");
@@ -214,17 +214,17 @@ public class PNCFetchController
 	@RequestMapping(value = { "/getBenCaseRecordFromDoctorPNC" }, method = { RequestMethod.POST })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenCaseRecordFromDoctorPNC(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"benVisitID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("PNC doctor data fetch request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
-			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("benVisitID")) {
+			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
 				Long benRegID = obj.getLong("benRegID");
-				Long benVisitID = obj.getLong("benVisitID");
+				Long visitCode = obj.getLong("visitCode");
 
-				String res = pncServiceImpl.getBenCaseRecordFromDoctorPNC(benRegID, benVisitID);
+				String res = pncServiceImpl.getBenCaseRecordFromDoctorPNC(benRegID, visitCode);
 				response.setResponse(res);
 			} else {
 				logger.info("Invalid request");

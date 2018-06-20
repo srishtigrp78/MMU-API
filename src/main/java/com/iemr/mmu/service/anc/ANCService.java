@@ -6,16 +6,16 @@ public interface ANCService {
 
 	public Long saveANCNurseData(JsonObject requestOBJ) throws Exception;
 
-	String getBenANCHistoryDetails(Long benRegID, Long benVisitID);
-
-	String getANCExaminationDetailsData(Long benRegID, Long benVisitID);
-
-	String getBenVisitDetailsFrmNurseANC(Long benRegID, Long benVisitID);
-
-	String getBenANCDetailsFrmNurseANC(Long benRegID, Long benVisitID);
-
 	//int UpdateANCVisitDetails(JsonObject jsnOBJ) throws Exception;
 
-	String getBeneficiaryVitalDetails(Long beneficiaryRegID, Long benVisitID);
+	String getBenVisitDetailsFrmNurseANC(Long benRegID, Long visitCode);
+
+	String getBenANCHistoryDetails(Long benRegID, Long visitCode);
+
+	String getANCExaminationDetailsData(Long benRegID, Long visitCode);
+
+	String getBeneficiaryVitalDetails(Long beneficiaryRegID, Long visitCode);
+
+	String getBenANCDetailsFrmNurseANC(Long benRegID, Long visitCode);
 
 }

@@ -16,5 +16,5 @@ public interface LabResultEntryRepo extends CrudRepository<LabResultEntry, Long>
 	ArrayList<Integer> findProcedureListByBeneficiaryRegIDAndBenVisitID(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID);
 
-	ArrayList<LabResultEntry> findByBeneficiaryRegIDAndBenVisitIDOrderByProcedureIDAsc(Long benRegID, Long benVisitID);
+	ArrayList<LabResultEntry> findByBeneficiaryRegIDAndBenVisitIDOrderByProcedureIDAsc(Long benRegID, Long visitCode);
 }
