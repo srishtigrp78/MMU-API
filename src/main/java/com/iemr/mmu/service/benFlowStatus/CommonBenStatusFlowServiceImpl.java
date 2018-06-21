@@ -204,7 +204,7 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 			short pharmaFlag, short oncologistFlag) {
 		int i = 0;
 		try {
-			i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterDoctorActivity(benFlowID, benRegID, benID, benVisitID,
+			i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterDoctorActivity(benFlowID, benRegID, benID,
 					docFlag, pharmaFlag, oncologistFlag);
 		} catch (Exception e) {
 			logger.error("Error in ben flow creation = " + e);
@@ -224,7 +224,7 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 			else
 				pharmaF1 = pharmaFlag;
 
-			i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterDoctorActivity(benFlowID, benRegID, benID, benVisitID,
+			i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterDoctorActivity(benFlowID, benRegID, benID, 
 					docFlag, pharmaF1, oncologistFlag);
 		} catch (Exception e) {
 			logger.error("Error in ben flow creation = " + e);
@@ -234,7 +234,7 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 
 	public int updateFlowAfterLabResultEntry(Long benFlowID, Long benRegID, Long benVisitID, Short nurseFlag,
 			Short doctorFlag, Short labFlag) {
-		int i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterLabResultEntry(benFlowID, benRegID, benVisitID,
+		int i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterLabResultEntry(benFlowID, benRegID,
 				nurseFlag, doctorFlag, labFlag);
 		return i;
 

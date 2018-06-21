@@ -24,7 +24,7 @@ public interface BenPersonalCancerHistoryRepo extends CrudRepository<BenPersonal
 			+ " quantityPerDay=:quantityPerDay, isFilteredCigaerette=:isFilteredCigaerette, isCigaretteExposure=:isCigaretteExposure, isBetelNutChewing=:isBetelNutChewing, "
 			+ " durationOfBetelQuid=:durationOfBetelQuid, alcoholUse=:alcoholUse, ssAlcoholUsed=:ssAlcoholUsed, frequencyOfAlcoholUsed=:frequencyOfAlcoholUsed,"
 			+ " modifiedBy=:modifiedBy, processed=:processed where "
-			+ " beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+			+ " beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public int updateBenPersonalCancerHistory(@Param("providerServiceMapID") Integer providerServiceMapID,
 			@Param("tobaccoUse") String tobaccoUse, @Param("startAge_year") Integer startAge_year,
 			@Param("endAge_year") Integer endAge_year, @Param("typeOfTobaccoProduct") String typeOfTobaccoProduct,
@@ -35,7 +35,7 @@ public interface BenPersonalCancerHistoryRepo extends CrudRepository<BenPersonal
 			@Param("durationOfBetelQuid") Integer durationOfBetelQuid, @Param("alcoholUse") String alcoholUse,
 			@Param("ssAlcoholUsed") Boolean ssAlcoholUsed,
 			@Param("frequencyOfAlcoholUsed") String frequencyOfAlcoholUsed, @Param("modifiedBy") String modifiedBy,
-			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID,
+			@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode,
 			@Param("processed") String processed);
 
 	// @Query(" SELECT bph from BenPersonalCancerHistory bph WHERE
@@ -54,8 +54,8 @@ public interface BenPersonalCancerHistoryRepo extends CrudRepository<BenPersonal
 			+ " or isBetelNutChewing is not null) order by createdDate desc")
 	public ArrayList<Object[]> getBenPersonalHistory(@Param("benRegID") Long benRegID);
 
-	@Query("SELECT processed from BenPersonalCancerHistory where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	@Query("SELECT processed from BenPersonalCancerHistory where beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public String getPersonalCancerHistoryStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 
 }

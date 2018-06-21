@@ -18,9 +18,9 @@ public interface CancerAbdominalExaminationRepo extends CrudRepository<CancerAbd
 	public CancerAbdominalExamination getBenCancerAbdominalExaminationDetails(@Param("benRegID") Long benRegID,
 			@Param("visitCode") Long visitCode);
 	
-	@Query("SELECT processed from CancerAbdominalExamination where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	@Query("SELECT processed from CancerAbdominalExamination where beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public String getCancerAbdominalExaminationStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 	@Transactional
 	@Modifying
@@ -31,7 +31,7 @@ public interface CancerAbdominalExaminationRepo extends CrudRepository<CancerAbd
 			+ "lymphNode_ExternalIliac_Right=:lymphNode_ExternalIliac_Right,lymphNode_ParaAortic_Left=:lymphNode_ParaAortic_Left,"
 			+ "lymphNode_ParaAortic_Right=:lymphNode_ParaAortic_Right, observation=:observation,"
 			+ "modifiedBy=:modifiedBy, processed=:processed where "
-			+ " beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+			+ " beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public int updateCancerAbdominalExamination(@Param("providerServiceMapID") Integer providerServiceMapID,
 			@Param("abdominalInspection_Normal") Boolean abdominalInspection_Normal, 
 			@Param("liver") String liver,
@@ -46,7 +46,7 @@ public interface CancerAbdominalExaminationRepo extends CrudRepository<CancerAbd
 			@Param("lymphNode_ParaAortic_Right") Boolean lymphNode_ParaAortic_Right,
 			@Param("observation") String observation, 
 			@Param("modifiedBy") String modifiedBy,
-			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID,
+			@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode,
 			@Param("processed") String processed);
 	
 	

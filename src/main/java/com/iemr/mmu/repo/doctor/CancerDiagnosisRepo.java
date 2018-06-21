@@ -14,22 +14,22 @@ import com.iemr.mmu.data.doctor.CancerDiagnosis;
 @Repository
 public interface CancerDiagnosisRepo extends CrudRepository<CancerDiagnosis, Long> {
 
-	@Query(" SELECT c from CancerDiagnosis c  WHERE c.beneficiaryRegID = :benRegID AND c.benVisitID = :benVisitID "
+	@Query(" SELECT c from CancerDiagnosis c  WHERE c.beneficiaryRegID = :benRegID "
 			+ " AND c.deleted = false AND c.visitCode = :visitCode")
 	public CancerDiagnosis getBenCancerDiagnosisDetails(@Param("benRegID") Long benRegID,
 			 @Param("visitCode") Long visitCode);
 
-	@Query(" SELECT processed  from CancerDiagnosis c  WHERE c.beneficiaryRegID = :benRegID AND c.benVisitID = :benVisitID AND c.deleted=false")
+	@Query(" SELECT processed  from CancerDiagnosis c  WHERE c.beneficiaryRegID = :benRegID AND c.visitCode = :visitCode AND c.deleted=false")
 	public String getCancerDiagnosisStatuses(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 
 	@Transactional
 	@Modifying
 	@Query(" update CancerDiagnosis set provisionalDiagnosisOncologist=:provisionalDiagnosisOncologist, modifiedBy=:modifiedBy, processed=:processed "
-			+ "WHERE beneficiaryRegID =:benRegID AND benVisitID =:benVisitID")
+			+ "WHERE beneficiaryRegID =:benRegID AND visitCode =:visitCode")
 	public int updateDetailsByOncologist(@Param("provisionalDiagnosisOncologist") String provisionalDiagnosisOncologist,
 			@Param("benRegID") Long benRegID, 
-			@Param("benVisitID") Long benVisitID,
+			@Param("visitCode") Long visitCode,
 			@Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed);
 	
@@ -39,7 +39,7 @@ public interface CancerDiagnosisRepo extends CrudRepository<CancerDiagnosis, Lon
 	@Query(" update CancerDiagnosis set provisionalDiagnosisPrimaryDoctor=:provisionalDiagnosisPrimaryDoctor, remarks=:remarks, "
 			+ "referredToInstituteID=:referredToInstituteID, refrredToAdditionalService=:refrredToAdditionalService, "
 			+ "modifiedBy=:modifiedBy, processed=:processed "
-			+ "WHERE beneficiaryRegID =:beneficiaryRegID AND benVisitID =:benVisitID")
+			+ "WHERE beneficiaryRegID =:beneficiaryRegID AND visitCode =:visitCode")
 	public int updateCancerDiagnosisDetailsByDoctor(@Param("provisionalDiagnosisPrimaryDoctor") String provisionalDiagnosisPrimaryDoctor,
 			@Param("remarks") String remarks,
 			@Param("referredToInstituteID") Integer referredToInstituteID,
@@ -47,7 +47,7 @@ public interface CancerDiagnosisRepo extends CrudRepository<CancerDiagnosis, Lon
 			@Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed,
 			@Param("beneficiaryRegID") Long beneficiaryRegID, 
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 }
 		

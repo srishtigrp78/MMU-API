@@ -24,9 +24,9 @@ public interface PerinatalHistoryRepo extends CrudRepository<PerinatalHistory, L
 	public ArrayList<Object[]> getBenPerinatalDetails(@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("visitCode") Long visitCode);
 	
-	@Query("SELECT processed from PerinatalHistory where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID AND deleted = false")
+	@Query("SELECT processed from PerinatalHistory where beneficiaryRegID=:benRegID AND visitCode = :visitCode AND deleted = false")
 	public String getPerinatalHistoryStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 	@Transactional
 	@Modifying
@@ -35,7 +35,7 @@ public interface PerinatalHistoryRepo extends CrudRepository<PerinatalHistory, L
 			+ " typeOfDelivery=:typeOfDelivery, complicationAtBirthID=:complicationAtBirthID, complicationAtBirth=:complicationAtBirth, "
 			+ "otherComplicationAtBirth=:otherComplicationAtBirth, gestation=:gestation, birthWeight_kg=:birthWeight_kg, "
 			+ "  modifiedBy=:modifiedBy, processed=:processed where "
-			+ "beneficiaryRegID=:beneficiaryRegID AND benVisitID = :benVisitID")
+			+ "beneficiaryRegID=:beneficiaryRegID AND visitCode = :visitCode")
 	public int updatePerinatalDetails(
 			@Param("deliveryPlaceID") Short deliveryPlaceID,
 			@Param("placeOfDelivery") String placeOfDelivery,
@@ -50,6 +50,6 @@ public interface PerinatalHistoryRepo extends CrudRepository<PerinatalHistory, L
 			@Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed,
 			@Param("beneficiaryRegID") Long beneficiaryRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 }

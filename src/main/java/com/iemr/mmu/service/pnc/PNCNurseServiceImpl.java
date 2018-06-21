@@ -54,7 +54,7 @@ public class PNCNurseServiceImpl implements PNCNurseService{
 		int res = 0;
 		int recordsAvailable = 0;
 		String processed = pncCareRepo.getBenPNCCareDetailsStatus(pncCareDetailsOBJ.getBeneficiaryRegID(),
-				pncCareDetailsOBJ.getBenVisitID());
+				pncCareDetailsOBJ.getVisitCode());
 		if (null != processed) {
 			recordsAvailable = 1;
 		}
@@ -95,7 +95,7 @@ public class PNCNurseServiceImpl implements PNCNurseService{
 				pncCareOBJ.getGestationID(), pncCareOBJ.getGestationName(), 
 				pncCareOBJ.getBirthWeightOfNewborn(), pncCareOBJ.getNewBornHealthStatusID(),
 				pncCareOBJ.getNewBornHealthStatus(), pncCareOBJ.getModifiedBy(), pncCareOBJ.getProcessed(), 
-				pncCareOBJ.getBeneficiaryRegID(), pncCareOBJ.getBenVisitID());
+				pncCareOBJ.getBeneficiaryRegID(), pncCareOBJ.getVisitCode());
 		return r;
 	}
 }

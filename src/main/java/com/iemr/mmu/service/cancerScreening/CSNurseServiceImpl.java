@@ -230,7 +230,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 
 			ArrayList<Object[]> benFamilyCancerHistoryStatuses = benFamilyCancerHistoryRepo
 					.getFamilyCancerHistoryStatus(benFamilyCancerHistoryList.get(0).getBeneficiaryRegID(),
-							benFamilyCancerHistoryList.get(0).getBenVisitID());
+							benFamilyCancerHistoryList.get(0).getVisitCode());
 
 			if (benFamilyCancerHistoryStatuses != null && benFamilyCancerHistoryStatuses.size() > 0) {
 				for (Object[] obj : benFamilyCancerHistoryStatuses) {
@@ -288,7 +288,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 		int response = 0;
 		int recordsAvailable = 0;
 		String processed = benObstetricCancerHistoryRepo.getObstetricCancerHistoryStatus(
-				benObstetricCancerHistory.getBeneficiaryRegID(), benObstetricCancerHistory.getBenVisitID());
+				benObstetricCancerHistory.getBeneficiaryRegID(), benObstetricCancerHistory.getVisitCode());
 		if (null != processed) {
 			recordsAvailable = 1;
 		}
@@ -330,7 +330,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 				benObstetricCancerHistory.getIsDysmenorrhea(), benObstetricCancerHistory.getIsInterMenstrualBleeding(),
 				benObstetricCancerHistory.getMenopauseAge(), benObstetricCancerHistory.getIsPostMenopauseBleeding(),
 				benObstetricCancerHistory.getIsFoulSmellingDischarge(), benObstetricCancerHistory.getModifiedBy(),
-				benObstetricCancerHistory.getBeneficiaryRegID(), benObstetricCancerHistory.getBenVisitID(),
+				benObstetricCancerHistory.getBeneficiaryRegID(), benObstetricCancerHistory.getVisitCode(),
 				benObstetricCancerHistory.getProcessed());
 		return response;
 	}
@@ -340,7 +340,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 		int response = 0;
 		int recordsAvailable = 0;
 		String processed = benPersonalCancerHistoryRepo.getPersonalCancerHistoryStatus(
-				benPersonalCancerHistory.getBeneficiaryRegID(), benPersonalCancerHistory.getBenVisitID());
+				benPersonalCancerHistory.getBeneficiaryRegID(), benPersonalCancerHistory.getVisitCode());
 		if (null != processed) {
 			recordsAvailable = 1;
 		}
@@ -380,7 +380,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 				benPersonalCancerHistory.getIsBetelNutChewing(), benPersonalCancerHistory.getDurationOfBetelQuid(),
 				benPersonalCancerHistory.getAlcoholUse(), benPersonalCancerHistory.getSsAlcoholUsed(),
 				benPersonalCancerHistory.getFrequencyOfAlcoholUsed(), benPersonalCancerHistory.getModifiedBy(),
-				benPersonalCancerHistory.getBeneficiaryRegID(), benPersonalCancerHistory.getBenVisitID(),
+				benPersonalCancerHistory.getBeneficiaryRegID(), benPersonalCancerHistory.getVisitCode(),
 				benPersonalCancerHistory.getProcessed());
 		return response;
 	}
@@ -390,7 +390,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 		int response = 0;
 		int recordsAvailable = 0;
 		String processed = benPersonalCancerDietHistoryRepo.getPersonalCancerDietHistoryStatus(
-				benPersonalCancerDietHistory.getBeneficiaryRegID(), benPersonalCancerDietHistory.getBenVisitID());
+				benPersonalCancerDietHistory.getBeneficiaryRegID(), benPersonalCancerDietHistory.getVisitCode());
 		if (null != processed) {
 			recordsAvailable = 1;
 		}
@@ -434,7 +434,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 				benPersonalCancerDietHistory.getPhysicalActivityType(),
 				benPersonalCancerDietHistory.getSsRadiationExposure(),
 				benPersonalCancerDietHistory.getIsThyroidDisorder(), benPersonalCancerDietHistory.getModifiedBy(),
-				benPersonalCancerDietHistory.getBeneficiaryRegID(), benPersonalCancerDietHistory.getBenVisitID(),
+				benPersonalCancerDietHistory.getBeneficiaryRegID(), benPersonalCancerDietHistory.getVisitCode(),
 				benPersonalCancerDietHistory.getProcessed());
 		return response;
 	}
@@ -444,7 +444,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 		int response = 0;
 		int i = 0;
 		String processed = benCancerVitalDetailRepo.getCancerVitalStatus(benCancerVitalDetail.getBeneficiaryRegID(),
-				benCancerVitalDetail.getBenVisitID());
+				benCancerVitalDetail.getVisitCode());
 		if (processed != null) {
 			i = 1;
 		}
@@ -464,7 +464,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 					benCancerVitalDetail.getSystolicBP_3rdReading(), benCancerVitalDetail.getDiastolicBP_3rdReading(),
 					benCancerVitalDetail.getHbA1C(), benCancerVitalDetail.getHemoglobin(),
 					benCancerVitalDetail.getModifiedBy(), benCancerVitalDetail.getBeneficiaryRegID(),
-					benCancerVitalDetail.getBenVisitID(), processed);
+					benCancerVitalDetail.getVisitCode(), processed);
 		} else {
 			benCancerVitalDetail.setCreatedBy(benCancerVitalDetail.getModifiedBy());
 			BenCancerVitalDetail benCancerVitalDetailRS = benCancerVitalDetailRepo.save(benCancerVitalDetail);
@@ -1207,7 +1207,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 		int response = 0;
 		int recordsAvailable = 0;
 		String processed = cancerSignAndSymptomsRepo.getCancerSignAndSymptomsStatus(
-				cancerSignAndSymptoms.getBeneficiaryRegID(), cancerSignAndSymptoms.getBenVisitID());
+				cancerSignAndSymptoms.getBeneficiaryRegID(), cancerSignAndSymptoms.getVisitCode());
 		if (null != processed) {
 			recordsAvailable = 1;
 		}
@@ -1252,7 +1252,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 				cancerSignAndSymptoms.getFoulSmellingVaginalDischarge(), cancerSignAndSymptoms.getBreastEnlargement(),
 				cancerSignAndSymptoms.getLymphNode_Enlarged(), cancerSignAndSymptoms.getBriefHistory(),
 				cancerSignAndSymptoms.getModifiedBy(), cancerSignAndSymptoms.getBeneficiaryRegID(),
-				cancerSignAndSymptoms.getBenVisitID(), cancerSignAndSymptoms.getProcessed());
+				cancerSignAndSymptoms.getVisitCode(), cancerSignAndSymptoms.getProcessed());
 		return response;
 	}
 
@@ -1321,7 +1321,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 
 		ArrayList<Object[]> lymphNodeDetailsStatuses = cancerLymphNodeExaminationRepo.getCancerLymphNodeDetailsStatus(
 				wrapperOBJ.getCancerSignAndSymptoms().getBeneficiaryRegID(),
-				wrapperOBJ.getCancerSignAndSymptoms().getBenVisitID());
+				wrapperOBJ.getCancerSignAndSymptoms().getVisitCode());
 
 		if (lymphNodeDetailsStatuses != null && lymphNodeDetailsStatuses.size() > 0) {
 			for (Object[] obj : lymphNodeDetailsStatuses) {
@@ -1344,7 +1344,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 		ArrayList<Object[]> lymphNodeDetailsStatuses = cancerLymphNodeExaminationRepo
 				.getCancerLymphNodeDetailsStatusForLymphnodeNameList(
 						wrapperOBJ.getCancerSignAndSymptoms().getBeneficiaryRegID(),
-						wrapperOBJ.getCancerSignAndSymptoms().getBenVisitID(), lymphNodeNameList);
+						wrapperOBJ.getCancerSignAndSymptoms().getVisitCode(), lymphNodeNameList);
 
 		if (lymphNodeDetailsStatuses != null && lymphNodeDetailsStatuses.size() > 0) {
 			for (Object[] obj : lymphNodeDetailsStatuses) {
@@ -1366,7 +1366,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 		int response = 0;
 		int recordsAvailable = 0;
 		String processed = cancerOralExaminationRepo.getCancerOralExaminationStatus(
-				cancerOralExamination.getBeneficiaryRegID(), cancerOralExamination.getBenVisitID());
+				cancerOralExamination.getBeneficiaryRegID(), cancerOralExamination.getVisitCode());
 		if (null != processed) {
 			recordsAvailable = 1;
 		}
@@ -1404,7 +1404,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 				cancerOralExamination.getPremalignantLesions(), cancerOralExamination.getPreMalignantLesionType(),
 				cancerOralExamination.getProlongedIrritation(), cancerOralExamination.getChronicBurningSensation(),
 				cancerOralExamination.getObservation(), cancerOralExamination.getModifiedBy(),
-				cancerOralExamination.getBeneficiaryRegID(), cancerOralExamination.getBenVisitID(),
+				cancerOralExamination.getBeneficiaryRegID(), cancerOralExamination.getVisitCode(),
 				cancerOralExamination.getProcessed());
 		return response;
 	}
@@ -1413,7 +1413,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 		int response = 0;
 		int recordsAvailable = 0;
 		String processed = cancerBreastExaminationRepo.getCancerBreastExaminationStatus(
-				cancerBreastExamination.getBeneficiaryRegID(), cancerBreastExamination.getBenVisitID());
+				cancerBreastExamination.getBeneficiaryRegID(), cancerBreastExamination.getVisitCode());
 		if (null != processed) {
 			recordsAvailable = 1;
 		}
@@ -1451,7 +1451,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 				cancerBreastExamination.getLumpSize(), cancerBreastExamination.getLumpShape(),
 				cancerBreastExamination.getLumpTexture(), cancerBreastExamination.getReferredToMammogram(),
 				cancerBreastExamination.getMamogramReport(), cancerBreastExamination.getModifiedBy(),
-				cancerBreastExamination.getBeneficiaryRegID(), cancerBreastExamination.getBenVisitID(),
+				cancerBreastExamination.getBeneficiaryRegID(), cancerBreastExamination.getVisitCode(),
 				cancerBreastExamination.getProcessed());
 		return response;
 	}
@@ -1460,7 +1460,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 		int response = 0;
 		int recordsAvailable = 0;
 		String processed = cancerAbdominalExaminationRepo.getCancerAbdominalExaminationStatus(
-				cancerAbdominalExamination.getBeneficiaryRegID(), cancerAbdominalExamination.getBenVisitID());
+				cancerAbdominalExamination.getBeneficiaryRegID(), cancerAbdominalExamination.getVisitCode());
 		if (null != processed) {
 			recordsAvailable = 1;
 		}
@@ -1502,7 +1502,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 				cancerAbdominalExamination.getLymphNode_ParaAortic_Left(),
 				cancerAbdominalExamination.getLymphNode_ParaAortic_Right(), cancerAbdominalExamination.getObservation(),
 				cancerAbdominalExamination.getModifiedBy(), cancerAbdominalExamination.getBeneficiaryRegID(),
-				cancerAbdominalExamination.getBenVisitID(), cancerAbdominalExamination.getProcessed());
+				cancerAbdominalExamination.getVisitCode(), cancerAbdominalExamination.getProcessed());
 		return response;
 	}
 
@@ -1511,7 +1511,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 		int response = 0;
 		int recordsAvailable = 0;
 		String processed = cancerGynecologicalExaminationRepo.getCancerGynecologicalExaminationStatus(
-				cancerGynecologicalExamination.getBeneficiaryRegID(), cancerGynecologicalExamination.getBenVisitID());
+				cancerGynecologicalExamination.getBeneficiaryRegID(), cancerGynecologicalExamination.getVisitCode());
 		if (null != processed) {
 			recordsAvailable = 1;
 		}
@@ -1553,7 +1553,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 				cancerGynecologicalExamination.getrTIOrSTIDetail(), cancerGynecologicalExamination.getFilePath(),
 				cancerGynecologicalExamination.getExperiencedPostCoitalBleeding(),
 				cancerGynecologicalExamination.getObservation(), cancerGynecologicalExamination.getModifiedBy(),
-				cancerGynecologicalExamination.getBeneficiaryRegID(), cancerGynecologicalExamination.getBenVisitID(),
+				cancerGynecologicalExamination.getBeneficiaryRegID(), cancerGynecologicalExamination.getVisitCode(),
 				cancerGynecologicalExamination.getProcessed());
 		return response;
 	}
@@ -1578,7 +1578,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 				cancerExaminationImageAnnotationStatuses = cancerExaminationImageAnnotationRepo
 						.getCancerExaminationImageAnnotationDetailsStatus(
 								cancerExaminationImageAnnotationList.get(0).getBeneficiaryRegID(),
-								cancerExaminationImageAnnotationList.get(0).getBenVisitID(), imgIDList);
+								cancerExaminationImageAnnotationList.get(0).getVisitCode(), imgIDList);
 			}
 
 			if (cancerExaminationImageAnnotationStatuses != null

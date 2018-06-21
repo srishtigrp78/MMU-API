@@ -31,9 +31,9 @@ public interface ANCCareRepo extends CrudRepository<ANCCareDetails, Long>{
 			@Param("visitCode") Long visitCode);
 	
 	
-	@Query(" SELECT processed from ANCCareDetails where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	@Query(" SELECT processed from ANCCareDetails where beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public String getBenANCCareDetailsStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 	@Transactional
 	@Modifying
@@ -43,7 +43,7 @@ public interface ANCCareRepo extends CrudRepository<ANCCareDetails, Long>{
 			+ "trimesterNumber=:trimesterNumber,  expectedDateofDelivery=:expectedDateofDelivery, primiGravida=:primiGravida, "
 			+ "gravida_G=:gravida_G, termDeliveries_T=:termDeliveries_T, pretermDeliveries_P=:pretermDeliveries_P,"
 			+ "abortions_A=:abortions_A,livebirths_L=:livebirths_L, bloodGroup=:bloodGroup, modifiedBy=:modifiedBy, processed=:processed"
-			+ " where benVisitID=:benVisitID AND beneficiaryRegID=:beneficiaryRegID")
+			+ " where visitCode=:visitCode AND beneficiaryRegID=:beneficiaryRegID")
 	public int updateANCCareDetails(@Param("comolaintType") String comolaintType,
 			@Param("duration") String duration,
 			@Param("description") String description,
@@ -61,5 +61,5 @@ public interface ANCCareRepo extends CrudRepository<ANCCareDetails, Long>{
 			@Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed,
 			@Param("beneficiaryRegID") Long beneficiaryRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 }

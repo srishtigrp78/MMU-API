@@ -371,11 +371,11 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		return resMap.toString();
 	}
 
-	public String getBenQuickConsultNurseData(Long benRegID, Long benVisitID) {
+	public String getBenQuickConsultNurseData(Long benRegID, Long visitCode) {
 
 		Map<String, Object> resMap = new HashMap<>();
 
-		resMap.put("vitals", getBeneficiaryVitalDetails(benRegID, benVisitID));
+		resMap.put("vitals", getBeneficiaryVitalDetails(benRegID, visitCode));
 
 		return resMap.toString();
 	}

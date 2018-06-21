@@ -22,16 +22,16 @@ public interface ANCDiagnosisRepo extends CrudRepository<ANCDiagnosis, Long>{
 	public ArrayList<Object[]> getANCDiagnosisDetails(@Param("benRegID") Long benRegID,
 			@Param("visitCode") Long visitCode);
 	
-	@Query("SELECT processed from ANCDiagnosis where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	@Query("SELECT processed from ANCDiagnosis where beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public String getANCDiagnosisStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 	@Transactional
 	@Modifying
 	@Query("update ANCDiagnosis set highRiskStatus=:highRiskStatus, highRiskCondition=:highRiskCondition, "
 			+ "complicationOfCurrentPregnancy=:complicationOfCurrentPregnancy, isMaternalDeath=:isMaternalDeath, placeOfDeath=:placeOfDeath,"
 			+ "dateOfDeath=:dateOfDeath, causeOfDeath=:causeOfDeath, modifiedBy=:modifiedBy, processed=:processed "
-			+ "where benVisitID=:benVisitID AND beneficiaryRegID=:beneficiaryRegID")
+			+ "where visitCode=:visitCode AND beneficiaryRegID=:beneficiaryRegID")
 	public int updateANCDiagnosis(@Param("highRiskStatus") String highRiskStatus,
 			@Param("highRiskCondition") String highRiskCondition,
 			@Param("complicationOfCurrentPregnancy") String complicationOfCurrentPregnancy,
@@ -42,5 +42,5 @@ public interface ANCDiagnosisRepo extends CrudRepository<ANCDiagnosis, Long>{
 			@Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed,
 			@Param("beneficiaryRegID") Long beneficiaryRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 }

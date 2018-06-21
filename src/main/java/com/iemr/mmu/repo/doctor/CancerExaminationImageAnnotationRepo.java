@@ -21,9 +21,9 @@ public interface CancerExaminationImageAnnotationRepo extends CrudRepository<Can
 			@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 
 	@Query("SELECT ID, processed from CancerExaminationImageAnnotation where beneficiaryRegID=:benRegID "
-			+ "  AND benVisitID = :benVisitID AND deleted = false AND cancerImageID IN (:imgIDList)")
+			+ "  AND visitCode = :visitCode AND deleted = false AND cancerImageID IN (:imgIDList)")
 	public ArrayList<Object[]> getCancerExaminationImageAnnotationDetailsStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID, @Param("imgIDList") List<Integer> imgIDList);
+			@Param("visitCode") Long visitCode, @Param("imgIDList") List<Integer> imgIDList);
 
 	@Modifying
 	@Transactional

@@ -19,15 +19,15 @@ public interface BenPhysicalVitalRepo extends CrudRepository<BenPhysicalVitalDet
 	public BenPhysicalVitalDetail getBenPhysicalVitalDetail(@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("visitCode") Long visitCode);
 
-	@Query("SELECT processed from BenPhysicalVitalDetail where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
-	public String getBenPhysicalVitalStatus(@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
+	@Query("SELECT processed from BenPhysicalVitalDetail where beneficiaryRegID=:benRegID AND visitCode = :visitCode")
+	public String getBenPhysicalVitalStatus(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 
 	@Transactional
 	@Modifying
 	@Query("update BenPhysicalVitalDetail set temperature=:temperature, pulseRate=:pulseRate, respiratoryRate=:respiratoryRate, diastolicBP_1stReading=:diastolicBP_1stReading, diastolicBP_2ndReading=:diastolicBP_2ndReading, diastolicBP_3rdReading=:diastolicBP_3rdReading, "
 			+ " systolicBP_1stReading=:systolicBP_1stReading, systolicBP_2ndReading=:systolicBP_2ndReading, systolicBP_3rdReading=:systolicBP_3rdReading, averageSystolicBP=:averageSystolicBP, averageDiastolicBP=:averageDiastolicBP, capillaryRefillTime=:capillaryRefillTime, "
 			+ " bloodPressureStatusID=:bloodPressureStatusID, bloodPressureStatus=:bloodPressureStatus, bloodGlucose_Fasting=:bloodGlucose_Fasting, bloodGlucose_Random=:bloodGlucose_Random, bloodGlucose_2hr_PP=:bloodGlucose_2hr_PP, bloodGlucose_NotSpecified=:bloodGlucose_NotSpecified, diabeticStatusID=:diabeticStatusID, diabeticStatus=:diabeticStatus, "
-			+ " modifiedBy=:modifiedBy, processed=:processed where beneficiaryRegID=:beneficiaryRegID AND benVisitID=:benVisitID")
+			+ " modifiedBy=:modifiedBy, processed=:processed where beneficiaryRegID=:beneficiaryRegID AND visitCode=:visitCode")
 	public int updatePhysicalVitalDetails(@Param("temperature") Double temperature, @Param("pulseRate") Short pulseRate,
 			@Param("respiratoryRate") Short respiratoryRate,
 			@Param("systolicBP_1stReading") Short systolicBP_1stReading,
@@ -50,7 +50,7 @@ public interface BenPhysicalVitalRepo extends CrudRepository<BenPhysicalVitalDet
 
 			@Param("capillaryRefillTime") String capillaryRefillTime, @Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed, @Param("beneficiaryRegID") Long beneficiaryRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 
 	/**
 	 * Vital data for graphical trends.(BP - blood pressure & BG - blood glucose)

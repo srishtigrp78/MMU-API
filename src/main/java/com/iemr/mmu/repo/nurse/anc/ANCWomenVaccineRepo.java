@@ -21,22 +21,22 @@ public interface ANCWomenVaccineRepo extends CrudRepository<ANCWomenVaccineDetai
 	public ArrayList<Object[]> getANCWomenVaccineDetails(@Param("benRegID") Long benRegID,
 			 @Param("visitCode") Long visitCode);
 	
-	@Query(" SELECT vaccineName, processed from ANCWomenVaccineDetail where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID AND deleted = false")
+	@Query(" SELECT vaccineName, processed from ANCWomenVaccineDetail where beneficiaryRegID=:benRegID AND visitCode = :visitCode AND deleted = false")
 	public ArrayList<Object[]> getBenANCWomenVaccineStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 	@Transactional
 	@Modifying
 	@Query("update ANCWomenVaccineDetail set status=:status, receivedDate=:receivedDate, receivedFacilityName=:receivedFacilityName, "
 			+ "modifiedBy=:modifiedBy, processed=:processed "
-			+ "where benVisitID=:benVisitID AND beneficiaryRegID=:beneficiaryRegID AND vaccineName=:vaccineName")
+			+ "where visitCode=:visitCode AND beneficiaryRegID=:beneficiaryRegID AND vaccineName=:vaccineName")
 	public int updateANCImmunizationDetails(@Param("status") String status,
 			@Param("receivedDate") Date receivedDate,
 			@Param("receivedFacilityName") String receivedFacilityName,
 			@Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed,
 			@Param("beneficiaryRegID") Long beneficiaryRegID,
-			@Param("benVisitID") Long benVisitID,
+			@Param("visitCode") Long visitCode,
 			@Param("vaccineName") String vaccineName);
 	
 }

@@ -1,6 +1,5 @@
 package com.iemr.mmu.repo.quickConsultation;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.transaction.Transactional;
@@ -19,28 +18,27 @@ public interface PrescriptionDetailRepo extends CrudRepository<PrescriptionDetai
 	@Query(" SELECT prescriptionID, beneficiaryRegID, benVisitID, providerServiceMapID, diagnosisProvided, "
 			+ " instruction, externalInvestigation, visitCode "
 			+ "from PrescriptionDetail ba WHERE ba.beneficiaryRegID = :benRegID AND ba.visitCode = :visitCode AND ba.deleted = false")
-	public ArrayList<Object[]> getBenPrescription(@Param("benRegID") Long benRegID,
-			@Param("visitCode") Long visitCode);
+	public ArrayList<Object[]> getBenPrescription(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 
 	@Query(" SELECT prescriptionID, beneficiaryRegID, benVisitID, providerServiceMapID, diagnosisProvided, instruction, "
 			+ " visitCode "
-			+ "from PrescriptionDetail ba WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID AND ba.deleted = false")
+			+ " from PrescriptionDetail ba WHERE ba.beneficiaryRegID = :benRegID AND ba.visitCode = :visitCode AND ba.deleted = false")
 	public ArrayList<Object[]> getGeneralOPDDiagnosisDetails(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 
 	@Query("SELECT processed from PrescriptionDetail where prescriptionID = :prescriptionID AND "
-			+ " beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
-	public String getGeneralOPDDiagnosisStatus(@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID,
+			+ " beneficiaryRegID=:benRegID AND visitCode = :visitCode")
+	public String getGeneralOPDDiagnosisStatus(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode,
 			@Param("prescriptionID") Long prescriptionID);
 
 	@Transactional
 	@Modifying
 	@Query("update PrescriptionDetail set diagnosisProvided=:diagnosisProvided, instruction=:instruction, "
 			+ "modifiedBy=:modifiedBy, processed=:processed "
-			+ "where benVisitID=:benVisitID AND beneficiaryRegID=:beneficiaryRegID AND prescriptionID=:prescriptionID")
+			+ "where visitCode=:visitCode AND beneficiaryRegID=:beneficiaryRegID AND prescriptionID=:prescriptionID")
 	public int updateGeneralOPDDiagnosis(@Param("diagnosisProvided") String diagnosisProvided,
 			@Param("instruction") String instruction, @Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed, @Param("beneficiaryRegID") Long beneficiaryRegID,
-			@Param("benVisitID") Long benVisitID, @Param("prescriptionID") Long prescriptionID);
+			@Param("visitCode") Long visitCode, @Param("prescriptionID") Long prescriptionID);
 
 }

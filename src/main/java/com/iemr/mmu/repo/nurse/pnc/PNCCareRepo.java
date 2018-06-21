@@ -25,9 +25,9 @@ public interface PNCCareRepo extends CrudRepository<PNCCare, Integer>{
 	public ArrayList<Object[]> getPNCCareDetails(@Param("benRegID") Long benRegID,
 			@Param("visitCode") Long visitCode);
 	
-	@Query(" SELECT processed from PNCCare where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	@Query(" SELECT processed from PNCCare where beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public String getBenPNCCareDetailsStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 	
 	@Transactional
@@ -41,7 +41,7 @@ public interface PNCCareRepo extends CrudRepository<PNCCare, Integer>{
 			+ "otherPostNatalComplication=:otherPostNatalComplication, gestationID=:gestationID, gestationName=:gestationName,"
 			+ "birthWeightOfNewborn=:birthWeightOfNewborn,newBornHealthStatusID=:newBornHealthStatusID, newBornHealthStatus=:newBornHealthStatus,"
 			+ " modifiedBy=:modifiedBy, processed=:processed"
-			+ " where benVisitID=:benVisitID AND beneficiaryRegID=:beneficiaryRegID")
+			+ " where visitCode=:visitCode AND beneficiaryRegID=:beneficiaryRegID")
 	public int updatePNCCareDetails(
 			@Param("deliveryTypeID") Short deliveryTypeID,
 			@Param("deliveryType") String deliveryType,
@@ -65,6 +65,6 @@ public interface PNCCareRepo extends CrudRepository<PNCCare, Integer>{
 			@Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed,
 			@Param("beneficiaryRegID") Long beneficiaryRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 }

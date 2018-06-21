@@ -23,7 +23,7 @@ public interface BenObstetricCancerHistoryRepo extends CrudRepository<BenObstetr
 			+ " menstrualFlowDuration=:menstrualFlowDuration, menstrualFlowType=:menstrualFlowType, isDysmenorrhea=:isDysmenorrhea,"
 			+ " isInterMenstrualBleeding=:isInterMenstrualBleeding, menopauseAge=:menopauseAge, isPostMenopauseBleeding=:isPostMenopauseBleeding,"
 			+ " isFoulSmellingDischarge=:isFoulSmellingDischarge, modifiedBy=:modifiedBy, processed=:processed where "
-			+ " beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+			+ " beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public int updateBenObstetricCancerHistory(@Param("providerServiceMapID") Integer providerServiceMapID,
 			@Param("pregnancyStatus") String pregnancyStatus, @Param("isUrinePregTest") Boolean isUrinePregTest,
 			@Param("pregnant_No") String pregnant_No, @Param("noOfLivingChild") Integer noOfLivingChild,
@@ -38,7 +38,7 @@ public interface BenObstetricCancerHistoryRepo extends CrudRepository<BenObstetr
 			@Param("menopauseAge") Integer menopauseAge,
 			@Param("isPostMenopauseBleeding") Boolean isPostMenopauseBleeding,
 			@Param("isFoulSmellingDischarge") Boolean isFoulSmellingDischarge, @Param("modifiedBy") String modifiedBy,
-			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID,
+			@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode,
 			@Param("processed") String processed);
 
 	@Query("SELECT boh from BenObstetricCancerHistory boh WHERE boh.beneficiaryRegID = :benRegID AND boh.deleted = false "
@@ -69,7 +69,7 @@ public interface BenObstetricCancerHistoryRepo extends CrudRepository<BenObstetr
 			+ " isFoulSmellingDischarge is not null) order by createdDate desc")
 	public ArrayList<Object[]> getBenObstetricCancerHistoryData(@Param("benRegID") Long benRegID);
 
-	@Query("SELECT processed from BenObstetricCancerHistory where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	@Query("SELECT processed from BenObstetricCancerHistory where beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public String getObstetricCancerHistoryStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 }

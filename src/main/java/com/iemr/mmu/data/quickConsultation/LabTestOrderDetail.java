@@ -279,6 +279,10 @@ public class LabTestOrderDetail {
 
 				if (emrgCasesheet.has("benVisitID") && !emrgCasesheet.get("benVisitID").isJsonNull())
 					labTestOrderDetail.setBenVisitID(emrgCasesheet.get("benVisitID").getAsLong());
+				
+				if (emrgCasesheet.has("visitCode") && !emrgCasesheet.get("visitCode").isJsonNull())
+					labTestOrderDetail.setVisitCode(emrgCasesheet.get("visitCode").getAsLong());
+
 
 				if (emrgCasesheet.has("beneficiaryRegID") && !emrgCasesheet.get("beneficiaryRegID").isJsonNull())
 					labTestOrderDetail.setBeneficiaryRegID(emrgCasesheet.get("beneficiaryRegID").getAsLong());

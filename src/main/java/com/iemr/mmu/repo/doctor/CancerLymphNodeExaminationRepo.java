@@ -20,14 +20,14 @@ public interface CancerLymphNodeExaminationRepo extends CrudRepository<CancerLym
 	public List<CancerLymphNodeDetails> getBenCancerLymphNodeDetails(@Param("benRegID") Long benRegID,
 			@Param("visitCode") Long visitCode);
 
-	@Query("SELECT ID, processed from CancerLymphNodeDetails where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID AND deleted = false")
+	@Query("SELECT ID, processed from CancerLymphNodeDetails where beneficiaryRegID=:benRegID AND visitCode = :visitCode AND deleted = false")
 	public ArrayList<Object[]> getCancerLymphNodeDetailsStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 
 	@Query("SELECT ID, processed from CancerLymphNodeDetails where beneficiaryRegID=:benRegID "
-			+ " AND benVisitID = :benVisitID AND deleted = false AND lymphNodeName IN (:nameList)")
+			+ " AND visitCode = :visitCode AND deleted = false AND lymphNodeName IN (:nameList)")
 	public ArrayList<Object[]> getCancerLymphNodeDetailsStatusForLymphnodeNameList(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID, @Param("nameList") List<String> nameList);
+			@Param("visitCode") Long visitCode, @Param("nameList") List<String> nameList);
 
 	@Modifying
 	@Transactional

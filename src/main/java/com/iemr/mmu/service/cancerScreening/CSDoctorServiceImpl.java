@@ -66,7 +66,7 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 		int response = 0;
 		int recordsAvailable = 0;
 		String processed = cancerDiagnosisRepo.getCancerDiagnosisStatuses(cancerDiagnosis.getBeneficiaryRegID(),
-				cancerDiagnosis.getBenVisitID());
+				cancerDiagnosis.getVisitCode());
 		if (null != processed) {
 			recordsAvailable = 1;
 		}
@@ -83,7 +83,7 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 					cancerDiagnosis.getProvisionalDiagnosisPrimaryDoctor(), cancerDiagnosis.getRemarks(),
 					cancerDiagnosis.getReferredToInstituteID(), cancerDiagnosis.getRefrredToAdditionalService(),
 					cancerDiagnosis.getModifiedBy(), processed, cancerDiagnosis.getBeneficiaryRegID(),
-					cancerDiagnosis.getBenVisitID());
+					cancerDiagnosis.getVisitCode());
 		} else {
 			cancerDiagnosis.setCreatedBy(cancerDiagnosis.getModifiedBy());
 			Long cancerDiagnosisRS = saveCancerDiagnosisData(cancerDiagnosis);

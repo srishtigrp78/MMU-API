@@ -30,9 +30,9 @@ public class GeneralOPDDoctorServiceImpl implements GeneralOPDDoctorService {
 		this.prescriptionDetailRepo = prescriptionDetailRepo;
 	}
 
-	public String getGeneralOPDDiagnosisDetails(Long beneficiaryRegID, Long benVisitID) {
+	public String getGeneralOPDDiagnosisDetails(Long beneficiaryRegID, Long visitCode) {
 		ArrayList<Object[]> diagnosisDetails = prescriptionDetailRepo.getGeneralOPDDiagnosisDetails(beneficiaryRegID,
-				benVisitID);
+				visitCode);
 		PrescriptionDetail diagnosisList = PrescriptionDetail.getGeneralOPDDiagnosis(diagnosisDetails);
 
 		return new Gson().toJson(diagnosisList);
@@ -42,7 +42,7 @@ public class GeneralOPDDoctorServiceImpl implements GeneralOPDDoctorService {
 		int res = 0;
 		int recordsAvailable = 0;
 		String processed = prescriptionDetailRepo.getGeneralOPDDiagnosisStatus(prescription.getBeneficiaryRegID(),
-				prescription.getBenVisitID(), prescription.getPrescriptionID());
+				prescription.getVisitCode(), prescription.getPrescriptionID());
 
 		if (null != processed) {
 			recordsAvailable = 1;
@@ -57,7 +57,7 @@ public class GeneralOPDDoctorServiceImpl implements GeneralOPDDoctorService {
 			prescription.setModifiedBy(prescription.getCreatedBy());
 			res = prescriptionDetailRepo.updateGeneralOPDDiagnosis(prescription.getDiagnosisProvided(),
 					prescription.getInstruction(), prescription.getModifiedBy(), processed,
-					prescription.getBeneficiaryRegID(), prescription.getBenVisitID(), prescription.getPrescriptionID());
+					prescription.getBeneficiaryRegID(), prescription.getVisitCode(), prescription.getPrescriptionID());
 		}
 		return res;
 	}

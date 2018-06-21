@@ -20,9 +20,9 @@ public interface CancerSignAndSymptomsRepo extends CrudRepository<CancerSignAndS
 	public CancerSignAndSymptoms getBenCancerSignAndSymptomsDetails(@Param("benRegID") Long benRegID,
 	 @Param("visitCode") Long visitCode);
 	
-	@Query("SELECT processed from CancerSignAndSymptoms where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID AND deleted=false")
+	@Query("SELECT processed from CancerSignAndSymptoms where beneficiaryRegID=:benRegID AND visitCode = :visitCode AND deleted=false")
 	public String getCancerSignAndSymptomsStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 	@Transactional
 	@Modifying
@@ -34,7 +34,7 @@ public interface CancerSignAndSymptomsRepo extends CrudRepository<CancerSignAndS
 			+ "vaginalBleedingAfterMenopause=:vaginalBleedingAfterMenopause, vaginalBleedingAfterIntercourse=:vaginalBleedingAfterIntercourse,"
 			+ " foulSmellingVaginalDischarge=:foulSmellingVaginalDischarge, breastEnlargement=:breastEnlargement, "
 			+ "lymphNode_Enlarged=:lymphNode_Enlarged, observation =:observation, modifiedBy=:modifiedBy, processed=:processed where "
-			+ " beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+			+ " beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public int updateCancerSignAndSymptoms(@Param("providerServiceMapID") Integer providerServiceMapID,
 			@Param("shortnessOfBreath") Boolean shortnessOfBreath, 
 			@Param("coughgt2Weeks") Boolean coughgt2Weeks,
@@ -52,7 +52,7 @@ public interface CancerSignAndSymptomsRepo extends CrudRepository<CancerSignAndS
 			@Param("lymphNode_Enlarged") Boolean lymphNode_Enlarged, 
 			@Param("observation") String observation,
 			@Param("modifiedBy") String modifiedBy,
-			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID,
+			@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode,
 			@Param("processed") String processed);
 	
 }

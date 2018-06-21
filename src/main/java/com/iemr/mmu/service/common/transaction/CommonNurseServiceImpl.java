@@ -700,7 +700,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		if (null != anthropometryDetail) {
 
 			String processed = benAnthropometryRepo.getBenAnthropometryStatus(anthropometryDetail.getBeneficiaryRegID(),
-					anthropometryDetail.getBenVisitID());
+					anthropometryDetail.getVisitCode());
 			if (null != processed && !processed.equals("N")) {
 				processed = "U";
 			} else {
@@ -714,7 +714,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					anthropometryDetail.getMidUpperArmCircumference_MUAC_cm(),
 					anthropometryDetail.getHipCircumference_cm(), anthropometryDetail.getWaistCircumference_cm(),
 					anthropometryDetail.getWaistHipRatio(), anthropometryDetail.getModifiedBy(), processed,
-					anthropometryDetail.getBeneficiaryRegID(), anthropometryDetail.getBenVisitID());
+					anthropometryDetail.getBeneficiaryRegID(), anthropometryDetail.getVisitCode());
 		}
 		return r;
 	}
@@ -724,7 +724,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		if (null != physicalVitalDetail) {
 
 			String processed = benPhysicalVitalRepo.getBenPhysicalVitalStatus(physicalVitalDetail.getBeneficiaryRegID(),
-					physicalVitalDetail.getBenVisitID());
+					physicalVitalDetail.getVisitCode());
 			if (null != processed && !processed.equals("N")) {
 				processed = "U";
 			} else {
@@ -744,7 +744,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					physicalVitalDetail.getBloodGlucose_2hr_PP(), physicalVitalDetail.getBloodGlucose_NotSpecified(),
 					physicalVitalDetail.getDiabeticStatusID(), physicalVitalDetail.getDiabeticStatus(),
 					physicalVitalDetail.getCapillaryRefillTime(), physicalVitalDetail.getModifiedBy(), processed,
-					physicalVitalDetail.getBeneficiaryRegID(), physicalVitalDetail.getBenVisitID());
+					physicalVitalDetail.getBeneficiaryRegID(), physicalVitalDetail.getVisitCode());
 
 		}
 		return r;
@@ -1716,7 +1716,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		int r = 0;
 		if (null != benChiefComplaintList && benChiefComplaintList.size() > 0) {
 			benChiefComplaintRepo.deleteExistingBenChiefComplaints(benChiefComplaintList.get(0).getBeneficiaryRegID(),
-					benChiefComplaintList.get(0).getBenVisitID());
+					benChiefComplaintList.get(0).getVisitCode());
 
 			List<BenChiefComplaint> benChiefComplaintResultList = (List<BenChiefComplaint>) benChiefComplaintRepo
 					.save(benChiefComplaintList);
@@ -1735,7 +1735,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			// Delete Existing past History of beneficiary before inserting
 			// updated history
 			ArrayList<Object[]> benMedHistoryStatuses = benMedHistoryRepo
-					.getBenMedHistoryStatus(benMedHistory.getBeneficiaryRegID(), benMedHistory.getBenVisitID());
+					.getBenMedHistoryStatus(benMedHistory.getBeneficiaryRegID(), benMedHistory.getVisitCode());
 
 			for (Object[] obj : benMedHistoryStatuses) {
 				String processed = (String) obj[1];
@@ -1768,7 +1768,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 			ArrayList<Object[]> benComorbidCondHistoryStatuses = bencomrbidityCondRepo
 					.getBenComrbidityCondHistoryStatus(wrapperComorbidCondDetails.getBeneficiaryRegID(),
-							wrapperComorbidCondDetails.getBenVisitID());
+							wrapperComorbidCondDetails.getVisitCode());
 
 			for (Object[] obj : benComorbidCondHistoryStatuses) {
 				String processed = (String) obj[1];
@@ -1802,7 +1802,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		if (null != wrapperMedicationHistory) {
 
 			ArrayList<Object[]> benMedicationHistoryStatuses = benMedicationHistoryRepo.getBenMedicationHistoryStatus(
-					wrapperMedicationHistory.getBeneficiaryRegID(), wrapperMedicationHistory.getBenVisitID());
+					wrapperMedicationHistory.getBeneficiaryRegID(), wrapperMedicationHistory.getVisitCode());
 
 			for (Object[] obj : benMedicationHistoryStatuses) {
 				String processed = (String) obj[1];
@@ -1836,7 +1836,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		if (null != benPersonalHabit) {
 
 			ArrayList<Object[]> benPersonalHistoryStatuses = benPersonalHabitRepo.getBenPersonalHistoryStatus(
-					benPersonalHabit.getBeneficiaryRegID(), benPersonalHabit.getBenVisitID());
+					benPersonalHabit.getBeneficiaryRegID(), benPersonalHabit.getVisitCode());
 
 			for (Object[] obj : benPersonalHistoryStatuses) {
 				String processed = (String) obj[1];
@@ -1869,7 +1869,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		if (null != benAllergyHistory) {
 
 			ArrayList<Object[]> benAllergyHistoryStatuses = benAllergyHistoryRepo.getBenAllergyHistoryStatus(
-					benAllergyHistory.getBeneficiaryRegID(), benAllergyHistory.getBenVisitID());
+					benAllergyHistory.getBeneficiaryRegID(), benAllergyHistory.getVisitCode());
 
 			for (Object[] obj : benAllergyHistoryStatuses) {
 				String processed = (String) obj[1];
@@ -1901,7 +1901,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		if (null != benFamilyHistory) {
 
 			ArrayList<Object[]> benFamilyHistoryStatuses = benFamilyHistoryRepo.getBenFamilyHistoryStatus(
-					benFamilyHistory.getBeneficiaryRegID(), benFamilyHistory.getBenVisitID());
+					benFamilyHistory.getBeneficiaryRegID(), benFamilyHistory.getVisitCode());
 
 			for (Object[] obj : benFamilyHistoryStatuses) {
 				String processed = (String) obj[1];
@@ -1932,7 +1932,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		int recordsAvailable = 0;
 		if (null != benMenstrualDetails) {
 			String processed = benMenstrualDetailsRepo.getBenMenstrualDetailStatus(
-					benMenstrualDetails.getBeneficiaryRegID(), benMenstrualDetails.getBenVisitID());
+					benMenstrualDetails.getBeneficiaryRegID(), benMenstrualDetails.getVisitCode());
 			if (processed != null) {
 				recordsAvailable = 1;
 			}
@@ -1949,7 +1949,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 						benMenstrualDetails.getBloodFlowDuration(), benMenstrualDetails.getMenstrualProblemID(),
 						benMenstrualDetails.getProblemName(), benMenstrualDetails.getlMPDate(),
 						benMenstrualDetails.getModifiedBy(), processed, benMenstrualDetails.getBeneficiaryRegID(),
-						benMenstrualDetails.getBenVisitID());
+						benMenstrualDetails.getVisitCode());
 			} else {
 				benMenstrualDetails.setCreatedBy(benMenstrualDetails.getModifiedBy());
 				BenMenstrualDetails menstrualDetails = benMenstrualDetailsRepo.save(benMenstrualDetails);
@@ -1966,7 +1966,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		int delRes = 0;
 		if (null != wrapperFemaleObstetricHistory) {
 			ArrayList<Object[]> benObstetricHistoryStatuses = femaleObstetricHistoryRepo.getBenObstetricHistoryStatus(
-					wrapperFemaleObstetricHistory.getBeneficiaryRegID(), wrapperFemaleObstetricHistory.getBenVisitID());
+					wrapperFemaleObstetricHistory.getBeneficiaryRegID(), wrapperFemaleObstetricHistory.getVisitCode());
 
 			for (Object[] obj : benObstetricHistoryStatuses) {
 				String processed = (String) obj[1];
@@ -1996,7 +1996,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 			ArrayList<Object[]> benChildOptionalVaccineHistoryStatuses = childOptionalVaccineDetailRepo
 					.getBenChildOptionalVaccineHistoryStatus(wrapperChildOptionalVaccineDetail.getBeneficiaryRegID(),
-							wrapperChildOptionalVaccineDetail.getBenVisitID());
+							wrapperChildOptionalVaccineDetail.getVisitCode());
 
 			for (Object[] obj : benChildOptionalVaccineHistoryStatuses) {
 				String processed = (String) obj[1];
@@ -2033,7 +2033,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			String processed = "N";
 			ChildVaccineDetail1 childVaccine = childVaccineDetails.get(0);
 			ArrayList<Object[]> childVaccineStatuses = childVaccineDetail1Repo
-					.getBenChildVaccineDetailStatus(childVaccine.getBeneficiaryRegID(), childVaccine.getBenVisitID());
+					.getBenChildVaccineDetailStatus(childVaccine.getBeneficiaryRegID(), childVaccine.getVisitCode());
 
 			Map<String, String> vaccineStatuses = new HashMap<String, String>();
 
@@ -2052,7 +2052,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 				}
 				r = childVaccineDetail1Repo.updateChildANCImmunization(childVaccineDetail.getStatus(),
 						childVaccineDetail.getModifiedBy(), processed, childVaccineDetail.getBeneficiaryRegID(),
-						childVaccineDetail.getBenVisitID(), childVaccineDetail.getDefaultReceivingAge(),
+						childVaccineDetail.getVisitCode(), childVaccineDetail.getDefaultReceivingAge(),
 						childVaccineDetail.getVaccineName());
 			}
 		}
@@ -2066,7 +2066,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		if (null != generalExamination) {
 
 			String processed = phyGeneralExaminationRepo.getBenGeneralExaminationStatus(
-					generalExamination.getBeneficiaryRegID(), generalExamination.getBenVisitID());
+					generalExamination.getBeneficiaryRegID(), generalExamination.getVisitCode());
 			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
 			} else {
@@ -2091,7 +2091,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					generalExamination.getLymphnodesInvolved(), generalExamination.getTypeOfLymphadenopathy(),
 					generalExamination.getEdema(), generalExamination.getExtentOfEdema(),
 					generalExamination.getEdemaType(), generalExamination.getModifiedBy(), processed,
-					generalExamination.getBeneficiaryRegID(), generalExamination.getBenVisitID());
+					generalExamination.getBeneficiaryRegID(), generalExamination.getVisitCode());
 		}
 		return response;
 	}
@@ -2100,7 +2100,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		int response = 0;
 		if (null != headToToeExamination) {
 			String processed = phyHeadToToeExaminationRepo.getBenHeadToToeExaminationStatus(
-					headToToeExamination.getBeneficiaryRegID(), headToToeExamination.getBenVisitID());
+					headToToeExamination.getBeneficiaryRegID(), headToToeExamination.getVisitCode());
 			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
 			} else {
@@ -2114,7 +2114,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					headToToeExamination.getUpperLimbs(), headToToeExamination.getLowerLimbs(),
 					headToToeExamination.getSkin(), headToToeExamination.getHair(), headToToeExamination.getNails(),
 					headToToeExamination.getModifiedBy(), processed, headToToeExamination.getBeneficiaryRegID(),
-					headToToeExamination.getBenVisitID());
+					headToToeExamination.getVisitCode());
 		}
 		return response;
 	}
@@ -2123,7 +2123,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		int response = 0;
 		if (null != cardiovascular) {
 			String processed = sysCardiovascularExaminationRepo.getBenCardiovascularExaminationStatus(
-					cardiovascular.getBeneficiaryRegID(), cardiovascular.getBenVisitID());
+					cardiovascular.getBeneficiaryRegID(), cardiovascular.getVisitCode());
 			if (null != processed && !processed.equals("N")) {
 				processed = "U";
 			}
@@ -2132,7 +2132,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					cardiovascular.getApexbeatType(), cardiovascular.getFirstHeartSound_S1(),
 					cardiovascular.getSecondHeartSound_S2(), cardiovascular.getAdditionalHeartSounds(),
 					cardiovascular.getMurmurs(), cardiovascular.getPericardialRub(), cardiovascular.getModifiedBy(),
-					processed, cardiovascular.getBeneficiaryRegID(), cardiovascular.getBenVisitID());
+					processed, cardiovascular.getBeneficiaryRegID(), cardiovascular.getVisitCode());
 		}
 		return response;
 	}
@@ -2141,7 +2141,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		int r = 0;
 		if (null != respiratory) {
 			String processed = sysRespiratoryExaminationRepo
-					.getBenRespiratoryExaminationStatus(respiratory.getBeneficiaryRegID(), respiratory.getBenVisitID());
+					.getBenRespiratoryExaminationStatus(respiratory.getBeneficiaryRegID(), respiratory.getVisitCode());
 			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
 			} else {
@@ -2154,7 +2154,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					respiratory.getAuscultation_Wheezing(), respiratory.getAuscultation_PleuralRub(),
 					respiratory.getAuscultation_ConductedSounds(), respiratory.getPercussion(),
 					respiratory.getModifiedBy(), processed, respiratory.getBeneficiaryRegID(),
-					respiratory.getBenVisitID());
+					respiratory.getVisitCode());
 		}
 		return r;
 	}
@@ -2163,7 +2163,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		int r = 0;
 		if (null != centralNervous) {
 			String processed = sysCentralNervousExaminationRepo.getBenCentralNervousExaminationStatus(
-					centralNervous.getBeneficiaryRegID(), centralNervous.getBenVisitID());
+					centralNervous.getBeneficiaryRegID(), centralNervous.getVisitCode());
 			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
 			} else {
@@ -2174,7 +2174,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					centralNervous.getSensorySystem(), centralNervous.getAutonomicSystem(),
 					centralNervous.getCerebellarSigns(), centralNervous.getSignsOfMeningealIrritation(),
 					centralNervous.getSkull(), centralNervous.getModifiedBy(), processed,
-					centralNervous.getBeneficiaryRegID(), centralNervous.getBenVisitID());
+					centralNervous.getBeneficiaryRegID(), centralNervous.getVisitCode());
 		}
 
 		return r;
@@ -2184,7 +2184,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		int r = 0;
 		if (null != musculoskeletalSystem) {
 			String processed = sysMusculoskeletalSystemExaminationRepo.getBenMusculoskeletalSystemExaminationStatus(
-					musculoskeletalSystem.getBeneficiaryRegID(), musculoskeletalSystem.getBenVisitID());
+					musculoskeletalSystem.getBeneficiaryRegID(), musculoskeletalSystem.getVisitCode());
 			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
 			} else {
@@ -2196,7 +2196,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					musculoskeletalSystem.getUpperLimb_Abnormality(), musculoskeletalSystem.getLowerLimb_Laterality(),
 					musculoskeletalSystem.getLowerLimb_Abnormality(), musculoskeletalSystem.getChestWall(),
 					musculoskeletalSystem.getSpine(), musculoskeletalSystem.getModifiedBy(), processed,
-					musculoskeletalSystem.getBeneficiaryRegID(), musculoskeletalSystem.getBenVisitID());
+					musculoskeletalSystem.getBeneficiaryRegID(), musculoskeletalSystem.getVisitCode());
 		}
 		return r;
 	}
@@ -2205,7 +2205,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		int r = 0;
 		if (null != genitourinarySystem) {
 			String processed = sysGenitourinarySystemExaminationRepo.getBenGenitourinarySystemExaminationStatus(
-					genitourinarySystem.getBeneficiaryRegID(), genitourinarySystem.getBenVisitID());
+					genitourinarySystem.getBeneficiaryRegID(), genitourinarySystem.getVisitCode());
 			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
 			} else {
@@ -2214,7 +2214,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			r = sysGenitourinarySystemExaminationRepo.updateSysGenitourinarySystemExamination(
 					genitourinarySystem.getRenalAngle(), genitourinarySystem.getSuprapubicRegion(),
 					genitourinarySystem.getExternalGenitalia(), genitourinarySystem.getModifiedBy(), processed,
-					genitourinarySystem.getBeneficiaryRegID(), genitourinarySystem.getBenVisitID());
+					genitourinarySystem.getBeneficiaryRegID(), genitourinarySystem.getVisitCode());
 		}
 		return r;
 	}
@@ -2671,7 +2671,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		int recordsAvailable = 0;
 		if (null != childFeedingDetails) {
 			String processed = childFeedingDetailsRepo.getBenChildFeedingDetailStatus(
-					childFeedingDetails.getBeneficiaryRegID(), childFeedingDetails.getBenVisitID());
+					childFeedingDetails.getBeneficiaryRegID(), childFeedingDetails.getVisitCode());
 			if (null != processed) {
 				recordsAvailable = 1;
 			}
@@ -2686,7 +2686,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 						childFeedingDetails.getCompFeedStartAge(), childFeedingDetails.getNoOfCompFeedPerDay(),
 						childFeedingDetails.getFoodIntoleranceStatus(), childFeedingDetails.getTypeofFoodIntolerance(),
 						childFeedingDetails.getModifiedBy(), processed, childFeedingDetails.getBeneficiaryRegID(),
-						childFeedingDetails.getBenVisitID());
+						childFeedingDetails.getVisitCode());
 			} else {
 				childFeedingDetails.setCreatedBy(childFeedingDetails.getModifiedBy());
 				ChildFeedingDetails feedingDetails = childFeedingDetailsRepo.save(childFeedingDetails);
@@ -2703,7 +2703,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		int recordsAvailable = 0;
 		if (null != perinatalHistory) {
 			String processed = perinatalHistoryRepo.getPerinatalHistoryStatus(perinatalHistory.getBeneficiaryRegID(),
-					perinatalHistory.getBenVisitID());
+					perinatalHistory.getVisitCode());
 			if (null != processed) {
 				recordsAvailable = 1;
 			}
@@ -2719,7 +2719,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 						perinatalHistory.getComplicationAtBirthID(), perinatalHistory.getComplicationAtBirth(),
 						perinatalHistory.getOtherComplicationAtBirth(), perinatalHistory.getGestation(),
 						perinatalHistory.getBirthWeight_kg(), perinatalHistory.getModifiedBy(), processed,
-						perinatalHistory.getBeneficiaryRegID(), perinatalHistory.getBenVisitID());
+						perinatalHistory.getBeneficiaryRegID(), perinatalHistory.getVisitCode());
 			} else {
 				perinatalHistory.setCreatedBy(perinatalHistory.getModifiedBy());
 				PerinatalHistory perinatalRes = perinatalHistoryRepo.save(perinatalHistory);
@@ -2737,7 +2737,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		int recordsAvailable = 0;
 		if (null != childDevelopmentDetails) {
 			String processed = benChildDevelopmentHistoryRepo.getDevelopmentHistoryStatus(
-					childDevelopmentDetails.getBeneficiaryRegID(), childDevelopmentDetails.getBenVisitID());
+					childDevelopmentDetails.getBeneficiaryRegID(), childDevelopmentDetails.getVisitCode());
 			if (null != processed) {
 				recordsAvailable = 1;
 			}
@@ -2756,7 +2756,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 						childDevelopmentHistory.getLanguageMilestone(), childDevelopmentHistory.getIsLMAttained(),
 						childDevelopmentHistory.getDevelopmentProblem(), childDevelopmentHistory.getModifiedBy(),
 						processed, childDevelopmentHistory.getBeneficiaryRegID(),
-						childDevelopmentHistory.getBenVisitID());
+						childDevelopmentHistory.getVisitCode());
 			} else {
 				childDevelopmentHistory.setCreatedBy(childDevelopmentHistory.getModifiedBy());
 				BenChildDevelopmentHistory developmentDetails = benChildDevelopmentHistoryRepo
@@ -2773,7 +2773,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		int response = 0;
 		if (null != gastrointestinalExamination) {
 			String processed = sysGastrointestinalExaminationRepo.getBenGastrointestinalExaminationStatus(
-					gastrointestinalExamination.getBeneficiaryRegID(), gastrointestinalExamination.getBenVisitID());
+					gastrointestinalExamination.getBeneficiaryRegID(), gastrointestinalExamination.getVisitCode());
 			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
 			} else {
@@ -2787,7 +2787,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					gastrointestinalExamination.getPalpation_LocationOfTenderness(),
 					gastrointestinalExamination.getPercussion(), gastrointestinalExamination.getAuscultation(),
 					gastrointestinalExamination.getAnalRegion(), gastrointestinalExamination.getModifiedBy(), processed,
-					gastrointestinalExamination.getBeneficiaryRegID(), gastrointestinalExamination.getBenVisitID());
+					gastrointestinalExamination.getBeneficiaryRegID(), gastrointestinalExamination.getVisitCode());
 		}
 		return response;
 	}

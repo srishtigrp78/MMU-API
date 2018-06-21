@@ -536,7 +536,7 @@ public class BenPersonalHabit {
 					benPersonalHabit.setAlcoholDuration(Utility.convertToDateFormat(durationUnit, duration));
 				}
 
-				if (benPersonalHabit.getTobaccoUseTypeID() != null || benPersonalHabit.getAlcoholTypeID() != null)
+				//if (benPersonalHabit.getTobaccoUseTypeID() != null || benPersonalHabit.getAlcoholTypeID() != null)
 					personalHabitList.add(benPersonalHabit);
 			}
 		} else {

@@ -45,8 +45,8 @@ public interface BenFamilyCancerHistoryRepo extends CrudRepository<BenFamilyCanc
 			+ " AND familyMember IS NOT NULL AND deleted = false ORDER BY createdDate DESC  ")
 	public ArrayList<Object[]> getBenCancerFamilyHistory(@Param("benRegID") Long benRegID);
 
-	@Query("SELECT ID, processed from BenFamilyCancerHistory where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID AND deleted=false")
+	@Query("SELECT ID, processed from BenFamilyCancerHistory where beneficiaryRegID=:benRegID AND visitCode = :visitCode AND deleted=false")
 	public ArrayList<Object[]> getFamilyCancerHistoryStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 
 }

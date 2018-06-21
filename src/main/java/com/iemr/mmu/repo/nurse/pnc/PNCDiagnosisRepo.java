@@ -19,20 +19,20 @@ public interface PNCDiagnosisRepo extends CrudRepository<PNCDiagnosis, Long>{
 	@Query(" SELECT beneficiaryRegID, benVisitID, providerServiceMapID, prescriptionID, provisionalDiagnosis, "
 			+ "confirmatoryDiagnosis, isMaternalDeath, placeOfDeath, dateOfDeath, causeOfDeath, visitCode "
 			+ " from PNCDiagnosis ba "
-			+ "WHERE ba.beneficiaryRegID = :benRegID AND ba.benVisitID = :benVisitID AND ba.deleted = false ")
+			+ "WHERE ba.beneficiaryRegID = :benRegID AND ba.visitCode = :visitCode AND ba.deleted = false ")
 	public ArrayList<Object[]> getPNCDiagnosisDetails(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
-	@Query("SELECT processed from PNCDiagnosis where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	@Query("SELECT processed from PNCDiagnosis where beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public String getPNCDiagnosisStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 	@Transactional
 	@Modifying
 	@Query("update PNCDiagnosis set provisionalDiagnosis=:provisionalDiagnosis, confirmatoryDiagnosis=:confirmatoryDiagnosis, "
 			+ "isMaternalDeath=:isMaternalDeath, placeOfDeath=:placeOfDeath,"
 			+ "dateOfDeath=:dateOfDeath, causeOfDeath=:causeOfDeath, modifiedBy=:modifiedBy, processed=:processed "
-			+ "where benVisitID=:benVisitID AND beneficiaryRegID=:beneficiaryRegID")
+			+ "where visitCode=:visitCode AND beneficiaryRegID=:beneficiaryRegID")
 	public int updatePNCDiagnosis(@Param("provisionalDiagnosis") String provisionalDiagnosis,
 			@Param("confirmatoryDiagnosis") String confirmatoryDiagnosis,
 			@Param("isMaternalDeath") Boolean isMaternalDeath,
@@ -42,6 +42,6 @@ public interface PNCDiagnosisRepo extends CrudRepository<PNCDiagnosis, Long>{
 			@Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed,
 			@Param("beneficiaryRegID") Long beneficiaryRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 }

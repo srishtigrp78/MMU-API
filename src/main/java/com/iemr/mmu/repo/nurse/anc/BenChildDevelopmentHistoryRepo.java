@@ -28,9 +28,9 @@ public interface BenChildDevelopmentHistoryRepo extends CrudRepository<BenChildD
 	public ArrayList<Object[]> getBenDevelopmentDetails(@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("visitCode") Long visitCode);
 	
-	@Query("SELECT processed from BenChildDevelopmentHistory where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID AND deleted = false")
+	@Query("SELECT processed from BenChildDevelopmentHistory where beneficiaryRegID=:benRegID AND visitCode = :visitCode AND deleted = false")
 	public String getDevelopmentHistoryStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 
 	@Transactional
 	@Modifying
@@ -39,7 +39,7 @@ public interface BenChildDevelopmentHistoryRepo extends CrudRepository<BenChildD
 			+ " socialMilestone=:socialMilestone, isSMAttained=:isSMAttained, languageMilestone=:languageMilestone, "
 			+ "isLMAttained=:isLMAttained, developmentProblem=:developmentProblem, "
 			+ "  modifiedBy=:modifiedBy, processed=:processed where "
-			+ "beneficiaryRegID=:beneficiaryRegID AND benVisitID = :benVisitID")
+			+ "beneficiaryRegID=:beneficiaryRegID AND visitCode = :visitCode")
 	public int updatePerinatalDetails(
 			@Param("grossMotorMilestone") String grossMotorMilestone,
 			@Param("isGMMAttained") Boolean isGMMAttained,
@@ -53,6 +53,6 @@ public interface BenChildDevelopmentHistoryRepo extends CrudRepository<BenChildD
 			@Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed,
 			@Param("beneficiaryRegID") Long beneficiaryRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 }

@@ -1368,14 +1368,14 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		return exmnSuccessFlag;
 	}
 
-	public String getBenGeneralOPDNurseData(Long benRegID, Long benVisitID) {
+	public String getBenGeneralOPDNurseData(Long benRegID, Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
 
-		resMap.put("history", getBenHistoryDetails(benRegID, benVisitID));
+		resMap.put("history", getBenHistoryDetails(benRegID, visitCode));
 
-		resMap.put("vitals", getBeneficiaryVitalDetails(benRegID, benVisitID));
+		resMap.put("vitals", getBeneficiaryVitalDetails(benRegID, visitCode));
 
-		resMap.put("examination", getExaminationDetailsData(benRegID, benVisitID));
+		resMap.put("examination", getExaminationDetailsData(benRegID, visitCode));
 
 		return resMap.toString();
 	}
@@ -1508,6 +1508,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 							tmpObj.setBeneficiaryRegID(tmpOBJ.get("beneficiaryRegID").getAsLong());
 						if (tmpOBJ.has("benVisitID") && null != tmpOBJ.get("benVisitID"))
 							tmpObj.setBenVisitID(tmpOBJ.get("benVisitID").getAsLong());
+						if (tmpOBJ.has("visitCode") && null != tmpOBJ.get("visitCode"))
+							tmpObj.setVisitCode(tmpOBJ.get("visitCode").getAsLong());
 						Map<String, String> drug = tmpObj.getDrug();
 						if (null != drug && drug.size() > 0 && drug.containsKey("drugID")
 								&& drug.containsKey("drugDisplayName")) {

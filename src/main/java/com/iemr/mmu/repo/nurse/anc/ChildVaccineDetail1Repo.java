@@ -26,19 +26,19 @@ public interface ChildVaccineDetail1Repo extends CrudRepository<ChildVaccineDeta
 			@Param("visitCode") Long visitCode);
 
 	
-	@Query(" SELECT defaultReceivingAge, vaccineName, processed from ChildVaccineDetail1 where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	@Query(" SELECT defaultReceivingAge, vaccineName, processed from ChildVaccineDetail1 where beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public ArrayList<Object[]> getBenChildVaccineDetailStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 	@Transactional
 	@Modifying
 	@Query("update ChildVaccineDetail1 set status=:status, modifiedBy=:modifiedBy, processed=:processed"
-			+ " where  beneficiaryRegID=:benRegID and benVisitID = :benVisitID  AND defaultReceivingAge=:defaultReceivingAge AND vaccineName=:vaccineName")
+			+ " where  beneficiaryRegID=:benRegID and visitCode = :visitCode  AND defaultReceivingAge=:defaultReceivingAge AND vaccineName=:vaccineName")
 	public int updateChildANCImmunization(@Param("status") Boolean status,
 			@Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed,
 			@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID,
+			@Param("visitCode") Long visitCode,
 			@Param("defaultReceivingAge") String defaultReceivingAge,
 			@Param("vaccineName") String vaccineName);
 	

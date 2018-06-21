@@ -677,7 +677,7 @@ public class CSServiceImpl implements CSService {
 		Long docDataSuccessFlag = null;
 
 		if (requestOBJ != null) {
-			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
+			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ.getAsJsonObject("diagnosis"), CommonUtilityClass.class);
 			Long diagnosisSuccessFlag = saveBenDiagnosisDetails(requestOBJ);
 
 			if (diagnosisSuccessFlag != null && diagnosisSuccessFlag > 0) {

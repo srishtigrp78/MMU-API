@@ -37,9 +37,9 @@ public interface FemaleObstetricHistoryRepo extends CrudRepository<FemaleObstetr
 	@Query(" Update FemaleObstetricHistory  set deleted=true, processed=:processed WHERE obstetricHistoryID = :obstetricHistoryID")
 		public int deleteExistingObstetricHistory(@Param("obstetricHistoryID") Long obstetricHistoryID, @Param("processed") String processed);
 
-	@Query("SELECT obstetricHistoryID, processed from FemaleObstetricHistory where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID AND deleted=false")
+	@Query("SELECT obstetricHistoryID, processed from FemaleObstetricHistory where beneficiaryRegID=:benRegID AND visitCode = :visitCode AND deleted=false")
 	public ArrayList<Object[]> getBenObstetricHistoryStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 	
 	@Transactional

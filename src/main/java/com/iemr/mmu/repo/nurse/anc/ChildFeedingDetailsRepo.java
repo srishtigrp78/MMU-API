@@ -28,9 +28,9 @@ public interface ChildFeedingDetailsRepo extends CrudRepository<ChildFeedingDeta
 	public ArrayList<Object[]> getBenFeedingDetails(@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("visitCode") Long visitCode);
 	
-	@Query("SELECT processed from ChildFeedingDetails where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID AND deleted = false")
+	@Query("SELECT processed from ChildFeedingDetails where beneficiaryRegID=:benRegID AND visitCode = :visitCode AND deleted = false")
 	public String getBenChildFeedingDetailStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 		
 	@Transactional
 	@Modifying
@@ -38,7 +38,7 @@ public interface ChildFeedingDetailsRepo extends CrudRepository<ChildFeedingDeta
 			+ "typeOfFeed=:typeOfFeed, compFeedStartAge=:compFeedStartAge,"
 			+ " noOfCompFeedPerDay=:noOfCompFeedPerDay, foodIntoleranceStatus=:foodIntoleranceStatus, typeofFoodIntolerance=:typeofFoodIntolerance,"
 			+ "  modifiedBy=:modifiedBy, processed=:processed where "
-			+ "beneficiaryRegID=:beneficiaryRegID AND benVisitID = :benVisitID")
+			+ "beneficiaryRegID=:beneficiaryRegID AND visitCode = :visitCode")
 	public int updateFeedingDetails(
 			@Param("childID") Long childID,
 			@Param("benMotherID") Long benMotherID,
@@ -50,6 +50,6 @@ public interface ChildFeedingDetailsRepo extends CrudRepository<ChildFeedingDeta
 			@Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed,
 			@Param("beneficiaryRegID") Long beneficiaryRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 }

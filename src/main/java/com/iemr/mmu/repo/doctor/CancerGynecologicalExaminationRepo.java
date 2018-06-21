@@ -19,9 +19,9 @@ public interface CancerGynecologicalExaminationRepo extends CrudRepository<Cance
 	public CancerGynecologicalExamination getBenCancerGynecologicalExaminationDetails(@Param("benRegID") Long benRegID,
 	@Param("visitCode") Long visitCode);
 	
-	@Query("SELECT processed from CancerGynecologicalExamination where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	@Query("SELECT processed from CancerGynecologicalExamination where beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public String getCancerGynecologicalExaminationStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 	
 	@Transactional
@@ -31,7 +31,7 @@ public interface CancerGynecologicalExaminationRepo extends CrudRepository<Cance
 			+ "uterus_Normal=:uterus_Normal, sufferedFromRTIOrSTI=:sufferedFromRTIOrSTI, rTIOrSTIDetail=:rTIOrSTIDetail,"
 			+ "filePath=:filePath, experiencedPostCoitalBleeding=:experiencedPostCoitalBleeding, observation=:observation,"
 			+ "modifiedBy=:modifiedBy, processed=:processed where "
-			+ " beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+			+ " beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public int updateCancerGynecologicalExamination(@Param("providerServiceMapID") Integer providerServiceMapID,
 			@Param("appearanceOfCervix") String appearanceOfCervix, 
 			@Param("typeOfLesion") String typeOfLesion,
@@ -44,6 +44,6 @@ public interface CancerGynecologicalExaminationRepo extends CrudRepository<Cance
 			@Param("experiencedPostCoitalBleeding") Boolean experiencedPostCoitalBleeding, 
 			@Param("observation") String observation,
 			@Param("modifiedBy") String modifiedBy,
-			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID,
+			@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode,
 			@Param("processed") String processed);
 }

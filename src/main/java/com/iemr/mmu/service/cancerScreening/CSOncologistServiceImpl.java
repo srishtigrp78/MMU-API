@@ -24,7 +24,7 @@ public class CSOncologistServiceImpl implements CSOncologistService {
 		int response = 0;
 		int recordsAvailable = 0;
 		String processed= cancerDiagnosisRepo.getCancerDiagnosisStatuses(cancerDiagnosis.getBeneficiaryRegID(),
-				cancerDiagnosis.getBenVisitID());
+				cancerDiagnosis.getVisitCode());
 		if (null != processed) {
 			recordsAvailable = 1;
 		}
@@ -38,7 +38,7 @@ public class CSOncologistServiceImpl implements CSOncologistService {
 		if (recordsAvailable > 0) {
 			response = cancerDiagnosisRepo.updateDetailsByOncologist(
 					cancerDiagnosis.getProvisionalDiagnosisOncologist(), cancerDiagnosis.getBeneficiaryRegID(),
-					cancerDiagnosis.getBenVisitID(), cancerDiagnosis.getModifiedBy(), processed);
+					cancerDiagnosis.getVisitCode(), cancerDiagnosis.getModifiedBy(), processed);
 		} else {
 			cancerDiagnosis.setCreatedBy(cancerDiagnosis.getModifiedBy());
 			CancerDiagnosis cancerDiagnosisRS = cancerDiagnosisRepo.save(cancerDiagnosis);

@@ -54,10 +54,10 @@ public class LabtechnicianFetchController {
 			JsonElement jsnElmnt = jsnParser.parse(requestOBJ);
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
-			if (jsnOBJ != null && !jsnOBJ.isJsonNull() && jsnOBJ.has("beneficiaryRegID") && jsnOBJ.has("benVisitID")) {
+			if (jsnOBJ != null && !jsnOBJ.isJsonNull() && jsnOBJ.has("beneficiaryRegID") && jsnOBJ.has("visitCode")) {
 
 				String s = labTechnicianServiceImpl.getBenePrescribedProcedureDetails(
-						jsnOBJ.get("beneficiaryRegID").getAsLong(), jsnOBJ.get("benVisitID").getAsLong());
+						jsnOBJ.get("beneficiaryRegID").getAsLong(), jsnOBJ.get("visitCode").getAsLong());
 				if (s != null)
 					response.setResponse(s);
 				else

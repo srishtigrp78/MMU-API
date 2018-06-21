@@ -35,8 +35,8 @@ public class PNCDoctorServiceImpl implements PNCDoctorService {
 		return ID;
 	}
 	
-	public String getPNCDiagnosisDetails(Long beneficiaryRegID, Long benVisitID) {
-		ArrayList<Object[]> resList = pncDiagnosisRepo.getPNCDiagnosisDetails(beneficiaryRegID, benVisitID);
+	public String getPNCDiagnosisDetails(Long beneficiaryRegID, Long visitCode) {
+		ArrayList<Object[]> resList = pncDiagnosisRepo.getPNCDiagnosisDetails(beneficiaryRegID, visitCode);
 		PNCDiagnosis pncDiagnosisDetails = PNCDiagnosis.getPNCDiagnosisDetails(resList);
 		return new Gson().toJson(pncDiagnosisDetails);
 	}
@@ -45,7 +45,7 @@ public class PNCDoctorServiceImpl implements PNCDoctorService {
 		int res = 0;
 		int recordsAvailable = 0;
 		String processed = pncDiagnosisRepo.getPNCDiagnosisStatus(pncDiagnosis.getBeneficiaryRegID(), 
-				pncDiagnosis.getBenVisitID());
+				pncDiagnosis.getVisitCode());
 		
 		if (null != processed) {
 			recordsAvailable = 1;
@@ -60,7 +60,7 @@ public class PNCDoctorServiceImpl implements PNCDoctorService {
 			pncDiagnosis.setModifiedBy(pncDiagnosis.getCreatedBy());
 			res = pncDiagnosisRepo.updatePNCDiagnosis(pncDiagnosis.getProvisionalDiagnosis(), pncDiagnosis.getConfirmatoryDiagnosis(),
 					pncDiagnosis.getIsMaternalDeath(), pncDiagnosis.getPlaceOfDeath(), pncDiagnosis.getDateOfDeath(), pncDiagnosis.getCauseOfDeath(), 
-					pncDiagnosis.getModifiedBy(), processed, pncDiagnosis.getBeneficiaryRegID(), pncDiagnosis.getBenVisitID());
+					pncDiagnosis.getModifiedBy(), processed, pncDiagnosis.getBeneficiaryRegID(), pncDiagnosis.getVisitCode());
 		}else{
 			pncDiagnosis.setPrescriptionID(prescriptionID);
 			PNCDiagnosis pncDiagnosisRes  = pncDiagnosisRepo.save(pncDiagnosis);

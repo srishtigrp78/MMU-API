@@ -20,9 +20,9 @@ public interface CancerOralExaminationRepo extends CrudRepository<CancerOralExam
 	public CancerOralExamination getBenCancerOralExaminationDetails(@Param("benRegID") Long benRegID,
 	@Param("visitCode") Long  visitCode);
 	
-	@Query("SELECT processed from CancerOralExamination where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	@Query("SELECT processed from CancerOralExamination where beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public String getCancerOralExaminationStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 	@Transactional
 	@Modifying
@@ -30,7 +30,7 @@ public interface CancerOralExaminationRepo extends CrudRepository<CancerOralExam
 			+ "premalignantLesions=:premalignantLesions, preMalignantLesionType=:preMalignantLesionType, "
 			+ "prolongedIrritation=:prolongedIrritation, chronicBurningSensation=:chronicBurningSensation, "
 			+ "observation =:observation, modifiedBy=:modifiedBy, processed=:processed where "
-			+ " beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+			+ " beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public int updateCancerOralExaminationDetails(@Param("providerServiceMapID") Integer providerServiceMapID,
 			@Param("limitedMouthOpening") String limitedMouthOpening, 
 			@Param("premalignantLesions") Boolean premalignantLesions,
@@ -39,6 +39,6 @@ public interface CancerOralExaminationRepo extends CrudRepository<CancerOralExam
 			@Param("chronicBurningSensation") Boolean chronicBurningSensation, 
 			@Param("observation") String observation,
 			@Param("modifiedBy") String modifiedBy,
-			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID,
+			@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode,
 			@Param("processed") String processed);
 }

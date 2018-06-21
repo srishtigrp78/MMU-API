@@ -25,7 +25,7 @@ public interface BenPersonalCancerDietHistoryRepo extends CrudRepository<BenPers
 			+ " intakeOfOutsidePreparedMeal=:intakeOfOutsidePreparedMeal, typeOfOilConsumed=:typeOfOilConsumed, physicalActivityType=:physicalActivityType,"
 			+ " ssRadiationExposure=:ssRadiationExposure, isThyroidDisorder=:isThyroidDisorder,"
 			+ " modifiedBy=:modifiedBy, processed=:processed where "
-			+ "  beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+			+ "  beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public int updateBenPersonalCancerDietHistory(@Param("providerServiceMapID") Integer providerServiceMapID,
 			@Param("dietType") String dietType, @Param("fruitConsumptionDays") Integer fruitConsumptionDays,
 			@Param("fruitQuantityPerDay") Integer fruitQuantityPerDay,
@@ -36,7 +36,7 @@ public interface BenPersonalCancerDietHistoryRepo extends CrudRepository<BenPers
 			@Param("physicalActivityType") String physicalActivityType,
 			@Param("ssRadiationExposure") Boolean ssRadiationExposure,
 			@Param("isThyroidDisorder") Boolean isThyroidDisorder, @Param("modifiedBy") String modifiedBy,
-			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID,
+			@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode,
 			@Param("processed") String processed);
 
 	// @Query("SELECT bpdh from BenPersonalCancerDietHistory bpdh WHERE
@@ -54,8 +54,8 @@ public interface BenPersonalCancerDietHistoryRepo extends CrudRepository<BenPers
 			+ "or typeOfOilConsumed <> '' or physicalActivityType is not null or ssRadiationExposure is not null or isThyroidDisorder is not null) order by createdDate desc")
 	public ArrayList<Object[]> getBenPersonaDietHistory(@Param("benRegID") Long benRegID);
 
-	@Query("SELECT processed from BenPersonalCancerDietHistory where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	@Query("SELECT processed from BenPersonalCancerDietHistory where beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public String getPersonalCancerDietHistoryStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 
 }

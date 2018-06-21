@@ -20,9 +20,9 @@ public interface CancerBreastExaminationRepo extends CrudRepository<CancerBreast
 	public CancerBreastExamination getBenCancerBreastExaminationDetails(@Param("benRegID") Long benRegID,
 			@Param("visitCode") Long visitCode);
 	
-	@Query("SELECT processed from CancerBreastExamination where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	@Query("SELECT processed from CancerBreastExamination where beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public String getCancerBreastExaminationStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 	@Transactional
 	@Modifying
@@ -32,7 +32,7 @@ public interface CancerBreastExaminationRepo extends CrudRepository<CancerBreast
 			+ "peaudOrange =:peaudOrange, lumpInBreast=:lumpInBreast, lumpSize=:lumpSize, lumpShape=:lumpShape,"
 			+ "lumpTexture=:lumpTexture, referredToMammogram=:referredToMammogram, mamogramReport=:mamogramReport,"
 			+ "modifiedBy=:modifiedBy, processed=:processed where "
-			+ " beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+			+ " beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public int updateCancerBreastExaminatio(@Param("providerServiceMapID") Integer providerServiceMapID,
 			@Param("everBreastFed") Boolean everBreastFed, 
 			@Param("breastFeedingDurationGTE6months") Boolean breastFeedingDurationGTE6months,
@@ -48,6 +48,6 @@ public interface CancerBreastExaminationRepo extends CrudRepository<CancerBreast
 			@Param("referredToMammogram") Boolean referredToMammogram, 
 			@Param("mamogramReport") String mamogramReport,
 			@Param("modifiedBy") String modifiedBy,
-			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID,
+			@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode,
 			@Param("processed") String processed);
 }

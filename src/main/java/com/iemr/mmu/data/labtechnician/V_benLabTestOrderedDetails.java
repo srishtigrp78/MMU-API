@@ -20,6 +20,9 @@ public class V_benLabTestOrderedDetails {
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
 	@Expose
+	@Column(name = "VisitCode")
+	private Long visitCode;
+	@Expose
 	@Column(name = "PrescriptionID")
 	private Long prescriptionID;
 	@Expose
@@ -199,6 +202,14 @@ public class V_benLabTestOrderedDetails {
 
 	public void setResultValue(String resultValue) {
 		this.resultValue = resultValue;
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 
 }

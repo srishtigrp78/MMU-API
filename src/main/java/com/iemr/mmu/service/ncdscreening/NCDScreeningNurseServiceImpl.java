@@ -49,7 +49,7 @@ public class NCDScreeningNurseServiceImpl implements NCDScreeningNurseService {
 				ncdScreening.getScreeningCondition(), ncdScreening.getNcdScreeningReasonID(),
 				ncdScreening.getReasonForScreening(), ncdScreening.getNextScreeningDateDB(),
 				ncdScreening.getActionForScreenPositive(), ncdScreening.getIsScreeningComplete(),
-				ncdScreening.getModifiedBy(), ncdScreening.getBeneficiaryRegID(), ncdScreening.getBenVisitID(),
+				ncdScreening.getModifiedBy(), ncdScreening.getBeneficiaryRegID(), ncdScreening.getVisitCode(),
 				ncdScreening.getIsBPPrescribed(), ncdScreening.getIsBloodGlucosePrescribed());
 
 		return r;

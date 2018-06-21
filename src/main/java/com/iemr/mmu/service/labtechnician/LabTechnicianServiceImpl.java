@@ -58,11 +58,11 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 		resultEnteredProcList.add(0);
 
 		ArrayList<V_benLabTestOrderedDetails> orderedLabTestListLab = v_benLabTestOrderedDetailsRepo
-				.findDistinctByBeneficiaryRegIDAndBenVisitIDAndProcedureTypeAndProcedureIDNotInOrderByProcedureIDAscTestComponentIDAscResultValueAsc(
+				.findDistinctByBeneficiaryRegIDAndVisitCodeAndProcedureTypeAndProcedureIDNotInOrderByProcedureIDAscTestComponentIDAscResultValueAsc(
 						benRegID, visitCode, "Laboratory", resultEnteredProcList);
 
 		ArrayList<V_benLabTestOrderedDetails> orderedLabTestListRadio = v_benLabTestOrderedDetailsRepo
-				.findDistinctByBeneficiaryRegIDAndBenVisitIDAndProcedureTypeAndProcedureIDNotInOrderByProcedureIDAscTestComponentIDAscResultValueAsc(
+				.findDistinctByBeneficiaryRegIDAndVisitCodeAndProcedureTypeAndProcedureIDNotInOrderByProcedureIDAscTestComponentIDAscResultValueAsc(
 						benRegID, visitCode, "Radiology", resultEnteredProcList);
 
 		radiologyList = getPrescribedLabTestInJsonFormatRadiology(orderedLabTestListRadio);
@@ -184,7 +184,8 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 
 	public ArrayList<LabResultEntry> getLabResultDataForBen(Long benRegID, Long visitCode) {
 		ArrayList<LabResultEntry> procedureResults = new ArrayList<>();
-		procedureResults = labResultEntryRepo.findByBeneficiaryRegIDAndBenVisitIDOrderByProcedureIDAsc(benRegID, visitCode);
+		procedureResults = labResultEntryRepo.findByBeneficiaryRegIDAndVisitCodeOrderByProcedureIDAsc(benRegID,
+				visitCode);
 		procedureResults = LabResultEntry.getLabResultEntry(procedureResults);
 		return procedureResults;
 	}
@@ -337,7 +338,6 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 						LabResultEntry labCompResult = new LabResultEntry();
 						labCompResult.setPrescriptionID(labResult.getPrescriptionID());
 						labCompResult.setProcedureID(labResult.getProcedureID());
-						
 
 						if (null != comp.get("testComponentID") && !comp.get("testComponentID").toString().isEmpty()
 								&& null != comp.get("testResultValue")
@@ -348,10 +348,10 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 							if (comp.containsKey("testResultUnit") && comp.get("testResultUnit") != null
 									&& !comp.get("testResultUnit").isEmpty())
 								labCompResult.setTestResultUnit(comp.get("testResultUnit"));
-							
+
 							if (comp.containsKey("remarks") && comp.get("remarks") != null
 									&& !comp.get("remarks").isEmpty())
-								
+
 								labCompResult.setRemarks(comp.get("remarks"));
 
 							labCompResult.setBeneficiaryRegID(wrapperLabResults.getBeneficiaryRegID());

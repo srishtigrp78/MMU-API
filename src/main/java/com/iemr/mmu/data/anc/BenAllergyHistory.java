@@ -392,7 +392,7 @@ public class BenAllergyHistory {
 					benAllergyHistory.setOtherAllergicReaction(allergic.get("otherAllergicReaction").toString());
 				}
 
-				if (benAllergyHistory.getAllergyType() != null)
+				//if (benAllergyHistory.getAllergyType() != null)
 					benAllergyHistoryList.add(benAllergyHistory);
 			}
 		} else {

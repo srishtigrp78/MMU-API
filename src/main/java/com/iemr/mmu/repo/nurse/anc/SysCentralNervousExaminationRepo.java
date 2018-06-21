@@ -18,9 +18,9 @@ public interface SysCentralNervousExaminationRepo extends CrudRepository<SysCent
 	public SysCentralNervousExamination getSysCentralNervousExaminationData(@Param("benRegID") Long benRegID,
 			 @Param("visitCode") Long visitCode);
 	
-	@Query("SELECT processed from SysCentralNervousExamination where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	@Query("SELECT processed from SysCentralNervousExamination where beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public String getBenCentralNervousExaminationStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 	@Transactional
 	@Modifying
@@ -28,7 +28,7 @@ public interface SysCentralNervousExaminationRepo extends CrudRepository<SysCent
 			+ "motorSystem=:motorSystem, sensorySystem=:sensorySystem, autonomicSystem =:autonomicSystem, "
 			+ "cerebellarSigns=:cerebellarSigns, signsOfMeningealIrritation=:signsOfMeningealIrritation, skull =:skull, "
 			+ "modifiedBy=:modifiedBy, processed=:processed "
-			+ "where beneficiaryRegID=:benRegID and benVisitID = :benVisitID ")
+			+ "where beneficiaryRegID=:benRegID and visitCode = :visitCode ")
 	public int updateSysCentralNervousExamination(
 			@Param("handedness") String handedness,
 			@Param("cranialNervesExamination") String cranialNervesExamination,
@@ -41,5 +41,5 @@ public interface SysCentralNervousExaminationRepo extends CrudRepository<SysCent
 			@Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed,
 			@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 }

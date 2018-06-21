@@ -19,16 +19,16 @@ public interface SysCardiovascularExaminationRepo extends CrudRepository<SysCard
 			@Param("visitCode") Long visitCode);
 	
 
-	@Query("SELECT processed from SysCardiovascularExamination where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	@Query("SELECT processed from SysCardiovascularExamination where beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public String getBenCardiovascularExaminationStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 	@Transactional
 	@Modifying
 	@Query("update SysCardiovascularExamination set jugularVenousPulse_JVP=:jugularVenousPulse_JVP, apexbeatLocation=:apexbeatLocation, apexbeatType=:apexbeatType, "
 			+ "firstHeartSound_S1=:firstHeartSound_S1, secondHeartSound_S2=:secondHeartSound_S2, additionalHeartSounds =:additionalHeartSounds, "
 			+ "murmurs=:murmurs, pericardialRub=:pericardialRub, modifiedBy=:modifiedBy, processed=:processed "
-			+ "where beneficiaryRegID=:benRegID and benVisitID = :benVisitID ")
+			+ "where beneficiaryRegID=:benRegID and visitCode = :visitCode ")
 	public int updateSysCardiovascularExamination(@Param("jugularVenousPulse_JVP") String jugularVenousPulse_JVP,
 			@Param("apexbeatLocation") String apexbeatLocation,
 			@Param("apexbeatType") String apexbeatType,
@@ -40,5 +40,5 @@ public interface SysCardiovascularExaminationRepo extends CrudRepository<SysCard
 			@Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed,
 			@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 }

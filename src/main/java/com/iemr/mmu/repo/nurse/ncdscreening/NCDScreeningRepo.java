@@ -26,7 +26,7 @@ public interface NCDScreeningRepo extends CrudRepository<NCDScreening, Long> {
 			+ " nextScreeningDateDB=:nextScreeningDate, actionForScreenPositive=:actionForScreenPositive, "
 			+ " isScreeningComplete=:isScreeningComplete, "
 			+ " isBPPrescribed = :isBPPrescribed, isBloodGlucosePrescribed = :isBloodGlucosePrescribed, "
-			+ " modifiedBy=:modifiedBy where benVisitID=:benVisitID AND beneficiaryRegID=:beneficiaryRegID")
+			+ " modifiedBy=:modifiedBy where visitCode=:visitCode AND beneficiaryRegID=:beneficiaryRegID")
 	public int updateNCDScreeningDetails(@Param("ncdScreeningConditionID") Integer ncdScreeningConditionID,
 			@Param("screeningCondition") String screeningCondition,
 			@Param("ncdScreeningReasonID") Integer ncdScreeningReasonID,
@@ -34,7 +34,7 @@ public interface NCDScreeningRepo extends CrudRepository<NCDScreening, Long> {
 			@Param("nextScreeningDate") Timestamp nextScreeningDate,
 			@Param("actionForScreenPositive") String actionForScreenPositive,
 			@Param("isScreeningComplete") Boolean isScreeningComplete, @Param("modifiedBy") String modifiedBy,
-			@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("benVisitID") Long benVisitID,
+			@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("visitCode") Long visitCode,
 			@Param("isBPPrescribed") Boolean isBPPrescribed,
 			@Param("isBloodGlucosePrescribed") Boolean isBloodGlucosePrescribed);
 

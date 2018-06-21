@@ -19,20 +19,20 @@ public interface SysGenitourinarySystemExaminationRepo extends CrudRepository<Sy
 			@Param("visitCode") Long visitCode);
 	
 
-	@Query("SELECT processed from SysGenitourinarySystemExamination where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	@Query("SELECT processed from SysGenitourinarySystemExamination where beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public String getBenGenitourinarySystemExaminationStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 	@Transactional
 	@Modifying
 	@Query("update SysGenitourinarySystemExamination set renalAngle=:renalAngle, suprapubicRegion=:suprapubicRegion, "
 			+ "externalGenitalia=:externalGenitalia, modifiedBy=:modifiedBy, processed=:processed "
-			+ "where beneficiaryRegID=:benRegID and benVisitID = :benVisitID ")
+			+ "where beneficiaryRegID=:benRegID and visitCode = :visitCode ")
 	public int updateSysGenitourinarySystemExamination(@Param("renalAngle") String renalAngle,
 			@Param("suprapubicRegion") String suprapubicRegion,
 			@Param("externalGenitalia") String externalGenitalia,
 			@Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed,
 			@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 }

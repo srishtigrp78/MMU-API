@@ -551,13 +551,13 @@ public class NCDCareServiceImpl implements NCDCareService {
 		return new Gson().toJson(HistoryDetailsMap);
 	}
 
-	public String getBeneficiaryVitalDetails(Long beneficiaryRegID, Long benVisitID) {
+	public String getBeneficiaryVitalDetails(Long beneficiaryRegID, Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
 
 		resMap.put("benAnthropometryDetail",
-				commonNurseServiceImpl.getBeneficiaryPhysicalAnthropometryDetails(beneficiaryRegID, benVisitID));
+				commonNurseServiceImpl.getBeneficiaryPhysicalAnthropometryDetails(beneficiaryRegID, visitCode));
 		resMap.put("benPhysicalVitalDetail",
-				commonNurseServiceImpl.getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, benVisitID));
+				commonNurseServiceImpl.getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, visitCode));
 
 		return resMap.toString();
 	}
@@ -1084,31 +1084,31 @@ public class NCDCareServiceImpl implements NCDCareService {
 		return vitalSuccessFlag;
 	}
 
-	public String getBenNCDCareNurseData(Long benRegID, Long benVisitID) {
+	public String getBenNCDCareNurseData(Long benRegID, Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
 
-		resMap.put("vitals", getBeneficiaryVitalDetails(benRegID, benVisitID));
+		resMap.put("vitals", getBeneficiaryVitalDetails(benRegID, visitCode));
 
-		resMap.put("history", getBenNCDCareHistoryDetails(benRegID, benVisitID));
+		resMap.put("history", getBenNCDCareHistoryDetails(benRegID, visitCode));
 
 		return resMap.toString();
 	}
 
-	public String getBenCaseRecordFromDoctorNCDCare(Long benRegID, Long benVisitID) {
+	public String getBenCaseRecordFromDoctorNCDCare(Long benRegID, Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
 
-		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, benVisitID));
+		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, visitCode));
 
-		resMap.put("diagnosis", ncdCareDoctorServiceImpl.getNCDCareDiagnosisDetails(benRegID, benVisitID));
+		resMap.put("diagnosis", ncdCareDoctorServiceImpl.getNCDCareDiagnosisDetails(benRegID, visitCode));
 
-		resMap.put("investigation", commonDoctorServiceImpl.getInvestigationDetails(benRegID, benVisitID));
+		resMap.put("investigation", commonDoctorServiceImpl.getInvestigationDetails(benRegID, visitCode));
 
-		resMap.put("prescription", commonDoctorServiceImpl.getPrescribedDrugs(benRegID, benVisitID));
+		resMap.put("prescription", commonDoctorServiceImpl.getPrescribedDrugs(benRegID, visitCode));
 
-		resMap.put("Refer", commonDoctorServiceImpl.getReferralDetails(benRegID, benVisitID));
+		resMap.put("Refer", commonDoctorServiceImpl.getReferralDetails(benRegID, visitCode));
 
 		resMap.put("LabReport",
-				new Gson().toJson(labTechnicianServiceImpl.getLabResultDataForBen(benRegID, benVisitID)));
+				new Gson().toJson(labTechnicianServiceImpl.getLabResultDataForBen(benRegID, visitCode)));
 
 		resMap.put("GraphData", new Gson().toJson(commonNurseServiceImpl.getGraphicalTrendData(benRegID, "ncdCare")));
 
@@ -1163,7 +1163,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 							wrapperBenInvestigationANC.getBenVisitID(),
 							wrapperBenInvestigationANC.getProviderServiceMapID(),
 							wrapperBenInvestigationANC.getCreatedBy(),
-							wrapperBenInvestigationANC.getExternalInvestigations(), Long.valueOf("00000000000000"));
+							wrapperBenInvestigationANC.getExternalInvestigations(), wrapperBenInvestigationANC.getVisitCode());
 
 					// bvID = wrapperBenInvestigationANC.getBenVisitID();
 
@@ -1205,7 +1205,8 @@ public class NCDCareServiceImpl implements NCDCareService {
 								tmpObj.setBenVisitID(tmpOBJ.get("benVisitID").getAsLong());
 							if (tmpOBJ.has("createdBy") && null != tmpOBJ.get("createdBy"))
 								tmpObj.setCreatedBy(tmpOBJ.get("createdBy").getAsString());
-
+							if (tmpOBJ.has("visitCode") && null != tmpOBJ.get("visitCode"))
+								tmpObj.setVisitCode(tmpOBJ.get("visitCode").getAsLong());
 							Map<String, String> drug = tmpObj.getDrug();
 							if (null != drug && drug.size() > 0 && drug.containsKey("drugID")
 									&& drug.containsKey("drugDisplayName")) {

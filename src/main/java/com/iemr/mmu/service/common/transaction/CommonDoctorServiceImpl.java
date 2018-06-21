@@ -306,12 +306,12 @@ public class CommonDoctorServiceImpl {
 		return new Gson().toJson(prescriptionData);
 	}
 
-	public PrescriptionDetail getLatestPrescription(Long beneficiaryRegID, Long benVisitID) {
+	/*public PrescriptionDetail getLatestPrescription(Long beneficiaryRegID, Long benVisitID) {
 		ArrayList<Object[]> prescriptions = prescriptionDetailRepo.getBenPrescription(beneficiaryRegID, benVisitID);
 
 		PrescriptionDetail prescriptionData = PrescriptionDetail.getPrescriptions(prescriptions);
 		return prescriptionData;
-	}
+	}*/
 
 	public String getReferralDetails(Long beneficiaryRegID, Long visitCode) {
 		ArrayList<Object[]> resList = benReferDetailsRepo.getBenReferDetails(beneficiaryRegID, visitCode);
@@ -336,6 +336,7 @@ public class CommonDoctorServiceImpl {
 				if (benChiefComplaint.getChiefComplaint() != null) {
 					benChiefComplaint.setBeneficiaryRegID(wrapperAncFindings.getBeneficiaryRegID());
 					benChiefComplaint.setBenVisitID(wrapperAncFindings.getBenVisitID());
+					benChiefComplaint.setVisitCode(wrapperAncFindings.getVisitCode());
 					benChiefComplaint.setProviderServiceMapID(wrapperAncFindings.getProviderServiceMapID());
 					benChiefComplaint.setCreatedBy(wrapperAncFindings.getCreatedBy());
 
@@ -375,7 +376,7 @@ public class CommonDoctorServiceImpl {
 		int recordsAvailable = 0;
 		if (null != benClinicalObservations) {
 			String processed = benClinicalObservationsRepo.getBenClinicalObservationStatus(
-					benClinicalObservations.getBeneficiaryRegID(), benClinicalObservations.getBenVisitID());
+					benClinicalObservations.getBeneficiaryRegID(), benClinicalObservations.getVisitCode());
 
 			if (null != processed) {
 				recordsAvailable = 1;
@@ -391,7 +392,7 @@ public class CommonDoctorServiceImpl {
 						benClinicalObservations.getClinicalObservation(), benClinicalObservations.getOtherSymptoms(),
 						benClinicalObservations.getSignificantFindings(), benClinicalObservations.getIsForHistory(),
 						benClinicalObservations.getCreatedBy(), processed,
-						benClinicalObservations.getBeneficiaryRegID(), benClinicalObservations.getBenVisitID());
+						benClinicalObservations.getBeneficiaryRegID(), benClinicalObservations.getVisitCode());
 			} else {
 				BenClinicalObservations observationsRes = benClinicalObservationsRepo.save(benClinicalObservations);
 				if (null != observationsRes && observationsRes.getClinicalObservationID() > 0) {
@@ -411,7 +412,7 @@ public class CommonDoctorServiceImpl {
 		BenReferDetails referDetailsTemp = null;
 
 		ArrayList<Object[]> benReferDetailsStatuses = benReferDetailsRepo
-				.getBenReferDetailsStatus(referDetails.getBeneficiaryRegID(), referDetails.getBenVisitID());
+				.getBenReferDetailsStatus(referDetails.getBeneficiaryRegID(), referDetails.getVisitCode());
 
 		for (Object[] obj : benReferDetailsStatuses) {
 			String processed = (String) obj[1];

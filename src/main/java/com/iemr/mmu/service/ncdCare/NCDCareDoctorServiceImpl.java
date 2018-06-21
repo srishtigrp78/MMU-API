@@ -35,8 +35,8 @@ public class NCDCareDoctorServiceImpl implements NCDCareDoctorService
 		return res;
 	}
 	
-	public String getNCDCareDiagnosisDetails(Long beneficiaryRegID, Long benVisitID) {
-		ArrayList<Object[]> resList = ncdCareDiagnosisRepo.getNCDCareDiagnosisDetails(beneficiaryRegID, benVisitID);
+	public String getNCDCareDiagnosisDetails(Long beneficiaryRegID, Long visitCode) {
+		ArrayList<Object[]> resList = ncdCareDiagnosisRepo.getNCDCareDiagnosisDetails(beneficiaryRegID, visitCode);
 		NCDCareDiagnosis ncdCareDiagnosisDetails = NCDCareDiagnosis.getNCDCareDiagnosisDetails(resList);
 		return new Gson().toJson(ncdCareDiagnosisDetails);
 	}
@@ -44,7 +44,7 @@ public class NCDCareDoctorServiceImpl implements NCDCareDoctorService
 	public int updateBenNCDCareDiagnosis(NCDCareDiagnosis ncdCareDiagnosis, Long prescriptionID) throws IEMRException {
 		int res = 0;
 		int recordsAvailable = 0;
-		String processed = ncdCareDiagnosisRepo.getNCDCareDiagnosisStatus(ncdCareDiagnosis.getBeneficiaryRegID(), ncdCareDiagnosis.getBenVisitID());
+		String processed = ncdCareDiagnosisRepo.getNCDCareDiagnosisStatus(ncdCareDiagnosis.getBeneficiaryRegID(), ncdCareDiagnosis.getVisitCode());
 		
 		if (null != processed) {
 			recordsAvailable = 1;
@@ -59,7 +59,7 @@ public class NCDCareDoctorServiceImpl implements NCDCareDoctorService
 			ncdCareDiagnosis.setModifiedBy(ncdCareDiagnosis.getCreatedBy());
 			res = ncdCareDiagnosisRepo.updateNCDCareDiagnosis(ncdCareDiagnosis.getNcdCareCondition(), ncdCareDiagnosis.getNcdComplication(), 
 					ncdCareDiagnosis.getNcdCareType(), ncdCareDiagnosis.getModifiedBy(), processed, ncdCareDiagnosis.getBeneficiaryRegID(), 
-					ncdCareDiagnosis.getBenVisitID());
+					ncdCareDiagnosis.getVisitCode());
 		}else{
 			ncdCareDiagnosis.setPrescriptionID(prescriptionID);
 			NCDCareDiagnosis ncdCareDiagnosisRes  = ncdCareDiagnosisRepo.save(ncdCareDiagnosis);

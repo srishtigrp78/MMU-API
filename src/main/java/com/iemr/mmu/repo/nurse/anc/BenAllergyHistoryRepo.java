@@ -31,7 +31,7 @@ public interface BenAllergyHistoryRepo extends CrudRepository<BenAllergyHistory,
 	@Query("Update BenAllergyHistory set deleted=true, processed=:processed WHERE ID = :ID")
 	public int deleteExistingBenAllergyHistory(@Param("ID") Long ID, @Param("processed") String processed);
 	
-	@Query("SELECT ID, processed from BenAllergyHistory where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID AND deleted=false")
+	@Query("SELECT ID, processed from BenAllergyHistory where beneficiaryRegID=:benRegID AND visitCode = :visitCode AND deleted=false")
 	public ArrayList<Object[]> getBenAllergyHistoryStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 }

@@ -44,7 +44,7 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 		int res = 0;
 		int recordsAvailable = 0;
 		String processed = ancDiagnosisRepo.getANCDiagnosisStatus(ancDiagnosis.getBeneficiaryRegID(),
-				ancDiagnosis.getBenVisitID());
+				ancDiagnosis.getVisitCode());
 
 		if (null != processed) {
 			recordsAvailable = 1;
@@ -61,7 +61,7 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 					ancDiagnosis.getHighRiskCondition(), ancDiagnosis.getComplicationOfCurrentPregnancy(),
 					ancDiagnosis.getIsMaternalDeath(), ancDiagnosis.getPlaceOfDeath(), ancDiagnosis.getDateOfDeath(),
 					ancDiagnosis.getCauseOfDeath(), ancDiagnosis.getModifiedBy(), processed,
-					ancDiagnosis.getBeneficiaryRegID(), ancDiagnosis.getBenVisitID());
+					ancDiagnosis.getBeneficiaryRegID(), ancDiagnosis.getVisitCode());
 		} else {
 			ancDiagnosis.setPrescriptionID(prescriptionID);
 			ANCDiagnosis ancDiagnosisRes = ancDiagnosisRepo.save(ancDiagnosis);

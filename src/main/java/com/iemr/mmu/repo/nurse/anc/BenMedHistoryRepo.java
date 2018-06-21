@@ -32,9 +32,9 @@ public interface BenMedHistoryRepo extends CrudRepository<BenMedHistory, Long> {
 	@Query(" update BenMedHistory set deleted=true, processed=:processed WHERE benMedHistoryID = :benMedHistoryID")
 	public int deleteExistingBenMedHistory(@Param("benMedHistoryID") Long benMedHistoryID, @Param("processed") String processed);
 
-	@Query("SELECT benMedHistoryID, processed from BenMedHistory where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID AND deleted=false")
+	@Query("SELECT benMedHistoryID, processed from BenMedHistory where beneficiaryRegID=:benRegID AND visitCode = :visitCode AND deleted=false")
 	public ArrayList<Object[]> getBenMedHistoryStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 
 	
 }

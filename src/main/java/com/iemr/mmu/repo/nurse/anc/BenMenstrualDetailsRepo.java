@@ -26,9 +26,9 @@ public interface BenMenstrualDetailsRepo extends CrudRepository<BenMenstrualDeta
 	public ArrayList<Object[]> getBenMenstrualDetail(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 	
 
-	@Query("SELECT processed from BenAnthropometryDetail where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	@Query("SELECT processed from BenAnthropometryDetail where beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public String getBenMenstrualDetailStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 
 	
 	@Transactional
@@ -37,7 +37,7 @@ public interface BenMenstrualDetailsRepo extends CrudRepository<BenMenstrualDeta
 			+ "regularity=:regularity,  menstrualCyclelengthID=:menstrualCyclelengthID, cycleLength=:cycleLength,"
 			+ " bloodFlowDuration=:bloodFlowDuration, menstrualProblemID=:menstrualProblemID, problemName=:problemName, lMPDate=:lMPDate,"
 			+ " menstrualFlowDurationID=:menstrualFlowDurationID,  modifiedBy=:modifiedBy, processed=:processed where "
-			+ "beneficiaryRegID=:beneficiaryRegID AND benVisitID = :benVisitID")
+			+ "beneficiaryRegID=:beneficiaryRegID AND visitCode = :visitCode")
 	public int updateMenstrualDetails(
 			@Param("menstrualCycleStatusID") Short menstrualCycleStatusID,
 			@Param("menstrualCycleStatus") String menstrualCycleStatus,
@@ -52,5 +52,5 @@ public interface BenMenstrualDetailsRepo extends CrudRepository<BenMenstrualDeta
 			@Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed,
 			@Param("beneficiaryRegID") Long beneficiaryRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 }

@@ -1342,35 +1342,35 @@ public class PNCServiceImpl implements PNCService {
 		return pncSuccessFlag;
 	}
 
-	public String getBenPNCNurseData(Long benRegID, Long benVisitID) {
+	public String getBenPNCNurseData(Long benRegID, Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
 
-		resMap.put("pnc", getBenPNCDetailsFrmNursePNC(benRegID, benVisitID));
+		resMap.put("pnc", getBenPNCDetailsFrmNursePNC(benRegID, visitCode));
 
-		resMap.put("history", getBenHistoryDetails(benRegID, benVisitID));
+		resMap.put("history", getBenHistoryDetails(benRegID, visitCode));
 
-		resMap.put("vitals", getBeneficiaryVitalDetails(benRegID, benVisitID));
+		resMap.put("vitals", getBeneficiaryVitalDetails(benRegID, visitCode));
 
-		resMap.put("examination", getPNCExaminationDetailsData(benRegID, benVisitID));
+		resMap.put("examination", getPNCExaminationDetailsData(benRegID, visitCode));
 
 		return resMap.toString();
 	}
 
-	public String getBenCaseRecordFromDoctorPNC(Long benRegID, Long benVisitID) {
+	public String getBenCaseRecordFromDoctorPNC(Long benRegID, Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
 
-		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, benVisitID));
+		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, visitCode));
 
-		resMap.put("diagnosis", pncDoctorServiceImpl.getPNCDiagnosisDetails(benRegID, benVisitID));
+		resMap.put("diagnosis", pncDoctorServiceImpl.getPNCDiagnosisDetails(benRegID, visitCode));
 
-		resMap.put("investigation", commonDoctorServiceImpl.getInvestigationDetails(benRegID, benVisitID));
+		resMap.put("investigation", commonDoctorServiceImpl.getInvestigationDetails(benRegID, visitCode));
 
-		resMap.put("prescription", commonDoctorServiceImpl.getPrescribedDrugs(benRegID, benVisitID));
+		resMap.put("prescription", commonDoctorServiceImpl.getPrescribedDrugs(benRegID, visitCode));
 
-		resMap.put("Refer", commonDoctorServiceImpl.getReferralDetails(benRegID, benVisitID));
+		resMap.put("Refer", commonDoctorServiceImpl.getReferralDetails(benRegID, visitCode));
 
 		resMap.put("LabReport",
-				new Gson().toJson(labTechnicianServiceImpl.getLabResultDataForBen(benRegID, benVisitID)));
+				new Gson().toJson(labTechnicianServiceImpl.getLabResultDataForBen(benRegID, visitCode)));
 
 		resMap.put("GraphData", new Gson().toJson(commonNurseServiceImpl.getGraphicalTrendData(benRegID, "pnc")));
 

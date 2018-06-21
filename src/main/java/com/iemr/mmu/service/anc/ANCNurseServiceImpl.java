@@ -277,7 +277,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		int r = 0;
 
 		String processed = ancCareRepo.getBenANCCareDetailsStatus(ancCareDetailsOBJ.getBeneficiaryRegID(),
-				ancCareDetailsOBJ.getBenVisitID());
+				ancCareDetailsOBJ.getVisitCode());
 		if (null != processed && !"N".equals(processed)) {
 			processed = "U";
 		} else {
@@ -305,7 +305,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 				ancCareDetailsOBJ.getPretermDeliveries_P(), ancCareDetailsOBJ.getAbortions_A(),
 				ancCareDetailsOBJ.getLivebirths_L(), ancCareDetailsOBJ.getBloodGroup(),
 				ancCareDetailsOBJ.getModifiedBy(), processed, ancCareDetailsOBJ.getBeneficiaryRegID(),
-				ancCareDetailsOBJ.getBenVisitID());
+				ancCareDetailsOBJ.getVisitCode());
 		return r;
 	}
 
@@ -320,7 +320,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 			String processed = "N";
 			ANCWomenVaccineDetail ancWomenVaccine = ancWomenVaccineDetailList.get(0);
 			ArrayList<Object[]> ancWomenVaccineStatuses = ancWomenVaccineRepo.getBenANCWomenVaccineStatus(
-					ancWomenVaccine.getBeneficiaryRegID(), ancWomenVaccine.getBenVisitID());
+					ancWomenVaccine.getBeneficiaryRegID(), ancWomenVaccine.getVisitCode());
 			Map<String, String> womenVaccineStatuses = new HashMap<String, String>();
 
 			for (Object[] obj : ancWomenVaccineStatuses) {
@@ -338,7 +338,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 				r = ancWomenVaccineRepo.updateANCImmunizationDetails(ancWomenVaccineDetail.getStatus(),
 						ancWomenVaccineDetail.getReceivedDate(), ancWomenVaccineDetail.getReceivedFacilityName(),
 						ancWomenVaccineDetail.getModifiedBy(), processed, ancWomenVaccineDetail.getBeneficiaryRegID(),
-						ancWomenVaccineDetail.getBenVisitID(), ancWomenVaccineDetail.getVaccineName());
+						ancWomenVaccineDetail.getVisitCode(), ancWomenVaccineDetail.getVaccineName());
 
 			}
 		}
@@ -351,7 +351,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		int r = 0;
 		if (null != obstetricExamination) {
 			String processed = sysObstetricExaminationRepo.getBenObstetricExaminationStatus(
-					obstetricExamination.getBeneficiaryRegID(), obstetricExamination.getBenVisitID());
+					obstetricExamination.getBeneficiaryRegID(), obstetricExamination.getVisitCode());
 			if (null != processed && !"N".equals(processed)) {
 				processed = "U";
 			} else {
@@ -363,7 +363,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 					obstetricExamination.getFetalHeartRate_BeatsPerMinute(),
 					obstetricExamination.getFetalPositionOrLie(), obstetricExamination.getFetalPresentation(),
 					obstetricExamination.getAbdominalScars(), obstetricExamination.getModifiedBy(), processed,
-					obstetricExamination.getBeneficiaryRegID(), obstetricExamination.getBenVisitID());
+					obstetricExamination.getBeneficiaryRegID(), obstetricExamination.getVisitCode());
 		}
 		return r;
 	}

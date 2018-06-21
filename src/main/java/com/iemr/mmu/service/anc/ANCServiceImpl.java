@@ -1505,7 +1505,8 @@ public class ANCServiceImpl implements ANCService {
 								tmpObj.setBenVisitID(tmpOBJ.get("benVisitID").getAsLong());
 							if (tmpOBJ.has("createdBy") && null != tmpOBJ.get("createdBy"))
 								tmpObj.setCreatedBy(tmpOBJ.get("createdBy").getAsString());
-
+							if (tmpOBJ.has("visitCode") && null != tmpOBJ.get("visitCode"))
+								tmpObj.setVisitCode(tmpOBJ.get("visitCode").getAsLong());
 							Map<String, String> drug = tmpObj.getDrug();
 							if (null != drug && drug.size() > 0 && drug.containsKey("drugID")
 									&& drug.containsKey("drugDisplayName")) {

@@ -69,7 +69,7 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 					+ " WHERE t.benFlowID = :benFlowID AND "
 			+ " t.beneficiaryRegID = :benRegID AND t.beneficiaryID = :benID ")
 	public int updateBenFlowStatusAfterDoctorActivity(@Param("benFlowID") Long benFlowID,
-			@Param("benRegID") Long benRegID, @Param("benID") Long benID, @Param("benVisitID") Long benVisitID,
+			@Param("benRegID") Long benRegID, @Param("benID") Long benID,
 			@Param("docFlag") Short docFlag, @Param("pharmaFlag") Short pharmaFlag,
 			@Param("oncologistFlag") Short oncologistFlag);
 
@@ -79,7 +79,7 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			+ " t.oncologist_flag = :oncologistFlag " + " WHERE t.benFlowID = :benFlowID AND "
 			+ " t.beneficiaryRegID = :benRegID AND t.beneficiaryID = :benID ")
 	public int updateBenFlowStatusAfterDoctorActivityUpdate(@Param("benFlowID") Long benFlowID,
-			@Param("benRegID") Long benRegID, @Param("benID") Long benID, @Param("benVisitID") Long benVisitID,
+			@Param("benRegID") Long benRegID, @Param("benID") Long benID,
 			@Param("docFlag") Short docFlag, @Param("pharmaFlag") Short pharmaFlag,
 			@Param("oncologistFlag") Short oncologistFlag);
 
@@ -109,7 +109,7 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	@Query("UPDATE BeneficiaryFlowStatus t set t.nurseFlag = :nurseFlag, t.doctorFlag = :doctorFlag, t.lab_technician_flag = :labFlag "
 			+ " WHERE t.benFlowID = :benFlowID AND t.beneficiaryRegID = :benRegID ")
 	public int updateBenFlowStatusAfterLabResultEntry(@Param("benFlowID") Long benFlowID,
-			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID, @Param("nurseFlag") Short nurseFlag,
+			@Param("benRegID") Long benRegID,  @Param("nurseFlag") Short nurseFlag,
 			@Param("doctorFlag") Short doctorFlag, @Param("labFlag") Short labFlag);
 
 }

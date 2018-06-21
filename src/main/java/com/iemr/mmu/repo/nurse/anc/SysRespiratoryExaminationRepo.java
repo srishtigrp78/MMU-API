@@ -19,9 +19,9 @@ public interface SysRespiratoryExaminationRepo extends CrudRepository<SysRespira
 			@Param("visitCode") Long  visitCode);
 	
 
-	@Query("SELECT processed from SysRespiratoryExamination where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	@Query("SELECT processed from SysRespiratoryExamination where beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public String getBenRespiratoryExaminationStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 	@Transactional
 	@Modifying
@@ -30,7 +30,7 @@ public interface SysRespiratoryExaminationRepo extends CrudRepository<SysRespira
 			+ "auscultation_Stridor=:auscultation_Stridor, auscultation_BreathSounds=:auscultation_BreathSounds, auscultation_Crepitations =:auscultation_Crepitations,"
 			+ "auscultation_Wheezing =:auscultation_Wheezing, auscultation_PleuralRub=:auscultation_PleuralRub, "
 			+ "auscultation_ConductedSounds=:auscultation_ConductedSounds, percussion=:percussion, modifiedBy=:modifiedBy, processed=:processed "
-			+ "where beneficiaryRegID=:benRegID and benVisitID = :benVisitID ")
+			+ "where beneficiaryRegID=:benRegID and visitCode = :visitCode ")
 	public int updateSysRespiratoryExamination(@Param("trachea") String trachea,
 			@Param("inspection") String inspection,
 			@Param("signsOfRespiratoryDistress") String signsOfRespiratoryDistress,
@@ -46,6 +46,6 @@ public interface SysRespiratoryExaminationRepo extends CrudRepository<SysRespira
 			@Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed,
 			@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 }

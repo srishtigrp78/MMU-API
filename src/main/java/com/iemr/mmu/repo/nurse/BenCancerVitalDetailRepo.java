@@ -23,7 +23,7 @@ public interface BenCancerVitalDetailRepo extends CrudRepository<BenCancerVitalD
 			+ "diastolicBP_1stReading=:diastolicBP_1stReading, systolicBP_2ndReading=:systolicBP_2ndReading, diastolicBP_2ndReading=:diastolicBP_2ndReading,"
 			+ " systolicBP_3rdReading=:systolicBP_3rdReading, diastolicBP_3rdReading=:diastolicBP_3rdReading, hbA1C=:hbA1C, hemoglobin=:hemoglobin, "
 			+ " modifiedBy=:modifiedBy, processed=:processed where  "
-			+ "  beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+			+ "  beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public int updateBenCancerVitalDetail(@Param("providerServiceMapID") Integer providerServiceMapID,
 			@Param("weight_Kg") Double weight_Kg, @Param("height_cm") Double height_cm,
 			@Param("waistCircumference_cm") Double waistCircumference_cm,
@@ -37,7 +37,7 @@ public interface BenCancerVitalDetailRepo extends CrudRepository<BenCancerVitalD
 			@Param("systolicBP_3rdReading") Short systolicBP_3rdReading,
 			@Param("diastolicBP_3rdReading") Short diastolicBP_3rdReading, @Param("hbA1C") Short hbA1C,
 			@Param("hemoglobin") Short hemoglobin, @Param("modifiedBy") String modifiedBy,
-			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID,
+			@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode,
 			@Param("processed") String processed);
 
 	@Query(" SELECT bvd from BenCancerVitalDetail bvd WHERE bvd.beneficiaryRegID = :benRegID AND bvd.deleted = false AND bvd.visitCode = :visitCode")
@@ -50,8 +50,8 @@ public interface BenCancerVitalDetailRepo extends CrudRepository<BenCancerVitalD
 	public BenCancerVitalDetail getBenCancerVitalDetail(@Param("benRegID") Long benRegID,
 			@Param("benVisitID") Long benVisitID, @Param("createdDate") Date createdDate);
 
-	@Query("SELECT processed from BenCancerVitalDetail where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
-	public String getCancerVitalStatus(@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID);
+	@Query("SELECT processed from BenCancerVitalDetail where beneficiaryRegID=:benRegID AND visitCode = :visitCode")
+	public String getCancerVitalStatus(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 	
 	@Query(" SELECT bvd from BenCancerVitalDetail bvd WHERE bvd.benVisitID IN :visitIDList ")
 	public ArrayList<BenCancerVitalDetail> getBenCancerVitalDetailForGraph(@Param("visitIDList") ArrayList<Long> visitIDList);

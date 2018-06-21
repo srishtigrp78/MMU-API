@@ -26,16 +26,16 @@ public interface BenClinicalObservationsRepo extends CrudRepository<BenClinicalO
 	public ArrayList<Object[]> getFindingsData(@Param("benRegID") Long benRegID,
 			@Param("visitCode") Long visitCode);
 	
-	@Query("SELECT processed from BenClinicalObservations where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID")
+	@Query("SELECT processed from BenClinicalObservations where beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public String getBenClinicalObservationStatus(@Param("benRegID") Long benRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 	
 	@Transactional
 	@Modifying
 	@Query("update BenClinicalObservations set clinicalObservation=:clinicalObservation, otherSymptoms=:otherSymptoms, "
 			+ "significantFindings=:significantFindings, isForHistory=:isForHistory, "
 			+ "  modifiedBy=:modifiedBy, processed=:processed where "
-			+ "beneficiaryRegID=:beneficiaryRegID AND benVisitID = :benVisitID")
+			+ "beneficiaryRegID=:beneficiaryRegID AND visitCode = :visitCode")
 	public int updateBenClinicalObservations(
 			@Param("clinicalObservation") String clinicalObservation,
 			@Param("otherSymptoms") String otherSymptoms,
@@ -44,5 +44,5 @@ public interface BenClinicalObservationsRepo extends CrudRepository<BenClinicalO
 			@Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed,
 			@Param("beneficiaryRegID") Long beneficiaryRegID,
-			@Param("benVisitID") Long benVisitID);
+			@Param("visitCode") Long visitCode);
 }
