@@ -465,10 +465,11 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 			short docFlag;
 			short labFalg;
 
-			Long tmpBenFlowID = quickConsultDoctorOBJ.get("benFlowID").getAsLong();
-			Long tmpBeneficiaryID = quickConsultDoctorOBJ.get("beneficiaryID").getAsLong();
-			Long tmpBenVisitID = quickConsultDoctorOBJ.get("benVisitID").getAsLong();
-			Long tmpbeneficiaryRegID = quickConsultDoctorOBJ.get("beneficiaryRegID").getAsLong();
+			Long tmpBenFlowID = commonUtilityClass.getBenFlowID();
+			Long tmpBeneficiaryID = commonUtilityClass.getBeneficiaryID();
+			Long tmpBenVisitID = commonUtilityClass.getBenVisitID();
+			Long tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
+
 
 			// new logic on 25-04-2018
 			if (testList != null && !testList.isJsonNull() && testList.size() > 0) {

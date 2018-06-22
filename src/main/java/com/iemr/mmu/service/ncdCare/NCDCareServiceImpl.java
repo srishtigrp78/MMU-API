@@ -1128,6 +1128,8 @@ public class NCDCareServiceImpl implements NCDCareService {
 		String createdBy = null;
 		if (requestOBJ != null) {
 
+			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
+
 			JsonArray testList = null;
 			JsonArray drugList = null;
 			if (requestOBJ.has("investigation")) {
@@ -1163,7 +1165,8 @@ public class NCDCareServiceImpl implements NCDCareService {
 							wrapperBenInvestigationANC.getBenVisitID(),
 							wrapperBenInvestigationANC.getProviderServiceMapID(),
 							wrapperBenInvestigationANC.getCreatedBy(),
-							wrapperBenInvestigationANC.getExternalInvestigations(), wrapperBenInvestigationANC.getVisitCode());
+							wrapperBenInvestigationANC.getExternalInvestigations(),
+							wrapperBenInvestigationANC.getVisitCode());
 
 					// bvID = wrapperBenInvestigationANC.getBenVisitID();
 
@@ -1200,13 +1203,13 @@ public class NCDCareServiceImpl implements NCDCareService {
 							tmpObj.setPrescriptionID(prescriptionID);
 							// tmpObj.setCreatedBy(createdBy);
 							if (tmpOBJ.has("beneficiaryRegID") && null != tmpOBJ.get("beneficiaryRegID"))
-								tmpObj.setBeneficiaryRegID(tmpOBJ.get("beneficiaryRegID").getAsLong());
+								tmpObj.setBeneficiaryRegID(commonUtilityClass.getBeneficiaryRegID());
 							if (tmpOBJ.has("benVisitID") && null != tmpOBJ.get("benVisitID"))
-								tmpObj.setBenVisitID(tmpOBJ.get("benVisitID").getAsLong());
+								tmpObj.setBenVisitID(commonUtilityClass.getBenVisitID());
 							if (tmpOBJ.has("createdBy") && null != tmpOBJ.get("createdBy"))
 								tmpObj.setCreatedBy(tmpOBJ.get("createdBy").getAsString());
 							if (tmpOBJ.has("visitCode") && null != tmpOBJ.get("visitCode"))
-								tmpObj.setVisitCode(tmpOBJ.get("visitCode").getAsLong());
+								tmpObj.setVisitCode(commonUtilityClass.getVisitCode());
 							Map<String, String> drug = tmpObj.getDrug();
 							if (null != drug && drug.size() > 0 && drug.containsKey("drugID")
 									&& drug.containsKey("drugDisplayName")) {
@@ -1246,10 +1249,10 @@ public class NCDCareServiceImpl implements NCDCareService {
 				short docFlag;
 				short labFalg;
 
-				Long tmpBenFlowID = requestOBJ.get("benFlowID").getAsLong();
-				Long tmpBeneficiaryID = requestOBJ.get("beneficiaryID").getAsLong();
-				Long tmpBenVisitID = requestOBJ.getAsJsonObject("diagnosis").get("benVisitID").getAsLong();
-				Long tmpbeneficiaryRegID = requestOBJ.getAsJsonObject("diagnosis").get("beneficiaryRegID").getAsLong();
+				Long tmpBenFlowID = commonUtilityClass.getBenFlowID();
+				Long tmpBeneficiaryID = commonUtilityClass.getBeneficiaryID();
+				Long tmpBenVisitID = commonUtilityClass.getBenVisitID();
+				Long tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
 
 				// new logic on 25-04-2018
 				if (testList != null && !testList.isJsonNull() && testList.size() > 0) {

@@ -465,7 +465,8 @@ public class PNCServiceImpl implements PNCService {
 	 * @param requestOBJ
 	 * @return success or failure flag for visitDetails data saving
 	 */
-	public Long saveBenPNCHistoryDetails(JsonObject pncHistoryOBJ, Long benVisitID, Long benVisitCode) throws Exception {
+	public Long saveBenPNCHistoryDetails(JsonObject pncHistoryOBJ, Long benVisitID, Long benVisitCode)
+			throws Exception {
 		Long pastHistorySuccessFlag = null;
 		Long comrbidSuccessFlag = null;
 		Long medicationSuccessFlag = null;
@@ -651,7 +652,8 @@ public class PNCServiceImpl implements PNCService {
 	 * @param requestOBJ
 	 * @return success or failure flag for vitalDetails data saving
 	 */
-	public Long saveBenPNCVitalDetails(JsonObject vitalDetailsOBJ, Long benVisitID, Long benVisitCode) throws Exception {
+	public Long saveBenPNCVitalDetails(JsonObject vitalDetailsOBJ, Long benVisitID, Long benVisitCode)
+			throws Exception {
 		Long vitalSuccessFlag = null;
 		Long anthropometrySuccessFlag = null;
 		Long phyVitalSuccessFlag = null;
@@ -689,7 +691,8 @@ public class PNCServiceImpl implements PNCService {
 	 * @param requestOBJ
 	 * @return success or failure flag for examinationDetails data saving
 	 */
-	public Long saveBenExaminationDetails(JsonObject examinationDetailsOBJ, Long benVisitID, Long benVisitCode) throws Exception {
+	public Long saveBenExaminationDetails(JsonObject examinationDetailsOBJ, Long benVisitID, Long benVisitCode)
+			throws Exception {
 
 		Long genExmnSuccessFlag = null;
 		Long headToToeExmnSuccessFlag = null;
@@ -1390,6 +1393,8 @@ public class PNCServiceImpl implements PNCService {
 		String createdBy = null;
 		if (requestOBJ != null) {
 
+			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
+
 			JsonArray testList = null;
 			JsonArray drugList = null;
 			if (requestOBJ.has("investigation")) {
@@ -1425,7 +1430,8 @@ public class PNCServiceImpl implements PNCService {
 							wrapperBenInvestigationANC.getBenVisitID(),
 							wrapperBenInvestigationANC.getProviderServiceMapID(),
 							wrapperBenInvestigationANC.getCreatedBy(),
-							wrapperBenInvestigationANC.getExternalInvestigations(), Long.valueOf("00000000000000"));
+							wrapperBenInvestigationANC.getExternalInvestigations(),
+							wrapperBenInvestigationANC.getVisitCode());
 
 					// bvID = wrapperBenInvestigationANC.getBenVisitID();
 
@@ -1462,9 +1468,11 @@ public class PNCServiceImpl implements PNCService {
 							tmpObj.setPrescriptionID(prescriptionID);
 							// tmpObj.setCreatedBy(createdBy);
 							if (tmpOBJ.has("beneficiaryRegID") && null != tmpOBJ.get("beneficiaryRegID"))
-								tmpObj.setBeneficiaryRegID(tmpOBJ.get("beneficiaryRegID").getAsLong());
+								tmpObj.setBeneficiaryRegID(commonUtilityClass.getBeneficiaryRegID());
 							if (tmpOBJ.has("benVisitID") && null != tmpOBJ.get("benVisitID"))
-								tmpObj.setBenVisitID(tmpOBJ.get("benVisitID").getAsLong());
+								tmpObj.setBenVisitID(commonUtilityClass.getBenVisitID());
+							if (tmpOBJ.has("visitCode") && null != tmpOBJ.get("visitCode"))
+								tmpObj.setVisitCode(commonUtilityClass.getVisitCode());
 							if (tmpOBJ.has("createdBy") && null != tmpOBJ.get("createdBy"))
 								tmpObj.setCreatedBy(tmpOBJ.get("createdBy").getAsString());
 
@@ -1507,10 +1515,11 @@ public class PNCServiceImpl implements PNCService {
 				short docFlag;
 				short labFalg;
 
-				Long tmpBenFlowID = requestOBJ.get("benFlowID").getAsLong();
-				Long tmpBeneficiaryID = requestOBJ.get("beneficiaryID").getAsLong();
-				Long tmpBenVisitID = requestOBJ.getAsJsonObject("diagnosis").get("benVisitID").getAsLong();
-				Long tmpbeneficiaryRegID = requestOBJ.getAsJsonObject("diagnosis").get("beneficiaryRegID").getAsLong();
+				Long tmpBenFlowID = commonUtilityClass.getBenFlowID();
+				Long tmpBeneficiaryID = commonUtilityClass.getBeneficiaryID();
+				Long tmpBenVisitID = commonUtilityClass.getBenVisitID();
+				Long tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
+
 
 				// new logic on 25-04-2018
 				if (testList != null && !testList.isJsonNull() && testList.size() > 0) {
