@@ -44,6 +44,11 @@ public class BenChiefComplaint {
 	@Expose
 	@Column(name = "ChiefComplaint")
 	private String chiefComplaint;
+	
+	@Expose
+	@Column(name = "SCTCode")
+	private String conceptID;
+	
 	@Expose
 	@Column(name = "Duration")
 	private Integer duration;
@@ -110,7 +115,7 @@ public class BenChiefComplaint {
 	
 	public BenChiefComplaint(Long benChiefComplaintID, Long beneficiaryRegID, Long benVisitID,
 			Integer providerServiceMapID, Integer chiefComplaintID, String chiefComplaint, Integer duration,
-			String unitOfDuration, String description, Long visitCode) {
+			String unitOfDuration, String description, Long visitCode, String conceptID) {
 		super();
 		this.benChiefComplaintID = benChiefComplaintID;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -122,6 +127,7 @@ public class BenChiefComplaint {
 		this.duration = duration;
 		this.unitOfDuration = unitOfDuration;
 		this.description = description;
+		this.conceptID = conceptID;
 	}
 
 
@@ -130,7 +136,7 @@ public class BenChiefComplaint {
 		BenChiefComplaint cOBJ = null;
 		for(Object[] obj:resList){		
 			cOBJ = new BenChiefComplaint((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (Integer)obj[4],
-					(String)obj[5], (Integer)obj[6], (String)obj[7], (String)obj[8], (Long)obj[9]);
+					(String)obj[5], (Integer)obj[6], (String)obj[7], (String)obj[8], (Long)obj[9],  (String)obj[10]);
 			resArray.add(cOBJ);
 		}
 		return resArray;
@@ -317,14 +323,21 @@ public class BenChiefComplaint {
 		this.benChiefComplaintID = benChiefComplaintID;
 	}
 
+	public String getConceptID() {
+		return conceptID;
+	}
+
+	public void setConceptID(String conceptID) {
+		this.conceptID = conceptID;
+	}
 
 	public static ArrayList<BenChiefComplaint> getBenChiefComplaintList(JsonObject emrgCasesheet) {
 		ArrayList<BenChiefComplaint> resArray = new ArrayList<>();
 		BenChiefComplaint benChiefComplaint = null;
 		//System.out.println("ello");
-		if (emrgCasesheet.has("benChiefComplaint") && !emrgCasesheet.get("benChiefComplaint").isJsonNull()
-				&& emrgCasesheet.get("benChiefComplaint").isJsonArray()) {
-			for (JsonElement csobj : emrgCasesheet.getAsJsonArray("benChiefComplaint")) {
+		if (emrgCasesheet.has("chiefComplaintList") && !emrgCasesheet.get("chiefComplaintList").isJsonNull()
+				&& emrgCasesheet.get("chiefComplaintList").isJsonArray()) {
+			for (JsonElement csobj : emrgCasesheet.getAsJsonArray("chiefComplaintList")) {
 				benChiefComplaint = new BenChiefComplaint();
 
 				if (emrgCasesheet.has("benVisitID") && !emrgCasesheet.get("benVisitID").isJsonNull())
@@ -354,8 +367,14 @@ public class BenChiefComplaint {
 				if (obj.has("unitOfDuration") && !obj.get("unitOfDuration").isJsonNull())
 					benChiefComplaint.setUnitOfDuration(obj.get("unitOfDuration").getAsString());
 
-				if (emrgCasesheet.has("description") && !emrgCasesheet.get("description").isJsonNull())
-					benChiefComplaint.setDescription(emrgCasesheet.get("description").getAsString());
+				if (obj.has("description") && !obj.get("description").isJsonNull())
+					benChiefComplaint.setDescription(obj.get("description").getAsString());
+				
+				if (obj.has("conceptID") && !obj.get("conceptID").isJsonNull())
+					benChiefComplaint.setConceptID(obj.get("conceptID").getAsString());
+				
+				/*if (emrgCasesheet.has("description") && !emrgCasesheet.get("description").isJsonNull())
+					benChiefComplaint.setDescription(emrgCasesheet.get("description").getAsString());*/
 
 				if (emrgCasesheet.has("createdBy") && !emrgCasesheet.get("createdBy").isJsonNull())
 					benChiefComplaint.setCreatedBy(emrgCasesheet.get("createdBy").getAsString());

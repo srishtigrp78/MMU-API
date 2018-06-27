@@ -16,7 +16,7 @@ import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 public interface BenChiefComplaintRepo extends CrudRepository<BenChiefComplaint, Long> {
 
 	@Query(" SELECT benChiefComplaintID, beneficiaryRegID, benVisitID, providerServiceMapID, chiefComplaintID, chiefComplaint, "
-			+ "duration, unitOfDuration, description, visitCode "
+			+ "duration, unitOfDuration, description, visitCode,conceptID "
 			+ "from BenChiefComplaint ba WHERE ba.beneficiaryRegID = :benRegID "
 			+ " AND ba.deleted = false AND ba.chiefComplaintID is not null AND ba.visitCode = :visitCode")
 	public ArrayList<Object[]> getBenChiefComplaints(@Param("benRegID") Long benRegID,
