@@ -1,5 +1,7 @@
 package com.iemr.mmu.data.labModule;
 
+import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -148,6 +150,37 @@ public class LabResultEntry {
 	@Transient
 	private ArrayList<Map<String, Object>> componentList;
 
+	@Expose
+	@Transient
+	private Date date;
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public LabResultEntry(Long visitCode, Date createdDate) {
+		super();
+		this.visitCode = visitCode;
+		this.date = createdDate;
+	}
+
+	public static ArrayList<LabResultEntry> getVisitCodeAndDate(ArrayList<Object[]> resultSetArr) {
+		LabResultEntry obj;
+		ArrayList<LabResultEntry> returnArr = new ArrayList<>();
+		if (resultSetArr.size() > 0) {
+			for (Object[] arr : resultSetArr) {
+				BigInteger vCode = (BigInteger) arr[0];
+				obj = new LabResultEntry(vCode.longValue(), (Date) arr[1]);
+				returnArr.add(obj);
+			}
+		}
+		return returnArr;
+	}
+
 	public ArrayList<Map<String, Object>> getComponentList() {
 		return componentList;
 	}
@@ -194,7 +227,7 @@ public class LabResultEntry {
 					tmpOBJ.setCreatedDate(obj.getCreatedDate());
 
 					compDetails = new HashMap<String, Object>();
-					//compDetails.put("resultEntryDate", obj.getCreatedDate());
+					// compDetails.put("resultEntryDate", obj.getCreatedDate());
 					compDetails.put("testComponentID", obj.getTestComponentID());
 					compDetails.put("componentName", obj.getTestComponentMaster().getTestComponentName());
 					compDetails.put("testResultValue", obj.getTestResultValue());
@@ -210,7 +243,7 @@ public class LabResultEntry {
 
 				} else {
 					compDetails = new HashMap<String, Object>();
-					//compDetails.put("resultEntryDate", obj.getCreatedDate());
+					// compDetails.put("resultEntryDate", obj.getCreatedDate());
 					compDetails.put("testComponentID", obj.getTestComponentID());
 					compDetails.put("componentName", obj.getTestComponentMaster().getTestComponentName());
 					compDetails.put("testResultValue", obj.getTestResultValue());

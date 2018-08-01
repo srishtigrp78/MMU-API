@@ -10,12 +10,12 @@ import org.springframework.stereotype.Repository;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 
 @Repository
-public interface PrescribedDrugDetailRepo extends CrudRepository<PrescribedDrugDetail, Long>{
+public interface PrescribedDrugDetailRepo extends CrudRepository<PrescribedDrugDetail, Long> {
 
-	
-	@Query(" SELECT prescribedDrugID, prescriptionID, drugForm, drugTradeOrBrandName, drugID, genericDrugName, "
-			+ "drugStrength, dose, route, frequency, drugDuration, drugDurationUnit, relationToFood, specialInstruction "
-			+ "from PrescribedDrugDetail ba WHERE ba.beneficiaryRegID =:beneficiaryRegID  and ba.visitCode=:visitCode"
-			+ " and deleted = false")
-	public ArrayList<Object[]> getBenPrescribedDrugDetails(@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("visitCode") Long visitCode);
+	@Query(" SELECT id, prescriptionID, formName, drugTradeOrBrandName, drugID, drugName, "
+			+ " drugStrength, dose, route, frequency, duration, unit, relationToFood, instructions "
+			+ " FROM PrescribedDrugDetail  WHERE beneficiaryRegID =:beneficiaryRegID "
+			+ " AND visitCode=:visitCode AND deleted = false ")
+	public ArrayList<Object[]> getBenPrescribedDrugDetails(@Param("beneficiaryRegID") Long beneficiaryRegID,
+			@Param("visitCode") Long visitCode);
 }

@@ -26,8 +26,8 @@ public class DrugDoseMaster {
 	@Column(name = "DrugDoseDesc")
 	private String drugDoseDesc;
 	@Expose
-	@Column(name = "DrugFormID")
-	private Integer drugFormID;
+	@Column(name = "ItemFormID")
+	private Integer itemFormID;
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = false)
 	private Boolean deleted;
@@ -50,13 +50,13 @@ public class DrugDoseMaster {
 	public DrugDoseMaster() {
 	}
 
-	public DrugDoseMaster(Integer drugDoseID, String drugDose, String drugDoseDesc, Integer drugFormID, Boolean deleted,
+	public DrugDoseMaster(Integer drugDoseID, String drugDose, String drugDoseDesc, Integer itemFormID, Boolean deleted,
 			Character processed, String createdBy, Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
 		super();
 		this.drugDoseID = drugDoseID;
 		this.drugDose = drugDose;
 		this.drugDoseDesc = drugDoseDesc;
-		this.drugFormID = drugFormID;
+		this.itemFormID = itemFormID;
 		this.deleted = deleted;
 		this.processed = processed;
 		this.createdBy = createdBy;
@@ -65,16 +65,17 @@ public class DrugDoseMaster {
 		this.lastModDate = lastModDate;
 	}
 	
-	public DrugDoseMaster(Integer drugDoseID, String drugDose) {
+	public DrugDoseMaster(Integer drugDoseID, String drugDose, Integer itemFormID) {
 		super();
 		this.drugDoseID = drugDoseID;
 		this.drugDose = drugDose;
+		this.itemFormID = itemFormID;
 	}
 
 	public static ArrayList<DrugDoseMaster> getDrugDoseMasters(ArrayList<Object[]> resList) {
 		ArrayList<DrugDoseMaster> resArray = new ArrayList<DrugDoseMaster>();
 		for (Object[] obj : resList) {
-			DrugDoseMaster cOBJ = new DrugDoseMaster((Integer)obj[0], (String)obj[1]);
+			DrugDoseMaster cOBJ = new DrugDoseMaster((Integer)obj[0], (String)obj[1], (Integer)obj[2]);
 			resArray.add(cOBJ);
 		}
 		return resArray;
@@ -105,11 +106,11 @@ public class DrugDoseMaster {
 	}
 
 	public Integer getDrugFormID() {
-		return drugFormID;
+		return itemFormID;
 	}
 
-	public void setDrugFormID(Integer drugFormID) {
-		this.drugFormID = drugFormID;
+	public void setDrugFormID(Integer itemFormID) {
+		this.itemFormID = itemFormID;
 	}
 
 	public Boolean getDeleted() {

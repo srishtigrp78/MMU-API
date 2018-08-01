@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.ANCDiagnosis;
 import com.iemr.mmu.repo.nurse.anc.ANCDiagnosisRepo;
+import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
@@ -16,6 +17,12 @@ import com.iemr.mmu.utils.mapper.InputMapper;
 public class ANCDoctorServiceImpl implements ANCDoctorService {
 
 	private ANCDiagnosisRepo ancDiagnosisRepo;
+	private PrescriptionDetailRepo prescriptionDetailRepo;
+
+	@Autowired
+	public void setPrescriptionDetailRepo(PrescriptionDetailRepo prescriptionDetailRepo) {
+		this.prescriptionDetailRepo = prescriptionDetailRepo;
+	}
 
 	@Autowired
 	public void setAncDiagnosisRepo(ANCDiagnosisRepo ancDiagnosisRepo) {
@@ -35,42 +42,23 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 	}
 
 	public String getANCDiagnosisDetails(Long beneficiaryRegID, Long visitCode) {
+		String externalInvestigation = prescriptionDetailRepo.getExternalinvestigationForVisitCode(beneficiaryRegID,
+				visitCode);
 		ArrayList<Object[]> resList = ancDiagnosisRepo.getANCDiagnosisDetails(beneficiaryRegID, visitCode);
 		ANCDiagnosis ancDiagnosisDetails = ANCDiagnosis.getANCDiagnosisDetails(resList);
+		if (externalInvestigation != null)
+			ancDiagnosisDetails.setExternalInvestigation(externalInvestigation);
 		return new Gson().toJson(ancDiagnosisDetails);
 	}
 
 	public int updateBenANCDiagnosis(ANCDiagnosis ancDiagnosis, Long prescriptionID) throws IEMRException {
 		int res = 0;
-		int recordsAvailable = 0;
-		String processed = ancDiagnosisRepo.getANCDiagnosisStatus(ancDiagnosis.getBeneficiaryRegID(),
-				ancDiagnosis.getVisitCode());
 
-		if (null != processed) {
-			recordsAvailable = 1;
+		ancDiagnosis.setPrescriptionID(prescriptionID);
+		ANCDiagnosis ancDiagnosisRes = ancDiagnosisRepo.save(ancDiagnosis);
+		if (null != ancDiagnosisRes && ancDiagnosisRes.getID() > 0) {
+			res = 1;
 		}
-
-		if (null != processed && !processed.equals("N")) {
-			processed = "U";
-		} else {
-			processed = "N";
-		}
-		if (recordsAvailable > 0) {
-			ancDiagnosis.setModifiedBy(ancDiagnosis.getCreatedBy());
-			res = ancDiagnosisRepo.updateANCDiagnosis(ancDiagnosis.getHighRiskStatus(),
-					ancDiagnosis.getHighRiskCondition(), ancDiagnosis.getComplicationOfCurrentPregnancy(),
-					ancDiagnosis.getIsMaternalDeath(), ancDiagnosis.getPlaceOfDeath(), ancDiagnosis.getDateOfDeath(),
-					ancDiagnosis.getCauseOfDeath(), ancDiagnosis.getModifiedBy(), processed,
-					ancDiagnosis.getBeneficiaryRegID(), ancDiagnosis.getVisitCode());
-		} else {
-			ancDiagnosis.setPrescriptionID(prescriptionID);
-			ANCDiagnosis ancDiagnosisRes = ancDiagnosisRepo.save(ancDiagnosis);
-			if (null != ancDiagnosisRes && ancDiagnosisRes.getID() > 0) {
-				res = 1;
-			}
-
-		}
-
 		return res;
 	}
 }

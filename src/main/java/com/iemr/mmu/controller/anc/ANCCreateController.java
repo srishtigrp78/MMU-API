@@ -3,7 +3,6 @@ package com.iemr.mmu.controller.anc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,10 +40,11 @@ public class ANCCreateController {
 
 	/**
 	 * @Objective Save ANC data for nurse.
-	 * @param JSON requestObj 
+	 * @param JSON
+	 *            requestObj
 	 * @return success or failure response
 	 */
-	
+
 	@CrossOrigin
 	@ApiOperation(value = "Save ANC nurse data..", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
@@ -63,7 +63,7 @@ public class ANCCreateController {
 				if (null != ancRes && ancRes > 0) {
 					response.setResponse("Data saved successfully");
 				} else {
-					response.setError(5000,"Unable to save data");
+					response.setError(5000, "Unable to save data");
 				}
 
 			} else {
@@ -79,7 +79,8 @@ public class ANCCreateController {
 
 	/**
 	 * @Objective Save ANC data for doctor.
-	 * @param JSON requestObj 
+	 * @param JSON
+	 *            requestObj
 	 * @return success or failure response
 	 */
 	@CrossOrigin

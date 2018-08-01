@@ -1,6 +1,5 @@
 package com.iemr.mmu.data.ncdcare;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -9,52 +8,51 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
-import com.iemr.mmu.data.anc.ANCDiagnosis;
 
 @Entity
 @Table(name = "t_ncddiagnosis")
-public class NCDCareDiagnosis
-{
+public class NCDCareDiagnosis {
 	@Id
 	@GeneratedValue
 	@Expose
 	@Column(name = "ID")
 	private Long ID;
-	
+
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
-	
+
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
-	
+
 	@Expose
 	@Column(name = "PrescriptionID")
 	private Long prescriptionID;
-	
+
 	@Expose
 	@Column(name = "NCD_Condition")
 	private String ncdScreeningCondition;
-	
+
 	@Expose
 	@Column(name = "NCD_Complication")
 	private String ncdComplication;
-	
+
 	@Expose
 	@Column(name = "NCDCareType")
 	private String ncdCareType;
-	
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -82,216 +80,196 @@ public class NCDCareDiagnosis
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
 
-	public Long getID()
-	{
-		return ID;
-	}
+	@Transient
+	@Expose
+	private String externalInvestigation;
 
-	public void setID(Long iD)
-	{
-		ID = iD;
-	}
-
-	public Long getBeneficiaryRegID()
-	{
-		return beneficiaryRegID;
-	}
-
-	public void setBeneficiaryRegID(Long beneficiaryRegID)
-	{
-		this.beneficiaryRegID = beneficiaryRegID;
-	}
-
-	public Long getBenVisitID()
-	{
-		return benVisitID;
-	}
-
-	public void setBenVisitID(Long benVisitID)
-	{
-		this.benVisitID = benVisitID;
-	}
-
-	public Integer getProviderServiceMapID()
-	{
-		return providerServiceMapID;
-	}
-
-	public void setProviderServiceMapID(Integer providerServiceMapID)
-	{
-		this.providerServiceMapID = providerServiceMapID;
-	}
-
-	
-	public String getNcdCareCondition()
-	{
+	public String getNcdScreeningCondition() {
 		return ncdScreeningCondition;
 	}
 
-	public void setNcdCareCondition(String ncdCareCondition)
-	{
+	public void setNcdScreeningCondition(String ncdScreeningCondition) {
+		this.ncdScreeningCondition = ncdScreeningCondition;
+	}
+
+	public String getExternalInvestigation() {
+		return externalInvestigation;
+	}
+
+	public void setExternalInvestigation(String externalInvestigation) {
+		this.externalInvestigation = externalInvestigation;
+	}
+
+	public Long getID() {
+		return ID;
+	}
+
+	public void setID(Long iD) {
+		ID = iD;
+	}
+
+	public Long getBeneficiaryRegID() {
+		return beneficiaryRegID;
+	}
+
+	public void setBeneficiaryRegID(Long beneficiaryRegID) {
+		this.beneficiaryRegID = beneficiaryRegID;
+	}
+
+	public Long getBenVisitID() {
+		return benVisitID;
+	}
+
+	public void setBenVisitID(Long benVisitID) {
+		this.benVisitID = benVisitID;
+	}
+
+	public Integer getProviderServiceMapID() {
+		return providerServiceMapID;
+	}
+
+	public void setProviderServiceMapID(Integer providerServiceMapID) {
+		this.providerServiceMapID = providerServiceMapID;
+	}
+
+	public String getNcdCareCondition() {
+		return ncdScreeningCondition;
+	}
+
+	public void setNcdCareCondition(String ncdCareCondition) {
 		this.ncdScreeningCondition = ncdCareCondition;
 	}
 
-	
-	public String getNcdComplication()
-	{
+	public String getNcdComplication() {
 		return ncdComplication;
 	}
 
-	public void setNcdComplication(String ncdComplication)
-	{
+	public void setNcdComplication(String ncdComplication) {
 		this.ncdComplication = ncdComplication;
 	}
 
-	public String getNcdCareType()
-	{
+	public String getNcdCareType() {
 		return ncdCareType;
 	}
 
-	public void setNcdCareType(String ncdCareType)
-	{
+	public void setNcdCareType(String ncdCareType) {
 		this.ncdCareType = ncdCareType;
 	}
 
-	public Boolean getDeleted()
-	{
+	public Boolean getDeleted() {
 		return deleted;
 	}
 
-	public void setDeleted(Boolean deleted)
-	{
+	public void setDeleted(Boolean deleted) {
 		this.deleted = deleted;
 	}
 
-	public String getProcessed()
-	{
+	public String getProcessed() {
 		return processed;
 	}
 
-	public void setProcessed(String processed)
-	{
+	public void setProcessed(String processed) {
 		this.processed = processed;
 	}
 
-	public String getCreatedBy()
-	{
+	public String getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(String createdBy)
-	{
+	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
 
-	public Timestamp getCreatedDate()
-	{
+	public Timestamp getCreatedDate() {
 		return createdDate;
 	}
 
-	public void setCreatedDate(Timestamp createdDate)
-	{
+	public void setCreatedDate(Timestamp createdDate) {
 		this.createdDate = createdDate;
 	}
 
-	public String getModifiedBy()
-	{
+	public String getModifiedBy() {
 		return modifiedBy;
 	}
 
-	public void setModifiedBy(String modifiedBy)
-	{
+	public void setModifiedBy(String modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
 
-	public Timestamp getLastModDate()
-	{
+	public Timestamp getLastModDate() {
 		return lastModDate;
 	}
 
-	public void setLastModDate(Timestamp lastModDate)
-	{
+	public void setLastModDate(Timestamp lastModDate) {
 		this.lastModDate = lastModDate;
 	}
 
-	public Long getVanSerialNo()
-	{
+	public Long getVanSerialNo() {
 		return vanSerialNo;
 	}
 
-	public void setVanSerialNo(Long vanSerialNo)
-	{
+	public void setVanSerialNo(Long vanSerialNo) {
 		this.vanSerialNo = vanSerialNo;
 	}
 
-	public String getVehicalNo()
-	{
+	public String getVehicalNo() {
 		return vehicalNo;
 	}
 
-	public void setVehicalNo(String vehicalNo)
-	{
+	public void setVehicalNo(String vehicalNo) {
 		this.vehicalNo = vehicalNo;
 	}
 
-	public Integer getParkingPlaceID()
-	{
+	public Integer getParkingPlaceID() {
 		return parkingPlaceID;
 	}
 
-	public void setParkingPlaceID(Integer parkingPlaceID)
-	{
+	public void setParkingPlaceID(Integer parkingPlaceID) {
 		this.parkingPlaceID = parkingPlaceID;
 	}
 
-	public String getSyncedBy()
-	{
+	public String getSyncedBy() {
 		return syncedBy;
 	}
 
-	public void setSyncedBy(String syncedBy)
-	{
+	public void setSyncedBy(String syncedBy) {
 		this.syncedBy = syncedBy;
 	}
 
-	public Timestamp getSyncedDate()
-	{
+	public Timestamp getSyncedDate() {
 		return syncedDate;
 	}
 
-	public void setSyncedDate(Timestamp syncedDate)
-	{
+	public void setSyncedDate(Timestamp syncedDate) {
 		this.syncedDate = syncedDate;
 	}
 
-	public String getReservedForChange()
-	{
+	public String getReservedForChange() {
 		return reservedForChange;
 	}
 
-	public void setReservedForChange(String reservedForChange)
-	{
+	public void setReservedForChange(String reservedForChange) {
 		this.reservedForChange = reservedForChange;
 	}
 
@@ -304,7 +282,8 @@ public class NCDCareDiagnosis
 	}
 
 	public NCDCareDiagnosis(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, Long prescriptionID,
-			String ncdCareCondition, String ncdComplication, String ncdCareType, Long visitCode) {
+			String ncdCareCondition, String ncdComplication, String ncdCareType, Long visitCode,
+			String externalInvestigation) {
 		super();
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
@@ -314,15 +293,16 @@ public class NCDCareDiagnosis
 		this.ncdComplication = ncdComplication;
 		this.ncdCareType = ncdCareType;
 		this.visitCode = visitCode;
+		this.externalInvestigation = externalInvestigation;
 	}
-	
+
 	public static NCDCareDiagnosis getNCDCareDiagnosisDetails(ArrayList<Object[]> resList) {
 		NCDCareDiagnosis cOBJ = null;
-		if(null != resList && resList.size()>0){
-			for (Object[] obj : resList) {
-				cOBJ = new NCDCareDiagnosis((Long)obj[0], (Long)obj[1], (Integer)obj[2], (Long)obj[3], 
-						(String)obj[4], (String)obj[5], (String)obj[6], (Long)obj[7]);
-			}
+		if (null != resList && resList.size() > 0) {
+			Object[] obj = resList.get(0);
+			cOBJ = new NCDCareDiagnosis((Long) obj[0], (Long) obj[1], (Integer) obj[2], (Long) obj[3], (String) obj[4],
+					(String) obj[5], (String) obj[6], (Long) obj[7], null);
+
 		}
 		return cOBJ;
 	}
@@ -334,5 +314,5 @@ public class NCDCareDiagnosis
 	public void setVisitCode(Long visitCode) {
 		this.visitCode = visitCode;
 	}
-	
+
 }

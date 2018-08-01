@@ -1,6 +1,7 @@
 package com.iemr.mmu.service.quickConsultation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -159,29 +160,34 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		return r;
 	}
 
-	@Override
-	public Long saveBeneficiaryPrescribedDrugDetail(JsonObject caseSheet, Long prescriptionID,
-			CommonUtilityClass commonUtilityClass) {
-		Long prescribedDrugSuccessFlag = null;
-		ArrayList<PrescribedDrugDetail> prescriptionDetails = PrescribedDrugDetail
-				.getBenPrescribedDrugDetailList(caseSheet, prescriptionID, commonUtilityClass);
-
-		/*
-		 * List<PrescribedDrugDetail> prescribedDrugs = (List<PrescribedDrugDetail>)
-		 * prescribedDrugDetailRepo .save(prescriptionDetails);
-		 * 
-		 * if (null != prescribedDrugs && prescribedDrugs.size() > 0) { for
-		 * (PrescribedDrugDetail prescribedDrug : prescribedDrugs) { return
-		 * prescribedDrug.getPrescribedDrugID(); } }
-		 */
-
-		Integer r = commonNurseServiceImpl.saveBenPrescribedDrugsList(prescriptionDetails);
-		if (r > 0 && r != null) {
-			prescribedDrugSuccessFlag = new Long(r);
-		}
-
-		return prescribedDrugSuccessFlag;
-	}
+	// now not required
+	// @Deprecated
+	// @Override
+	// public Long saveBeneficiaryPrescribedDrugDetail(JsonObject caseSheet, Long
+	// prescriptionID,
+	// CommonUtilityClass commonUtilityClass) {
+	// Long prescribedDrugSuccessFlag = null;
+	// ArrayList<PrescribedDrugDetail> prescriptionDetails = PrescribedDrugDetail
+	// .getBenPrescribedDrugDetailList(caseSheet, prescriptionID,
+	// commonUtilityClass);
+	//
+	// /*
+	// * List<PrescribedDrugDetail> prescribedDrugs = (List<PrescribedDrugDetail>)
+	// * prescribedDrugDetailRepo .save(prescriptionDetails);
+	// *
+	// * if (null != prescribedDrugs && prescribedDrugs.size() > 0) { for
+	// * (PrescribedDrugDetail prescribedDrug : prescribedDrugs) { return
+	// * prescribedDrug.getPrescribedDrugID(); } }
+	// */
+	//
+	// Integer r =
+	// commonNurseServiceImpl.saveBenPrescribedDrugsList(prescriptionDetails);
+	// if (r > 0 && r != null) {
+	// prescribedDrugSuccessFlag = new Long(r);
+	// }
+	//
+	// return prescribedDrugSuccessFlag;
+	// }
 
 	@Override
 	public Long saveBeneficiaryExternalLabTestOrderDetails(JsonObject caseSheet) {
@@ -274,6 +280,8 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	@Override
 	public Integer quickConsultDoctorDataInsert(JsonObject quickConsultDoctorOBJ) throws Exception {
 		Integer returnOBJ = 0;
+		Integer prescriptionSuccessFlag = null;
+		Integer investigationSuccessFlag = null;
 
 		CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(quickConsultDoctorOBJ,
 				CommonUtilityClass.class);
@@ -282,70 +290,101 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		Long clinicalObservationID = saveBeneficiaryClinicalObservations(quickConsultDoctorOBJ);
 		Long prescriptionID = commonNurseServiceImpl.saveBeneficiaryPrescription(quickConsultDoctorOBJ);
 
-		Long prescribedDrugID = null;
-		Long labTestOrderID = null;
+		Boolean isTestPrescribed = false;
+		Boolean isMedicinePrescribed = false;
 
 		JsonArray testList = quickConsultDoctorOBJ.getAsJsonArray("labTestOrders");
-		JsonArray drugList = quickConsultDoctorOBJ.getAsJsonArray("prescribedDrugs");
+		if (testList != null && !testList.isJsonNull() && testList.size() > 0)
+			isTestPrescribed = true;
 
-		if (prescriptionID != null && prescriptionID > 0) {
+		JsonArray drugList = quickConsultDoctorOBJ.getAsJsonArray("prescription");
+		if (drugList != null && !drugList.isJsonNull() && drugList.size() > 0)
+			isMedicinePrescribed = true;
 
-			if (quickConsultDoctorOBJ.has("prescribedDrugs")) {
-				drugList = quickConsultDoctorOBJ.getAsJsonArray("prescribedDrugs");
-				if (drugList != null && !drugList.isJsonNull() && drugList.size() > 0) {
-					JsonObject tmp = drugList.get(0).getAsJsonObject();
-					if (tmp.get("drug") != null && !tmp.get("drug").isJsonNull())
-						prescribedDrugID = saveBeneficiaryPrescribedDrugDetail(quickConsultDoctorOBJ, prescriptionID,
-								commonUtilityClass);
-				}
+		// save prescribed medicine
+		if (isMedicinePrescribed) {
+
+			PrescribedDrugDetail[] prescribedDrugDetail = InputMapper.gson()
+					.fromJson(quickConsultDoctorOBJ.get("prescription"), PrescribedDrugDetail[].class);
+			List<PrescribedDrugDetail> prescribedDrugDetailList = Arrays.asList(prescribedDrugDetail);
+
+			for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
+				tmpObj.setPrescriptionID(prescriptionID);
 			}
-			/// prescribedDrugID =
-			/// saveBeneficiaryPrescribedDrugDetail(quickConsultDoctorOBJ,
-			/// prescriptionID);
-
-			labTestOrderID = commonNurseServiceImpl.saveBeneficiaryLabTestOrderDetails(quickConsultDoctorOBJ,
-					prescriptionID);
-
+			Integer r = commonNurseServiceImpl.saveBenPrescribedDrugsList(prescribedDrugDetailList);
+			if (r > 0 && r != null) {
+				prescriptionSuccessFlag = r;
+			}
+		} else {
+			prescriptionSuccessFlag = 1;
 		}
+
+		// save prescribed lab test
+		if (isTestPrescribed) {
+			Long i = commonNurseServiceImpl.saveBeneficiaryLabTestOrderDetails(quickConsultDoctorOBJ, prescriptionID);
+			if (i != null && i > 0)
+				investigationSuccessFlag = 1;
+		} else {
+			investigationSuccessFlag = 1;
+		}
+
+		// check if all data updated successfully
 		if ((null != benChiefComplaintID && benChiefComplaintID > 0)
 				&& (null != clinicalObservationID && clinicalObservationID > 0)
-				&& (prescriptionID != null && prescriptionID > 0)) {
+				&& (prescriptionID != null && prescriptionID > 0)
+				&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)
+				&& (investigationSuccessFlag != null && investigationSuccessFlag > 0)) {
 
-			// New code for ben fow logic
-			short pharmaFalg;
-			short docFlag;
-			short labFalg;
+			// call method to update beneficiary flow table
+			int i = updateBenFlowtableAfterDocDataSave(commonUtilityClass, isTestPrescribed, isMedicinePrescribed);
 
-			Long tmpBenFlowID = quickConsultDoctorOBJ.get("benFlowID").getAsLong();
-			Long tmpBeneficiaryID = quickConsultDoctorOBJ.get("beneficiaryID").getAsLong();
-			Long tmpBenVisitID = quickConsultDoctorOBJ.get("benVisitID").getAsLong();
-			Long tmpbeneficiaryRegID = quickConsultDoctorOBJ.get("beneficiaryRegID").getAsLong();
-
-			// new logic on 25-04-2018
-			if (testList != null && !testList.isJsonNull() && testList.size() > 0) {
-				docFlag = (short) 2;
-			} else {
-				docFlag = (short) 9;
-
-			}
-
-			if (drugList != null && !drugList.isJsonNull() && drugList.size() > 0) {
-				JsonObject firstDrugDetails = drugList.get(0).getAsJsonObject();
-				if (firstDrugDetails.get("drug") == null || firstDrugDetails.get("drug").isJsonNull())
-					pharmaFalg = (short) 0;
-				else
-					pharmaFalg = (short) 1;
-			} else {
-				pharmaFalg = (short) 0;
-			}
-
-			int l = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
-					tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
-
-			returnOBJ = 1;
+			if (i > 0)
+				returnOBJ = 1;
+			else
+				throw new Exception();
 		}
 		return returnOBJ;
 	}
+
+	/**
+	 * 
+	 * 
+	 * @param commonUtilityClass
+	 * @param testList
+	 * @param drugList
+	 * @return
+	 */
+	/// ------Start of beneficiary flow table after doctor data save-------------
+
+	private int updateBenFlowtableAfterDocDataSave(CommonUtilityClass commonUtilityClass, Boolean isTestPrescribed,
+			Boolean isMedicinePrescribed) {
+		short pharmaFalg;
+		short docFlag;
+
+		Long tmpBenFlowID = commonUtilityClass.getBenFlowID();
+		Long tmpBeneficiaryID = commonUtilityClass.getBeneficiaryID();
+		Long tmpBenVisitID = commonUtilityClass.getBenVisitID();
+		Long tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
+
+		// checking if test is prescribed
+		if (isTestPrescribed) {
+			docFlag = (short) 2;
+		} else {
+			docFlag = (short) 9;
+		}
+		// checking if medicine is prescribed
+		if (isMedicinePrescribed) {
+			pharmaFalg = (short) 1;
+		} else {
+			pharmaFalg = (short) 0;
+		}
+
+		int i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
+				tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
+		return i;
+	}
+
+	/// ------End of beneficiary flow table after doctor data save-------------
 
 	// ------- Start Fetch (Nurse data to Doctor screen) ----------------
 	public String getBenDataFrmNurseToDocVisitDetailsScreen(Long benRegID, Long visitCode) {
@@ -396,13 +435,15 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	public Long updateGeneralOPDQCDoctorData(JsonObject quickConsultDoctorOBJ) throws Exception {
 		Long updateSuccessFlag = null;
 		Long prescriptionID = null;
-		Integer diagnosisSuccessFlag = null;
+		Long prescribedDrugSuccessFlag = null;
+		Long labTestOrderSuccessFlag = null;
 
 		CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(quickConsultDoctorOBJ,
 				CommonUtilityClass.class);
 
 		Long benChiefComplaintID = saveBeneficiaryChiefComplaint(quickConsultDoctorOBJ);
 		Integer clinicalObservationID = updateBeneficiaryClinicalObservations(quickConsultDoctorOBJ);
+		prescriptionID = commonNurseServiceImpl.saveBeneficiaryPrescription(quickConsultDoctorOBJ);
 
 		JsonArray testList = null;
 		JsonArray drugList = null;
@@ -410,43 +451,40 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		Boolean isTestPrescribed = false;
 		Boolean isMedicinePrescribed = false;
 
+		// checking if test is prescribed
 		if (quickConsultDoctorOBJ.has("labTestOrders")) {
 			testList = quickConsultDoctorOBJ.getAsJsonArray("labTestOrders");
 			if (testList != null && !testList.isJsonNull() && testList.size() > 0)
 				isTestPrescribed = true;
 		}
-		if (quickConsultDoctorOBJ.has("prescribedDrugs")) {
-			drugList = quickConsultDoctorOBJ.getAsJsonArray("prescribedDrugs");
+		// checking if medicine is prescribed
+		if (quickConsultDoctorOBJ.has("prescription") && !quickConsultDoctorOBJ.get("prescription").isJsonNull()
+				&& quickConsultDoctorOBJ.get("prescription") != null) {
+			drugList = quickConsultDoctorOBJ.getAsJsonArray("prescription");
 			if (drugList != null && !drugList.isJsonNull() && drugList.size() > 0) {
-				JsonObject tmp = drugList.get(0).getAsJsonObject();
-				if (tmp.get("drug") != null && !tmp.get("drug").isJsonNull() && tmp.get("drug").isJsonObject())
-					isMedicinePrescribed = true;
+				isMedicinePrescribed = true;
 			}
 		}
 
-		PrescriptionDetail prescriptionDetail = InputMapper.gson().fromJson(quickConsultDoctorOBJ,
-				PrescriptionDetail.class);
-
-		if (isTestPrescribed == true || isMedicinePrescribed == true) {
-			prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
-			if (prescriptionID > 0)
-				diagnosisSuccessFlag = 1;
-		} else {
-			int i = generalOPDDoctorServiceImpl.updateBenGeneralOPDDiagnosis(prescriptionDetail);
-			if (i > 0)
-				diagnosisSuccessFlag = 1;
-		}
-
-		Long prescribedDrugSuccessFlag = null;
-		Long labTestOrderSuccessFlag = null;
-
+		// update prescribed medicine
 		if (isMedicinePrescribed == true) {
-			prescribedDrugSuccessFlag = saveBeneficiaryPrescribedDrugDetail(quickConsultDoctorOBJ, prescriptionID,
-					commonUtilityClass);
+			PrescribedDrugDetail[] prescribedDrugDetail = InputMapper.gson()
+					.fromJson(quickConsultDoctorOBJ.get("prescription"), PrescribedDrugDetail[].class);
+			List<PrescribedDrugDetail> prescribedDrugDetailList = Arrays.asList(prescribedDrugDetail);
+
+			for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
+				tmpObj.setPrescriptionID(prescriptionID);
+			}
+			Integer r = commonNurseServiceImpl.saveBenPrescribedDrugsList(prescribedDrugDetailList);
+			if (r > 0 && r != null) {
+				prescribedDrugSuccessFlag = new Long(1);
+			}
+
 		} else {
 			prescribedDrugSuccessFlag = new Long(1);
 		}
 
+		// update prescribed lab test
 		if (isTestPrescribed == true) {
 			labTestOrderSuccessFlag = commonNurseServiceImpl.saveBeneficiaryLabTestOrderDetails(quickConsultDoctorOBJ,
 					prescriptionID);
@@ -456,46 +494,54 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 
 		if ((null != benChiefComplaintID && benChiefComplaintID > 0)
 				&& (null != clinicalObservationID && clinicalObservationID > 0)
-				&& (diagnosisSuccessFlag != null && diagnosisSuccessFlag > 0)
 				&& (null != prescribedDrugSuccessFlag && prescribedDrugSuccessFlag > 0)
 				&& (null != labTestOrderSuccessFlag && labTestOrderSuccessFlag > 0)) {
 
-			// New code for ben fow logic
-			short pharmaFalg;
-			short docFlag;
-			short labFalg;
+			// call method to update beneficiary flow table
+			int i = updateBenFlowtableAfterDocDataUpdate(commonUtilityClass, isTestPrescribed, isMedicinePrescribed);
 
-			Long tmpBenFlowID = commonUtilityClass.getBenFlowID();
-			Long tmpBeneficiaryID = commonUtilityClass.getBeneficiaryID();
-			Long tmpBenVisitID = commonUtilityClass.getBenVisitID();
-			Long tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
-
-
-			// new logic on 25-04-2018
-			if (testList != null && !testList.isJsonNull() && testList.size() > 0) {
-				docFlag = (short) 2;
-			} else {
-				docFlag = (short) 9;
-
-			}
-
-			if (drugList != null && !drugList.isJsonNull() && drugList.size() > 0) {
-				JsonObject firstDrugDetails = drugList.get(0).getAsJsonObject();
-				if (firstDrugDetails.get("drug") == null || firstDrugDetails.get("drug").isJsonNull())
-					pharmaFalg = (short) 0;
-				else
-					pharmaFalg = (short) 1;
-			} else {
-				pharmaFalg = (short) 0;
-			}
-
-			int l = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdate(tmpBenFlowID, tmpbeneficiaryRegID,
-					tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
-
-			updateSuccessFlag = benChiefComplaintID;
+			if (i > 0)
+				updateSuccessFlag = benChiefComplaintID;
+			else
+				throw new Exception();
 		}
 
 		return updateSuccessFlag;
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param commonUtilityClass
+	 * @param isTestPrescribed
+	 * @param isMedicinePrescribed
+	 * @return
+	 */
+	private int updateBenFlowtableAfterDocDataUpdate(CommonUtilityClass commonUtilityClass, Boolean isTestPrescribed,
+			Boolean isMedicinePrescribed) {
+
+		short pharmaFalg;
+		short docFlag;
+
+		Long tmpBenFlowID = commonUtilityClass.getBenFlowID();
+		Long tmpBeneficiaryID = commonUtilityClass.getBeneficiaryID();
+		Long tmpBenVisitID = commonUtilityClass.getBenVisitID();
+		Long tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
+
+		if (isTestPrescribed)
+			docFlag = (short) 2;
+		else
+			docFlag = (short) 9;
+
+		if (isMedicinePrescribed)
+			pharmaFalg = (short) 1;
+		else
+			pharmaFalg = (short) 0;
+
+		int i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdate(tmpBenFlowID, tmpbeneficiaryRegID,
+				tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
+
+		return i;
 	}
 
 	@Override

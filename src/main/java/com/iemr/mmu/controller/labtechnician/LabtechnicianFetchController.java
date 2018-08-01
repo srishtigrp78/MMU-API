@@ -71,4 +71,34 @@ public class LabtechnicianFetchController {
 		}
 		return response.toString();
 	}
+
+	// API for getting lab result based on beneficiaryRegID and visitCode
+	// 11-07-2018
+	@CrossOrigin()
+	@ApiOperation(value = "get lab test result for a visitcode.", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/get/labResultForVisitcode" }, method = { RequestMethod.POST })
+	public String getLabResultForVisitCode(@RequestBody String requestOBJ) {
+		OutputResponse response = new OutputResponse();
+		try {
+			JsonObject jsnOBJ = new JsonObject();
+			JsonParser jsnParser = new JsonParser();
+			JsonElement jsnElmnt = jsnParser.parse(requestOBJ);
+			jsnOBJ = jsnElmnt.getAsJsonObject();
+
+			if (jsnOBJ != null && !jsnOBJ.isJsonNull() && jsnOBJ.has("beneficiaryRegID") && jsnOBJ.has("visitCode")) {
+				String s = labTechnicianServiceImpl.getLabResultForVisitcode(jsnOBJ.get("beneficiaryRegID").getAsLong(),
+						jsnOBJ.get("visitCode").getAsLong());
+
+				if (s != null)
+					response.setResponse(s);
+				else
+					response.setError(5000, "Error while getting lab report");
+			} else
+				response.setError(5000, "Invalid request");
+		} catch (Exception e) {
+			logger.error("Error while getting lab result for requested data:" + requestOBJ);
+			response.setError(5000, "Error while getting lab report");
+		}
+		return response.toString();
+	}
 }

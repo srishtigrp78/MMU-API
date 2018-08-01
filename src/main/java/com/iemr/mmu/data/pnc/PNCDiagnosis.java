@@ -9,9 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
-import com.iemr.mmu.data.anc.ANCDiagnosis;
 
 @Entity
 @Table(name = "t_pncdiagnosis")
@@ -37,31 +37,31 @@ public class PNCDiagnosis {
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
-	
+
 	@Expose
 	@Column(name = "PrescriptionID")
 	private Long prescriptionID;
-	
+
 	@Expose
 	@Column(name = "ProvisionalDiagnosis")
 	private String provisionalDiagnosis;
-	
+
 	@Expose
 	@Column(name = "ConfirmatoryDiagnosis")
 	private String confirmatoryDiagnosis;
-	
+
 	@Expose
 	@Column(name = "IsMaternalDeath")
 	private Boolean isMaternalDeath;
-	
+
 	@Expose
 	@Column(name = "PlaceOfDeath")
 	private String placeOfDeath;
-	
+
 	@Expose
 	@Column(name = "DateOfDeath")
 	private Date dateOfDeath;
-	
+
 	@Expose
 	@Column(name = "CauseOfDeath")
 	private String causeOfDeath;
@@ -89,7 +89,7 @@ public class PNCDiagnosis {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
-	
+
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
@@ -113,8 +113,19 @@ public class PNCDiagnosis {
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
-	
+
+	@Transient
+	@Expose
+	private String externalInvestigation;
+
+	public String getExternalInvestigation() {
+		return externalInvestigation;
+	}
+
+	public void setExternalInvestigation(String externalInvestigation) {
+		this.externalInvestigation = externalInvestigation;
+	}
+
 	public Long getID() {
 		return ID;
 	}
@@ -309,7 +320,7 @@ public class PNCDiagnosis {
 
 	public PNCDiagnosis(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, Long prescriptionID,
 			String provisionalDiagnosis, String confirmatoryDiagnosis, Boolean isMaternalDeath, String placeOfDeath,
-			Date dateOfDeath, String causeOfDeath, Long visitCode) {
+			Date dateOfDeath, String causeOfDeath, Long visitCode, String externalInvestigation) {
 		super();
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
@@ -322,19 +333,19 @@ public class PNCDiagnosis {
 		this.dateOfDeath = dateOfDeath;
 		this.causeOfDeath = causeOfDeath;
 		this.visitCode = visitCode;
+		this.externalInvestigation = externalInvestigation;
 	}
-	
+
 	public static PNCDiagnosis getPNCDiagnosisDetails(ArrayList<Object[]> resList) {
-		ArrayList<PNCDiagnosis> resArray = new ArrayList<PNCDiagnosis>();
 		PNCDiagnosis cOBJ = null;
-		if(null != resList && resList.size()>0){
-			for (Object[] obj : resList) {
-				cOBJ = new PNCDiagnosis((Long)obj[0], (Long)obj[1], (Integer)obj[2], (Long)obj[3], (String)obj[4], 
-						(String)obj[5], (Boolean)obj[6], (String)obj[7], (Date)obj[8], (String)obj[9], (Long)obj[10]);
-				
-			}
+		if (null != resList && resList.size() > 0) {
+			Object[] obj = resList.get(0);
+			cOBJ = new PNCDiagnosis((Long) obj[0], (Long) obj[1], (Integer) obj[2], (Long) obj[3], (String) obj[4],
+					(String) obj[5], (Boolean) obj[6], (String) obj[7], (Date) obj[8], (String) obj[9], (Long) obj[10],
+					null);
+
 		}
 		return cOBJ;
 	}
-	
+
 }

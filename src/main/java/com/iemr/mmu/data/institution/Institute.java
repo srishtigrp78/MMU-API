@@ -77,7 +77,7 @@ public class Institute {
 		this.institutionName = institutionName;
 	}
 
-	public ArrayList<Institute> getinstituteDetails(ArrayList<Object[]> objList) {
+	public static ArrayList<Institute> getinstituteDetails(ArrayList<Object[]> objList) {
 		ArrayList<Institute> instituteList = new ArrayList<>();
 		if (objList != null && objList.size() > 0) {
 			for (Object[] obj : objList) {

@@ -1,7 +1,6 @@
 package com.iemr.mmu.service.quickConsultation;
 
 import com.google.gson.JsonObject;
-import com.iemr.mmu.data.nurse.CommonUtilityClass;
 
 public interface QuickConsultationService {
 
@@ -12,8 +11,9 @@ public interface QuickConsultationService {
 	// public Long saveBeneficiaryPrescription(JsonObject prescriptionDetail) throws
 	// Exception;
 
-	public Long saveBeneficiaryPrescribedDrugDetail(JsonObject prescribedDrugDetail, Long prescriptionID,
-			CommonUtilityClass commonUtilityClass);
+	// public Long saveBeneficiaryPrescribedDrugDetail(JsonObject
+	// prescribedDrugDetail, Long prescriptionID,
+	// CommonUtilityClass commonUtilityClass);
 
 	// public Long saveBeneficiaryLabTestOrderDetails(JsonObject labTestOrderDetail,
 	// Long prescriptionID);

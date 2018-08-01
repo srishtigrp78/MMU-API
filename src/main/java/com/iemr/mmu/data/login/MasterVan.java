@@ -30,6 +30,12 @@ public class MasterVan {
 	@Expose
 	@Column(name = "Deleted")
 	private Boolean deleted;
+	@Expose
+	@Column(name = "IsFacility")
+	private Boolean isFacility;
+	@Expose
+	@Column(name = "FacilityID")
+	private Integer facilityID;
 
 	@ManyToOne
 	@JoinColumn(name = "ParkingPlaceID", insertable = false, updatable = false)
@@ -47,6 +53,22 @@ public class MasterVan {
 		this.parkingPlaceID = parkingPlaceID;
 		this.deleted = deleted;
 		this.userParkingplaceMapping = userParkingplaceMapping;
+	}
+
+	public Boolean getIsFacility() {
+		return isFacility;
+	}
+
+	public void setIsFacility(Boolean isFacility) {
+		this.isFacility = isFacility;
+	}
+
+	public Integer getFacilityID() {
+		return facilityID;
+	}
+
+	public void setFacilityID(Integer facilityID) {
+		this.facilityID = facilityID;
 	}
 
 	public Integer getVanID() {

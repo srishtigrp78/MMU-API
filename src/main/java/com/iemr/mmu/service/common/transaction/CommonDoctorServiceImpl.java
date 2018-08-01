@@ -20,7 +20,6 @@ import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
-import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.data.registrar.WrapperRegWorklist;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.doctor.BenReferDetailsRepo;
@@ -51,7 +50,6 @@ public class CommonDoctorServiceImpl {
 
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
 
-	
 	@Autowired
 	public void setBeneficiaryFlowStatusRepo(BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo) {
 		this.beneficiaryFlowStatusRepo = beneficiaryFlowStatusRepo;
@@ -81,7 +79,6 @@ public class CommonDoctorServiceImpl {
 	public void setDocWorkListRepo(DocWorkListRepo docWorkListRepo) {
 		this.docWorkListRepo = docWorkListRepo;
 	}
-
 
 	@Autowired
 	public void setBenChiefComplaintRepo(BenChiefComplaintRepo benChiefComplaintRepo) {
@@ -178,8 +175,7 @@ public class CommonDoctorServiceImpl {
 
 				if (null != complaintsDetails.getChiefComplaintID()) {
 					/*
-					 * Double d = (Double)
-					 * complaintsDetails.getChiefComplaintID(); if (d == null)
+					 * Double d = (Double) complaintsDetails.getChiefComplaintID(); if (d == null)
 					 * continue;
 					 */
 					benChiefComplaint.setChiefComplaintID(complaintsDetails.getChiefComplaintID());
@@ -292,26 +288,30 @@ public class CommonDoctorServiceImpl {
 	}
 
 	public String getPrescribedDrugs(Long beneficiaryRegID, Long visitCode) {
-		ArrayList<Object[]> prescriptions = prescriptionDetailRepo.getBenPrescription(beneficiaryRegID, visitCode);
+		// ArrayList<Object[]> prescriptions =
+		// prescriptionDetailRepo.getBenPrescription(beneficiaryRegID, visitCode);
+		//
+		// PrescriptionDetail prescriptionData =
+		// PrescriptionDetail.getPrescriptions(prescriptions);
+		// if (null != prescriptionData) {
+		ArrayList<Object[]> resList = prescribedDrugDetailRepo.getBenPrescribedDrugDetails(beneficiaryRegID, visitCode);
 
-		PrescriptionDetail prescriptionData = PrescriptionDetail.getPrescriptions(prescriptions);
-		if (null != prescriptionData) {
-			ArrayList<Object[]> resList = prescribedDrugDetailRepo.getBenPrescribedDrugDetails(beneficiaryRegID,
-					visitCode);
+		ArrayList<PrescribedDrugDetail> prescribedDrugs = PrescribedDrugDetail.getprescribedDrugs(resList);
+		// prescriptionData.setPrescribedDrugs(prescribedDrugs);
+		// }
 
-			ArrayList<PrescribedDrugDetail> prescribedDrugs = PrescribedDrugDetail.getprescribedDrugs(resList);
-			prescriptionData.setPrescribedDrugs(prescribedDrugs);
-		}
-
-		return new Gson().toJson(prescriptionData);
+		return new Gson().toJson(prescribedDrugs);
 	}
 
-	/*public PrescriptionDetail getLatestPrescription(Long beneficiaryRegID, Long benVisitID) {
-		ArrayList<Object[]> prescriptions = prescriptionDetailRepo.getBenPrescription(beneficiaryRegID, benVisitID);
-
-		PrescriptionDetail prescriptionData = PrescriptionDetail.getPrescriptions(prescriptions);
-		return prescriptionData;
-	}*/
+	/*
+	 * public PrescriptionDetail getLatestPrescription(Long beneficiaryRegID, Long
+	 * benVisitID) { ArrayList<Object[]> prescriptions =
+	 * prescriptionDetailRepo.getBenPrescription(beneficiaryRegID, benVisitID);
+	 * 
+	 * PrescriptionDetail prescriptionData =
+	 * PrescriptionDetail.getPrescriptions(prescriptions); return prescriptionData;
+	 * }
+	 */
 
 	public String getReferralDetails(Long beneficiaryRegID, Long visitCode) {
 		ArrayList<Object[]> resList = benReferDetailsRepo.getBenReferDetails(beneficiaryRegID, visitCode);

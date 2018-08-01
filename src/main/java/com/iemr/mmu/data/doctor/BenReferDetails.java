@@ -143,7 +143,7 @@ public class BenReferDetails {
 	}
 
 	public void setVisitCode(Long visitCode) {
-		visitCode = visitCode;
+		this.visitCode = visitCode;
 	}
 
 	public Integer getReferredToInstituteID() {
@@ -286,10 +286,12 @@ public class BenReferDetails {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	
 
 	public BenReferDetails(Long benReferID, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
-			Integer referredToInstituteID, String referredToInstituteName, Short serviceID, 
-			String serviceName, Long visitCode) {
+			Integer referredToInstituteID, String referredToInstituteName, Short serviceID, String serviceName,
+			Long visitCode) {
 		super();
 		this.benReferID = benReferID;
 		this.beneficiaryRegID = beneficiaryRegID;

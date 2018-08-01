@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
@@ -117,6 +118,18 @@ public class ANCDiagnosis {
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
+
+	@Transient
+	@Expose
+	private String externalInvestigation;
+
+	public String getExternalInvestigation() {
+		return externalInvestigation;
+	}
+
+	public void setExternalInvestigation(String externalInvestigation) {
+		this.externalInvestigation = externalInvestigation;
+	}
 
 	public Long getID() {
 		return ID;
@@ -312,7 +325,8 @@ public class ANCDiagnosis {
 
 	public ANCDiagnosis(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			Long prescriptionID, String highRiskStatus, String highRiskCondition, String complicationOfCurrentPregnancy,
-			Boolean isMaternalDeath, String placeOfDeath, Date dateOfDeath, String causeOfDeath, Long visitCode) {
+			Boolean isMaternalDeath, String placeOfDeath, Date dateOfDeath, String causeOfDeath, Long visitCode,
+			String externalInvestigation) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -327,18 +341,17 @@ public class ANCDiagnosis {
 		this.dateOfDeath = dateOfDeath;
 		this.causeOfDeath = causeOfDeath;
 		this.visitCode = visitCode;
+		this.externalInvestigation = externalInvestigation;
 	}
 
 	public static ANCDiagnosis getANCDiagnosisDetails(ArrayList<Object[]> resList) {
-		ArrayList<ANCDiagnosis> resArray = new ArrayList<ANCDiagnosis>();
 		ANCDiagnosis cOBJ = null;
 		if (null != resList && resList.size() > 0) {
-			for (Object[] obj : resList) {
-				cOBJ = new ANCDiagnosis((Long) obj[0], (Long) obj[1], (Long) obj[2], (Integer) obj[3], (Long) obj[4],
-						(String) obj[5], (String) obj[6], (String) obj[7], (Boolean) obj[8], (String) obj[9],
-						(Date) obj[10], (String) obj[11], (Long) obj[12]);
+			Object[] obj = resList.get(0);
+			cOBJ = new ANCDiagnosis((Long) obj[0], (Long) obj[1], (Long) obj[2], (Integer) obj[3], (Long) obj[4],
+					(String) obj[5], (String) obj[6], (String) obj[7], (Boolean) obj[8], (String) obj[9],
+					(Date) obj[10], (String) obj[11], (Long) obj[12], null);
 
-			}
 		}
 		return cOBJ;
 	}

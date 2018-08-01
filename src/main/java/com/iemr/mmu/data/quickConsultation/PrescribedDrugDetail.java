@@ -2,19 +2,14 @@ package com.iemr.mmu.data.quickConsultation;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
-import com.iemr.mmu.data.nurse.CommonUtilityClass;
 
 @Entity
 @Table(name = "t_prescribeddrug")
@@ -22,8 +17,8 @@ public class PrescribedDrugDetail {
 	@Id
 	@GeneratedValue
 	@Expose
-	@Column(name = "PrescribedDrugID")
-	private Long prescribedDrugID;
+	@Column(name = "PrescribedDrugID", insertable = false, updatable = false)
+	private Long id;
 
 	@Expose
 	@Column(name = "BeneficiaryRegID")
@@ -47,7 +42,7 @@ public class PrescribedDrugDetail {
 
 	@Expose
 	@Column(name = "DrugForm")
-	private String drugForm;
+	private String formName;
 
 	@Expose
 	@Column(name = "DrugTradeOrBrandName")
@@ -59,7 +54,7 @@ public class PrescribedDrugDetail {
 
 	@Expose
 	@Column(name = "GenericDrugName")
-	private String genericDrugName;
+	private String drugName;
 
 	@Expose
 	@Column(name = "DrugStrength")
@@ -79,11 +74,11 @@ public class PrescribedDrugDetail {
 
 	@Expose
 	@Column(name = "Duration")
-	private String drugDuration;
+	private String duration;
 
 	@Expose
 	@Column(name = "DuartionUnit")
-	private String drugDurationUnit;
+	private String unit;
 
 	@Expose
 	@Column(name = "RelationToFood")
@@ -91,7 +86,7 @@ public class PrescribedDrugDetail {
 
 	@Expose
 	@Column(name = "SpecialInstruction")
-	private String specialInstruction;
+	private String instructions;
 
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -141,228 +136,42 @@ public class PrescribedDrugDetail {
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
 
-	@Transient
-	private Map<String, String> drug;
-
-	public Map<String, String> getDrug() {
-		return drug;
-	}
-
-	public void setDrug(Map<String, String> drug) {
-		this.drug = drug;
-	}
-
 	public PrescribedDrugDetail() {
+	}
+
+	public PrescribedDrugDetail(Long prescribedDrugID, Long prescriptionID, String drugForm,
+			String drugTradeOrBrandName, Integer drugID, String genericDrugName, String drugStrength, String dose,
+			String route, String frequency, String drugDuration, String drugDurationUnit, String relationToFood,
+			String specialInstruction) {
 		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public Integer getDrugID() {
-		return drugID;
-	}
-
-	public void setDrugID(Integer drugID) {
-		this.drugID = drugID;
-	}
-
-	public String getDrugDuration() {
-		return drugDuration;
-	}
-
-	public void setDrugDuration(String drugDuration) {
-		this.drugDuration = drugDuration;
-	}
-
-	public void setPrescribedDrugID(Long prescribedDrugID) {
-		this.prescribedDrugID = prescribedDrugID;
-	}
-
-	public Long getPrescriptionID() {
-		return prescriptionID;
-	}
-
-	public void setPrescriptionID(Long prescriptionID) {
+		this.id = prescribedDrugID;
 		this.prescriptionID = prescriptionID;
-	}
-
-	public String getDrugForm() {
-		return drugForm;
-	}
-
-	public void setDrugForm(String drugForm) {
-		this.drugForm = drugForm;
-	}
-
-	public String getDrugTradeOrBrandName() {
-		return drugTradeOrBrandName;
-	}
-
-	public void setDrugTradeOrBrandName(String drugTradeOrBrandName) {
+		this.formName = drugForm;
 		this.drugTradeOrBrandName = drugTradeOrBrandName;
-	}
-
-	public String getGenericDrugName() {
-		return genericDrugName;
-	}
-
-	public void setGenericDrugName(String genericDrugName) {
-		this.genericDrugName = genericDrugName;
-	}
-
-	public String getDrugStrength() {
-		return drugStrength;
-	}
-
-	public void setDrugStrength(String drugStrength) {
+		this.drugID = drugID;
+		this.drugName = genericDrugName;
 		this.drugStrength = drugStrength;
-	}
-
-	public String getDose() {
-		return dose;
-	}
-
-	public void setDose(String dose) {
 		this.dose = dose;
-	}
-
-	public String getRoute() {
-		return route;
-	}
-
-	public void setRoute(String route) {
 		this.route = route;
-	}
-
-	public String getFrequency() {
-		return frequency;
-	}
-
-	public void setFrequency(String frequency) {
 		this.frequency = frequency;
-	}
-
-	public String getDuration() {
-		return drugDuration;
-	}
-
-	public void setDuration(String duration) {
-		this.drugDuration = duration;
-	}
-
-	public String getRelationToFood() {
-		return relationToFood;
-	}
-
-	public void setRelationToFood(String relationToFood) {
+		this.duration = drugDuration;
+		this.unit = drugDurationUnit;
 		this.relationToFood = relationToFood;
+		this.instructions = specialInstruction;
 	}
 
-	public String getSpecialInstruction() {
-		return specialInstruction;
-	}
-
-	public void setSpecialInstruction(String specialInstruction) {
-		this.specialInstruction = specialInstruction;
-	}
-
-	public Boolean getDeleted() {
-		return deleted;
-	}
-
-	public void setDeleted(Boolean deleted) {
-		this.deleted = deleted;
-	}
-
-	public String getProcessed() {
-		return processed;
-	}
-
-	public void setProcessed(String processed) {
-		this.processed = processed;
-	}
-
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public Timestamp getCreatedDate() {
-		return createdDate;
-	}
-
-	public void setCreatedDate(Timestamp createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	public String getModifiedBy() {
-		return modifiedBy;
-	}
-
-	public void setModifiedBy(String modifiedBy) {
-		this.modifiedBy = modifiedBy;
-	}
-
-	public Timestamp getLastModDate() {
-		return lastModDate;
-	}
-
-	public void setLastModDate(Timestamp lastModDate) {
-		this.lastModDate = lastModDate;
-	}
-
-	public Long getPrescribedDrugID() {
-		return prescribedDrugID;
-	}
-
-	public Long getVanSerialNo() {
-		return vanSerialNo;
-	}
-
-	public void setVanSerialNo(Long vanSerialNo) {
-		this.vanSerialNo = vanSerialNo;
-	}
-
-	public String getVehicalNo() {
-		return vehicalNo;
-	}
-
-	public void setVehicalNo(String vehicalNo) {
-		this.vehicalNo = vehicalNo;
-	}
-
-	public Integer getParkingPlaceID() {
-		return parkingPlaceID;
-	}
-
-	public void setParkingPlaceID(Integer parkingPlaceID) {
-		this.parkingPlaceID = parkingPlaceID;
-	}
-
-	public String getSyncedBy() {
-		return syncedBy;
-	}
-
-	public void setSyncedBy(String syncedBy) {
-		this.syncedBy = syncedBy;
-	}
-
-	public Timestamp getSyncedDate() {
-		return syncedDate;
-	}
-
-	public void setSyncedDate(Timestamp syncedDate) {
-		this.syncedDate = syncedDate;
-	}
-
-	public String getReservedForChange() {
-		return reservedForChange;
-	}
-
-	public void setReservedForChange(String reservedForChange) {
-		this.reservedForChange = reservedForChange;
+	public static ArrayList<PrescribedDrugDetail> getprescribedDrugs(ArrayList<Object[]> resList) {
+		ArrayList<PrescribedDrugDetail> resArray = new ArrayList<PrescribedDrugDetail>();
+		PrescribedDrugDetail cOBJ = null;
+		if (resList != null && resList.size() > 0) {
+			for (Object[] obj : resList) {
+				cOBJ = new PrescribedDrugDetail((Long) obj[0], (Long) obj[1], (String) obj[2], (String) obj[3],
+						(Integer) obj[4], (String) obj[5], (String) obj[6], (String) obj[7], (String) obj[8],
+						(String) obj[9], (String) obj[10], (String) obj[11], (String) obj[12], (String) obj[13]);
+				resArray.add(cOBJ);
+			}
+		}
+		return resArray;
 	}
 
 	public Long getBeneficiaryRegID() {
@@ -389,128 +198,6 @@ public class PrescribedDrugDetail {
 		this.providerServiceMapID = providerServiceMapID;
 	}
 
-	public String getDrugDurationUnit() {
-		return drugDurationUnit;
-	}
-
-	public void setDrugDurationUnit(String drugDurationUnit) {
-		this.drugDurationUnit = drugDurationUnit;
-	}
-
-	public static ArrayList<PrescribedDrugDetail> getBenPrescribedDrugDetailList(JsonObject emrgCasesheet,
-			Long prescriptionID, CommonUtilityClass commonUtilityClass) {
-		ArrayList<PrescribedDrugDetail> resArray = new ArrayList<PrescribedDrugDetail>();
-		PrescribedDrugDetail prescribedDrugDetail = null;
-		if (emrgCasesheet.has("prescribedDrugs") && !emrgCasesheet.get("prescribedDrugs").isJsonNull()
-				&& emrgCasesheet.get("prescribedDrugs").isJsonArray()) {
-			for (JsonElement csobj : emrgCasesheet.getAsJsonArray("prescribedDrugs")) {
-				prescribedDrugDetail = new PrescribedDrugDetail();
-
-				prescribedDrugDetail.setPrescriptionID(prescriptionID);
-
-				JsonObject obj = csobj.getAsJsonObject();
-
-				if (obj.has("drugForm") && !obj.get("drugForm").isJsonNull())
-					prescribedDrugDetail.setDrugForm(obj.get("drugForm").getAsString());
-
-				if (obj.has("drugTradeOrBrandName") && !obj.get("drugTradeOrBrandName").isJsonNull())
-					prescribedDrugDetail.setDrugTradeOrBrandName(obj.get("drugTradeOrBrandName").getAsString());
-
-				if (obj.has("drugStrength") && !obj.get("drugStrength").isJsonNull())
-					prescribedDrugDetail.setDrugStrength(obj.get("drugStrength").getAsString());
-
-				if (obj.has("dose") && !obj.get("dose").isJsonNull())
-					prescribedDrugDetail.setDose(obj.get("dose").getAsString());
-
-				if (obj.has("route") && !obj.get("route").isJsonNull())
-					prescribedDrugDetail.setRoute(obj.get("route").getAsString());
-
-				if (obj.has("frequency") && !obj.get("frequency").isJsonNull())
-					prescribedDrugDetail.setFrequency(obj.get("frequency").getAsString());
-
-				if (obj.has("drugDuration") && !obj.get("drugDuration").isJsonNull())
-					prescribedDrugDetail.setDuration(obj.get("drugDuration").getAsString());
-
-				if (obj.has("drugDurationUnit") && !obj.get("drugDurationUnit").isJsonNull())
-					prescribedDrugDetail.setDrugDurationUnit(obj.get("drugDurationUnit").getAsString());
-
-				if (obj.has("relationToFood") && !obj.get("relationToFood").isJsonNull())
-					prescribedDrugDetail.setRelationToFood(obj.get("relationToFood").getAsString());
-
-				if (obj.has("specialInstruction") && !obj.get("specialInstruction").isJsonNull())
-					prescribedDrugDetail.setSpecialInstruction(obj.get("specialInstruction").getAsString());
-
-				if (emrgCasesheet.has("createdBy") && !emrgCasesheet.get("createdBy").isJsonNull())
-					prescribedDrugDetail.setCreatedBy(emrgCasesheet.get("createdBy").getAsString());
-
-//				if (emrgCasesheet.has("beneficiaryRegID") && !emrgCasesheet.get("beneficiaryRegID").isJsonNull())
-//					prescribedDrugDetail.setBeneficiaryRegID(emrgCasesheet.get("beneficiaryRegID").getAsLong());
-//
-//				if (emrgCasesheet.has("benVisitID") && !emrgCasesheet.get("benVisitID").isJsonNull())
-//					prescribedDrugDetail.setBenVisitID(emrgCasesheet.get("benVisitID").getAsLong());
-				
-				prescribedDrugDetail.setBeneficiaryRegID(commonUtilityClass.getBeneficiaryRegID());
-				prescribedDrugDetail.setBenVisitID(commonUtilityClass.getBenVisitID());
-				prescribedDrugDetail.setVisitCode(commonUtilityClass.getVisitCode());
-				prescribedDrugDetail.setProviderServiceMapID(commonUtilityClass.getProviderServiceMapID());
-
-				if (obj.has("drug") && !obj.get("drug").isJsonNull() && obj.size() > 0
-						&& obj.get("drug").isJsonObject()) {
-					JsonObject tmpDugDeailsOBJ = obj.getAsJsonObject("drug");
-					if (tmpDugDeailsOBJ.has("drugID") && !tmpDugDeailsOBJ.get("drugID").isJsonNull()
-							&& tmpDugDeailsOBJ.has("drugDisplayName")
-							&& !tmpDugDeailsOBJ.get("drugDisplayName").isJsonNull()) {
-						prescribedDrugDetail.setDrugID(tmpDugDeailsOBJ.get("drugID").getAsInt());
-						prescribedDrugDetail.setGenericDrugName(tmpDugDeailsOBJ.get("drugDisplayName").getAsString());
-
-						resArray.add(prescribedDrugDetail);
-					}
-
-				}
-
-			}
-		}
-
-		return resArray;
-	}
-
-	public PrescribedDrugDetail(Long prescribedDrugID, Long prescriptionID, String drugForm,
-			String drugTradeOrBrandName, Integer drugID, String genericDrugName, String drugStrength, String dose,
-			String route, String frequency, String drugDuration, String drugDurationUnit, String relationToFood,
-			String specialInstruction) {
-		super();
-		this.prescribedDrugID = prescribedDrugID;
-		this.prescriptionID = prescriptionID;
-		this.drugForm = drugForm;
-		this.drugTradeOrBrandName = drugTradeOrBrandName;
-		this.drugID = drugID;
-		this.genericDrugName = genericDrugName;
-		this.drugStrength = drugStrength;
-		this.dose = dose;
-		this.route = route;
-		this.frequency = frequency;
-		this.drugDuration = drugDuration;
-		this.drugDurationUnit = drugDurationUnit;
-		this.relationToFood = relationToFood;
-		this.specialInstruction = specialInstruction;
-	}
-
-	public static ArrayList<PrescribedDrugDetail> getprescribedDrugs(ArrayList<Object[]> resList) {
-		ArrayList<PrescribedDrugDetail> resArray = new ArrayList<PrescribedDrugDetail>();
-		PrescribedDrugDetail cOBJ = null;
-		if (resList != null && resList.size() > 0) {
-
-			for (Object[] obj : resList) {
-
-				cOBJ = new PrescribedDrugDetail((Long) obj[0], (Long) obj[1], (String) obj[2], (String) obj[3],
-						(Integer) obj[4], (String) obj[5], (String) obj[6], (String) obj[7], (String) obj[8],
-						(String) obj[9], (String) obj[10], (String) obj[11], (String) obj[12], (String) obj[13]);
-				resArray.add(cOBJ);
-			}
-		}
-		return resArray;
-	}
-
 	public Long getVisitCode() {
 		return visitCode;
 	}
@@ -518,4 +205,13 @@ public class PrescribedDrugDetail {
 	public void setVisitCode(Long visitCode) {
 		this.visitCode = visitCode;
 	}
+
+	public Long getPrescriptionID() {
+		return prescriptionID;
+	}
+
+	public void setPrescriptionID(Long prescriptionID) {
+		this.prescriptionID = prescriptionID;
+	}
+
 }

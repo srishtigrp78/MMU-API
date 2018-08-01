@@ -228,21 +228,20 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 	 * saveLabTestResult(JsonObject requestOBJ) throws Exception {
 	 * 
 	 * Integer labResultSaveFlag = null; if (requestOBJ != null &&
-	 * requestOBJ.has("labTestResults") && null !=
-	 * requestOBJ.get("labTestResults") &&
-	 * !requestOBJ.get("labTestResults").isJsonNull()) {
+	 * requestOBJ.has("labTestResults") && null != requestOBJ.get("labTestResults")
+	 * && !requestOBJ.get("labTestResults").isJsonNull()) {
 	 * 
 	 * LabResultEntry[] labResults =
 	 * InputMapper.gson().fromJson(requestOBJ.get("labTestResults"),
 	 * LabResultEntry[].class); List<LabResultEntry> labResultsList =
 	 * Arrays.asList(labResults);
 	 * 
-	 * if(null != labResultsList && labResultsList.size()>0){
-	 * List<LabResultEntry> labResultsListNew = new ArrayList<LabResultEntry>();
-	 * for(LabResultEntry labResult : labResultsList){ List<Map<String, String>>
-	 * compResult = labResult.getCompList(); if(null != compResult &&
-	 * compResult.size()>0){ for(Map<String, String> comp: compResult){
-	 * LabResultEntry labCompResult = new LabResultEntry();
+	 * if(null != labResultsList && labResultsList.size()>0){ List<LabResultEntry>
+	 * labResultsListNew = new ArrayList<LabResultEntry>(); for(LabResultEntry
+	 * labResult : labResultsList){ List<Map<String, String>> compResult =
+	 * labResult.getCompList(); if(null != compResult && compResult.size()>0){
+	 * for(Map<String, String> comp: compResult){ LabResultEntry labCompResult = new
+	 * LabResultEntry();
 	 * labCompResult.setPrescriptionID(labResult.getPrescriptionID());
 	 * labCompResult.setProcedureID(labResult.getProcedureID());
 	 * 
@@ -267,10 +266,10 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 	 * labResultsListNew.add(labCompResult); }
 	 * 
 	 * } } } List<LabResultEntry> labResultEntryRes = (List<LabResultEntry>)
-	 * labResultEntryRepo.save(labResultsListNew); if(null != labResultEntryRes
-	 * && labResultsListNew.size() == labResultEntryRes.size()){
-	 * labResultSaveFlag = 1; } }else{ labResultSaveFlag = 1; } }else{
-	 * labResultSaveFlag = 1; } return labResultSaveFlag; }
+	 * labResultEntryRepo.save(labResultsListNew); if(null != labResultEntryRes &&
+	 * labResultsListNew.size() == labResultEntryRes.size()){ labResultSaveFlag = 1;
+	 * } }else{ labResultSaveFlag = 1; } }else{ labResultSaveFlag = 1; } return
+	 * labResultSaveFlag; }
 	 */
 
 	@Transactional(rollbackFor = Exception.class)
@@ -379,5 +378,16 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 			labResultSaveFlag = 1;
 		}
 		return labResultSaveFlag;
+	}
+
+	public String getLast_3_ArchivedTestVisitList(Long benRegID, Long visitCode) {
+		ArrayList<Object[]> visitCodeList = labResultEntryRepo.getLast_3_visitForLabTestDone(benRegID, visitCode);
+
+		return new Gson().toJson(LabResultEntry.getVisitCodeAndDate(visitCodeList));
+	}
+
+	public String getLabResultForVisitcode(Long benRegID, Long visitCode) {
+		ArrayList<LabResultEntry> labResultList = getLabResultDataForBen(benRegID, visitCode);
+		return new Gson().toJson(labResultList);
 	}
 }

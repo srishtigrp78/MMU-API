@@ -317,13 +317,9 @@ public class PrescriptionDetail {
 	public static PrescriptionDetail getPrescriptions(ArrayList<Object[]> resList) {
 		PrescriptionDetail cOBJ = null;
 		if (resList != null && resList.size() > 0) {
-
-			for (Object[] obj : resList) {
-
-				cOBJ = new PrescriptionDetail((Long) obj[0], (Long) obj[1], (Long) obj[2], (Integer) obj[3],
-						(String) obj[4], (String) obj[5], (String) obj[6], (Long) obj[7]);
-
-			}
+			Object[] obj = resList.get(0);
+			cOBJ = new PrescriptionDetail((Long) obj[0], (Long) obj[1], (Long) obj[2], (Integer) obj[3],
+					(String) obj[4], (String) obj[5], (String) obj[6], (Long) obj[7]);
 		}
 		return cOBJ;
 	}
@@ -331,12 +327,10 @@ public class PrescriptionDetail {
 	public static PrescriptionDetail getGeneralOPDDiagnosis(ArrayList<Object[]> resList) {
 		PrescriptionDetail cOBJ = null;
 		if (resList != null && resList.size() > 0) {
+			Object[] obj = resList.get(0);
+			cOBJ = new PrescriptionDetail((Long) obj[0], (Long) obj[1], (Long) obj[2], (Integer) obj[3],
+					(String) obj[4], (String) obj[5], (Long) obj[6]);
 
-			for (Object[] obj : resList) {
-
-				cOBJ = new PrescriptionDetail((Long) obj[0], (Long) obj[1], (Long) obj[2], (Integer) obj[3],
-						(String) obj[4], (String) obj[5], (Long) obj[6]);
-			}
 		}
 		return cOBJ;
 	}

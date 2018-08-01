@@ -22,8 +22,6 @@ import io.swagger.annotations.ApiParam;
 @RequestMapping(value = "/snomed")
 @RestController
 public class SnomedController {
-
-	InputMapper inputMapper = new InputMapper();
 	private Logger logger = LoggerFactory.getLogger(SnomedController.class);
 
 	private SnomedService snomedService;
@@ -40,26 +38,26 @@ public class SnomedController {
 		OutputResponse output = new OutputResponse();
 		try {
 
-			SCTDescription sctdescription = inputMapper.gson().fromJson(request, SCTDescription.class);
+			SCTDescription sctdescription = InputMapper.gson().fromJson(request, SCTDescription.class);
 
 			logger.info("getSnomedCTRecord request " + sctdescription.toString());
 
 			List<SCTDescription> sctdescriptions = snomedService.findSnomedCTRecordFromTerm(sctdescription.getTerm());
 
 			SCTDescription recentRecord = null;
-			
-			for (SCTDescription sct : sctdescriptions) {				
+
+			for (SCTDescription sct : sctdescriptions) {
 				recentRecord = sct;
-				//  recent & case insensitive id is 900000000000448009
-				if(sct.getCaseSignificanceID() == "900000000000448009")
-				break;
+				// recent & case insensitive id is 900000000000448009
+				if (sct.getCaseSignificanceID() == "900000000000448009")
+					break;
 			}
 
-			if(recentRecord == null)
+			if (recentRecord == null)
 				output.setResponse("No Records Found");
 			else
-			output.setResponse(recentRecord.toString());
-			
+				output.setResponse(recentRecord.toString());
+
 			logger.info("ggetSnomedCTRecord response: " + output);
 		} catch (Exception e) {
 			logger.error("ggetSnomedCTRecord failed with error " + e.getMessage(), e);
@@ -75,7 +73,7 @@ public class SnomedController {
 		OutputResponse output = new OutputResponse();
 		try {
 
-			SCTDescription sctdescription = inputMapper.gson().fromJson(request, SCTDescription.class);
+			SCTDescription sctdescription = InputMapper.gson().fromJson(request, SCTDescription.class);
 
 			logger.info("getSnomedCTRecord request " + sctdescription.toString());
 

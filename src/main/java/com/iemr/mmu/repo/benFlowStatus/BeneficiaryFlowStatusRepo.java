@@ -47,7 +47,9 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			@Param("benFlowID") Long benFlowID);
 
 	@Query("SELECT t from BeneficiaryFlowStatus t WHERE (t.doctorFlag = 1 OR t.doctorFlag = 2 OR "
-			+ " t.doctorFlag = 3 OR t.nurseFlag = 2 OR t.doctorFlag = 9) AND t.deleted = false AND t.providerServiceMapId = :providerServiceMapId")
+			+ " t.doctorFlag = 3 OR t.nurseFlag = 2 OR t.doctorFlag = 9) AND t.deleted = false "
+			+ " AND t.providerServiceMapId = :providerServiceMapId "
+			+ " ORDER BY visitDate DESC ")
 	public ArrayList<BeneficiaryFlowStatus> getDocWorkListNew(
 			@Param("providerServiceMapId") Integer providerServiceMapId);
 
@@ -58,7 +60,7 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			@Param("provoderSerMapID") Integer provoderSerMapID);
 
 	@Query("SELECT t from BeneficiaryFlowStatus t WHERE (t.nurseFlag = 2 OR t.doctorFlag = 2) AND t.deleted = false "
-			+ "AND t.providerServiceMapId = :providerServiceMapId")
+			+ "AND t.providerServiceMapId = :providerServiceMapId ORDER BY consultationDate DESC ")
 	public ArrayList<BeneficiaryFlowStatus> getLabWorklistNew(
 			@Param("providerServiceMapId") Integer providerServiceMapId);
 
