@@ -16,6 +16,7 @@ import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.doctor.BenReferDetails;
 import com.iemr.mmu.data.masterdata.anc.ServiceMaster;
+import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
@@ -29,6 +30,7 @@ import com.iemr.mmu.repo.quickConsultation.BenClinicalObservationsRepo;
 import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
+import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
@@ -48,7 +50,14 @@ public class CommonDoctorServiceImpl {
 	private PrescribedDrugDetailRepo prescribedDrugDetailRepo;
 	private PrescriptionDetailRepo prescriptionDetailRepo;
 
+	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
+
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
+
+	@Autowired
+	public void setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl) {
+		this.commonBenStatusFlowServiceImpl = commonBenStatusFlowServiceImpl;
+	}
 
 	@Autowired
 	public void setBeneficiaryFlowStatusRepo(BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo) {
@@ -106,16 +115,18 @@ public class CommonDoctorServiceImpl {
 		int i = 0;
 		int clinicalObservationFlag = 0;
 		int chiefComFlag = 0;
+
+		// save clinical observation
 		BenClinicalObservations benClinicalObservationsRS = benClinicalObservationsRepo
 				.save(getBenClinicalObservations(wrapperAncFindings));
 		if (benClinicalObservationsRS != null) {
 			clinicalObservationFlag = 1;
 		}
 
-		// ArrayList<BenChiefComplaint> tmpBenCHiefComplaints =
-		// getBenChiefComplaint(wrapperAncFindings);
+		// get chief complaints Object to save
 		ArrayList<BenChiefComplaint> tmpBenCHiefComplaints = wrapperAncFindings.getComplaints();
 		ArrayList<BenChiefComplaint> tmpBenCHiefComplaintsTMP = new ArrayList<>();
+		// filter out valid chief complaints
 		if (tmpBenCHiefComplaints.size() > 0) {
 			for (BenChiefComplaint benChiefComplaint : tmpBenCHiefComplaints) {
 				if (benChiefComplaint.getChiefComplaint() != null) {
@@ -130,6 +141,7 @@ public class CommonDoctorServiceImpl {
 			}
 
 		}
+		// if valid chief complaints is present than save to DB
 		if (tmpBenCHiefComplaintsTMP.size() > 0) {
 			ArrayList<BenChiefComplaint> benChiefComplaintListRS = (ArrayList<BenChiefComplaint>) benChiefComplaintRepo
 					.save(tmpBenCHiefComplaintsTMP);
@@ -140,6 +152,7 @@ public class CommonDoctorServiceImpl {
 			chiefComFlag = 1;
 		}
 
+		// check if both clinical observation & chief complaints both saved successfully
 		if (clinicalObservationFlag > 0 && chiefComFlag > 0)
 			i = 1;
 
@@ -458,5 +471,83 @@ public class CommonDoctorServiceImpl {
 		}
 		return ID;
 	}
+
+	/**
+	 * 
+	 * 
+	 * @param commonUtilityClass
+	 * @param testList
+	 * @param drugList
+	 * @return
+	 */
+	/// ------Start of beneficiary flow table after doctor data save-------------
+
+	public int updateBenFlowtableAfterDocDataSave(CommonUtilityClass commonUtilityClass, Boolean isTestPrescribed,
+			Boolean isMedicinePrescribed) {
+		short pharmaFalg;
+		short docFlag;
+
+		Long tmpBenFlowID = commonUtilityClass.getBenFlowID();
+		Long tmpBeneficiaryID = commonUtilityClass.getBeneficiaryID();
+		Long tmpBenVisitID = commonUtilityClass.getBenVisitID();
+		Long tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
+
+		// checking if test is prescribed
+		if (isTestPrescribed) {
+			docFlag = (short) 2;
+		} else {
+			docFlag = (short) 9;
+		}
+		// checking if medicine is prescribed
+		if (isMedicinePrescribed) {
+			pharmaFalg = (short) 1;
+		} else {
+			pharmaFalg = (short) 0;
+		}
+
+		int i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
+				tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
+		return i;
+	}
+
+	/// ------End of beneficiary flow table after doctor data save-------------
+
+	/// ------Start of beneficiary flow table after doctor data update-------------
+	/**
+	 * 
+	 * 
+	 * @param commonUtilityClass
+	 * @param isTestPrescribed
+	 * @param isMedicinePrescribed
+	 * @return
+	 */
+	public int updateBenFlowtableAfterDocDataUpdate(CommonUtilityClass commonUtilityClass, Boolean isTestPrescribed,
+			Boolean isMedicinePrescribed) {
+
+		short pharmaFalg;
+		short docFlag;
+
+		Long tmpBenFlowID = commonUtilityClass.getBenFlowID();
+		Long tmpBeneficiaryID = commonUtilityClass.getBeneficiaryID();
+		Long tmpBenVisitID = commonUtilityClass.getBenVisitID();
+		Long tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
+
+		if (isTestPrescribed)
+			docFlag = (short) 2;
+		else
+			docFlag = (short) 9;
+
+		if (isMedicinePrescribed)
+			pharmaFalg = (short) 1;
+		else
+			pharmaFalg = (short) 0;
+
+		int i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdate(tmpBenFlowID, tmpbeneficiaryRegID,
+				tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
+
+		return i;
+	}
+
+	/// ------End of beneficiary flow table after doctor data update-------------
 
 }

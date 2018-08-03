@@ -100,7 +100,7 @@ public class ANCCreateController {
 				if (r != null && r > 0) {
 					response.setResponse("Data saved successfully");
 				} else {
-					// soething went wrong
+					// something went wrong
 					response.setError(5000, "Unable to save data");
 				}
 			} else {

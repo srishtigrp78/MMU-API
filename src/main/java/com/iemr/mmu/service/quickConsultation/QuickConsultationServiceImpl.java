@@ -22,19 +22,15 @@ import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 import com.iemr.mmu.data.quickConsultation.ExternalLabTestOrder;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
-import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.BenChiefComplaintRepo;
 import com.iemr.mmu.repo.quickConsultation.BenClinicalObservationsRepo;
 import com.iemr.mmu.repo.quickConsultation.ExternalTestOrderRepo;
-import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
-import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.generalOPD.GeneralOPDDoctorServiceImpl;
 import com.iemr.mmu.service.labtechnician.LabTechnicianServiceImpl;
-import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
@@ -42,32 +38,39 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	private BenChiefComplaintRepo benChiefComplaintRepo;
 	private BenClinicalObservationsRepo benClinicalObservationsRepo;
 	private PrescriptionDetailRepo prescriptionDetailRepo;
-	private PrescribedDrugDetailRepo prescribedDrugDetailRepo;
-	private LabTestOrderDetailRepo labTestOrderDetailRepo;
+	// private PrescribedDrugDetailRepo prescribedDrugDetailRepo;
+	// private LabTestOrderDetailRepo labTestOrderDetailRepo;
 	private ExternalTestOrderRepo externalTestOrderRepo;
-	private NurseServiceImpl nurseServiceImpl;
-	private BenVisitDetailRepo benVisitDetailRepo;
+	// private NurseServiceImpl nurseServiceImpl;
+	// private BenVisitDetailRepo benVisitDetailRepo;
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
 	private LabTechnicianServiceImpl labTechnicianServiceImpl;
+	private CommonDoctorServiceImpl commonDoctorServiceImpl;
+	// private GeneralOPDDoctorServiceImpl generalOPDDoctorServiceImpl;
+
+	private GeneralOPDDoctorServiceImpl generalOPDDoctorServiceImpl;
+
+	@Autowired
+	public void setGeneralOPDDoctorServiceImpl(GeneralOPDDoctorServiceImpl generalOPDDoctorServiceImpl) {
+		this.generalOPDDoctorServiceImpl = generalOPDDoctorServiceImpl;
+	}
 
 	@Autowired
 	public void setLabTechnicianServiceImpl(LabTechnicianServiceImpl labTechnicianServiceImpl) {
 		this.labTechnicianServiceImpl = labTechnicianServiceImpl;
 	}
 
-	private CommonDoctorServiceImpl commonDoctorServiceImpl;
-	private GeneralOPDDoctorServiceImpl generalOPDDoctorServiceImpl;
-
 	@Autowired
 	public void setCommonDoctorServiceImpl(CommonDoctorServiceImpl commonDoctorServiceImpl) {
 		this.commonDoctorServiceImpl = commonDoctorServiceImpl;
 	}
 
-	@Autowired
-	public void setGeneralOPDDoctorServiceImpl(GeneralOPDDoctorServiceImpl generalOPDDoctorServiceImpl) {
-		this.generalOPDDoctorServiceImpl = generalOPDDoctorServiceImpl;
-	}
+	// @Autowired
+	// public void setGeneralOPDDoctorServiceImpl(GeneralOPDDoctorServiceImpl
+	// generalOPDDoctorServiceImpl) {
+	// this.generalOPDDoctorServiceImpl = generalOPDDoctorServiceImpl;
+	// }
 
 	@Autowired
 	public void setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl) {
@@ -79,15 +82,16 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		this.commonNurseServiceImpl = commonNurseServiceImpl;
 	}
 
-	@Autowired
-	public void setBeneficiaryVisitDetail(BenVisitDetailRepo benVisitDetailRepo) {
-		this.benVisitDetailRepo = benVisitDetailRepo;
-	}
-
-	@Autowired
-	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
-		this.nurseServiceImpl = nurseServiceImpl;
-	}
+	// @Autowired
+	// public void setBeneficiaryVisitDetail(BenVisitDetailRepo benVisitDetailRepo)
+	// {
+	// this.benVisitDetailRepo = benVisitDetailRepo;
+	// }
+	//
+	// @Autowired
+	// public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
+	// this.nurseServiceImpl = nurseServiceImpl;
+	// }
 
 	@Autowired
 	public void setBenChiefComplaintRepo(BenChiefComplaintRepo benChiefComplaintRepo) {
@@ -104,15 +108,17 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		this.prescriptionDetailRepo = prescriptionDetailRepo;
 	}
 
-	@Autowired
-	public void setPrescribedDrugDetailRepo(PrescribedDrugDetailRepo prescribedDrugDetailRepo) {
-		this.prescribedDrugDetailRepo = prescribedDrugDetailRepo;
-	}
-
-	@Autowired
-	public void setLabTestOrderDetailRepo(LabTestOrderDetailRepo labTestOrderDetailRepo) {
-		this.labTestOrderDetailRepo = labTestOrderDetailRepo;
-	}
+	// @Autowired
+	// public void setPrescribedDrugDetailRepo(PrescribedDrugDetailRepo
+	// prescribedDrugDetailRepo) {
+	// this.prescribedDrugDetailRepo = prescribedDrugDetailRepo;
+	// }
+	//
+	// @Autowired
+	// public void setLabTestOrderDetailRepo(LabTestOrderDetailRepo
+	// labTestOrderDetailRepo) {
+	// this.labTestOrderDetailRepo = labTestOrderDetailRepo;
+	// }
 
 	@Autowired
 	public void setExternalTestOrderRepo(ExternalTestOrderRepo externalTestOrderRepo) {
@@ -288,6 +294,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 
 		Long benChiefComplaintID = saveBeneficiaryChiefComplaint(quickConsultDoctorOBJ);
 		Long clinicalObservationID = saveBeneficiaryClinicalObservations(quickConsultDoctorOBJ);
+		// generate prescription
 		Long prescriptionID = commonNurseServiceImpl.saveBeneficiaryPrescription(quickConsultDoctorOBJ);
 
 		Boolean isTestPrescribed = false;
@@ -310,6 +317,10 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 
 			for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
 				tmpObj.setPrescriptionID(prescriptionID);
+				tmpObj.setBeneficiaryRegID(commonUtilityClass.getBeneficiaryRegID());
+				tmpObj.setBenVisitID(commonUtilityClass.getBenVisitID());
+				tmpObj.setVisitCode(commonUtilityClass.getVisitCode());
+				tmpObj.setProviderServiceMapID(commonUtilityClass.getProviderServiceMapID());
 			}
 			Integer r = commonNurseServiceImpl.saveBenPrescribedDrugsList(prescribedDrugDetailList);
 			if (r > 0 && r != null) {
@@ -336,7 +347,8 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 				&& (investigationSuccessFlag != null && investigationSuccessFlag > 0)) {
 
 			// call method to update beneficiary flow table
-			int i = updateBenFlowtableAfterDocDataSave(commonUtilityClass, isTestPrescribed, isMedicinePrescribed);
+			int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataSave(commonUtilityClass, isTestPrescribed,
+					isMedicinePrescribed);
 
 			if (i > 0)
 				returnOBJ = 1;
@@ -345,46 +357,6 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		}
 		return returnOBJ;
 	}
-
-	/**
-	 * 
-	 * 
-	 * @param commonUtilityClass
-	 * @param testList
-	 * @param drugList
-	 * @return
-	 */
-	/// ------Start of beneficiary flow table after doctor data save-------------
-
-	private int updateBenFlowtableAfterDocDataSave(CommonUtilityClass commonUtilityClass, Boolean isTestPrescribed,
-			Boolean isMedicinePrescribed) {
-		short pharmaFalg;
-		short docFlag;
-
-		Long tmpBenFlowID = commonUtilityClass.getBenFlowID();
-		Long tmpBeneficiaryID = commonUtilityClass.getBeneficiaryID();
-		Long tmpBenVisitID = commonUtilityClass.getBenVisitID();
-		Long tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
-
-		// checking if test is prescribed
-		if (isTestPrescribed) {
-			docFlag = (short) 2;
-		} else {
-			docFlag = (short) 9;
-		}
-		// checking if medicine is prescribed
-		if (isMedicinePrescribed) {
-			pharmaFalg = (short) 1;
-		} else {
-			pharmaFalg = (short) 0;
-		}
-
-		int i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
-				tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
-		return i;
-	}
-
-	/// ------End of beneficiary flow table after doctor data save-------------
 
 	// ------- Start Fetch (Nurse data to Doctor screen) ----------------
 	public String getBenDataFrmNurseToDocVisitDetailsScreen(Long benRegID, Long visitCode) {
@@ -421,14 +393,23 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	// ------- END of Fetch (Nurse data to Doctor screen) ----------------
 
 	public String getBenCaseRecordFromDoctorQuickConsult(Long benRegID, Long visitCode) {
+		Map<String, Object> resMap = new HashMap<>();
+		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, visitCode));
+		resMap.put("diagnosis", generalOPDDoctorServiceImpl.getGeneralOPDDiagnosisDetails(benRegID, visitCode));
+		resMap.put("investigation", commonDoctorServiceImpl.getInvestigationDetails(benRegID, visitCode));
+		resMap.put("prescription", commonDoctorServiceImpl.getPrescribedDrugs(benRegID, visitCode));
+		resMap.put("LabReport",
+				new Gson().toJson(labTechnicianServiceImpl.getLabResultDataForBen(benRegID, visitCode)));
 
-		List<Object> resList = new ArrayList<Object>();
-		resList.add(commonDoctorServiceImpl.getFindingsDetails(benRegID, visitCode));
-		resList.add(commonDoctorServiceImpl.getInvestigationDetails(benRegID, visitCode));
-		resList.add(commonDoctorServiceImpl.getPrescribedDrugs(benRegID, visitCode));
-		resList.add(new Gson().toJson(labTechnicianServiceImpl.getLabResultDataForBen(benRegID, visitCode)));
+		// resList.add(commonDoctorServiceImpl.getFindingsDetails(benRegID, visitCode));
+		// resList.add(commonDoctorServiceImpl.getInvestigationDetails(benRegID,
+		// visitCode));
+		// resList.add(commonDoctorServiceImpl.getPrescribedDrugs(benRegID, visitCode));
+		// resList.add(new
+		// Gson().toJson(labTechnicianServiceImpl.getLabResultDataForBen(benRegID,
+		// visitCode)));
 
-		return resList.toString();
+		return resMap.toString();
 	}
 
 	@Transactional(rollbackFor = Exception.class)
@@ -443,6 +424,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 
 		Long benChiefComplaintID = saveBeneficiaryChiefComplaint(quickConsultDoctorOBJ);
 		Integer clinicalObservationID = updateBeneficiaryClinicalObservations(quickConsultDoctorOBJ);
+		// generate prescription
 		prescriptionID = commonNurseServiceImpl.saveBeneficiaryPrescription(quickConsultDoctorOBJ);
 
 		JsonArray testList = null;
@@ -474,6 +456,10 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 
 			for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
 				tmpObj.setPrescriptionID(prescriptionID);
+				tmpObj.setBeneficiaryRegID(commonUtilityClass.getBeneficiaryRegID());
+				tmpObj.setBenVisitID(commonUtilityClass.getBenVisitID());
+				tmpObj.setVisitCode(commonUtilityClass.getVisitCode());
+				tmpObj.setProviderServiceMapID(commonUtilityClass.getProviderServiceMapID());
 			}
 			Integer r = commonNurseServiceImpl.saveBenPrescribedDrugsList(prescribedDrugDetailList);
 			if (r > 0 && r != null) {
@@ -498,7 +484,8 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 				&& (null != labTestOrderSuccessFlag && labTestOrderSuccessFlag > 0)) {
 
 			// call method to update beneficiary flow table
-			int i = updateBenFlowtableAfterDocDataUpdate(commonUtilityClass, isTestPrescribed, isMedicinePrescribed);
+			int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataUpdate(commonUtilityClass, isTestPrescribed,
+					isMedicinePrescribed);
 
 			if (i > 0)
 				updateSuccessFlag = benChiefComplaintID;
@@ -507,41 +494,6 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		}
 
 		return updateSuccessFlag;
-	}
-
-	/**
-	 * 
-	 * 
-	 * @param commonUtilityClass
-	 * @param isTestPrescribed
-	 * @param isMedicinePrescribed
-	 * @return
-	 */
-	private int updateBenFlowtableAfterDocDataUpdate(CommonUtilityClass commonUtilityClass, Boolean isTestPrescribed,
-			Boolean isMedicinePrescribed) {
-
-		short pharmaFalg;
-		short docFlag;
-
-		Long tmpBenFlowID = commonUtilityClass.getBenFlowID();
-		Long tmpBeneficiaryID = commonUtilityClass.getBeneficiaryID();
-		Long tmpBenVisitID = commonUtilityClass.getBenVisitID();
-		Long tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
-
-		if (isTestPrescribed)
-			docFlag = (short) 2;
-		else
-			docFlag = (short) 9;
-
-		if (isMedicinePrescribed)
-			pharmaFalg = (short) 1;
-		else
-			pharmaFalg = (short) 0;
-
-		int i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdate(tmpBenFlowID, tmpbeneficiaryRegID,
-				tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
-
-		return i;
 	}
 
 	@Override

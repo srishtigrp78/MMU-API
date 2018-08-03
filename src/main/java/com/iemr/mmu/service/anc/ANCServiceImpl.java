@@ -47,14 +47,13 @@ import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.labtechnician.LabTechnicianServiceImpl;
-import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
 public class ANCServiceImpl implements ANCService {
 
 	private ANCNurseServiceImpl ancNurseServiceImpl;
-	private NurseServiceImpl nurseServiceImpl;
+	// private NurseServiceImpl nurseServiceImpl;
 	private ANCDoctorServiceImpl ancDoctorServiceImpl;
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
@@ -91,10 +90,10 @@ public class ANCServiceImpl implements ANCService {
 		this.ancNurseServiceImpl = ancNurseServiceImpl;
 	}
 
-	@Autowired
-	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
-		this.nurseServiceImpl = nurseServiceImpl;
-	}
+	// @Autowired
+	// public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
+	// this.nurseServiceImpl = nurseServiceImpl;
+	// }
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
@@ -324,7 +323,8 @@ public class ANCServiceImpl implements ANCService {
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
 
 				// call method to update beneficiary flow table
-				int i = updateBenFlowtableAfterDocDataSave(commonUtilityClass, isTestPrescribed, isMedicinePrescribed);
+				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataSave(commonUtilityClass, isTestPrescribed,
+						isMedicinePrescribed);
 
 				if (i > 0)
 					saveSuccessFlag = diagnosisSuccessFlag;
@@ -341,49 +341,10 @@ public class ANCServiceImpl implements ANCService {
 
 	/**
 	 * 
-	 * 
-	 * @param commonUtilityClass
-	 * @param testList
-	 * @param drugList
-	 * @return
-	 */
-	/// ------Start of beneficiary flow table after doctor data save-------------
-
-	private int updateBenFlowtableAfterDocDataSave(CommonUtilityClass commonUtilityClass, Boolean isTestPrescribed,
-			Boolean isMedicinePrescribed) {
-		short pharmaFalg;
-		short docFlag;
-
-		Long tmpBenFlowID = commonUtilityClass.getBenFlowID();
-		Long tmpBeneficiaryID = commonUtilityClass.getBeneficiaryID();
-		Long tmpBenVisitID = commonUtilityClass.getBenVisitID();
-		Long tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
-
-		// checking if test is prescribed
-		if (isTestPrescribed) {
-			docFlag = (short) 2;
-		} else {
-			docFlag = (short) 9;
-		}
-		// checking if medicine is prescribed
-		if (isMedicinePrescribed) {
-			pharmaFalg = (short) 1;
-		} else {
-			pharmaFalg = (short) 0;
-		}
-
-		int i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
-				tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
-		return i;
-	}
-
-	/// ------End of beneficiary flow table after doctor data save-------------
-
-	/**
-	 * 
 	 * @param requestOBJ
 	 * @return success or failure flag for visitDetails data saving
 	 */
+
 	public Map<String, Long> saveBenVisitDetails(JsonObject visitDetailsOBJ, CommonUtilityClass nurseUtilityClass)
 			throws Exception {
 		Map<String, Long> visitIdAndCodeMap = new HashMap<>();
@@ -749,7 +710,7 @@ public class ANCServiceImpl implements ANCService {
 
 		Long genExmnSuccessFlag = null;
 		Long headToToeExmnSuccessFlag = null;
-		Long gastroIntsExmnSuccessFlag = null;
+		// Long gastroIntsExmnSuccessFlag = null;
 		Long cardiExmnSuccessFlag = null;
 		Long respiratoryExmnSuccessFlag = null;
 		Long centralNrvsExmnSuccessFlag = null;
@@ -1449,6 +1410,16 @@ public class ANCServiceImpl implements ANCService {
 					wrapperBenInvestigationANC.getProviderServiceMapID(), wrapperBenInvestigationANC.getCreatedBy(),
 					wrapperBenInvestigationANC.getExternalInvestigations(), wrapperBenInvestigationANC.getVisitCode());
 
+			// update diagnosis
+			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
+				ANCDiagnosis ancDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
+						ANCDiagnosis.class);
+
+				diagnosisSuccessFlag = ancDoctorServiceImpl.updateBenANCDiagnosis(ancDiagnosis, prescriptionID);
+			} else {
+				diagnosisSuccessFlag = 1;
+			}
+
 			// update prescribed lab test
 			if (isTestPrescribed) {
 				wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
@@ -1465,6 +1436,10 @@ public class ANCServiceImpl implements ANCService {
 
 				for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
 					tmpObj.setPrescriptionID(prescriptionID);
+					tmpObj.setBeneficiaryRegID(commonUtilityClass.getBeneficiaryRegID());
+					tmpObj.setBenVisitID(commonUtilityClass.getBenVisitID());
+					tmpObj.setVisitCode(commonUtilityClass.getVisitCode());
+					tmpObj.setProviderServiceMapID(commonUtilityClass.getProviderServiceMapID());
 				}
 				Integer r = commonNurseServiceImpl.saveBenPrescribedDrugsList(prescribedDrugDetailList);
 				if (r > 0 && r != null) {
@@ -1472,16 +1447,6 @@ public class ANCServiceImpl implements ANCService {
 				}
 			} else {
 				prescriptionSuccessFlag = 1;
-			}
-
-			// update diagnosis
-			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
-				ANCDiagnosis ancDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
-						ANCDiagnosis.class);
-
-				diagnosisSuccessFlag = ancDoctorServiceImpl.updateBenANCDiagnosis(ancDiagnosis, prescriptionID);
-			} else {
-				diagnosisSuccessFlag = 1;
 			}
 
 			// update referral
@@ -1500,8 +1465,8 @@ public class ANCServiceImpl implements ANCService {
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
 
 				// call method to update beneficiary flow table
-				int i = updateBenFlowtableAfterDocDataUpdate(commonUtilityClass, isTestPrescribed,
-						isMedicinePrescribed);
+				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataUpdate(commonUtilityClass,
+						isTestPrescribed, isMedicinePrescribed);
 
 				if (i > 0)
 					updateSuccessFlag = investigationSuccessFlag;
@@ -1513,41 +1478,6 @@ public class ANCServiceImpl implements ANCService {
 			// request OBJ is null.
 		}
 		return updateSuccessFlag;
-	}
-
-	/**
-	 * 
-	 * 
-	 * @param commonUtilityClass
-	 * @param isTestPrescribed
-	 * @param isMedicinePrescribed
-	 * @return
-	 */
-	private int updateBenFlowtableAfterDocDataUpdate(CommonUtilityClass commonUtilityClass, Boolean isTestPrescribed,
-			Boolean isMedicinePrescribed) {
-
-		short pharmaFalg;
-		short docFlag;
-
-		Long tmpBenFlowID = commonUtilityClass.getBenFlowID();
-		Long tmpBeneficiaryID = commonUtilityClass.getBeneficiaryID();
-		Long tmpBenVisitID = commonUtilityClass.getBenVisitID();
-		Long tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
-
-		if (isTestPrescribed)
-			docFlag = (short) 2;
-		else
-			docFlag = (short) 9;
-
-		if (isMedicinePrescribed)
-			pharmaFalg = (short) 1;
-		else
-			pharmaFalg = (short) 0;
-
-		int i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdate(tmpBenFlowID, tmpbeneficiaryRegID,
-				tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
-
-		return i;
 	}
 
 }

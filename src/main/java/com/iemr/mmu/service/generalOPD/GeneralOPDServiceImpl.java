@@ -786,13 +786,13 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 				prescriptionDetail = InputMapper.gson().fromJson(diagnosisObj, PrescriptionDetail.class);
 
-				if (diagnosisObj.has("provisionalDiagnosis")
-						&& !diagnosisObj.get("provisionalDiagnosis").isJsonNull()) {
-					prescriptionDetail.setDiagnosisProvided(diagnosisObj.get("provisionalDiagnosis").toString());
-				}
-				if (diagnosisObj.has("specialistAdvice") && !diagnosisObj.get("specialistAdvice").isJsonNull()) {
-					prescriptionDetail.setInstruction(diagnosisObj.get("specialistAdvice").toString());
-				}
+//				if (diagnosisObj.has("provisionalDiagnosis")
+//						&& !diagnosisObj.get("provisionalDiagnosis").isJsonNull()) {
+//					prescriptionDetail.setDiagnosisProvided(diagnosisObj.get("provisionalDiagnosis").toString());
+//				}
+//				if (diagnosisObj.has("specialistAdvice") && !diagnosisObj.get("specialistAdvice").isJsonNull()) {
+//					prescriptionDetail.setInstruction(diagnosisObj.get("specialistAdvice").toString());
+//				}
 
 			} else {
 			}
@@ -856,7 +856,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
 
 				// call method to update beneficiary flow table
-				int i = updateBenFlowtableAfterDocDataSave(commonUtilityClass, isTestPrescribed, isMedicinePrescribed);
+				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataSave(commonUtilityClass, isTestPrescribed,
+						isMedicinePrescribed);
 
 				if (i > 0)
 					saveSuccessFlag = investigationSuccessFlag;
@@ -869,45 +870,6 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		return saveSuccessFlag;
 	}
 	/// ------------------- END of saving doctor data ------------------------
-
-	/**
-	 * 
-	 * 
-	 * @param commonUtilityClass
-	 * @param testList
-	 * @param drugList
-	 * @return
-	 */
-	/// ------Start of beneficiary flow table after doctor data save-------------
-	private int updateBenFlowtableAfterDocDataSave(CommonUtilityClass commonUtilityClass, Boolean isTestPrescribed,
-			Boolean isMedicinePrescribed) {
-		short pharmaFalg;
-		short docFlag;
-
-		Long tmpBenFlowID = commonUtilityClass.getBenFlowID();
-		Long tmpBeneficiaryID = commonUtilityClass.getBeneficiaryID();
-		Long tmpBenVisitID = commonUtilityClass.getBenVisitID();
-		Long tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
-
-		// checking if test is prescribed
-		if (isTestPrescribed) {
-			docFlag = (short) 2;
-		} else {
-			docFlag = (short) 9;
-		}
-		// checking if medicine is prescribed
-		if (isMedicinePrescribed) {
-			pharmaFalg = (short) 1;
-		} else {
-			pharmaFalg = (short) 0;
-		}
-
-		int i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
-				tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
-		return i;
-	}
-
-	/// ------End of beneficiary flow table after doctor data save-------------
 
 	/// --------------- Start of Fetching GeneralOPD Nurse Data ----------------
 	public String getBenVisitDetailsFrmNurseGOPD(Long benRegID, Long visitCode) {
@@ -1420,13 +1382,14 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 				prescriptionDetail = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), PrescriptionDetail.class);
 
-				if (diagnosisObj.has("provisionalDiagnosis")
-						&& !diagnosisObj.get("provisionalDiagnosis").isJsonNull()) {
-					prescriptionDetail.setDiagnosisProvided(diagnosisObj.get("provisionalDiagnosis").toString());
-				}
-				if (diagnosisObj.has("specialistAdvice") && !diagnosisObj.get("specialistAdvice").isJsonNull()) {
-					prescriptionDetail.setInstruction(diagnosisObj.get("specialistAdvice").toString());
-				}
+				// if (diagnosisObj.has("provisionalDiagnosis")
+				// && !diagnosisObj.get("provisionalDiagnosis").isJsonNull()) {
+				// prescriptionDetail.setDiagnosisProvided(diagnosisObj.get("provisionalDiagnosis").toString());
+				// }
+				// if (diagnosisObj.has("specialistAdvice") &&
+				// !diagnosisObj.get("specialistAdvice").isJsonNull()) {
+				// prescriptionDetail.setInstruction(diagnosisObj.get("specialistAdvice").toString());
+				// }
 			} else {
 				diagnosisSuccessFlag = 1;
 			}
@@ -1462,6 +1425,10 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				if (prescribedDrugDetailList.size() > 0) {
 					for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
 						tmpObj.setPrescriptionID(prescriptionID);
+						tmpObj.setBeneficiaryRegID(commonUtilityClass.getBeneficiaryRegID());
+						tmpObj.setBenVisitID(commonUtilityClass.getBenVisitID());
+						tmpObj.setVisitCode(commonUtilityClass.getVisitCode());
+						tmpObj.setProviderServiceMapID(commonUtilityClass.getProviderServiceMapID());
 					}
 					Integer r = commonNurseServiceImpl.saveBenPrescribedDrugsList(prescribedDrugDetailList);
 					if (r > 0 && r != null) {
@@ -1492,8 +1459,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
 
 				// call method to update beneficiary flow table
-				int i = updateBenFlowtableAfterDocDataUpdate(commonUtilityClass, isTestPrescribed,
-						isMedicinePrescribed);
+				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataUpdate(commonUtilityClass,
+						isTestPrescribed, isMedicinePrescribed);
 
 				if (i > 0)
 					updateSuccessFlag = investigationSuccessFlag;
@@ -1506,38 +1473,4 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		return updateSuccessFlag;
 	}
 
-	/**
-	 * 
-	 * 
-	 * @param commonUtilityClass
-	 * @param isTestPrescribed
-	 * @param isMedicinePrescribed
-	 * @return
-	 */
-	private int updateBenFlowtableAfterDocDataUpdate(CommonUtilityClass commonUtilityClass, Boolean isTestPrescribed,
-			Boolean isMedicinePrescribed) {
-
-		short pharmaFalg;
-		short docFlag;
-
-		Long tmpBenFlowID = commonUtilityClass.getBenFlowID();
-		Long tmpBeneficiaryID = commonUtilityClass.getBeneficiaryID();
-		Long tmpBenVisitID = commonUtilityClass.getBenVisitID();
-		Long tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
-
-		if (isTestPrescribed)
-			docFlag = (short) 2;
-		else
-			docFlag = (short) 9;
-
-		if (isMedicinePrescribed)
-			pharmaFalg = (short) 1;
-		else
-			pharmaFalg = (short) 0;
-
-		int i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdate(tmpBenFlowID, tmpbeneficiaryRegID,
-				tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
-
-		return i;
-	}
 }
