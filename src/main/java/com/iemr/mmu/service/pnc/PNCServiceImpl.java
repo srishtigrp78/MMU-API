@@ -249,7 +249,7 @@ public class PNCServiceImpl implements PNCService {
 			// save diagnosis
 			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
 				diagnosisSuccessFlag = pncDoctorServiceImpl
-						.saveBenPNCDiagnosis(requestOBJ.get("diagnosis").getAsJsonObject(), null);
+						.saveBenPNCDiagnosis(requestOBJ.get("diagnosis").getAsJsonObject(), prescriptionID);
 			} else {
 				diagnosisSuccessFlag = new Long(1);
 			}
@@ -1277,6 +1277,9 @@ public class PNCServiceImpl implements PNCService {
 
 		resMap.put("GraphData", new Gson().toJson(commonNurseServiceImpl.getGraphicalTrendData(benRegID, "pnc")));
 
+		resMap.put("ArchivedVisitcodeForLabResult",
+				labTechnicianServiceImpl.getLast_3_ArchivedTestVisitList(benRegID, visitCode));
+
 		return resMap.toString();
 	}
 
@@ -1341,7 +1344,7 @@ public class PNCServiceImpl implements PNCService {
 			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
 				PNCDiagnosis pncDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
 						PNCDiagnosis.class);
-				diagnosisSuccessFlag = pncDoctorServiceImpl.updateBenPNCDiagnosis(pncDiagnosis, null);
+				diagnosisSuccessFlag = pncDoctorServiceImpl.updateBenPNCDiagnosis(pncDiagnosis, prescriptionID);
 			} else {
 				diagnosisSuccessFlag = 1;
 			}

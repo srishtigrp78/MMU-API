@@ -2,7 +2,6 @@ package com.iemr.mmu.data.quickConsultation;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +11,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
-import com.iemr.mmu.data.anc.ANCCareDetails;
 
 @Entity
 @Table(name = "t_benclinicalobservation")
@@ -33,7 +31,7 @@ public class BenClinicalObservations {
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
@@ -45,11 +43,20 @@ public class BenClinicalObservations {
 	@Expose
 	@Column(name = "OtherSymptoms")
 	private String otherSymptoms;
-	
+
+	// newly added field on 07-08-2018
+	@Expose
+	@Column(name = "OtherSymptoms_SCTCode")
+	private String otherSymptomsSCTCode;
+
+	@Expose
+	@Column(name = "OtherSymptoms_SCTTerm")
+	private String otherSymptomsSCTTerm;
+
 	@Expose
 	@Column(name = "SignificantFindings")
 	private String significantFindings;
-	
+
 	@Expose
 	@Column(name = "IsForHistory")
 	private Boolean isForHistory;
@@ -81,30 +88,30 @@ public class BenClinicalObservations {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	@Transient
 	private Date captureDate;
-	
+
 	public BenClinicalObservations() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -276,7 +283,6 @@ public class BenClinicalObservations {
 		this.captureDate = createdDate;
 	}
 
-	
 	public BenClinicalObservations(Long clinicalObservationID, Long beneficiaryRegID, Long benVisitID,
 			Integer providerServiceMapID, String clinicalObservation, String otherSymptoms, String significantFindings,
 			Boolean isForHistory) {
@@ -299,7 +305,30 @@ public class BenClinicalObservations {
 		this.visitCode = visitCode;
 	}
 
-	
+	public String getOtherSymptomsSCTCode() {
+		return otherSymptomsSCTCode;
+	}
+
+	public void setOtherSymptomsSCTCode(String otherSymptomsSCTCode) {
+		this.otherSymptomsSCTCode = otherSymptomsSCTCode;
+	}
+
+	public String getOtherSymptomsSCTTerm() {
+		return otherSymptomsSCTTerm;
+	}
+
+	public void setOtherSymptomsSCTTerm(String otherSymptomsSCTTerm) {
+		this.otherSymptomsSCTTerm = otherSymptomsSCTTerm;
+	}
+
+	public Date getCaptureDate() {
+		return captureDate;
+	}
+
+	public void setCaptureDate(Date captureDate) {
+		this.captureDate = captureDate;
+	}
+
 	// public static BenClinicalObservations
 	// getBenClinicalObservationsList(JsonObject emrgCasesheet) {
 	// ArrayList<BenClinicalObservations> resArray = new ArrayList<>();
@@ -352,5 +381,4 @@ public class BenClinicalObservations {
 	// return resArray;
 	// }
 
-	
 }

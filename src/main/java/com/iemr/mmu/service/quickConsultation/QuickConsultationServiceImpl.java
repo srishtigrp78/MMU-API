@@ -148,6 +148,16 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 
 		BenClinicalObservations benClinicalObservations = InputMapper.gson().fromJson(caseSheet,
 				BenClinicalObservations.class);
+
+		// get snomedCT code for symptoms
+		if (benClinicalObservations != null) {
+			String[] snomedCTcodeArr = commonDoctorServiceImpl
+					.getSnomedCTcode(benClinicalObservations.getOtherSymptoms());
+			if (snomedCTcodeArr != null && snomedCTcodeArr.length > 1) {
+				benClinicalObservations.setOtherSymptomsSCTCode(snomedCTcodeArr[0]);
+				benClinicalObservations.setOtherSymptomsSCTTerm(snomedCTcodeArr[1]);
+			}
+		}
 		BenClinicalObservations benClinicalObservation = benClinicalObservationsRepo.save(benClinicalObservations);
 		if (null != benClinicalObservation && benClinicalObservation.getClinicalObservationID() > 0) {
 			return benClinicalObservation.getClinicalObservationID();
@@ -501,6 +511,16 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		Integer r = 0;
 		BenClinicalObservations benClinicalObservations = InputMapper.gson().fromJson(caseSheet,
 				BenClinicalObservations.class);
+		// get snomedCT code for symptoms
+		if (benClinicalObservations != null) {
+			String[] snomedCTcodeArr = commonDoctorServiceImpl
+					.getSnomedCTcode(benClinicalObservations.getOtherSymptoms());
+			if (snomedCTcodeArr != null && snomedCTcodeArr.length > 1) {
+				benClinicalObservations.setOtherSymptomsSCTCode(snomedCTcodeArr[0]);
+				benClinicalObservations.setOtherSymptomsSCTTerm(snomedCTcodeArr[1]);
+			}
+		}
+
 		r = commonDoctorServiceImpl.updateBenClinicalObservations(benClinicalObservations);
 		return r;
 	}

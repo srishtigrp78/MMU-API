@@ -22,6 +22,7 @@ import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.registrar.WrapperRegWorklist;
+import com.iemr.mmu.data.snomedct.SCTDescription;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.doctor.BenReferDetailsRepo;
 import com.iemr.mmu.repo.doctor.DocWorkListRepo;
@@ -31,6 +32,7 @@ import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
+import com.iemr.mmu.service.snomedct.SnomedServiceImpl;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
@@ -50,9 +52,16 @@ public class CommonDoctorServiceImpl {
 	private PrescribedDrugDetailRepo prescribedDrugDetailRepo;
 	private PrescriptionDetailRepo prescriptionDetailRepo;
 
+	private SnomedServiceImpl snomedServiceImpl;
+
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
 
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
+
+	@Autowired
+	public void setSnomedServiceImpl(SnomedServiceImpl snomedServiceImpl) {
+		this.snomedServiceImpl = snomedServiceImpl;
+	}
 
 	@Autowired
 	public void setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl) {
@@ -159,7 +168,41 @@ public class CommonDoctorServiceImpl {
 		return i;
 	}
 
+	// get comma separated snomedCT code for give string comma seperated
+	public String[] getSnomedCTcode(String requestString) {
+		String[] returnARR = new String[2];
+		String snomedCTidVal = "";
+		String snomedCTtermVal = "";
+
+		if (requestString != null && requestString.length() > 0) {
+			String[] symptomArr = requestString.split(",");
+
+			int pointer = 0;
+			for (String s : symptomArr) {
+				SCTDescription obj = snomedServiceImpl.findSnomedCTRecordFromTerm(s);
+				if (pointer == symptomArr.length - 1) {
+					snomedCTidVal += obj.getConceptID();
+					snomedCTtermVal += obj.getTerm();
+				} else {
+					snomedCTidVal += obj.getConceptID() + ",";
+					snomedCTtermVal += obj.getTerm() + ",";
+				}
+				pointer++;
+			}
+
+		}
+		returnARR[0] = snomedCTidVal;
+		returnARR[1] = snomedCTtermVal;
+
+		return returnARR;
+	}
+
 	private BenClinicalObservations getBenClinicalObservations(WrapperAncFindings wrapperAncFindings) {
+		// snomedCT integration started on : 06-08-2018
+		String symptoms = wrapperAncFindings.getOtherSymptoms();
+		String[] responseString = getSnomedCTcode(symptoms);
+		// end of snomedCT integration
+
 		BenClinicalObservations benClinicalObservations = new BenClinicalObservations();
 		benClinicalObservations.setBeneficiaryRegID(wrapperAncFindings.getBeneficiaryRegID());
 		benClinicalObservations.setBenVisitID(wrapperAncFindings.getBenVisitID());
@@ -171,6 +214,10 @@ public class CommonDoctorServiceImpl {
 		benClinicalObservations.setSignificantFindings(wrapperAncFindings.getSignificantFindings());
 		benClinicalObservations.setIsForHistory(wrapperAncFindings.getIsForHistory());
 		benClinicalObservations.setModifiedBy(wrapperAncFindings.getModifiedBy());
+		if (responseString != null && responseString.length > 1) {
+			benClinicalObservations.setOtherSymptomsSCTCode(responseString[0]);
+			benClinicalObservations.setOtherSymptomsSCTCode(responseString[1]);
+		}
 		return benClinicalObservations;
 	}
 
@@ -400,9 +447,12 @@ public class CommonDoctorServiceImpl {
 			} else {
 				processed = "N";
 			}
+
 			if (recordsAvailable > 0) {
 				r = benClinicalObservationsRepo.updateBenClinicalObservations(
 						benClinicalObservations.getClinicalObservation(), benClinicalObservations.getOtherSymptoms(),
+						benClinicalObservations.getOtherSymptomsSCTCode(),
+						benClinicalObservations.getOtherSymptomsSCTTerm(),
 						benClinicalObservations.getSignificantFindings(), benClinicalObservations.getIsForHistory(),
 						benClinicalObservations.getCreatedBy(), processed,
 						benClinicalObservations.getBeneficiaryRegID(), benClinicalObservations.getVisitCode());

@@ -1,7 +1,5 @@
 package com.iemr.mmu.controller.snomedct;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.Gson;
 import com.iemr.mmu.data.snomedct.SCTDescription;
 import com.iemr.mmu.service.snomedct.SnomedService;
 import com.iemr.mmu.utils.mapper.InputMapper;
@@ -42,21 +41,12 @@ public class SnomedController {
 
 			logger.info("getSnomedCTRecord request " + sctdescription.toString());
 
-			List<SCTDescription> sctdescriptions = snomedService.findSnomedCTRecordFromTerm(sctdescription.getTerm());
+			SCTDescription sctdescriptions = snomedService.findSnomedCTRecordFromTerm(sctdescription.getTerm());
 
-			SCTDescription recentRecord = null;
-
-			for (SCTDescription sct : sctdescriptions) {
-				recentRecord = sct;
-				// recent & case insensitive id is 900000000000448009
-				if (sct.getCaseSignificanceID() == "900000000000448009")
-					break;
-			}
-
-			if (recentRecord == null)
+			if (sctdescriptions == null || sctdescriptions.getConceptID() == null)
 				output.setResponse("No Records Found");
 			else
-				output.setResponse(recentRecord.toString());
+				output.setResponse(new Gson().toJson(sctdescriptions));
 
 			logger.info("ggetSnomedCTRecord response: " + output);
 		} catch (Exception e) {
@@ -66,26 +56,31 @@ public class SnomedController {
 		return output.toString();
 	}
 
-	@CrossOrigin
-	@ApiOperation(value = "retrives SnomedCT Records", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = "/getSnomedCTRecords", method = RequestMethod.POST, headers = "Authorization")
-	public String getSnomedCTRecords(@ApiParam(value = "{\"term\":\"String\"}") @RequestBody String request) {
-		OutputResponse output = new OutputResponse();
-		try {
-
-			SCTDescription sctdescription = InputMapper.gson().fromJson(request, SCTDescription.class);
-
-			logger.info("getSnomedCTRecord request " + sctdescription.toString());
-
-			List<SCTDescription> sctdescriptions = snomedService.findSnomedCTRecordFromTerm(sctdescription.getTerm());
-
-			output.setResponse(sctdescriptions.toString());
-			logger.info("ggetSnomedCTRecord response: " + output);
-		} catch (Exception e) {
-			logger.error("ggetSnomedCTRecord failed with error " + e.getMessage(), e);
-			output.setError(e);
-		}
-		return output.toString();
-	}
+	// @CrossOrigin
+	// @ApiOperation(value = "retrives SnomedCT Records", consumes =
+	// "application/json", produces = "application/json")
+	// @RequestMapping(value = "/getSnomedCTRecords", method = RequestMethod.POST,
+	// headers = "Authorization")
+	// public String getSnomedCTRecords(@ApiParam(value = "{\"term\":\"String\"}")
+	// @RequestBody String request) {
+	// OutputResponse output = new OutputResponse();
+	// try {
+	//
+	// SCTDescription sctdescription = InputMapper.gson().fromJson(request,
+	// SCTDescription.class);
+	//
+	// logger.info("getSnomedCTRecord request " + sctdescription.toString());
+	//
+	// List<SCTDescription> sctdescriptions =
+	// snomedService.findSnomedCTRecordFromTerm(sctdescription.getTerm());
+	//
+	// output.setResponse(sctdescriptions.toString());
+	// logger.info("ggetSnomedCTRecord response: " + output);
+	// } catch (Exception e) {
+	// logger.error("ggetSnomedCTRecord failed with error " + e.getMessage(), e);
+	// output.setError(e);
+	// }
+	// return output.toString();
+	// }
 
 }

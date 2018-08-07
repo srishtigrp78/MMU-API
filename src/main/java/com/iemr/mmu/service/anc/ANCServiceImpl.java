@@ -1353,6 +1353,9 @@ public class ANCServiceImpl implements ANCService {
 
 		resMap.put("GraphData", new Gson().toJson(commonNurseServiceImpl.getGraphicalTrendData(benRegID, "anc")));
 
+		resMap.put("ArchivedVisitcodeForLabResult",
+				labTechnicianServiceImpl.getLast_3_ArchivedTestVisitList(benRegID, visitCode));
+
 		return resMap.toString();
 	}
 

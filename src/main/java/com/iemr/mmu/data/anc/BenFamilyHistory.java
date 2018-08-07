@@ -36,7 +36,7 @@ public class BenFamilyHistory {
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
@@ -372,9 +372,17 @@ public class BenFamilyHistory {
 
 				String familyMembers = "";
 				if (null != familyMemberList) {
-					for (String familyMember : familyMemberList) {
-						familyMembers += familyMember + ",";
+					int length = familyMemberList.size();
+					for (int i = 0; i < length; i++) {
+						if (i == length - 1)
+							familyMembers += familyMember;
+						else
+							familyMembers += familyMember + ",";
 					}
+
+					// for (String familyMember : familyMemberList) {
+					// familyMembers += familyMember + ",";
+					// }
 				}
 				benFamilyHistory.setFamilyMember(familyMembers);
 				// code changed by Neeraj on 18-05-2018

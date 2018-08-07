@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -124,6 +123,13 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
 
 	private BenCancerVitalDetailRepo benCancerVitalDetailRepo;
+
+	private CommonDoctorServiceImpl commonDoctorServiceImpl;
+
+	@Autowired
+	public void setCommonDoctorServiceImpl(CommonDoctorServiceImpl commonDoctorServiceImpl) {
+		this.commonDoctorServiceImpl = commonDoctorServiceImpl;
+	}
 
 	@Autowired
 	public void setBenCancerVitalDetailRepo(BenCancerVitalDetailRepo benCancerVitalDetailRepo) {
@@ -338,7 +344,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		// if (month <= 9)
 		// monthString = "0" + month;
 		// else monthString += month;
-		
+
 		// current date
 		// int day = LocalDateTime.now().getDayOfMonth();
 		// String dayString = "";
@@ -346,7 +352,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		// dayString = "0" + day;
 		// else
 		// dayString += day;
-		
+
 		// van & session ID
 		String vanIDString = "";
 		int vanIdLength = (int) (Math.log10(vanID) + 1);
@@ -363,15 +369,16 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		visitIDString += visitID;
 
 		// Generating VISIT CODE
-		//visitCode += sessionID + dayString + monthString + vanIDString + visitIDString;
-		//changed logic 14 digit visit code, removed day & month 
+		// visitCode += sessionID + dayString + monthString + vanIDString +
+		// visitIDString;
+		// changed logic 14 digit visit code, removed day & month
 		visitCode += sessionID + vanIDString + visitIDString;
 
-		 int i = benVisitDetailRepo.updateVisitCode(Long.valueOf(visitCode), visitID);
-		 if (i > 0)
-		 return Long.valueOf(visitCode);
-		 else
-		 return Long.valueOf(0);
+		int i = benVisitDetailRepo.updateVisitCode(Long.valueOf(visitCode), visitID);
+		if (i > 0)
+			return Long.valueOf(visitCode);
+		else
+			return Long.valueOf(0);
 	}
 
 	@Deprecated
@@ -422,16 +429,15 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		if (null != benVisitDetailsOBJ) {
 			benVisitDetailsOBJ1 = new BeneficiaryVisitDetail(benVisitDetailsOBJ.getBenVisitID(),
 					benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitDetailsOBJ.getVisitCode(),
-					benVisitDetailsOBJ.getProviderServiceMapID(),
-					benVisitDetailsOBJ.getVisitDateTime(), benVisitDetailsOBJ.getVisitNo(),
-					benVisitDetailsOBJ.getVisitReasonID(), benVisitDetailsOBJ.getVisitReason(),
-					benVisitDetailsOBJ.getVisitCategoryID(), benVisitDetailsOBJ.getVisitCategory(),
-					benVisitDetailsOBJ.getPregnancyStatus(), benVisitDetailsOBJ.getrCHID(),
-					benVisitDetailsOBJ.getHealthFacilityType(), benVisitDetailsOBJ.getHealthFacilityLocation(),
-					benVisitDetailsOBJ.getReportFilePath(), benVisitDetailsOBJ.getDeleted(),
-					benVisitDetailsOBJ.getProcessed(), benVisitDetailsOBJ.getCreatedBy(),
-					benVisitDetailsOBJ.getCreatedDate(), benVisitDetailsOBJ.getModifiedBy(),
-					benVisitDetailsOBJ.getLastModDate());
+					benVisitDetailsOBJ.getProviderServiceMapID(), benVisitDetailsOBJ.getVisitDateTime(),
+					benVisitDetailsOBJ.getVisitNo(), benVisitDetailsOBJ.getVisitReasonID(),
+					benVisitDetailsOBJ.getVisitReason(), benVisitDetailsOBJ.getVisitCategoryID(),
+					benVisitDetailsOBJ.getVisitCategory(), benVisitDetailsOBJ.getPregnancyStatus(),
+					benVisitDetailsOBJ.getrCHID(), benVisitDetailsOBJ.getHealthFacilityType(),
+					benVisitDetailsOBJ.getHealthFacilityLocation(), benVisitDetailsOBJ.getReportFilePath(),
+					benVisitDetailsOBJ.getDeleted(), benVisitDetailsOBJ.getProcessed(),
+					benVisitDetailsOBJ.getCreatedBy(), benVisitDetailsOBJ.getCreatedDate(),
+					benVisitDetailsOBJ.getModifiedBy(), benVisitDetailsOBJ.getLastModDate());
 
 		}
 
@@ -1596,8 +1602,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	}
 
 	public BenFamilyHistory getFamilyHistory(Long beneficiaryRegID, Long visitCode) {
-		ArrayList<Object[]> familyHistory = benFamilyHistoryRepo.getBenFamilyHistoryDetail(beneficiaryRegID,
-				visitCode);
+		ArrayList<Object[]> familyHistory = benFamilyHistoryRepo.getBenFamilyHistoryDetail(beneficiaryRegID, visitCode);
 		BenFamilyHistory familyHistoryDetails = BenFamilyHistory.getBenFamilyHistory(familyHistory);
 
 		return familyHistoryDetails;
@@ -1900,8 +1905,8 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		int delRes = 0;
 		if (null != benFamilyHistory) {
 
-			ArrayList<Object[]> benFamilyHistoryStatuses = benFamilyHistoryRepo.getBenFamilyHistoryStatus(
-					benFamilyHistory.getBeneficiaryRegID(), benFamilyHistory.getVisitCode());
+			ArrayList<Object[]> benFamilyHistoryStatuses = benFamilyHistoryRepo
+					.getBenFamilyHistoryStatus(benFamilyHistory.getBeneficiaryRegID(), benFamilyHistory.getVisitCode());
 
 			for (Object[] obj : benFamilyHistoryStatuses) {
 				String processed = (String) obj[1];
@@ -2236,13 +2241,22 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	public Long saveBeneficiaryPrescription(JsonObject caseSheet) throws Exception {
 
 		PrescriptionDetail prescriptionDetail = InputMapper.gson().fromJson(caseSheet, PrescriptionDetail.class);
-
+		String[] snomedCTArr = commonDoctorServiceImpl.getSnomedCTcode(prescriptionDetail.getDiagnosisProvided());
+		if (snomedCTArr != null && snomedCTArr.length > 1) {
+			prescriptionDetail.setDiagnosisProvided_SCTCode(snomedCTArr[0]);
+			prescriptionDetail.setDiagnosisProvided_SCTTerm(snomedCTArr[0]);
+		}
 		return saveBenPrescription(prescriptionDetail);
 	}
 
 	public Long saveBenPrescription(PrescriptionDetail prescription) {
 		Long r = null;
 		prescription.setPrescriptionID(null);
+		String[] snomedCTArr = commonDoctorServiceImpl.getSnomedCTcode(prescription.getDiagnosisProvided());
+		if (snomedCTArr != null && snomedCTArr.length > 1) {
+			prescription.setDiagnosisProvided_SCTCode(snomedCTArr[0]);
+			prescription.setDiagnosisProvided_SCTTerm(snomedCTArr[0]);
+		}
 		PrescriptionDetail prescriptionRS = prescriptionDetailRepo.save(prescription);
 		if (prescriptionRS != null && prescriptionRS.getPrescriptionID() > 0) {
 			r = prescriptionRS.getPrescriptionID();

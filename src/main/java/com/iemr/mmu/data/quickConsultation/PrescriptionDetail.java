@@ -42,6 +42,14 @@ public class PrescriptionDetail {
 	private String diagnosisProvided;
 
 	@Expose
+	@Column(name = "DiagnosisProvided_SCTCode")
+	private String diagnosisProvided_SCTCode;
+
+	@Expose
+	@Column(name = "DiagnosisProvided_SCTTerm")
+	private String diagnosisProvided_SCTTerm;
+
+	@Expose
 	@Column(name = "Instruction")
 	private String instruction;
 
@@ -107,6 +115,22 @@ public class PrescriptionDetail {
 
 	@Transient
 	private ArrayList<PrescribedDrugDetail> prescribedDrugs;
+
+	public String getDiagnosisProvided_SCTCode() {
+		return diagnosisProvided_SCTCode;
+	}
+
+	public void setDiagnosisProvided_SCTCode(String diagnosisProvided_SCTCode) {
+		this.diagnosisProvided_SCTCode = diagnosisProvided_SCTCode;
+	}
+
+	public String getDiagnosisProvided_SCTTerm() {
+		return diagnosisProvided_SCTTerm;
+	}
+
+	public void setDiagnosisProvided_SCTTerm(String diagnosisProvided_SCTTerm) {
+		this.diagnosisProvided_SCTTerm = diagnosisProvided_SCTTerm;
+	}
 
 	public ArrayList<PrescribedDrugDetail> getPrescribedDrugs() {
 		return prescribedDrugs;

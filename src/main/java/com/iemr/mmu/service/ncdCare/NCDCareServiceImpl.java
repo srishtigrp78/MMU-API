@@ -695,6 +695,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
 				NCDCareDiagnosis ncdDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
 						NCDCareDiagnosis.class);
+				ncdDiagnosis.setPrescriptionID(prescriptionID);
 				diagnosisSuccessFlag = ncdCareDoctorServiceImpl.saveNCDDiagnosisData(ncdDiagnosis);
 
 			} else {
@@ -1002,6 +1003,9 @@ public class NCDCareServiceImpl implements NCDCareService {
 
 		resMap.put("GraphData", new Gson().toJson(commonNurseServiceImpl.getGraphicalTrendData(benRegID, "ncdCare")));
 
+		resMap.put("ArchivedVisitcodeForLabResult",
+				labTechnicianServiceImpl.getLast_3_ArchivedTestVisitList(benRegID, visitCode));
+
 		return resMap.toString();
 	}
 
@@ -1062,7 +1066,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
 				NCDCareDiagnosis ncdCareDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
 						NCDCareDiagnosis.class);
-				diagnosisSuccessFlag = ncdCareDoctorServiceImpl.updateBenNCDCareDiagnosis(ncdCareDiagnosis, null);
+				diagnosisSuccessFlag = ncdCareDoctorServiceImpl.updateBenNCDCareDiagnosis(ncdCareDiagnosis, prescriptionID);
 			} else {
 				diagnosisSuccessFlag = 1;
 			}

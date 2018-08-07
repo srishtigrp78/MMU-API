@@ -47,8 +47,24 @@ public class PNCDiagnosis {
 	private String provisionalDiagnosis;
 
 	@Expose
+	@Column(name = "ProvisionalDiagnosis_SCTCode")
+	private String provisionalDiagnosisSCTCode;
+
+	@Expose
+	@Column(name = "ProvisionalDiagnosis_SCTTerm")
+	private String provisionalDiagnosisSCTTerm;
+
+	@Expose
 	@Column(name = "ConfirmatoryDiagnosis")
 	private String confirmatoryDiagnosis;
+
+	@Expose
+	@Column(name = "ConfirmatoryDiagnosis_SCTCode")
+	private String confirmatoryDiagnosisSCTCode;
+
+	@Expose
+	@Column(name = "ConfirmatoryDiagnosis_SCTTerm")
+	private String confirmatoryDiagnosisSCTTerm;
 
 	@Expose
 	@Column(name = "IsMaternalDeath")
@@ -117,6 +133,38 @@ public class PNCDiagnosis {
 	@Transient
 	@Expose
 	private String externalInvestigation;
+
+	public String getProvisionalDiagnosisSCTCode() {
+		return provisionalDiagnosisSCTCode;
+	}
+
+	public void setProvisionalDiagnosisSCTCode(String provisionalDiagnosisSCTCode) {
+		this.provisionalDiagnosisSCTCode = provisionalDiagnosisSCTCode;
+	}
+
+	public String getProvisionalDiagnosisSCTTerm() {
+		return provisionalDiagnosisSCTTerm;
+	}
+
+	public void setProvisionalDiagnosisSCTTerm(String provisionalDiagnosisSCTTerm) {
+		this.provisionalDiagnosisSCTTerm = provisionalDiagnosisSCTTerm;
+	}
+
+	public String getConfirmatoryDiagnosisSCTCode() {
+		return confirmatoryDiagnosisSCTCode;
+	}
+
+	public void setConfirmatoryDiagnosisSCTCode(String confirmatoryDiagnosisSCTCode) {
+		this.confirmatoryDiagnosisSCTCode = confirmatoryDiagnosisSCTCode;
+	}
+
+	public String getConfirmatoryDiagnosisSCTTerm() {
+		return confirmatoryDiagnosisSCTTerm;
+	}
+
+	public void setConfirmatoryDiagnosisSCTTerm(String confirmatoryDiagnosisSCTTerm) {
+		this.confirmatoryDiagnosisSCTTerm = confirmatoryDiagnosisSCTTerm;
+	}
 
 	public String getExternalInvestigation() {
 		return externalInvestigation;

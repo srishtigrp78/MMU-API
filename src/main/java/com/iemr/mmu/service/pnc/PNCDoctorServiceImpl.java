@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 import com.iemr.mmu.data.pnc.PNCDiagnosis;
 import com.iemr.mmu.repo.nurse.pnc.PNCDiagnosisRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
+import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
@@ -18,6 +19,12 @@ public class PNCDoctorServiceImpl implements PNCDoctorService {
 
 	private PNCDiagnosisRepo pncDiagnosisRepo;
 	private PrescriptionDetailRepo prescriptionDetailRepo;
+	private CommonDoctorServiceImpl commonDoctorServiceImpl;
+
+	@Autowired
+	public void setCommonDoctorServiceImpl(CommonDoctorServiceImpl commonDoctorServiceImpl) {
+		this.commonDoctorServiceImpl = commonDoctorServiceImpl;
+	}
 
 	@Autowired
 	public void setPrescriptionDetailRepo(PrescriptionDetailRepo prescriptionDetailRepo) {
@@ -33,6 +40,21 @@ public class PNCDoctorServiceImpl implements PNCDoctorService {
 		Long ID = null;
 		PNCDiagnosis pncDiagnosis = InputMapper.gson().fromJson(obj, PNCDiagnosis.class);
 		pncDiagnosis.setPrescriptionID(prescriptionID);
+
+		// getting snomedCT code for provisional diagnosis
+		String[] snomedCTArrPD = commonDoctorServiceImpl.getSnomedCTcode(pncDiagnosis.getProvisionalDiagnosis());
+		// getting snomedCT code for confirmatory diagnosis
+		String[] snomedCTArrCD = commonDoctorServiceImpl.getSnomedCTcode(pncDiagnosis.getProvisionalDiagnosis());
+
+		if (snomedCTArrPD != null && snomedCTArrPD.length > 1) {
+			pncDiagnosis.setProvisionalDiagnosisSCTCode(snomedCTArrPD[0]);
+			pncDiagnosis.setProvisionalDiagnosisSCTTerm(snomedCTArrPD[1]);
+
+		}
+		if (snomedCTArrCD != null && snomedCTArrCD.length > 1) {
+			pncDiagnosis.setConfirmatoryDiagnosisSCTCode(snomedCTArrCD[0]);
+			pncDiagnosis.setConfirmatoryDiagnosisSCTTerm(snomedCTArrCD[1]);
+		}
 
 		PNCDiagnosis res = pncDiagnosisRepo.save(pncDiagnosis);
 		if (null != res && res.getID() > 0) {
@@ -53,35 +75,27 @@ public class PNCDoctorServiceImpl implements PNCDoctorService {
 
 	public int updateBenPNCDiagnosis(PNCDiagnosis pncDiagnosis, Long prescriptionID) throws IEMRException {
 		int res = 0;
-		int recordsAvailable = 0;
-		String processed = pncDiagnosisRepo.getPNCDiagnosisStatus(pncDiagnosis.getBeneficiaryRegID(),
-				pncDiagnosis.getVisitCode());
+		pncDiagnosis.setPrescriptionID(prescriptionID);
 
-		if (null != processed) {
-			recordsAvailable = 1;
-		}
+		// getting snomedCT code for provisional diagnosis
+		String[] snomedCTArrPD = commonDoctorServiceImpl.getSnomedCTcode(pncDiagnosis.getProvisionalDiagnosis());
+		// getting snomedCT code for confirmatory diagnosis
+		String[] snomedCTArrCD = commonDoctorServiceImpl.getSnomedCTcode(pncDiagnosis.getProvisionalDiagnosis());
 
-		if (null != processed && !processed.equals("N")) {
-			processed = "U";
-		} else {
-			processed = "N";
-		}
-		if (recordsAvailable > 0) {
-			pncDiagnosis.setModifiedBy(pncDiagnosis.getCreatedBy());
-			res = pncDiagnosisRepo.updatePNCDiagnosis(pncDiagnosis.getProvisionalDiagnosis(),
-					pncDiagnosis.getConfirmatoryDiagnosis(), pncDiagnosis.getIsMaternalDeath(),
-					pncDiagnosis.getPlaceOfDeath(), pncDiagnosis.getDateOfDeath(), pncDiagnosis.getCauseOfDeath(),
-					pncDiagnosis.getModifiedBy(), processed, pncDiagnosis.getBeneficiaryRegID(),
-					pncDiagnosis.getVisitCode());
-		} else {
-			pncDiagnosis.setPrescriptionID(prescriptionID);
-			PNCDiagnosis pncDiagnosisRes = pncDiagnosisRepo.save(pncDiagnosis);
-			if (null != pncDiagnosisRes && pncDiagnosisRes.getID() > 0) {
-				res = 1;
-			}
+		if (snomedCTArrPD != null && snomedCTArrPD.length > 1) {
+			pncDiagnosis.setProvisionalDiagnosisSCTCode(snomedCTArrPD[0]);
+			pncDiagnosis.setProvisionalDiagnosisSCTTerm(snomedCTArrPD[1]);
 
 		}
+		if (snomedCTArrCD != null && snomedCTArrCD.length > 1) {
+			pncDiagnosis.setConfirmatoryDiagnosisSCTCode(snomedCTArrCD[0]);
+			pncDiagnosis.setConfirmatoryDiagnosisSCTTerm(snomedCTArrCD[1]);
+		}
 
+		PNCDiagnosis pncDiagnosisRes = pncDiagnosisRepo.save(pncDiagnosis);
+		if (null != pncDiagnosisRes && pncDiagnosisRes.getID() > 0) {
+			res = 1;
+		}
 		return res;
 	}
 }

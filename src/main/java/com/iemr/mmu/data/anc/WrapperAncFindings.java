@@ -1,10 +1,11 @@
 package com.iemr.mmu.data.anc;
 
 import java.util.ArrayList;
-import java.util.Map;
 
+import javax.persistence.Column;
+
+import com.google.gson.annotations.Expose;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
-import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 
 public class WrapperAncFindings {
 	private Long beneficiaryRegID;
@@ -15,9 +16,18 @@ public class WrapperAncFindings {
 	private String modifiedBy;
 	private String clinicalObservation;
 	private String otherSymptoms;
+	// newly added field on 07-08-2018
+	@Expose
+	@Column(name = "OtherSymptoms_SCTCode")
+	private String otherSymptomsSCTCode;
+
+	@Expose
+	@Column(name = "OtherSymptoms_SCTTerm")
+	private String otherSymptomsSCTTerm;
+
 	private String significantFindings;
 	private ArrayList<BenChiefComplaint> complaints;
-	//private ArrayList<BenChiefComplaint> chiefComplaints;
+	// private ArrayList<BenChiefComplaint> chiefComplaints;
 	private Boolean isForHistory;
 
 	public WrapperAncFindings(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, String createdBy,
@@ -33,17 +43,30 @@ public class WrapperAncFindings {
 		this.significantFindings = significantFindings;
 		this.complaints = complaints;
 	}
-	
+
+	public String getOtherSymptomsSCTCode() {
+		return otherSymptomsSCTCode;
+	}
+
+	public void setOtherSymptomsSCTCode(String otherSymptomsSCTCode) {
+		this.otherSymptomsSCTCode = otherSymptomsSCTCode;
+	}
+
+	public String getOtherSymptomsSCTTerm() {
+		return otherSymptomsSCTTerm;
+	}
+
+	public void setOtherSymptomsSCTTerm(String otherSymptomsSCTTerm) {
+		this.otherSymptomsSCTTerm = otherSymptomsSCTTerm;
+	}
 
 	public Long getVisitCode() {
 		return visitCode;
 	}
 
-
 	public void setVisitCode(Long visitCode) {
 		this.visitCode = visitCode;
 	}
-
 
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
@@ -101,7 +124,7 @@ public class WrapperAncFindings {
 		this.significantFindings = significantFindings;
 	}
 
-	public ArrayList<BenChiefComplaint>  getComplaints() {
+	public ArrayList<BenChiefComplaint> getComplaints() {
 		return complaints;
 	}
 
@@ -140,20 +163,21 @@ public class WrapperAncFindings {
 		this.isForHistory = isForHistory;
 	}
 
-	public static WrapperAncFindings getFindingsData(ArrayList<Object[]> clinicalObservationsList, ArrayList<Object[]> chiefComplaintsList) {
+	public static WrapperAncFindings getFindingsData(ArrayList<Object[]> clinicalObservationsList,
+			ArrayList<Object[]> chiefComplaintsList) {
 		WrapperAncFindings cOBJ = null;
-		
-		ArrayList<BenChiefComplaint>  chiefcmplts = BenChiefComplaint.getBenChiefComplaints(chiefComplaintsList);
-		if(null != clinicalObservationsList && clinicalObservationsList.size()>0){
+
+		ArrayList<BenChiefComplaint> chiefcmplts = BenChiefComplaint.getBenChiefComplaints(chiefComplaintsList);
+		if (null != clinicalObservationsList && clinicalObservationsList.size() > 0) {
 			for (Object[] obj : clinicalObservationsList) {
-				cOBJ = new WrapperAncFindings((Long)obj[0], (Long)obj[1], (Integer)obj[2], (String)obj[3], 
-						(String)obj[4], (String)obj[5], chiefcmplts, (Boolean)obj[6], (Long)obj[7]);
-						
+				cOBJ = new WrapperAncFindings((Long) obj[0], (Long) obj[1], (Integer) obj[2], (String) obj[3],
+						(String) obj[4], (String) obj[5], chiefcmplts, (Boolean) obj[6], (Long) obj[7]);
+
 			}
-		}else if (null != chiefcmplts && chiefcmplts.size()>0){
+		} else if (null != chiefcmplts && chiefcmplts.size() > 0) {
 			BenChiefComplaint cmplint = chiefcmplts.get(0);
-			cOBJ = new WrapperAncFindings(cmplint.getBeneficiaryRegID(), cmplint.getBenVisitID(), cmplint.getProviderServiceMapID(), null, 
-					null, null, chiefcmplts, null, cmplint.getVisitCode());
+			cOBJ = new WrapperAncFindings(cmplint.getBeneficiaryRegID(), cmplint.getBenVisitID(),
+					cmplint.getProviderServiceMapID(), null, null, null, chiefcmplts, null, cmplint.getVisitCode());
 		}
 		return cOBJ;
 	}
