@@ -375,9 +375,9 @@ public class BenFamilyHistory {
 					int length = familyMemberList.size();
 					for (int i = 0; i < length; i++) {
 						if (i == length - 1)
-							familyMembers += familyMember;
+							familyMembers += familyMemberList.get(i);
 						else
-							familyMembers += familyMember + ",";
+							familyMembers += familyMemberList.get(i) + ",";
 					}
 
 					// for (String familyMember : familyMemberList) {

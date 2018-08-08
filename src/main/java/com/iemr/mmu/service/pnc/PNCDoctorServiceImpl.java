@@ -44,7 +44,7 @@ public class PNCDoctorServiceImpl implements PNCDoctorService {
 		// getting snomedCT code for provisional diagnosis
 		String[] snomedCTArrPD = commonDoctorServiceImpl.getSnomedCTcode(pncDiagnosis.getProvisionalDiagnosis());
 		// getting snomedCT code for confirmatory diagnosis
-		String[] snomedCTArrCD = commonDoctorServiceImpl.getSnomedCTcode(pncDiagnosis.getProvisionalDiagnosis());
+		String[] snomedCTArrCD = commonDoctorServiceImpl.getSnomedCTcode(pncDiagnosis.getConfirmatoryDiagnosis());
 
 		if (snomedCTArrPD != null && snomedCTArrPD.length > 1) {
 			pncDiagnosis.setProvisionalDiagnosisSCTCode(snomedCTArrPD[0]);

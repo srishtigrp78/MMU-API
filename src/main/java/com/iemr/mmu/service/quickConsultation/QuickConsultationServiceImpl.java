@@ -410,6 +410,8 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		resMap.put("prescription", commonDoctorServiceImpl.getPrescribedDrugs(benRegID, visitCode));
 		resMap.put("LabReport",
 				new Gson().toJson(labTechnicianServiceImpl.getLabResultDataForBen(benRegID, visitCode)));
+		resMap.put("ArchivedVisitcodeForLabResult",
+				labTechnicianServiceImpl.getLast_3_ArchivedTestVisitList(benRegID, visitCode));
 
 		// resList.add(commonDoctorServiceImpl.getFindingsDetails(benRegID, visitCode));
 		// resList.add(commonDoctorServiceImpl.getInvestigationDetails(benRegID,

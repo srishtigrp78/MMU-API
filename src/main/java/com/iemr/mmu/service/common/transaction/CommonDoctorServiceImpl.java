@@ -179,13 +179,24 @@ public class CommonDoctorServiceImpl {
 
 			int pointer = 0;
 			for (String s : symptomArr) {
-				SCTDescription obj = snomedServiceImpl.findSnomedCTRecordFromTerm(s);
-				if (pointer == symptomArr.length - 1) {
-					snomedCTidVal += obj.getConceptID();
-					snomedCTtermVal += obj.getTerm();
+				SCTDescription obj = snomedServiceImpl.findSnomedCTRecordFromTerm(s.trim());
+				if (obj != null) {
+					if (pointer == symptomArr.length - 1) {
+						snomedCTidVal += obj.getConceptID();
+						snomedCTtermVal += obj.getTerm();
+					} else {
+						snomedCTidVal += obj.getConceptID() + ",";
+						snomedCTtermVal += obj.getTerm() + ",";
+					}
 				} else {
-					snomedCTidVal += obj.getConceptID() + ",";
-					snomedCTtermVal += obj.getTerm() + ",";
+					if (pointer == symptomArr.length - 1) {
+						snomedCTidVal += "N/A";
+						snomedCTtermVal += "N/A";
+					} else {
+						snomedCTidVal += "N/A" + ",";
+						snomedCTtermVal += "N/A" + ",";
+					}
+
 				}
 				pointer++;
 			}
@@ -216,7 +227,7 @@ public class CommonDoctorServiceImpl {
 		benClinicalObservations.setModifiedBy(wrapperAncFindings.getModifiedBy());
 		if (responseString != null && responseString.length > 1) {
 			benClinicalObservations.setOtherSymptomsSCTCode(responseString[0]);
-			benClinicalObservations.setOtherSymptomsSCTCode(responseString[1]);
+			benClinicalObservations.setOtherSymptomsSCTTerm(responseString[1]);
 		}
 		return benClinicalObservations;
 	}
