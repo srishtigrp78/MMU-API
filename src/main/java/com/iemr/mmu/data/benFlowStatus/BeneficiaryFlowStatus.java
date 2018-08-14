@@ -257,6 +257,17 @@ public class BeneficiaryFlowStatus {
 
 	}
 
+	public BeneficiaryFlowStatus(Long benFlowID, Long benRegID, Long visitCode, Timestamp visitDate, Short benVisitNo,
+			String VisitReason, String VisitCategory) {
+		this.benFlowID = benFlowID;
+		this.beneficiaryRegID = benRegID;
+		this.visitCode = visitCode;
+		this.benVisitDate = visitDate;
+		this.benVisitNo = benVisitNo;
+		this.VisitReason = VisitReason;
+		this.VisitCategory = VisitCategory;
+	}
+
 	public static BeneficiaryFlowStatus getBeneficiaryFlowStatusForLeftPanel(ArrayList<Object[]> objList) {
 		BeneficiaryFlowStatus obj = null;
 		if (objList != null && objList.size() > 0) {
@@ -269,6 +280,19 @@ public class BeneficiaryFlowStatus {
 			}
 		}
 		return obj;
+	}
+
+	public static ArrayList<BeneficiaryFlowStatus> getBeneficiaryPastVisitHistory(ArrayList<Object[]> objList) {
+		ArrayList<BeneficiaryFlowStatus> visitHistoryList = new ArrayList<>();
+		BeneficiaryFlowStatus obj = null;
+		if (objList != null && objList.size() > 0) {
+			for (Object[] objArr : objList) {
+				obj = new BeneficiaryFlowStatus((Long) objArr[0], (Long) objArr[1], (Long) objArr[2],
+						(Timestamp) objArr[3], (Short) objArr[4], (String) objArr[5], (String) objArr[6]);
+				visitHistoryList.add(obj);
+			}
+		}
+		return visitHistoryList;
 	}
 
 	public Integer getConsultantID() {

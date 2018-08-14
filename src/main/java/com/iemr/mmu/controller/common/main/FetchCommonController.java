@@ -79,6 +79,7 @@ public class FetchCommonController {
 		return response.toString();
 	}
 
+	@Deprecated
 	@CrossOrigin()
 	@ApiOperation(value = "Get Nurse worklist", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getNurseWorklist" }, method = { RequestMethod.GET })
@@ -617,16 +618,26 @@ public class FetchCommonController {
 	// End of Fetch Previous History...
 
 	/***
-	 * fetch ben previous visit details for case-record.
+	 * fetch ben previous visit details for history case-record(Platform).
+	 * 08-08-2018
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "get ben previous visit details such as benid, chief complaints, diagonosis and snomedCT code", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenPreviousVisitDetailsForCaseRecord" }, method = { RequestMethod.POST })
-	public String getBenPreviousVisitDetailsForCaseRecord(@RequestBody String comingRequest) {
+	@ApiOperation(value = "Get casesheet History of Beneficiary", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBeneficiaryCaseSheetHistory" }, method = { RequestMethod.POST })
+	public String getBeneficiaryCaseSheetHistory(
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
-
-		logger.info("getBenDevelopmentHistory request:" + comingRequest);
-
+		logger.info("Request object for fetching beneficiary previous visit history :" + comingRequest);
+		try {
+			String responseData = commonServiceImpl.getBenPreviousVisitDataForCaseRecord(comingRequest);
+			if (responseData != null)
+				response.setResponse(responseData);
+			else
+				response.setError(5000, "Error while fetching beneficiary previous visit history details");
+		} catch (Exception e) {
+			response.setError(5000, "Error while fetching beneficiary previous visit history details");
+			logger.error("Error while fetching beneficiary previous visit history :" + e);
+		}
 		return response.toString();
 	}
 

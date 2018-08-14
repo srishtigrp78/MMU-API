@@ -2,6 +2,7 @@ package com.iemr.mmu.service.common.transaction;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
+import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
 import com.iemr.mmu.service.cancerScreening.CSNurseServiceImpl;
@@ -17,6 +19,8 @@ import com.iemr.mmu.service.generalOPD.GeneralOPDServiceImpl;
 import com.iemr.mmu.service.ncdCare.NCDCareServiceImpl;
 import com.iemr.mmu.service.pnc.PNCServiceImpl;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
+import com.iemr.mmu.utils.exception.IEMRException;
+import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
 public class CommonServiceImpl implements CommonService {
@@ -30,12 +34,12 @@ public class CommonServiceImpl implements CommonService {
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private CSNurseServiceImpl cSNurseServiceImpl;
 	private CSServiceImpl csServiceImpl;
-	
+
 	@Autowired
 	public void setCsServiceImpl(CSServiceImpl csServiceImpl) {
 		this.csServiceImpl = csServiceImpl;
 	}
-	
+
 	@Autowired
 	public void setcSNurseServiceImpl(CSNurseServiceImpl cSNurseServiceImpl) {
 		this.cSNurseServiceImpl = cSNurseServiceImpl;
@@ -139,10 +143,10 @@ public class CommonServiceImpl implements CommonService {
 
 		caseSheetData.put("BeneficiaryData",
 				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
-		
+
 		caseSheetData.put("ImageAnnotatedData",
-				new Gson().toJson(cSNurseServiceImpl.getCancerExaminationImageAnnotationCasesheet(benFlowOBJ.getBeneficiaryRegID(),
-						 benFlowOBJ.getBenVisitCode())));
+				new Gson().toJson(cSNurseServiceImpl.getCancerExaminationImageAnnotationCasesheet(
+						benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitCode())));
 
 		return caseSheetData.toString();
 	}
@@ -198,8 +202,8 @@ public class CommonServiceImpl implements CommonService {
 		caseSheetData.put("nurseData", quickConsultationServiceImpl
 				.getBenQuickConsultNurseData(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitCode()));
 
-		caseSheetData.put("doctorData", quickConsultationServiceImpl
-				.getBenCaseRecordFromDoctorQuickConsult(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitCode()));
+		caseSheetData.put("doctorData", quickConsultationServiceImpl.getBenCaseRecordFromDoctorQuickConsult(
+				benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitCode()));
 
 		caseSheetData.put("BeneficiaryData",
 				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
@@ -301,13 +305,24 @@ public class CommonServiceImpl implements CommonService {
 	public String getBenDevelopmentHistoryData(Long beneficiaryRegID) {
 		return commonNurseServiceImpl.fetchBenDevelopmentHistory(beneficiaryRegID);
 	}
-	
-	
-	// ------- Fetch beneficiary previous visit details for case-record  ---------------
+
+	// -- Fetch beneficiary previous visit details for case-record ---
 	/**
-	 * date : 15-05-2018
+	 * date : 08-09-2018
+	 * 
+	 * @throws IEMRException
 	 */
-		public String getBenPreviousVisitDataForCaseRecord(Long beneficiaryRegID) {
-			return null;
-		}
+	public String getBenPreviousVisitDataForCaseRecord(String comingRequest) throws IEMRException {
+		CommonUtilityClass obj = InputMapper.gson().fromJson(comingRequest, CommonUtilityClass.class);
+		List<Short> flagList = new ArrayList<>();
+		flagList.add((short) 9);
+		flagList.add((short) 3);
+
+		ArrayList<Object[]> resultList = beneficiaryFlowStatusRepo.getBenPreviousHistory(obj.getBeneficiaryRegID(),
+				flagList);
+
+		return new Gson().toJson(BeneficiaryFlowStatus.getBeneficiaryPastVisitHistory(resultList));
+	}
+
+	// end of Fetch beneficiary previous visit details for case-record
 }
