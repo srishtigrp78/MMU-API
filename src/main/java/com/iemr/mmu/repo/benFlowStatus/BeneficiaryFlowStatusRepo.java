@@ -113,7 +113,8 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	// beneficiary previous visit history
 	@Query("SELECT benFlowID, beneficiaryRegID, visitCode, "
 			+ " benVisitDate, benVisitNo, VisitReason, VisitCategory  from BeneficiaryFlowStatus "
-			+ "  WHERE beneficiaryRegID = :beneficiaryRegID AND nurseFlag IN :flagList")
+			+ "  WHERE beneficiaryRegID = :beneficiaryRegID AND nurseFlag IN :flagList "
+			+ " ORDER BY benVisitDate DESC ")
 	public ArrayList<Object[]> getBenPreviousHistory(@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("flagList") List<Short> flagList);
 
