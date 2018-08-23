@@ -2246,6 +2246,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			prescriptionDetail.setDiagnosisProvided_SCTCode(snomedCTArr[0]);
 			prescriptionDetail.setDiagnosisProvided_SCTTerm(snomedCTArr[0]);
 		}
+		prescriptionDetail.setPrescriptionID(null);
 		return saveBenPrescription(prescriptionDetail);
 	}
 
@@ -2262,6 +2263,37 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			r = prescriptionRS.getPrescriptionID();
 		}
 		return r;
+	}
+
+	public int updatePrescription(PrescriptionDetail prescription) {
+		int i = 0;
+		String[] snomedCTArr = commonDoctorServiceImpl.getSnomedCTcode(prescription.getDiagnosisProvided());
+		if (snomedCTArr != null && snomedCTArr.length > 1) {
+			prescription.setDiagnosisProvided_SCTCode(snomedCTArr[0]);
+			prescription.setDiagnosisProvided_SCTTerm(snomedCTArr[0]);
+		}
+
+		String processed = prescriptionDetailRepo.getGeneralOPDDiagnosisStatus(prescription.getBeneficiaryRegID(),
+				prescription.getVisitCode(), prescription.getPrescriptionID());
+		if (null != processed && !processed.equals("N")) {
+			processed = "U";
+		}
+
+		prescription.setProcessed(processed);
+
+		if (processed != null) {
+			i = prescriptionDetailRepo.updatePrescription(prescription.getDiagnosisProvided(),
+					prescription.getInstruction(), prescription.getCreatedBy(), prescription.getProcessed(),
+					prescription.getBeneficiaryRegID(), prescription.getVisitCode(), prescription.getPrescriptionID(),
+					prescription.getExternalInvestigation(), prescription.getDiagnosisProvided_SCTCode(),
+					prescription.getDiagnosisProvided_SCTTerm());
+		} else {
+			PrescriptionDetail prescriptionRS = prescriptionDetailRepo.save(prescription);
+			if (prescriptionRS != null && prescriptionRS.getPrescriptionID() > 0)
+				i = 1;
+		}
+
+		return i;
 	}
 
 	public Long saveBeneficiaryLabTestOrderDetails(JsonObject caseSheet, Long prescriptionID) {

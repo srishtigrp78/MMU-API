@@ -46,44 +46,28 @@ public class NCDCareDoctorServiceImpl implements NCDCareDoctorService {
 		return new Gson().toJson(ncdCareDiagnosisDetails);
 	}
 
-	public int updateBenNCDCareDiagnosis(NCDCareDiagnosis ncdCareDiagnosis, Long prescriptionID) throws IEMRException {
+	public int updateBenNCDCareDiagnosis(NCDCareDiagnosis ncdCareDiagnosis) throws IEMRException {
 		int res = 0;
-		ncdCareDiagnosis.setPrescriptionID(prescriptionID);
-		NCDCareDiagnosis ncdCareDiagnosisRes = ncdCareDiagnosisRepo.save(ncdCareDiagnosis);
-		if (null != ncdCareDiagnosisRes && ncdCareDiagnosisRes.getID() > 0) {
-			res = 1;
+		String processed = ncdCareDiagnosisRepo.getNCDCareDiagnosisStatus(ncdCareDiagnosis.getBeneficiaryRegID(),
+				ncdCareDiagnosis.getVisitCode(), ncdCareDiagnosis.getPrescriptionID());
+
+		if (null != processed && !processed.equals("N")) {
+			processed = "U";
 		}
 
-		// int recordsAvailable = 0;
-		// String processed =
-		// ncdCareDiagnosisRepo.getNCDCareDiagnosisStatus(ncdCareDiagnosis.getBeneficiaryRegID(),
-		// ncdCareDiagnosis.getVisitCode());
-		//
-		// if (null != processed) {
-		// recordsAvailable = 1;
-		// }
-		//
-		// if (null != processed && !processed.equals("N")) {
-		// processed = "U";
-		// } else {
-		// processed = "N";
-		// }
-		// if (recordsAvailable > 0) {
-		// ncdCareDiagnosis.setModifiedBy(ncdCareDiagnosis.getCreatedBy());
-		// res =
-		// ncdCareDiagnosisRepo.updateNCDCareDiagnosis(ncdCareDiagnosis.getNcdCareCondition(),
-		// ncdCareDiagnosis.getNcdComplication(), ncdCareDiagnosis.getNcdCareType(),
-		// ncdCareDiagnosis.getModifiedBy(), processed,
-		// ncdCareDiagnosis.getBeneficiaryRegID(),
-		// ncdCareDiagnosis.getVisitCode());
-		// } else {
-		// ncdCareDiagnosis.setPrescriptionID(prescriptionID);
-		// NCDCareDiagnosis ncdCareDiagnosisRes =
-		// ncdCareDiagnosisRepo.save(ncdCareDiagnosis);
-		// if (null != ncdCareDiagnosisRes && ncdCareDiagnosisRes.getID() > 0) {
-		// res = 1;
-		// }
-		// }
+		ncdCareDiagnosis.setProcessed(processed);
+		if (processed != null) {
+			res = ncdCareDiagnosisRepo.updateNCDCareDiagnosis(ncdCareDiagnosis.getNcdCareCondition(),
+					ncdCareDiagnosis.getNcdComplication(), ncdCareDiagnosis.getNcdCareType(),
+					ncdCareDiagnosis.getCreatedBy(), ncdCareDiagnosis.getProcessed(),
+					ncdCareDiagnosis.getBeneficiaryRegID(), ncdCareDiagnosis.getVisitCode(),
+					ncdCareDiagnosis.getPrescriptionID());
+		} else {
+			NCDCareDiagnosis ncdCareDiagnosisRes = ncdCareDiagnosisRepo.save(ncdCareDiagnosis);
+			if (null != ncdCareDiagnosisRes && ncdCareDiagnosisRes.getID() > 0) {
+				res = 1;
+			}
+		}
 
 		return res;
 	}

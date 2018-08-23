@@ -436,8 +436,15 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 
 		Long benChiefComplaintID = saveBeneficiaryChiefComplaint(quickConsultDoctorOBJ);
 		Integer clinicalObservationID = updateBeneficiaryClinicalObservations(quickConsultDoctorOBJ);
-		// generate prescription
-		prescriptionID = commonNurseServiceImpl.saveBeneficiaryPrescription(quickConsultDoctorOBJ);
+
+		// generate prescription OBJ
+		PrescriptionDetail prescriptionDetail = InputMapper.gson().fromJson(quickConsultDoctorOBJ,
+				PrescriptionDetail.class);
+
+		if (prescriptionDetail != null) {
+			int p = commonNurseServiceImpl.updatePrescription(prescriptionDetail);
+			prescriptionID = prescriptionDetail.getPrescriptionID();
+		}
 
 		JsonArray testList = null;
 		JsonArray drugList = null;

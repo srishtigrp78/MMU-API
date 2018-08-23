@@ -34,6 +34,7 @@ import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
+import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
@@ -1055,18 +1056,28 @@ public class NCDCareServiceImpl implements NCDCareService {
 				findingSuccessFlag = 1;
 			}
 
+			// generate WrapperBenInvestigationANC OBJ
 			WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
 					.fromJson(requestOBJ.get("investigation"), WrapperBenInvestigationANC.class);
-			prescriptionID = commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
-					wrapperBenInvestigationANC.getBeneficiaryRegID(), wrapperBenInvestigationANC.getBenVisitID(),
-					wrapperBenInvestigationANC.getProviderServiceMapID(), wrapperBenInvestigationANC.getCreatedBy(),
-					wrapperBenInvestigationANC.getExternalInvestigations(), wrapperBenInvestigationANC.getVisitCode());
+
+			// generate prescription OBJ & diagnosis OBJ
+			PrescriptionDetail prescriptionDetail = null;
+			NCDCareDiagnosis ncdCareDiagnosis = null;
+			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
+				prescriptionDetail = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), PrescriptionDetail.class);
+				prescriptionDetail.setExternalInvestigation(wrapperBenInvestigationANC.getExternalInvestigations());
+				prescriptionID = prescriptionDetail.getPrescriptionID();
+				ncdCareDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), NCDCareDiagnosis.class);
+			}
+
+			// update prescription
+			if (prescriptionDetail != null) {
+				int p = commonNurseServiceImpl.updatePrescription(prescriptionDetail);
+			}
 
 			// update diagnosis
-			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
-				NCDCareDiagnosis ncdCareDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
-						NCDCareDiagnosis.class);
-				diagnosisSuccessFlag = ncdCareDoctorServiceImpl.updateBenNCDCareDiagnosis(ncdCareDiagnosis, prescriptionID);
+			if (ncdCareDiagnosis != null) {
+				diagnosisSuccessFlag = ncdCareDoctorServiceImpl.updateBenNCDCareDiagnosis(ncdCareDiagnosis);
 			} else {
 				diagnosisSuccessFlag = 1;
 			}

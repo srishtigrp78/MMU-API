@@ -785,15 +785,6 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				JsonObject diagnosisObj = requestOBJ.getAsJsonObject("diagnosis");
 
 				prescriptionDetail = InputMapper.gson().fromJson(diagnosisObj, PrescriptionDetail.class);
-
-//				if (diagnosisObj.has("provisionalDiagnosis")
-//						&& !diagnosisObj.get("provisionalDiagnosis").isJsonNull()) {
-//					prescriptionDetail.setDiagnosisProvided(diagnosisObj.get("provisionalDiagnosis").toString());
-//				}
-//				if (diagnosisObj.has("specialistAdvice") && !diagnosisObj.get("specialistAdvice").isJsonNull()) {
-//					prescriptionDetail.setInstruction(diagnosisObj.get("specialistAdvice").toString());
-//				}
-
 			} else {
 			}
 
@@ -1374,33 +1365,26 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				findingSuccessFlag = 1;
 			}
 
-			// creating prescription object
+			// creating prescription OBJ
 			PrescriptionDetail prescriptionDetail = null;
-
 			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
-				JsonObject diagnosisObj = requestOBJ.getAsJsonObject("diagnosis");
-
+				// JsonObject diagnosisObj = requestOBJ.getAsJsonObject("diagnosis");
 				prescriptionDetail = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), PrescriptionDetail.class);
-
-				// if (diagnosisObj.has("provisionalDiagnosis")
-				// && !diagnosisObj.get("provisionalDiagnosis").isJsonNull()) {
-				// prescriptionDetail.setDiagnosisProvided(diagnosisObj.get("provisionalDiagnosis").toString());
-				// }
-				// if (diagnosisObj.has("specialistAdvice") &&
-				// !diagnosisObj.get("specialistAdvice").isJsonNull()) {
-				// prescriptionDetail.setInstruction(diagnosisObj.get("specialistAdvice").toString());
-				// }
-			} else {
-				diagnosisSuccessFlag = 1;
 			}
 
-			// generating prescription
+			// generating WrapperBenInvestigationANC OBJ
 			WrapperBenInvestigationANC wrapperBenInvestigationANCTMP = InputMapper.gson()
 					.fromJson(requestOBJ.get("investigation"), WrapperBenInvestigationANC.class);
-			prescriptionDetail.setExternalInvestigation(wrapperBenInvestigationANCTMP.getExternalInvestigations());
-			prescriptionID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
 
-			if (prescriptionID > 0)
+			if (prescriptionDetail != null) {
+				prescriptionDetail.setExternalInvestigation(wrapperBenInvestigationANCTMP.getExternalInvestigations());
+				prescriptionID = prescriptionDetail.getPrescriptionID();
+			}
+
+			// update prescription
+			int p = commonNurseServiceImpl.updatePrescription(prescriptionDetail);
+
+			if (p > 0)
 				diagnosisSuccessFlag = 1;
 
 			// save prescribed lab test

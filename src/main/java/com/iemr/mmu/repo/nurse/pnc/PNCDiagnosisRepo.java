@@ -24,20 +24,33 @@ public interface PNCDiagnosisRepo extends CrudRepository<PNCDiagnosis, Long> {
 	public ArrayList<Object[]> getPNCDiagnosisDetails(@Param("benRegID") Long benRegID,
 			@Param("visitCode") Long visitCode);
 
-	@Query("SELECT processed from PNCDiagnosis where beneficiaryRegID=:benRegID AND visitCode = :visitCode")
-	public String getPNCDiagnosisStatus(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
+	@Query("SELECT processed from PNCDiagnosis where beneficiaryRegID=:benRegID AND visitCode = :visitCode "
+			+ " AND prescriptionID =:prescriptionID ")
+	public String getPNCDiagnosisStatus(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode,
+			@Param("prescriptionID") Long prescriptionID);
 
 	@Transactional
 	@Modifying
-	@Query("update PNCDiagnosis set provisionalDiagnosis=:provisionalDiagnosis, confirmatoryDiagnosis=:confirmatoryDiagnosis, "
-			+ "isMaternalDeath=:isMaternalDeath, placeOfDeath=:placeOfDeath,"
-			+ "dateOfDeath=:dateOfDeath, causeOfDeath=:causeOfDeath, modifiedBy=:modifiedBy, processed=:processed "
-			+ "where visitCode=:visitCode AND beneficiaryRegID=:beneficiaryRegID")
+	@Query("update PNCDiagnosis set provisionalDiagnosis=:provisionalDiagnosis, "
+			+ " confirmatoryDiagnosis=:confirmatoryDiagnosis, "
+			+ " isMaternalDeath=:isMaternalDeath, placeOfDeath=:placeOfDeath, "
+			+ " dateOfDeath=:dateOfDeath, causeOfDeath=:causeOfDeath, modifiedBy=:modifiedBy, "
+			+ " processed=:processed, provisionalDiagnosisSCTCode =:provisionalDiagnosisSCTCode, "
+			+ " provisionalDiagnosisSCTTerm =:provisionalDiagnosisSCTTerm, "
+			+ " confirmatoryDiagnosisSCTCode =:confirmatoryDiagnosisSCTCode, "
+			+ " confirmatoryDiagnosisSCTTerm =:confirmatoryDiagnosisSCTTerm "
+			+ " where visitCode=:visitCode AND beneficiaryRegID=:beneficiaryRegID "
+			+ " AND prescriptionID =:prescriptionID ")
 	public int updatePNCDiagnosis(@Param("provisionalDiagnosis") String provisionalDiagnosis,
 			@Param("confirmatoryDiagnosis") String confirmatoryDiagnosis,
 			@Param("isMaternalDeath") Boolean isMaternalDeath, @Param("placeOfDeath") String placeOfDeath,
 			@Param("dateOfDeath") Date dateOfDeath, @Param("causeOfDeath") String causeOfDeath,
 			@Param("modifiedBy") String modifiedBy, @Param("processed") String processed,
-			@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("visitCode") Long visitCode);
+			@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("visitCode") Long visitCode,
+			@Param("provisionalDiagnosisSCTCode") String provisionalDiagnosisSCTCode,
+			@Param("provisionalDiagnosisSCTTerm") String provisionalDiagnosisSCTTerm,
+			@Param("confirmatoryDiagnosisSCTCode") String confirmatoryDiagnosisSCTCode,
+			@Param("confirmatoryDiagnosisSCTTerm") String confirmatoryDiagnosisSCTTerm,
+			@Param("prescriptionID") Long prescriptionID);
 
 }

@@ -27,14 +27,14 @@ public class BeneficiaryVisitDetail {
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
-//	@Expose
-//	@OneToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(updatable = false, insertable = false, name = "BeneficiaryRegID")
-//	private BeneficiaryData beneficiaryData;
+	// @Expose
+	// @OneToOne(fetch = FetchType.LAZY)
+	// @JoinColumn(updatable = false, insertable = false, name = "BeneficiaryRegID")
+	// private BeneficiaryData beneficiaryData;
 
 	@Expose
 	@Column(name = "ProviderServiceMapID")
@@ -115,48 +115,49 @@ public class BeneficiaryVisitDetail {
 	@Expose
 	@Column(name = "VisitFlowStatusFlag", insertable = false)
 	private String visitFlowStatusFlag;
-	
+
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
+	@Expose
+	@Column(name = "VanID")
+	private Integer vanID;
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
-	
 
 	public BeneficiaryVisitDetail() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public BeneficiaryVisitDetail(Long benVisitID, Long beneficiaryRegID,
-			Integer providerServiceMapID, Timestamp visitDateTime, Short visitNo, Short visitReasonID,
-			String visitReason, Integer visitCategoryID, String visitCategory, String pregnancyStatus, String rCHID,
-			String healthFacilityType, String healthFacilityLocation, String reportFilePath, Boolean deleted,
-			String processed, String createdBy, Timestamp createdDate, String modifiedBy, Timestamp lastModDate,
-			String visitFlowStatusFlag) {
+	public BeneficiaryVisitDetail(Long benVisitID, Long beneficiaryRegID, Integer providerServiceMapID,
+			Timestamp visitDateTime, Short visitNo, Short visitReasonID, String visitReason, Integer visitCategoryID,
+			String visitCategory, String pregnancyStatus, String rCHID, String healthFacilityType,
+			String healthFacilityLocation, String reportFilePath, Boolean deleted, String processed, String createdBy,
+			Timestamp createdDate, String modifiedBy, Timestamp lastModDate, String visitFlowStatusFlag) {
 		super();
 		this.benVisitID = benVisitID;
 		this.beneficiaryRegID = beneficiaryRegID;
-//		this.beneficiaryData = beneficiaryData;
+		// this.beneficiaryData = beneficiaryData;
 		this.providerServiceMapID = providerServiceMapID;
 		this.visitDateTime = visitDateTime;
 		this.visitNo = visitNo;
@@ -228,8 +229,6 @@ public class BeneficiaryVisitDetail {
 		this.reportFilePath = reportFilePath;
 		this.serviceProviderName = serviceProviderName;
 	}
-	
-	
 
 	public Long getVisitCode() {
 		return visitCode;
@@ -293,6 +292,14 @@ public class BeneficiaryVisitDetail {
 
 	public void setVisitNo(Short visitNo) {
 		this.visitNo = visitNo;
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
 	}
 
 	public Short getVisitReasonID() {

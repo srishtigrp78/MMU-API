@@ -43,6 +43,7 @@ import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
+import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
@@ -355,8 +356,15 @@ public class ANCServiceImpl implements ANCService {
 		if (visitDetailsOBJ != null && visitDetailsOBJ.has("visitDetails")
 				&& !visitDetailsOBJ.get("visitDetails").isJsonNull()) {
 
+			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(visitDetailsOBJ,
+					CommonUtilityClass.class);
+
 			BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(visitDetailsOBJ.get("visitDetails"),
 					BeneficiaryVisitDetail.class);
+
+			benVisitDetailsOBJ.setVanID(commonUtilityClass.getVanID());
+			benVisitDetailsOBJ.setParkingPlaceID(commonUtilityClass.getParkingPlaceID());
+
 			benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
 
 			// 07-06-2018 visit code
@@ -1405,20 +1413,30 @@ public class ANCServiceImpl implements ANCService {
 				findingSuccessFlag = 1;
 			}
 
-			// generate prescription
+			// Generate ANC wrapper class OBJ
 			WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
 					.fromJson(requestOBJ.get("investigation"), WrapperBenInvestigationANC.class);
-			prescriptionID = commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
-					wrapperBenInvestigationANC.getBeneficiaryRegID(), wrapperBenInvestigationANC.getBenVisitID(),
-					wrapperBenInvestigationANC.getProviderServiceMapID(), wrapperBenInvestigationANC.getCreatedBy(),
-					wrapperBenInvestigationANC.getExternalInvestigations(), wrapperBenInvestigationANC.getVisitCode());
+
+			// generate prescription OBJ & diagnosis OBJ
+			ANCDiagnosis ancDiagnosis = null;
+			PrescriptionDetail prescriptionDetail = null;
+			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
+				// diagnosis OBJ
+				ancDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), ANCDiagnosis.class);
+
+				// prescription OBJ
+				prescriptionDetail = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), PrescriptionDetail.class);
+				prescriptionDetail.setExternalInvestigation(wrapperBenInvestigationANC.getExternalInvestigations());
+			}
+
+			if (prescriptionDetail != null) {
+				prescriptionID = prescriptionDetail.getPrescriptionID();
+				commonNurseServiceImpl.updatePrescription(prescriptionDetail);
+			}
 
 			// update diagnosis
-			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
-				ANCDiagnosis ancDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
-						ANCDiagnosis.class);
-
-				diagnosisSuccessFlag = ancDoctorServiceImpl.updateBenANCDiagnosis(ancDiagnosis, prescriptionID);
+			if (ancDiagnosis != null) {
+				diagnosisSuccessFlag = ancDoctorServiceImpl.updateBenANCDiagnosis(ancDiagnosis);
 			} else {
 				diagnosisSuccessFlag = 1;
 			}

@@ -20,16 +20,19 @@ public interface NCDCareDiagnosisRepo extends CrudRepository<NCDCareDiagnosis, L
 	public ArrayList<Object[]> getNCDCareDiagnosisDetails(@Param("benRegID") Long benRegID,
 			@Param("visitCode") Long visitCode);
 
-	@Query("SELECT processed from NCDCareDiagnosis where beneficiaryRegID=:benRegID AND visitCode = :visitCode")
-	public String getNCDCareDiagnosisStatus(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
+	@Query("SELECT processed from NCDCareDiagnosis where beneficiaryRegID=:benRegID AND visitCode = :visitCode "
+			+ " AND prescriptionID =:prescriptionID ")
+	public String getNCDCareDiagnosisStatus(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode,
+			@Param("prescriptionID") Long prescriptionID);
 
 	@Transactional
 	@Modifying
 	@Query("update NCDCareDiagnosis set ncdScreeningCondition=:ncdScreeningCondition, ncdComplication=:ncdComplication, "
 			+ "ncdCareType=:ncdCareType, modifiedBy=:modifiedBy, processed=:processed "
-			+ "where visitCode=:visitCode AND beneficiaryRegID=:beneficiaryRegID")
+			+ "where visitCode=:visitCode AND beneficiaryRegID=:beneficiaryRegID AND prescriptionID =:prescriptionID ")
 	public int updateNCDCareDiagnosis(@Param("ncdScreeningCondition") String ncdScreeningCondition,
 			@Param("ncdComplication") String ncdComplication, @Param("ncdCareType") String ncdCareType,
 			@Param("modifiedBy") String modifiedBy, @Param("processed") String processed,
-			@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("visitCode") Long visitCode);
+			@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("visitCode") Long visitCode,
+			@Param("prescriptionID") Long prescriptionID);
 }

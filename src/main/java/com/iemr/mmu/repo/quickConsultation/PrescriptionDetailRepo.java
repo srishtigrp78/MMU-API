@@ -2,6 +2,9 @@ package com.iemr.mmu.repo.quickConsultation;
 
 import java.util.ArrayList;
 
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -35,22 +38,21 @@ public interface PrescriptionDetailRepo extends CrudRepository<PrescriptionDetai
 	public String getExternalinvestigationForVisitCode(@Param("benRegID") Long benRegID,
 			@Param("visitCode") Long visitCode);
 
-	// @Transactional
-	// @Modifying
-	// @Query("update PrescriptionDetail set diagnosisProvided=:diagnosisProvided,
-	// instruction=:instruction, "
-	// + " externalInvestigation =:externalInvestigation, modifiedBy=:modifiedBy,
-	// processed=:processed "
-	// + " where visitCode=:visitCode AND beneficiaryRegID=:beneficiaryRegID AND
-	// prescriptionID=:prescriptionID")
-	// public int updateGeneralOPDDiagnosis(@Param("diagnosisProvided") String
-	// diagnosisProvided,
-	// @Param("instruction") String instruction, @Param("modifiedBy") String
-	// modifiedBy,
-	// @Param("processed") String processed, @Param("beneficiaryRegID") Long
-	// beneficiaryRegID,
-	// @Param("visitCode") Long visitCode, @Param("prescriptionID") Long
-	// prescriptionID,
-	// @Param("externalInvestigation") String externalInvestigation);
+	@Transactional
+	@Modifying
+	@Query("update PrescriptionDetail set diagnosisProvided=:diagnosisProvided, "
+			+ " instruction=:instruction, externalInvestigation =:externalInvestigation, "
+			+ " modifiedBy=:modifiedBy, processed=:processed, "
+			+ " diagnosisProvided_SCTCode =:diagnosisProvided_SCTCode, "
+			+ " diagnosisProvided_SCTTerm =:diagnosisProvided_SCTTerm "
+			+ " where visitCode=:visitCode AND beneficiaryRegID=:beneficiaryRegID "
+			+ " AND prescriptionID=:prescriptionID")
+	public int updatePrescription(@Param("diagnosisProvided") String diagnosisProvided,
+			@Param("instruction") String instruction, @Param("modifiedBy") String modifiedBy,
+			@Param("processed") String processed, @Param("beneficiaryRegID") Long beneficiaryRegID,
+			@Param("visitCode") Long visitCode, @Param("prescriptionID") Long prescriptionID,
+			@Param("externalInvestigation") String externalInvestigation,
+			@Param("diagnosisProvided_SCTCode") String diagnosisProvided_SCTCode,
+			@Param("diagnosisProvided_SCTTerm") String diagnosisProvided_SCTTerm);
 
 }

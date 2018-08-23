@@ -73,14 +73,13 @@ public class PNCDoctorServiceImpl implements PNCDoctorService {
 		return new Gson().toJson(pncDiagnosisDetails);
 	}
 
-	public int updateBenPNCDiagnosis(PNCDiagnosis pncDiagnosis, Long prescriptionID) throws IEMRException {
+	public int updateBenPNCDiagnosis(PNCDiagnosis pncDiagnosis) throws IEMRException {
 		int res = 0;
-		pncDiagnosis.setPrescriptionID(prescriptionID);
 
 		// getting snomedCT code for provisional diagnosis
 		String[] snomedCTArrPD = commonDoctorServiceImpl.getSnomedCTcode(pncDiagnosis.getProvisionalDiagnosis());
 		// getting snomedCT code for confirmatory diagnosis
-		String[] snomedCTArrCD = commonDoctorServiceImpl.getSnomedCTcode(pncDiagnosis.getProvisionalDiagnosis());
+		String[] snomedCTArrCD = commonDoctorServiceImpl.getSnomedCTcode(pncDiagnosis.getConfirmatoryDiagnosis());
 
 		if (snomedCTArrPD != null && snomedCTArrPD.length > 1) {
 			pncDiagnosis.setProvisionalDiagnosisSCTCode(snomedCTArrPD[0]);
@@ -92,9 +91,26 @@ public class PNCDoctorServiceImpl implements PNCDoctorService {
 			pncDiagnosis.setConfirmatoryDiagnosisSCTTerm(snomedCTArrCD[1]);
 		}
 
-		PNCDiagnosis pncDiagnosisRes = pncDiagnosisRepo.save(pncDiagnosis);
-		if (null != pncDiagnosisRes && pncDiagnosisRes.getID() > 0) {
-			res = 1;
+		String processed = pncDiagnosisRepo.getPNCDiagnosisStatus(pncDiagnosis.getBeneficiaryRegID(),
+				pncDiagnosis.getVisitCode(), pncDiagnosis.getPrescriptionID());
+
+		if (null != processed && !processed.equals("N")) {
+			processed = "U";
+		}
+
+		if (processed != null) {
+			res = pncDiagnosisRepo.updatePNCDiagnosis(pncDiagnosis.getProvisionalDiagnosis(),
+					pncDiagnosis.getConfirmatoryDiagnosis(), pncDiagnosis.getIsMaternalDeath(),
+					pncDiagnosis.getPlaceOfDeath(), pncDiagnosis.getDateOfDeath(), pncDiagnosis.getCauseOfDeath(),
+					pncDiagnosis.getCreatedBy(), processed, pncDiagnosis.getBeneficiaryRegID(),
+					pncDiagnosis.getVisitCode(), pncDiagnosis.getProvisionalDiagnosisSCTCode(),
+					pncDiagnosis.getProvisionalDiagnosisSCTTerm(), pncDiagnosis.getConfirmatoryDiagnosisSCTCode(),
+					pncDiagnosis.getConfirmatoryDiagnosisSCTTerm(), pncDiagnosis.getPrescriptionID());
+		} else {
+			PNCDiagnosis pncDiagnosisRes = pncDiagnosisRepo.save(pncDiagnosis);
+			if (null != pncDiagnosisRes && pncDiagnosisRes.getID() > 0) {
+				res = 1;
+			}
 		}
 		return res;
 	}

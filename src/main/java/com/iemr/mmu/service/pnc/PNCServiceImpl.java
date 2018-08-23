@@ -43,6 +43,7 @@ import com.iemr.mmu.data.pnc.PNCCare;
 import com.iemr.mmu.data.pnc.PNCDiagnosis;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
+import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
@@ -1293,7 +1294,6 @@ public class PNCServiceImpl implements PNCService {
 		Integer prescriptionSuccessFlag = null;
 		Long referSaveSuccessFlag = null;
 
-		String createdBy = null;
 		if (requestOBJ != null) {
 
 			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
@@ -1332,19 +1332,25 @@ public class PNCServiceImpl implements PNCService {
 				findingSuccessFlag = 1;
 			}
 
-			// generate prescription
+			// generate WrapperBenInvestigationANC OBJ
 			WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
 					.fromJson(requestOBJ.get("investigation"), WrapperBenInvestigationANC.class);
-			prescriptionID = commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
-					wrapperBenInvestigationANC.getBeneficiaryRegID(), wrapperBenInvestigationANC.getBenVisitID(),
-					wrapperBenInvestigationANC.getProviderServiceMapID(), wrapperBenInvestigationANC.getCreatedBy(),
-					wrapperBenInvestigationANC.getExternalInvestigations(), wrapperBenInvestigationANC.getVisitCode());
 
-			// update diagnosis
+			// generate prescription & diagnosis OBJ
+			PrescriptionDetail prescriptionDetail = null;
+			PNCDiagnosis pncDiagnosis = null;
 			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
-				PNCDiagnosis pncDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
-						PNCDiagnosis.class);
-				diagnosisSuccessFlag = pncDoctorServiceImpl.updateBenPNCDiagnosis(pncDiagnosis, prescriptionID);
+				prescriptionDetail = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), PrescriptionDetail.class);
+				prescriptionDetail.setExternalInvestigation(wrapperBenInvestigationANC.getExternalInvestigations());
+				prescriptionID = prescriptionDetail.getPrescriptionID();
+				pncDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), PNCDiagnosis.class);
+			}
+
+			// update prescription
+			int p = commonNurseServiceImpl.updatePrescription(prescriptionDetail);
+			// update diagnosis
+			if (pncDiagnosis != null) {
+				diagnosisSuccessFlag = pncDoctorServiceImpl.updateBenPNCDiagnosis(pncDiagnosis);
 			} else {
 				diagnosisSuccessFlag = 1;
 			}

@@ -151,7 +151,7 @@ public class UpdateRegistrarController {
 				response.setError(5000, "Error while updating beneficiary details");
 			}
 		} catch (Exception e) {
-
+			response.setError(5000, "Error in beneficiary details update");
 		}
 		return response.toString();
 	}
