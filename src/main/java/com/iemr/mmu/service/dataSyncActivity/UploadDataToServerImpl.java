@@ -7,7 +7,13 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import com.iemr.mmu.data.syncActivity_syncLayer.SyncUtilityClass;
 
@@ -133,6 +139,14 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 
 	private String syncDataToServer(String schemaName, String tableName, String serverColumns,
 			List<Map<String, Object>> dataToBesync) {
+		
+//		RestTemplate restTemplate = new RestTemplate();
+//		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+//		headers.add("Content-Type", "application/json");
+//		headers.add("AUTHORIZATION", Authorization);
+//		HttpEntity<Object> request = new HttpEntity<Object>(comingRequest, headers);
+//		ResponseEntity<String> response = restTemplate.exchange(registrationUrl, HttpMethod.POST, request,
+//				String.class);
 		return null;
 	}
 

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.iemr.mmu.service.dataSyncActivity.DataSyncRepository;
 
 @Service
 public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB {
@@ -19,6 +20,8 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 	private DataSource dataSource;
 
 	private JdbcTemplate jdbcTemplate;
+	@Autowired
+	private DataSyncRepository dataSyncRepository;
 
 	private String syncDataToServer(String schemaName, String tableName, String serverColumns,
 			List<Map<String, Object>> dataToBesync) {
@@ -59,12 +62,12 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-		String query = getQueryToInsertUpdateDataToServerDB(SCHEMA_TESTING, tableName, serverColumns);
+		String query = getQueryToInsertUpdateDataToServerDB(schemaName, tableName, serverColumns);
 		int[] i = jdbcTemplate.batchUpdate(query, syncDataList);
 
 		// after sync completed then update processed flag in van DB
 		if (i.length == syncDataList.size()) {
-			dataSyncRepository.updateProcessedFlagInVan(SCHEMA_IEMR, tableName, vanSerialNos, "BenVisitID");
+			dataSyncRepository.updateProcessedFlagInVan(schemaName, tableName, vanSerialNos, "BenVisitID");
 		}
 
 		System.out.println("kamariya karela baloop LOLLYPOP lagelu ........");
