@@ -89,6 +89,10 @@ public class PrescribedDrugDetail {
 	private String instructions;
 
 	@Expose
+	@Column(name = "QtyPrescribed")
+	private Integer qtyPrescribed;
+
+	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
 
@@ -142,7 +146,7 @@ public class PrescribedDrugDetail {
 	public PrescribedDrugDetail(Long prescribedDrugID, Long prescriptionID, String drugForm,
 			String drugTradeOrBrandName, Integer drugID, String genericDrugName, String drugStrength, String dose,
 			String route, String frequency, String drugDuration, String drugDurationUnit, String relationToFood,
-			String specialInstruction) {
+			String specialInstruction, Integer qtyPrescribed) {
 		super();
 		this.id = prescribedDrugID;
 		this.prescriptionID = prescriptionID;
@@ -158,6 +162,7 @@ public class PrescribedDrugDetail {
 		this.unit = drugDurationUnit;
 		this.relationToFood = relationToFood;
 		this.instructions = specialInstruction;
+		this.qtyPrescribed = qtyPrescribed;
 	}
 
 	public static ArrayList<PrescribedDrugDetail> getprescribedDrugs(ArrayList<Object[]> resList) {
@@ -167,7 +172,8 @@ public class PrescribedDrugDetail {
 			for (Object[] obj : resList) {
 				cOBJ = new PrescribedDrugDetail((Long) obj[0], (Long) obj[1], (String) obj[2], (String) obj[3],
 						(Integer) obj[4], (String) obj[5], (String) obj[6], (String) obj[7], (String) obj[8],
-						(String) obj[9], (String) obj[10], (String) obj[11], (String) obj[12], (String) obj[13]);
+						(String) obj[9], (String) obj[10], (String) obj[11], (String) obj[12], (String) obj[13],
+						(Integer) obj[14]);
 				resArray.add(cOBJ);
 			}
 		}
@@ -212,6 +218,214 @@ public class PrescribedDrugDetail {
 
 	public void setPrescriptionID(Long prescriptionID) {
 		this.prescriptionID = prescriptionID;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getFormName() {
+		return formName;
+	}
+
+	public void setFormName(String formName) {
+		this.formName = formName;
+	}
+
+	public String getDrugTradeOrBrandName() {
+		return drugTradeOrBrandName;
+	}
+
+	public void setDrugTradeOrBrandName(String drugTradeOrBrandName) {
+		this.drugTradeOrBrandName = drugTradeOrBrandName;
+	}
+
+	public Integer getDrugID() {
+		return drugID;
+	}
+
+	public void setDrugID(Integer drugID) {
+		this.drugID = drugID;
+	}
+
+	public String getDrugName() {
+		return drugName;
+	}
+
+	public void setDrugName(String drugName) {
+		this.drugName = drugName;
+	}
+
+	public String getDrugStrength() {
+		return drugStrength;
+	}
+
+	public void setDrugStrength(String drugStrength) {
+		this.drugStrength = drugStrength;
+	}
+
+	public String getDose() {
+		return dose;
+	}
+
+	public void setDose(String dose) {
+		this.dose = dose;
+	}
+
+	public String getRoute() {
+		return route;
+	}
+
+	public void setRoute(String route) {
+		this.route = route;
+	}
+
+	public String getFrequency() {
+		return frequency;
+	}
+
+	public void setFrequency(String frequency) {
+		this.frequency = frequency;
+	}
+
+	public String getDuration() {
+		return duration;
+	}
+
+	public void setDuration(String duration) {
+		this.duration = duration;
+	}
+
+	public String getUnit() {
+		return unit;
+	}
+
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+
+	public String getRelationToFood() {
+		return relationToFood;
+	}
+
+	public void setRelationToFood(String relationToFood) {
+		this.relationToFood = relationToFood;
+	}
+
+	public String getInstructions() {
+		return instructions;
+	}
+
+	public void setInstructions(String instructions) {
+		this.instructions = instructions;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public String getProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(String processed) {
+		this.processed = processed;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Timestamp getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Timestamp createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Timestamp getLastModDate() {
+		return lastModDate;
+	}
+
+	public void setLastModDate(Timestamp lastModDate) {
+		this.lastModDate = lastModDate;
+	}
+
+	public Long getVanSerialNo() {
+		return vanSerialNo;
+	}
+
+	public void setVanSerialNo(Long vanSerialNo) {
+		this.vanSerialNo = vanSerialNo;
+	}
+
+	public String getVehicalNo() {
+		return vehicalNo;
+	}
+
+	public void setVehicalNo(String vehicalNo) {
+		this.vehicalNo = vehicalNo;
+	}
+
+	public Integer getParkingPlaceID() {
+		return parkingPlaceID;
+	}
+
+	public void setParkingPlaceID(Integer parkingPlaceID) {
+		this.parkingPlaceID = parkingPlaceID;
+	}
+
+	public String getSyncedBy() {
+		return syncedBy;
+	}
+
+	public void setSyncedBy(String syncedBy) {
+		this.syncedBy = syncedBy;
+	}
+
+	public Timestamp getSyncedDate() {
+		return syncedDate;
+	}
+
+	public void setSyncedDate(Timestamp syncedDate) {
+		this.syncedDate = syncedDate;
+	}
+
+	public String getReservedForChange() {
+		return reservedForChange;
+	}
+
+	public void setReservedForChange(String reservedForChange) {
+		this.reservedForChange = reservedForChange;
+	}
+
+	public Integer getQtyPrescribed() {
+		return qtyPrescribed;
+	}
+
+	public void setQtyPrescribed(Integer qtyPrescribed) {
+		this.qtyPrescribed = qtyPrescribed;
 	}
 
 }

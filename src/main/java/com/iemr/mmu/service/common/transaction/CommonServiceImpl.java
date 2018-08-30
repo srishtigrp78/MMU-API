@@ -314,12 +314,11 @@ public class CommonServiceImpl implements CommonService {
 	 */
 	public String getBenPreviousVisitDataForCaseRecord(String comingRequest) throws IEMRException {
 		CommonUtilityClass obj = InputMapper.gson().fromJson(comingRequest, CommonUtilityClass.class);
-		List<Short> flagList = new ArrayList<>();
-		flagList.add((short) 9);
-		flagList.add((short) 3);
+		//List<Short> flagList = new ArrayList<>();
+		// flagList.add((short) 9);
+		// flagList.add((short) 3);
 
-		ArrayList<Object[]> resultList = beneficiaryFlowStatusRepo.getBenPreviousHistory(obj.getBeneficiaryRegID(),
-				flagList);
+		ArrayList<Object[]> resultList = beneficiaryFlowStatusRepo.getBenPreviousHistory(obj.getBeneficiaryRegID());
 
 		return new Gson().toJson(BeneficiaryFlowStatus.getBeneficiaryPastVisitHistory(resultList));
 	}

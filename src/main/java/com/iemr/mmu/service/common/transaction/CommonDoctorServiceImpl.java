@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -610,5 +611,18 @@ public class CommonDoctorServiceImpl {
 	}
 
 	/// ------End of beneficiary flow table after doctor data update-------------
+
+	public String deletePrescribedMedicine(JSONObject obj) {
+		int i = 0;
+		if (obj != null && obj.has("id")) {
+			i = prescribedDrugDetailRepo.deletePrescribedmedicine(obj.getLong("id"));
+		} else {
+
+		}
+		if (i > 0)
+			return "record deleted successfully";
+		else
+			return null;
+	}
 
 }

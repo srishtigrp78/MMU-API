@@ -578,7 +578,7 @@ public class ANCMasterDataServiceImpl {
 		ArrayList<Object[]> ddmList = drugDoseMasterRepo.getDrugDoseMaster();
 		ArrayList<Object[]> ddumList = drugDurationUnitMasterRepo.getDrugDurationUnitMaster();
 		ArrayList<Object[]> dfrmList = drugFrequencyMasterRepo.getDrugFrequencyMaster();
-		ArrayList<Object[]> roaList = routeOfAdminRepo.getRouteOfAdminList();
+		ArrayList<Object[]> roaList = routeOfAdminRepo.getRouteOfAdminList(psmID);
 
 		ArrayList<V_DrugPrescription> itemList = new ArrayList<>();
 		itemList = v_DrugPrescriptionRepo.getItemListForFacility(facilityID);

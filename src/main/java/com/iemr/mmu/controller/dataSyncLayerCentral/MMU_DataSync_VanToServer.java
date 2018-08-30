@@ -1,4 +1,4 @@
-package com.iemr.mmu.controller.dataSyncLayer;
+package com.iemr.mmu.controller.dataSyncLayerCentral;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,7 +1,6 @@
 package com.iemr.mmu.repo.benFlowStatus;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -89,7 +88,9 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	public ArrayList<BeneficiaryFlowStatus> getOncologistWorkListNew(
 			@Param("providerServiceMapId") Integer providerServiceMapId);
 
-	@Query("SELECT t from BeneficiaryFlowStatus t WHERE t.pharmacist_flag = 1 AND t.providerServiceMapId= :providerServiceMapId")
+	@Query("SELECT t from BeneficiaryFlowStatus t WHERE t.pharmacist_flag = 1 "
+			+ "  AND t.providerServiceMapId= :providerServiceMapId AND doctorFlag = 9 "
+			+ "  ORDER BY consultationDate DESC ")
 	public ArrayList<BeneficiaryFlowStatus> getPharmaWorkListNew(
 			@Param("providerServiceMapId") Integer providerServiceMapId);
 
@@ -113,9 +114,7 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	// beneficiary previous visit history
 	@Query("SELECT benFlowID, beneficiaryRegID, visitCode, "
 			+ " benVisitDate, benVisitNo, VisitReason, VisitCategory  from BeneficiaryFlowStatus "
-			+ "  WHERE beneficiaryRegID = :beneficiaryRegID AND nurseFlag IN :flagList "
-			+ " ORDER BY benVisitDate DESC ")
-	public ArrayList<Object[]> getBenPreviousHistory(@Param("beneficiaryRegID") Long beneficiaryRegID,
-			@Param("flagList") List<Short> flagList);
+			+ "  WHERE beneficiaryRegID = :beneficiaryRegID AND doctorFlag = 9 " + " ORDER BY benVisitDate DESC ")
+	public ArrayList<Object[]> getBenPreviousHistory(@Param("beneficiaryRegID") Long beneficiaryRegID);
 
 }

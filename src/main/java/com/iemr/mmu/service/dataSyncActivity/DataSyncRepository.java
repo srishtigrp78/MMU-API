@@ -17,16 +17,21 @@ public class DataSyncRepository {
 	@Autowired
 	private DataSource dataSource;
 
+	private JdbcTemplate jdbcTemplate;
+
 	@Autowired
 	private SyncUtilityClassRepo syncutilityClassRepo;
 
-	public List<Map<String, Object>> getDataForGivenSchemaAndTable(String schema, String table) {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		String baseQuery1 = " SELECT * FROM ";
-		String baseQuery2 = " WHERE processed != ? ";
+	private JdbcTemplate getJdbcTemplate() {
+		return new JdbcTemplate(dataSource);
 
-		String finalQuery = baseQuery1 + schema + "." + table + baseQuery2;
-		List<Map<String, Object>> resultSetList = jdbcTemplate.queryForList(finalQuery, "P");
+	}
+
+	public List<Map<String, Object>> getDataForGivenSchemaAndTable(String schema, String table, String columnNames) {
+		jdbcTemplate = getJdbcTemplate();
+		String baseQuery = " SELECT " + columnNames + " FROM " + schema + "." + table + " WHERE processed != ? ";
+
+		List<Map<String, Object>> resultSetList = jdbcTemplate.queryForList(baseQuery, "P");
 
 		return resultSetList;
 	}
@@ -36,4 +41,19 @@ public class DataSyncRepository {
 				.findBySyncTableDetailIDInOrderBySyncTableDetailID(syncTableDetailsIDs);
 		return syncUtilityClassList;
 	}
+
+	public int updateProcessedFlagInVan(String schemaName, String tableName, StringBuilder vanSerialNos,
+			String autoIncreamentColumn) {
+		jdbcTemplate = getJdbcTemplate();
+		String query = " UPDATE " + schemaName + "." + tableName
+				+ " SET processed = 'P' , SyncedDate = now(), Syncedby = 'Neeraj baba' WHERE " + autoIncreamentColumn
+				+ " IN (" + vanSerialNos + ")";
+		System.out.println("hello");
+
+		int i = jdbcTemplate.update(query);
+
+		return i;
+
+	}
+
 }

@@ -19,6 +19,9 @@ public class SyncUtilityClass {
 	@Column(name = "SyncTableDetailID")
 	private Integer syncTableDetailID;
 	@Expose
+	@Column(name = "SchemaName")
+	private String schemaName;
+	@Expose
 	@Column(name = "TableName")
 	private String tableName;
 	@Expose
@@ -30,6 +33,9 @@ public class SyncUtilityClass {
 	@Expose
 	@Column(name = "VanColumnName")
 	private String vanColumnName;
+	@Expose
+	@Column(name = "VanAutoIncColumnName")
+	private String vanAutoIncColumnName;
 	@Expose
 	@Column(name = "IsMaster")
 	private Boolean isMaster;
@@ -91,6 +97,22 @@ public class SyncUtilityClass {
 
 	public void setDeleted(Boolean deleted) {
 		this.deleted = deleted;
+	}
+
+	public String getSchemaName() {
+		return schemaName;
+	}
+
+	public void setSchemaName(String schemaName) {
+		this.schemaName = schemaName;
+	}
+
+	public String getVanAutoIncColumnName() {
+		return vanAutoIncColumnName;
+	}
+
+	public void setVanAutoIncColumnName(String vanAutoIncColumnName) {
+		this.vanAutoIncColumnName = vanAutoIncColumnName;
 	}
 
 }

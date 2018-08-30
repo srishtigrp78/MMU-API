@@ -11,6 +11,7 @@ public class CommonUtilityClass {
 	private Integer providerServiceMapID;
 	private Long benVisitID;
 	private Long visitCode;
+	private Integer facilityID;
 
 	public Long getBenFlowID() {
 		return benFlowID;
@@ -82,6 +83,14 @@ public class CommonUtilityClass {
 
 	public void setVisitCode(Long visitCode) {
 		this.visitCode = visitCode;
+	}
+
+	public Integer getFacilityID() {
+		return facilityID;
+	}
+
+	public void setFacilityID(Integer facilityID) {
+		this.facilityID = facilityID;
 	}
 
 }

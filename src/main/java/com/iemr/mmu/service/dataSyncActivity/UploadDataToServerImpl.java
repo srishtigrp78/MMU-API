@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +13,11 @@ import com.iemr.mmu.data.syncActivity_syncLayer.SyncUtilityClass;
 
 @Service
 public class UploadDataToServerImpl implements UploadDataToServer {
-
+	@Autowired
+	private DataSource dataSource;
 	@Autowired
 	private DataSyncRepository dataSyncRepository;
 
-	private static final String SCHEMA_IEMR = "db_iemr";
-	// private static final String SCHEMA_IDENTIRY = "db_identity";
 	private static final int BATCH_SIZE = 50;
 
 	public String getDataToSyncToServer(String groupName) {
@@ -75,15 +76,17 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 		syncTableDetailsIDs.add(1);
 		// Start data sync process for this group
 		String serverAcknowledgement = startDataSync(syncTableDetailsIDs);
-		System.out.println(serverAcknowledgement);
-		return null;
+
+		return serverAcknowledgement;
 	}
 
 	private String startDataSync(List<Integer> syncTableDetailsIDs) {
+		String serverAcknowledgement = null;
 		// fetch table-name, van-side-columns, server-side-columns
 		List<SyncUtilityClass> syncUtilityClassList = getVanAndServerColumns(syncTableDetailsIDs);
 		for (SyncUtilityClass obj : syncUtilityClassList) {
-			List<Map<String, Object>> syncData = getDataToSync(obj.getTableName());
+			List<Map<String, Object>> syncData = getDataToSync(obj.getSchemaName(), obj.getTableName(),
+					obj.getVanColumnName());
 			if (syncData != null && syncData.size() > 0) {
 				int dataSize = syncData.size();
 				int startIndex = 0;
@@ -93,22 +96,22 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 				for (int i = 0; i < fullBatchCount; i++) {
 					List<Map<String, Object>> syncDataBatch = getBatchOfAskedSizeDataToSync(syncData, startIndex,
 							BATCH_SIZE);
-					String serverAcknowledgement = syncDataToServer(SCHEMA_IEMR, obj.getTableName(),
+					serverAcknowledgement = syncDataToServer(obj.getSchemaName(), obj.getTableName(),
 							obj.getServerColumnName(), syncDataBatch);
 					startIndex += BATCH_SIZE;
-					System.out.println(serverAcknowledgement);
 				}
 				if (remainder > 0) {
 					List<Map<String, Object>> syncDataBatch = getBatchOfAskedSizeDataToSync(syncData, startIndex,
 							remainder);
-					String serverAcknowledgement = syncDataToServer(SCHEMA_IEMR, obj.getTableName(),
+					serverAcknowledgement = syncDataToServer(obj.getSchemaName(), obj.getTableName(),
 							obj.getServerColumnName(), syncDataBatch);
-					System.out.println(serverAcknowledgement);
 				}
 
+			} else {
+				// nothing to sync
 			}
 		}
-		return null;
+		return serverAcknowledgement;
 	}
 
 	private List<SyncUtilityClass> getVanAndServerColumns(List<Integer> syncTableDetailsIDs) {
@@ -116,9 +119,9 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 		return syncUtilityClassList;
 	}
 
-	private List<Map<String, Object>> getDataToSync(String tableName) {
-		List<Map<String, Object>> resultSetList = dataSyncRepository.getDataForGivenSchemaAndTable(SCHEMA_IEMR,
-				tableName);
+	private List<Map<String, Object>> getDataToSync(String schemaName, String tableName, String columnNames) {
+		List<Map<String, Object>> resultSetList = dataSyncRepository.getDataForGivenSchemaAndTable(schemaName,
+				tableName, columnNames);
 		return resultSetList;
 	}
 
@@ -130,7 +133,6 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 
 	private String syncDataToServer(String schemaName, String tableName, String serverColumns,
 			List<Map<String, Object>> dataToBesync) {
-		System.out.println("kamariya karela baloop LOLLYPOP lagelu ........");
 		return null;
 	}
 

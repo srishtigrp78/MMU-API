@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
@@ -25,15 +26,16 @@ public class UpdateCommonController {
 	private Logger logger = LoggerFactory.getLogger(UpdateCommonController.class);
 	private InputMapper inputMapper = new InputMapper();
 	private CommonNurseServiceImpl commonNurseServiceImpl;
+	@Autowired
+	private CommonDoctorServiceImpl commonDoctorServiceImpl;
 
 	@Autowired
 	public void setCommonNurseServiceImpl(CommonNurseServiceImpl commonNurseServiceImpl) {
 		this.commonNurseServiceImpl = commonNurseServiceImpl;
 	}
 
-	
-	//this functionality are moved to registrar update controller.
-	//16-04-2018,  Neeraj kumar
+	// this functionality are moved to registrar update controller.
+	// 16-04-2018, Neeraj kumar
 	@CrossOrigin
 	@ApiOperation(value = "update Beneficiary Status Flag", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/benDetailsAndSubmitToNurse" }, method = { RequestMethod.POST })
@@ -80,6 +82,29 @@ public class UpdateCommonController {
 			response.setResponse("Session extended for 30 mins");
 		} catch (Exception e) {
 			logger.error("Error while extending running session");
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin
+	@ApiOperation(value = "Soft delete prescribed medicine", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/doctor/delete/prescribedMedicine" }, method = { RequestMethod.POST })
+	public String deletePrescribedMedicine(@RequestBody String requestOBJ) {
+		OutputResponse response = new OutputResponse();
+		try {
+			if (requestOBJ != null) {
+				JSONObject obj = new JSONObject(requestOBJ);
+				String s = commonDoctorServiceImpl.deletePrescribedMedicine(obj);
+				if (s != null)
+					response.setResponse(s);
+				else
+					response.setError(5000, "error while deleting record");
+			} else {
+
+			}
+		} catch (Exception e) {
+			logger.error("Error while deleting prescribed medicine");
+			response.setError(e);
 		}
 		return response.toString();
 	}

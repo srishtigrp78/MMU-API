@@ -159,6 +159,7 @@ public class OutputResponse {
 		// Gson gson = OutputMapper.gson();
 		GsonBuilder builder = new GsonBuilder();
 		builder.excludeFieldsWithoutExposeAnnotation();
+		// builder.serializeNulls();
 		// builder.disableInnerClassSerialization();
 		return builder.create().toJson(this);
 		// JSONObject response = new JSONObject();

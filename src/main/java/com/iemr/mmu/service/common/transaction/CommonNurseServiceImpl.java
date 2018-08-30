@@ -2318,6 +2318,14 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		Integer r = 0;
 
 		if (prescribedDrugDetailList.size() > 0) {
+			for (PrescribedDrugDetail obj : prescribedDrugDetailList) {
+				if (obj.getFormName().equalsIgnoreCase("Tablet") || obj.getFormName().equalsIgnoreCase("Capsule")) {
+					int qtyPrescribed = calculateQtyPrescribed(obj.getFormName(), obj.getDose(), obj.getFrequency(),
+							obj.getDuration(), obj.getUnit());
+
+					obj.setQtyPrescribed(qtyPrescribed);
+				}
+			}
 			List<PrescribedDrugDetail> prescribedDrugDetailListRS = (List<PrescribedDrugDetail>) prescribedDrugDetailRepo
 					.save(prescribedDrugDetailList);
 			if (prescribedDrugDetailList.size() == prescribedDrugDetailListRS.size()) {
@@ -2327,6 +2335,210 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			r = 1;
 		}
 		return r;
+	}
+
+	private int calculateQtyPrescribed(String form, String dose, String frequency, String duration,
+			String durationUnit) {
+		int qtyPrescribed = 0;
+
+		if (form != null && dose != null && frequency != null && duration != null && durationUnit != null) {
+			double qtyInOneDay = getQtyForOneDay(form, dose, frequency);
+
+			if (frequency.equalsIgnoreCase("Single Dose") || frequency.equalsIgnoreCase("Stat Dose")) {
+				qtyPrescribed = (int) Math.ceil(qtyInOneDay);
+			} else {
+				if (durationUnit.equalsIgnoreCase("Day(s)"))
+					qtyPrescribed = (int) Math.ceil(Integer.parseInt(duration) * qtyInOneDay);
+				else if (durationUnit.equalsIgnoreCase("Week(s)"))
+					qtyPrescribed = (int) Math.ceil(Integer.parseInt(duration) * 7 * qtyInOneDay);
+				else if (durationUnit.equalsIgnoreCase("Month(s)"))
+					qtyPrescribed = (int) Math.ceil(Integer.parseInt(duration) * 30 * qtyInOneDay);
+			}
+		}
+
+		return qtyPrescribed;
+
+	}
+
+	private double getQtyForOneDay(String form, String dose, String frequency) {
+		double qtyInOneDay = 0;
+		if (form != null && dose != null && frequency != null) {
+			if (frequency.equalsIgnoreCase("Once Daily (OD)")) {
+				if (form.equalsIgnoreCase("Tablet")) {
+					if (dose.equalsIgnoreCase("Half Tab")) {
+						qtyInOneDay = .5;
+					} else {
+						if (dose.equalsIgnoreCase("One Tab")) {
+							qtyInOneDay = 1;
+						} else {
+							if (dose.equalsIgnoreCase("One & Half Tab")) {
+								qtyInOneDay = 1.5;
+							} else {
+								if (dose.equalsIgnoreCase("Two Tabs")) {
+									qtyInOneDay = 2;
+								}
+							}
+						}
+
+					}
+				} else {
+					if (form.equalsIgnoreCase("Capsule")) {
+						qtyInOneDay = 1;
+					}
+				}
+			} else {
+				if (frequency.equalsIgnoreCase("Twice Daily (BD)")) {
+					if (form.equalsIgnoreCase("Tablet")) {
+						if (dose.equalsIgnoreCase("Half Tab")) {
+							qtyInOneDay = 1;
+						} else {
+							if (dose.equalsIgnoreCase("One Tab")) {
+								qtyInOneDay = 2;
+							} else {
+								if (dose.equalsIgnoreCase("One & Half Tab")) {
+									qtyInOneDay = 3;
+								} else {
+									if (dose.equalsIgnoreCase("Two Tabs")) {
+										qtyInOneDay = 4;
+									}
+								}
+							}
+
+						}
+					} else {
+						if (form.equalsIgnoreCase("Capsule")) {
+							qtyInOneDay = 2;
+						}
+					}
+				} else {
+					if (frequency.equalsIgnoreCase("Thrice Daily (TID)")) {
+						if (form.equalsIgnoreCase("Tablet")) {
+							if (dose.equalsIgnoreCase("Half Tab")) {
+								qtyInOneDay = 1.5;
+							} else {
+								if (dose.equalsIgnoreCase("One Tab")) {
+									qtyInOneDay = 3;
+								} else {
+									if (dose.equalsIgnoreCase("One & Half Tab")) {
+										qtyInOneDay = 4.5;
+									} else {
+										if (dose.equalsIgnoreCase("Two Tabs")) {
+											qtyInOneDay = 6;
+										}
+									}
+								}
+
+							}
+						} else {
+							if (form.equalsIgnoreCase("Capsule")) {
+								qtyInOneDay = 3;
+							}
+						}
+					} else {
+						if (frequency.equalsIgnoreCase("Four Times in a Day (QID)")) {
+							if (form.equalsIgnoreCase("Tablet")) {
+								if (dose.equalsIgnoreCase("Half Tab")) {
+									qtyInOneDay = 2;
+								} else {
+									if (dose.equalsIgnoreCase("One Tab")) {
+										qtyInOneDay = 4;
+									} else {
+										if (dose.equalsIgnoreCase("One & Half Tab")) {
+											qtyInOneDay = 6;
+										} else {
+											if (dose.equalsIgnoreCase("Two Tabs")) {
+												qtyInOneDay = 8;
+											}
+										}
+									}
+
+								}
+							} else {
+								if (form.equalsIgnoreCase("Capsule")) {
+									qtyInOneDay = 4;
+								}
+							}
+						} else {
+							if (frequency.equalsIgnoreCase("Single Dose") || frequency.equalsIgnoreCase("Stat Dose")) {
+								if (form.equalsIgnoreCase("Tablet")) {
+									if (dose.equalsIgnoreCase("Half Tab")) {
+										qtyInOneDay = .5;
+									} else {
+										if (dose.equalsIgnoreCase("One Tab")) {
+											qtyInOneDay = 1;
+										} else {
+											if (dose.equalsIgnoreCase("One & Half Tab")) {
+												qtyInOneDay = 1.5;
+											} else {
+												if (dose.equalsIgnoreCase("Two Tabs")) {
+													qtyInOneDay = 2;
+												}
+											}
+										}
+
+									}
+								} else {
+									if (form.equalsIgnoreCase("Capsule")) {
+										qtyInOneDay = 1;
+									}
+								}
+							} else {
+								if (frequency.equalsIgnoreCase("Once in a Week")) {
+									if (form.equalsIgnoreCase("Tablet")) {
+										if (dose.equalsIgnoreCase("Half Tab")) {
+											qtyInOneDay = .072;
+										} else {
+											if (dose.equalsIgnoreCase("One Tab")) {
+												qtyInOneDay = .15;
+											} else {
+												if (dose.equalsIgnoreCase("One & Half Tab")) {
+													qtyInOneDay = .222;
+												} else {
+													if (dose.equalsIgnoreCase("Two Tabs")) {
+														qtyInOneDay = .30;
+													}
+												}
+											}
+
+										}
+									} else {
+										if (form.equalsIgnoreCase("Capsule")) {
+											qtyInOneDay = .15;
+										}
+									}
+								} else {
+									if (frequency.equalsIgnoreCase("SOS")) {
+										if (form.equalsIgnoreCase("Tablet")) {
+											if (dose.equalsIgnoreCase("Half Tab")) {
+												qtyInOneDay = .5;
+											} else {
+												if (dose.equalsIgnoreCase("One Tab")) {
+													qtyInOneDay = 1;
+												} else {
+													if (dose.equalsIgnoreCase("One & Half Tab")) {
+														qtyInOneDay = 1.5;
+													} else {
+														if (dose.equalsIgnoreCase("Two Tabs")) {
+															qtyInOneDay = 2;
+														}
+													}
+												}
+
+											}
+										} else {
+											if (form.equalsIgnoreCase("Capsule")) {
+												qtyInOneDay = 1;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return qtyInOneDay;
 	}
 
 	public int saveBenInvestigationDetails(WrapperBenInvestigationANC wrapperBenInvestigationANC) {
