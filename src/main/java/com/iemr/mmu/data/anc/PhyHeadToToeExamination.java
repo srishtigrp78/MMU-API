@@ -13,7 +13,7 @@ import com.google.gson.annotations.Expose;
 @Entity
 @Table(name = "t_Phy_HeadToToe")
 public class PhyHeadToToeExamination {
-	
+
 	@Id
 	@GeneratedValue
 	@Expose
@@ -27,15 +27,15 @@ public class PhyHeadToToeExamination {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
-	
+
 	@Expose
 	@Column(name = "HeadtoToeExam")
 	private String headtoToeExam;
@@ -91,7 +91,7 @@ public class PhyHeadToToeExamination {
 	@Expose
 	@Column(name = "Nails")
 	private String nails;
-	
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -119,27 +119,31 @@ public class PhyHeadToToeExamination {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
+	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
@@ -387,5 +391,5 @@ public class PhyHeadToToeExamination {
 	public void setVisitCode(Long visitCode) {
 		this.visitCode = visitCode;
 	}
-	
+
 }

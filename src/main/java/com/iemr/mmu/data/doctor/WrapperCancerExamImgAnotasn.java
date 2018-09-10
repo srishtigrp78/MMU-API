@@ -12,6 +12,9 @@ public class WrapperCancerExamImgAnotasn {
 	private ArrayList<Map<String, Object>> markers;
 	private String createdBy;
 
+	private Integer vanID;
+	private Integer parkingPlaceID;
+
 	public WrapperCancerExamImgAnotasn() {
 	}
 
@@ -26,7 +29,22 @@ public class WrapperCancerExamImgAnotasn {
 		this.createdBy = createdBy;
 	}
 
-	
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
+	public Integer getParkingPlaceID() {
+		return parkingPlaceID;
+	}
+
+	public void setParkingPlaceID(Integer parkingPlaceID) {
+		this.parkingPlaceID = parkingPlaceID;
+	}
+
 	public Long getVisitCode() {
 		return visitCode;
 	}

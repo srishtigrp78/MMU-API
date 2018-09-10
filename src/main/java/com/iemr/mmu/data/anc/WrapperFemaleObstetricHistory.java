@@ -8,10 +8,28 @@ public class WrapperFemaleObstetricHistory {
 	private Long benVisitID;
 	private Long visitCode;
 	private Integer providerServiceMapID;
+	private Integer vanID;
+	private Integer parkingPlaceID;
 	private String createdBy;
 	private Short totalNoOfPreg;
 
 	private ArrayList<FemaleObstetricHistory> femaleObstetricHistoryList;
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
+	public Integer getParkingPlaceID() {
+		return parkingPlaceID;
+	}
+
+	public void setParkingPlaceID(Integer parkingPlaceID) {
+		this.parkingPlaceID = parkingPlaceID;
+	}
 
 	public ArrayList<FemaleObstetricHistory> getFemaleObstetricHistoryList() {
 		return femaleObstetricHistoryList;
@@ -29,6 +47,8 @@ public class WrapperFemaleObstetricHistory {
 				femaleObstetricHistory.setBenVisitID(benVisitID);
 				femaleObstetricHistory.setVisitCode(visitCode);
 				femaleObstetricHistory.setProviderServiceMapID(providerServiceMapID);
+				femaleObstetricHistory.setVanID(vanID);
+				femaleObstetricHistory.setParkingPlaceID(parkingPlaceID);
 				femaleObstetricHistory.setCreatedBy(createdBy);
 				femaleObstetricHistory.setTotalNoOfPreg(totalNoOfPreg);
 
@@ -40,6 +60,8 @@ public class WrapperFemaleObstetricHistory {
 				tmpOBJ.setBenVisitID(benVisitID);
 				tmpOBJ.setVisitCode(visitCode);
 				tmpOBJ.setProviderServiceMapID(providerServiceMapID);
+				tmpOBJ.setVanID(vanID);
+				tmpOBJ.setParkingPlaceID(parkingPlaceID);
 				tmpOBJ.setCreatedBy(createdBy);
 				tmpOBJ.setTotalNoOfPreg(totalNoOfPreg);
 				femaleObstetricHistoryList = new ArrayList<FemaleObstetricHistory>();
@@ -92,8 +114,6 @@ public class WrapperFemaleObstetricHistory {
 	public void setBenVisitID(Long benVisitID) {
 		this.benVisitID = benVisitID;
 	}
-	
-	
 
 	public Long getVisitCode() {
 		return visitCode;

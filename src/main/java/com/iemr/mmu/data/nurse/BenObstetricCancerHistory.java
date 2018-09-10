@@ -26,25 +26,25 @@ public class BenObstetricCancerHistory {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
-	
+
 	@Expose
 	@Column(name = "PregnancyStatus")
 	private String pregnancyStatus;
 	@Expose
 	@Column(name = "IsUrinePregTest")
 	private Boolean isUrinePregTest;
-	
+
 	@Transient
 	private String IsUrinePregTest;
-	
+
 	@Expose
 	@Column(name = "Pregnant_No")
 	private String pregnant_No;
@@ -54,34 +54,34 @@ public class BenObstetricCancerHistory {
 	@Expose
 	@Column(name = "IsAbortion")
 	private Boolean isAbortion;
-	
+
 	@Transient
 	private String IsAbortion;
-	
+
 	@Expose
 	@Column(name = "IsOralContraceptiveUsed")
 	private Boolean isOralContraceptiveUsed;
-	
+
 	@Transient
 	private String IsOralContraceptiveUsed;
-	
+
 	@Expose
 	@Column(name = "IsHormoneReplacementTherapy")
 	private Boolean isHormoneReplacementTherapy;
-	
+
 	@Transient
 	private String IsHormoneReplacementTherapy;
-	
+
 	@Expose
 	@Column(name = "Menarche_Age")
 	private Integer menarche_Age;
 	@Expose
 	@Column(name = "IsMenstrualCycleRegular")
 	private Boolean isMenstrualCycleRegular;
-	
+
 	@Transient
 	private String IsMenstrualCycleRegular;
-	
+
 	@Expose
 	@Column(name = "MenstrualCycleLength")
 	private Integer menstrualCycleLength;
@@ -94,35 +94,34 @@ public class BenObstetricCancerHistory {
 	@Expose
 	@Column(name = "IsDysmenorrhea")
 	private Boolean isDysmenorrhea;
-	
+
 	@Transient
 	private String IsDysmenorrhea;
-	
+
 	@Expose
 	@Column(name = "IsInterMenstrualBleeding")
 	private Boolean isInterMenstrualBleeding;
-	
+
 	@Transient
 	private String IsInterMenstrualBleeding;
-	
+
 	@Expose
 	@Column(name = "MenopauseAge")
 	private Integer menopauseAge;
 	@Expose
 	@Column(name = "IsPostMenopauseBleeding")
 	private Boolean isPostMenopauseBleeding;
-	
+
 	@Transient
 	private String IsPostMenopauseBleeding;
-	
-	
+
 	@Expose
 	@Column(name = "isFoulSmellingDischarge")
 	private Boolean isFoulSmellingDischarge;
-	
+
 	@Transient
 	private String IsFoulSmellingDischarge;
-	
+
 	@Expose
 	@Column(name = "Deleted", insertable = false)
 	private Boolean deleted;
@@ -141,31 +140,35 @@ public class BenObstetricCancerHistory {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
-	
+
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
+	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	@Transient
 	private Date captureDate;
 
@@ -180,59 +183,59 @@ public class BenObstetricCancerHistory {
 			Boolean isPostMenopauseBleeding, Boolean isFoulSmellingDischarge, Date captureDate) {
 
 		this.pregnancyStatus = pregnancyStatus;
-		
-		if(null != isUrinePregTest && isUrinePregTest)
+
+		if (null != isUrinePregTest && isUrinePregTest)
 			this.IsUrinePregTest = "Yes";
 		else
 			this.IsUrinePregTest = "No";
-		
+
 		this.pregnant_No = pregnant_No;
 		this.noOfLivingChild = noOfLivingChild;
-		
-		if(null != isAbortion && isAbortion)
+
+		if (null != isAbortion && isAbortion)
 			this.IsAbortion = "Yes";
 		else
 			this.IsAbortion = "No";
-		
-		if(null != isOralContraceptiveUsed && isOralContraceptiveUsed)
+
+		if (null != isOralContraceptiveUsed && isOralContraceptiveUsed)
 			this.IsOralContraceptiveUsed = "Yes";
 		else
 			this.IsOralContraceptiveUsed = "No";
-		
-		if(null != isHormoneReplacementTherapy && isHormoneReplacementTherapy)
+
+		if (null != isHormoneReplacementTherapy && isHormoneReplacementTherapy)
 			this.IsHormoneReplacementTherapy = "Yes";
 		else
 			this.IsHormoneReplacementTherapy = "No";
-		
+
 		this.menarche_Age = menarche_Age;
-		
-		if(null != isMenstrualCycleRegular && isMenstrualCycleRegular)
+
+		if (null != isMenstrualCycleRegular && isMenstrualCycleRegular)
 			this.IsMenstrualCycleRegular = "Yes";
 		else
 			this.IsMenstrualCycleRegular = "No";
-		
+
 		this.menstrualCycleLength = menstrualCycleLength;
 		this.menstrualFlowDuration = menstrualFlowDuration;
 		this.menstrualFlowType = menstrualFlowType;
-		
-		if(null != isDysmenorrhea && isDysmenorrhea)
+
+		if (null != isDysmenorrhea && isDysmenorrhea)
 			this.IsDysmenorrhea = "Yes";
 		else
 			this.IsDysmenorrhea = "No";
-		
-		if(null != isInterMenstrualBleeding && isInterMenstrualBleeding)
+
+		if (null != isInterMenstrualBleeding && isInterMenstrualBleeding)
 			this.IsInterMenstrualBleeding = "Yes";
 		else
 			this.IsInterMenstrualBleeding = "No";
-		
+
 		this.menopauseAge = menopauseAge;
-		
-		if(null != isPostMenopauseBleeding && isPostMenopauseBleeding)
+
+		if (null != isPostMenopauseBleeding && isPostMenopauseBleeding)
 			this.IsPostMenopauseBleeding = "Yes";
 		else
 			this.IsPostMenopauseBleeding = "No";
-		
-		if(null != isFoulSmellingDischarge && isFoulSmellingDischarge)
+
+		if (null != isFoulSmellingDischarge && isFoulSmellingDischarge)
 			this.IsFoulSmellingDischarge = "Yes";
 		else
 			this.IsFoulSmellingDischarge = "No";
@@ -246,8 +249,8 @@ public class BenObstetricCancerHistory {
 			Integer menarche_Age, Boolean isMenstrualCycleRegular, Integer menstrualCycleLength,
 			Integer menstrualFlowDuration, String menstrualFlowType, Boolean isDysmenorrhea,
 			Boolean isInterMenstrualBleeding, Integer menopauseAge, Boolean isPostMenopauseBleeding,
-			Boolean isFoulSmellingDischarge, Boolean deleted, String processed, String createdBy,
-			Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
+			Boolean isFoulSmellingDischarge, Boolean deleted, String processed, String createdBy, Timestamp createdDate,
+			String modifiedBy, Timestamp lastModDate) {
 		super();
 		this.ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -276,6 +279,58 @@ public class BenObstetricCancerHistory {
 		this.createdDate = createdDate;
 		this.modifiedBy = modifiedBy;
 		this.lastModDate = lastModDate;
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
+	public Date getCaptureDate() {
+		return captureDate;
+	}
+
+	public void setCaptureDate(Date captureDate) {
+		this.captureDate = captureDate;
+	}
+
+	public void setIsUrinePregTest(String isUrinePregTest) {
+		IsUrinePregTest = isUrinePregTest;
+	}
+
+	public void setIsAbortion(String isAbortion) {
+		IsAbortion = isAbortion;
+	}
+
+	public void setIsOralContraceptiveUsed(String isOralContraceptiveUsed) {
+		IsOralContraceptiveUsed = isOralContraceptiveUsed;
+	}
+
+	public void setIsHormoneReplacementTherapy(String isHormoneReplacementTherapy) {
+		IsHormoneReplacementTherapy = isHormoneReplacementTherapy;
+	}
+
+	public void setIsMenstrualCycleRegular(String isMenstrualCycleRegular) {
+		IsMenstrualCycleRegular = isMenstrualCycleRegular;
+	}
+
+	public void setIsDysmenorrhea(String isDysmenorrhea) {
+		IsDysmenorrhea = isDysmenorrhea;
+	}
+
+	public void setIsInterMenstrualBleeding(String isInterMenstrualBleeding) {
+		IsInterMenstrualBleeding = isInterMenstrualBleeding;
+	}
+
+	public void setIsPostMenopauseBleeding(String isPostMenopauseBleeding) {
+		IsPostMenopauseBleeding = isPostMenopauseBleeding;
+	}
+
+	public void setIsFoulSmellingDischarge(String isFoulSmellingDischarge) {
+		IsFoulSmellingDischarge = isFoulSmellingDischarge;
 	}
 
 	public Long getID() {

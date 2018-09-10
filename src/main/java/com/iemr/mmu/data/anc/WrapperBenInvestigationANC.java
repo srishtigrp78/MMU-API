@@ -2,7 +2,6 @@ package com.iemr.mmu.data.anc;
 
 import java.util.ArrayList;
 
-import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
 
 public class WrapperBenInvestigationANC {
@@ -13,6 +12,9 @@ public class WrapperBenInvestigationANC {
 	private Long prescriptionID;
 	private String externalInvestigations;
 	private String createdBy;
+
+	private Integer vanID;
+	private Integer parkingPlaceID;
 
 	private ArrayList<LabTestOrderDetail> laboratoryList;
 
@@ -45,7 +47,6 @@ public class WrapperBenInvestigationANC {
 	public void setBenVisitID(Long benVisitID) {
 		this.benVisitID = benVisitID;
 	}
-		
 
 	public Long getVisitCode() {
 		return visitCode;
@@ -94,18 +95,35 @@ public class WrapperBenInvestigationANC {
 	public void setExternalInvestigations(String externalInvestigations) {
 		this.externalInvestigations = externalInvestigations;
 	}
-	
-	/*public static WrapperBenInvestigationANC getInvestigations(ArrayList<Object[]> investigationList) {
-		WrapperBenInvestigationANC cOBJ = null;
-		
-		WrapperBenInvestigationANC  labTestOrdersList = LabTestOrderDetail.getLabTestOrderDetails(investigationList);
-		if(null != labTestOrdersList && labTestOrdersList.size()>0){
-			for (LabTestOrderDetail order : labTestOrdersList) {
-				
-						
-			}
-		}
-		return cOBJ;
-	}*/
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
+	public Integer getParkingPlaceID() {
+		return parkingPlaceID;
+	}
+
+	public void setParkingPlaceID(Integer parkingPlaceID) {
+		this.parkingPlaceID = parkingPlaceID;
+	}
+
+	/*
+	 * public static WrapperBenInvestigationANC
+	 * getInvestigations(ArrayList<Object[]> investigationList) {
+	 * WrapperBenInvestigationANC cOBJ = null;
+	 * 
+	 * WrapperBenInvestigationANC labTestOrdersList =
+	 * LabTestOrderDetail.getLabTestOrderDetails(investigationList); if(null !=
+	 * labTestOrdersList && labTestOrdersList.size()>0){ for (LabTestOrderDetail
+	 * order : labTestOrdersList) {
+	 * 
+	 * 
+	 * } } return cOBJ; }
+	 */
 
 }

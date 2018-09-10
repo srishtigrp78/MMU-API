@@ -2225,7 +2225,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	}
 
 	public Long savePrescriptionDetailsAndGetPrescriptionID(Long benRegID, Long benVisitID, Integer psmID,
-			String createdBy, String externalInvestigation, Long benVisitCode) {
+			String createdBy, String externalInvestigation, Long benVisitCode, Integer vanID, Integer parkingPlaceID) {
 		PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
 		prescriptionDetail.setBeneficiaryRegID(benRegID);
 		prescriptionDetail.setBenVisitID(benVisitID);
@@ -2233,6 +2233,8 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		prescriptionDetail.setProviderServiceMapID(psmID);
 		prescriptionDetail.setCreatedBy(createdBy);
 		prescriptionDetail.setExternalInvestigation(externalInvestigation);
+		prescriptionDetail.setVanID(vanID);
+		prescriptionDetail.setParkingPlaceID(parkingPlaceID);
 
 		Long prescriptionID = saveBenPrescription(prescriptionDetail);
 		return prescriptionID;
@@ -2363,7 +2365,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	private double getQtyForOneDay(String form, String dose, String frequency) {
 		double qtyInOneDay = 0;
 		if (form != null && dose != null && frequency != null) {
-			if (frequency.equalsIgnoreCase("Once Daily (OD)")) {
+			if (frequency.equalsIgnoreCase("Once Daily(OD)")) {
 				if (form.equalsIgnoreCase("Tablet")) {
 					if (dose.equalsIgnoreCase("Half Tab")) {
 						qtyInOneDay = .5;
@@ -2387,7 +2389,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					}
 				}
 			} else {
-				if (frequency.equalsIgnoreCase("Twice Daily (BD)")) {
+				if (frequency.equalsIgnoreCase("Twice Daily(BD)")) {
 					if (form.equalsIgnoreCase("Tablet")) {
 						if (dose.equalsIgnoreCase("Half Tab")) {
 							qtyInOneDay = 1;
@@ -2548,7 +2550,8 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			Long prescriptionID = savePrescriptionDetailsAndGetPrescriptionID(
 					wrapperBenInvestigationANC.getBeneficiaryRegID(), wrapperBenInvestigationANC.getBenVisitID(),
 					wrapperBenInvestigationANC.getProviderServiceMapID(), wrapperBenInvestigationANC.getCreatedBy(),
-					wrapperBenInvestigationANC.getExternalInvestigations(), wrapperBenInvestigationANC.getVisitCode());
+					wrapperBenInvestigationANC.getExternalInvestigations(), wrapperBenInvestigationANC.getVisitCode(),
+					wrapperBenInvestigationANC.getVanID(), wrapperBenInvestigationANC.getParkingPlaceID());
 
 			wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
 			investigationSuccessFlag = saveBenInvestigation(wrapperBenInvestigationANC);
@@ -2579,6 +2582,8 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 				testData.setVisitCode(wrapperBenInvestigationANC.getVisitCode());
 				testData.setProviderServiceMapID(wrapperBenInvestigationANC.getProviderServiceMapID());
 				testData.setCreatedBy(wrapperBenInvestigationANC.getCreatedBy());
+				testData.setVanID(wrapperBenInvestigationANC.getVanID());
+				testData.setParkingPlaceID(wrapperBenInvestigationANC.getParkingPlaceID());
 
 				LabTestOrderDetailList.add(testData);
 			}

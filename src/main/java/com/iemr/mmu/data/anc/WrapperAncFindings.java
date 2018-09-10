@@ -30,6 +30,9 @@ public class WrapperAncFindings {
 	// private ArrayList<BenChiefComplaint> chiefComplaints;
 	private Boolean isForHistory;
 
+	private Integer vanID;
+	private Integer parkingPlaceID;
+
 	public WrapperAncFindings(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, String createdBy,
 			String clinicalObservation, String otherSymptoms, String significantFindings,
 			ArrayList<BenChiefComplaint> complaints) {
@@ -42,6 +45,22 @@ public class WrapperAncFindings {
 		this.otherSymptoms = otherSymptoms;
 		this.significantFindings = significantFindings;
 		this.complaints = complaints;
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
+	public Integer getParkingPlaceID() {
+		return parkingPlaceID;
+	}
+
+	public void setParkingPlaceID(Integer parkingPlaceID) {
+		this.parkingPlaceID = parkingPlaceID;
 	}
 
 	public String getOtherSymptomsSCTCode() {

@@ -1,6 +1,5 @@
 package com.iemr.mmu.data.doctor;
 
-import java.sql.Blob;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -9,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
 
 @Entity
@@ -32,7 +30,7 @@ public class CancerAbdominalExamination {
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
@@ -85,9 +83,11 @@ public class CancerAbdominalExamination {
 	@Column(name = "Observation")
 	private String observation;
 
-	/*@JsonIgnore
-	@Column(name = "Image")
-	private Blob image;*/
+	/*
+	 * @JsonIgnore
+	 * 
+	 * @Column(name = "Image") private Blob image;
+	 */
 
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -116,27 +116,31 @@ public class CancerAbdominalExamination {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
+	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	public CancerAbdominalExamination() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -146,9 +150,8 @@ public class CancerAbdominalExamination {
 			Boolean abdominalInspection_Normal, String liver, Boolean ascites_Present, Boolean anyOtherMass_Present,
 			Boolean lymphNodes_Enlarged, Boolean lymphNode_Inguinal_Left, Boolean lymphNode_Inguinal_Right,
 			Boolean lymphNode_ExternalIliac_Left, Boolean lymphNode_ExternalIliac_Right,
-			Boolean lymphNode_ParaAortic_Left, Boolean lymphNode_ParaAortic_Right, String observation,
-			Boolean deleted, String processed, String createdBy, Timestamp createdDate, String modifiedBy,
-			Timestamp lastModDate) {
+			Boolean lymphNode_ParaAortic_Left, Boolean lymphNode_ParaAortic_Right, String observation, Boolean deleted,
+			String processed, String createdBy, Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -166,13 +169,21 @@ public class CancerAbdominalExamination {
 		this.lymphNode_ParaAortic_Left = lymphNode_ParaAortic_Left;
 		this.lymphNode_ParaAortic_Right = lymphNode_ParaAortic_Right;
 		this.observation = observation;
-		//this.image = image;
+		// this.image = image;
 		this.deleted = deleted;
 		this.processed = processed;
 		this.createdBy = createdBy;
 		this.createdDate = createdDate;
 		this.modifiedBy = modifiedBy;
 		this.lastModDate = lastModDate;
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
 	}
 
 	public Long getID() {
@@ -303,13 +314,11 @@ public class CancerAbdominalExamination {
 		this.observation = observation;
 	}
 
-	/*public Blob getImage() {
-		return image;
-	}
-
-	public void setImage(Blob image) {
-		this.image = image;
-	}*/
+	/*
+	 * public Blob getImage() { return image; }
+	 * 
+	 * public void setImage(Blob image) { this.image = image; }
+	 */
 
 	public Boolean getDeleted() {
 		return deleted;

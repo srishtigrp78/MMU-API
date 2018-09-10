@@ -38,7 +38,7 @@ public class BenPersonalHabit {
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
@@ -156,6 +156,10 @@ public class BenPersonalHabit {
 	private String vehicalNo;
 
 	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+
+	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
 
@@ -182,6 +186,46 @@ public class BenPersonalHabit {
 
 	@Transient
 	private String riskySexualPracticeStatus;
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
+	public Date getCaptureDate() {
+		return captureDate;
+	}
+
+	public void setCaptureDate(Date captureDate) {
+		this.captureDate = captureDate;
+	}
+
+	public Date getTobacco_use_duration() {
+		return tobacco_use_duration;
+	}
+
+	public void setTobacco_use_duration(Date tobacco_use_duration) {
+		this.tobacco_use_duration = tobacco_use_duration;
+	}
+
+	public Date getAlcohol_use_duration() {
+		return alcohol_use_duration;
+	}
+
+	public void setAlcohol_use_duration(Date alcohol_use_duration) {
+		this.alcohol_use_duration = alcohol_use_duration;
+	}
+
+	public String getRiskySexualPracticeStatus() {
+		return riskySexualPracticeStatus;
+	}
+
+	public void setRiskySexualPracticeStatus(String riskySexualPracticeStatus) {
+		this.riskySexualPracticeStatus = riskySexualPracticeStatus;
+	}
 
 	public String getAllergyStatus() {
 		return allergyStatus;
@@ -492,6 +536,8 @@ public class BenPersonalHabit {
 				benPersonalHabit.setBenVisitID(benVisitID);
 				benPersonalHabit.setVisitCode(visitCode);
 				benPersonalHabit.setProviderServiceMapID(providerServiceMapID);
+				benPersonalHabit.setVanID(vanID);
+				benPersonalHabit.setParkingPlaceID(parkingPlaceID);
 				benPersonalHabit.setCreatedBy(createdBy);
 				benPersonalHabit.setDietaryType(dietaryType);
 				benPersonalHabit.setPhysicalActivityType(physicalActivityType);
@@ -536,8 +582,9 @@ public class BenPersonalHabit {
 					benPersonalHabit.setAlcoholDuration(Utility.convertToDateFormat(durationUnit, duration));
 				}
 
-				//if (benPersonalHabit.getTobaccoUseTypeID() != null || benPersonalHabit.getAlcoholTypeID() != null)
-					personalHabitList.add(benPersonalHabit);
+				// if (benPersonalHabit.getTobaccoUseTypeID() != null ||
+				// benPersonalHabit.getAlcoholTypeID() != null)
+				personalHabitList.add(benPersonalHabit);
 			}
 		} else {
 			if (dietaryType != null || physicalActivityType != null || riskySexualPracticesStatus != null
@@ -548,6 +595,8 @@ public class BenPersonalHabit {
 				benPersonalHabit.setBenVisitID(benVisitID);
 				benPersonalHabit.setVisitCode(visitCode);
 				benPersonalHabit.setProviderServiceMapID(providerServiceMapID);
+				benPersonalHabit.setVanID(vanID);
+				benPersonalHabit.setParkingPlaceID(parkingPlaceID);
 				benPersonalHabit.setCreatedBy(createdBy);
 
 				benPersonalHabit.setDietaryType(dietaryType);
@@ -648,7 +697,8 @@ public class BenPersonalHabit {
 			for (Object[] obj : personalHistoryDetails) {
 				BenPersonalHabit personalHabits = new BenPersonalHabit((String) obj[6], (String) obj[7],
 						(String) obj[8], (Short) obj[9], (Timestamp) obj[10], (String) obj[12], (String) obj[13],
-						(String) obj[14], (String) obj[15], (String) obj[16], (Timestamp) obj[17], (Timestamp) obj[19], (Long) obj[20]);
+						(String) obj[14], (String) obj[15], (String) obj[16], (Timestamp) obj[17], (Timestamp) obj[19],
+						(Long) obj[20]);
 
 				Map<String, Object> timePeriod = null;
 				Integer timePeriodAgo = null;

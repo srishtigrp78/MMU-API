@@ -98,6 +98,10 @@ public class PrescriptionDetail {
 	private String vehicalNo;
 
 	@Expose
+	@Column(name = "VanID")
+	private Integer vanID;
+
+	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
 
@@ -366,4 +370,13 @@ public class PrescriptionDetail {
 	public void setVisitCode(Long visitCode) {
 		this.visitCode = visitCode;
 	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
 }

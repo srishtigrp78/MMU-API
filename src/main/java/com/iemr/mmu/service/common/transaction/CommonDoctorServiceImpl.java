@@ -145,6 +145,8 @@ public class CommonDoctorServiceImpl {
 					benChiefComplaint.setVisitCode(wrapperAncFindings.getVisitCode());
 					benChiefComplaint.setProviderServiceMapID(wrapperAncFindings.getProviderServiceMapID());
 					benChiefComplaint.setCreatedBy(wrapperAncFindings.getCreatedBy());
+					benChiefComplaint.setVanID(wrapperAncFindings.getVanID());
+					benChiefComplaint.setParkingPlaceID(wrapperAncFindings.getParkingPlaceID());
 
 					tmpBenCHiefComplaintsTMP.add(benChiefComplaint);
 				}
@@ -220,6 +222,8 @@ public class CommonDoctorServiceImpl {
 		benClinicalObservations.setBenVisitID(wrapperAncFindings.getBenVisitID());
 		benClinicalObservations.setVisitCode(wrapperAncFindings.getVisitCode());
 		benClinicalObservations.setProviderServiceMapID(wrapperAncFindings.getProviderServiceMapID());
+		benClinicalObservations.setVanID(wrapperAncFindings.getVanID());
+		benClinicalObservations.setParkingPlaceID(wrapperAncFindings.getParkingPlaceID());
 		benClinicalObservations.setCreatedBy(wrapperAncFindings.getCreatedBy());
 		benClinicalObservations.setClinicalObservation(wrapperAncFindings.getClinicalObservation());
 		benClinicalObservations.setOtherSymptoms(wrapperAncFindings.getOtherSymptoms());
@@ -317,6 +321,8 @@ public class CommonDoctorServiceImpl {
 					referDetailsTemp.setProviderServiceMapID(referDetails.getProviderServiceMapID());
 					referDetailsTemp.setVisitCode(referDetails.getVisitCode());
 					referDetailsTemp.setCreatedBy(referDetails.getCreatedBy());
+					referDetailsTemp.setVanID(referDetails.getVanID());
+					referDetailsTemp.setParkingPlaceID(referDetails.getParkingPlaceID());
 
 					referDetailsTemp.setServiceID(sm.getServiceID());
 					referDetailsTemp.setServiceName(sm.getServiceName());

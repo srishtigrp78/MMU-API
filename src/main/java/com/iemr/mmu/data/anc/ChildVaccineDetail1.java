@@ -16,7 +16,7 @@ import com.google.gson.annotations.Expose;
 @Entity
 @Table(name = "t_ChildVaccineDetail1")
 public class ChildVaccineDetail1 {
-	
+
 	@Id
 	@GeneratedValue
 	@Expose
@@ -30,15 +30,15 @@ public class ChildVaccineDetail1 {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
-	
+
 	@Expose
 	@Column(name = "DefaultReceivingAge")
 	private String defaultReceivingAge;
@@ -58,11 +58,11 @@ public class ChildVaccineDetail1 {
 	@Transient
 	@Expose
 	private String Status;
-	
+
 	@Transient
 	@Expose
 	private List vaccines;
-	
+
 	@Expose
 	@Column(name = "ReceivedDate")
 	private Timestamp receivedDate;
@@ -70,7 +70,7 @@ public class ChildVaccineDetail1 {
 	@Expose
 	@Column(name = "ReceivedFacilityName")
 	private String receivedFacilityName;
-	
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -98,34 +98,58 @@ public class ChildVaccineDetail1 {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
+	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	@Transient
 	@Expose
 	private List<String> vaccineNameList;
-	
+
 	@Transient
 	private Date captureDate;
-	
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
+	public Date getCaptureDate() {
+		return captureDate;
+	}
+
+	public void setCaptureDate(Date captureDate) {
+		this.captureDate = captureDate;
+	}
+
+	public void setStatus(String status) {
+		Status = status;
+	}
+
 	public List<String> getVaccineNameList() {
 		return vaccineNameList;
 	}
@@ -265,7 +289,7 @@ public class ChildVaccineDetail1 {
 	public Long getID() {
 		return ID;
 	}
-	
+
 	public List getVaccines() {
 		return vaccines;
 	}
@@ -333,18 +357,18 @@ public class ChildVaccineDetail1 {
 		this.vaccineName = vaccineName;
 		this.status = status;
 	}
-	
+
 	public ChildVaccineDetail1(Date createdDate, String defaultReceivingAge, String vaccineName, Boolean status) {
 		super();
 		this.captureDate = createdDate;
 		this.defaultReceivingAge = defaultReceivingAge;
 		this.vaccineName = vaccineName;
-		if(null!= status && status)
+		if (null != status && status)
 			this.Status = "Yes";
 		else
 			this.Status = "No";
 	}
-	
+
 	public ChildVaccineDetail1(String defaultReceivingAge) {
 		super();
 		this.defaultReceivingAge = defaultReceivingAge;
@@ -353,5 +377,5 @@ public class ChildVaccineDetail1 {
 	public void setID(Long iD) {
 		ID = iD;
 	}
-	
+
 }

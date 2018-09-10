@@ -34,7 +34,6 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	private SysObstetricExaminationRepo sysObstetricExaminationRepo;
 
-
 	private LabTestOrderDetailRepo labTestOrderDetailRepo;
 
 	@Autowired
@@ -160,6 +159,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 			ancWomenVaccineDetail.setBenVisitID(wrapperAncImmunizationOBJ.getBenVisitID());
 			ancWomenVaccineDetail.setVisitCode(wrapperAncImmunizationOBJ.getVisitCode());
 			ancWomenVaccineDetail.setProviderServiceMapID(wrapperAncImmunizationOBJ.getProviderServiceMapID());
+			ancWomenVaccineDetail.setVanID(wrapperAncImmunizationOBJ.getVanID());
+			ancWomenVaccineDetail.setParkingPlaceID(wrapperAncImmunizationOBJ.getParkingPlaceID());
 			ancWomenVaccineDetail.setCreatedBy(wrapperAncImmunizationOBJ.getCreatedBy());
 			ancWomenVaccineDetail.setID(wrapperAncImmunizationOBJ.gettT1ID());
 			ancWomenVaccineDetail.setVaccineName("TT-1");
@@ -179,6 +180,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 			ancWomenVaccineDetail.setBeneficiaryRegID(wrapperAncImmunizationOBJ.getBeneficiaryRegID());
 			ancWomenVaccineDetail.setBenVisitID(wrapperAncImmunizationOBJ.getBenVisitID());
 			ancWomenVaccineDetail.setProviderServiceMapID(wrapperAncImmunizationOBJ.getProviderServiceMapID());
+			ancWomenVaccineDetail.setVanID(wrapperAncImmunizationOBJ.getVanID());
+			ancWomenVaccineDetail.setParkingPlaceID(wrapperAncImmunizationOBJ.getParkingPlaceID());
 			ancWomenVaccineDetail.setVisitCode(wrapperAncImmunizationOBJ.getVisitCode());
 			ancWomenVaccineDetail.setCreatedBy(wrapperAncImmunizationOBJ.getCreatedBy());
 			ancWomenVaccineDetail.setID(wrapperAncImmunizationOBJ.gettT2ID());
@@ -199,6 +202,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 			ancWomenVaccineDetail.setBeneficiaryRegID(wrapperAncImmunizationOBJ.getBeneficiaryRegID());
 			ancWomenVaccineDetail.setBenVisitID(wrapperAncImmunizationOBJ.getBenVisitID());
 			ancWomenVaccineDetail.setProviderServiceMapID(wrapperAncImmunizationOBJ.getProviderServiceMapID());
+			ancWomenVaccineDetail.setVanID(wrapperAncImmunizationOBJ.getVanID());
+			ancWomenVaccineDetail.setParkingPlaceID(wrapperAncImmunizationOBJ.getParkingPlaceID());
 			ancWomenVaccineDetail.setVisitCode(wrapperAncImmunizationOBJ.getVisitCode());
 			ancWomenVaccineDetail.setCreatedBy(wrapperAncImmunizationOBJ.getCreatedBy());
 			ancWomenVaccineDetail.setID(wrapperAncImmunizationOBJ.gettT3ID());
@@ -270,8 +275,6 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		return r;
 	}
 
-	
-
 	@Override
 	public int updateBenAncCareDetails(ANCCareDetails ancCareDetailsOBJ) throws ParseException {
 		int r = 0;
@@ -319,8 +322,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 			String processed = "N";
 			ANCWomenVaccineDetail ancWomenVaccine = ancWomenVaccineDetailList.get(0);
-			ArrayList<Object[]> ancWomenVaccineStatuses = ancWomenVaccineRepo.getBenANCWomenVaccineStatus(
-					ancWomenVaccine.getBeneficiaryRegID(), ancWomenVaccine.getVisitCode());
+			ArrayList<Object[]> ancWomenVaccineStatuses = ancWomenVaccineRepo
+					.getBenANCWomenVaccineStatus(ancWomenVaccine.getBeneficiaryRegID(), ancWomenVaccine.getVisitCode());
 			Map<String, String> womenVaccineStatuses = new HashMap<String, String>();
 
 			for (Object[] obj : ancWomenVaccineStatuses) {
@@ -344,7 +347,6 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		}
 		return r;
 	}
-
 
 	@Override
 	public int updateSysObstetricExamination(SysObstetricExamination obstetricExamination) {

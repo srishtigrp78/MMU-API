@@ -30,7 +30,7 @@ public class BenCancerVitalDetail {
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
@@ -118,6 +118,10 @@ public class BenCancerVitalDetail {
 	private String vehicalNo;
 
 	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+
+	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
 
@@ -169,6 +173,14 @@ public class BenCancerVitalDetail {
 		this.createdDate = createdDate;
 		this.modifiedBy = modifiedBy;
 		this.lastModDate = lastModDate;
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
 	}
 
 	public Long getID() {

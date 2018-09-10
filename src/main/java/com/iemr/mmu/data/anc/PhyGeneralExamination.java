@@ -144,6 +144,10 @@ public class PhyGeneralExamination {
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
 	
+    @Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+	
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;

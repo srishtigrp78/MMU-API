@@ -107,6 +107,10 @@ public class BenAllergyHistory {
 	private String vehicalNo;
 
 	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+
+	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
 
@@ -158,6 +162,22 @@ public class BenAllergyHistory {
 		this.otherAllergicReaction = otherAllergicReaction;
 		this.remarks = remarks;
 		this.visitCode = visitCode;
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
+	public Date getCaptureDate() {
+		return captureDate;
+	}
+
+	public void setCaptureDate(Date captureDate) {
+		this.captureDate = captureDate;
 	}
 
 	public Long getBeneficiaryRegID() {
@@ -373,6 +393,8 @@ public class BenAllergyHistory {
 				benAllergyHistory.setBenVisitID(benVisitID);
 				benAllergyHistory.setVisitCode(visitCode);
 				benAllergyHistory.setProviderServiceMapID(providerServiceMapID);
+				benAllergyHistory.setVanID(vanID);
+				benAllergyHistory.setParkingPlaceID(parkingPlaceID);
 				benAllergyHistory.setAllergyStatus(allergyStatus);
 				benAllergyHistory.setCreatedBy(createdBy);
 
@@ -416,6 +438,8 @@ public class BenAllergyHistory {
 				benAllergyHistory.setBenVisitID(benVisitID);
 				benAllergyHistory.setVisitCode(visitCode);
 				benAllergyHistory.setProviderServiceMapID(providerServiceMapID);
+				benAllergyHistory.setVanID(vanID);
+				benAllergyHistory.setParkingPlaceID(parkingPlaceID);
 				benAllergyHistory.setCreatedBy(createdBy);
 
 				benAllergyHistory.setAllergyStatus(allergyStatus);

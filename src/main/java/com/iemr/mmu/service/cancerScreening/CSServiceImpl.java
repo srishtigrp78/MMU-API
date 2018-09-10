@@ -565,16 +565,16 @@ public class CSServiceImpl implements CSService {
 
 			WrapperCancerExamImgAnotasn[] wrapperCancerExamImgAnotasn = InputMapper.gson()
 					.fromJson(jsnOBJ.get("imageCoordinates"), WrapperCancerExamImgAnotasn[].class);
-			
+
 			Long visitCode = null;
-			if(jsnOBJ.has("visitCode") && !jsnOBJ.get("visitCode").isJsonNull()){
+			if (jsnOBJ.has("visitCode") && !jsnOBJ.get("visitCode").isJsonNull()) {
 				visitCode = jsnOBJ.get("visitCode").getAsLong();
 			}
 			List<WrapperCancerExamImgAnotasn> wrapperCancerExamImgAnotasnList = Arrays
 					.asList(wrapperCancerExamImgAnotasn);
 			if (null != wrapperCancerExamImgAnotasnList) {
-				int r = cSNurseServiceImpl.updateCancerExamImgAnotasnDetails(
-						cSNurseServiceImpl.getCancerExaminationImageAnnotationList(wrapperCancerExamImgAnotasnList, visitCode));
+				int r = cSNurseServiceImpl.updateCancerExamImgAnotasnDetails(cSNurseServiceImpl
+						.getCancerExaminationImageAnnotationList(wrapperCancerExamImgAnotasnList, visitCode));
 				if (r > 0) {
 					// imageCoordinates stored successfully...
 					imgCoordinatesSuccessFlag = r;
@@ -677,7 +677,8 @@ public class CSServiceImpl implements CSService {
 		Long docDataSuccessFlag = null;
 
 		if (requestOBJ != null) {
-			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ.getAsJsonObject("diagnosis"), CommonUtilityClass.class);
+			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ.getAsJsonObject("diagnosis"),
+					CommonUtilityClass.class);
 			Long diagnosisSuccessFlag = saveBenDiagnosisDetails(requestOBJ);
 
 			if (diagnosisSuccessFlag != null && diagnosisSuccessFlag > 0) {
@@ -986,7 +987,7 @@ public class CSServiceImpl implements CSService {
 	@Deprecated
 	public String getBenDataForCaseSheet(Long benFlowID, Long benRegID, Long visitCode, String Authorization)
 			throws Exception {
-		
+
 		Map<String, Object> caseSheetData = cSNurseServiceImpl.getBenNurseDataForCaseSheet(benRegID, visitCode);
 		caseSheetData.putAll(cSDoctorServiceImpl.getBenDoctorEnteredDataForCaseSheet(benRegID, visitCode));
 

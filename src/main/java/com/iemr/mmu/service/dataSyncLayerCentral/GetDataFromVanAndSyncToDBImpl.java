@@ -4,75 +4,69 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.iemr.mmu.service.dataSyncActivity.DataSyncRepository;
+import com.iemr.mmu.data.syncActivity_syncLayer.SyncUploadDataDigester;
+import com.iemr.mmu.utils.mapper.InputMapper;
+
+/***
+ * 
+ * @author NE298657
+ *
+ */
 
 @Service
 public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB {
+
 	@Autowired
-	private DataSource dataSource;
+	private DataSyncRepositoryCentral dataSyncRepositoryCentral;
 
-	private JdbcTemplate jdbcTemplate;
-	@Autowired
-	private DataSyncRepository dataSyncRepository;
+	public String syncDataToServer(String requestOBJ, String Authorization) throws Exception {
 
-	private String syncDataToServer(String schemaName, String tableName, String serverColumns,
-			List<Map<String, Object>> dataToBesync) {
+		// feed sync request
+		SyncUploadDataDigester syncUploadDataDigester = InputMapper.gson().fromJson(requestOBJ,
+				SyncUploadDataDigester.class);
 
-		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.serializeNulls();
-		Gson gson = gsonBuilder.create();
-
-		List<Object[]> syncDataList = new ArrayList<>();
-
-		// Map<String, Object> dataMap = new HashMap<>();
-		// dataMap.put("schemaName", schemaName);
-		// dataMap.put("tableName", tableName);
-		// dataMap.put("serverColumns", serverColumns);
-		// dataMap.put("syncData", dataToBesync);
+		List<Map<String, Object>> dataToBesync = syncUploadDataDigester.getSyncData();
 
 		Object[] objArr;
-		StringBuilder vanSerialNos = new StringBuilder();
 
-		int pointer1 = 0;
+		// sync data 'list of object array'
+		List<Object[]> syncDataList = new ArrayList<>();
 
 		for (Map<String, Object> map : dataToBesync) {
 			int pointer = 0;
 			objArr = new Object[map.size()];
-			if (pointer1 == dataToBesync.size() - 1)
-				vanSerialNos.append(map.get("BenVisitID"));
-			else
-				vanSerialNos.append(map.get("BenVisitID") + ",");
-			// vanSerialNoArr[pointer1] = map.get("BenVisitID");
-
 			for (Map.Entry<String, Object> entry : map.entrySet()) {
-				objArr[pointer] = entry.getValue();
+				if (entry.getValue() != null) {
+					if (String.valueOf(entry.getValue()).equalsIgnoreCase("false")
+							|| String.valueOf(entry.getValue()).equalsIgnoreCase("true"))
+						objArr[pointer] = entry.getValue();
+					else
+						objArr[pointer] = String.valueOf(entry.getValue());
+				} else
+					objArr[pointer] = entry.getValue();
 				pointer++;
 			}
 			syncDataList.add(objArr);
-			pointer1++;
 		}
 
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+		// schema name hard coded
+		String query = getQueryToInsertUpdateDataToServerDB("neeraj", syncUploadDataDigester.getTableName(),
+				syncUploadDataDigester.getServerColumns());
 
-		String query = getQueryToInsertUpdateDataToServerDB(schemaName, tableName, serverColumns);
-		int[] i = jdbcTemplate.batchUpdate(query, syncDataList);
-
-		// after sync completed then update processed flag in van DB
-		if (i.length == syncDataList.size()) {
-			dataSyncRepository.updateProcessedFlagInVan(schemaName, tableName, vanSerialNos, "BenVisitID");
-		}
+		// call repository to execute the query with given data list
+		int[] i = dataSyncRepositoryCentral.syncDataToCentralDB(query, syncDataList);
 
 		System.out.println("kamariya karela baloop LOLLYPOP lagelu ........");
-		// return gson.toJson(dataMap);
-		return "Data successfully sync";
+
+		// validating if data sync successfully
+		if (syncDataList.size() == i.length)
+			return "data sync passed";
+		else
+			return null;
+
 	}
 
 	public String getQueryToInsertUpdateDataToServerDB(String schemaName, String tableName, String serverColumns) {

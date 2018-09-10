@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 @Entity
 @Table(name = "t_phy_vitals")
@@ -24,7 +23,7 @@ public class BenPhysicalVitalDetail {
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
-	
+
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
@@ -32,52 +31,51 @@ public class BenPhysicalVitalDetail {
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
-	
 
 	@Expose
 	@Column(name = "Temperature")
 	private Double temperature;
-	
+
 	@Expose
 	@Column(name = "PulseRate")
 	private Short pulseRate;
-	
+
 	@Expose
 	@Column(name = "RespiratoryRate")
 	private Short respiratoryRate;
-	
+
 	@Expose
 	@Column(name = "SystolicBP_1stReading")
 	private Short systolicBP_1stReading;
-	
+
 	@Expose
 	@Column(name = "DiastolicBP_1stReading")
 	private Short diastolicBP_1stReading;
-	
+
 	@Expose
 	@Column(name = "SystolicBP_2ndReading")
 	private Short systolicBP_2ndReading;
-	
+
 	@Expose
 	@Column(name = "DiastolicBP_2ndReading")
 	private Short diastolicBP_2ndReading;
-	
+
 	@Expose
 	@Column(name = "SystolicBP_3rdReading")
 	private Short systolicBP_3rdReading;
-	
+
 	@Expose
 	@Column(name = "DiastolicBP_3rdReading")
 	private Short diastolicBP_3rdReading;
-	
+
 	@Expose
 	@Column(name = "BloodPressureStatusID")
 	private Short bloodPressureStatusID;
-	
+
 	@Expose
 	@Column(name = "BloodPressureStatus")
 	private String bloodPressureStatus;
@@ -85,11 +83,11 @@ public class BenPhysicalVitalDetail {
 	@Expose
 	@Column(name = "BloodGlucose_Fasting")
 	private Short bloodGlucose_Fasting;
-	
+
 	@Expose
 	@Column(name = "BloodGlucose_Random")
 	private Short bloodGlucose_Random;
-	
+
 	@Expose
 	@Column(name = "BloodGlucose_2hr_PP")
 	private Short bloodGlucose_2hr_PP;
@@ -97,15 +95,15 @@ public class BenPhysicalVitalDetail {
 	@Expose
 	@Column(name = "BloodGlucose_NotSpecified")
 	private Short bloodGlucose_NotSpecified;
-	
+
 	@Expose
 	@Column(name = "DiabeticStatusID")
 	private Short diabeticStatusID;
-	
+
 	@Expose
 	@Column(name = "DiabeticStatus")
 	private String diabeticStatus;
-	
+
 	@Expose
 	@Column(name = "AverageSystolicBP")
 	private Short averageSystolicBP;
@@ -113,31 +111,31 @@ public class BenPhysicalVitalDetail {
 	@Expose
 	@Column(name = "AverageDiastolicBP")
 	private Short averageDiastolicBP;
-	
+
 	@Expose
 	@Column(name = "CapillaryRefillTime")
 	private String capillaryRefillTime;
-	
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
-	
+
 	@Expose
 	@Column(name = "Processed", insertable = false, updatable = true)
 	private String processed;
-	
+
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
-	
+
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
 	private Timestamp createdDate;
-	
+
 	@Expose
 	@Column(name = "ModifiedBy")
 	private String modifiedBy;
-	
+
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
@@ -145,29 +143,41 @@ public class BenPhysicalVitalDetail {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
+	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	public BenPhysicalVitalDetail() {
 		super();
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
 	}
 
 	public Long getID() {
@@ -466,5 +476,4 @@ public class BenPhysicalVitalDetail {
 		this.reservedForChange = reservedForChange;
 	}
 
-	
 }

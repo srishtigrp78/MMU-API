@@ -30,11 +30,11 @@ public class LabTestOrderDetail {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
@@ -82,27 +82,31 @@ public class LabTestOrderDetail {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
+	@Expose
+	@Column(name = "VanID")
+	private Integer vanID;
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	public LabTestOrderDetail() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -279,10 +283,9 @@ public class LabTestOrderDetail {
 
 				if (emrgCasesheet.has("benVisitID") && !emrgCasesheet.get("benVisitID").isJsonNull())
 					labTestOrderDetail.setBenVisitID(emrgCasesheet.get("benVisitID").getAsLong());
-				
+
 				if (emrgCasesheet.has("visitCode") && !emrgCasesheet.get("visitCode").isJsonNull())
 					labTestOrderDetail.setVisitCode(emrgCasesheet.get("visitCode").getAsLong());
-
 
 				if (emrgCasesheet.has("beneficiaryRegID") && !emrgCasesheet.get("beneficiaryRegID").isJsonNull())
 					labTestOrderDetail.setBeneficiaryRegID(emrgCasesheet.get("beneficiaryRegID").getAsLong());
@@ -290,6 +293,12 @@ public class LabTestOrderDetail {
 				if (emrgCasesheet.has("providerServiceMapID")
 						&& !emrgCasesheet.get("providerServiceMapID").isJsonNull())
 					labTestOrderDetail.setProviderServiceMapID(emrgCasesheet.get("providerServiceMapID").getAsInt());
+
+				if (emrgCasesheet.has("vanID") && !emrgCasesheet.get("vanID").isJsonNull())
+					labTestOrderDetail.setVanID(emrgCasesheet.get("vanID").getAsInt());
+
+				if (emrgCasesheet.has("parkingPlaceID") && !emrgCasesheet.get("parkingPlaceID").isJsonNull())
+					labTestOrderDetail.setParkingPlaceID(emrgCasesheet.get("parkingPlaceID").getAsInt());
 
 				labTestOrderDetail.setPrescriptionID(prescriptionID);
 
@@ -349,6 +358,14 @@ public class LabTestOrderDetail {
 
 	public void setVisitCode(Long visitCode) {
 		this.visitCode = visitCode;
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
 	}
 
 }

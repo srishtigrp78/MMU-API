@@ -27,15 +27,15 @@ public class SysGastrointestinalExamination {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
-	
+
 	@Expose
 	@Column(name = "Inspection")
 	private String inspection;
@@ -75,7 +75,7 @@ public class SysGastrointestinalExamination {
 	@Expose
 	@Column(name = "AnalRegion")
 	private String analRegion;
-	
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -103,27 +103,31 @@ public class SysGastrointestinalExamination {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
+	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
@@ -339,5 +343,5 @@ public class SysGastrointestinalExamination {
 	public void setVisitCode(Long visitCode) {
 		this.visitCode = visitCode;
 	}
-	
+
 }

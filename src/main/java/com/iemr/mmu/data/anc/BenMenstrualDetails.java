@@ -16,7 +16,7 @@ import com.google.gson.annotations.Expose;
 @Entity
 @Table(name = "t_BenMenstrualDetails")
 public class BenMenstrualDetails {
-	
+
 	@Id
 	@GeneratedValue
 	@Expose
@@ -30,15 +30,15 @@ public class BenMenstrualDetails {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
-	
+
 	@Expose
 	@Column(name = "MenstrualCycleStatusID")
 	private Short menstrualCycleStatusID;
@@ -46,7 +46,7 @@ public class BenMenstrualDetails {
 	@Expose
 	@Column(name = "MenstrualCycleStatus")
 	private String menstrualCycleStatus;
-	
+
 	@Expose
 	@Column(name = "Regularity")
 	private String regularity;
@@ -74,11 +74,11 @@ public class BenMenstrualDetails {
 	@Expose
 	@Column(name = "ProblemName")
 	private String problemName;
-	
+
 	@Expose
 	@Column(name = "LMPDate")
 	private Timestamp lMPDate;
-	
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -102,27 +102,31 @@ public class BenMenstrualDetails {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
+	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
@@ -132,7 +136,31 @@ public class BenMenstrualDetails {
 
 	@Transient
 	private Date lmp_date;
-	
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
+	public Date getCaptureDate() {
+		return captureDate;
+	}
+
+	public void setCaptureDate(Date captureDate) {
+		this.captureDate = captureDate;
+	}
+
+	public Date getLmp_date() {
+		return lmp_date;
+	}
+
+	public void setLmp_date(Date lmp_date) {
+		this.lmp_date = lmp_date;
+	}
+
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
@@ -164,7 +192,7 @@ public class BenMenstrualDetails {
 	public void setMenstrualCycleStatusID(Short menstrualCycleStatusID) {
 		this.menstrualCycleStatusID = menstrualCycleStatusID;
 	}
-	
+
 	public String getMenstrualCycleStatus() {
 		return menstrualCycleStatus;
 	}
@@ -341,7 +369,7 @@ public class BenMenstrualDetails {
 		this.benMenstrualID = benMenstrualID;
 	}
 
-	public BenMenstrualDetails(Date createdDate, String regularity, String cycleLength, String bloodFlowDuration, 
+	public BenMenstrualDetails(Date createdDate, String regularity, String cycleLength, String bloodFlowDuration,
 			String problemName, Date lMPDate) {
 		super();
 		this.captureDate = createdDate;
@@ -351,27 +379,23 @@ public class BenMenstrualDetails {
 		this.problemName = problemName;
 		this.lmp_date = lMPDate;
 	}
-	
+
 	/*
-	public BenMenstrualDetails(Short menstrualCycleStatusID, String regularity, Short menstrualCyclelengthID,
-			String cycleLength, Short menstrualFlowDurationID, String bloodFlowDuration, Short menstrualProblemID,
-			String problemName, Timestamp lMPDate) {
-		super();
-		this.menstrualCycleStatusID = menstrualCycleStatusID;
-		this.regularity = regularity;
-		this.menstrualCyclelengthID = menstrualCyclelengthID;
-		this.cycleLength = cycleLength;
-		this.menstrualFlowDurationID = menstrualFlowDurationID;
-		this.bloodFlowDuration = bloodFlowDuration;
-		this.menstrualProblemID = menstrualProblemID;
-		this.problemName = problemName;
-		this.lMPDate = lMPDate;
-	}*/
+	 * public BenMenstrualDetails(Short menstrualCycleStatusID, String regularity,
+	 * Short menstrualCyclelengthID, String cycleLength, Short
+	 * menstrualFlowDurationID, String bloodFlowDuration, Short menstrualProblemID,
+	 * String problemName, Timestamp lMPDate) { super(); this.menstrualCycleStatusID
+	 * = menstrualCycleStatusID; this.regularity = regularity;
+	 * this.menstrualCyclelengthID = menstrualCyclelengthID; this.cycleLength =
+	 * cycleLength; this.menstrualFlowDurationID = menstrualFlowDurationID;
+	 * this.bloodFlowDuration = bloodFlowDuration; this.menstrualProblemID =
+	 * menstrualProblemID; this.problemName = problemName; this.lMPDate = lMPDate; }
+	 */
 
 	public BenMenstrualDetails(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
-			Short menstrualCycleStatusID, String menstrualCycleStatus, String regularity, Short menstrualCyclelengthID, String cycleLength,
-			Short menstrualFlowDurationID, String bloodFlowDuration, Short menstrualProblemID, String problemName,
-			Timestamp lMPDate, Long visitCode) {
+			Short menstrualCycleStatusID, String menstrualCycleStatus, String regularity, Short menstrualCyclelengthID,
+			String cycleLength, Short menstrualFlowDurationID, String bloodFlowDuration, Short menstrualProblemID,
+			String problemName, Timestamp lMPDate, Long visitCode) {
 		super();
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
@@ -388,14 +412,15 @@ public class BenMenstrualDetails {
 		this.menstrualCycleStatus = menstrualCycleStatus;
 		this.visitCode = visitCode;
 	}
-	
-	public static BenMenstrualDetails getBenMenstrualDetails(ArrayList<Object[]> menstrualHistoryDetails){
+
+	public static BenMenstrualDetails getBenMenstrualDetails(ArrayList<Object[]> menstrualHistoryDetails) {
 		BenMenstrualDetails menstrualDetails = null;
-		if(null != menstrualHistoryDetails && menstrualHistoryDetails.size()>0){
-			for(Object[] obj:menstrualHistoryDetails){
-				menstrualDetails = new BenMenstrualDetails((Long)obj[0], (Long)obj[1], (Integer)obj[2], 
-						(Short)obj[3], (String)obj[4], (String)obj[5], (Short)obj[6], (String)obj[7], (Short)obj[8], (String)obj[9], (Short)obj[10], 
-						(String)obj[11], (Timestamp)obj[12], (Long)obj[13]);
+		if (null != menstrualHistoryDetails && menstrualHistoryDetails.size() > 0) {
+			for (Object[] obj : menstrualHistoryDetails) {
+				menstrualDetails = new BenMenstrualDetails((Long) obj[0], (Long) obj[1], (Integer) obj[2],
+						(Short) obj[3], (String) obj[4], (String) obj[5], (Short) obj[6], (String) obj[7],
+						(Short) obj[8], (String) obj[9], (Short) obj[10], (String) obj[11], (Timestamp) obj[12],
+						(Long) obj[13]);
 			}
 		}
 		return menstrualDetails;
@@ -413,5 +438,5 @@ public class BenMenstrualDetails {
 	public void setVisitCode(Long visitCode) {
 		this.visitCode = visitCode;
 	}
-	
+
 }

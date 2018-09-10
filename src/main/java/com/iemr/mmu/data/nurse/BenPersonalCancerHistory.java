@@ -28,15 +28,15 @@ public class BenPersonalCancerHistory {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
-	
+
 	@Expose
 	@Column(name = "TobaccoUse")
 	private String tobaccoUse;
@@ -55,24 +55,24 @@ public class BenPersonalCancerHistory {
 	@Expose
 	@Column(name = "IsFilteredCigaerette")
 	private Boolean isFilteredCigaerette;
-	
+
 	@Transient
 	private String IsFilteredCigaerette;
-	
+
 	@Expose
 	@Column(name = "IsCigaretteExposure")
 	private Boolean isCigaretteExposure;
-	
+
 	@Transient
 	private String IsCigaretteExposure;
-	
+
 	@Expose
 	@Column(name = "IsBetelNutChewing")
 	private Boolean isBetelNutChewing;
-	
+
 	@Transient
 	private String IsBetelNutChewing;
-	
+
 	@Expose
 	@Column(name = "DurationOfBetelQuid")
 	private Integer durationOfBetelQuid;
@@ -82,10 +82,10 @@ public class BenPersonalCancerHistory {
 	@Expose
 	@Column(name = "IsAlcoholUsed")
 	private Boolean ssAlcoholUsed;
-	
+
 	@Transient
 	private String IsAlcoholUsed;
-	
+
 	@Expose
 	@Column(name = "FrequencyOfAlcoholUsed")
 	private String frequencyOfAlcoholUsed;
@@ -115,6 +115,10 @@ public class BenPersonalCancerHistory {
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
+
+	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
 
 	@Expose
 	@Column(name = "ParkingPlaceID")
@@ -184,32 +188,68 @@ public class BenPersonalCancerHistory {
 		this.endAge_year = endAge_year;
 		this.typeOfTobaccoProduct = typeOfTobaccoProduct;
 		this.quantityPerDay = quantityPerDay;
-		
-		if(null != isFilteredCigaerette && isFilteredCigaerette)
+
+		if (null != isFilteredCigaerette && isFilteredCigaerette)
 			this.IsFilteredCigaerette = "Yes";
 		else
 			this.IsFilteredCigaerette = "No";
-		
-		if(null != isCigaretteExposure && isCigaretteExposure)
+
+		if (null != isCigaretteExposure && isCigaretteExposure)
 			this.IsCigaretteExposure = "Yes";
 		else
 			this.IsCigaretteExposure = "No";
-		
-		if(null != isBetelNutChewing && isBetelNutChewing)
+
+		if (null != isBetelNutChewing && isBetelNutChewing)
 			this.IsBetelNutChewing = "Yes";
 		else
 			this.IsBetelNutChewing = "No";
-		
+
 		this.durationOfBetelQuid = durationOfBetelQuid;
 		this.alcoholUse = alcoholUse;
-		
-		if(null != ssAlcoholUsed && ssAlcoholUsed)
+
+		if (null != ssAlcoholUsed && ssAlcoholUsed)
 			this.IsAlcoholUsed = "Yes";
 		else
 			this.IsAlcoholUsed = "No";
-		
+
 		this.frequencyOfAlcoholUsed = frequencyOfAlcoholUsed;
 		this.captureDate = captureDate;
+	}
+
+	public String getIsAlcoholUsed() {
+		return IsAlcoholUsed;
+	}
+
+	public void setIsAlcoholUsed(String isAlcoholUsed) {
+		IsAlcoholUsed = isAlcoholUsed;
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
+	public Date getCaptureDate() {
+		return captureDate;
+	}
+
+	public void setCaptureDate(Date captureDate) {
+		this.captureDate = captureDate;
+	}
+
+	public void setIsFilteredCigaerette(String isFilteredCigaerette) {
+		IsFilteredCigaerette = isFilteredCigaerette;
+	}
+
+	public void setIsCigaretteExposure(String isCigaretteExposure) {
+		IsCigaretteExposure = isCigaretteExposure;
+	}
+
+	public void setIsBetelNutChewing(String isBetelNutChewing) {
+		IsBetelNutChewing = isBetelNutChewing;
 	}
 
 	public Long getID() {

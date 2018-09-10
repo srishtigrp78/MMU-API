@@ -12,7 +12,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
-import com.iemr.mmu.data.anc.ANCCareDetails;
 
 @Entity
 @Table(name = "t_pnccare")
@@ -150,6 +149,10 @@ public class PNCCare {
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
+
+	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
 
 	@Expose
 	@Column(name = "ParkingPlaceID")
@@ -476,11 +479,10 @@ public class PNCCare {
 
 	public PNCCare(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, Short visitNo,
 			Short deliveryTypeID, String deliveryType, Short deliveryPlaceID, String deliveryPlace,
-			String otherDeliveryPlace, Date dateOfDelivery, Short deliveryComplicationID,
-			String deliveryComplication, String otherDeliveryComplication, Short pregOutcomeID, String pregOutcome,
-			Short postNatalComplicationID, String postNatalComplication, String otherPostNatalComplication,
-			Short gestationID, String gestationName, Double birthWeightOfNewborn, Integer newBornHealthStatusID,
-			String newBornHealthStatus, Long visitCode) {
+			String otherDeliveryPlace, Date dateOfDelivery, Short deliveryComplicationID, String deliveryComplication,
+			String otherDeliveryComplication, Short pregOutcomeID, String pregOutcome, Short postNatalComplicationID,
+			String postNatalComplication, String otherPostNatalComplication, Short gestationID, String gestationName,
+			Double birthWeightOfNewborn, Integer newBornHealthStatusID, String newBornHealthStatus, Long visitCode) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -513,15 +515,15 @@ public class PNCCare {
 		ArrayList<PNCCare> resArray = new ArrayList<PNCCare>();
 		PNCCare cOBJ = null;
 		for (Object[] obj : resList) {
-			
-			cOBJ = new PNCCare((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (Short)obj[4], (Short)obj[5], (String)obj[6], 
-					(Short)obj[7], (String)obj[8], (String)obj[9], (Date)obj[10], (Short)obj[11], (String)obj[12], (String)obj[13], (Short)obj[14], 
-					(String)obj[15], (Short)obj[16], (String)obj[17], (String)obj[18], (Short)obj[19], (String)obj[20], (Double)obj[21], (Integer)obj[22],
-					(String)obj[23], (Long)obj[24]);
-			
+
+			cOBJ = new PNCCare((Long) obj[0], (Long) obj[1], (Long) obj[2], (Integer) obj[3], (Short) obj[4],
+					(Short) obj[5], (String) obj[6], (Short) obj[7], (String) obj[8], (String) obj[9], (Date) obj[10],
+					(Short) obj[11], (String) obj[12], (String) obj[13], (Short) obj[14], (String) obj[15],
+					(Short) obj[16], (String) obj[17], (String) obj[18], (Short) obj[19], (String) obj[20],
+					(Double) obj[21], (Integer) obj[22], (String) obj[23], (Long) obj[24]);
+
 		}
 		return cOBJ;
 	}
-	
-	
+
 }

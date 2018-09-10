@@ -20,6 +20,9 @@ public class WrapperAncImmunization {
 	private String facilityNameOfTT_3;
 	private String modifiedBy;
 
+	private Integer vanID;
+	private Integer parkingPlaceID;
+
 	public WrapperAncImmunization() {
 	}
 
@@ -43,6 +46,22 @@ public class WrapperAncImmunization {
 		this.facilityNameOfTT_3 = facilityNameOfTT_3;
 	}
 
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
+	public Integer getParkingPlaceID() {
+		return parkingPlaceID;
+	}
+
+	public void setParkingPlaceID(Integer parkingPlaceID) {
+		this.parkingPlaceID = parkingPlaceID;
+	}
+
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
@@ -58,7 +77,6 @@ public class WrapperAncImmunization {
 	public void setBenVisitID(Long benVisitID) {
 		this.benVisitID = benVisitID;
 	}
-	
 
 	public Long getVisitCode() {
 		return visitCode;

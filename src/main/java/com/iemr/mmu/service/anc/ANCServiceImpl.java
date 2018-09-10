@@ -269,7 +269,8 @@ public class ANCServiceImpl implements ANCService {
 			prescriptionID = commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
 					wrapperBenInvestigationANC.getBeneficiaryRegID(), wrapperBenInvestigationANC.getBenVisitID(),
 					wrapperBenInvestigationANC.getProviderServiceMapID(), wrapperBenInvestigationANC.getCreatedBy(),
-					wrapperBenInvestigationANC.getExternalInvestigations(), wrapperBenInvestigationANC.getVisitCode());
+					wrapperBenInvestigationANC.getExternalInvestigations(), wrapperBenInvestigationANC.getVisitCode(),
+					wrapperBenInvestigationANC.getVanID(), wrapperBenInvestigationANC.getParkingPlaceID());
 
 			// save prescribed lab test
 			if (isTestPrescribed) {
@@ -362,8 +363,8 @@ public class ANCServiceImpl implements ANCService {
 			BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(visitDetailsOBJ.get("visitDetails"),
 					BeneficiaryVisitDetail.class);
 
-			benVisitDetailsOBJ.setVanID(commonUtilityClass.getVanID());
-			benVisitDetailsOBJ.setParkingPlaceID(commonUtilityClass.getParkingPlaceID());
+			// benVisitDetailsOBJ.setVanID(commonUtilityClass.getVanID());
+			// benVisitDetailsOBJ.setParkingPlaceID(commonUtilityClass.getParkingPlaceID());
 
 			benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
 
@@ -498,8 +499,6 @@ public class ANCServiceImpl implements ANCService {
 				benMedHistory.setBenVisitID(benVisitID);
 				benMedHistory.setVisitCode(benVisitCode);
 				pastHistorySuccessFlag = commonNurseServiceImpl.saveBenPastHistory(benMedHistory);
-				// pastHistorySuccessFlag =
-				// ancNurseServiceImpl.saveBenANCPastHistory(benMedHistory);
 			}
 
 		}
@@ -513,8 +512,6 @@ public class ANCServiceImpl implements ANCService {
 				wrapperComorbidCondDetails.setBenVisitID(benVisitID);
 				wrapperComorbidCondDetails.setVisitCode(benVisitCode);
 				comrbidSuccessFlag = commonNurseServiceImpl.saveBenComorbidConditions(wrapperComorbidCondDetails);
-				// comrbidSuccessFlag =
-				// ancNurseServiceImpl.saveBenANCComorbidConditions(wrapperComorbidCondDetails);
 			}
 		}
 

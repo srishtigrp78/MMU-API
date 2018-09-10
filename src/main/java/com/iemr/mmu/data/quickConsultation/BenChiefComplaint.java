@@ -12,7 +12,6 @@ import javax.persistence.Table;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
-import com.iemr.mmu.data.anc.BenAdherence;
 
 @Entity
 @Table(name = "t_benchiefcomplaint")
@@ -33,7 +32,7 @@ public class BenChiefComplaint {
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
@@ -44,11 +43,11 @@ public class BenChiefComplaint {
 	@Expose
 	@Column(name = "ChiefComplaint")
 	private String chiefComplaint;
-	
+
 	@Expose
 	@Column(name = "SCTCode")
 	private String conceptID;
-	
+
 	@Expose
 	@Column(name = "Duration")
 	private Integer duration;
@@ -86,33 +85,36 @@ public class BenChiefComplaint {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
+	@Expose
+	@Column(name = "VanID")
+	private Integer vanID;
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	public BenChiefComplaint() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	
 	public BenChiefComplaint(Long benChiefComplaintID, Long beneficiaryRegID, Long benVisitID,
 			Integer providerServiceMapID, Integer chiefComplaintID, String chiefComplaint, Integer duration,
 			String unitOfDuration, String description, Long visitCode, String conceptID) {
@@ -130,18 +132,18 @@ public class BenChiefComplaint {
 		this.conceptID = conceptID;
 	}
 
-
 	public static ArrayList<BenChiefComplaint> getBenChiefComplaints(ArrayList<Object[]> resList) {
 		ArrayList<BenChiefComplaint> resArray = new ArrayList<BenChiefComplaint>();
 		BenChiefComplaint cOBJ = null;
-		for(Object[] obj:resList){		
-			cOBJ = new BenChiefComplaint((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (Integer)obj[4],
-					(String)obj[5], (Integer)obj[6], (String)obj[7], (String)obj[8], (Long)obj[9],  (String)obj[10]);
+		for (Object[] obj : resList) {
+			cOBJ = new BenChiefComplaint((Long) obj[0], (Long) obj[1], (Long) obj[2], (Integer) obj[3],
+					(Integer) obj[4], (String) obj[5], (Integer) obj[6], (String) obj[7], (String) obj[8],
+					(Long) obj[9], (String) obj[10]);
 			resArray.add(cOBJ);
 		}
 		return resArray;
 	}
-	
+
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
@@ -262,64 +264,51 @@ public class BenChiefComplaint {
 		return vanSerialNo;
 	}
 
-
 	public void setVanSerialNo(Long vanSerialNo) {
 		this.vanSerialNo = vanSerialNo;
 	}
-
 
 	public String getVehicalNo() {
 		return vehicalNo;
 	}
 
-
 	public void setVehicalNo(String vehicalNo) {
 		this.vehicalNo = vehicalNo;
 	}
-
 
 	public Integer getParkingPlaceID() {
 		return parkingPlaceID;
 	}
 
-
 	public void setParkingPlaceID(Integer parkingPlaceID) {
 		this.parkingPlaceID = parkingPlaceID;
 	}
-
 
 	public String getSyncedBy() {
 		return syncedBy;
 	}
 
-
 	public void setSyncedBy(String syncedBy) {
 		this.syncedBy = syncedBy;
 	}
-
 
 	public Timestamp getSyncedDate() {
 		return syncedDate;
 	}
 
-
 	public void setSyncedDate(Timestamp syncedDate) {
 		this.syncedDate = syncedDate;
 	}
-
 
 	public String getReservedForChange() {
 		return reservedForChange;
 	}
 
-
 	public void setReservedForChange(String reservedForChange) {
 		this.reservedForChange = reservedForChange;
 	}
 
-
-	public void setBenChiefComplaintID(Long benChiefComplaintID)
-	{
+	public void setBenChiefComplaintID(Long benChiefComplaintID) {
 		this.benChiefComplaintID = benChiefComplaintID;
 	}
 
@@ -334,7 +323,7 @@ public class BenChiefComplaint {
 	public static ArrayList<BenChiefComplaint> getBenChiefComplaintList(JsonObject emrgCasesheet) {
 		ArrayList<BenChiefComplaint> resArray = new ArrayList<>();
 		BenChiefComplaint benChiefComplaint = null;
-		//System.out.println("ello");
+		// System.out.println("ello");
 		if (emrgCasesheet.has("chiefComplaintList") && !emrgCasesheet.get("chiefComplaintList").isJsonNull()
 				&& emrgCasesheet.get("chiefComplaintList").isJsonArray()) {
 			for (JsonElement csobj : emrgCasesheet.getAsJsonArray("chiefComplaintList")) {
@@ -342,7 +331,7 @@ public class BenChiefComplaint {
 
 				if (emrgCasesheet.has("benVisitID") && !emrgCasesheet.get("benVisitID").isJsonNull())
 					benChiefComplaint.setBenVisitID(emrgCasesheet.get("benVisitID").getAsLong());
-				
+
 				if (emrgCasesheet.has("visitCode") && !emrgCasesheet.get("visitCode").isJsonNull())
 					benChiefComplaint.setVisitCode(emrgCasesheet.get("visitCode").getAsLong());
 
@@ -369,12 +358,22 @@ public class BenChiefComplaint {
 
 				if (obj.has("description") && !obj.get("description").isJsonNull())
 					benChiefComplaint.setDescription(obj.get("description").getAsString());
-				
+
 				if (obj.has("conceptID") && !obj.get("conceptID").isJsonNull())
 					benChiefComplaint.setConceptID(obj.get("conceptID").getAsString());
-				
-				/*if (emrgCasesheet.has("description") && !emrgCasesheet.get("description").isJsonNull())
-					benChiefComplaint.setDescription(emrgCasesheet.get("description").getAsString());*/
+
+				if (obj.has("vanID") && !obj.get("vanID").isJsonNull())
+					benChiefComplaint.setVanID(obj.get("vanID").getAsInt());
+
+				if (obj.has("parkingPlaceID") && !obj.get("parkingPlaceID").isJsonNull())
+					benChiefComplaint.setParkingPlaceID(obj.get("parkingPlaceID").getAsInt());
+
+				/*
+				 * if (emrgCasesheet.has("description") &&
+				 * !emrgCasesheet.get("description").isJsonNull())
+				 * benChiefComplaint.setDescription(emrgCasesheet.get("description").getAsString
+				 * ());
+				 */
 
 				if (emrgCasesheet.has("createdBy") && !emrgCasesheet.get("createdBy").isJsonNull())
 					benChiefComplaint.setCreatedBy(emrgCasesheet.get("createdBy").getAsString());
@@ -386,14 +385,20 @@ public class BenChiefComplaint {
 		return resArray;
 	}
 
-
 	public Long getVisitCode() {
 		return visitCode;
 	}
 
-
 	public void setVisitCode(Long visitCode) {
 		this.visitCode = visitCode;
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
 	}
 
 }

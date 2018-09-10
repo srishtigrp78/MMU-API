@@ -37,7 +37,7 @@ public class BenMedHistory {
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
@@ -109,6 +109,10 @@ public class BenMedHistory {
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
+
+	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
 
 	@Expose
 	@Column(name = "ParkingPlaceID")
@@ -415,6 +419,8 @@ public class BenMedHistory {
 			benMedHistory.setBenVisitID(benVisitID);
 			benMedHistory.setVisitCode(visitCode);
 			benMedHistory.setProviderServiceMapID(providerServiceMapID);
+			benMedHistory.setVanID(vanID);
+			benMedHistory.setParkingPlaceID(parkingPlaceID);
 			benMedHistory.setCreatedBy(createdBy);
 			if (null != pastIllness && pastIllness.size() > i) {
 				Map<String, Object> illness = (Map<String, Object>) pastIllness.get(i);
@@ -530,6 +536,70 @@ public class BenMedHistory {
 
 	public void setVisitCode(Long visitCode) {
 		this.visitCode = visitCode;
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
+	public Date getYear_Of_Illness() {
+		return Year_Of_Illness;
+	}
+
+	public void setYear_Of_Illness(Date year_Of_Illness) {
+		Year_Of_Illness = year_Of_Illness;
+	}
+
+	public Date getYear_Of_Surgery() {
+		return Year_Of_Surgery;
+	}
+
+	public void setYear_Of_Surgery(Date year_Of_Surgery) {
+		Year_Of_Surgery = year_Of_Surgery;
+	}
+
+	public String getIllness_Type() {
+		return Illness_Type;
+	}
+
+	public void setIllness_Type(String illness_Type) {
+		Illness_Type = illness_Type;
+	}
+
+	public String getSurgery_Type() {
+		return Surgery_Type;
+	}
+
+	public void setSurgery_Type(String surgery_Type) {
+		Surgery_Type = surgery_Type;
+	}
+
+	public String getOther_Illness_Type() {
+		return Other_Illness_Type;
+	}
+
+	public void setOther_Illness_Type(String other_Illness_Type) {
+		Other_Illness_Type = other_Illness_Type;
+	}
+
+	public String getOther_Surgery_Type() {
+		return Other_Surgery_Type;
+	}
+
+	public void setOther_Surgery_Type(String other_Surgery_Type) {
+		Other_Surgery_Type = other_Surgery_Type;
+	}
+
+	public Date getCaptureDate() {
+		return captureDate;
+	}
+
+	public void setCaptureDate(Date captureDate) {
+		this.captureDate = captureDate;
 	}
 
 }

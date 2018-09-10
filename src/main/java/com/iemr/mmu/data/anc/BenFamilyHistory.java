@@ -108,6 +108,10 @@ public class BenFamilyHistory {
 	private String vehicalNo;
 
 	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+
+	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
 
@@ -129,6 +133,30 @@ public class BenFamilyHistory {
 
 	@Transient
 	private Date captureDate;
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
+	public Date getCaptureDate() {
+		return captureDate;
+	}
+
+	public void setCaptureDate(Date captureDate) {
+		this.captureDate = captureDate;
+	}
+
+	public void setIsGeneticDisorder(String isGeneticDisorder) {
+		IsGeneticDisorder = isGeneticDisorder;
+	}
+
+	public void setIsConsanguineousMarrige(String isConsanguineousMarrige) {
+		IsConsanguineousMarrige = isConsanguineousMarrige;
+	}
 
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
@@ -351,6 +379,8 @@ public class BenFamilyHistory {
 				benFamilyHistory.setBenVisitID(benVisitID);
 				benFamilyHistory.setVisitCode(visitCode);
 				benFamilyHistory.setProviderServiceMapID(providerServiceMapID);
+				benFamilyHistory.setVanID(vanID);
+				benFamilyHistory.setParkingPlaceID(parkingPlaceID);
 				benFamilyHistory.setCreatedBy(createdBy);
 
 				benFamilyHistory.setGeneticDisorder(geneticDisorder);

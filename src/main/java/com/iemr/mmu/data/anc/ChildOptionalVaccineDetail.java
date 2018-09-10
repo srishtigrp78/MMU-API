@@ -29,15 +29,15 @@ public class ChildOptionalVaccineDetail {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
-	
+
 	@Expose
 	@Column(name = "DefaultReceivingAge")
 	private String defaultReceivingAge;
@@ -61,7 +61,7 @@ public class ChildOptionalVaccineDetail {
 	@Expose
 	@Column(name = "ReceivedFacilityName")
 	private String receivedFacilityName;
-	
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -89,30 +89,50 @@ public class ChildOptionalVaccineDetail {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
+	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	@Transient
 	private Date captureDate;
-	
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
+	public Date getCaptureDate() {
+		return captureDate;
+	}
+
+	public void setCaptureDate(Date captureDate) {
+		this.captureDate = captureDate;
+	}
+
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
@@ -303,7 +323,7 @@ public class ChildOptionalVaccineDetail {
 		this.actualReceivingAge = actualReceivingAge;
 		this.receivedFacilityName = receivedFacilityName;
 	}
-	
+
 	public ChildOptionalVaccineDetail(Date createdDate, String defaultReceivingAge, String vaccineName, String status,
 			Timestamp receivedDate, String actualReceivingAge, String receivedFacilityName) {
 		super();
@@ -324,5 +344,5 @@ public class ChildOptionalVaccineDetail {
 	public void setID(Long iD) {
 		ID = iD;
 	}
-	
+
 }

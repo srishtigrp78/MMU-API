@@ -32,7 +32,7 @@ public class ANCWomenVaccineDetail {
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
@@ -80,27 +80,31 @@ public class ANCWomenVaccineDetail {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
+	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	public ANCWomenVaccineDetail() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -122,33 +126,33 @@ public class ANCWomenVaccineDetail {
 	public static WrapperAncImmunization getANCWomenVaccineDetails(ArrayList<Object[]> resList) {
 		ArrayList<ANCWomenVaccineDetail> resArray = new ArrayList<ANCWomenVaccineDetail>();
 		WrapperAncImmunization wrapperAncImmunization = new WrapperAncImmunization();
-		
+
 		for (Object[] obj : resList) {
-			Date dt= (Date)obj[6];
-			if(resList.indexOf(obj) == 0){
-				wrapperAncImmunization.setBeneficiaryRegID((Long)obj[1]);
-				wrapperAncImmunization.setBenVisitID((Long)obj[2]);
-				wrapperAncImmunization.setProviderServiceMapID((Integer)obj[3]);
-				wrapperAncImmunization.setVisitCode((Long)obj[8]);
-				wrapperAncImmunization.settT1ID((Long)obj[0]);
-				wrapperAncImmunization.settT_1Status((String)obj[5]);
-				if(null != dt)
-				wrapperAncImmunization.setDateReceivedForTT_1(dt.toString());
-				wrapperAncImmunization.setFacilityNameOfTT_1((String)obj[7]);
-			}else if(resList.indexOf(obj) == 1){
-				wrapperAncImmunization.settT2ID((Long)obj[0]);
-				wrapperAncImmunization.settT_2Status((String)obj[5]);
-				if(null != dt)
-				wrapperAncImmunization.setDateReceivedForTT_2(dt.toString());
-				wrapperAncImmunization.setFacilityNameOfTT_2((String)obj[7]);
-			}else if(resList.indexOf(obj) == 2){
-				wrapperAncImmunization.settT3ID((Long)obj[0]);
-				wrapperAncImmunization.settT_3Status((String)obj[5]);
-				if(null != dt)
-				wrapperAncImmunization.setDateReceivedForTT_3(dt.toString());
-				wrapperAncImmunization.setFacilityNameOfTT_3((String)obj[7]);
+			Date dt = (Date) obj[6];
+			if (resList.indexOf(obj) == 0) {
+				wrapperAncImmunization.setBeneficiaryRegID((Long) obj[1]);
+				wrapperAncImmunization.setBenVisitID((Long) obj[2]);
+				wrapperAncImmunization.setProviderServiceMapID((Integer) obj[3]);
+				wrapperAncImmunization.setVisitCode((Long) obj[8]);
+				wrapperAncImmunization.settT1ID((Long) obj[0]);
+				wrapperAncImmunization.settT_1Status((String) obj[5]);
+				if (null != dt)
+					wrapperAncImmunization.setDateReceivedForTT_1(dt.toString());
+				wrapperAncImmunization.setFacilityNameOfTT_1((String) obj[7]);
+			} else if (resList.indexOf(obj) == 1) {
+				wrapperAncImmunization.settT2ID((Long) obj[0]);
+				wrapperAncImmunization.settT_2Status((String) obj[5]);
+				if (null != dt)
+					wrapperAncImmunization.setDateReceivedForTT_2(dt.toString());
+				wrapperAncImmunization.setFacilityNameOfTT_2((String) obj[7]);
+			} else if (resList.indexOf(obj) == 2) {
+				wrapperAncImmunization.settT3ID((Long) obj[0]);
+				wrapperAncImmunization.settT_3Status((String) obj[5]);
+				if (null != dt)
+					wrapperAncImmunization.setDateReceivedForTT_3(dt.toString());
+				wrapperAncImmunization.setFacilityNameOfTT_3((String) obj[7]);
 			}
-			
+
 		}
 		return wrapperAncImmunization;
 	}
@@ -319,6 +323,14 @@ public class ANCWomenVaccineDetail {
 
 	public void setVisitCode(Long visitCode) {
 		this.visitCode = visitCode;
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
 	}
 
 }

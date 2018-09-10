@@ -15,7 +15,7 @@ import com.google.gson.annotations.Expose;
 @Entity
 @Table(name = "t_benMedicationHistory")
 public class BenMedicationHistory {
-	
+
 	@Id
 	@GeneratedValue
 	@Expose
@@ -29,23 +29,23 @@ public class BenMedicationHistory {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
-	
+
 	@Expose
 	@Column(name = "CurrentMedication")
 	private String currentMedication;
-	
+
 	@Expose
 	@Column(name = "Year")
 	private Timestamp year;
-	
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -69,45 +69,49 @@ public class BenMedicationHistory {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
-	
+
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
+	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	@Transient
-	@Expose 
+	@Expose
 	private Integer timePeriodAgo;
-	
+
 	@Transient
 	@Expose
 	private String timePeriodUnit;
 
 	@Transient
 	private Date captureDate;
-	
+
 	@Transient
 	private Date medication_year;
-	
+
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
@@ -271,7 +275,8 @@ public class BenMedicationHistory {
 		this.medication_year = year;
 	}
 
-	public BenMedicationHistory(String currentMedication, Integer timePeriodAgo, String timePeriodUnit, Long visitCode) {
+	public BenMedicationHistory(String currentMedication, Integer timePeriodAgo, String timePeriodUnit,
+			Long visitCode) {
 		super();
 		this.currentMedication = currentMedication;
 		this.timePeriodAgo = timePeriodAgo;
@@ -295,5 +300,29 @@ public class BenMedicationHistory {
 	public void setVisitCode(Long visitCode) {
 		this.visitCode = visitCode;
 	}
-	
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
+	public Date getCaptureDate() {
+		return captureDate;
+	}
+
+	public void setCaptureDate(Date captureDate) {
+		this.captureDate = captureDate;
+	}
+
+	public Date getMedication_year() {
+		return medication_year;
+	}
+
+	public void setMedication_year(Date medication_year) {
+		this.medication_year = medication_year;
+	}
+
 }

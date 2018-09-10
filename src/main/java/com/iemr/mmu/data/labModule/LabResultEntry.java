@@ -110,6 +110,10 @@ public class LabResultEntry {
 	private String vehicalNo;
 
 	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+
+	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
 
@@ -498,6 +502,14 @@ public class LabResultEntry {
 
 	public void setCompList(List<Map<String, String>> compList) {
 		this.compList = compList;
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
 	}
 
 }

@@ -54,6 +54,7 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 				ArrayList<Long> benFlowIDList = beneficiaryFlowStatusRepo
 						.checkBenAlreadyInNurseWorkList(obj.getBeneficiaryRegID(), obj.getProviderServiceMapID());
 				if (benFlowIDList != null && benFlowIDList.size() > 0) {
+					// update i_ben_flow table for updated beneficiary id
 					returnOBJ = 3;
 				} else {
 					objRS = beneficiaryFlowStatusRepo.save(obj);
@@ -77,8 +78,9 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 		int i = 0;
 		try {
 			i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterNurseActivity(benFlowID, benRegID, benVisitID,
-					visitReason, visitCategory, nurseFlag, docFlag, labIteration, radiologistFlag, oncologistFlag, visitCode);
-			//System.out.println("hello");
+					visitReason, visitCategory, nurseFlag, docFlag, labIteration, radiologistFlag, oncologistFlag,
+					visitCode);
+			// System.out.println("hello");
 		} catch (Exception e) {
 			// e.printStackTrace();
 			logger.error("Error in ben flow creation = " + e);
@@ -101,25 +103,25 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 			throws Exception {
 
 		BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(requestOBJ, BeneficiaryFlowStatus.class);
-		
+
 		if (obj.getI_bendemographics().getDistrictID() != null)
-			obj.setDistrictID(obj.getI_bendemographics().getDistrictID());	
+			obj.setDistrictID(obj.getI_bendemographics().getDistrictID());
 		if (obj.getI_bendemographics().getDistrictName() != null)
 			obj.setDistrictName(obj.getI_bendemographics().getDistrictName());
-		
+
 		if (obj.getI_bendemographics().getDistrictBranchID() != null)
 			obj.setVillageID(obj.getI_bendemographics().getDistrictBranchID());
 		if (obj.getI_bendemographics().getDistrictBranchName() != null)
 			obj.setVillageName(obj.getI_bendemographics().getDistrictBranchName());
-		
+
 		if (obj.getI_bendemographics().getServicePointID() != null)
 			obj.setServicePointID(obj.getI_bendemographics().getServicePointID());
 		if (obj.getI_bendemographics().getServicePointName() != null)
 			obj.setServicePointName(obj.getI_bendemographics().getServicePointName());
-		
+
 		if (beneficiaryRegID != null && obj.getBeneficiaryRegID() == null)
 			obj.setBeneficiaryRegID(beneficiaryRegID);
-		
+
 		if (beneficiaryID != null && obj.getBeneficiaryID() == null)
 			obj.setBeneficiaryID(beneficiaryID);
 
@@ -132,8 +134,6 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 
 		if (obj.getGenderName() == null)
 			obj.setGenderName(obj.getM_gender().getGenderName());
-
-		
 
 		String ageDetails = "";
 		int age_val = 0;
@@ -195,8 +195,7 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 			obj.setRegistrationDate(obj.getCreatedDate());
 		else
 			obj.setRegistrationDate(new Timestamp(System.currentTimeMillis()));
-		
-		
+
 		return obj;
 	}
 
@@ -204,8 +203,8 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 			short pharmaFlag, short oncologistFlag) {
 		int i = 0;
 		try {
-			i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterDoctorActivity(benFlowID, benRegID, benID,
-					docFlag, pharmaFlag, oncologistFlag);
+			i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterDoctorActivity(benFlowID, benRegID, benID, docFlag,
+					pharmaFlag, oncologistFlag);
 		} catch (Exception e) {
 			logger.error("Error in ben flow creation = " + e);
 		}
@@ -224,8 +223,8 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 			else
 				pharmaF1 = pharmaFlag;
 
-			i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterDoctorActivity(benFlowID, benRegID, benID, 
-					docFlag, pharmaF1, oncologistFlag);
+			i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterDoctorActivity(benFlowID, benRegID, benID, docFlag,
+					pharmaF1, oncologistFlag);
 		} catch (Exception e) {
 			logger.error("Error in ben flow creation = " + e);
 		}
@@ -234,8 +233,8 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 
 	public int updateFlowAfterLabResultEntry(Long benFlowID, Long benRegID, Long benVisitID, Short nurseFlag,
 			Short doctorFlag, Short labFlag) {
-		int i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterLabResultEntry(benFlowID, benRegID,
-				nurseFlag, doctorFlag, labFlag);
+		int i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterLabResultEntry(benFlowID, benRegID, nurseFlag,
+				doctorFlag, labFlag);
 		return i;
 
 	}

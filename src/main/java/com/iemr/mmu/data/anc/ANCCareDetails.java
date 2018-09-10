@@ -12,7 +12,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
-import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
 
 @Entity
 @Table(name = "t_anccare")
@@ -35,7 +34,7 @@ public class ANCCareDetails {
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
@@ -55,14 +54,6 @@ public class ANCCareDetails {
 	@Expose
 	@Column(name = "Description")
 	private String description;
-
-	/*@Expose
-	@Column(name = "ANCRegistrationDate")
-	private Date aNCRegistrationDate;
-
-	@Expose
-	@Column(name = "ANCVisitNumber")
-	private Short aNCVisitNumber;*/
 
 	@Expose
 	@Column(name = "LastMenstrualPeriod_LMP")
@@ -84,10 +75,6 @@ public class ANCCareDetails {
 	@Column(name = "PrimiGravida")
 	private Boolean primiGravida;
 
-	/*@Expose
-	@Column(name = "ObstetricFormula")
-	private String obstetricFormula;
-*/
 	@Expose
 	@Column(name = "Gravida_G")
 	private Short gravida_G;
@@ -145,38 +132,41 @@ public class ANCCareDetails {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
+	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
-	
+
 	public ANCCareDetails() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public ANCCareDetails(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, Long visitCode, Short visitNo,
-			String comolaintType, String duration, String description, 
-			Date lastMenstrualPeriod_LMP, Short gestationalAgeOrPeriodofAmenorrhea_POA, Short trimesterNumber,
-			Date expectedDateofDelivery, Boolean primiGravida, Short gravida_G,
-			Short termDeliveries_T, Short pretermDeliveries_P, Short abortions_A, Short livebirths_L, String bloodGroup) {
+	public ANCCareDetails(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, Long visitCode,
+			Short visitNo, String comolaintType, String duration, String description, Date lastMenstrualPeriod_LMP,
+			Short gestationalAgeOrPeriodofAmenorrhea_POA, Short trimesterNumber, Date expectedDateofDelivery,
+			Boolean primiGravida, Short gravida_G, Short termDeliveries_T, Short pretermDeliveries_P, Short abortions_A,
+			Short livebirths_L, String bloodGroup) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -201,26 +191,27 @@ public class ANCCareDetails {
 	}
 
 	public static ANCCareDetails getANCCareDetails(ArrayList<Object[]> resList) {
-		ArrayList<ANCCareDetails> resArray = new ArrayList<ANCCareDetails>();
+		// ArrayList<ANCCareDetails> resArray = new ArrayList<ANCCareDetails>();
 		ANCCareDetails cOBJ = null;
 		for (Object[] obj : resList) {
-			cOBJ = new ANCCareDetails((Long)obj[0], (Long)obj[1], (Long)obj[2], (Integer)obj[3], (Long)obj[4], (Short)obj[5], (String)obj[6], 
-					(String)obj[7], (String)obj[8], (Date)obj[9], (Short)obj[10], (Short)obj[11], (Date)obj[12], (Boolean)obj[13], 
-					(Short)obj[14], (Short)obj[15], (Short)obj[16], (Short)obj[17], (Short)obj[18], (String)obj[19]);
-			
-			Date Ldate=(Date)obj[9];
-			if(null != Ldate){
+			cOBJ = new ANCCareDetails((Long) obj[0], (Long) obj[1], (Long) obj[2], (Integer) obj[3], (Long) obj[4],
+					(Short) obj[5], (String) obj[6], (String) obj[7], (String) obj[8], (Date) obj[9], (Short) obj[10],
+					(Short) obj[11], (Date) obj[12], (Boolean) obj[13], (Short) obj[14], (Short) obj[15],
+					(Short) obj[16], (Short) obj[17], (Short) obj[18], (String) obj[19]);
+
+			Date Ldate = (Date) obj[9];
+			if (null != Ldate) {
 				cOBJ.setLmpDate(Ldate.toString());
 			}
-			
-			Date EDate=(Date)obj[12];
-			if(null != EDate){
+
+			Date EDate = (Date) obj[12];
+			if (null != EDate) {
 				cOBJ.setExpDelDt(EDate.toString());
 			}
 		}
 		return cOBJ;
 	}
-	
+
 	public Long getID() {
 		return ID;
 	}
@@ -251,6 +242,14 @@ public class ANCCareDetails {
 
 	public void setProviderServiceMapID(Integer providerServiceMapID) {
 		this.providerServiceMapID = providerServiceMapID;
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
 	}
 
 	public Short getVisitNo() {
@@ -445,6 +444,14 @@ public class ANCCareDetails {
 		this.vanSerialNo = vanSerialNo;
 	}
 
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
 	public String getVehicalNo() {
 		return vehicalNo;
 	}
@@ -483,14 +490,6 @@ public class ANCCareDetails {
 
 	public void setReservedForChange(String reservedForChange) {
 		this.reservedForChange = reservedForChange;
-	}
-
-	public Long getVisitCode() {
-		return visitCode;
-	}
-
-	public void setVisitCode(Long visitCode) {
-		this.visitCode = visitCode;
 	}
 
 }

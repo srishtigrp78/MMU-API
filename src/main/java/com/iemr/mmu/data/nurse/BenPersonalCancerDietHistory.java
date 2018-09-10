@@ -28,15 +28,15 @@ public class BenPersonalCancerDietHistory {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
-	
+
 	@Expose
 	@Column(name = "DietType")
 	private String dietType;
@@ -64,13 +64,13 @@ public class BenPersonalCancerDietHistory {
 	@Expose
 	@Column(name = "IsRadiationExposure")
 	private Boolean ssRadiationExposure;
-	
+
 	@Transient
 	private String IsRadiationExposure;
-	
+
 	@Transient
 	private String IsThyroidDisorder;
-	
+
 	@Expose
 	@Column(name = "IsThyroidDisorder")
 	private Boolean isThyroidDisorder;
@@ -96,27 +96,31 @@ public class BenPersonalCancerDietHistory {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
+	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	@Transient
 	@JsonIgnore
 	private List<String> typeOfOilConsumedList;
@@ -156,7 +160,7 @@ public class BenPersonalCancerDietHistory {
 
 	@Transient
 	private Date captureDate;
-	
+
 	public BenPersonalCancerDietHistory(String dietType, Integer fruitConsumptionDays, Integer fruitQuantityPerDay,
 			Integer vegetableConsumptionDays, Integer vegetableQuantityPerDay, Integer intakeOfOutsidePreparedMeal,
 			String typeOfOilConsumed, String physicalActivityType, Boolean ssRadiationExposure,
@@ -170,16 +174,44 @@ public class BenPersonalCancerDietHistory {
 		this.intakeOfOutsidePreparedMeal = intakeOfOutsidePreparedMeal;
 		this.typeOfOilConsumed = typeOfOilConsumed;
 		this.physicalActivityType = physicalActivityType;
-		if(null != ssRadiationExposure && ssRadiationExposure)
+		if (null != ssRadiationExposure && ssRadiationExposure)
 			this.IsRadiationExposure = "Yes";
 		else
 			this.IsRadiationExposure = "No";
-		if(null != isThyroidDisorder && isThyroidDisorder)
+		if (null != isThyroidDisorder && isThyroidDisorder)
 			this.IsThyroidDisorder = "Yes";
 		else
 			this.IsThyroidDisorder = "No";
-		
+
 		this.captureDate = captureDate;
+	}
+
+	public String getIsRadiationExposure() {
+		return IsRadiationExposure;
+	}
+
+	public void setIsRadiationExposure(String isRadiationExposure) {
+		IsRadiationExposure = isRadiationExposure;
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
+	public Date getCaptureDate() {
+		return captureDate;
+	}
+
+	public void setCaptureDate(Date captureDate) {
+		this.captureDate = captureDate;
+	}
+
+	public void setIsThyroidDisorder(String isThyroidDisorder) {
+		IsThyroidDisorder = isThyroidDisorder;
 	}
 
 	public Long getID() {

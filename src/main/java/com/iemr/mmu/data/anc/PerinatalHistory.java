@@ -3,7 +3,6 @@ package com.iemr.mmu.data.anc;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,47 +29,47 @@ public class PerinatalHistory {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
-	
+
 	@Expose
 	@Column(name = "DeliveryPlaceID")
 	private Short deliveryPlaceID;
-	
+
 	@Expose
 	@Column(name = "PlaceOfDelivery")
 	private String placeOfDelivery;
-	
+
 	@Expose
 	@Column(name = "OtherPlaceOfDelivery")
 	private String otherPlaceOfDelivery;
-	
+
 	@Expose
 	@Column(name = "DeliveryTypeID")
 	private Short deliveryTypeID;
-	
+
 	@Expose
 	@Column(name = "TypeOfDelivery")
 	private String typeOfDelivery;
-	
+
 	@Expose
 	@Column(name = "ComplicationAtBirthID")
 	private Short complicationAtBirthID;
-	
+
 	@Expose
 	@Column(name = "ComplicationAtBirth")
 	private String complicationAtBirth;
-	
+
 	@Expose
 	@Column(name = "OtherComplicationAtBirth")
 	private String otherComplicationAtBirth;
-	
+
 	@Expose
 	@Column(name = "Gestation")
 	private String gestation;
@@ -78,7 +77,7 @@ public class PerinatalHistory {
 	@Expose
 	@Column(name = "BirthWeight_kg")
 	private Double birthWeight_kg;
-	
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -106,30 +105,34 @@ public class PerinatalHistory {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
+	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	@Transient
 	private Date captureDate;
-	
+
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
@@ -334,8 +337,9 @@ public class PerinatalHistory {
 		this.reservedForChange = reservedForChange;
 	}
 
-	public PerinatalHistory(Date createdDate, String placeOfDelivery, String otherPlaceOfDelivery, String typeOfDelivery,  String complicationAtBirth,
-			String otherComplicationAtBirth, String gestation, Double birthWeight_kg) {
+	public PerinatalHistory(Date createdDate, String placeOfDelivery, String otherPlaceOfDelivery,
+			String typeOfDelivery, String complicationAtBirth, String otherComplicationAtBirth, String gestation,
+			Double birthWeight_kg) {
 		super();
 		this.captureDate = createdDate;
 		this.placeOfDelivery = placeOfDelivery;
@@ -347,10 +351,10 @@ public class PerinatalHistory {
 		this.birthWeight_kg = birthWeight_kg;
 	}
 
-	public PerinatalHistory(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
-			Short deliveryPlaceID, String placeOfDelivery, String otherPlaceOfDelivery, Short deliveryTypeID,
-			String typeOfDelivery, Short complicationAtBirthID, String complicationAtBirth,
-			String otherComplicationAtBirth, String gestation, Double birthWeight_kg, Long visitCode) {
+	public PerinatalHistory(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, Short deliveryPlaceID,
+			String placeOfDelivery, String otherPlaceOfDelivery, Short deliveryTypeID, String typeOfDelivery,
+			Short complicationAtBirthID, String complicationAtBirth, String otherComplicationAtBirth, String gestation,
+			Double birthWeight_kg, Long visitCode) {
 		super();
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
@@ -367,13 +371,14 @@ public class PerinatalHistory {
 		this.birthWeight_kg = birthWeight_kg;
 		this.visitCode = visitCode;
 	}
-	
-	public static PerinatalHistory getBenPerinatalDetails(ArrayList<Object[]> perinatalHistoryDetails){
+
+	public static PerinatalHistory getBenPerinatalDetails(ArrayList<Object[]> perinatalHistoryDetails) {
 		PerinatalHistory perinatalDetails = null;
-		if(null != perinatalHistoryDetails && perinatalHistoryDetails.size()>0){
-			for(Object[] obj:perinatalHistoryDetails){
-				perinatalDetails = new PerinatalHistory((Long)obj[0], (Long)obj[1], (Integer)obj[2], (Short)obj[3], (String)obj[4], (String)obj[5],
-						(Short)obj[6], (String)obj[7], (Short)obj[8], (String)obj[9], (String)obj[10], (String)obj[11], (Double)obj[12], (Long)obj[13]);
+		if (null != perinatalHistoryDetails && perinatalHistoryDetails.size() > 0) {
+			for (Object[] obj : perinatalHistoryDetails) {
+				perinatalDetails = new PerinatalHistory((Long) obj[0], (Long) obj[1], (Integer) obj[2], (Short) obj[3],
+						(String) obj[4], (String) obj[5], (Short) obj[6], (String) obj[7], (Short) obj[8],
+						(String) obj[9], (String) obj[10], (String) obj[11], (Double) obj[12], (Long) obj[13]);
 			}
 		}
 		return perinatalDetails;
@@ -395,5 +400,5 @@ public class PerinatalHistory {
 	public void setVisitCode(Long visitCode) {
 		this.visitCode = visitCode;
 	}
-	
+
 }

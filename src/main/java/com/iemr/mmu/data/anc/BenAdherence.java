@@ -83,6 +83,10 @@ public class BenAdherence {
 	private String vehicalNo;
 	
 	@Expose
+	@Column(name = "VanID")
+	private Integer vanID;
+	
+	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
 	

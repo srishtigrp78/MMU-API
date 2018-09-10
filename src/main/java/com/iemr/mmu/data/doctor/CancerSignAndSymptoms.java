@@ -30,7 +30,7 @@ public class CancerSignAndSymptoms {
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
@@ -90,15 +90,15 @@ public class CancerSignAndSymptoms {
 	@Expose
 	@Column(name = "BreastEnlargement")
 	private Boolean breastEnlargement;
-	
+
 	@Expose
 	@Column(name = "LymphNode_Enlarged")
 	private Boolean lymphNode_Enlarged;
-	
+
 	@Expose
 	@Column(name = "BriefHistory")
 	private String observation;
-	
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -126,27 +126,31 @@ public class CancerSignAndSymptoms {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
+	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	public CancerSignAndSymptoms() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -156,10 +160,10 @@ public class CancerSignAndSymptoms {
 			Boolean shortnessOfBreath, Boolean coughGTE2Weeks, Boolean bloodInSputum, Boolean difficultyInOpeningMouth,
 			Boolean nonHealingUlcerOrPatchOrGrowth, Boolean changeInTheToneOfVoice, Boolean lumpInTheBreast,
 			Boolean bloodStainedDischargeFromNipple, Boolean changeInShapeAndSizeOfBreasts,
-			Boolean vaginalBleedingBetweenPeriods, Boolean vaginalBleedingAfterMenopause, Boolean vaginalBleedingAfterIntercourse, 
-			Boolean foulSmellingVaginalDischarge, Boolean breastEnlargement, Boolean lymphNode_Enlarged, String  observation,
-			Boolean deleted, String processed, String createdBy, Timestamp createdDate, String modifiedBy, 
-			Timestamp lastModDate) {
+			Boolean vaginalBleedingBetweenPeriods, Boolean vaginalBleedingAfterMenopause,
+			Boolean vaginalBleedingAfterIntercourse, Boolean foulSmellingVaginalDischarge, Boolean breastEnlargement,
+			Boolean lymphNode_Enlarged, String observation, Boolean deleted, String processed, String createdBy,
+			Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -187,6 +191,30 @@ public class CancerSignAndSymptoms {
 		this.createdDate = createdDate;
 		this.modifiedBy = modifiedBy;
 		this.lastModDate = lastModDate;
+	}
+
+	public Boolean getCoughgt2Weeks() {
+		return coughgt2Weeks;
+	}
+
+	public void setCoughgt2Weeks(Boolean coughgt2Weeks) {
+		this.coughgt2Weeks = coughgt2Weeks;
+	}
+
+	public String getObservation() {
+		return observation;
+	}
+
+	public void setObservation(String observation) {
+		this.observation = observation;
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
 	}
 
 	public Long getID() {
@@ -332,7 +360,7 @@ public class CancerSignAndSymptoms {
 	public void setBreastEnlargement(Boolean breastEnlargement) {
 		this.breastEnlargement = breastEnlargement;
 	}
-	
+
 	public Boolean getLymphNode_Enlarged() {
 		return lymphNode_Enlarged;
 	}
@@ -348,7 +376,7 @@ public class CancerSignAndSymptoms {
 	public void setBriefHistory(String observation) {
 		this.observation = observation;
 	}
-	
+
 	public Boolean getDeleted() {
 		return deleted;
 	}

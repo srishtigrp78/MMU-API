@@ -88,6 +88,10 @@ public class BenReferDetails {
 	private String vehicalNo;
 
 	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+
+	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
 
@@ -286,8 +290,6 @@ public class BenReferDetails {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	
 
 	public BenReferDetails(Long benReferID, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			Integer referredToInstituteID, String referredToInstituteName, Short serviceID, String serviceName,
@@ -323,6 +325,14 @@ public class BenReferDetails {
 			cOBJ.setRefrredToAdditionalServiceList(servicesList);
 		}
 		return cOBJ;
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
 	}
 
 }

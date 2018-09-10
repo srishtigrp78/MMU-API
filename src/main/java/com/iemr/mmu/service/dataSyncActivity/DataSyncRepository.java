@@ -8,9 +8,17 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.iemr.mmu.data.syncActivity_syncLayer.SyncUtilityClass;
 import com.iemr.mmu.repo.syncActivity_syncLayer.SyncUtilityClassRepo;
+
+/***
+ * 
+ * @author NE298657
+ *
+ */
 
 @Service
 public class DataSyncRepository {
@@ -27,7 +35,8 @@ public class DataSyncRepository {
 
 	}
 
-	public List<Map<String, Object>> getDataForGivenSchemaAndTable(String schema, String table, String columnNames) {
+	public List<Map<String, Object>> getDataForGivenSchemaAndTable(String schema, String table, String columnNames)
+			throws Exception {
 		jdbcTemplate = getJdbcTemplate();
 		String baseQuery = " SELECT " + columnNames + " FROM " + schema + "." + table + " WHERE processed != ? ";
 
@@ -36,14 +45,15 @@ public class DataSyncRepository {
 		return resultSetList;
 	}
 
-	public List<SyncUtilityClass> getVanAndServerColumnList(List<Integer> syncTableDetailsIDs) {
+	public List<SyncUtilityClass> getVanAndServerColumnList(List<Integer> syncTableDetailsIDs) throws Exception {
 		List<SyncUtilityClass> syncUtilityClassList = syncutilityClassRepo
 				.findBySyncTableDetailIDInOrderBySyncTableDetailID(syncTableDetailsIDs);
 		return syncUtilityClassList;
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
 	public int updateProcessedFlagInVan(String schemaName, String tableName, StringBuilder vanSerialNos,
-			String autoIncreamentColumn) {
+			String autoIncreamentColumn) throws Exception {
 		jdbcTemplate = getJdbcTemplate();
 		String query = " UPDATE " + schemaName + "." + tableName
 				+ " SET processed = 'P' , SyncedDate = now(), Syncedby = 'Neeraj baba' WHERE " + autoIncreamentColumn

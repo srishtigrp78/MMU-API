@@ -29,15 +29,15 @@ public class BenFamilyCancerHistory {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
-	
+
 	@Expose
 	@Column(name = "CancerDiseaseType")
 	private String cancerDiseaseType;
@@ -70,6 +70,10 @@ public class BenFamilyCancerHistory {
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
+
+	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
 
 	@Expose
 	@Column(name = "ParkingPlaceID")
@@ -124,6 +128,14 @@ public class BenFamilyCancerHistory {
 
 	public Long getID() {
 		return ID;
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
 	}
 
 	public void setID(Long iD) {

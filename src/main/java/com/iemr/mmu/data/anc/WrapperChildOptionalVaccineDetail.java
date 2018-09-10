@@ -11,6 +11,25 @@ public class WrapperChildOptionalVaccineDetail {
 	private Integer providerServiceMapID;
 	private String createdBy;
 
+	private Integer vanID;
+	private Integer parkingPlaceID;
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
+	public Integer getParkingPlaceID() {
+		return parkingPlaceID;
+	}
+
+	public void setParkingPlaceID(Integer parkingPlaceID) {
+		this.parkingPlaceID = parkingPlaceID;
+	}
+
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
@@ -72,6 +91,8 @@ public class WrapperChildOptionalVaccineDetail {
 					childOptionalVaccine.setBenVisitID(benVisitID);
 					childOptionalVaccine.setVisitCode(visitCode);
 					childOptionalVaccine.setProviderServiceMapID(providerServiceMapID);
+					childOptionalVaccine.setVanID(vanID);
+					childOptionalVaccine.setParkingPlaceID(parkingPlaceID);
 					childOptionalVaccine.setCreatedBy(createdBy);
 
 					childOptionalVaccineListTMP.add(childOptionalVaccine);

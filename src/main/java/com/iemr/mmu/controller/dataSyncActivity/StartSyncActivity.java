@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +22,7 @@ import io.swagger.annotations.ApiOperation;
  * 
  * @author NE298657
  * @date 16-08-2018
- * @operation Class used for data sync from van-to-server & server-to-van
+ * @purpose Class used for data sync from van-to-server & server-to-van
  *
  */
 @CrossOrigin
@@ -36,13 +37,14 @@ public class StartSyncActivity {
 	@CrossOrigin()
 	@ApiOperation(value = "start data sync from Van to Server", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/van-to-server" }, method = { RequestMethod.POST })
-	public String dataSyncToServer(@RequestBody String requestOBJ) {
+	public String dataSyncToServer(@RequestBody String requestOBJ,
+			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
 			System.out.println(LocalDateTime.now());
 			JSONObject obj = new JSONObject(requestOBJ);
 			if (obj != null && obj.has("groupName") && obj.get("groupName") != null) {
-				String s = uploadDataToServerImpl.getDataToSyncToServer(obj.getString("groupName"));
+				String s = uploadDataToServerImpl.getDataToSyncToServer(obj.getString("groupName"), Authorization);
 				if (s != null)
 					response.setResponse(s);
 				else

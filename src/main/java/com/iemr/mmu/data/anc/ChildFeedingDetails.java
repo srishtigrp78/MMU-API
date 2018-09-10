@@ -16,7 +16,7 @@ import com.google.gson.annotations.Expose;
 @Entity
 @Table(name = "t_childfeedinghistory")
 public class ChildFeedingDetails {
-	
+
 	@Id
 	@GeneratedValue
 	@Expose
@@ -30,15 +30,15 @@ public class ChildFeedingDetails {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
-	
+
 	@Expose
 	@Column(name = "ChildID")
 	private Long childID;
@@ -54,7 +54,7 @@ public class ChildFeedingDetails {
 	@Expose
 	@Column(name = "CompFeedStartAge")
 	private String compFeedStartAge;
-	
+
 	@Expose
 	@Column(name = "NoOfCompFeedPerDay")
 	private String noOfCompFeedPerDay;
@@ -94,30 +94,34 @@ public class ChildFeedingDetails {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
+	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	@Transient
 	private Date captureDate;
-	
+
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
@@ -298,9 +302,9 @@ public class ChildFeedingDetails {
 		this.reservedForChange = reservedForChange;
 	}
 
-	public ChildFeedingDetails(Date createdDate, Long childID, Long benMotherID, String typeOfFeed, 
-			String compFeedStartAge,  String noOfCompFeedPerDay,
-			String foodIntoleranceStatus, String typeofFoodIntolerance) {
+	public ChildFeedingDetails(Date createdDate, Long childID, Long benMotherID, String typeOfFeed,
+			String compFeedStartAge, String noOfCompFeedPerDay, String foodIntoleranceStatus,
+			String typeofFoodIntolerance) {
 		super();
 		this.captureDate = createdDate;
 		this.childID = childID;
@@ -328,13 +332,14 @@ public class ChildFeedingDetails {
 		this.typeofFoodIntolerance = typeofFoodIntolerance;
 		this.visitCode = visitCode;
 	}
-	
-	public static ChildFeedingDetails getBenFeedingDetails(ArrayList<Object[]> feedingHistoryDetails){
+
+	public static ChildFeedingDetails getBenFeedingDetails(ArrayList<Object[]> feedingHistoryDetails) {
 		ChildFeedingDetails feedingDetails = null;
-		if(null != feedingHistoryDetails && feedingHistoryDetails.size()>0){
-			for(Object[] obj:feedingHistoryDetails){
-				feedingDetails = new ChildFeedingDetails((Long)obj[0], (Long)obj[1], (Integer)obj[2], (Long)obj[3], 
-						(Long)obj[4], (String)obj[5], (String)obj[6], (String)obj[7], (String)obj[8], (String)obj[9], (Long)obj[10]);
+		if (null != feedingHistoryDetails && feedingHistoryDetails.size() > 0) {
+			for (Object[] obj : feedingHistoryDetails) {
+				feedingDetails = new ChildFeedingDetails((Long) obj[0], (Long) obj[1], (Integer) obj[2], (Long) obj[3],
+						(Long) obj[4], (String) obj[5], (String) obj[6], (String) obj[7], (String) obj[8],
+						(String) obj[9], (Long) obj[10]);
 			}
 		}
 		return feedingDetails;
@@ -356,5 +361,5 @@ public class ChildFeedingDetails {
 	public void setVisitCode(Long visitCode) {
 		this.visitCode = visitCode;
 	}
-	
+
 }

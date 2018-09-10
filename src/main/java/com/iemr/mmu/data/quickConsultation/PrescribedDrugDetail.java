@@ -125,6 +125,10 @@ public class PrescribedDrugDetail {
 	private String vehicalNo;
 
 	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+
+	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
 
@@ -426,6 +430,14 @@ public class PrescribedDrugDetail {
 
 	public void setQtyPrescribed(Integer qtyPrescribed) {
 		this.qtyPrescribed = qtyPrescribed;
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
 	}
 
 }

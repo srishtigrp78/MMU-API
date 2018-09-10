@@ -17,6 +17,25 @@ public class WrapperLabResultEntry {
 	private Short nurseFlag;
 	private Short doctorFlag;
 
+	private Integer vanID;
+	private Integer parkingPlaceID;
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
+	public Integer getParkingPlaceID() {
+		return parkingPlaceID;
+	}
+
+	public void setParkingPlaceID(Integer parkingPlaceID) {
+		this.parkingPlaceID = parkingPlaceID;
+	}
+
 	public Short getNurseFlag() {
 		return nurseFlag;
 	}
@@ -64,8 +83,6 @@ public class WrapperLabResultEntry {
 	public void setVisitID(Long visitID) {
 		this.visitID = visitID;
 	}
-	
-	
 
 	public Long getVisitCode() {
 		return visitCode;

@@ -1,13 +1,11 @@
 package com.iemr.mmu.data.doctor;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -18,10 +16,6 @@ import javax.persistence.Transient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
 import com.iemr.mmu.data.institution.Institute;
-import com.iemr.mmu.data.masterdata.nurse.CancerDiseaseType;
-import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
-import com.iemr.mmu.data.registrar.BeneficiaryData;
-import com.iemr.mmu.data.registrar.BeneficiaryDemographicData;
 
 @Entity
 @Table(name = "t_cancerdiagnosis")
@@ -31,75 +25,75 @@ public class CancerDiagnosis {
 	@Expose
 	@Column(name = "ID")
 	private Long ID;
-	
+
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
-	
+
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	
+
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
-	
+
 	@Expose
 	@Column(name = "VisitCode")
 	private Long visitCode;
-	
+
 	@Expose
 	@Column(name = "ProvisionalDiagnosisPrimaryDoctor")
 	private String provisionalDiagnosisPrimaryDoctor;
-	
+
 	@Expose
 	@Column(name = "ProvisionalDiagnosisOncologist")
 	private String provisionalDiagnosisOncologist;
-	
+
 	@Expose
 	@Column(name = "Remarks")
 	private String remarks;
-	
+
 	@Expose
 	@Column(name = "ReferredToInstituteID")
 	private Integer referredToInstituteID;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "referredToInstituteID", referencedColumnName = "institutionID", insertable = false, updatable = false)
 	private Institute institute;
-	
+
 	@Transient
 	@Expose
 	private String referredToInstituteName;
-	
+
 	@Expose
 	@Column(name = "RefrredToAdditionalService")
 	private String refrredToAdditionalService;
-	
+
 	@JsonIgnore
 	@Transient
 	private List<String> refrredToAdditionalServiceList;
 
 	@Expose
-	@Column(name = "Deleted",insertable = false, updatable = true)
-	private Boolean deleted; 
-	
+	@Column(name = "Deleted", insertable = false, updatable = true)
+	private Boolean deleted;
+
 	@Expose
-	@Column(name = "Processed",insertable = false, updatable = true)
+	@Column(name = "Processed", insertable = false, updatable = true)
 	private String processed;
-	
+
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
-	
+
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
 	private Timestamp createdDate;
-	
+
 	@Expose
 	@Column(name = "ModifiedBy")
 	private String modifiedBy;
-	
+
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
@@ -107,27 +101,31 @@ public class CancerDiagnosis {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
+	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	public CancerDiagnosis() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -268,7 +266,7 @@ public class CancerDiagnosis {
 	public void setLastModDate(Timestamp lastModDate) {
 		this.lastModDate = lastModDate;
 	}
-	
+
 	public String getReferredToInstituteName() {
 		return referredToInstituteName;
 	}
@@ -276,7 +274,7 @@ public class CancerDiagnosis {
 	public void setReferredToInstituteName(String referredToInstituteName) {
 		this.referredToInstituteName = referredToInstituteName;
 	}
-	
+
 	public List<String> getRefrredToAdditionalServiceList() {
 		return refrredToAdditionalServiceList;
 	}
@@ -348,5 +346,5 @@ public class CancerDiagnosis {
 	public void setVisitCode(Long visitCode) {
 		this.visitCode = visitCode;
 	}
-	
+
 }

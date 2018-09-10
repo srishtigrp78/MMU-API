@@ -14,7 +14,26 @@ public class WrapperMedicationHistory {
 	private Integer providerServiceMapID;
 	private String createdBy;
 
+	private Integer vanID;
+	private Integer parkingPlaceID;
+
 	private ArrayList<BenMedicationHistory> medicationHistoryList;
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
+	public Integer getParkingPlaceID() {
+		return parkingPlaceID;
+	}
+
+	public void setParkingPlaceID(Integer parkingPlaceID) {
+		this.parkingPlaceID = parkingPlaceID;
+	}
 
 	public ArrayList<BenMedicationHistory> getMedicationHistoryList() {
 		return medicationHistoryList;
@@ -40,7 +59,6 @@ public class WrapperMedicationHistory {
 		this.benVisitID = benVisitID;
 	}
 
-	
 	public Long getVisitCode() {
 		return visitCode;
 	}
@@ -76,6 +94,8 @@ public class WrapperMedicationHistory {
 				medicationHistory.setBenVisitID(benVisitID);
 				medicationHistory.setVisitCode(visitCode);
 				medicationHistory.setProviderServiceMapID(providerServiceMapID);
+				medicationHistory.setVanID(vanID);
+				medicationHistory.setParkingPlaceID(parkingPlaceID);
 				medicationHistory.setCreatedBy(createdBy);
 
 				medicationHistory.setYear(Utility.convertToDateFormat(timePeriodUnit, timePeriodAgo));

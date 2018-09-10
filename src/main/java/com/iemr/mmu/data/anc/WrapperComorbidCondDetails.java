@@ -14,7 +14,26 @@ public class WrapperComorbidCondDetails {
 	private Integer providerServiceMapID;
 	private String createdBy;
 
+	private Integer vanID;
+	private Integer parkingPlaceID;
+
 	private ArrayList<BencomrbidityCondDetails> comorbidityConcurrentConditionsList;
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
+	public Integer getParkingPlaceID() {
+		return parkingPlaceID;
+	}
+
+	public void setParkingPlaceID(Integer parkingPlaceID) {
+		this.parkingPlaceID = parkingPlaceID;
+	}
 
 	public ArrayList<BencomrbidityCondDetails> getComorbidityConcurrentConditionsList() {
 		return comorbidityConcurrentConditionsList;
@@ -76,6 +95,8 @@ public class WrapperComorbidCondDetails {
 				comrbidityCond.setBenVisitID(benVisitID);
 				comrbidityCond.setVisitCode(visitCode);
 				comrbidityCond.setProviderServiceMapID(providerServiceMapID);
+				comrbidityCond.setVanID(vanID);
+				comrbidityCond.setParkingPlaceID(parkingPlaceID);
 				comrbidityCond.setCreatedBy(createdBy);
 				comrbidityCond.setYear(Utility.convertToDateFormat(timePeriodUnit, timePeriodAgo));
 
@@ -102,7 +123,8 @@ public class WrapperComorbidCondDetails {
 
 				Integer timePeriodAgo = Integer.parseInt(timePeriod.get("timePeriodAgo").toString());
 				BencomrbidityCondDetails comrbidityConds = new BencomrbidityCondDetails((Short) obj[3], (String) obj[4],
-						(String) obj[6], (Boolean) obj[7], timePeriodAgo, timePeriod.get("timePeriodUnit").toString(), (Long) obj[9]);
+						(String) obj[6], (Boolean) obj[7], timePeriodAgo, timePeriod.get("timePeriodUnit").toString(),
+						(Long) obj[9]);
 
 				WCD.comorbidityConcurrentConditionsList.add(comrbidityConds);
 

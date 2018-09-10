@@ -67,34 +67,38 @@ public class CancerExaminationImageAnnotation {
 	@Expose
 	@Column(name = "VanSerialNo")
 	private Long vanSerialNo;
-	
+
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	
+
+	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+
 	@Expose
 	@Column(name = "SyncedBy")
 	private String syncedBy;
-	
+
 	@Expose
 	@Column(name = "SyncedDate")
 	private Timestamp syncedDate;
-	
+
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-	
+
 	public CancerExaminationImageAnnotation() {
 	}
 
 	public CancerExaminationImageAnnotation(Long iD, Long beneficiaryRegID, Long benVisitID,
 			Integer providerServiceMapID, Integer cancerImageID, Integer xCoordinate, Integer yCoordinate,
-			Integer point, String pointDesc, Boolean deleted, String processed, String createdBy,
-			Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
+			Integer point, String pointDesc, Boolean deleted, String processed, String createdBy, Timestamp createdDate,
+			String modifiedBy, Timestamp lastModDate) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -111,6 +115,14 @@ public class CancerExaminationImageAnnotation {
 		this.createdDate = createdDate;
 		this.modifiedBy = modifiedBy;
 		this.lastModDate = lastModDate;
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
 	}
 
 	public Long getID() {

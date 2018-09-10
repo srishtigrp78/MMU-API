@@ -575,7 +575,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 		return cancerSignAndSymptoms;
 	}
 
-	public List<CancerLymphNodeDetails> getBenCancerLymphNodeDetailsData(Long benRegID, Long  visitCode) {
+	public List<CancerLymphNodeDetails> getBenCancerLymphNodeDetailsData(Long benRegID, Long visitCode) {
 		List<CancerLymphNodeDetails> cancerLymphNodeDetails = cancerLymphNodeExaminationRepo
 				.getBenCancerLymphNodeDetails(benRegID, visitCode);
 		return cancerLymphNodeDetails;
@@ -1034,10 +1034,10 @@ public class CSNurseServiceImpl implements CSNurseService {
 		columnMap.put("keyName", "IsPostMenopauseBleeding");
 		columns.add(columnMap);
 
-//		columnMap = new HashMap<>();
-//		columnMap.put("columnName", "Foul Smelling Discharge");
-//		columnMap.put("keyName", "IsFoulSmellingDischarge");
-//		columns.add(columnMap);
+		// columnMap = new HashMap<>();
+		// columnMap.put("columnName", "Foul Smelling Discharge");
+		// columnMap.put("keyName", "IsFoulSmellingDischarge");
+		// columns.add(columnMap);
 
 		resMap.put("columns", columns);
 		resMap.put("data", benObstetricCancerHistoryArrayList);
@@ -1045,7 +1045,8 @@ public class CSNurseServiceImpl implements CSNurseService {
 		return new Gson().toJson(resMap);
 	}
 
-	public Long saveLymphNodeDetails(List<CancerLymphNodeDetails> cancerLymphNodeDetails, Long benVisitID, Long benVisitCode) {
+	public Long saveLymphNodeDetails(List<CancerLymphNodeDetails> cancerLymphNodeDetails, Long benVisitID,
+			Long benVisitCode) {
 		Long responseData = null;
 		for (CancerLymphNodeDetails cancerLymphNodeDetail : cancerLymphNodeDetails) {
 			cancerLymphNodeDetail.setBenVisitID(benVisitID);
@@ -1064,7 +1065,8 @@ public class CSNurseServiceImpl implements CSNurseService {
 		return responseData;
 	}
 
-	public Long saveCancerSignAndSymptomsData(CancerSignAndSymptoms cancerSignAndSymptoms, Long benVisitID, Long benVisitCode) {
+	public Long saveCancerSignAndSymptomsData(CancerSignAndSymptoms cancerSignAndSymptoms, Long benVisitID,
+			Long benVisitCode) {
 		cancerSignAndSymptoms.setBenVisitID(benVisitID);
 		cancerSignAndSymptoms.setVisitCode(benVisitCode);
 		Long response = saveCancerSignAndSymptomsData(cancerSignAndSymptoms);
@@ -1150,7 +1152,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 		Long x = null;
 		for (WrapperCancerExamImgAnotasn wrapperCancerExamImgAnotasn : wrapperCancerExamImgAnotasnList) {
 			wrapperCancerExamImgAnotasn.setVisitID(benVisitID);
-			}
+		}
 		List<CancerExaminationImageAnnotation> objList = (List<CancerExaminationImageAnnotation>) cancerExaminationImageAnnotationRepo
 				.save(getCancerExaminationImageAnnotationList(wrapperCancerExamImgAnotasnList, benVisitCode));
 		if (objList != null && objList.size() > 0) {
@@ -1174,8 +1176,11 @@ public class CSNurseServiceImpl implements CSNurseService {
 							cancerExaminationImageAnnotation.setBenVisitID(obj.getVisitID());
 							cancerExaminationImageAnnotation.setVisitCode(visitCode);
 							cancerExaminationImageAnnotation.setProviderServiceMapID(obj.getProviderServiceMapID());
+							cancerExaminationImageAnnotation.setVanID(obj.getVanID());
+							cancerExaminationImageAnnotation.setParkingPlaceID(obj.getParkingPlaceID());
 							cancerExaminationImageAnnotation.setCreatedBy(obj.getCreatedBy());
 							cancerExaminationImageAnnotation.setCancerImageID(obj.getImageID());
+
 							Double a = (Double) marker.get("xCord");
 							cancerExaminationImageAnnotation.setxCoordinate(a.intValue());
 							Double b = (Double) marker.get("yCord");
