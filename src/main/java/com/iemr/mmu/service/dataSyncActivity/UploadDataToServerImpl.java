@@ -1,6 +1,5 @@
 package com.iemr.mmu.service.dataSyncActivity;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,52 +51,24 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	 * @return
 	 */
 	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = { Exception.class })
-	public String getDataToSyncToServer(String groupName, String Authorization) throws Exception {
+	public String getDataToSyncToServer(Integer groupID, String Authorization) throws Exception {
 
 		String syncData = null;
-		switch (groupName) {
-		case "benDetails": {
-			syncData = syncBenVisitDetailsData(Authorization);
-		}
-			break;
+		if (groupID != null && groupID > 0) {
+			switch (groupID) {
+			case 1: {
+				syncData = syncBenVisitDetailsData(groupID, Authorization);
+			}
+				break;
 
-		case "benImages": {
-			syncData = syncBenVisitDetailsData(Authorization);
-		}
-			break;
+			case 2: {
+				syncData = syncBenVisitDetailsData(groupID, Authorization);
+			}
+				break;
 
-		case "benVisitDetails": {
-			syncData = syncBenVisitDetailsData(Authorization);
-		}
-			break;
-
-		case "benVitals": {
-			syncData = syncBenVisitDetailsData(Authorization);
-		}
-			break;
-
-		case "benHistory": {
-			syncData = syncBenVisitDetailsData(Authorization);
-		}
-			break;
-
-		case "benExamination": {
-			syncData = syncBenVisitDetailsData(Authorization);
-		}
-			break;
-
-		case "benDiagnosis": {
-			syncData = syncBenVisitDetailsData(Authorization);
-		}
-			break;
-
-		case "benReferral": {
-			syncData = syncBenVisitDetailsData(Authorization);
-		}
-			break;
-
-		default:
-			break;
+			default:
+				break;
+			}
 		}
 		return syncData;
 	}
@@ -107,13 +78,10 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	 * @param Authorization
 	 * @return
 	 */
-	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
-	public String syncBenVisitDetailsData(String Authorization) throws Exception {
-		List<Integer> syncTableDetailsIDs = new ArrayList<>();
-		// 1 = Beneficiary visit details : "t_benvisitdetail"
-		syncTableDetailsIDs.add(1);
-		// Start data sync process for this group
-		String serverAcknowledgement = startDataSync(syncTableDetailsIDs, Authorization);
+	public String syncBenVisitDetailsData(Integer groupID, String Authorization) throws Exception {
+
+		// sync activity trigger
+		String serverAcknowledgement = startDataSync(groupID, Authorization);
 
 		return serverAcknowledgement;
 	}
@@ -124,11 +92,11 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	 * @param Authorization
 	 * @return
 	 */
-	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
-	private String startDataSync(List<Integer> syncTableDetailsIDs, String Authorization) throws Exception {
+
+	private String startDataSync(Integer groupID, String Authorization) throws Exception {
 		String serverAcknowledgement = null;
 		// fetch table-name, van-side-columns, server-side-columns
-		List<SyncUtilityClass> syncUtilityClassList = getVanAndServerColumns(syncTableDetailsIDs);
+		List<SyncUtilityClass> syncUtilityClassList = getVanAndServerColumns(groupID);
 		for (SyncUtilityClass obj : syncUtilityClassList) {
 			// get data from DB to sync to server
 			List<Map<String, Object>> syncData = getDataToSync(obj.getSchemaName(), obj.getTableName(),
@@ -172,9 +140,9 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	 * @param syncTableDetailsIDs
 	 * @return
 	 */
-	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
-	private List<SyncUtilityClass> getVanAndServerColumns(List<Integer> syncTableDetailsIDs) throws Exception {
-		List<SyncUtilityClass> syncUtilityClassList = dataSyncRepository.getVanAndServerColumnList(syncTableDetailsIDs);
+
+	private List<SyncUtilityClass> getVanAndServerColumns(Integer groupID) throws Exception {
+		List<SyncUtilityClass> syncUtilityClassList = dataSyncRepository.getVanAndServerColumnList(groupID);
 		return syncUtilityClassList;
 	}
 
@@ -185,7 +153,7 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	 * @param columnNames
 	 * @return
 	 */
-	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
+
 	private List<Map<String, Object>> getDataToSync(String schemaName, String tableName, String columnNames)
 			throws Exception {
 		List<Map<String, Object>> resultSetList = dataSyncRepository.getDataForGivenSchemaAndTable(schemaName,
@@ -200,7 +168,7 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	 * @param size
 	 * @return
 	 */
-	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
+
 	private List<Map<String, Object>> getBatchOfAskedSizeDataToSync(List<Map<String, Object>> syncData, int startIndex,
 			int size) throws Exception {
 		List<Map<String, Object>> syncDataOfBatchSize = syncData.subList(startIndex, (startIndex + size));
@@ -217,7 +185,7 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	 * @param Authorization
 	 * @return
 	 */
-	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
+
 	public String syncDataToServer(String schemaName, String tableName, String vanAutoIncColumnName,
 			String serverColumns, List<Map<String, Object>> dataToBesync, String Authorization) throws Exception {
 
@@ -271,7 +239,7 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	 * @param dataToBesync
 	 * @return
 	 */
-	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
+
 	public StringBuilder getVanSerialNoListForSyncedData(String vanAutoIncColumnName,
 			List<Map<String, Object>> dataToBesync) throws Exception {
 		// comma separated van serial no

@@ -41,17 +41,16 @@ public class DataSyncRepository {
 		String baseQuery = " SELECT " + columnNames + " FROM " + schema + "." + table + " WHERE processed != ? ";
 
 		List<Map<String, Object>> resultSetList = jdbcTemplate.queryForList(baseQuery, "P");
-
 		return resultSetList;
 	}
 
-	public List<SyncUtilityClass> getVanAndServerColumnList(List<Integer> syncTableDetailsIDs) throws Exception {
+	public List<SyncUtilityClass> getVanAndServerColumnList(Integer groupID) throws Exception {
 		List<SyncUtilityClass> syncUtilityClassList = syncutilityClassRepo
-				.findBySyncTableDetailIDInOrderBySyncTableDetailID(syncTableDetailsIDs);
+				.findBySyncTableGroupIDOrderBySyncTableDetailID(groupID);
 		return syncUtilityClassList;
 	}
 
-	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
+	
 	public int updateProcessedFlagInVan(String schemaName, String tableName, StringBuilder vanSerialNos,
 			String autoIncreamentColumn) throws Exception {
 		jdbcTemplate = getJdbcTemplate();

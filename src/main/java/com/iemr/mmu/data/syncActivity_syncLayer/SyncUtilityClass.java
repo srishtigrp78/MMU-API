@@ -37,6 +37,9 @@ public class SyncUtilityClass {
 	@Column(name = "VanAutoIncColumnName")
 	private String vanAutoIncColumnName;
 	@Expose
+	@Column(name = "SyncTableGroupID")
+	private Integer syncTableGroupID;
+	@Expose
 	@Column(name = "IsMaster")
 	private Boolean isMaster;
 	@Expose
@@ -113,6 +116,14 @@ public class SyncUtilityClass {
 
 	public void setVanAutoIncColumnName(String vanAutoIncColumnName) {
 		this.vanAutoIncColumnName = vanAutoIncColumnName;
+	}
+
+	public Integer getSyncTableGroupID() {
+		return syncTableGroupID;
+	}
+
+	public void setSyncTableGroupID(Integer syncTableGroupID) {
+		this.syncTableGroupID = syncTableGroupID;
 	}
 
 }

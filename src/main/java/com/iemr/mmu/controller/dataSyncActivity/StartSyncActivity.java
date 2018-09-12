@@ -43,8 +43,8 @@ public class StartSyncActivity {
 		try {
 			System.out.println(LocalDateTime.now());
 			JSONObject obj = new JSONObject(requestOBJ);
-			if (obj != null && obj.has("groupName") && obj.get("groupName") != null) {
-				String s = uploadDataToServerImpl.getDataToSyncToServer(obj.getString("groupName"), Authorization);
+			if (obj != null && obj.has("groupID") && obj.get("groupID") != null) {
+				String s = uploadDataToServerImpl.getDataToSyncToServer(obj.getInt("groupID"), Authorization);
 				if (s != null)
 					response.setResponse(s);
 				else
