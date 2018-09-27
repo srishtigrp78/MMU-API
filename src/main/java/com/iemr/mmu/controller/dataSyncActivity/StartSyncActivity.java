@@ -59,4 +59,22 @@ public class StartSyncActivity {
 		System.out.println(LocalDateTime.now());
 		return response.toStringWithSerialization();
 	}
+
+	@CrossOrigin()
+	@ApiOperation(value = "get data sync group details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getSyncGroupDetails" }, method = { RequestMethod.GET })
+	public String getSyncGroupDetails() {
+		OutputResponse response = new OutputResponse();
+		try {
+			String s = uploadDataToServerImpl.getDataSyncGroupDetails();
+			if (s != null)
+				response.setResponse(s);
+			else
+				response.setError(5000, "Error in data sync");
+		} catch (Exception e) {
+			logger.error("Error in getting data sync group details : " + e);
+			response.setError(e);
+		}
+		return response.toString();
+	}
 }

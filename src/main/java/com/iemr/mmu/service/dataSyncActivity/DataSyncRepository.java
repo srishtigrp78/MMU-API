@@ -38,7 +38,7 @@ public class DataSyncRepository {
 	public List<Map<String, Object>> getDataForGivenSchemaAndTable(String schema, String table, String columnNames)
 			throws Exception {
 		jdbcTemplate = getJdbcTemplate();
-		String baseQuery = " SELECT " + columnNames + " FROM " + schema + "." + table + " WHERE processed != ? ";
+		String baseQuery = " SELECT " + columnNames + " FROM " + schema + "." + table + " WHERE processed != ? AND vanID is not null ";
 
 		List<Map<String, Object>> resultSetList = jdbcTemplate.queryForList(baseQuery, "P");
 		return resultSetList;

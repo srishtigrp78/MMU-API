@@ -53,7 +53,7 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 		}
 
 		// schema name hard coded
-		String query = getQueryToInsertUpdateDataToServerDB("neeraj", syncUploadDataDigester.getTableName(),
+		String query = getQueryToInsertUpdateDataToServerDB("db_iemr_sync", syncUploadDataDigester.getTableName(),
 				syncUploadDataDigester.getServerColumns());
 
 		// call repository to execute the query with given data list

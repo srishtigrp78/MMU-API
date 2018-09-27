@@ -15,7 +15,8 @@ import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 public interface BenClinicalObservationsRepo extends CrudRepository<BenClinicalObservations, Long> {
 
 	@Query("select Date(createdDate), significantFindings  from BenClinicalObservations a where a.beneficiaryRegID = :beneficiaryRegID "
-			+ "AND significantFindings is not null AND isForHistory = true AND deleted = false")
+			+ "AND significantFindings is not null AND isForHistory = true AND deleted = false "
+			+ " ORDER BY createdDate DESC ")
 	public ArrayList<Object[]> getPreviousSignificantFindings(@Param("beneficiaryRegID") Long beneficiaryRegID);
 
 	@Query(" SELECT beneficiaryRegID, benVisitID, providerServiceMapID, clinicalObservation, "

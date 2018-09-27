@@ -20,7 +20,9 @@ import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.iemr.mmu.data.syncActivity_syncLayer.DataSyncGroups;
 import com.iemr.mmu.data.syncActivity_syncLayer.SyncUtilityClass;
+import com.iemr.mmu.repo.syncActivity_syncLayer.DataSyncGroupsRepo;
 
 /***
  * 
@@ -40,6 +42,8 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 
 	@Autowired
 	private DataSyncRepository dataSyncRepository;
+	@Autowired
+	private DataSyncGroupsRepo dataSyncGroupsRepo;
 
 	// batch size for data upload
 	private static final int BATCH_SIZE = 30;
@@ -54,22 +58,24 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	public String getDataToSyncToServer(Integer groupID, String Authorization) throws Exception {
 
 		String syncData = null;
-		if (groupID != null && groupID > 0) {
-			switch (groupID) {
-			case 1: {
-				syncData = syncBenVisitDetailsData(groupID, Authorization);
-			}
-				break;
+		syncData = syncIntercepter(groupID, Authorization);
 
-			case 2: {
-				syncData = syncBenVisitDetailsData(groupID, Authorization);
-			}
-				break;
-
-			default:
-				break;
-			}
-		}
+		// if (groupID != null && groupID > 0) {
+		// switch (groupID) {
+		// case 1: {
+		// syncData = syncBenVisitDetailsData(groupID, Authorization);
+		// }
+		// break;
+		//
+		// case 2: {
+		// syncData = syncBenVisitDetailsData(groupID, Authorization);
+		// }
+		// break;
+		//
+		// default:
+		// break;
+		// }
+		// }
 		return syncData;
 	}
 
@@ -78,7 +84,7 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	 * @param Authorization
 	 * @return
 	 */
-	public String syncBenVisitDetailsData(Integer groupID, String Authorization) throws Exception {
+	public String syncIntercepter(Integer groupID, String Authorization) throws Exception {
 
 		// sync activity trigger
 		String serverAcknowledgement = startDataSync(groupID, Authorization);
@@ -257,4 +263,11 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 		return vanSerialNos;
 	}
 
+	public String getDataSyncGroupDetails() {
+		List<DataSyncGroups> dataSyncGroupList = dataSyncGroupsRepo.findByDeleted(false);
+		if (dataSyncGroupList != null)
+			return new Gson().toJson(dataSyncGroupList);
+		else
+			return null;
+	}
 }
