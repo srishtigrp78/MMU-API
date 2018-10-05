@@ -8,8 +8,6 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.iemr.mmu.data.syncActivity_syncLayer.SyncUtilityClass;
 import com.iemr.mmu.repo.syncActivity_syncLayer.SyncUtilityClassRepo;
@@ -52,10 +50,10 @@ public class DataSyncRepository {
 
 	
 	public int updateProcessedFlagInVan(String schemaName, String tableName, StringBuilder vanSerialNos,
-			String autoIncreamentColumn) throws Exception {
+			String autoIncreamentColumn, String user) throws Exception {
 		jdbcTemplate = getJdbcTemplate();
 		String query = " UPDATE " + schemaName + "." + tableName
-				+ " SET processed = 'P' , SyncedDate = now(), Syncedby = 'Neeraj baba' WHERE " + autoIncreamentColumn
+				+ " SET processed = 'P' , SyncedDate = now(), Syncedby = '"+user+"' WHERE " + autoIncreamentColumn
 				+ " IN (" + vanSerialNos + ")";
 		System.out.println("hello");
 

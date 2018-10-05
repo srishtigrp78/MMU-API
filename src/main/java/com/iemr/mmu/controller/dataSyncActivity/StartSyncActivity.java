@@ -38,13 +38,15 @@ public class StartSyncActivity {
 	@ApiOperation(value = "start data sync from Van to Server", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/van-to-server" }, method = { RequestMethod.POST })
 	public String dataSyncToServer(@RequestBody String requestOBJ,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String Authorization,
+			@RequestHeader(value = "ServerAuthorization") String ServerAuthorization) {
 		OutputResponse response = new OutputResponse();
 		try {
 			System.out.println(LocalDateTime.now());
 			JSONObject obj = new JSONObject(requestOBJ);
 			if (obj != null && obj.has("groupID") && obj.get("groupID") != null) {
-				String s = uploadDataToServerImpl.getDataToSyncToServer(obj.getInt("groupID"), Authorization);
+				String s = uploadDataToServerImpl.getDataToSyncToServer(obj.getInt("groupID"), obj.getString("user"),
+						ServerAuthorization);
 				if (s != null)
 					response.setResponse(s);
 				else

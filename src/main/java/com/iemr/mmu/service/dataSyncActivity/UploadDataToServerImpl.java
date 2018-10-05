@@ -55,10 +55,10 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	 * @return
 	 */
 	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = { Exception.class })
-	public String getDataToSyncToServer(Integer groupID, String Authorization) throws Exception {
+	public String getDataToSyncToServer(Integer groupID, String user, String Authorization) throws Exception {
 
 		String syncData = null;
-		syncData = syncIntercepter(groupID, Authorization);
+		syncData = syncIntercepter(groupID, user, Authorization);
 
 		// if (groupID != null && groupID > 0) {
 		// switch (groupID) {
@@ -84,10 +84,10 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	 * @param Authorization
 	 * @return
 	 */
-	public String syncIntercepter(Integer groupID, String Authorization) throws Exception {
+	public String syncIntercepter(Integer groupID, String user, String Authorization) throws Exception {
 
 		// sync activity trigger
-		String serverAcknowledgement = startDataSync(groupID, Authorization);
+		String serverAcknowledgement = startDataSync(groupID, user, Authorization);
 
 		return serverAcknowledgement;
 	}
@@ -99,7 +99,7 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	 * @return
 	 */
 
-	private String startDataSync(Integer groupID, String Authorization) throws Exception {
+	private String startDataSync(Integer groupID, String user, String Authorization) throws Exception {
 		String serverAcknowledgement = null;
 		// fetch table-name, van-side-columns, server-side-columns
 		List<SyncUtilityClass> syncUtilityClassList = getVanAndServerColumns(groupID);
@@ -120,7 +120,8 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 							BATCH_SIZE);
 					// for each batch sync data to central server
 					serverAcknowledgement = syncDataToServer(obj.getSchemaName(), obj.getTableName(),
-							obj.getVanAutoIncColumnName(), obj.getServerColumnName(), syncDataBatch, Authorization);
+							obj.getVanAutoIncColumnName(), obj.getServerColumnName(), syncDataBatch, user,
+							Authorization);
 					startIndex += BATCH_SIZE;
 				}
 				// sync data to server for rest data left from batch
@@ -130,12 +131,13 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 							remainder);
 					// for extra data from batch sync data to central server
 					serverAcknowledgement = syncDataToServer(obj.getSchemaName(), obj.getTableName(),
-							obj.getVanAutoIncColumnName(), obj.getServerColumnName(), syncDataBatch, Authorization);
+							obj.getVanAutoIncColumnName(), obj.getServerColumnName(), syncDataBatch, user,
+							Authorization);
 				}
 
 			} else {
 				// nothing to sync
-				serverAcknowledgement = "There is no data to sync";
+				serverAcknowledgement = "Data successfully synced";
 			}
 		}
 		return serverAcknowledgement;
@@ -193,7 +195,8 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	 */
 
 	public String syncDataToServer(String schemaName, String tableName, String vanAutoIncColumnName,
-			String serverColumns, List<Map<String, Object>> dataToBesync, String Authorization) throws Exception {
+			String serverColumns, List<Map<String, Object>> dataToBesync, String user, String Authorization)
+			throws Exception {
 
 		RestTemplate restTemplate = new RestTemplate();
 
@@ -208,6 +211,7 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 		dataMap.put("vanAutoIncColumnName", vanAutoIncColumnName);
 		dataMap.put("serverColumns", serverColumns);
 		dataMap.put("syncData", dataToBesync);
+		dataMap.put("syncedBy", user);
 
 		String requestOBJ = gson.toJson(dataMap);
 
@@ -230,7 +234,7 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 				StringBuilder vanSerialNos = getVanSerialNoListForSyncedData(vanAutoIncColumnName, dataToBesync);
 				// update table for processed flag = "P"
 				i = dataSyncRepository.updateProcessedFlagInVan(schemaName, tableName, vanSerialNos,
-						vanAutoIncColumnName);
+						vanAutoIncColumnName, user);
 			}
 		}
 		if (i > 0)

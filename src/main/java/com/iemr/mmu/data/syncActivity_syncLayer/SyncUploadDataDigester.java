@@ -8,6 +8,7 @@ public class SyncUploadDataDigester {
 	private String tableName;
 	private String vanAutoIncColumnName;
 	private String serverColumns;
+	private String syncedBy;
 	private List<Map<String, Object>> syncData;
 
 	public String getSchemaName() {
@@ -48,6 +49,14 @@ public class SyncUploadDataDigester {
 
 	public void setSyncData(List<Map<String, Object>> syncData) {
 		this.syncData = syncData;
+	}
+
+	public String getSyncedBy() {
+		return syncedBy;
+	}
+
+	public void setSyncedBy(String syncedBy) {
+		this.syncedBy = syncedBy;
 	}
 
 }
