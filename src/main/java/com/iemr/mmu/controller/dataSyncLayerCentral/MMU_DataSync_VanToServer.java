@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.iemr.mmu.data.syncActivity_syncLayer.SyncDownloadMaster;
 import com.iemr.mmu.service.dataSyncLayerCentral.GetDataFromVanAndSyncToDBImpl;
+import com.iemr.mmu.service.dataSyncLayerCentral.GetMasterDataFromCentralForVanImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
@@ -30,6 +32,8 @@ public class MMU_DataSync_VanToServer {
 
 	@Autowired
 	private GetDataFromVanAndSyncToDBImpl getDataFromVanAndSyncToDBImpl;
+	@Autowired
+	private GetMasterDataFromCentralForVanImpl getMasterDataFromCentralForVanImpl;
 
 	@CrossOrigin()
 	@ApiOperation(value = "sync data from van-to-server", consumes = "application/json", produces = "application/json")
@@ -47,6 +51,29 @@ public class MMU_DataSync_VanToServer {
 			response.setError(e);
 		}
 		return response.toString();
+	}
+
+	@CrossOrigin()
+	@ApiOperation(value = "download data from server-to-van", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/server-to-van" }, method = { RequestMethod.POST })
+	public String dataDownloadFromServer(@RequestBody SyncDownloadMaster syncDownloadMaster,
+			@RequestHeader(value = "Authorization") String Authorization) {
+		OutputResponse response = new OutputResponse();
+		try {
+			if (syncDownloadMaster != null) {
+				String s = getMasterDataFromCentralForVanImpl.getMasterDataForVan(syncDownloadMaster);
+				if (s != null)
+					response.setResponse(s);
+				else
+					response.setError(5000, "Error in master download for table " + syncDownloadMaster.getSchemaName()
+							+ "." + syncDownloadMaster.getTableName());
+			} else {
+				response.setError(5000, "Invalid request");
+			}
+		} catch (Exception e) {
+			response.setError(e);
+		}
+		return response.toStringWithSerialization();
 	}
 
 }

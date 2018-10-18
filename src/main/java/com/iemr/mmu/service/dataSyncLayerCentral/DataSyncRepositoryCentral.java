@@ -1,5 +1,7 @@
 package com.iemr.mmu.service.dataSyncLayerCentral;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +29,7 @@ public class DataSyncRepositoryCentral {
 
 	}
 
+	// Data Upload Repository
 	public int checkRecordIsAlreadyPresentOrNot(String schemaName, String tableName, String vanSerialNo, String vanID) {
 		jdbcTemplate = getJdbcTemplate();
 		String query = " SELECT * FROM " + schemaName + "." + tableName + " WHERE VanSerialNo = " + vanSerialNo
@@ -46,4 +49,45 @@ public class DataSyncRepositoryCentral {
 
 		return i;
 	}
+
+	// End of Data Upload Repository
+
+	// Data Download Repository
+	public List<Map<String, Object>> getMasterDataFromTable(String schema, String table, String columnNames,
+			String masterType, Timestamp lastDownloadDate, Integer vanID, Integer psmID) throws Exception {
+
+		jdbcTemplate = getJdbcTemplate();
+		List<Map<String, Object>> resultSetList = new ArrayList<>();
+		String baseQuery = "";
+
+		if (masterType != null) {
+			if (lastDownloadDate != null) {
+				if (masterType.equalsIgnoreCase("A"))
+					baseQuery += " SELECT " + columnNames + " FROM " + schema + "." + table
+							+ " WHERE Date(LastModDate) >= '" + lastDownloadDate + "' ";
+				else if (masterType.equalsIgnoreCase("V"))
+					baseQuery += " SELECT " + columnNames + " FROM " + schema + "." + table
+							+ " WHERE Date(LastModDate) >= '" + lastDownloadDate + "' AND VanID = " + vanID;
+				else if (masterType.equalsIgnoreCase("P"))
+					baseQuery += " SELECT " + columnNames + " FROM " + schema + "." + table
+							+ " WHERE Date(LastModDate) >= '" + lastDownloadDate + "' AND ProviderServiceMapID = "
+							+ psmID;
+			} else {
+				if (masterType.equalsIgnoreCase("A"))
+					baseQuery += " SELECT " + columnNames + " FROM " + schema + "." + table;
+				else if (masterType.equalsIgnoreCase("V"))
+					baseQuery += " SELECT " + columnNames + " FROM " + schema + "." + table + " WHERE VanID = " + vanID;
+				else if (masterType.equalsIgnoreCase("P"))
+					baseQuery += " SELECT " + columnNames + " FROM " + schema + "." + table
+							+ " WHERE ProviderServiceMapID = " + psmID;
+
+			}
+		}
+
+		resultSetList = jdbcTemplate.queryForList(baseQuery);
+
+		return resultSetList;
+	}
+
+	// End of Data Download Repository
 }

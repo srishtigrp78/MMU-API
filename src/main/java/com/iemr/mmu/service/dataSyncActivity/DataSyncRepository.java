@@ -33,10 +33,12 @@ public class DataSyncRepository {
 
 	}
 
+	// ---------------------------- Upload repository
 	public List<Map<String, Object>> getDataForGivenSchemaAndTable(String schema, String table, String columnNames)
 			throws Exception {
 		jdbcTemplate = getJdbcTemplate();
-		String baseQuery = " SELECT " + columnNames + " FROM " + schema + "." + table + " WHERE processed != ? AND vanID is not null ";
+		String baseQuery = " SELECT " + columnNames + " FROM " + schema + "." + table
+				+ " WHERE processed != ? AND vanID is not null ";
 
 		List<Map<String, Object>> resultSetList = jdbcTemplate.queryForList(baseQuery, "P");
 		return resultSetList;
@@ -48,12 +50,11 @@ public class DataSyncRepository {
 		return syncUtilityClassList;
 	}
 
-	
 	public int updateProcessedFlagInVan(String schemaName, String tableName, StringBuilder vanSerialNos,
 			String autoIncreamentColumn, String user) throws Exception {
 		jdbcTemplate = getJdbcTemplate();
 		String query = " UPDATE " + schemaName + "." + tableName
-				+ " SET processed = 'P' , SyncedDate = now(), Syncedby = '"+user+"' WHERE " + autoIncreamentColumn
+				+ " SET processed = 'P' , SyncedDate = now(), Syncedby = '" + user + "' WHERE " + autoIncreamentColumn
 				+ " IN (" + vanSerialNos + ")";
 		System.out.println("hello");
 
@@ -62,5 +63,24 @@ public class DataSyncRepository {
 		return i;
 
 	}
+
+	// ---------------------------------- End of Upload repository
+
+	//
+	//
+
+	// ---------------------------------- Download Repository
+	public int[] updateLatestMasterInLocal(String query, List<Object[]> syncDataList) {
+		int[] i = null;
+		// get JDBC template
+		jdbcTemplate = getJdbcTemplate();
+		// start batch insert/update
+		i = jdbcTemplate.batchUpdate(query, syncDataList);
+
+		return i;
+
+	}
+
+	// ---------------------------------- End of Download Repository
 
 }

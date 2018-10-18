@@ -1,5 +1,6 @@
 package com.iemr.mmu.service.dataSyncLayerCentral;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,8 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 
 			String vanSerialNo = String.valueOf(map.get(syncUploadDataDigester.getVanAutoIncColumnName()));
 			String vanID = String.valueOf(map.get("VanID"));
+			map.replace("SyncedBy", syncUploadDataDigester.getSyncedBy());
+			map.replace("SyncedDate", String.valueOf(LocalDateTime.now()));
 
 			int recordCheck = dataSyncRepositoryCentral.checkRecordIsAlreadyPresentOrNot("db_iemr_sync",
 					syncUploadDataDigester.getTableName(), vanSerialNo, vanID);
@@ -94,7 +97,7 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 			j = dataSyncRepositoryCentral.syncDataToCentralDB(queryUpdate, syncDataListUpdate);
 		}
 
-		System.out.println("kamariya karela baloop LOLLYPOP lagelu ........");
+		// System.out.println("kamariya karela baloop LOLLYPOP lagelu ........");
 
 		// validating if data sync successfully
 		if ((i != null && syncDataListInsert.size() != i.length)

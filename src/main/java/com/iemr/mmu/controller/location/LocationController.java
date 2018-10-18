@@ -133,14 +133,15 @@ public class LocationController {
 	}
 
 	/***
-	 * based on servicepoint id and provider service map id get other location
-	 * details.
+	 * old, 11-10-2018 based on servicepoint id and provider service map id get
+	 * other location details.
 	 * 
 	 * @param comingRequest
 	 * @return
 	 */
+	@Deprecated
 	@CrossOrigin()
-	@RequestMapping(value = "/getLocDetailsBasedOnSpIDAndPsmID", method = { RequestMethod.POST }, produces = {
+	@RequestMapping(value = "/getLocDetailsBasedOnSpIDAndPsmID_old", method = { RequestMethod.POST }, produces = {
 			"application/json" })
 	public String getLocDetailsBasedOnSpIDAndPsmID(@RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -149,6 +150,35 @@ public class LocationController {
 			if (obj != null && obj.has("spID") && obj.has("spPSMID") && obj.get("spID") != null
 					&& obj.get("spPSMID") != null) {
 				String s = locationServiceImpl.getLocDetails(obj.getInt("spID"), obj.getInt("spPSMID"));
+
+				response.setResponse(s);
+			} else {
+				response.setError(5000, "Invalid request");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setError(5000, "Error while getting location data");
+		}
+		return response.toString();
+	}
+
+	/***
+	 * New, 11-10-2018 based on servicepoint id and provider service map id get
+	 * other location details.
+	 * 
+	 * @param comingRequest
+	 * @return
+	 */
+	@CrossOrigin()
+	@RequestMapping(value = "/getLocDetailsBasedOnSpIDAndPsmID", method = { RequestMethod.POST }, produces = {
+			"application/json" })
+	public String getLocDetailsBasedOnSpIDAndPsmIDNew(@RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj != null && obj.has("spID") && obj.has("spPSMID") && obj.get("spID") != null
+					&& obj.get("spPSMID") != null) {
+				String s = locationServiceImpl.getLocDetailsNew(obj.getInt("spID"), obj.getInt("spPSMID"));
 
 				response.setResponse(s);
 			} else {

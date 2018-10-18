@@ -60,22 +60,6 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 		String syncData = null;
 		syncData = syncIntercepter(groupID, user, Authorization);
 
-		// if (groupID != null && groupID > 0) {
-		// switch (groupID) {
-		// case 1: {
-		// syncData = syncBenVisitDetailsData(groupID, Authorization);
-		// }
-		// break;
-		//
-		// case 2: {
-		// syncData = syncBenVisitDetailsData(groupID, Authorization);
-		// }
-		// break;
-		//
-		// default:
-		// break;
-		// }
-		// }
 		return syncData;
 	}
 
@@ -137,7 +121,7 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 
 			} else {
 				// nothing to sync
-				serverAcknowledgement = "Data successfully synced";
+				serverAcknowledgement = syncData.size() + " Record successfully synced";
 			}
 		}
 		return serverAcknowledgement;
@@ -274,4 +258,5 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 		else
 			return null;
 	}
+
 }
