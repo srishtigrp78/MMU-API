@@ -121,7 +121,7 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 
 			} else {
 				// nothing to sync
-				serverAcknowledgement = syncData.size() + " Record successfully synced";
+				serverAcknowledgement = "Data successfully synced";
 			}
 		}
 		return serverAcknowledgement;
