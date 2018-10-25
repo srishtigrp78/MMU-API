@@ -46,7 +46,7 @@ public class DataSyncRepository {
 
 	public List<SyncUtilityClass> getVanAndServerColumnList(Integer groupID) throws Exception {
 		List<SyncUtilityClass> syncUtilityClassList = syncutilityClassRepo
-				.findBySyncTableGroupIDOrderBySyncTableDetailID(groupID);
+				.findBySyncTableGroupIDAndDeletedOrderBySyncTableDetailID(groupID, false);
 		return syncUtilityClassList;
 	}
 

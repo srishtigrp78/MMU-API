@@ -9,5 +9,5 @@ import com.iemr.mmu.data.syncActivity_syncLayer.SyncUtilityClass;
 
 @Repository
 public interface SyncUtilityClassRepo extends CrudRepository<SyncUtilityClass, Integer> {
-	List<SyncUtilityClass> findBySyncTableGroupIDOrderBySyncTableDetailID(Integer groupID);
+	List<SyncUtilityClass> findBySyncTableGroupIDAndDeletedOrderBySyncTableDetailID(Integer groupID, Boolean deleted);
 }
