@@ -45,8 +45,8 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 			map.replace("SyncedBy", syncUploadDataDigester.getSyncedBy());
 			map.replace("SyncedDate", String.valueOf(LocalDateTime.now()));
 
-			int recordCheck = dataSyncRepositoryCentral.checkRecordIsAlreadyPresentOrNot("db_iemr_sync",
-					syncUploadDataDigester.getTableName(), vanSerialNo, vanID);
+			int recordCheck = dataSyncRepositoryCentral.checkRecordIsAlreadyPresentOrNot(
+					syncUploadDataDigester.getSchemaName(), syncUploadDataDigester.getTableName(), vanSerialNo, vanID);
 
 			if (recordCheck == 0) {
 				objArr = new Object[map.size()];
@@ -80,8 +80,8 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 		int[] i = null;
 		if (syncDataListInsert != null && syncDataListInsert.size() > 0) {
 			// schema name hard coded(Insert query builder)
-			String queryInsert = getQueryToInsertDataToServerDB("db_iemr_sync", syncUploadDataDigester.getTableName(),
-					syncUploadDataDigester.getServerColumns());
+			String queryInsert = getQueryToInsertDataToServerDB(syncUploadDataDigester.getSchemaName(),
+					syncUploadDataDigester.getTableName(), syncUploadDataDigester.getServerColumns());
 
 			// call repository to execute the query with given data list(Insert)
 			i = dataSyncRepositoryCentral.syncDataToCentralDB(queryInsert, syncDataListInsert);
@@ -90,8 +90,8 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 		int[] j = null;
 		if (syncDataListUpdate != null && syncDataListUpdate.size() > 0) {
 			// schema name hard coded(Update query builder)
-			String queryUpdate = getQueryToUpdateDataToServerDB("db_iemr_sync", syncUploadDataDigester.getTableName(),
-					syncUploadDataDigester.getServerColumns());
+			String queryUpdate = getQueryToUpdateDataToServerDB(syncUploadDataDigester.getSchemaName(),
+					syncUploadDataDigester.getTableName(), syncUploadDataDigester.getServerColumns());
 
 			// call repository to execute the query with given data list(Update)
 			j = dataSyncRepositoryCentral.syncDataToCentralDB(queryUpdate, syncDataListUpdate);

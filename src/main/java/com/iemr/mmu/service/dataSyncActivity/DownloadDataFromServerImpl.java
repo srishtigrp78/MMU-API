@@ -205,7 +205,7 @@ public class DownloadDataFromServerImpl implements DownloadDataFromServer {
 		StringBuilder updateStatement = new StringBuilder();
 
 		// temp code pointing to diff target schema
-		syncDownloadMaster.setSchemaName("db_iemr_sync");
+		//syncDownloadMaster.setSchemaName("db_iemr_sync");
 
 		if (columnsArr != null && columnsArr.length > 0) {
 			int index = 0;
