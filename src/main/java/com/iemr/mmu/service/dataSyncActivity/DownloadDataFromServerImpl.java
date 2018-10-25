@@ -38,12 +38,13 @@ public class DownloadDataFromServerImpl implements DownloadDataFromServer {
 	@Autowired
 	private DataSyncRepository dataSyncRepository;
 
-	public static int progressCounter;
-	public static int totalCounter;
+	public static int progressCounter = 0;
+	public static int totalCounter = 0;
 	public static StringBuilder failedMasters;
 
 	public static int successCounter;
 	public static int failedCounter;
+	private static int downloadProgress;
 
 	/**
 	 * 
@@ -53,6 +54,11 @@ public class DownloadDataFromServerImpl implements DownloadDataFromServer {
 	 */
 	public String downloadMasterDataFromServer(String ServerAuthorization, Integer vanID, Integer psmID)
 			throws Exception {
+
+		if (totalCounter != progressCounter) {
+			return "inProgress";
+		}
+
 		String successFlag = " Master download started ";
 
 		ArrayList<SyncDownloadMaster> downloadMasterList = syncDownloadMasterRepo.getDownloadTables();
@@ -77,7 +83,7 @@ public class DownloadDataFromServerImpl implements DownloadDataFromServer {
 
 							int i = downloadDataFromServer(table, ServerAuthorization);
 							if (i > 0) {
-								//successCounter++;
+								// successCounter++;
 							} else {
 								failedCounter++;
 								failedMasters.append(table.getTableName() + " | ");
@@ -230,8 +236,9 @@ public class DownloadDataFromServerImpl implements DownloadDataFromServer {
 
 		Object[] objArr;
 
+		int pointer;
 		for (Map<String, Object> map : masterList) {
-			int pointer = 0;
+			pointer = 0;
 			objArr = new Object[map.size()];
 			for (Map.Entry<String, Object> entry : map.entrySet()) {
 				if (entry.getValue() != null) {

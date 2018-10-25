@@ -103,9 +103,13 @@ public class StartSyncActivity {
 					&& obj.get("providerServiceMapID") != null) {
 				String s = downloadDataFromServerImpl.downloadMasterDataFromServer(ServerAuthorization,
 						obj.getInt("vanID"), obj.getInt("providerServiceMapID"));
-				if (s != null)
-					response.setResponse(s);
-				else
+				if (s != null) {
+					if (s.equalsIgnoreCase("inProgress"))
+						response.setError(5000,
+								"Download is already in progress from different device, kindly wait to finish this");
+					else
+						response.setResponse(s);
+				} else
 					response.setError(5000, s);
 			} else {
 			}

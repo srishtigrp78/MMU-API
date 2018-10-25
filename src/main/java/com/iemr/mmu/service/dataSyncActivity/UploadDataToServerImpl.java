@@ -87,9 +87,11 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 		String serverAcknowledgement = null;
 		// fetch table-name, van-side-columns, server-side-columns
 		List<SyncUtilityClass> syncUtilityClassList = getVanAndServerColumns(groupID);
+		List<Map<String, Object>> syncData;
+		List<Map<String, Object>> syncDataBatch;
 		for (SyncUtilityClass obj : syncUtilityClassList) {
 			// get data from DB to sync to server
-			List<Map<String, Object>> syncData = getDataToSync(obj.getSchemaName(), obj.getTableName(),
+			syncData = getDataToSync(obj.getSchemaName(), obj.getTableName(),
 					obj.getVanColumnName());
 			if (syncData != null && syncData.size() > 0) {
 				int dataSize = syncData.size();
@@ -100,7 +102,7 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 				// sync data to server for batches
 				for (int i = 0; i < fullBatchCount; i++) {
 					// get data for each batch
-					List<Map<String, Object>> syncDataBatch = getBatchOfAskedSizeDataToSync(syncData, startIndex,
+					 syncDataBatch = getBatchOfAskedSizeDataToSync(syncData, startIndex,
 							BATCH_SIZE);
 					// for each batch sync data to central server
 					serverAcknowledgement = syncDataToServer(obj.getSchemaName(), obj.getTableName(),
@@ -111,7 +113,7 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 				// sync data to server for rest data left from batch
 				if (remainder > 0) {
 					// get data for extra data from batch
-					List<Map<String, Object>> syncDataBatch = getBatchOfAskedSizeDataToSync(syncData, startIndex,
+					 syncDataBatch = getBatchOfAskedSizeDataToSync(syncData, startIndex,
 							remainder);
 					// for extra data from batch sync data to central server
 					serverAcknowledgement = syncDataToServer(obj.getSchemaName(), obj.getTableName(),
