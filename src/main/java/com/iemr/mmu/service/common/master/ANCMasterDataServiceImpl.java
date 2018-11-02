@@ -414,12 +414,13 @@ public class ANCMasterDataServiceImpl {
 		ArrayList<Object[]> deliveryType = deliveryTypeRepo.getDeliveryTypes();
 		ArrayList<Object[]> developmentProblems = developmentProblemsRepo.getDevelopmentProblems();
 		ArrayList<Object[]> gestation = gestationRepo.getGestationTypes();
-		ArrayList<Object[]> illnessTypes = illnessTypesRepo.getIllnessTypes();
+		// # illness history
+		ArrayList<Object[]> illnessTypes = illnessTypesRepo.getIllnessTypes(visitCategoryID);
 		ArrayList<Object[]> jointTypes = jointTypesRepo.getJointTypes();
 		ArrayList<Object[]> menstrualCycleLengths = menstrualCycleRangeRepo.getMenstrualCycleRanges("Cycle Length");
 		ArrayList<Object[]> menstrualCycleBloodFlowDuration = menstrualCycleRangeRepo
 				.getMenstrualCycleRanges(" Blood Flow Duration");
-		ArrayList<Object[]> menstrualCycleStatus = menstrualCycleStatusRepo.getMenstrualCycleStatuses();
+		ArrayList<Object[]> menstrualCycleStatus = menstrualCycleStatusRepo.getMenstrualCycleStatuses(visitCategoryID);
 		ArrayList<Object[]> menstrualProblem = menstrualProblemRepo.getMenstrualProblems();
 		ArrayList<Object[]> musculoskeletalLateralityTypes = musculoskeletalRepo.getMusculoskeletalvalues("Laterality");
 		ArrayList<Object[]> musculoskeletalAbnormalityTypes = musculoskeletalRepo
@@ -429,8 +430,10 @@ public class ANCMasterDataServiceImpl {
 		// ArrayList<Object[]> pregComplicationTypes =
 		// pregComplicationTypesRepo.getPregComplicationTypes();
 		ArrayList<Object[]> pregDuration = pregDurationRepo.getPregDurationTypes();
-		ArrayList<Object[]> surgeryTypes = surgeryTypesRepo.getSurgeryTypes();
-		ArrayList<Object[]> comorbidConditions = comorbidConditionRepo.getComorbidConditions();
+		// # surgery history
+		ArrayList<Object[]> surgeryTypes = surgeryTypesRepo.getSurgeryTypes(visitCategoryID, gender);
+		// # comorbidity history
+		ArrayList<Object[]> comorbidConditions = comorbidConditionRepo.getComorbidConditions(visitCategoryID);
 		ArrayList<Object[]> grossMotorMilestones = grossMotorMilestoneRepo.getGrossMotorMilestones();
 		ArrayList<Object[]> fundalHeights = fundalHeightRepo.getFundalHeights();
 		ArrayList<Object[]> feedTypes = compFeedsRepo.getCompFeeds("Feed Type");

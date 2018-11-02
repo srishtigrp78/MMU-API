@@ -142,6 +142,7 @@ public class FetchCommonController {
 		return response.toString();
 	}
 
+	// Get Lab technician worklist new
 	@CrossOrigin()
 	@ApiOperation(value = "Get Lab technician worklist new", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getLabWorklistNew/{providerServiceMapID}" }, method = { RequestMethod.GET })
@@ -241,7 +242,7 @@ public class FetchCommonController {
 		return response.toString();
 	}
 
-	// Start of Fetch Previous History...
+	// Start of Fetch Previous Medical History...
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Past History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenPastHistory" }, method = { RequestMethod.POST })

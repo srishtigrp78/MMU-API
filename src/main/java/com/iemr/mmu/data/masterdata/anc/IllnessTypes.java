@@ -20,19 +20,23 @@ public class IllnessTypes {
 	@Expose
 	@Column(name = "IllnessID")
 	private Integer illnessID;
-	
+
 	@Expose
 	@Column(name = "IllnessType")
 	private String illnessType;
-	
+
 	@Expose
 	@Column(name = "isAcute")
 	private Boolean isAcute;
-	
+
 	@Expose
 	@Column(name = "isChronic")
 	private Boolean isChronic;
-	
+
+	@Expose
+	@Column(name = "VisitCategoryID")
+	private Integer visitCategoryID;
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -57,18 +61,16 @@ public class IllnessTypes {
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
-	public IllnessTypes(Integer illnessID, String illnessType, Boolean isAcute, Boolean isChronic) {
+	public IllnessTypes(Integer illnessID, String illnessType) {
 		super();
 		this.illnessID = illnessID;
 		this.illnessType = illnessType;
-		this.isAcute = isAcute;
-		this.isChronic = isChronic;
 	}
-	
+
 	public static ArrayList<IllnessTypes> getIllnessTypes(ArrayList<Object[]> resList) {
 		ArrayList<IllnessTypes> resArray = new ArrayList<IllnessTypes>();
 		for (Object[] obj : resList) {
-			IllnessTypes cOBJ = new IllnessTypes((Integer)obj[0], (String)obj[1], (Boolean)obj[2], (Boolean)obj[3]);
+			IllnessTypes cOBJ = new IllnessTypes((Integer) obj[0], (String) obj[1]);
 			resArray.add(cOBJ);
 		}
 		return resArray;

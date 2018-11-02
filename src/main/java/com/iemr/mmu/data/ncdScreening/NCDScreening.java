@@ -1,6 +1,8 @@
 package com.iemr.mmu.data.ncdScreening;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -44,11 +46,15 @@ public class NCDScreening {
 
 	@Expose
 	@Column(name = "NCDScreeningConditionID")
-	private Integer ncdScreeningConditionID;
+	private String ncdScreeningConditionID;
 
 	@Expose
 	@Column(name = "ScreeningCondition")
 	private String screeningCondition;
+
+	@Expose
+	@Transient
+	private ArrayList<Map<String, Object>> ncdScreeningConditionList;
 
 	@Expose
 	@Column(name = "NCDScreeningReasonID")
@@ -184,11 +190,11 @@ public class NCDScreening {
 		this.ncdScreeningVisitNo = ncdScreeningVisitNo;
 	}
 
-	public Integer getNcdScreeningConditionID() {
+	public String getNcdScreeningConditionID() {
 		return ncdScreeningConditionID;
 	}
 
-	public void setNcdScreeningConditionID(Integer ncdScreeningConditionID) {
+	public void setNcdScreeningConditionID(String ncdScreeningConditionID) {
 		this.ncdScreeningConditionID = ncdScreeningConditionID;
 	}
 
@@ -366,6 +372,22 @@ public class NCDScreening {
 
 	public void setBenFlowID(Long benFlowID) {
 		this.benFlowID = benFlowID;
+	}
+
+	public ArrayList<Map<String, Object>> getNcdScreeningConditionList() {
+		return ncdScreeningConditionList;
+	}
+
+	public void setNcdScreeningConditionList(ArrayList<Map<String, Object>> ncdScreeningConditionList) {
+		this.ncdScreeningConditionList = ncdScreeningConditionList;
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
 	}
 
 }

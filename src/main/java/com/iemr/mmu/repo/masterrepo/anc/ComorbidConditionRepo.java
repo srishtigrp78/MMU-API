@@ -4,14 +4,16 @@ import java.util.ArrayList;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.iemr.mmu.data.masterdata.anc.ComorbidCondition;
 
 @Repository
-public interface ComorbidConditionRepo extends CrudRepository<ComorbidCondition, Short>{
-	
-	@Query("select comorbidConditionID, comorbidCondition, comorbidConditionDesc from ComorbidCondition where deleted = false order by comorbidCondition")
-	public ArrayList<Object[]> getComorbidConditions();
-	
+public interface ComorbidConditionRepo extends CrudRepository<ComorbidCondition, Short> {
+
+	@Query(" SELECT comorbidConditionID, comorbidCondition FROM ComorbidCondition WHERE deleted = false "
+			+ " AND (visitCategoryID = :visitCategoryID OR visitCategoryID is null) ORDER BY comorbidCondition")
+	public ArrayList<Object[]> getComorbidConditions(@Param("visitCategoryID") Integer visitCategoryID);
+
 }

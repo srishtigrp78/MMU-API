@@ -15,21 +15,25 @@ import com.google.gson.annotations.Expose;
 @Entity
 @Table(name = "m_diseasetype")
 public class DiseaseType {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Expose
 	@Column(name = "DiseaseTypeID")
 	private Short diseaseTypeID;
-	
+
 	@Expose
 	@Column(name = "DiseaseType")
 	private String diseaseType;
-	
+
 	@Expose
 	@Column(name = "DiseaseTypeDesc")
 	private String diseaseTypeDesc;
-	
+
+	@Expose
+	@Column(name = "Gender")
+	private String gender;
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -59,15 +63,14 @@ public class DiseaseType {
 		this.diseaseTypeID = diseaseTypeID;
 		this.diseaseType = diseaseType;
 	}
-	
+
 	public static ArrayList<DiseaseType> getDiseaseTypes(ArrayList<Object[]> resList) {
 		ArrayList<DiseaseType> resArray = new ArrayList<DiseaseType>();
 		for (Object[] obj : resList) {
-			DiseaseType cOBJ = new DiseaseType((Short)obj[0], (String)obj[1]);
+			DiseaseType cOBJ = new DiseaseType((Short) obj[0], (String) obj[1]);
 			resArray.add(cOBJ);
 		}
 		return resArray;
 	}
-	
-	
+
 }

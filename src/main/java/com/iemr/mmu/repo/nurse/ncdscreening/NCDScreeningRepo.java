@@ -27,7 +27,7 @@ public interface NCDScreeningRepo extends CrudRepository<NCDScreening, Long> {
 			+ " isScreeningComplete=:isScreeningComplete, "
 			+ " isBPPrescribed = :isBPPrescribed, isBloodGlucosePrescribed = :isBloodGlucosePrescribed, "
 			+ " modifiedBy=:modifiedBy where visitCode=:visitCode AND beneficiaryRegID=:beneficiaryRegID")
-	public int updateNCDScreeningDetails(@Param("ncdScreeningConditionID") Integer ncdScreeningConditionID,
+	public int updateNCDScreeningDetails(@Param("ncdScreeningConditionID") String ncdScreeningConditionID,
 			@Param("screeningCondition") String screeningCondition,
 			@Param("ncdScreeningReasonID") Integer ncdScreeningReasonID,
 			@Param("reasonForScreening") String reasonForScreening,

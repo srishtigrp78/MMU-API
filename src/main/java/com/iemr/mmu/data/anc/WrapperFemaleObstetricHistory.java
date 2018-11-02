@@ -84,12 +84,13 @@ public class WrapperFemaleObstetricHistory {
 			if (null != WFO.totalNoOfPreg && WFO.totalNoOfPreg > 0) {
 				for (Object[] obj : FemaleObstetricHistory) {
 
-					FemaleObstetricHistory obstetricHistory = new FemaleObstetricHistory((Short) obj[3], (Short) obj[5],
-							(String) obj[6], (String) obj[7], (Short) obj[8], (String) obj[9], (Short) obj[10],
-							(String) obj[11], (Short) obj[12], (String) obj[13], (String) obj[14], (Short) obj[15],
-							(String) obj[16], (String) obj[17], (Short) obj[18], (String) obj[19], (Short) obj[20],
-							(String) obj[21], (String) obj[22], (Short) obj[23], (String) obj[24], (String) obj[25],
-							(String) obj[26], (Short) obj[27], (String) obj[28], (String) obj[29], (Long) obj[30]);
+					FemaleObstetricHistory obstetricHistory = new FemaleObstetricHistory((Short) obj[3],
+							(String) obj[5], (String) obj[6], (String) obj[7], (Short) obj[8], (String) obj[9],
+							(Short) obj[10], (String) obj[11], (Short) obj[12], (String) obj[13], (String) obj[14],
+							(String) obj[15], (String) obj[16], (String) obj[17], (Short) obj[18], (String) obj[19],
+							(String) obj[20], (String) obj[21], (String) obj[22], (Short) obj[23], (String) obj[24],
+							(String) obj[25], (String) obj[26], (Short) obj[27], (String) obj[28], (String) obj[29],
+							(Long) obj[30]);
 
 					WFO.femaleObstetricHistoryList.add(obstetricHistory);
 

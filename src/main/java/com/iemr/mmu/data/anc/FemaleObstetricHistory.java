@@ -2,6 +2,8 @@ package com.iemr.mmu.data.anc;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -48,11 +50,16 @@ public class FemaleObstetricHistory {
 
 	@Expose
 	@Column(name = "PregComplicationID")
-	private Short pregComplicationID;
+	private String pregComplicationID;
 
 	@Expose
 	@Column(name = "PregComplicationType")
 	private String pregComplicationType;
+
+	// CR, 30-10-2018, multiple selection
+	@Expose
+	@Transient
+	private ArrayList<Map<String, Object>> pregComplicationList;
 
 	@Expose
 	@Column(name = "OtherPregComplication")
@@ -88,11 +95,16 @@ public class FemaleObstetricHistory {
 
 	@Expose
 	@Column(name = "DeliveryComplicationID")
-	private Short deliveryComplicationID;
+	private String deliveryComplicationID;
 
 	@Expose
 	@Column(name = "DeliveryComplicationType")
 	private String deliveryComplicationType;
+
+	// CR, 30-10-2018, multiple selection
+	@Expose
+	@Transient
+	private ArrayList<Map<String, Object>> deliveryComplicationList;
 
 	@Expose
 	@Column(name = "OtherDeliveryComplication")
@@ -108,11 +120,16 @@ public class FemaleObstetricHistory {
 
 	@Expose
 	@Column(name = "PostpartumComplicationID")
-	private Short postpartumComplicationID;
+	private String postpartumComplicationID;
 
 	@Expose
 	@Column(name = "PostpartumComplicationType")
 	private String postpartumComplicationType;
+
+	// CR, 30-10-2018, multiple selection
+	@Expose
+	@Transient
+	private ArrayList<Map<String, Object>> postpartumComplicationList;
 
 	@Expose
 	@Column(name = "OtherPostpartumCompType")
@@ -249,11 +266,11 @@ public class FemaleObstetricHistory {
 		this.pregOrder = pregOrder;
 	}
 
-	public Short getPregComplicationID() {
+	public String getPregComplicationID() {
 		return pregComplicationID;
 	}
 
-	public void setPregComplicationID(Short pregComplicationID) {
+	public void setPregComplicationID(String pregComplicationID) {
 		this.pregComplicationID = pregComplicationID;
 	}
 
@@ -329,11 +346,11 @@ public class FemaleObstetricHistory {
 		this.otherDeliveryPlace = otherDeliveryPlace;
 	}
 
-	public Short getDeliveryComplicationID() {
+	public String getDeliveryComplicationID() {
 		return deliveryComplicationID;
 	}
 
-	public void setDeliveryComplicationID(Short deliveryComplicationID) {
+	public void setDeliveryComplicationID(String deliveryComplicationID) {
 		this.deliveryComplicationID = deliveryComplicationID;
 	}
 
@@ -369,11 +386,11 @@ public class FemaleObstetricHistory {
 		this.pregOutcome = pregOutcome;
 	}
 
-	public Short getPostpartumComplicationID() {
+	public String getPostpartumComplicationID() {
 		return postpartumComplicationID;
 	}
 
-	public void setPostpartumComplicationID(Short postpartumComplicationID) {
+	public void setPostpartumComplicationID(String postpartumComplicationID) {
 		this.postpartumComplicationID = postpartumComplicationID;
 	}
 
@@ -587,11 +604,11 @@ public class FemaleObstetricHistory {
 		this.otherNewBornComplication = otherNewBornComplication;
 	}
 
-	public FemaleObstetricHistory(Short pregOrder, Short pregComplicationID, String pregComplicationType,
+	public FemaleObstetricHistory(Short pregOrder, String pregComplicationID, String pregComplicationType,
 			String otherPregComplication, Short pregDurationID, String durationType, Short deliveryTypeID,
 			String deliveryType, Short deliveryPlaceID, String deliveryPlace, String otherDeliveryPlace,
-			Short deliveryComplicationID, String deliveryComplicationType, String otherDeliveryComplication,
-			Short pregOutcomeID, String pregOutcome, Short postpartumComplicationID, String postpartumComplicationType,
+			String deliveryComplicationID, String deliveryComplicationType, String otherDeliveryComplication,
+			Short pregOutcomeID, String pregOutcome, String postpartumComplicationID, String postpartumComplicationType,
 			String otherPostpartumCompType, Short postNatalComplicationID, String postNatalComplication,
 			String otherPostNatalComplication, String congenitalAnomalies, Short newBornComplicationID,
 			String newBornComplication, String otherNewBornComplication, Long visitCode) {
@@ -635,6 +652,30 @@ public class FemaleObstetricHistory {
 
 	public void setVisitCode(Long visitCode) {
 		this.visitCode = visitCode;
+	}
+
+	public ArrayList<Map<String, Object>> getDeliveryComplicationList() {
+		return deliveryComplicationList;
+	}
+
+	public void setDeliveryComplicationList(ArrayList<Map<String, Object>> deliveryComplicationList) {
+		this.deliveryComplicationList = deliveryComplicationList;
+	}
+
+	public ArrayList<Map<String, Object>> getPregComplicationList() {
+		return pregComplicationList;
+	}
+
+	public void setPregComplicationList(ArrayList<Map<String, Object>> pregComplicationList) {
+		this.pregComplicationList = pregComplicationList;
+	}
+
+	public ArrayList<Map<String, Object>> getPostpartumComplicationList() {
+		return postpartumComplicationList;
+	}
+
+	public void setPostpartumComplicationList(ArrayList<Map<String, Object>> postpartumComplicationList) {
+		this.postpartumComplicationList = postpartumComplicationList;
 	}
 
 }

@@ -36,8 +36,8 @@ public interface BenAnthropometryRepo extends CrudRepository<BenAnthropometryDet
 			@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("visitCode") Long visitCode);
 
 	@Query("select a.weight_Kg, Date(a.createdDate) from BenAnthropometryDetail a "
-			+ " where a.benVisitID in :visitIDList ")
+			+ " where a.visitCode in :visitCodeList ")
 	public ArrayList<Object[]> getBenAnthropometryDetailForGraphtrends(
-			@Param("visitIDList") ArrayList<Long> visitIDList);
+			@Param("visitCodeList") ArrayList<Long> visitCodeList);
 
 }

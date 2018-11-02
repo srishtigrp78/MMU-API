@@ -21,15 +21,19 @@ public class ComorbidCondition {
 	@Expose
 	@Column(name = "ComorbidConditionID")
 	private Short comorbidConditionID;
-	
+
 	@Expose
 	@Column(name = "ComorbidCondition")
 	private String comorbidCondition;
-	
+
 	@Expose
 	@Column(name = "ComorbidConditionDesc")
 	private String comorbidConditionDesc;
-	
+
+	@Expose
+	@Column(name = "VisitCategoryID")
+	private Integer visitCategoryID;
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -54,17 +58,16 @@ public class ComorbidCondition {
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
-	public ComorbidCondition(Short comorbidConditionID, String comorbidCondition, String comorbidConditionDesc) {
+	public ComorbidCondition(Short comorbidConditionID, String comorbidCondition) {
 		super();
 		this.comorbidConditionID = comorbidConditionID;
 		this.comorbidCondition = comorbidCondition;
-		this.comorbidConditionDesc = comorbidConditionDesc;
 	}
-	
+
 	public static ArrayList<ComorbidCondition> getComorbidConditions(ArrayList<Object[]> resList) {
 		ArrayList<ComorbidCondition> resArray = new ArrayList<ComorbidCondition>();
 		for (Object[] obj : resList) {
-			ComorbidCondition cOBJ = new ComorbidCondition((Short)obj[0], (String)obj[1], (String)obj[2]);
+			ComorbidCondition cOBJ = new ComorbidCondition((Short) obj[0], (String) obj[1]);
 			resArray.add(cOBJ);
 		}
 		return resArray;

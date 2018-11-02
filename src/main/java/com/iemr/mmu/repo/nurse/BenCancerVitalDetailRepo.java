@@ -36,9 +36,8 @@ public interface BenCancerVitalDetailRepo extends CrudRepository<BenCancerVitalD
 			@Param("diastolicBP_2ndReading") Short diastolicBP_2ndReading,
 			@Param("systolicBP_3rdReading") Short systolicBP_3rdReading,
 			@Param("diastolicBP_3rdReading") Short diastolicBP_3rdReading, @Param("hbA1C") Short hbA1C,
-			@Param("hemoglobin") Short hemoglobin, @Param("modifiedBy") String modifiedBy,
-			@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode,
-			@Param("processed") String processed);
+			@Param("hemoglobin") Double hemoglobin, @Param("modifiedBy") String modifiedBy,
+			@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode, @Param("processed") String processed);
 
 	@Query(" SELECT bvd from BenCancerVitalDetail bvd WHERE bvd.beneficiaryRegID = :benRegID AND bvd.deleted = false AND bvd.visitCode = :visitCode")
 	public BenCancerVitalDetail getBenCancerVitalDetail(@Param("benRegID") Long benRegID,
@@ -52,8 +51,9 @@ public interface BenCancerVitalDetailRepo extends CrudRepository<BenCancerVitalD
 
 	@Query("SELECT processed from BenCancerVitalDetail where beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public String getCancerVitalStatus(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
-	
-	@Query(" SELECT bvd from BenCancerVitalDetail bvd WHERE bvd.benVisitID IN :visitIDList ")
-	public ArrayList<BenCancerVitalDetail> getBenCancerVitalDetailForGraph(@Param("visitIDList") ArrayList<Long> visitIDList);
+
+	@Query(" SELECT bvd from BenCancerVitalDetail bvd WHERE bvd.visitCode IN :visitCodeList ")
+	public ArrayList<BenCancerVitalDetail> getBenCancerVitalDetailForGraph(
+			@Param("visitCodeList") ArrayList<Long> visitCodeList);
 
 }

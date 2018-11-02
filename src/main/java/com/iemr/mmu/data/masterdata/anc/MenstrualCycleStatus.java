@@ -20,15 +20,19 @@ public class MenstrualCycleStatus {
 	@Expose
 	@Column(name = "MenstrualCycleStatusID")
 	private Short menstrualCycleStatusID;
-	
+
 	@Expose
 	@Column(name = "Name")
 	private String name;
-	
+
 	@Expose
 	@Column(name = "MenstrualCycleStatusDesc")
 	private String menstrualCycleStatusDesc;
-	
+
+	@Expose
+	@Column(name = "VisitCategoryID")
+	private Integer visitCategoryID;
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -59,14 +63,14 @@ public class MenstrualCycleStatus {
 		this.name = name;
 		this.menstrualCycleStatusDesc = menstrualCycleStatusDesc;
 	}
-	
+
 	public static ArrayList<MenstrualCycleStatus> getMenstrualCycleStatuses(ArrayList<Object[]> resList) {
 		ArrayList<MenstrualCycleStatus> resArray = new ArrayList<MenstrualCycleStatus>();
 		for (Object[] obj : resList) {
-			MenstrualCycleStatus cOBJ = new MenstrualCycleStatus((Short)obj[0], (String)obj[1], (String)obj[2]);
+			MenstrualCycleStatus cOBJ = new MenstrualCycleStatus((Short) obj[0], (String) obj[1], (String) obj[2]);
 			resArray.add(cOBJ);
 		}
 		return resArray;
 	}
-	
+
 }

@@ -511,12 +511,14 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	public Long saveFemaleObstetricHistory(WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory) {
 		Long obstetricSuccessFlag = null;
 
-		ArrayList<FemaleObstetricHistory> FemaleObstetricHistorylist = wrapperFemaleObstetricHistory
-				.getFemaleObstetricHistoryDetails();
-		if (FemaleObstetricHistorylist.size() > 0) {
+		ArrayList<FemaleObstetricHistory> femaleObstetricHistorylist = getFemaleObstetricHistoryObj(
+				wrapperFemaleObstetricHistory.getFemaleObstetricHistoryDetails());
+
+		if (femaleObstetricHistorylist != null && femaleObstetricHistorylist.size() > 0) {
+
 			ArrayList<FemaleObstetricHistory> res = (ArrayList<FemaleObstetricHistory>) femaleObstetricHistoryRepo
-					.save(FemaleObstetricHistorylist);
-			if (FemaleObstetricHistorylist.size() == res.size()) {
+					.save(femaleObstetricHistorylist);
+			if (femaleObstetricHistorylist.size() == res.size()) {
 				obstetricSuccessFlag = new Long(1);
 			}
 		} else {
@@ -525,8 +527,110 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		return obstetricSuccessFlag;
 	}
 
+	private ArrayList<FemaleObstetricHistory> getFemaleObstetricHistoryObj(
+			ArrayList<FemaleObstetricHistory> femaleObstetricHistorylist) {
+		StringBuilder pregComplicationID;
+		StringBuilder pregComplicationName;
+		StringBuilder deliComplicationID;
+		StringBuilder deliComplicationName;
+		StringBuilder postpartumComplicationID;
+		StringBuilder postpartumComplicationName;
+
+		// iterate through pregnancy complication
+		for (FemaleObstetricHistory obj : femaleObstetricHistorylist) {
+			pregComplicationID = new StringBuilder();
+			pregComplicationName = new StringBuilder();
+			deliComplicationID = new StringBuilder();
+			deliComplicationName = new StringBuilder();
+			postpartumComplicationID = new StringBuilder();
+			postpartumComplicationName = new StringBuilder();
+
+			// check for pregnancy complication
+			if (obj.getPregComplicationList() != null && obj.getPregComplicationList().size() > 0) {
+				for (int i = 0; i < obj.getPregComplicationList().size(); i++) {
+					if (i == (obj.getPregComplicationList().size() - 1)) {
+						pregComplicationID.append(obj.getPregComplicationList().get(i).get("pregComplicationID"));
+						pregComplicationName.append(obj.getPregComplicationList().get(i).get("pregComplicationType"));
+					} else {
+						pregComplicationID.append(obj.getPregComplicationList().get(i).get("pregComplicationID"))
+								.append(",");
+						pregComplicationName.append(obj.getPregComplicationList().get(i).get("pregComplicationType"))
+								.append(",");
+					}
+				}
+			}
+			// check for delivery complication
+			if (obj.getDeliveryComplicationList() != null && obj.getDeliveryComplicationList().size() > 0) {
+				for (int i = 0; i < obj.getDeliveryComplicationList().size(); i++) {
+					if (i == (obj.getDeliveryComplicationList().size() - 1)) {
+						deliComplicationID
+								.append(obj.getDeliveryComplicationList().get(i).get("deliveryComplicationID"));
+						deliComplicationName
+								.append(obj.getDeliveryComplicationList().get(i).get("deliveryComplicationType"));
+					} else {
+						deliComplicationID
+								.append(obj.getDeliveryComplicationList().get(i).get("deliveryComplicationID"))
+								.append(",");
+						deliComplicationName
+								.append(obj.getDeliveryComplicationList().get(i).get("deliveryComplicationType"))
+								.append(",");
+					}
+				}
+			}
+
+			// check for postpartum complication
+			if (obj.getPostpartumComplicationList() != null && obj.getPostpartumComplicationList().size() > 0) {
+				for (int i = 0; i < obj.getPostpartumComplicationList().size(); i++) {
+					if (i == (obj.getPostpartumComplicationList().size() - 1)) {
+						postpartumComplicationID
+								.append(obj.getPostpartumComplicationList().get(i).get("postpartumComplicationID"));
+						postpartumComplicationName
+								.append(obj.getPostpartumComplicationList().get(i).get("postpartumComplicationType"));
+					} else {
+						postpartumComplicationID
+								.append(obj.getPostpartumComplicationList().get(i).get("postpartumComplicationID"))
+								.append(",");
+						postpartumComplicationName
+								.append(obj.getPostpartumComplicationList().get(i).get("postpartumComplicationType"))
+								.append(",");
+					}
+				}
+			}
+
+			// set pregnancy complication ID & Name (comma "," seperated)
+			obj.setPregComplicationID(pregComplicationID.toString());
+			obj.setPregComplicationType(pregComplicationName.toString());
+			// set delivery complication ID & Name (comma "," seperated)
+			obj.setDeliveryComplicationID(deliComplicationID.toString());
+			obj.setDeliveryComplicationType(deliComplicationName.toString());
+			// set postpartum complication ID & Name (comma "," seperated)
+			obj.setPostpartumComplicationID(postpartumComplicationID.toString());
+			obj.setPostpartumComplicationType(postpartumComplicationName.toString());
+		}
+
+		return femaleObstetricHistorylist;
+	}
+
 	public Integer saveBenMenstrualHistory(BenMenstrualDetails benMenstrualDetails) {
 		Integer menstrualHistorySuccessFlag = null;
+
+		ArrayList<Map<String, Object>> menstrualProblemList = benMenstrualDetails.getMenstrualProblemList();
+		if (menstrualProblemList != null && menstrualProblemList.size() > 0) {
+			StringBuilder problemID = new StringBuilder();
+			StringBuilder problemName = new StringBuilder();
+
+			for (int i = 0; i < menstrualProblemList.size(); i++) {
+				if (i == (menstrualProblemList.size() - 1)) {
+					problemID.append(menstrualProblemList.get(i).get("menstrualProblemID"));
+					problemName.append(menstrualProblemList.get(i).get("problemName"));
+				} else {
+					problemID.append(menstrualProblemList.get(i).get("menstrualProblemID")).append(",");
+					problemName.append(menstrualProblemList.get(i).get("problemName")).append(",");
+				}
+			}
+			benMenstrualDetails.setMenstrualProblemID(problemID.toString());
+			benMenstrualDetails.setProblemName(problemName.toString());
+		}
 
 		BenMenstrualDetails res = benMenstrualDetailsRepo.save(benMenstrualDetails);
 		if (null != res && res.getBenMenstrualID() > 0) {
@@ -1613,6 +1717,27 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 				visitCode);
 		BenMenstrualDetails menstrualHistoryDetails = BenMenstrualDetails.getBenMenstrualDetails(menstrualHistory);
 
+		// CRs changes, 30-10-2018
+		String problemID = menstrualHistoryDetails.getMenstrualProblemID();
+		String problemName = menstrualHistoryDetails.getProblemName();
+
+		if (problemID != null && problemName != null) {
+			String[] problemIdArr = problemID.split(",");
+			String[] problemNameArr = problemName.split(",");
+			ArrayList<Map<String, Object>> menstrualProblemList = new ArrayList<>();
+			Map<String, Object> menstrualProblemMap = null;
+
+			if (problemIdArr.length == problemNameArr.length) {
+				for (int i = 0; i < problemIdArr.length; i++) {
+					menstrualProblemMap = new HashMap<String, Object>();
+					menstrualProblemMap.put("menstrualProblemID", problemIdArr[i]);
+					menstrualProblemMap.put("problemName", problemNameArr[i]);
+					menstrualProblemList.add(menstrualProblemMap);
+				}
+			}
+			menstrualHistoryDetails.setMenstrualProblemList(menstrualProblemList);
+		}
+
 		return menstrualHistoryDetails;
 	}
 
@@ -1621,7 +1746,106 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 				.getBenFemaleObstetricHistoryDetail(beneficiaryRegID, visitCode);
 		WrapperFemaleObstetricHistory femaleObstetricHistoryDetails = WrapperFemaleObstetricHistory
 				.getFemaleObstetricHistory(femaleObstetricHistory);
+		femaleObstetricHistoryDetails = getWrapperFemaleObstetricHistory(femaleObstetricHistoryDetails);
 
+		return femaleObstetricHistoryDetails;
+	}
+
+	private WrapperFemaleObstetricHistory getWrapperFemaleObstetricHistory(
+			WrapperFemaleObstetricHistory femaleObstetricHistoryDetails) {
+		// s
+		if (femaleObstetricHistoryDetails != null
+				&& femaleObstetricHistoryDetails.getFemaleObstetricHistoryList() != null
+				&& femaleObstetricHistoryDetails.getFemaleObstetricHistoryList().size() > 0) {
+
+			String[] pregComplicationIDArr;
+			String[] pregComplicationNameArr;
+			String[] deliComplicationIDArr;
+			String[] deliComplicationNameArr;
+			String[] popaComplicationIDArr;
+			String[] popaComplicationNameArr;
+
+			ArrayList<Map<String, Object>> pregList;
+			ArrayList<Map<String, Object>> deliList;
+			ArrayList<Map<String, Object>> popaList;
+			Map<String, Object> preMap;
+			Map<String, Object> delMap;
+			Map<String, Object> posMap;
+
+			for (FemaleObstetricHistory obj : femaleObstetricHistoryDetails.getFemaleObstetricHistoryList()) {
+
+				pregComplicationIDArr = null;
+				pregComplicationNameArr = null;
+				deliComplicationIDArr = null;
+				deliComplicationNameArr = null;
+				popaComplicationIDArr = null;
+				popaComplicationNameArr = null;
+
+				pregList = new ArrayList<>();
+				deliList = new ArrayList<>();
+				popaList = new ArrayList<>();
+
+				if (obj.getPregComplicationID() != null)
+					pregComplicationIDArr = obj.getPregComplicationID().split(",");
+				if (obj.getPregComplicationType() != null)
+					pregComplicationNameArr = obj.getPregComplicationType().split(",");
+				if (obj.getPregComplicationType() != null)
+					deliComplicationIDArr = obj.getDeliveryComplicationID().split(",");
+				if (obj.getPregComplicationType() != null)
+					deliComplicationNameArr = obj.getDeliveryComplicationType().split(",");
+				if (obj.getPregComplicationType() != null)
+					popaComplicationIDArr = obj.getPostpartumComplicationID().split(",");
+				if (obj.getPregComplicationType() != null)
+					popaComplicationNameArr = obj.getPostpartumComplicationType().split(",");
+
+				if (pregComplicationIDArr != null && pregComplicationIDArr.length > 0 && pregComplicationNameArr != null
+						&& pregComplicationNameArr.length > 0
+						&& pregComplicationIDArr.length == pregComplicationNameArr.length) {
+
+					for (int i = 0; i < pregComplicationIDArr.length; i++) {
+						preMap = new HashMap<>();
+						preMap.put("pregComplicationID", pregComplicationIDArr[i]);
+						preMap.put("pregComplicationType", pregComplicationNameArr[i]);
+
+						pregList.add(preMap);
+					}
+
+				}
+				if (deliComplicationIDArr != null && deliComplicationIDArr.length > 0 && deliComplicationNameArr != null
+						&& deliComplicationNameArr.length > 0
+						&& deliComplicationIDArr.length == deliComplicationNameArr.length) {
+
+					for (int i = 0; i < deliComplicationIDArr.length; i++) {
+						delMap = new HashMap<>();
+						delMap.put("deliveryComplicationID", deliComplicationIDArr[i]);
+						delMap.put("deliveryComplicationType", deliComplicationNameArr[i]);
+
+						deliList.add(delMap);
+					}
+
+				}
+				if (popaComplicationIDArr != null && popaComplicationIDArr.length > 0 && popaComplicationNameArr != null
+						&& popaComplicationNameArr.length > 0
+						&& popaComplicationIDArr.length == popaComplicationNameArr.length) {
+
+					for (int i = 0; i < deliComplicationIDArr.length; i++) {
+						posMap = new HashMap<>();
+						posMap.put("postpartumComplicationID", popaComplicationIDArr[i]);
+						posMap.put("postpartumComplicationType", popaComplicationNameArr[i]);
+
+						popaList.add(posMap);
+					}
+
+				}
+
+				obj.setPregComplicationList(pregList);
+				obj.setDeliveryComplicationList(deliList);
+				obj.setPostpartumComplicationList(popaList);
+
+			}
+
+		}
+		// e
 		return femaleObstetricHistoryDetails;
 	}
 
@@ -1946,6 +2170,25 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			} else {
 				processed = "N";
 			}
+
+			ArrayList<Map<String, Object>> menstrualProblemList = benMenstrualDetails.getMenstrualProblemList();
+			if (menstrualProblemList != null && menstrualProblemList.size() > 0) {
+				StringBuilder problemID = new StringBuilder();
+				StringBuilder problemName = new StringBuilder();
+
+				for (int i = 0; i < menstrualProblemList.size(); i++) {
+					if (i == (menstrualProblemList.size() - 1)) {
+						problemID.append(menstrualProblemList.get(i).get("menstrualProblemID"));
+						problemName.append(menstrualProblemList.get(i).get("problemName"));
+					} else {
+						problemID.append(menstrualProblemList.get(i).get("menstrualProblemID")).append(",");
+						problemName.append(menstrualProblemList.get(i).get("problemName")).append(",");
+					}
+				}
+				benMenstrualDetails.setMenstrualProblemID(problemID.toString());
+				benMenstrualDetails.setProblemName(problemName.toString());
+			}
+
 			if (recordsAvailable > 0) {
 				response = benMenstrualDetailsRepo.updateMenstrualDetails(
 						benMenstrualDetails.getMenstrualCycleStatusID(), benMenstrualDetails.getMenstrualCycleStatus(),
@@ -1983,11 +2226,13 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 				delRes = femaleObstetricHistoryRepo.deleteExistingObstetricHistory((Long) obj[0], processed);
 			}
 
-			ArrayList<FemaleObstetricHistory> femaleObstetricHistoryDetails = wrapperFemaleObstetricHistory
-					.getFemaleObstetricHistoryDetails();
+			ArrayList<FemaleObstetricHistory> femaleObstetricHistorylist = getFemaleObstetricHistoryObj(
+					wrapperFemaleObstetricHistory.getFemaleObstetricHistoryDetails());
+
 			ArrayList<FemaleObstetricHistory> res = (ArrayList<FemaleObstetricHistory>) femaleObstetricHistoryRepo
-					.save(femaleObstetricHistoryDetails);
-			if (femaleObstetricHistoryDetails.size() == res.size()) {
+					.save(femaleObstetricHistorylist);
+
+			if (femaleObstetricHistorylist.size() == res.size()) {
 				r = 1;
 			}
 		}
@@ -3060,18 +3305,20 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		ArrayList<Object[]> benLastSixVisitDetails = benVisitDetailRepo.getLastSixVisitDetailsForBeneficiary(benRegID);
 
-		ArrayList<Long> benVisitIdListCancer = new ArrayList<>();
-		ArrayList<Long> benVisitIdListOther = new ArrayList<>();
+		ArrayList<Long> benVisitCodeListCancer = new ArrayList<>();
+		ArrayList<Long> benVisitCodeListOther = new ArrayList<>();
 
+		BigInteger a;
+		String vc;
 		if (benLastSixVisitDetails != null && benLastSixVisitDetails.size() > 0) {
 			for (Object[] objArr : benLastSixVisitDetails) {
-				String vc = (String) objArr[1];
+				vc = (String) objArr[1];
 				if (vc != null && vc.equalsIgnoreCase("Cancer Screening")) {
-					BigInteger a = (BigInteger) objArr[0];
-					benVisitIdListCancer.add(a.longValue());
+					a = (BigInteger) objArr[2];
+					benVisitCodeListCancer.add(a.longValue());
 				} else {
-					BigInteger a = (BigInteger) objArr[0];
-					benVisitIdListOther.add(a.longValue());
+					a = (BigInteger) objArr[2];
+					benVisitCodeListOther.add(a.longValue());
 				}
 			}
 		}
@@ -3080,13 +3327,13 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		ArrayList<Object[]> benVital = new ArrayList<>();
 		ArrayList<BenCancerVitalDetail> benCancerVital = new ArrayList<>();
 
-		if (benVisitIdListCancer.size() > 0) {
-			benCancerVital = benCancerVitalDetailRepo.getBenCancerVitalDetailForGraph(benVisitIdListCancer);
+		if (benVisitCodeListCancer.size() > 0) {
+			benCancerVital = benCancerVitalDetailRepo.getBenCancerVitalDetailForGraph(benVisitCodeListCancer);
 		}
 
-		if (benVisitIdListOther.size() > 0) {
-			benAnthro = benAnthropometryRepo.getBenAnthropometryDetailForGraphtrends(benVisitIdListOther);
-			benVital = benPhysicalVitalRepo.getBenPhysicalVitalDetailForGraphTrends(benVisitIdListOther);
+		if (benVisitCodeListOther.size() > 0) {
+			benAnthro = benAnthropometryRepo.getBenAnthropometryDetailForGraphtrends(benVisitCodeListOther);
+			benVital = benPhysicalVitalRepo.getBenPhysicalVitalDetailForGraphTrends(benVisitCodeListOther);
 		}
 
 		ArrayList<Map<String, Object>> weightList = new ArrayList<>();

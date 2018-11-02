@@ -57,8 +57,8 @@ public interface BenPhysicalVitalRepo extends CrudRepository<BenPhysicalVitalDet
 	 */
 
 	@Query("select v.averageSystolicBP, v.averageDiastolicBP, v.bloodGlucose_Fasting, v.bloodGlucose_Random, "
-			+ " v.bloodGlucose_2hr_PP, Date(v.createdDate) from BenPhysicalVitalDetail v where v.benVisitID IN :visitIDList")
+			+ " v.bloodGlucose_2hr_PP, Date(v.createdDate) from BenPhysicalVitalDetail v where v.visitCode IN :visitCodeList")
 	public ArrayList<Object[]> getBenPhysicalVitalDetailForGraphTrends(
-			@Param("visitIDList") ArrayList<Long> visitIDList);
+			@Param("visitCodeList") ArrayList<Long> visitCodeList);
 
 }

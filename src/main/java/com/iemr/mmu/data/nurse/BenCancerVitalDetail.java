@@ -88,7 +88,7 @@ public class BenCancerVitalDetail {
 
 	@Expose
 	@Column(name = "Hemoglobin")
-	private Short hemoglobin;
+	private Double hemoglobin;
 
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -146,7 +146,7 @@ public class BenCancerVitalDetail {
 			Double weight_Kg, Double height_cm, Double waistCircumference_cm, Short bloodGlucose_Fasting,
 			Short bloodGlucose_Random, Short bloodGlucose_2HrPostPrandial, Short systolicBP_1stReading,
 			Short diastolicBP_1stReading, Short systolicBP_2ndReading, Short diastolicBP_2ndReading,
-			Short systolicBP_3rdReading, Short diastolicBP_3rdReading, Short hbA1C, Short hemoglobin, Boolean deleted,
+			Short systolicBP_3rdReading, Short diastolicBP_3rdReading, Short hbA1C, Double hemoglobin, Boolean deleted,
 			String processed, String createdBy, Timestamp createdDate, String modifiedBy, Timestamp lastModDate) {
 		super();
 		ID = iD;
@@ -319,11 +319,11 @@ public class BenCancerVitalDetail {
 		this.hbA1C = hbA1C;
 	}
 
-	public Short getHemoglobin() {
+	public Double getHemoglobin() {
 		return hemoglobin;
 	}
 
-	public void setHemoglobin(Short hemoglobin) {
+	public void setHemoglobin(Double hemoglobin) {
 		this.hemoglobin = hemoglobin;
 	}
 

@@ -20,11 +20,23 @@ public class SurgeryTypes {
 	@Expose
 	@Column(name = "SurgeryID")
 	private Integer surgeryID;
-	
+
 	@Expose
 	@Column(name = "SurgeryType")
 	private String surgeryType;
-	
+
+	@Expose
+	@Column(name = "Gender")
+	private String gender;
+
+	@Expose
+	@Column(name = "Age")
+	private String age;
+
+	@Expose
+	@Column(name = "VisitCategoryID")
+	private Integer visitCategoryID;
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -54,14 +66,14 @@ public class SurgeryTypes {
 		this.surgeryID = surgeryID;
 		this.surgeryType = surgeryType;
 	}
-	
+
 	public static ArrayList<SurgeryTypes> getSurgeryTypes(ArrayList<Object[]> resList) {
 		ArrayList<SurgeryTypes> resArray = new ArrayList<SurgeryTypes>();
 		for (Object[] obj : resList) {
-			SurgeryTypes cOBJ = new SurgeryTypes((Integer)obj[0], (String)obj[1]);
+			SurgeryTypes cOBJ = new SurgeryTypes((Integer) obj[0], (String) obj[1]);
 			resArray.add(cOBJ);
 		}
 		return resArray;
 	}
-	
+
 }

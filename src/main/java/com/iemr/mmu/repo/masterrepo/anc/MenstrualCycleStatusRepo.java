@@ -4,13 +4,16 @@ import java.util.ArrayList;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.iemr.mmu.data.masterdata.anc.MenstrualCycleStatus;
 
 @Repository
-public interface MenstrualCycleStatusRepo extends CrudRepository<MenstrualCycleStatus, Short>{
-	
-	@Query("select menstrualCycleStatusID, name, menstrualCycleStatusDesc from MenstrualCycleStatus where deleted = false order by name")
-	public ArrayList<Object[]> getMenstrualCycleStatuses();
+public interface MenstrualCycleStatusRepo extends CrudRepository<MenstrualCycleStatus, Short> {
+
+	@Query(" SELECT menstrualCycleStatusID, name, menstrualCycleStatusDesc FROM MenstrualCycleStatus "
+			+ " WHERE deleted = false AND (visitCategoryID = :visitCategoryID OR visitCategoryID is null) "
+			+ " ORDER BY name")
+	public ArrayList<Object[]> getMenstrualCycleStatuses(@Param("visitCategoryID") Integer visitCategoryID);
 }

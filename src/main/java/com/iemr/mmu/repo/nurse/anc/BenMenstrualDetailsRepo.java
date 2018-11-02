@@ -46,7 +46,7 @@ public interface BenMenstrualDetailsRepo extends CrudRepository<BenMenstrualDeta
 			@Param("cycleLength") String cycleLength,
 			@Param("menstrualFlowDurationID") Short menstrualFlowDurationID,
 			@Param("bloodFlowDuration") String bloodFlowDuration,
-			@Param("menstrualProblemID") Short menstrualProblemID,
+			@Param("menstrualProblemID") String menstrualProblemID,
 			@Param("problemName") String problemName,
 			@Param("lMPDate") Timestamp lMPDate,
 			@Param("modifiedBy") String modifiedBy,
