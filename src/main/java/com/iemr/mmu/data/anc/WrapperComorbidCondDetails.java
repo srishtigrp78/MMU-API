@@ -117,11 +117,16 @@ public class WrapperComorbidCondDetails {
 			WCD.benVisitID = (Long) obj1[1];
 			WCD.providerServiceMapID = (Integer) obj1[2];
 
+			Integer timePeriodAgo;
 			for (Object[] obj : comrbidityCondDetails) {
+				timePeriodAgo = null;
 
 				Map<String, Object> timePeriod = Utility.convertTimeToWords((Timestamp) obj[5], (Timestamp) obj[8]);
 
-				Integer timePeriodAgo = Integer.parseInt(timePeriod.get("timePeriodAgo").toString());
+				if (timePeriod != null && timePeriod.get("timePeriodAgo") != null
+						&& timePeriod.get("timePeriodAgo") instanceof java.lang.Integer)
+					timePeriodAgo = Integer.parseInt(timePeriod.get("timePeriodAgo").toString());
+
 				BencomrbidityCondDetails comrbidityConds = new BencomrbidityCondDetails((Short) obj[3], (String) obj[4],
 						(String) obj[6], (Boolean) obj[7], timePeriodAgo, timePeriod.get("timePeriodUnit").toString(),
 						(Long) obj[9]);

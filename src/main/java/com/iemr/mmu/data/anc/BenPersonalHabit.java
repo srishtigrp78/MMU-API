@@ -701,7 +701,7 @@ public class BenPersonalHabit {
 						(Long) obj[20]);
 
 				Map<String, Object> timePeriod = null;
-				Integer timePeriodAgo = null;
+				// Integer timePeriodAgo = null;
 				if (null != personalHabits.getTobaccoUseTypeID()) {
 					Map<String, String> tobaccoInfo = new HashMap<String, String>();
 					tobaccoInfo.put("tobaccoUseTypeID", personalHabits.getTobaccoUseTypeID());
@@ -713,9 +713,12 @@ public class BenPersonalHabit {
 
 					timePeriod = Utility.convertTimeToWords(personalHabits.getTobaccoUseDuration(),
 							personalHabits.getCreatedDate());
-					timePeriodAgo = Integer.parseInt(timePeriod.get("timePeriodAgo").toString());
 
-					tobaccoInfo.put("duration", timePeriodAgo.toString());
+					if (timePeriod != null && timePeriod.get("timePeriodAgo") != null)
+						tobaccoInfo.put("duration", timePeriod.get("timePeriodAgo").toString());
+					else
+						tobaccoInfo.put("duration", null);
+
 					tobaccoInfo.put("durationUnit", timePeriod.get("timePeriodUnit").toString());
 
 					tobaccoList.add(tobaccoInfo);
@@ -730,9 +733,14 @@ public class BenPersonalHabit {
 
 					timePeriod = Utility.convertTimeToWords(personalHabits.getAlcoholDuration(),
 							personalHabits.getCreatedDate());
-					timePeriodAgo = Integer.parseInt(timePeriod.get("timePeriodAgo").toString());
+					// timePeriodAgo = Integer.parseInt(timePeriod.get("timePeriodAgo").toString());
 
-					alcoholInfo.put("duration", timePeriodAgo.toString());
+					if (timePeriod != null && timePeriod.get("timePeriodAgo") != null)
+						alcoholInfo.put("duration", timePeriod.get("timePeriodAgo").toString());
+					else
+						alcoholInfo.put("duration", null);
+
+					// alcoholInfo.put("duration", timePeriodAgo.toString());
 					alcoholInfo.put("durationUnit", timePeriod.get("timePeriodUnit").toString());
 
 					alcoholList.add(alcoholInfo);

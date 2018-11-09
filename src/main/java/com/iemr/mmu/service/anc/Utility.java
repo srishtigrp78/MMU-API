@@ -2,63 +2,105 @@ package com.iemr.mmu.service.anc;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Utility {
 
-	public static Timestamp convertToDateFormat(String timePeriodUnit, Integer timePeriodAgo){
-		if(null != timePeriodUnit && null != timePeriodAgo){
+	public static Timestamp convertToDateFormat(String timePeriodUnit, Integer timePeriodAgo) {
+		if (null != timePeriodUnit && null != timePeriodAgo) {
 			Calendar cal = Calendar.getInstance();
-			if(timePeriodUnit.equals("Years")){
+			if (timePeriodUnit.equals("Years")) {
 				cal.add(Calendar.YEAR, -timePeriodAgo);
-			}else if(timePeriodUnit.equals("Months")){
+			} else if (timePeriodUnit.equals("Months")) {
 				cal.add(Calendar.MONTH, -timePeriodAgo);
-			}else if(timePeriodUnit.equals("Weeks")){
-				cal.add(Calendar.DATE, -(7*timePeriodAgo));
-			}else if(timePeriodUnit.equals("Days")){
+			} else if (timePeriodUnit.equals("Weeks")) {
+				cal.add(Calendar.DATE, -(7 * timePeriodAgo));
+			} else if (timePeriodUnit.equals("Days")) {
 				cal.add(Calendar.DATE, -timePeriodAgo);
 			}
 			return new Timestamp(cal.getTimeInMillis());
 		}
-		
+
 		return null;
 	}
-	
-	public static Map<String,Object> convertTimeToWords(Timestamp yearOfIllness, Timestamp createdDate) {
-		Integer timePeriodAgo = 0;
+
+	public static Map<String, Object> convertTimeToWords(Timestamp yearOfIllness, Timestamp createdDate) {
+		Integer timePeriodAgo = null;
 		String timePeriodUnit = "";
-		Map<String,Object> timePeriod = new HashMap<String,Object>();
-		if(null != yearOfIllness && null != createdDate){
+		Map<String, Object> timePeriod = new HashMap<String, Object>();
+		if (null != yearOfIllness && null != createdDate) {
 			Calendar CD = Calendar.getInstance();
 			CD.setTime(createdDate);
 			Calendar YOI = Calendar.getInstance();
 			YOI.setTime(yearOfIllness);
-			
-			int year = CD.get(Calendar.YEAR) - YOI.get(Calendar.YEAR);
-			int month =  CD.get(Calendar.MONTH) - YOI.get(Calendar.MONTH);
-			int day =  CD.get(Calendar.DATE) - YOI.get(Calendar.DATE);
-			if((year!=0 || month !=0) && ( month !=0 || day != 0) && (year!=0 || day !=0)){
-				timePeriodUnit = "Weeks";
-				int days = year*365 + month*30 +day;
-				int weeks = days/7;
-				timePeriodAgo = weeks;
-			}else{
-				if(year!=0 ){
+
+			long createDate = CD.getTimeInMillis();
+			long illnessDate = YOI.getTimeInMillis();
+
+			long diffInMilis = createDate - illnessDate;
+
+			long diffDays = diffInMilis / (24 * 60 * 60 * 1000);
+
+			// int year = CD.get(Calendar.YEAR) - YOI.get(Calendar.YEAR);
+			// int month = CD.get(Calendar.MONTH) - YOI.get(Calendar.MONTH);
+			// int day = CD.get(Calendar.DATE) - YOI.get(Calendar.DATE);
+			// if ((year != 0 || month != 0) && (month != 0 || day != 0) && (year != 0 ||
+			// day != 0)) {
+			// timePeriodUnit = "Weeks";
+			// int days = year * 365 + month * 30 + day;
+			// int weeks = days / 7;
+			// timePeriodAgo = weeks;
+			// } else {
+			// if (year != 0) {
+			// timePeriodUnit = "Years";
+			// timePeriodAgo = year;
+			// } else if (month != 0) {
+			// timePeriodUnit = "Months";
+			// timePeriodAgo = month;
+			// } else if (day != 0) {
+			// timePeriodUnit = "Days";
+			// timePeriodAgo = day;
+			// }
+			// }
+
+			if (diffDays >= 365) {
+				if (diffDays % 365 == 0) {
 					timePeriodUnit = "Years";
-					timePeriodAgo = year;
-				}else if(month !=0){
-					timePeriodUnit = "Months";
-					timePeriodAgo = month;
-				}else if(day != 0){
+					timePeriodAgo = (int) (long) (diffDays / 365);
+				} else {
+					if (diffDays % 365 >= 182) {
+						timePeriodUnit = "Years";
+						timePeriodAgo = (int) (long) ((diffDays / 365) + 1);
+					} else {
+						timePeriodUnit = "Years";
+						timePeriodAgo = (int) (long) (diffDays / 365);
+					}
+				}
+			} else {
+				if (diffDays >= 30) {
+					if (diffDays % 30 == 0) {
+						timePeriodUnit = "Months";
+						timePeriodAgo = (int) (long) (diffDays / 30);
+					} else {
+						if (diffDays % 7 == 0) {
+							timePeriodUnit = "Weeks";
+							timePeriodAgo = (int) (long) (diffDays / 7);
+						} else {
+							timePeriodUnit = "Weeks";
+							timePeriodAgo = (int) (long) ((diffDays / 7) + 1);
+						}
+					}
+				} else {
 					timePeriodUnit = "Days";
-					timePeriodAgo = day;
+					timePeriodAgo = (int) (long) diffDays;
 				}
 			}
 		}
+
 		timePeriod.put("timePeriodAgo", timePeriodAgo);
 		timePeriod.put("timePeriodUnit", timePeriodUnit);
+
 		return timePeriod;
 	}
 }

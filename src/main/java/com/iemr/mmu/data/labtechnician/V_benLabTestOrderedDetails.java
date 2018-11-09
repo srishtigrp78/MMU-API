@@ -2,7 +2,6 @@ package com.iemr.mmu.data.labtechnician;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -67,6 +66,26 @@ public class V_benLabTestOrderedDetails {
 	@Expose
 	@Column(name = "ResultValue")
 	private String resultValue;
+
+	@Expose
+	@Column(name = "isDecimal")
+	private Boolean isDecimal;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public Boolean getIsDecimal() {
+		return isDecimal;
+	}
+
+	public void setIsDecimal(Boolean isDecimal) {
+		this.isDecimal = isDecimal;
+	}
 
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;

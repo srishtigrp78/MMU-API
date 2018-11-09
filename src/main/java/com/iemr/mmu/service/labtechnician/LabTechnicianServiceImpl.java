@@ -109,6 +109,7 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 						compDetails.put("range_normal_min", obj.getRange_normal_min());
 						compDetails.put("range_normal_max", obj.getRange_normal_max());
 						compDetails.put("range_max", obj.getRange_max());
+						compDetails.put("isDecimal", obj.getIsDecimal());
 
 						compOption = new HashMap<>();
 						compOptionList = new ArrayList<>();

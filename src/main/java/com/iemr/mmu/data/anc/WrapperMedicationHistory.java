@@ -116,11 +116,16 @@ public class WrapperMedicationHistory {
 			WMH.benVisitID = (Long) obj1[1];
 			WMH.providerServiceMapID = (Integer) obj1[2];
 
+			Integer timePeriodAgo;
 			for (Object[] obj : medicationHistoryDetails) {
+				timePeriodAgo = null;
 
 				Map<String, Object> timePeriod = Utility.convertTimeToWords((Timestamp) obj[4], (Timestamp) obj[5]);
 
-				Integer timePeriodAgo = Integer.parseInt(timePeriod.get("timePeriodAgo").toString());
+				if (timePeriod != null && timePeriod.get("timePeriodAgo") != null
+						&& timePeriod.get("timePeriodAgo") instanceof java.lang.Integer)
+					timePeriodAgo = (Integer) timePeriod.get("timePeriodAgo");
+
 				BenMedicationHistory medicationHistory = new BenMedicationHistory((String) obj[3], timePeriodAgo,
 						timePeriod.get("timePeriodUnit").toString(), (Long) obj[6]);
 
