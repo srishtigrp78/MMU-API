@@ -9,31 +9,32 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
 @Entity
 @Table(name = "m_complication")
 public class ComplicationTypes {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Expose
 	@Column(name = "ComplicationID")
 	private Short complicationID;
-	
+
 	@Expose
 	@Column(name = "ComplicationType")
 	private String complicationType;
-	
+
 	@Expose
 	@Column(name = "ComplicationValue")
 	private String complicationValue;
-	
+
 	@Expose
 	@Column(name = "ComplicationDesc")
 	private String complicationDesc;
-	
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -58,22 +59,76 @@ public class ComplicationTypes {
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
-	
-	
-	public ComplicationTypes(Short complicationID, String complicationType, String complicationValue) {
+	@Expose
+	@Transient
+	private Short pregComplicationID;
+
+	@Expose
+	@Transient
+	private String pregComplicationType;
+
+	@Expose
+	@Transient
+	private Short deliveryComplicationID;
+
+	@Expose
+	@Transient
+	private String deliveryComplicationType;
+
+	@Expose
+	@Transient
+	private Short postpartumComplicationID;
+
+	@Expose
+	@Transient
+	private String postpartumComplicationType;
+
+	public ComplicationTypes(Short complicationID, String complicationValue) {
 		super();
 		this.complicationID = complicationID;
-		this.complicationType = complicationType;
 		this.complicationValue = complicationValue;
 	}
 
+	public ComplicationTypes(Short complicationID, String complicationValue, int a) {
+		super();
+		this.pregComplicationID = complicationID;
+		this.pregComplicationType = complicationValue;
+	}
 
+	public ComplicationTypes(Short complicationID, String complicationValue, int a, int b) {
+		super();
+		this.deliveryComplicationID = complicationID;
+		this.deliveryComplicationType = complicationValue;
+	}
 
-	public static ArrayList<ComplicationTypes> getComplicationTypes(ArrayList<Object[]> resList) {
+	public ComplicationTypes(Short complicationID, String complicationValue, int a, int b, int c) {
+		super();
+		this.postpartumComplicationID = complicationID;
+		this.postpartumComplicationType = complicationValue;
+	}
+
+	public static ArrayList<ComplicationTypes> getComplicationTypes(ArrayList<Object[]> resList, int masterType) {
 		ArrayList<ComplicationTypes> resArray = new ArrayList<ComplicationTypes>();
-		for (Object[] obj : resList) {
-			ComplicationTypes cOBJ = new ComplicationTypes((Short)obj[0], (String)obj[1], (String)obj[2]);
-			resArray.add(cOBJ);
+		if (masterType == 1) {
+			for (Object[] obj : resList) {
+				ComplicationTypes cOBJ = new ComplicationTypes((Short) obj[0], (String) obj[1], 0);
+				resArray.add(cOBJ);
+			}
+		} else if (masterType == 2) {
+			for (Object[] obj : resList) {
+				ComplicationTypes cOBJ = new ComplicationTypes((Short) obj[0], (String) obj[1], 0, 0);
+				resArray.add(cOBJ);
+			}
+		} else if (masterType == 3) {
+			for (Object[] obj : resList) {
+				ComplicationTypes cOBJ = new ComplicationTypes((Short) obj[0], (String) obj[1], 0, 0, 0);
+				resArray.add(cOBJ);
+			}
+		} else {
+			for (Object[] obj : resList) {
+				ComplicationTypes cOBJ = new ComplicationTypes((Short) obj[0], (String) obj[1]);
+				resArray.add(cOBJ);
+			}
 		}
 		return resArray;
 	}

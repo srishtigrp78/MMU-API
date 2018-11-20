@@ -12,7 +12,7 @@ import com.iemr.mmu.data.masterdata.anc.ComplicationTypes;
 @Repository
 public interface ComplicationTypesRepo extends CrudRepository<ComplicationTypes, Short>{
 
-	@Query("select complicationID, complicationType, complicationValue from ComplicationTypes where deleted = false and "
+	@Query("select complicationID, complicationValue from ComplicationTypes where deleted = false and "
 			+ "complicationType=:complicationType order by complicationValue")
 	public ArrayList<Object[]> getComplicationTypes(@Param("complicationType") String complicationType);
 	

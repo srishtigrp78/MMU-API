@@ -45,6 +45,9 @@ public class HTTPRequestInterceptor extends HandlerInterceptorAdapter {
 				String[] requestURIParts = request.getRequestURI().split("/");
 				String requestAPI = requestURIParts[requestURIParts.length - 1];
 				switch (requestAPI) {
+				case "startMasterDownload":
+				case "checkMastersDownloadProgress":
+				case "getVanDetailsForMasterDownload":
 				case "userAuthenticate":
 				case "superUserAuthenticate":
 				case "userAuthenticateNew":

@@ -11,6 +11,6 @@ import com.iemr.mmu.data.masterdata.ncdscreening.NCDScreeningCondition;
 @Repository
 public interface NCDScreeningConditionRepo extends CrudRepository<NCDScreeningCondition, Long>{
 
-	@Query("select ncdScreeningConditionID, ncdScreeningCondition from NCDScreeningCondition where deleted = false order by ncdScreeningCondition")
+	@Query("select ncdScreeningConditionID, screeningCondition from NCDScreeningCondition where deleted = false order by ncdScreeningCondition")
 	public ArrayList<Object[]> getNCDScreeningConditions();
 }

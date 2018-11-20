@@ -49,6 +49,7 @@ public class MMU_DataSync_VanToServer {
 				response.setError(5000, "data dync failed");
 		} catch (Exception e) {
 			response.setError(e);
+			logger.error("Upload SYNC Exception" + e);
 		}
 		return response.toString();
 	}

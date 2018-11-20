@@ -118,4 +118,8 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			+ " OR (nurseFlag = 9 AND doctorFlag = 0))  ORDER BY benVisitDate DESC ")
 	public ArrayList<Object[]> getBenPreviousHistory(@Param("beneficiaryRegID") Long beneficiaryRegID);
 
+	@Query(" SELECT COUNT(benFlowID) FROM BeneficiaryFlowStatus "
+			+ " WHERE beneficiaryRegID = :beneficiaryRegID AND VisitCategory = 'NCD screening' ")
+	public Long getNcdScreeningVisitCount(@Param("beneficiaryRegID") Long beneficiaryRegID);
+
 }

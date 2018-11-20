@@ -36,8 +36,8 @@ import com.iemr.mmu.repo.masterrepo.MaritalStatusMasterRepo;
 import com.iemr.mmu.repo.masterrepo.OccupationMasterRepo;
 import com.iemr.mmu.repo.masterrepo.QualificationMasterRepo;
 import com.iemr.mmu.repo.masterrepo.ReligionMasterRepo;
+import com.iemr.mmu.repo.nurse.anc.ANCCareRepo;
 import com.iemr.mmu.repo.registrar.BeneficiaryImageRepo;
-import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
 
 @Service
@@ -54,9 +54,14 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 	private OccupationMasterRepo occupationMasterRepo;
 	private QualificationMasterRepo qualificationMasterRepo;
 	private ReligionMasterRepo religionMasterRepo;
-	private RegistrarRepoBenData registrarRepoBenData;
 	private BeneficiaryImageRepo beneficiaryImageRepo;
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
+	private ANCCareRepo aNCCareRepo;
+
+	@Autowired
+	public void setaNCCareRepo(ANCCareRepo aNCCareRepo) {
+		this.aNCCareRepo = aNCCareRepo;
+	}
 
 	@Autowired
 	public void setBeneficiaryFlowStatusRepo(BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo) {
@@ -106,11 +111,6 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 	@Autowired
 	public void setReligionMasterRepo(ReligionMasterRepo religionMasterRepo) {
 		this.religionMasterRepo = religionMasterRepo;
-	}
-
-	@Autowired
-	public void setRegistrarRepoBenData(RegistrarRepoBenData registrarRepoBenData) {
-		this.registrarRepoBenData = registrarRepoBenData;
 	}
 
 	public String getRegMasterData() {
@@ -181,10 +181,17 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 	// Beneficiary details for left side of the screen new
 	public String getBenDetailsForLeftSideByRegIDNew(Long beneficiaryRegID, Long benFlowID, String Authorization,
 			String comingRequest) {
+
 		ArrayList<Object[]> benFlowOBJ = beneficiaryFlowStatusRepo.getBenDetailsForLeftSidePanel(beneficiaryRegID,
 				benFlowID);
+
 		BeneficiaryFlowStatus returnBenFlowOBJ = BeneficiaryFlowStatus.getBeneficiaryFlowStatusForLeftPanel(benFlowOBJ);
 		// have to add image also from common and identity.
+
+		String bloodGroup = aNCCareRepo.getBenANCCareDetailsStatus(beneficiaryRegID);
+		if (bloodGroup != null)
+			returnBenFlowOBJ.setBloodGroup(bloodGroup);
+
 		return new Gson().toJson(returnBenFlowOBJ);
 	}
 
@@ -198,7 +205,7 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 		HttpEntity<Object> request = new HttpEntity<Object>(comingRequest, headers);
 		ResponseEntity<String> response = restTemplate.exchange(getBenImageFromIdentity, HttpMethod.POST, request,
 				String.class);
-	//	if()
+		// if()
 		returnOBJ = response.getBody();
 		return returnOBJ;
 	}

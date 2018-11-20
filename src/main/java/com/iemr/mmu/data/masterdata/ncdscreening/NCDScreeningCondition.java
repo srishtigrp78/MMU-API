@@ -2,7 +2,6 @@ package com.iemr.mmu.data.masterdata.ncdscreening;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,56 +20,55 @@ public class NCDScreeningCondition {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Expose
 	@Column(name = "ncdScreeningConditionID")
-	private Integer ncdScreeningConditionID; 
-	
+	private Integer ncdScreeningConditionID;
+
 	@Expose
 	@Column(name = "ncdScreeningCondition")
-	private String ncdScreeningCondition;
-	
+	private String screeningCondition;
+
 	@Expose
 	@Column(name = "ncdScreeningConditionDesc")
 	private String ncdScreeningConditionDesc;
-	
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
-	
+
 	@Expose
 	@Column(name = "Processed", insertable = false, updatable = true)
 	private String processed;
-	
+
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
-	
+
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
 	private Timestamp createdDate;
-	
+
 	@Expose
 	@Column(name = "ModifiedBy")
 	private String modifiedBy;
-	
+
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
-	
 	public NCDScreeningCondition(Integer ncdScreeningConditionID, String ncdScreeningCondition) {
 		super();
 		this.ncdScreeningConditionID = ncdScreeningConditionID;
-		this.ncdScreeningCondition = ncdScreeningCondition;
+		this.screeningCondition = ncdScreeningCondition;
 	}
 
 	public static ArrayList<NCDScreeningCondition> getNCDScreeningCondition(ArrayList<Object[]> resList) {
 		ArrayList<NCDScreeningCondition> resArray = new ArrayList<NCDScreeningCondition>();
 		for (Object[] obj : resList) {
-			NCDScreeningCondition cOBJ = new NCDScreeningCondition((Integer)obj[0], (String)obj[1]);
+			NCDScreeningCondition cOBJ = new NCDScreeningCondition((Integer) obj[0], (String) obj[1]);
 			resArray.add(cOBJ);
 		}
 		return resArray;
 	}
-	
+
 	public Integer getNcdScreeningConditionID() {
 		return ncdScreeningConditionID;
 	}
@@ -80,11 +78,11 @@ public class NCDScreeningCondition {
 	}
 
 	public String getNcdScreeningCondition() {
-		return ncdScreeningCondition;
+		return screeningCondition;
 	}
 
 	public void setNcdScreeningCondition(String ncdScreeningCondition) {
-		this.ncdScreeningCondition = ncdScreeningCondition;
+		this.screeningCondition = ncdScreeningCondition;
 	}
 
 	public String getNcdScreeningConditionDesc() {
@@ -142,6 +140,5 @@ public class NCDScreeningCondition {
 	public void setLastModDate(Timestamp lastModDate) {
 		this.lastModDate = lastModDate;
 	}
-	
-	
+
 }

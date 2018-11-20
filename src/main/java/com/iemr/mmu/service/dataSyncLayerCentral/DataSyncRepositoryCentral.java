@@ -30,10 +30,11 @@ public class DataSyncRepositoryCentral {
 	}
 
 	// Data Upload Repository
-	public int checkRecordIsAlreadyPresentOrNot(String schemaName, String tableName, String vanSerialNo, String vanID) {
+	public int checkRecordIsAlreadyPresentOrNot(String schemaName, String tableName, String vanSerialNo, String vanID,
+			String vanAutoIncColumnName) {
 		jdbcTemplate = getJdbcTemplate();
-		String query = " SELECT * FROM " + schemaName + "." + tableName + " WHERE VanSerialNo = " + vanSerialNo
-				+ " AND VanID = " + vanID;
+		String query = " SELECT " + vanAutoIncColumnName + " FROM " + schemaName + "." + tableName
+				+ " WHERE VanSerialNo = " + vanSerialNo + " AND VanID = " + vanID;
 		List<Map<String, Object>> resultSet = jdbcTemplate.queryForList(query);
 		if (resultSet != null && resultSet.size() > 0)
 			return 1;

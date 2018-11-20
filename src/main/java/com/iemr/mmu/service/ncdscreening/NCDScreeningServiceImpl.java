@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.ncdScreening.NCDScreening;
@@ -15,18 +16,23 @@ import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.nurse.CommonUtilityClass;
+import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
-import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
 public class NCDScreeningServiceImpl implements NCDScreeningService {
 
 	private NCDScreeningNurseServiceImpl ncdScreeningNurseServiceImpl;
-	private NurseServiceImpl nurseServiceImpl;
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
+	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
+
+	@Autowired
+	public void setBeneficiaryFlowStatusRepo(BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo) {
+		this.beneficiaryFlowStatusRepo = beneficiaryFlowStatusRepo;
+	}
 
 	@Autowired
 	public void setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl) {
@@ -36,11 +42,6 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 	@Autowired
 	public void setCommonNurseServiceImpl(CommonNurseServiceImpl commonNurseServiceImpl) {
 		this.commonNurseServiceImpl = commonNurseServiceImpl;
-	}
-
-	@Autowired
-	public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
-		this.nurseServiceImpl = nurseServiceImpl;
 	}
 
 	@Autowired
@@ -211,6 +212,13 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 			// Failed to Fetch Beneficiary NCD Screening Details
 		}
 		return res.toString();
+	}
+
+	public String getNcdScreeningVisitCnt(Long beneficiaryRegID) {
+		Map<String, Long> returnMap = new HashMap<>();
+		Long visitCount = beneficiaryFlowStatusRepo.getNcdScreeningVisitCount(beneficiaryRegID);
+		returnMap.put("ncdScreeningVisitCount", visitCount + 1);
+		return new Gson().toJson(returnMap);
 	}
 
 }

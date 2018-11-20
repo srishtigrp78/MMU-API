@@ -20,15 +20,15 @@ public class MenstrualProblem {
 	@Expose
 	@Column(name = "MenstrualProblemID")
 	private Short menstrualProblemID;
-	
+
 	@Expose
 	@Column(name = "Name")
-	private String name;
-	
+	private String problemName;
+
 	@Expose
 	@Column(name = "MenstrualProblemDesc")
 	private String menstrualProblemDesc;
-	
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -53,20 +53,20 @@ public class MenstrualProblem {
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
-	public MenstrualProblem(Short menstrualProblemID, String name, String menstrualProblemDesc) {
+	public MenstrualProblem(Short menstrualProblemID, String problemName, String menstrualProblemDesc) {
 		super();
 		this.menstrualProblemID = menstrualProblemID;
-		this.name = name;
+		this.problemName = problemName;
 		this.menstrualProblemDesc = menstrualProblemDesc;
 	}
-	
+
 	public static ArrayList<MenstrualProblem> getMenstrualProblems(ArrayList<Object[]> resList) {
 		ArrayList<MenstrualProblem> resArray = new ArrayList<MenstrualProblem>();
 		for (Object[] obj : resList) {
-			MenstrualProblem cOBJ = new MenstrualProblem((Short)obj[0], (String)obj[1], (String)obj[2]);
+			MenstrualProblem cOBJ = new MenstrualProblem((Short) obj[0], (String) obj[1], (String) obj[2]);
 			resArray.add(cOBJ);
 		}
 		return resArray;
 	}
-	
+
 }

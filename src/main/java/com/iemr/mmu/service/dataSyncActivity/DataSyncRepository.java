@@ -1,5 +1,6 @@
 package com.iemr.mmu.service.dataSyncActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -37,10 +38,19 @@ public class DataSyncRepository {
 	public List<Map<String, Object>> getDataForGivenSchemaAndTable(String schema, String table, String columnNames)
 			throws Exception {
 		jdbcTemplate = getJdbcTemplate();
-		String baseQuery = " SELECT " + columnNames + " FROM " + schema + "." + table
-				+ " WHERE processed != ? AND vanID is not null ";
+		String baseQuery;
+		List<Map<String, Object>> resultSetList = new ArrayList<>();
 
-		List<Map<String, Object>> resultSetList = jdbcTemplate.queryForList(baseQuery, "P");
+		if (table.equalsIgnoreCase("m_beneficiaryregidmapping")) {
+			baseQuery = " SELECT " + columnNames + " FROM " + schema + "." + table
+					+ " WHERE provisioned is true AND processed != 'P' AND vanID is not null ";
+		} else {
+			baseQuery = " SELECT " + columnNames + " FROM " + schema + "." + table
+					+ " WHERE processed != 'P' AND vanID is not null ";
+
+		}
+		// resultSetList = jdbcTemplate.queryForList(baseQuery, "P");
+		resultSetList = jdbcTemplate.queryForList(baseQuery);
 		return resultSetList;
 	}
 

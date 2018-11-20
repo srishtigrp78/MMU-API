@@ -11,6 +11,6 @@ import com.iemr.mmu.data.masterdata.anc.MenstrualProblem;
 @Repository
 public interface MenstrualProblemRepo extends CrudRepository<MenstrualProblem, Short>{
 	
-	@Query("select menstrualProblemID, name, menstrualProblemDesc from MenstrualProblem where deleted = false order by name")
+	@Query("select menstrualProblemID, problemName, menstrualProblemDesc from MenstrualProblem where deleted = false order by name")
 	public ArrayList<Object[]> getMenstrualProblems();
 }

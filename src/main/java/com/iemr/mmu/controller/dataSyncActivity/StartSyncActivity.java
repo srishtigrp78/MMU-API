@@ -139,4 +139,22 @@ public class StartSyncActivity {
 		}
 		return response.toString();
 	}
+
+	@CrossOrigin()
+	@ApiOperation(value = "getVanDetailsForMasterDownload", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getVanDetailsForMasterDownload" }, method = { RequestMethod.GET })
+	public String getVanDetailsForMasterDownload() {
+		OutputResponse response = new OutputResponse();
+		try {
+			String s = downloadDataFromServerImpl.getVanDetailsForMasterDownload();
+			if (s != null)
+				response.setResponse(s);
+			else
+				response.setError(5000, "Error while getting van details.");
+		} catch (Exception e) {
+			logger.error("Error while getting van details : " + e);
+			response.setError(e);
+		}
+		return response.toString();
+	}
 }

@@ -527,12 +527,13 @@ public class ANCMasterDataServiceImpl {
 		resMap.put("compFeedServings", CompFeeds.getCompFeeds(compFeedServings));
 		resMap.put("pregOutcomes", PregOutcome.getPregOutcomes(pregOutcomes));
 
-		resMap.put("birthComplications", ComplicationTypes.getComplicationTypes(birthComplications));
-		resMap.put("deliveryComplicationTypes", ComplicationTypes.getComplicationTypes(deliveryComplicationTypes));
-		resMap.put("postpartumComplicationTypes", ComplicationTypes.getComplicationTypes(postpartumComplicationTypes));
-		resMap.put("pregComplicationTypes", ComplicationTypes.getComplicationTypes(pregComplicationTypes));
-		resMap.put("postNatalComplications", ComplicationTypes.getComplicationTypes(postNatalComplications));
-		resMap.put("newBornComplications", ComplicationTypes.getComplicationTypes(birthComplications));
+		resMap.put("birthComplications", ComplicationTypes.getComplicationTypes(birthComplications, 0));
+		resMap.put("deliveryComplicationTypes", ComplicationTypes.getComplicationTypes(deliveryComplicationTypes, 2));
+		resMap.put("postpartumComplicationTypes",
+				ComplicationTypes.getComplicationTypes(postpartumComplicationTypes, 3));
+		resMap.put("pregComplicationTypes", ComplicationTypes.getComplicationTypes(pregComplicationTypes, 1));
+		resMap.put("postNatalComplications", ComplicationTypes.getComplicationTypes(postNatalComplications, 0));
+		resMap.put("newBornComplications", ComplicationTypes.getComplicationTypes(birthComplications, 0));
 
 		// existing
 		resMap.put("chiefComplaintMaster", ChiefComplaintMaster.getChiefComplaintMasters(ccList));

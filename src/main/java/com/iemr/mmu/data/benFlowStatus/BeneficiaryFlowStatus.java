@@ -229,6 +229,8 @@ public class BeneficiaryFlowStatus {
 	private GenderMaster m_gender;
 	@Transient
 	private Boolean passToNurse;
+	@Transient
+	private String bloodGroup;
 
 	public BeneficiaryFlowStatus() {
 	}
@@ -255,6 +257,7 @@ public class BeneficiaryFlowStatus {
 		this.benVisitID = benVisitID;
 		this.visitCode = visitCode;
 		this.consultationDate = consultationDate;
+		this.bloodGroup = null;
 
 	}
 
@@ -750,6 +753,30 @@ public class BeneficiaryFlowStatus {
 
 	public void setBenPhoneMaps(List<BenPhoneMaps> benPhoneMaps) {
 		this.benPhoneMaps = benPhoneMaps;
+	}
+
+	public Long getVisitCode() {
+		return visitCode;
+	}
+
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
+	}
+
+	public String getBenImage() {
+		return benImage;
+	}
+
+	public void setBenImage(String benImage) {
+		this.benImage = benImage;
+	}
+
+	public String getBloodGroup() {
+		return bloodGroup;
+	}
+
+	public void setBloodGroup(String bloodGroup) {
+		this.bloodGroup = bloodGroup;
 	}
 
 }

@@ -21,9 +21,12 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import com.google.gson.Gson;
 import com.iemr.mmu.data.syncActivity_syncLayer.MasterDownloadDataDigester;
 import com.iemr.mmu.data.syncActivity_syncLayer.SyncDownloadMaster;
+import com.iemr.mmu.data.syncActivity_syncLayer.TempVan;
 import com.iemr.mmu.repo.syncActivity_syncLayer.SyncDownloadMasterRepo;
+import com.iemr.mmu.repo.syncActivity_syncLayer.TempVanRepo;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
@@ -37,6 +40,8 @@ public class DownloadDataFromServerImpl implements DownloadDataFromServer {
 	private SyncDownloadMasterRepo syncDownloadMasterRepo;
 	@Autowired
 	private DataSyncRepository dataSyncRepository;
+	@Autowired
+	private TempVanRepo tempVanRepo;
 
 	public static int progressCounter = 0;
 	public static int totalCounter = 0;
@@ -205,7 +210,7 @@ public class DownloadDataFromServerImpl implements DownloadDataFromServer {
 		StringBuilder updateStatement = new StringBuilder();
 
 		// temp code pointing to diff target schema
-		//syncDownloadMaster.setSchemaName("db_iemr_sync");
+		// syncDownloadMaster.setSchemaName("db_iemr_sync");
 
 		if (columnsArr != null && columnsArr.length > 0) {
 			int index = 0;
@@ -256,5 +261,14 @@ public class DownloadDataFromServerImpl implements DownloadDataFromServer {
 		}
 
 		return masterDataList;
+	}
+
+	public String getVanDetailsForMasterDownload() throws Exception {
+		List<TempVan> dataSyncGroupList = tempVanRepo.getVanID();
+		if (dataSyncGroupList != null && dataSyncGroupList.size() == 1) {
+			return new Gson().toJson(dataSyncGroupList.get(0));
+		} else {
+			throw new Exception("There are more than 1 van available. Kindly contact the administrator.");
+		}
 	}
 }

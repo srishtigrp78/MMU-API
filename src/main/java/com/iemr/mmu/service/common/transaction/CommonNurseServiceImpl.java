@@ -1828,7 +1828,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 						&& popaComplicationNameArr.length > 0
 						&& popaComplicationIDArr.length == popaComplicationNameArr.length) {
 
-					for (int i = 0; i < deliComplicationIDArr.length; i++) {
+					for (int i = 0; i < popaComplicationIDArr.length; i++) {
 						posMap = new HashMap<>();
 						posMap.put("postpartumComplicationID", popaComplicationIDArr[i]);
 						posMap.put("postpartumComplicationType", popaComplicationNameArr[i]);

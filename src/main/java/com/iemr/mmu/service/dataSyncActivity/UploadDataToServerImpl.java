@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -36,6 +38,7 @@ import com.iemr.mmu.repo.syncActivity_syncLayer.DataSyncGroupsRepo;
 @Service
 @PropertySource("classpath:myApp.properties")
 public class UploadDataToServerImpl implements UploadDataToServer {
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	// rest URLs from server to consume local van data and to sync to DB server
 	@Value("${dataSyncUploadUrl}")
 	private String dataSyncUploadUrl;
@@ -91,8 +94,8 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 		List<Map<String, Object>> syncDataBatch;
 		for (SyncUtilityClass obj : syncUtilityClassList) {
 			// get data from DB to sync to server
-			syncData = getDataToSync(obj.getSchemaName(), obj.getTableName(),
-					obj.getVanColumnName());
+			syncData = getDataToSync(obj.getSchemaName(), obj.getTableName(), obj.getVanColumnName());
+			// System.out.println(new Gson().toJson(syncData));
 			if (syncData != null && syncData.size() > 0) {
 				int dataSize = syncData.size();
 				int startIndex = 0;
@@ -102,8 +105,7 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 				// sync data to server for batches
 				for (int i = 0; i < fullBatchCount; i++) {
 					// get data for each batch
-					 syncDataBatch = getBatchOfAskedSizeDataToSync(syncData, startIndex,
-							BATCH_SIZE);
+					syncDataBatch = getBatchOfAskedSizeDataToSync(syncData, startIndex, BATCH_SIZE);
 					// for each batch sync data to central server
 					serverAcknowledgement = syncDataToServer(obj.getSchemaName(), obj.getTableName(),
 							obj.getVanAutoIncColumnName(), obj.getServerColumnName(), syncDataBatch, user,
@@ -113,8 +115,7 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 				// sync data to server for rest data left from batch
 				if (remainder > 0) {
 					// get data for extra data from batch
-					 syncDataBatch = getBatchOfAskedSizeDataToSync(syncData, startIndex,
-							remainder);
+					syncDataBatch = getBatchOfAskedSizeDataToSync(syncData, startIndex, remainder);
 					// for extra data from batch sync data to central server
 					serverAcknowledgement = syncDataToServer(obj.getSchemaName(), obj.getTableName(),
 							obj.getVanAutoIncColumnName(), obj.getServerColumnName(), syncDataBatch, user,
@@ -219,6 +220,8 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 			if (obj != null && obj.has("statusCode") && obj.getInt("statusCode") == 200) {
 				StringBuilder vanSerialNos = getVanSerialNoListForSyncedData(vanAutoIncColumnName, dataToBesync);
 				// update table for processed flag = "P"
+				logger.info(schemaName + "|" + tableName + "|" + vanSerialNos.toString() + "|" + vanAutoIncColumnName
+						+ "|" + user);
 				i = dataSyncRepository.updateProcessedFlagInVan(schemaName, tableName, vanSerialNos,
 						vanAutoIncColumnName, user);
 			}
