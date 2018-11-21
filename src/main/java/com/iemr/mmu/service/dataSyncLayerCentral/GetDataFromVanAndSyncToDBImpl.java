@@ -30,8 +30,8 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 				SyncUploadDataDigester.class);
 		if (syncUploadDataDigester != null && syncUploadDataDigester.getTableName() != null
 				&& syncUploadDataDigester.getTableName().equalsIgnoreCase("m_beneficiaryregidmapping")) {
-			update_M_BeneficiaryRegIdMapping_for_provisioned_benID(syncUploadDataDigester);
-			return "data sync passed";
+			String s = update_M_BeneficiaryRegIdMapping_for_provisioned_benID(syncUploadDataDigester);
+			return s;
 		} else {
 
 			List<Map<String, Object>> dataToBesync = syncUploadDataDigester.getSyncData();
@@ -122,8 +122,49 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 
 	}
 
-	public void update_M_BeneficiaryRegIdMapping_for_provisioned_benID(SyncUploadDataDigester syncUploadDataDigester) {
+	public String update_M_BeneficiaryRegIdMapping_for_provisioned_benID(
+			SyncUploadDataDigester syncUploadDataDigester) {
+		String returnOBJ = null;
+		List<Map<String, Object>> dataToBesync = syncUploadDataDigester.getSyncData();
 
+		Object[] objArr = new Object[4];
+		// sync data 'list of object array'
+		List<Object[]> syncData = new ArrayList<>();
+
+		String query = getqueryFor_M_BeneficiaryRegIdMapping(syncUploadDataDigester.getSchemaName(),
+				syncUploadDataDigester.getTableName());
+
+		for (Map<String, Object> map : dataToBesync) {
+			if (map.get("BenRegId") != null && map.get("BeneficiaryID") != null && map.get("VanID") != null) {
+				objArr[0] = String.valueOf(syncUploadDataDigester.getSyncedBy());
+				objArr[1] = String.valueOf(map.get("BenRegId"));
+				objArr[2] = String.valueOf(map.get("BeneficiaryID"));
+				objArr[3] = String.valueOf(map.get("VanID"));
+
+				syncData.add(objArr);
+			}
+		}
+		int[] i = null;
+
+		if (syncData != null && syncData.size() > 0) {
+			i = dataSyncRepositoryCentral.syncDataToCentralDB(query, syncData);
+
+			if (i.length == syncData.size()) {
+				returnOBJ = "data sync passed";
+			}
+		} else {
+			returnOBJ = "data sync passed";
+		}
+
+		return returnOBJ;
+
+	}
+
+	private String getqueryFor_M_BeneficiaryRegIdMapping(String schemaName, String tableName) {
+		String query = " UPDATE  " + schemaName + "." + tableName
+				+ " SET Provisioned = true, SyncedDate = now(), syncedBy = ? "
+				+ " WHERE BenRegId = ? AND BeneficiaryID = ? AND VanID = ? ";
+		return query;
 	}
 
 	public String getQueryToInsertDataToServerDB(String schemaName, String tableName, String serverColumns) {
