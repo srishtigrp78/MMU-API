@@ -112,6 +112,9 @@ public class StartSyncActivity {
 				} else
 					response.setError(5000, s);
 			} else {
+				response.setError(5000,
+						"vanID / providerServiceMapID or both are missing,"
+						+ " Kindly contact the administrator.");
 			}
 
 		} catch (Exception e) {
