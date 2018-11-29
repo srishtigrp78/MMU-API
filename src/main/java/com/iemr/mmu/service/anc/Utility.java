@@ -28,12 +28,29 @@ public class Utility {
 	public static Map<String, Object> convertTimeToWords(Timestamp yearOfIllness, Timestamp createdDate) {
 		Integer timePeriodAgo = null;
 		String timePeriodUnit = "";
+
 		Map<String, Object> timePeriod = new HashMap<String, Object>();
 		if (null != yearOfIllness && null != createdDate) {
+
 			Calendar CD = Calendar.getInstance();
 			CD.setTime(createdDate);
+			
+			CD.set(Calendar.HOUR_OF_DAY, 0);
+			CD.set(Calendar.MINUTE, 0);
+			CD.set(Calendar.SECOND, 0);
+			CD.set(Calendar.MILLISECOND, 0);
+			
+			
+
 			Calendar YOI = Calendar.getInstance();
 			YOI.setTime(yearOfIllness);
+			
+			YOI.set(Calendar.HOUR_OF_DAY, 0);
+			YOI.set(Calendar.MINUTE, 0);
+			YOI.set(Calendar.SECOND, 0);
+			YOI.set(Calendar.MILLISECOND, 0);
+			
+			
 
 			long createDate = CD.getTimeInMillis();
 			long illnessDate = YOI.getTimeInMillis();
