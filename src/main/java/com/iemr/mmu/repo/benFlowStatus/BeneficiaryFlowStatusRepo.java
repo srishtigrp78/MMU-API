@@ -45,10 +45,18 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	public ArrayList<Object[]> getBenDetailsForLeftSidePanel(@Param("benRegID") Long benRegID,
 			@Param("benFlowID") Long benFlowID);
 
+	// MMU doc work-list
 	@Query("SELECT t from BeneficiaryFlowStatus t WHERE (t.doctorFlag = 1 OR t.doctorFlag = 2 OR "
 			+ " t.doctorFlag = 3 OR t.nurseFlag = 2 OR t.doctorFlag = 9) AND t.deleted = false "
 			+ " AND t.providerServiceMapId = :providerServiceMapId " + " ORDER BY benVisitDate DESC ")
 	public ArrayList<BeneficiaryFlowStatus> getDocWorkListNew(
+			@Param("providerServiceMapId") Integer providerServiceMapId);
+	
+	// TC doc work-list, 04-12-2018
+	@Query("SELECT t from BeneficiaryFlowStatus t WHERE (t.doctorFlag = 1 OR t.doctorFlag = 2 OR "
+			+ " t.doctorFlag = 3 OR t.nurseFlag = 2 OR t.doctorFlag = 9 OR t.doctorFlag = 4 ) AND t.deleted = false "
+			+ " AND t.providerServiceMapId = :providerServiceMapId " + " ORDER BY benVisitDate DESC ")
+	public ArrayList<BeneficiaryFlowStatus> getDocWorkListNewTC(
 			@Param("providerServiceMapId") Integer providerServiceMapId);
 
 	@Query("SELECT  t.benFlowID from BeneficiaryFlowStatus t WHERE t.beneficiaryRegID = :benRegID "

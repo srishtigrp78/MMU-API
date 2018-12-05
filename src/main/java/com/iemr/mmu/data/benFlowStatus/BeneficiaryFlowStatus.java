@@ -82,6 +82,10 @@ public class BeneficiaryFlowStatus {
 	private Short specialist_flag;
 
 	@Expose
+	@Column(name = "TC_SpecialistLabFlag")
+	private Short tC_SpecialistLabFlag;
+
+	@Expose
 	@Column(name = "created_by")
 	private String agentId;
 
@@ -777,6 +781,14 @@ public class BeneficiaryFlowStatus {
 
 	public void setBloodGroup(String bloodGroup) {
 		this.bloodGroup = bloodGroup;
+	}
+
+	public Short gettC_SpecialistLabFlag() {
+		return tC_SpecialistLabFlag;
+	}
+
+	public void settC_SpecialistLabFlag(Short tC_SpecialistLabFlag) {
+		this.tC_SpecialistLabFlag = tC_SpecialistLabFlag;
 	}
 
 }

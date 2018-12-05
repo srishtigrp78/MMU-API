@@ -69,9 +69,9 @@ public class FetchCommonController {
 	@RequestMapping(value = { "/getDocWorklistNew/{providerServiceMapID}" }, method = { RequestMethod.GET })
 	public String getDocWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID) {
 		OutputResponse response = new OutputResponse();
-		try {
-			String s = commonDoctorServiceImpl.getDocWorkListNew(providerServiceMapID);
-			response.setResponse(s);
+		try {		
+				String s = commonDoctorServiceImpl.getDocWorkListNew(providerServiceMapID, 2);
+				response.setResponse(s);
 		} catch (Exception e) {
 			logger.error("Error in getDocWorkList:" + e);
 			response.setError(5000, "Error while getting doctor worklist");

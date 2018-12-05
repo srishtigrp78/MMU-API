@@ -276,10 +276,19 @@ public class CommonDoctorServiceImpl {
 		return WrapperRegWorklist.getDocWorkListData(docWorkListData);
 	}
 
-	// New doc worklist service
-	public String getDocWorkListNew(Integer providerServiceMapId) {
-		ArrayList<BeneficiaryFlowStatus> docWorkList = beneficiaryFlowStatusRepo
-				.getDocWorkListNew(providerServiceMapId);
+	// New doc work-list service
+	public String getDocWorkListNew(Integer providerServiceMapId, Integer serviceID) {
+
+		ArrayList<BeneficiaryFlowStatus> docWorkList = new ArrayList<>();
+		// MMU doc work-list
+		if (serviceID != null && serviceID == 2) {
+			docWorkList = beneficiaryFlowStatusRepo.getDocWorkListNew(providerServiceMapId);
+		}
+		// TC doc work-list
+		else if (serviceID != null && serviceID == 4) {
+			docWorkList = beneficiaryFlowStatusRepo.getDocWorkListNewTC(providerServiceMapId);
+		}
+
 		return new Gson().toJson(docWorkList);
 	}
 

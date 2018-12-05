@@ -127,7 +127,7 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 		String returnOBJ = null;
 		List<Map<String, Object>> dataToBesync = syncUploadDataDigester.getSyncData();
 
-		Object[] objArr = new Object[4];
+		Object[] objArr;
 		// sync data 'list of object array'
 		List<Object[]> syncData = new ArrayList<>();
 
@@ -136,6 +136,7 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 
 		for (Map<String, Object> map : dataToBesync) {
 			if (map.get("BenRegId") != null && map.get("BeneficiaryID") != null && map.get("VanID") != null) {
+				objArr = new Object[4];
 				objArr[0] = String.valueOf(syncUploadDataDigester.getSyncedBy());
 				objArr[1] = String.valueOf(map.get("BenRegId"));
 				objArr[2] = String.valueOf(map.get("BeneficiaryID"));
