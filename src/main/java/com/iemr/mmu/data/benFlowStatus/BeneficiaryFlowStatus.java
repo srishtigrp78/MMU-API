@@ -213,6 +213,28 @@ public class BeneficiaryFlowStatus {
 	@Column(name = "lab_iteration_cnt")
 	private Short labIteration;
 
+	@Expose
+	@Column(name = "VanSerialNo")
+	private Long vanSerialNo;
+	@Expose
+	@Column(name = "VehicalNo")
+	private String vehicalNo;
+	@Expose
+	@Column(name = "ParkingPlaceID")
+	private Integer parkingPlaceID;
+	@Expose
+	@Column(name = "SyncedBy")
+	private String syncedBy;
+	@Expose
+	@Column(name = "SyncedDate")
+	private Timestamp syncedDate;
+	@Expose
+	@Column(name = "ReservedForChange")
+	private String reservedForChange;
+	@Expose
+	@Column(name = "Processed", insertable = false)
+	private String processed;
+
 	@Transient
 	private I_bendemographics i_bendemographics;
 	@Transient
@@ -789,6 +811,62 @@ public class BeneficiaryFlowStatus {
 
 	public void settC_SpecialistLabFlag(Short tC_SpecialistLabFlag) {
 		this.tC_SpecialistLabFlag = tC_SpecialistLabFlag;
+	}
+
+	public Long getVanSerialNo() {
+		return vanSerialNo;
+	}
+
+	public void setVanSerialNo(Long vanSerialNo) {
+		this.vanSerialNo = vanSerialNo;
+	}
+
+	public String getVehicalNo() {
+		return vehicalNo;
+	}
+
+	public void setVehicalNo(String vehicalNo) {
+		this.vehicalNo = vehicalNo;
+	}
+
+	public Integer getParkingPlaceID() {
+		return parkingPlaceID;
+	}
+
+	public void setParkingPlaceID(Integer parkingPlaceID) {
+		this.parkingPlaceID = parkingPlaceID;
+	}
+
+	public String getSyncedBy() {
+		return syncedBy;
+	}
+
+	public void setSyncedBy(String syncedBy) {
+		this.syncedBy = syncedBy;
+	}
+
+	public Timestamp getSyncedDate() {
+		return syncedDate;
+	}
+
+	public void setSyncedDate(Timestamp syncedDate) {
+		this.syncedDate = syncedDate;
+	}
+
+	public String getReservedForChange() {
+		return reservedForChange;
+	}
+
+	public void setReservedForChange(String reservedForChange) {
+		this.reservedForChange = reservedForChange;
+	}
+
+	public String getProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(String processed) {
+		this.processed = processed;
 	}
 
 }

@@ -69,9 +69,17 @@ public class FetchCommonController {
 	@RequestMapping(value = { "/getDocWorklistNew/{providerServiceMapID}" }, method = { RequestMethod.GET })
 	public String getDocWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID) {
 		OutputResponse response = new OutputResponse();
-		try {		
+		try {
+			if (providerServiceMapID != null) {
 				String s = commonDoctorServiceImpl.getDocWorkListNew(providerServiceMapID, 2);
-				response.setResponse(s);
+				if (s != null)
+					response.setResponse(s);
+			} else {
+				logger.error("Invalid request, either ProviderServiceMapID or ServiceID is invalid. PSMID = "
+						+ providerServiceMapID + " SID = " + 2);
+				response.setError(5000, "Invalid request, either ProviderServiceMapID or ServiceID is invalid");
+			}
+
 		} catch (Exception e) {
 			logger.error("Error in getDocWorkList:" + e);
 			response.setError(5000, "Error while getting doctor worklist");

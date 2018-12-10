@@ -29,7 +29,7 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	@Query("UPDATE BeneficiaryFlowStatus t set t.benVisitID = :benVisitID, t.VisitReason = :visitReason, "
 			+ " t.VisitCategory = :visitCategory, t.nurseFlag = :nurseFlag, t.doctorFlag = :docFlag, "
 			+ " t.labIteration = :labIteration, t.lab_technician_flag = 0, t.radiologist_flag = :radiologistFlag, "
-			+ " t.oncologist_flag = :oncologistFlag, t.benVisitDate = now(), t.visitCode = :benVisitCode "
+			+ " t.oncologist_flag = :oncologistFlag, t.benVisitDate = now(), t.visitCode = :benVisitCode, t.processed = 'U' "
 			+ "  WHERE t.benFlowID = :benFlowID AND t.beneficiaryRegID = :benRegID " + " AND nurseFlag = 1  ")
 	public int updateBenFlowStatusAfterNurseActivity(@Param("benFlowID") Long benFlowID,
 			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID,
@@ -51,7 +51,7 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			+ " AND t.providerServiceMapId = :providerServiceMapId " + " ORDER BY benVisitDate DESC ")
 	public ArrayList<BeneficiaryFlowStatus> getDocWorkListNew(
 			@Param("providerServiceMapId") Integer providerServiceMapId);
-	
+
 	// TC doc work-list, 04-12-2018
 	@Query("SELECT t from BeneficiaryFlowStatus t WHERE (t.doctorFlag = 1 OR t.doctorFlag = 2 OR "
 			+ " t.doctorFlag = 3 OR t.nurseFlag = 2 OR t.doctorFlag = 9 OR t.doctorFlag = 4 ) AND t.deleted = false "
@@ -73,7 +73,7 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	@Transactional
 	@Modifying
 	@Query("UPDATE BeneficiaryFlowStatus t set t.doctorFlag = :docFlag , t.pharmacist_flag = :pharmaFlag, "
-			+ " t.oncologist_flag = :oncologistFlag, t.consultationDate = now()  "
+			+ " t.oncologist_flag = :oncologistFlag, t.consultationDate = now(), t.processed = 'U'  "
 			+ " WHERE t.benFlowID = :benFlowID AND " + " t.beneficiaryRegID = :benRegID AND t.beneficiaryID = :benID ")
 	public int updateBenFlowStatusAfterDoctorActivity(@Param("benFlowID") Long benFlowID,
 			@Param("benRegID") Long benRegID, @Param("benID") Long benID, @Param("docFlag") Short docFlag,
@@ -82,7 +82,7 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	@Transactional
 	@Modifying
 	@Query("UPDATE BeneficiaryFlowStatus t set t.doctorFlag = :docFlag , t.pharmacist_flag = :pharmaFlag, "
-			+ " t.oncologist_flag = :oncologistFlag " + " WHERE t.benFlowID = :benFlowID AND "
+			+ " t.oncologist_flag = :oncologistFlag , t.processed = 'U' " + " WHERE t.benFlowID = :benFlowID AND "
 			+ " t.beneficiaryRegID = :benRegID AND t.beneficiaryID = :benID ")
 	public int updateBenFlowStatusAfterDoctorActivityUpdate(@Param("benFlowID") Long benFlowID,
 			@Param("benRegID") Long benRegID, @Param("benID") Long benID, @Param("docFlag") Short docFlag,
@@ -107,13 +107,15 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 
 	@Transactional
 	@Modifying
-	@Query("UPDATE BeneficiaryFlowStatus t set t.nurseFlag = :nurseFlag where t.benFlowID = :benFlowID AND t.beneficiaryRegID = :benRegID ")
+	@Query("UPDATE BeneficiaryFlowStatus t set t.nurseFlag = :nurseFlag, t.processed = 'U' "
+			+ " where t.benFlowID = :benFlowID AND t.beneficiaryRegID = :benRegID ")
 	public int updateBenFlowStatusAfterNurseDataUpdateNCD_Screening(@Param("benFlowID") Long benFlowID,
 			@Param("benRegID") Long benRegID, @Param("nurseFlag") Short nurseFlag);
 
 	@Transactional
 	@Modifying
-	@Query("UPDATE BeneficiaryFlowStatus t set t.nurseFlag = :nurseFlag, t.doctorFlag = :doctorFlag, t.lab_technician_flag = :labFlag "
+	@Query("UPDATE BeneficiaryFlowStatus t set t.nurseFlag = :nurseFlag, t.doctorFlag = :doctorFlag, "
+			+ " t.lab_technician_flag = :labFlag, t.processed = 'U' "
 			+ " WHERE t.benFlowID = :benFlowID AND t.beneficiaryRegID = :benRegID ")
 	public int updateBenFlowStatusAfterLabResultEntry(@Param("benFlowID") Long benFlowID,
 			@Param("benRegID") Long benRegID, @Param("nurseFlag") Short nurseFlag,
