@@ -145,7 +145,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					examtnSaveSuccessFlag = saveBenExaminationDetails(requestOBJ.getAsJsonObject("examinationDetails"),
 							benVisitID, benVisitCode);
 
-				int i = commonNurseServiceImpl.updateBeneficiaryStatus('N', tmpOBJ.get("beneficiaryRegID").getAsLong());
+				//int i = commonNurseServiceImpl.updateBeneficiaryStatus('N', tmpOBJ.get("beneficiaryRegID").getAsLong());
 			} else {
 				// Beneficiary Visit ID not generated.
 			}
@@ -160,7 +160,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				 * We have to write new code to update ben status flow new logic
 				 */
 
-				int i = updateBenStatusFlagAfterNurseSaveSuccess(tmpOBJ, benVisitID, benFlowID, benVisitCode);
+				int i = updateBenStatusFlagAfterNurseSaveSuccess(tmpOBJ, benVisitID, benFlowID, benVisitCode, nurseUtilityClass.getVanID());
 
 			}
 		} else {
@@ -171,7 +171,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 	// method for updating ben flow status flag for nurse
 	private int updateBenStatusFlagAfterNurseSaveSuccess(JsonObject tmpOBJ, Long benVisitID, Long benFlowID,
-			Long benVisitCode) {
+			Long benVisitCode, Integer vanID) {
 		short nurseFlag = (short) 9;
 		short docFlag = (short) 1;
 		short labIteration = (short) 0;
@@ -179,7 +179,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				tmpOBJ.get("beneficiaryRegID").getAsLong(), benVisitID, tmpOBJ.get("visitReason").getAsString(),
 				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0,
-				benVisitCode);
+				benVisitCode, vanID);
 
 		return i;
 	}

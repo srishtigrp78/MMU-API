@@ -74,12 +74,12 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 
 	public int updateBenFlowNurseAfterNurseActivity(Long benFlowID, Long benRegID, Long benVisitID, String visitReason,
 			String visitCategory, Short nurseFlag, Short docFlag, Short labIteration, Short radiologistFlag,
-			Short oncologistFlag, Long visitCode) {
+			Short oncologistFlag, Long visitCode, Integer vanID) {
 		int i = 0;
 		try {
 			i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterNurseActivity(benFlowID, benRegID, benVisitID,
 					visitReason, visitCategory, nurseFlag, docFlag, labIteration, radiologistFlag, oncologistFlag,
-					visitCode);
+					visitCode, vanID);
 			// System.out.println("hello");
 		} catch (Exception e) {
 			// e.printStackTrace();

@@ -91,7 +91,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 					int i = updateBenFlowNurseAfterNurseActivityANC(beneficiaryVisitDetail.getBeneficiaryRegID(),
 							visitID, benFlowID, beneficiaryVisitDetail.getVisitReason(),
 							beneficiaryVisitDetail.getVisitCategory(), ncdScreening.getIsScreeningComplete(),
-							benVisitCode);
+							benVisitCode, nurseUtilityClass.getVanID());
 
 					result = 1;
 				}
@@ -101,7 +101,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 	}
 
 	private int updateBenFlowNurseAfterNurseActivityANC(Long benRegID, Long benVisitID, Long benFlowID,
-			String visitReason, String visitCategory, Boolean isScreeningDone, Long benVisitCode) {
+			String visitReason, String visitCategory, Boolean isScreeningDone, Long benVisitCode, Integer vanID) {
 		short nurseFlag;
 		short docFlag = (short) 0;
 		short labIteration = (short) 0;
@@ -112,7 +112,8 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 			nurseFlag = (short) 100;
 
 		int rs = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID, benRegID, benVisitID,
-				visitReason, visitCategory, nurseFlag, docFlag, labIteration, (short) 0, (short) 0, benVisitCode);
+				visitReason, visitCategory, nurseFlag, docFlag, labIteration, (short) 0, (short) 0, benVisitCode,
+				vanID);
 
 		return rs;
 	}

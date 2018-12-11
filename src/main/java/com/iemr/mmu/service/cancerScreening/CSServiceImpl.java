@@ -181,7 +181,7 @@ public class CSServiceImpl implements CSService {
 					 * We have to write new code to update ben status flow new logic
 					 */
 					int j = updateBenStatusFlagAfterNurseSaveSuccess(benVisitDetailsOBJ, benVisitID, benFlowID,
-							isReferedToMammogram, docVisitReq, benVisitCode);
+							isReferedToMammogram, docVisitReq, benVisitCode, nurseUtilityClass.getVanID());
 
 				}
 
@@ -195,7 +195,7 @@ public class CSServiceImpl implements CSService {
 
 	// method for updating ben flow status flag for nurse
 	private int updateBenStatusFlagAfterNurseSaveSuccess(BeneficiaryVisitDetail benVisitDetailsOBJ, Long benVisitID,
-			Long benFlowID, Boolean isReferedToMammogram, Boolean docVisitReq, Long benVisitCode) {
+			Long benFlowID, Boolean isReferedToMammogram, Boolean docVisitReq, Long benVisitCode, Integer vanID) {
 		short nurseFlag = (short) 9;
 		short docFlag = (short) 0;
 		short labIteration = (short) 0;
@@ -216,7 +216,7 @@ public class CSServiceImpl implements CSService {
 		int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitID, benVisitDetailsOBJ.getVisitReason(),
 				benVisitDetailsOBJ.getVisitCategory(), nurseFlag, docFlag, labIteration, radiologistFlag,
-				oncologistFlag, benVisitCode);
+				oncologistFlag, benVisitCode, vanID);
 
 		return i;
 	}

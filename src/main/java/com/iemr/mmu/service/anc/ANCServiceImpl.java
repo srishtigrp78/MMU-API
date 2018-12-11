@@ -177,7 +177,7 @@ public class ANCServiceImpl implements ANCService {
 
 				int J = updateBenFlowNurseAfterNurseActivityANC(
 						requestOBJ.getAsJsonObject("visitDetails").getAsJsonObject("investigation"), tmpOBJ, benVisitID,
-						benFlowID, benVisitCode);
+						benFlowID, benVisitCode, nurseUtilityClass.getVanID());
 
 				// End of update ben status flow new logic
 
@@ -189,7 +189,7 @@ public class ANCServiceImpl implements ANCService {
 	}
 
 	private int updateBenFlowNurseAfterNurseActivityANC(JsonObject investigationDataCheck, JsonObject tmpOBJ,
-			Long benVisitID, Long benFlowID, Long visitCode) {
+			Long benVisitID, Long benFlowID, Long visitCode, Integer vanID) {
 		short nurseFlag;
 		short docFlag;
 		short labIteration;
@@ -211,7 +211,7 @@ public class ANCServiceImpl implements ANCService {
 		int rs = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				tmpOBJ.get("beneficiaryRegID").getAsLong(), benVisitID, tmpOBJ.get("visitReason").getAsString(),
 				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0,
-				visitCode);
+				visitCode, vanID);
 
 		return rs;
 	}

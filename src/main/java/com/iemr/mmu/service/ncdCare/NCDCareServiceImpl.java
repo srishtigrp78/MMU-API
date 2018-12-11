@@ -133,7 +133,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 				 */
 				int J = updateBenFlowNurseAfterNurseActivityANC(
 						requestOBJ.getAsJsonObject("visitDetails").getAsJsonObject("investigation"), tmpOBJ, benVisitID,
-						benFlowID, benVisitCode);
+						benFlowID, benVisitCode, nurseUtilityClass.getVanID());
 			}
 		} else {
 			// Can't create BenVisitID
@@ -143,7 +143,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 
 	// method for updating ben flow status flag for nurse
 	private int updateBenFlowNurseAfterNurseActivityANC(JsonObject investigationDataCheck, JsonObject tmpOBJ,
-			Long benVisitID, Long benFlowID, Long benVisitCode) {
+			Long benVisitID, Long benFlowID, Long benVisitCode, Integer vanID) {
 		short nurseFlag;
 		short docFlag;
 		short labIteration;
@@ -165,7 +165,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 		int rs = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				tmpOBJ.get("beneficiaryRegID").getAsLong(), benVisitID, tmpOBJ.get("visitReason").getAsString(),
 				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0,
-				benVisitCode);
+				benVisitCode, vanID);
 
 		return rs;
 	}
