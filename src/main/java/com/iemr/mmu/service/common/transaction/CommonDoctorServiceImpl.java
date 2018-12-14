@@ -292,6 +292,39 @@ public class CommonDoctorServiceImpl {
 		return new Gson().toJson(docWorkList);
 	}
 
+	// New doc work-list service (Future scheduled beneficiary for TM)
+	public String getDocWorkListNewFutureScheduledForTM(Integer providerServiceMapId, Integer serviceID) {
+
+		ArrayList<BeneficiaryFlowStatus> docWorkListFutureScheduled = new ArrayList<>();
+		if (serviceID != null && serviceID == 4) {
+			docWorkListFutureScheduled = beneficiaryFlowStatusRepo
+					.getDocWorkListNewFutureScheduledTC(providerServiceMapId);
+		}
+		return new Gson().toJson(docWorkListFutureScheduled);
+	}
+
+	// New TC specialist work-list service
+	public String getTCSpecialistWorkListNewForTM(Integer providerServiceMapId, Integer userID, Integer serviceID) {
+
+		ArrayList<BeneficiaryFlowStatus> tcSpecialistWorkList = new ArrayList<>();
+		if (serviceID != null && serviceID == 4) {
+			tcSpecialistWorkList = beneficiaryFlowStatusRepo.getTCSpecialistWorkListNew(providerServiceMapId, userID);
+		}
+		return new Gson().toJson(tcSpecialistWorkList);
+	}
+
+	// New TC specialist work-list service (Future scheduled beneficiary for TM)
+	public String getTCSpecialistWorkListNewFutureScheduledForTM(Integer providerServiceMapId, Integer userID,
+			Integer serviceID) {
+
+		ArrayList<BeneficiaryFlowStatus> tcSpecialistWorkListFutureScheduled = new ArrayList<>();
+		if (serviceID != null && serviceID == 4) {
+			tcSpecialistWorkListFutureScheduled = beneficiaryFlowStatusRepo
+					.getTCSpecialistWorkListNewFutureScheduled(providerServiceMapId, userID);
+		}
+		return new Gson().toJson(tcSpecialistWorkListFutureScheduled);
+	}
+
 	public String fetchBenPreviousSignificantFindings(Long beneficiaryRegID) {
 		ArrayList<Object[]> previousSignificantFindings = (ArrayList<Object[]>) benClinicalObservationsRepo
 				.getPreviousSignificantFindings(beneficiaryRegID);

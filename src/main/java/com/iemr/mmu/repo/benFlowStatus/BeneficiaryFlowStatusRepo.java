@@ -56,10 +56,43 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 
 	// TC doc work-list, 04-12-2018
 	@Query("SELECT t from BeneficiaryFlowStatus t WHERE (t.doctorFlag = 1 OR t.doctorFlag = 2 OR "
-			+ " t.doctorFlag = 3 OR t.nurseFlag = 2 OR t.doctorFlag = 9 OR t.doctorFlag = 4 ) AND t.deleted = false "
-			+ " AND t.providerServiceMapId = :providerServiceMapId " + " ORDER BY benVisitDate DESC ")
+			+ " t.doctorFlag = 3 OR t.nurseFlag = 2 OR t.doctorFlag = 9 ) "
+			+ " OR ( t.doctorFlag = 4 AND t.tCRequestDate is not null AND DATE(t.tCRequestDate) = curdate() ) "
+			+ " AND t.deleted = false AND t.providerServiceMapId = :providerServiceMapId "
+			+ " ORDER BY t.benVisitDate DESC ")
 	public ArrayList<BeneficiaryFlowStatus> getDocWorkListNewTC(
 			@Param("providerServiceMapId") Integer providerServiceMapId);
+
+	// TC doc work-list, future scheduled 13-12-2018
+	@Query("SELECT t from BeneficiaryFlowStatus t "
+			+ " WHERE t.doctorFlag = 4 AND t.tCRequestDate is not null AND t.tCSpecialistUserID is not null "
+			+ " AND DATE(t.tCRequestDate) > curdate() "
+			+ " AND t.deleted = false AND t.providerServiceMapId = :providerServiceMapId "
+			+ " ORDER BY benVisitDate DESC ")
+	public ArrayList<BeneficiaryFlowStatus> getDocWorkListNewFutureScheduledTC(
+			@Param("providerServiceMapId") Integer providerServiceMapId);
+
+	// TC Specialist work-list, 13-12-2018
+	@Query("SELECT t from BeneficiaryFlowStatus t "
+			+ " WHERE t.doctorFlag = 4 AND t.tCRequestDate is not null AND t.tCSpecialistUserID is not null "
+			+ " AND t.tCSpecialistUserID =:tCSpecialistUserID AND t.specialist_flag != 11 "
+			+ " AND DATE(t.tCRequestDate) = curdate() "
+			+ " AND t.deleted = false AND t.providerServiceMapId = :providerServiceMapId "
+			+ " ORDER BY t.benVisitDate DESC ")
+	public ArrayList<BeneficiaryFlowStatus> getTCSpecialistWorkListNew(
+			@Param("providerServiceMapId") Integer providerServiceMapId,
+			@Param("tCSpecialistUserID") Integer tCSpecialistUserID);
+
+	// TC Specialist work-list, future scheduled, 13-12-2018
+	@Query("SELECT t from BeneficiaryFlowStatus t "
+			+ " WHERE t.doctorFlag = 4 AND t.tCRequestDate is not null AND t.tCSpecialistUserID is not null "
+			+ " AND t.tCSpecialistUserID =:tCSpecialistUserID AND t.specialist_flag != 11 "
+			+ " AND DATE(t.tCRequestDate) > curdate() "
+			+ " AND t.deleted = false AND t.providerServiceMapId = :providerServiceMapId "
+			+ " ORDER BY t.benVisitDate DESC ")
+	public ArrayList<BeneficiaryFlowStatus> getTCSpecialistWorkListNewFutureScheduled(
+			@Param("providerServiceMapId") Integer providerServiceMapId,
+			@Param("tCSpecialistUserID") Integer tCSpecialistUserID);
 
 	@Query("SELECT  t.benFlowID from BeneficiaryFlowStatus t WHERE t.beneficiaryRegID = :benRegID "
 			+ "AND t.providerServiceMapId = :provoderSerMapID AND "

@@ -235,6 +235,13 @@ public class BeneficiaryFlowStatus {
 	@Column(name = "Processed", insertable = false)
 	private String processed;
 
+	@Expose
+	@Column(name = "TCSpecialistUserID")
+	private Integer tCSpecialistUserID;
+	@Expose
+	@Column(name = "TCRequestDate")
+	private Timestamp tCRequestDate;
+
 	@Transient
 	private I_bendemographics i_bendemographics;
 	@Transient
@@ -867,6 +874,22 @@ public class BeneficiaryFlowStatus {
 
 	public void setProcessed(String processed) {
 		this.processed = processed;
+	}
+
+	public Integer gettCSpecialistUserID() {
+		return tCSpecialistUserID;
+	}
+
+	public void settCSpecialistUserID(Integer tCSpecialistUserID) {
+		this.tCSpecialistUserID = tCSpecialistUserID;
+	}
+
+	public Timestamp gettCRequestDate() {
+		return tCRequestDate;
+	}
+
+	public void settCRequestDate(Timestamp tCRequestDate) {
+		this.tCRequestDate = tCRequestDate;
 	}
 
 }

@@ -66,23 +66,52 @@ public class FetchCommonController {
 	// doc worklist new
 	@CrossOrigin()
 	@ApiOperation(value = "provides doctor worklist", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getDocWorklistNew/{providerServiceMapID}" }, method = { RequestMethod.GET })
-	public String getDocWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID) {
+	@RequestMapping(value = { "/getDocWorklistNew/{providerServiceMapID}/{serviceID}" }, method = { RequestMethod.GET })
+	public String getDocWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
+			@PathVariable("serviceID") Integer serviceID) {
 		OutputResponse response = new OutputResponse();
 		try {
-			if (providerServiceMapID != null) {
-				String s = commonDoctorServiceImpl.getDocWorkListNew(providerServiceMapID, 2);
+			if (providerServiceMapID != null && serviceID != null) {
+				String s = commonDoctorServiceImpl.getDocWorkListNew(providerServiceMapID, serviceID);
 				if (s != null)
 					response.setResponse(s);
 			} else {
 				logger.error("Invalid request, either ProviderServiceMapID or ServiceID is invalid. PSMID = "
-						+ providerServiceMapID + " SID = " + 2);
+						+ providerServiceMapID + " SID = " + serviceID);
 				response.setError(5000, "Invalid request, either ProviderServiceMapID or ServiceID is invalid");
 			}
 
 		} catch (Exception e) {
 			logger.error("Error in getDocWorkList:" + e);
 			response.setError(5000, "Error while getting doctor worklist");
+		}
+		return response.toString();
+	}
+
+	// doc worklist new (TM future scheduled beneficiary)
+	@CrossOrigin()
+	@ApiOperation(value = "provides doctor worklist future scheduled for TM", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getDocWorkListNewFutureScheduledForTM/{providerServiceMapID}/{serviceID}" }, method = {
+			RequestMethod.GET })
+	public String getDocWorkListNewFutureScheduledForTM(
+			@PathVariable("providerServiceMapID") Integer providerServiceMapID,
+			@PathVariable("serviceID") Integer serviceID) {
+		OutputResponse response = new OutputResponse();
+		try {
+			if (providerServiceMapID != null && serviceID != null) {
+				String s = commonDoctorServiceImpl.getDocWorkListNewFutureScheduledForTM(providerServiceMapID,
+						serviceID);
+				if (s != null)
+					response.setResponse(s);
+			} else {
+				logger.error("Invalid request, either ProviderServiceMapID or ServiceID is invalid. PSMID = "
+						+ providerServiceMapID + " SID = " + serviceID);
+				response.setError(5000, "Invalid request, either ProviderServiceMapID or ServiceID is invalid");
+			}
+
+		} catch (Exception e) {
+			logger.error("Error in getDocWorkListFutureScheduledbeneficiary:" + e);
+			response.setError(5000, "Error while getting doctor worklist for future scheduled beneficiay");
 		}
 		return response.toString();
 	}
@@ -650,4 +679,59 @@ public class FetchCommonController {
 		return response.toString();
 	}
 
+	// TC specialist worklist new
+	@CrossOrigin()
+	@ApiOperation(value = "TCSpecialist", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getTCSpecialistWorklist/{providerServiceMapID}/{serviceID}/{userID}" }, method = {
+			RequestMethod.GET })
+	public String getTCSpecialistWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
+			@PathVariable("userID") Integer userID, @PathVariable("serviceID") Integer serviceID) {
+		OutputResponse response = new OutputResponse();
+		try {
+			if (providerServiceMapID != null && userID != null) {
+				String s = commonDoctorServiceImpl.getTCSpecialistWorkListNewForTM(providerServiceMapID, userID,
+						serviceID);
+				if (s != null)
+					response.setResponse(s);
+			} else {
+				logger.error("Invalid request, either ProviderServiceMapID or userID is invalid. PSMID = "
+						+ providerServiceMapID + " SID = " + userID);
+				response.setError(5000, "Invalid request, either ProviderServiceMapID or userID is invalid");
+			}
+
+		} catch (Exception e) {
+			logger.error("Error in getTC_SpecialistWorkList:" + e);
+			response.setError(5000, "Error while getting TC specialist worklist");
+		}
+		return response.toString();
+	}
+
+	// TC specialist worklist new future scheduled
+	@CrossOrigin()
+	@ApiOperation(value = "TCSpecialist future scheduled", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = {
+			"/getTCSpecialistWorklistFutureScheduled/{providerServiceMapID}/{serviceID}/{userID}" }, method = {
+					RequestMethod.GET })
+	public String getTCSpecialistWorklistFutureScheduled(
+			@PathVariable("providerServiceMapID") Integer providerServiceMapID, @PathVariable("userID") Integer userID,
+			@PathVariable("serviceID") Integer serviceID) {
+		OutputResponse response = new OutputResponse();
+		try {
+			if (providerServiceMapID != null && userID != null) {
+				String s = commonDoctorServiceImpl.getTCSpecialistWorkListNewFutureScheduledForTM(providerServiceMapID,
+						userID, serviceID);
+				if (s != null)
+					response.setResponse(s);
+			} else {
+				logger.error("Invalid request, either ProviderServiceMapID or userID is invalid. PSMID = "
+						+ providerServiceMapID + " UserID = " + userID);
+				response.setError(5000, "Invalid request, either ProviderServiceMapID or userID is invalid");
+			}
+
+		} catch (Exception e) {
+			logger.error("Error in getTC_SpecialistWorkList future scheduled:" + e);
+			response.setError(5000, "Error while getting TC specialist future scheduled worklist");
+		}
+		return response.toString();
+	}
 }
