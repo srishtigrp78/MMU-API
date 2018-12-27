@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,10 +44,10 @@ public class QuickConsultCreateController {
 	 * 
 	 * @param requestObj
 	 * @return success or failure response
-	 * @objective first data will be pushed to BenVisitDetails Table and
-	 *            benVisitID will be generated and then this benVisitID will be
-	 *            patched with Beneficiary Vital and Anthropometry Detail Object
-	 *            and pushed to Database table
+	 * @objective first data will be pushed to BenVisitDetails Table and benVisitID
+	 *            will be generated and then this benVisitID will be patched with
+	 *            Beneficiary Vital and Anthropometry Detail Object and pushed to
+	 *            Database table
 	 */
 	@CrossOrigin
 	@ApiOperation(value = "Save quick consult nurse data (QC)..", consumes = "application/json", produces = "application/json")
@@ -97,7 +98,8 @@ public class QuickConsultCreateController {
 					+ "\"specialInstruction\":\"String\"}], \"labTestOrders\":[{\"testID\":\"String\", \"testName\":\"String\", \"testingRequirements\":\"String\","
 					+ " \"isRadiologyImaging\":\"String\", \"createdBy\":\"String\"}, {\"testID\":\"Integer\", \"testName\":\"String\", "
 					+ "\"testingRequirements\":\"String\", \"isRadiologyImaging\":\"Boolean\"}],"
-					+ "\"createdBy\":\"String\"}}") @RequestBody String requestObj) {
+					+ "\"createdBy\":\"String\"}}") @RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("Quick consult doctor data save request:" + requestObj);
@@ -107,7 +109,7 @@ public class QuickConsultCreateController {
 					WrapperQuickConsultation.class);
 
 			JsonObject quickConsultDoctorOBJ = wrapperQuickConsultation.getQuickConsultation();
-			Integer i = quickConsultationServiceImpl.quickConsultDoctorDataInsert(quickConsultDoctorOBJ);
+			Integer i = quickConsultationServiceImpl.quickConsultDoctorDataInsert(quickConsultDoctorOBJ, Authorization);
 
 			if (i != null && i > 0) {
 				response.setResponse("Data saved successfully");

@@ -22,15 +22,20 @@ import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
 import com.iemr.mmu.data.quickConsultation.ExternalLabTestOrder;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
+import com.iemr.mmu.data.tele_consultation.TCRequestModel;
+import com.iemr.mmu.data.tele_consultation.TcSpecialistSlotBookingRequestOBJ;
+import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
 import com.iemr.mmu.repo.quickConsultation.BenChiefComplaintRepo;
 import com.iemr.mmu.repo.quickConsultation.BenClinicalObservationsRepo;
 import com.iemr.mmu.repo.quickConsultation.ExternalTestOrderRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
+import com.iemr.mmu.service.anc.Utility;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.generalOPD.GeneralOPDDoctorServiceImpl;
 import com.iemr.mmu.service.labtechnician.LabTechnicianServiceImpl;
+import com.iemr.mmu.service.tele_consultation.TeleConsultationServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
@@ -50,6 +55,9 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	// private GeneralOPDDoctorServiceImpl generalOPDDoctorServiceImpl;
 
 	private GeneralOPDDoctorServiceImpl generalOPDDoctorServiceImpl;
+
+	@Autowired
+	private TeleConsultationServiceImpl teleConsultationServiceImpl;
 
 	@Autowired
 	public void setGeneralOPDDoctorServiceImpl(GeneralOPDDoctorServiceImpl generalOPDDoctorServiceImpl) {
@@ -294,13 +302,43 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	}
 
 	@Override
-	public Integer quickConsultDoctorDataInsert(JsonObject quickConsultDoctorOBJ) throws Exception {
+	public Integer quickConsultDoctorDataInsert(JsonObject quickConsultDoctorOBJ, String Authorization)
+			throws Exception {
 		Integer returnOBJ = 0;
 		Integer prescriptionSuccessFlag = null;
 		Integer investigationSuccessFlag = null;
+		Integer tcRequestStatusFlag = null;
 
+		TeleconsultationRequestOBJ tcRequestOBJ = null;
+		TcSpecialistSlotBookingRequestOBJ tcSpecialistSlotBookingRequestOBJ = null;
 		CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(quickConsultDoctorOBJ,
 				CommonUtilityClass.class);
+
+		if (commonUtilityClass != null && commonUtilityClass.getServiceID() != null
+				&& commonUtilityClass.getServiceID() == 4 && quickConsultDoctorOBJ != null
+				&& quickConsultDoctorOBJ.has("tcRequest") && quickConsultDoctorOBJ.get("tcRequest") != null) {
+			tcRequestOBJ = InputMapper.gson().fromJson(quickConsultDoctorOBJ.get("tcRequest"),
+					TeleconsultationRequestOBJ.class);
+
+			// create TC request
+			if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null && tcRequestOBJ.getUserID() > 0
+					&& tcRequestOBJ.getAllocationDate() != null) {
+
+				tcRequestOBJ.setAllocationDate(Utility.combineDateAndTimeToDateTime(
+						tcRequestOBJ.getAllocationDate().toString(), tcRequestOBJ.getFromTime()));
+				// tc request model
+				TCRequestModel tRequestModel = InputMapper.gson().fromJson(quickConsultDoctorOBJ, TCRequestModel.class);
+				tRequestModel.setUserID(tcRequestOBJ.getUserID());
+				tRequestModel.setRequestDate(tcRequestOBJ.getAllocationDate());
+				tcRequestStatusFlag = teleConsultationServiceImpl.createTCRequest(tRequestModel);
+				// tc speciaist slot booking model
+				tcSpecialistSlotBookingRequestOBJ = new TcSpecialistSlotBookingRequestOBJ();
+				tcSpecialistSlotBookingRequestOBJ.setUserID(tRequestModel.getUserID());
+				tcSpecialistSlotBookingRequestOBJ.setDate(tRequestModel.getRequestDate());
+				tcSpecialistSlotBookingRequestOBJ.setFromTime(tcRequestOBJ.getFromTime());
+				tcSpecialistSlotBookingRequestOBJ.setToTime(tcRequestOBJ.getToTime());
+			}
+		}
 
 		Long benChiefComplaintID = saveBeneficiaryChiefComplaint(quickConsultDoctorOBJ);
 		Long clinicalObservationID = saveBeneficiaryClinicalObservations(quickConsultDoctorOBJ);
@@ -358,11 +396,18 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 
 			// call method to update beneficiary flow table
 			int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataSave(commonUtilityClass, isTestPrescribed,
-					isMedicinePrescribed);
+					isMedicinePrescribed, tcRequestOBJ);
 
-			if (i > 0)
+			if (i > 0) {
+				// check for TC request created successfully or not
+				if (tcRequestStatusFlag != null && tcRequestStatusFlag > 0
+						&& tcSpecialistSlotBookingRequestOBJ != null) {
+					// code for updating specialist slot
+					int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
+							Authorization);
+				}
 				returnOBJ = 1;
-			else
+			} else
 				throw new Exception();
 		}
 		return returnOBJ;
@@ -425,15 +470,44 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public Long updateGeneralOPDQCDoctorData(JsonObject quickConsultDoctorOBJ) throws Exception {
+	public Long updateGeneralOPDQCDoctorData(JsonObject quickConsultDoctorOBJ, String Authorization) throws Exception {
 		Long updateSuccessFlag = null;
 		Long prescriptionID = null;
 		Long prescribedDrugSuccessFlag = null;
 		Long labTestOrderSuccessFlag = null;
 
+		Integer tcRequestStatusFlag = null;
+
+		TeleconsultationRequestOBJ tcRequestOBJ = null;
+		TcSpecialistSlotBookingRequestOBJ tcSpecialistSlotBookingRequestOBJ = null;
 		CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(quickConsultDoctorOBJ,
 				CommonUtilityClass.class);
 
+		if (commonUtilityClass != null && commonUtilityClass.getServiceID() != null
+				&& commonUtilityClass.getServiceID() == 4 && quickConsultDoctorOBJ != null
+				&& quickConsultDoctorOBJ.has("tcRequest") && quickConsultDoctorOBJ.get("tcRequest") != null) {
+			tcRequestOBJ = InputMapper.gson().fromJson(quickConsultDoctorOBJ.get("tcRequest"),
+					TeleconsultationRequestOBJ.class);
+
+			// create TC request
+			if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null && tcRequestOBJ.getUserID() > 0
+					&& tcRequestOBJ.getAllocationDate() != null) {
+
+				tcRequestOBJ.setAllocationDate(Utility.combineDateAndTimeToDateTime(
+						tcRequestOBJ.getAllocationDate().toString(), tcRequestOBJ.getFromTime()));
+				// tc request model
+				TCRequestModel tRequestModel = InputMapper.gson().fromJson(quickConsultDoctorOBJ, TCRequestModel.class);
+				tRequestModel.setUserID(tcRequestOBJ.getUserID());
+				tRequestModel.setRequestDate(tcRequestOBJ.getAllocationDate());
+				tcRequestStatusFlag = teleConsultationServiceImpl.createTCRequest(tRequestModel);
+				// tc speciaist slot booking model
+				tcSpecialistSlotBookingRequestOBJ = new TcSpecialistSlotBookingRequestOBJ();
+				tcSpecialistSlotBookingRequestOBJ.setUserID(tRequestModel.getUserID());
+				tcSpecialistSlotBookingRequestOBJ.setDate(tRequestModel.getRequestDate());
+				tcSpecialistSlotBookingRequestOBJ.setFromTime(tcRequestOBJ.getFromTime());
+				tcSpecialistSlotBookingRequestOBJ.setToTime(tcRequestOBJ.getToTime());
+			}
+		}
 		Long benChiefComplaintID = saveBeneficiaryChiefComplaint(quickConsultDoctorOBJ);
 		Integer clinicalObservationID = updateBeneficiaryClinicalObservations(quickConsultDoctorOBJ);
 
@@ -504,11 +578,18 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 
 			// call method to update beneficiary flow table
 			int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataUpdate(commonUtilityClass, isTestPrescribed,
-					isMedicinePrescribed);
+					isMedicinePrescribed, tcRequestOBJ);
 
-			if (i > 0)
+			if (i > 0) {
+				// check for TC request created successfully or not
+				if (tcRequestStatusFlag != null && tcRequestStatusFlag > 0
+						&& tcSpecialistSlotBookingRequestOBJ != null) {
+					// code for updating specialist slot
+					int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
+							Authorization);
+				}
 				updateSuccessFlag = benChiefComplaintID;
-			else
+			} else
 				throw new Exception();
 		}
 

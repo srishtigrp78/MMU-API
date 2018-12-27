@@ -168,7 +168,7 @@ public class TestGeneralOPDServices {
 
 		Long response = null;
 		try {
-			response = generalOPDServiceImpl.saveDoctorData(TestCommonServices.doctorSaveJsnPve);
+			response = generalOPDServiceImpl.saveDoctorData(TestCommonServices.doctorSaveJsnPve, "");
 
 			System.out.println("response " + response);
 		} catch (Exception e) {

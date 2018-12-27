@@ -8,11 +8,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -20,35 +20,33 @@ import com.iemr.mmu.service.ncdCare.NCDCareServiceImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
- 
+
 /**
  * 
  * @author NA874500
- * @Objective Updating NCD Care nurse and doctor data 
+ * @Objective Updating NCD Care nurse and doctor data
  *
  */
 
 @RestController
 @CrossOrigin
 @RequestMapping(value = "/NCDCare", headers = "Authorization")
-public class NCDCareUpdateController
-{
+public class NCDCareUpdateController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-	
+
 	private NCDCareServiceImpl ncdCareServiceImpl;
-	
+
 	@Autowired
-	public void setNcdCareServiceImpl(NCDCareServiceImpl ncdCareServiceImpl)
-	{
+	public void setNcdCareServiceImpl(NCDCareServiceImpl ncdCareServiceImpl) {
 		this.ncdCareServiceImpl = ncdCareServiceImpl;
 	}
-	
+
 	/**
 	 * 
 	 * @param requestObj
 	 * @return success or failure response
-	 * @objective Replace NCD Care History Data entered by Nurse with the
-	 *            details entered by Doctor
+	 * @objective Replace NCD Care History Data entered by Nurse with the details
+	 *            entered by Doctor
 	 */
 
 	@CrossOrigin
@@ -75,19 +73,19 @@ public class NCDCareUpdateController
 			}
 			logger.info("History data update Response:" + response);
 		} catch (Exception e) {
-			response.setError(5000,"Unable to modify data");
+			response.setError(5000, "Unable to modify data");
 			logger.error("Error while updating history data :" + e);
 		}
 
 		return response.toString();
 	}
-	
+
 	/**
 	 * 
 	 * @param requestObj
 	 * @return success or failure response
-	 * @objective Replace NCD Care Vital Data entered by Nurse with the
-	 *            details entered by Doctor
+	 * @objective Replace NCD Care Vital Data entered by Nurse with the details
+	 *            entered by Doctor
 	 */
 
 	@CrossOrigin
@@ -118,7 +116,7 @@ public class NCDCareUpdateController
 
 		return response.toString();
 	}
-	
+
 	/**
 	 * 
 	 * @param requestObj
@@ -128,7 +126,8 @@ public class NCDCareUpdateController
 	@CrossOrigin
 	@ApiOperation(value = "update NCDCare Doctor Data", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/doctorData" }, method = { RequestMethod.POST })
-	public String updateNCDCareDoctorData( @RequestBody String requestObj) {
+	public String updateNCDCareDoctorData(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for doctor data updating :" + requestObj);
@@ -139,7 +138,7 @@ public class NCDCareUpdateController
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
-			Long result = ncdCareServiceImpl.updateNCDCareDoctorData(jsnOBJ);
+			Long result = ncdCareServiceImpl.updateNCDCareDoctorData(jsnOBJ, Authorization);
 			if (null != result && result > 0) {
 				response.setResponse("Data updated successfully");
 			} else {

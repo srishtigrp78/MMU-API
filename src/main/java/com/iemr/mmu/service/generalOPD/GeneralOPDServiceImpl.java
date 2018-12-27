@@ -42,10 +42,15 @@ import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
+import com.iemr.mmu.data.tele_consultation.TCRequestModel;
+import com.iemr.mmu.data.tele_consultation.TcSpecialistSlotBookingRequestOBJ;
+import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
+import com.iemr.mmu.service.anc.Utility;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.labtechnician.LabTechnicianServiceImpl;
+import com.iemr.mmu.service.tele_consultation.TeleConsultationServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 /***
@@ -62,6 +67,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
 	private GeneralOPDDoctorServiceImpl generalOPDDoctorServiceImpl;
 	private LabTechnicianServiceImpl labTechnicianServiceImpl;
+	@Autowired
+	private TeleConsultationServiceImpl teleConsultationServiceImpl;
 
 	@Autowired
 	public void setLabTechnicianServiceImpl(LabTechnicianServiceImpl labTechnicianServiceImpl) {
@@ -145,7 +152,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					examtnSaveSuccessFlag = saveBenExaminationDetails(requestOBJ.getAsJsonObject("examinationDetails"),
 							benVisitID, benVisitCode);
 
-				//int i = commonNurseServiceImpl.updateBeneficiaryStatus('N', tmpOBJ.get("beneficiaryRegID").getAsLong());
+				// int i = commonNurseServiceImpl.updateBeneficiaryStatus('N',
+				// tmpOBJ.get("beneficiaryRegID").getAsLong());
 			} else {
 				// Beneficiary Visit ID not generated.
 			}
@@ -160,7 +168,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				 * We have to write new code to update ben status flow new logic
 				 */
 
-				int i = updateBenStatusFlagAfterNurseSaveSuccess(tmpOBJ, benVisitID, benFlowID, benVisitCode, nurseUtilityClass.getVanID());
+				int i = updateBenStatusFlagAfterNurseSaveSuccess(tmpOBJ, benVisitID, benFlowID, benVisitCode,
+						nurseUtilityClass.getVanID());
 
 			}
 		} else {
@@ -735,7 +744,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	/// --------------- start of saving doctor data ------------------------
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public Long saveDoctorData(JsonObject requestOBJ) throws Exception {
+	public Long saveDoctorData(JsonObject requestOBJ, String Authorization) throws Exception {
 		Long saveSuccessFlag = null;
 		Long prescriptionID = null;
 		Long investigationSuccessFlag = null;
@@ -743,8 +752,38 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		Integer prescriptionSuccessFlag = null;
 		Long referSaveSuccessFlag = null;
 
+		Integer tcRequestStatusFlag = null;
+
 		if (requestOBJ != null) {
+			TeleconsultationRequestOBJ tcRequestOBJ = null;
+			TcSpecialistSlotBookingRequestOBJ tcSpecialistSlotBookingRequestOBJ = null;
 			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
+
+			if (commonUtilityClass != null && commonUtilityClass.getServiceID() != null
+					&& commonUtilityClass.getServiceID() == 4 && requestOBJ != null && requestOBJ.has("tcRequest")
+					&& requestOBJ.get("tcRequest") != null) {
+				tcRequestOBJ = InputMapper.gson().fromJson(requestOBJ.get("tcRequest"),
+						TeleconsultationRequestOBJ.class);
+
+				// create TC request
+				if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null && tcRequestOBJ.getUserID() > 0
+						&& tcRequestOBJ.getAllocationDate() != null) {
+
+					tcRequestOBJ.setAllocationDate(Utility.combineDateAndTimeToDateTime(
+							tcRequestOBJ.getAllocationDate().toString(), tcRequestOBJ.getFromTime()));
+					// tc request model
+					TCRequestModel tRequestModel = InputMapper.gson().fromJson(requestOBJ, TCRequestModel.class);
+					tRequestModel.setUserID(tcRequestOBJ.getUserID());
+					tRequestModel.setRequestDate(tcRequestOBJ.getAllocationDate());
+					tcRequestStatusFlag = teleConsultationServiceImpl.createTCRequest(tRequestModel);
+					// tc speciaist slot booking model
+					tcSpecialistSlotBookingRequestOBJ = new TcSpecialistSlotBookingRequestOBJ();
+					tcSpecialistSlotBookingRequestOBJ.setUserID(tRequestModel.getUserID());
+					tcSpecialistSlotBookingRequestOBJ.setDate(tRequestModel.getRequestDate());
+					tcSpecialistSlotBookingRequestOBJ.setFromTime(tcRequestOBJ.getFromTime());
+					tcSpecialistSlotBookingRequestOBJ.setToTime(tcRequestOBJ.getToTime());
+				}
+			}
 
 			JsonArray testList = null;
 			JsonArray drugList = null;
@@ -848,11 +887,18 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 				// call method to update beneficiary flow table
 				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataSave(commonUtilityClass, isTestPrescribed,
-						isMedicinePrescribed);
+						isMedicinePrescribed, tcRequestOBJ);
 
-				if (i > 0)
+				if (i > 0) {
+					// check for TC request created successfully or not
+					if (tcRequestStatusFlag != null && tcRequestStatusFlag > 0
+							&& tcSpecialistSlotBookingRequestOBJ != null) {
+						// code for updating specialist slot
+						int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
+								Authorization);
+					}
 					saveSuccessFlag = investigationSuccessFlag;
-				else
+				} else
 					throw new Exception();
 			}
 		} else {
@@ -1319,7 +1365,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 	// update doctor data
 	@Transactional(rollbackFor = Exception.class)
-	public Long updateGeneralOPDDoctorData(JsonObject requestOBJ) throws Exception {
+	public Long updateGeneralOPDDoctorData(JsonObject requestOBJ, String Authorization) throws Exception {
 		Long updateSuccessFlag = null;
 		Long prescriptionID = null;
 		Long investigationSuccessFlag = null;
@@ -1327,9 +1373,38 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		Integer diagnosisSuccessFlag = null;
 		Integer prescriptionSuccessFlag = null;
 		Long referSaveSuccessFlag = null;
+		Integer tcRequestStatusFlag = null;
 
 		if (requestOBJ != null) {
+			TeleconsultationRequestOBJ tcRequestOBJ = null;
+			TcSpecialistSlotBookingRequestOBJ tcSpecialistSlotBookingRequestOBJ = null;
 			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
+
+			if (commonUtilityClass != null && commonUtilityClass.getServiceID() != null
+					&& commonUtilityClass.getServiceID() == 4 && requestOBJ != null && requestOBJ.has("tcRequest")
+					&& requestOBJ.get("tcRequest") != null) {
+				tcRequestOBJ = InputMapper.gson().fromJson(requestOBJ.get("tcRequest"),
+						TeleconsultationRequestOBJ.class);
+
+				// create TC request
+				if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null && tcRequestOBJ.getUserID() > 0
+						&& tcRequestOBJ.getAllocationDate() != null) {
+
+					tcRequestOBJ.setAllocationDate(Utility.combineDateAndTimeToDateTime(
+							tcRequestOBJ.getAllocationDate().toString(), tcRequestOBJ.getFromTime()));
+					// tc request model
+					TCRequestModel tRequestModel = InputMapper.gson().fromJson(requestOBJ, TCRequestModel.class);
+					tRequestModel.setUserID(tcRequestOBJ.getUserID());
+					tRequestModel.setRequestDate(tcRequestOBJ.getAllocationDate());
+					tcRequestStatusFlag = teleConsultationServiceImpl.createTCRequest(tRequestModel);
+					// tc speciaist slot booking model
+					tcSpecialistSlotBookingRequestOBJ = new TcSpecialistSlotBookingRequestOBJ();
+					tcSpecialistSlotBookingRequestOBJ.setUserID(tRequestModel.getUserID());
+					tcSpecialistSlotBookingRequestOBJ.setDate(tRequestModel.getRequestDate());
+					tcSpecialistSlotBookingRequestOBJ.setFromTime(tcRequestOBJ.getFromTime());
+					tcSpecialistSlotBookingRequestOBJ.setToTime(tcRequestOBJ.getToTime());
+				}
+			}
 
 			JsonArray testList = null;
 			JsonArray drugList = null;
@@ -1444,11 +1519,18 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 
 				// call method to update beneficiary flow table
 				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataUpdate(commonUtilityClass,
-						isTestPrescribed, isMedicinePrescribed);
+						isTestPrescribed, isMedicinePrescribed, tcRequestOBJ);
 
-				if (i > 0)
+				if (i > 0) {
+					// check for TC request created successfully or not
+					if (tcRequestStatusFlag != null && tcRequestStatusFlag > 0
+							&& tcSpecialistSlotBookingRequestOBJ != null) {
+						// code for updating specialist slot
+						int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
+								Authorization);
+					}
 					updateSuccessFlag = investigationSuccessFlag;
-				else
+				} else
 					throw new Exception();
 			}
 		} else {

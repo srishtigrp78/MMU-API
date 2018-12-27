@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -86,7 +87,8 @@ public class ANCCreateController {
 	@CrossOrigin
 	@ApiOperation(value = "Save ANC doctor data..", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/doctorData" }, method = { RequestMethod.POST })
-	public String saveBenANCDoctorData(@RequestBody String requestObj) {
+	public String saveBenANCDoctorData(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
 			logger.info("Request object for ANC doctor data saving :" + requestObj);
@@ -96,7 +98,7 @@ public class ANCCreateController {
 			JsonElement jsnElmnt = jsnParser.parse(requestObj);
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 			if (jsnOBJ != null) {
-				Long r = ancServiceImpl.saveANCDoctorData(jsnOBJ);
+				Long r = ancServiceImpl.saveANCDoctorData(jsnOBJ, Authorization);
 				if (r != null && r > 0) {
 					response.setResponse("Data saved successfully");
 				} else {

@@ -168,7 +168,7 @@ public class TestANCServices
 		Long response = null;
 		try
 		{
-			response = ancServiceImpl.saveANCDoctorData(doctorSavejsnOBJPve);
+			//response = ancServiceImpl.saveANCDoctorData(doctorSavejsnOBJPve);
 
 		} catch (Exception e)
 		{
@@ -186,7 +186,7 @@ public class TestANCServices
 		Long response = null;
 		try
 		{
-			response = ancServiceImpl.saveANCDoctorData(doctorSavejsnOBJNve);
+			//response = ancServiceImpl.saveANCDoctorData(doctorSavejsnOBJNve);
 
 		} catch (Exception e)
 		{

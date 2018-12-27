@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,7 @@ import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
+
 /**
  * 
  * @author NA874500
@@ -27,18 +29,17 @@ import io.swagger.annotations.ApiOperation;
  */
 @CrossOrigin
 @RestController
-@RequestMapping(value =  "/genOPD-QC-quickConsult", headers = "Authorization")
+@RequestMapping(value = "/genOPD-QC-quickConsult", headers = "Authorization")
 public class QuickConsultUpdateController {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	private QuickConsultationServiceImpl quickConsultationServiceImpl;
-	
+
 	@Autowired
 	public void setQuickConsultationServiceImpl(QuickConsultationServiceImpl quickConsultationServiceImpl) {
 		this.quickConsultationServiceImpl = quickConsultationServiceImpl;
 	}
-	
-	
+
 	/**
 	 * 
 	 * @param requestObj
@@ -46,11 +47,12 @@ public class QuickConsultUpdateController {
 	 * @objective Replace General OPD doctor data for the doctor next visit
 	 * 
 	 */
-	
+
 	@CrossOrigin
 	@ApiOperation(value = "update GeneralOPD(QuickConsult) Doctor Data", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/doctorData" }, method = { RequestMethod.POST })
-	public String updateGeneralOPDQCDoctorData( @RequestBody String requestObj) {
+	public String updateGeneralOPDQCDoctorData(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("Quick consult doctor data update request:" + requestObj);
@@ -65,8 +67,9 @@ public class QuickConsultUpdateController {
 					WrapperQuickConsultation.class);
 
 			JsonObject quickConsultDoctorOBJ = wrapperQuickConsultation.getQuickConsultation();
-			
-			Long result = quickConsultationServiceImpl.updateGeneralOPDQCDoctorData(quickConsultDoctorOBJ);
+
+			Long result = quickConsultationServiceImpl.updateGeneralOPDQCDoctorData(quickConsultDoctorOBJ,
+					Authorization);
 			if (null != result && result > 0) {
 				response.setResponse("Data updated successfully");
 			} else {
@@ -80,5 +83,5 @@ public class QuickConsultUpdateController {
 
 		return response.toString();
 	}
-	
+
 }

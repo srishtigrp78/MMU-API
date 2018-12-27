@@ -95,7 +95,7 @@ public class TestGeneralOPDController {
 			// Save API mocks
 			when(generalOPDServiceImplMock.saveNurseData(nurseJsnOBJPve)).thenReturn(new Long(1L));
 			
-			when(generalOPDServiceImplMock.saveDoctorData(doctorJsnOBJPve)).thenReturn(new Long(1L));
+			when(generalOPDServiceImplMock.saveDoctorData(doctorJsnOBJPve,"")).thenReturn(new Long(1L));
 			
 			//Fetch API mocks
 //			when(generalOPDServiceImplMock.getPastHistoryData(beneficiaryRegID)).thenReturn("");
@@ -161,7 +161,7 @@ public class TestGeneralOPDController {
 	@Test
 	public void  saveGOPDDoctorDataPveTest(){
 		
-		String response = createControllerMock.saveBenGenOPDDoctorData(doctorObjPve);
+		String response = createControllerMock.saveBenGenOPDDoctorData(doctorObjPve, "");
 		
 		assertTrue("",
 				response.equals("{\"data\":{\"response\":\"General OPD doctor Entered Details stored successfully.\"},\"statusCode\":200,"
@@ -171,7 +171,7 @@ public class TestGeneralOPDController {
 	@Test
 	public void  saveGOPDDoctorDataNveTest(){
 		
-		String response = createControllerMock.saveBenGenOPDDoctorData(doctorObjNve);
+		String response = createControllerMock.saveBenGenOPDDoctorData(doctorObjNve, "");
 		
 		assertTrue("",
 				response.equals("{\"data\":{\"response\":\"Failed to store General OPD doctor Details.\"},\"statusCode\":200,"

@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,17 +27,15 @@ import io.swagger.annotations.ApiOperation;
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/PNC", headers = "Authorization")
-public class PNCCreateController
-{
+public class PNCCreateController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	private PNCServiceImpl pncServiceImpl;
-	
+
 	@Autowired
-	public void setPncServiceImpl(PNCServiceImpl pncServiceImpl)
-	{
+	public void setPncServiceImpl(PNCServiceImpl pncServiceImpl) {
 		this.pncServiceImpl = pncServiceImpl;
 	}
-	
+
 	/**
 	 * @Objective Saving PNC nurse data
 	 * @param requestObj
@@ -80,11 +79,12 @@ public class PNCCreateController
 	 * @param requestObj
 	 * @return success or failure response
 	 */
-	
+
 	@CrossOrigin
 	@ApiOperation(value = "Save PNC doctor data..", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/doctorData" }, method = { RequestMethod.POST })
-	public String saveBenPNCDoctorData(@RequestBody String requestObj) {
+	public String saveBenPNCDoctorData(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
 			logger.info("Request object for PNC doctor data saving :" + requestObj);
@@ -94,7 +94,7 @@ public class PNCCreateController
 			JsonElement jsnElmnt = jsnParser.parse(requestObj);
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 			if (jsnOBJ != null) {
-				Long r = pncServiceImpl.savePNCDoctorData(jsnOBJ);
+				Long r = pncServiceImpl.savePNCDoctorData(jsnOBJ, Authorization);
 				if (r != null && r > 0) {
 					response.setResponse("Data saved successfully");
 				} else {

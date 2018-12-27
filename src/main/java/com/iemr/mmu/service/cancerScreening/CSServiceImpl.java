@@ -1,5 +1,6 @@
 package com.iemr.mmu.service.cancerScreening;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -31,8 +32,10 @@ import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.nurse.CommonUtilityClass;
+import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
+import com.iemr.mmu.service.anc.Utility;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
@@ -677,8 +680,22 @@ public class CSServiceImpl implements CSService {
 		Long docDataSuccessFlag = null;
 
 		if (requestOBJ != null) {
+			TeleconsultationRequestOBJ tcRequestOBJ = null;
+
 			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ.getAsJsonObject("diagnosis"),
 					CommonUtilityClass.class);
+
+			if (commonUtilityClass != null && commonUtilityClass.getServiceID() != null
+					&& commonUtilityClass.getServiceID() == 4 && requestOBJ != null && requestOBJ.has("tcRequest")
+					&& requestOBJ.get("tcRequest") != null) {
+				tcRequestOBJ = InputMapper.gson().fromJson(requestOBJ.get("tcRequest"),
+						TeleconsultationRequestOBJ.class);
+				if (tcRequestOBJ != null)
+					tcRequestOBJ.setAllocationDate(Utility.combineDateAndTimeToDateTime(
+							tcRequestOBJ.getAllocationDate().toString(), tcRequestOBJ.getFromTime()));
+
+			}
+
 			Long diagnosisSuccessFlag = saveBenDiagnosisDetails(requestOBJ);
 
 			if (diagnosisSuccessFlag != null && diagnosisSuccessFlag > 0) {
@@ -687,6 +704,9 @@ public class CSServiceImpl implements CSService {
 				Long tmpbeneficiaryRegID = null;
 				Long tmpBeneficiaryID = null;
 				Long tmpBenVisitID = null;
+				short tcSpecialistFlag = (short) 0;
+				int tcUserID = 0;
+				Timestamp tcDate = null;
 
 				if (requestOBJ.getAsJsonObject("diagnosis") != null
 						&& !requestOBJ.getAsJsonObject("diagnosis").isJsonNull()) {
@@ -700,8 +720,16 @@ public class CSServiceImpl implements CSService {
 				short pharmaFalg = (short) 0;
 				short oncologistFlag = (short) 1;
 
+				if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null && tcRequestOBJ.getUserID() > 0
+						&& tcRequestOBJ.getAllocationDate() != null) {
+					tcSpecialistFlag = (short) 1;
+					tcUserID = tcRequestOBJ.getUserID();
+					tcDate = tcRequestOBJ.getAllocationDate();
+				}
+
 				int l = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
-						tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, oncologistFlag);
+						tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, oncologistFlag, tcSpecialistFlag,
+						tcUserID, tcDate);
 
 				docDataSuccessFlag = diagnosisSuccessFlag;
 			}

@@ -1,6 +1,7 @@
 package com.iemr.mmu.service.common.transaction;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +9,15 @@ import java.util.Map;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -24,6 +33,8 @@ import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.registrar.WrapperRegWorklist;
 import com.iemr.mmu.data.snomedct.SCTDescription;
+import com.iemr.mmu.data.tele_consultation.TcSpecialistSlotBookingRequestOBJ;
+import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.doctor.BenReferDetailsRepo;
 import com.iemr.mmu.repo.doctor.DocWorkListRepo;
@@ -36,6 +47,7 @@ import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.snomedct.SnomedServiceImpl;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
+import com.iemr.mmu.utils.mapper.OutputMapper;
 
 /***
  * 
@@ -43,7 +55,11 @@ import com.iemr.mmu.utils.mapper.InputMapper;
  *
  */
 @Service
+@PropertySource("classpath:myApp.properties")
 public class CommonDoctorServiceImpl {
+
+	@Value("${tcSpecialistSlotBook}")
+	private String tcSpecialistSlotBook;
 
 	private BenClinicalObservationsRepo benClinicalObservationsRepo;
 	private BenChiefComplaintRepo benChiefComplaintRepo;
@@ -593,9 +609,12 @@ public class CommonDoctorServiceImpl {
 	/// ------Start of beneficiary flow table after doctor data save-------------
 
 	public int updateBenFlowtableAfterDocDataSave(CommonUtilityClass commonUtilityClass, Boolean isTestPrescribed,
-			Boolean isMedicinePrescribed) {
+			Boolean isMedicinePrescribed, TeleconsultationRequestOBJ tcRequestOBJ) {
 		short pharmaFalg;
 		short docFlag;
+		short tcSpecialistFlag = (short) 0;
+		int tcUserID = 0;
+		Timestamp tcDate = null;
 
 		Long tmpBenFlowID = commonUtilityClass.getBenFlowID();
 		Long tmpBeneficiaryID = commonUtilityClass.getBeneficiaryID();
@@ -615,8 +634,16 @@ public class CommonDoctorServiceImpl {
 			pharmaFalg = (short) 0;
 		}
 
+		if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null && tcRequestOBJ.getUserID() > 0
+				&& tcRequestOBJ.getAllocationDate() != null) {
+			tcSpecialistFlag = (short) 1;
+			tcUserID = tcRequestOBJ.getUserID();
+			tcDate = tcRequestOBJ.getAllocationDate();
+
+		}
+
 		int i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
-				tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
+				tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0, tcSpecialistFlag, tcUserID, tcDate);
 		return i;
 	}
 
@@ -632,10 +659,13 @@ public class CommonDoctorServiceImpl {
 	 * @return
 	 */
 	public int updateBenFlowtableAfterDocDataUpdate(CommonUtilityClass commonUtilityClass, Boolean isTestPrescribed,
-			Boolean isMedicinePrescribed) {
+			Boolean isMedicinePrescribed, TeleconsultationRequestOBJ tcRequestOBJ) {
 
 		short pharmaFalg;
 		short docFlag;
+		short tcSpecialistFlag = (short) 0;
+		int tcUserID = 0;
+		Timestamp tcDate = null;
 
 		Long tmpBenFlowID = commonUtilityClass.getBenFlowID();
 		Long tmpBeneficiaryID = commonUtilityClass.getBeneficiaryID();
@@ -652,8 +682,15 @@ public class CommonDoctorServiceImpl {
 		else
 			pharmaFalg = (short) 0;
 
+		if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null && tcRequestOBJ.getUserID() > 0
+				&& tcRequestOBJ.getAllocationDate() != null) {
+			tcSpecialistFlag = (short) 1;
+			tcUserID = tcRequestOBJ.getUserID();
+			tcDate = tcRequestOBJ.getAllocationDate();
+		}
+
 		int i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdate(tmpBenFlowID, tmpbeneficiaryRegID,
-				tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0);
+				tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0, tcSpecialistFlag, tcUserID, tcDate);
 
 		return i;
 	}
@@ -671,6 +708,26 @@ public class CommonDoctorServiceImpl {
 			return "record deleted successfully";
 		else
 			return null;
+	}
+
+	public int callTmForSpecialistSlotBook(TcSpecialistSlotBookingRequestOBJ tcSpecialistSlotBookingRequestOBJ,
+			String Authorization) {
+		int successFlag = 0;
+		// OutputMapper outputMapper = new OutputMapper();
+		String requestOBJ = OutputMapper.gson().toJson(tcSpecialistSlotBookingRequestOBJ);
+
+		RestTemplate restTemplate = new RestTemplate();
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+		headers.add("Content-Type", "application/json");
+		headers.add("AUTHORIZATION", Authorization);
+		HttpEntity<Object> request = new HttpEntity<Object>(requestOBJ, headers);
+		ResponseEntity<String> response = restTemplate.exchange(tcSpecialistSlotBook, HttpMethod.POST, request,
+				String.class);
+
+		if (response.getStatusCodeValue() == 200 & response.hasBody()) {
+			successFlag = 1;
+		}
+		return successFlag;
 	}
 
 }

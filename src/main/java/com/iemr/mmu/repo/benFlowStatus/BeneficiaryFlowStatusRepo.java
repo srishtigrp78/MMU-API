@@ -1,5 +1,6 @@
 package com.iemr.mmu.repo.benFlowStatus;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -57,7 +58,6 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	// TC doc work-list, 04-12-2018
 	@Query("SELECT t from BeneficiaryFlowStatus t WHERE (t.doctorFlag = 1 OR t.doctorFlag = 2 OR "
 			+ " t.doctorFlag = 3 OR t.nurseFlag = 2 OR t.doctorFlag = 9 ) "
-			+ " OR ( t.doctorFlag = 4 AND t.tCRequestDate is not null AND DATE(t.tCRequestDate) = curdate() ) "
 			+ " AND t.deleted = false AND t.providerServiceMapId = :providerServiceMapId "
 			+ " ORDER BY t.benVisitDate DESC ")
 	public ArrayList<BeneficiaryFlowStatus> getDocWorkListNewTC(
@@ -65,7 +65,7 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 
 	// TC doc work-list, future scheduled 13-12-2018
 	@Query("SELECT t from BeneficiaryFlowStatus t "
-			+ " WHERE t.doctorFlag = 4 AND t.tCRequestDate is not null AND t.tCSpecialistUserID is not null "
+			+ " WHERE t.specialist_flag = 1 AND t.tCRequestDate is not null AND t.tCSpecialistUserID is not null "
 			+ " AND DATE(t.tCRequestDate) > curdate() "
 			+ " AND t.deleted = false AND t.providerServiceMapId = :providerServiceMapId "
 			+ " ORDER BY benVisitDate DESC ")
@@ -74,9 +74,8 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 
 	// TC Specialist work-list, 13-12-2018
 	@Query("SELECT t from BeneficiaryFlowStatus t "
-			+ " WHERE t.doctorFlag = 4 AND t.tCRequestDate is not null AND t.tCSpecialistUserID is not null "
-			+ " AND t.tCSpecialistUserID =:tCSpecialistUserID AND t.specialist_flag != 11 "
-			+ " AND DATE(t.tCRequestDate) = curdate() "
+			+ " WHERE t.specialist_flag NOT IN (0,4) AND t.tCRequestDate is not null AND t.tCSpecialistUserID is not null "
+			+ " AND t.tCSpecialistUserID =:tCSpecialistUserID AND DATE(t.tCRequestDate) = curdate() "
 			+ " AND t.deleted = false AND t.providerServiceMapId = :providerServiceMapId "
 			+ " ORDER BY t.benVisitDate DESC ")
 	public ArrayList<BeneficiaryFlowStatus> getTCSpecialistWorkListNew(
@@ -85,9 +84,8 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 
 	// TC Specialist work-list, future scheduled, 13-12-2018
 	@Query("SELECT t from BeneficiaryFlowStatus t "
-			+ " WHERE t.doctorFlag = 4 AND t.tCRequestDate is not null AND t.tCSpecialistUserID is not null "
-			+ " AND t.tCSpecialistUserID =:tCSpecialistUserID AND t.specialist_flag != 11 "
-			+ " AND DATE(t.tCRequestDate) > curdate() "
+			+ " WHERE t.specialist_flag NOT IN (0,4) AND t.tCRequestDate is not null AND t.tCSpecialistUserID is not null "
+			+ " AND t.tCSpecialistUserID =:tCSpecialistUserID AND DATE(t.tCRequestDate) > curdate() "
 			+ " AND t.deleted = false AND t.providerServiceMapId = :providerServiceMapId "
 			+ " ORDER BY t.benVisitDate DESC ")
 	public ArrayList<BeneficiaryFlowStatus> getTCSpecialistWorkListNewFutureScheduled(
@@ -108,11 +106,14 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	@Transactional
 	@Modifying
 	@Query("UPDATE BeneficiaryFlowStatus t set t.doctorFlag = :docFlag , t.pharmacist_flag = :pharmaFlag, "
-			+ " t.oncologist_flag = :oncologistFlag, t.consultationDate = now(), t.processed = 'U'  "
+			+ " t.oncologist_flag = :oncologistFlag, t.consultationDate = now(), t.processed = 'U', "
+			+ " t.specialist_flag = :tcSpecialistFlag, t.tCSpecialistUserID = :tcSpecialistUserID, t.tCRequestDate = :tcDate "
 			+ " WHERE t.benFlowID = :benFlowID AND " + " t.beneficiaryRegID = :benRegID AND t.beneficiaryID = :benID ")
 	public int updateBenFlowStatusAfterDoctorActivity(@Param("benFlowID") Long benFlowID,
 			@Param("benRegID") Long benRegID, @Param("benID") Long benID, @Param("docFlag") Short docFlag,
-			@Param("pharmaFlag") Short pharmaFlag, @Param("oncologistFlag") Short oncologistFlag);
+			@Param("pharmaFlag") Short pharmaFlag, @Param("oncologistFlag") Short oncologistFlag,
+			@Param("tcSpecialistFlag") Short tcSpecialistFlag, @Param("tcSpecialistUserID") int tcSpecialistUserID,
+			@Param("tcDate") Timestamp tcDate);
 
 	@Transactional
 	@Modifying

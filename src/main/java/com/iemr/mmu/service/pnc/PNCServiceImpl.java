@@ -44,10 +44,15 @@ import com.iemr.mmu.data.pnc.PNCDiagnosis;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
+import com.iemr.mmu.data.tele_consultation.TCRequestModel;
+import com.iemr.mmu.data.tele_consultation.TcSpecialistSlotBookingRequestOBJ;
+import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
+import com.iemr.mmu.service.anc.Utility;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.labtechnician.LabTechnicianServiceImpl;
+import com.iemr.mmu.service.tele_consultation.TeleConsultationServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
@@ -59,6 +64,8 @@ public class PNCServiceImpl implements PNCService {
 
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
 	private LabTechnicianServiceImpl labTechnicianServiceImpl;
+	@Autowired
+	private TeleConsultationServiceImpl teleConsultationServiceImpl;
 
 	@Autowired
 	public void setLabTechnicianServiceImpl(LabTechnicianServiceImpl labTechnicianServiceImpl) {
@@ -196,7 +203,7 @@ public class PNCServiceImpl implements PNCService {
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public Long savePNCDoctorData(JsonObject requestOBJ) throws Exception {
+	public Long savePNCDoctorData(JsonObject requestOBJ, String Authorization) throws Exception {
 		Long saveSuccessFlag = null;
 		Long prescriptionID = null;
 		Long investigationSuccessFlag = null;
@@ -204,10 +211,38 @@ public class PNCServiceImpl implements PNCService {
 		Long diagnosisSuccessFlag = null;
 		Integer prescriptionSuccessFlag = null;
 		Long referSaveSuccessFlag = null;
+		Integer tcRequestStatusFlag = null;
 
 		if (requestOBJ != null) {
-
+			TeleconsultationRequestOBJ tcRequestOBJ = null;
+			TcSpecialistSlotBookingRequestOBJ tcSpecialistSlotBookingRequestOBJ = null;
 			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
+
+			if (commonUtilityClass != null && commonUtilityClass.getServiceID() != null
+					&& commonUtilityClass.getServiceID() == 4 && requestOBJ != null && requestOBJ.has("tcRequest")
+					&& requestOBJ.get("tcRequest") != null) {
+				tcRequestOBJ = InputMapper.gson().fromJson(requestOBJ.get("tcRequest"),
+						TeleconsultationRequestOBJ.class);
+
+				// create TC request
+				if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null && tcRequestOBJ.getUserID() > 0
+						&& tcRequestOBJ.getAllocationDate() != null) {
+
+					tcRequestOBJ.setAllocationDate(Utility.combineDateAndTimeToDateTime(
+							tcRequestOBJ.getAllocationDate().toString(), tcRequestOBJ.getFromTime()));
+					// tc request model
+					TCRequestModel tRequestModel = InputMapper.gson().fromJson(requestOBJ, TCRequestModel.class);
+					tRequestModel.setUserID(tcRequestOBJ.getUserID());
+					tRequestModel.setRequestDate(tcRequestOBJ.getAllocationDate());
+					tcRequestStatusFlag = teleConsultationServiceImpl.createTCRequest(tRequestModel);
+					// tc speciaist slot booking model
+					tcSpecialistSlotBookingRequestOBJ = new TcSpecialistSlotBookingRequestOBJ();
+					tcSpecialistSlotBookingRequestOBJ.setUserID(tRequestModel.getUserID());
+					tcSpecialistSlotBookingRequestOBJ.setDate(tRequestModel.getRequestDate());
+					tcSpecialistSlotBookingRequestOBJ.setFromTime(tcRequestOBJ.getFromTime());
+					tcSpecialistSlotBookingRequestOBJ.setToTime(tcRequestOBJ.getToTime());
+				}
+			}
 
 			JsonArray testList = null;
 			JsonArray drugList = null;
@@ -303,11 +338,18 @@ public class PNCServiceImpl implements PNCService {
 
 				// call method to update beneficiary flow table
 				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataSave(commonUtilityClass, isTestPrescribed,
-						isMedicinePrescribed);
+						isMedicinePrescribed, tcRequestOBJ);
 
-				if (i > 0)
+				if (i > 0) {
+					// check for TC request created successfully or not
+					if (tcRequestStatusFlag != null && tcRequestStatusFlag > 0
+							&& tcSpecialistSlotBookingRequestOBJ != null) {
+						// code for updating specialist slot
+						int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
+								Authorization);
+					}
 					saveSuccessFlag = diagnosisSuccessFlag;
-				else
+				} else
 					throw new Exception();
 			}
 		} else {
@@ -1287,7 +1329,7 @@ public class PNCServiceImpl implements PNCService {
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public Long updatePNCDoctorData(JsonObject requestOBJ) throws Exception {
+	public Long updatePNCDoctorData(JsonObject requestOBJ, String Authorization) throws Exception {
 		Long updateSuccessFlag = null;
 		Long prescriptionID = null;
 		Long investigationSuccessFlag = null;
@@ -1295,10 +1337,38 @@ public class PNCServiceImpl implements PNCService {
 		Integer diagnosisSuccessFlag = null;
 		Integer prescriptionSuccessFlag = null;
 		Long referSaveSuccessFlag = null;
+		Integer tcRequestStatusFlag = null;
 
 		if (requestOBJ != null) {
-
+			TeleconsultationRequestOBJ tcRequestOBJ = null;
+			TcSpecialistSlotBookingRequestOBJ tcSpecialistSlotBookingRequestOBJ = null;
 			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
+
+			if (commonUtilityClass != null && commonUtilityClass.getServiceID() != null
+					&& commonUtilityClass.getServiceID() == 4 && requestOBJ != null && requestOBJ.has("tcRequest")
+					&& requestOBJ.get("tcRequest") != null) {
+				tcRequestOBJ = InputMapper.gson().fromJson(requestOBJ.get("tcRequest"),
+						TeleconsultationRequestOBJ.class);
+
+				// create TC request
+				if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null && tcRequestOBJ.getUserID() > 0
+						&& tcRequestOBJ.getAllocationDate() != null) {
+
+					tcRequestOBJ.setAllocationDate(Utility.combineDateAndTimeToDateTime(
+							tcRequestOBJ.getAllocationDate().toString(), tcRequestOBJ.getFromTime()));
+					// tc request model
+					TCRequestModel tRequestModel = InputMapper.gson().fromJson(requestOBJ, TCRequestModel.class);
+					tRequestModel.setUserID(tcRequestOBJ.getUserID());
+					tRequestModel.setRequestDate(tcRequestOBJ.getAllocationDate());
+					tcRequestStatusFlag = teleConsultationServiceImpl.createTCRequest(tRequestModel);
+					// tc speciaist slot booking model
+					tcSpecialistSlotBookingRequestOBJ = new TcSpecialistSlotBookingRequestOBJ();
+					tcSpecialistSlotBookingRequestOBJ.setUserID(tRequestModel.getUserID());
+					tcSpecialistSlotBookingRequestOBJ.setDate(tRequestModel.getRequestDate());
+					tcSpecialistSlotBookingRequestOBJ.setFromTime(tcRequestOBJ.getFromTime());
+					tcSpecialistSlotBookingRequestOBJ.setToTime(tcRequestOBJ.getToTime());
+				}
+			}
 
 			JsonArray testList = null;
 			JsonArray drugList = null;
@@ -1404,11 +1474,18 @@ public class PNCServiceImpl implements PNCService {
 
 				// call method to update beneficiary flow table
 				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataUpdate(commonUtilityClass,
-						isTestPrescribed, isMedicinePrescribed);
+						isTestPrescribed, isMedicinePrescribed, tcRequestOBJ);
 
-				if (i > 0)
+				if (i > 0) {
+					// check for TC request created successfully or not
+					if (tcRequestStatusFlag != null && tcRequestStatusFlag > 0
+							&& tcSpecialistSlotBookingRequestOBJ != null) {
+						// code for updating specialist slot
+						int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
+								Authorization);
+					}
 					updateSuccessFlag = investigationSuccessFlag;
-				else
+				} else
 					throw new Exception();
 
 			}

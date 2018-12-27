@@ -12,7 +12,7 @@ public interface GeneralOPDService {
 	Map<String, Long> saveBenVisitDetails(JsonObject visitDetailsOBJ, CommonUtilityClass nurseUtilityClass)
 			throws Exception;
 
-	Long saveDoctorData(JsonObject requestOBJ) throws Exception;
+	Long saveDoctorData(JsonObject requestOBJ, String Authorization) throws Exception;
 
 	Long saveBenGeneralOPDHistoryDetails(JsonObject generalOPDHistoryOBJ, Long benVisitID, Long benVisitCode)
 			throws Exception;

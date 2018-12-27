@@ -41,7 +41,7 @@ public class TestANCController
 		{
 			when(ancServiceImplMock.saveANCNurseData(isA(JsonObject.class))).thenReturn(1L);
 			
-			when(ancServiceImplMock.saveANCDoctorData(isA(JsonObject.class))).thenReturn(1L);
+			when(ancServiceImplMock.saveANCDoctorData(isA(JsonObject.class), "")).thenReturn(1L);
 			
 			when(ancServiceImplMock.getBenVisitDetailsFrmNurseANC(beneficiaryRegID, benVisitID)).thenReturn("");
 			
@@ -93,7 +93,7 @@ public class TestANCController
 	
 	@Test
 	public void saveBenANCDoctorDataPveTest(){
-		String response = createControllerSpy.saveBenANCDoctorData(nurseSaveObjPve);
+		String response = createControllerSpy.saveBenANCDoctorData(nurseSaveObjPve, "");
 		
 		assertTrue("",
 				response.equals("{\"data\":{\"response\":\"ANC Doc data saved successfully.\"},\"statusCode\":200,"

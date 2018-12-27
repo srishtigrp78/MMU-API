@@ -1,18 +1,15 @@
 package com.iemr.mmu.controller.generalOPD;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -78,8 +75,8 @@ public class GeneralOPDUpdateController {
 	 * 
 	 * @param requestObj
 	 * @return success or failure response
-	 * @objective Replace General OPD History Data entered by Nurse with the
-	 *            details entered by Doctor
+	 * @objective Replace General OPD History Data entered by Nurse with the details
+	 *            entered by Doctor
 	 */
 
 	@CrossOrigin
@@ -89,7 +86,7 @@ public class GeneralOPDUpdateController {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for history data updating :" + requestObj);
-		
+
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
 		JsonElement jsnElmnt = jsnParser.parse(requestObj);
@@ -115,8 +112,8 @@ public class GeneralOPDUpdateController {
 	 * 
 	 * @param requestObj
 	 * @return success or failure response
-	 * @objective Replace General OPD Vital Data entered by Nurse with the
-	 *            details entered by Doctor
+	 * @objective Replace General OPD Vital Data entered by Nurse with the details
+	 *            entered by Doctor
 	 */
 
 	@CrossOrigin
@@ -184,7 +181,7 @@ public class GeneralOPDUpdateController {
 
 		return response.toString();
 	}
-	
+
 	/**
 	 * 
 	 * @param requestObj
@@ -194,7 +191,8 @@ public class GeneralOPDUpdateController {
 	@CrossOrigin
 	@ApiOperation(value = "update GeneralOPD Doctor Data", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/doctorData" }, method = { RequestMethod.POST })
-	public String updateGeneralOPDDoctorData( @RequestBody String requestObj) {
+	public String updateGeneralOPDDoctorData(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for doctor data updating :" + requestObj);
@@ -205,7 +203,7 @@ public class GeneralOPDUpdateController {
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
-			Long result = generalOPDServiceImpl.updateGeneralOPDDoctorData(jsnOBJ);
+			Long result = generalOPDServiceImpl.updateGeneralOPDDoctorData(jsnOBJ, Authorization);
 			if (null != result && result > 0) {
 				response.setResponse("Data updated successfully");
 			} else {

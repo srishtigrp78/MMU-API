@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,30 +27,30 @@ import io.swagger.annotations.ApiOperation;
  */
 @CrossOrigin
 @RestController
-@RequestMapping(value =  "/ANC", headers = "Authorization")
+@RequestMapping(value = "/ANC", headers = "Authorization")
 public class ANCUpdateController {
 
-private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-	
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+
 	private ANCServiceImpl ancServiceImpl;
 
 	@Autowired
 	public void setAncServiceImpl(ANCServiceImpl ancServiceImpl) {
 		this.ancServiceImpl = ancServiceImpl;
 	}
-	
+
 	/**
 	 * 
 	 * @param requestObj
 	 * @return success or failure response
-	 * @objective Replace ANC Care Data entered by Nurse with
-	 *            the details entered by Doctor
+	 * @objective Replace ANC Care Data entered by Nurse with the details entered by
+	 *            Doctor
 	 */
 
 	@CrossOrigin
 	@ApiOperation(value = "update ANC care Data in Doctor screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/ANCScreen" }, method = { RequestMethod.POST })
-	public String updateANCCareNurse( @RequestBody String requestObj) {
+	public String updateANCCareNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for ANC Care data updating :" + requestObj);
@@ -74,19 +75,19 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 
 		return response.toString();
 	}
-	
+
 	/**
 	 * 
 	 * @param requestObj
 	 * @return success or failure response
-	 * @objective Replace ANC History Data entered by Nurse with
-	 *            the details entered by Doctor
+	 * @objective Replace ANC History Data entered by Nurse with the details entered
+	 *            by Doctor
 	 */
 
 	@CrossOrigin
 	@ApiOperation(value = "update ANC History Data in Doctor screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/historyScreen" }, method = { RequestMethod.POST })
-	public String updateANCHistoryNurse( @RequestBody String requestObj) {
+	public String updateANCHistoryNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for ANC history data updating :" + requestObj);
@@ -111,19 +112,19 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 
 		return response.toString();
 	}
-	
+
 	/**
 	 * 
 	 * @param requestObj
 	 * @return success or failure response
-	 * @objective Replace ANC Vital Data entered by Nurse with
-	 *            the details entered by Doctor
+	 * @objective Replace ANC Vital Data entered by Nurse with the details entered
+	 *            by Doctor
 	 */
 
 	@CrossOrigin
 	@ApiOperation(value = "update ANC Vital Data in Doctor screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/vitalScreen" }, method = { RequestMethod.POST })
-	public String updateANCVitalNurse( @RequestBody String requestObj) {
+	public String updateANCVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for ANC Vital data updating :" + requestObj);
@@ -148,19 +149,19 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 
 		return response.toString();
 	}
-	
+
 	/**
 	 * 
 	 * @param requestObj
 	 * @return success or failure response
-	 * @objective Replace ANC History Data entered by Nurse with
-	 *            the details entered by Doctor
+	 * @objective Replace ANC History Data entered by Nurse with the details entered
+	 *            by Doctor
 	 */
 
 	@CrossOrigin
 	@ApiOperation(value = "update ANC Examination Data in Doctor screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/examinationScreen" }, method = { RequestMethod.POST })
-	public String updateANCExaminationNurse( @RequestBody String requestObj) {
+	public String updateANCExaminationNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for ANC examination data updating :" + requestObj);
@@ -185,7 +186,7 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 
 		return response.toString();
 	}
-	
+
 	/**
 	 * 
 	 * @param requestObj
@@ -196,7 +197,8 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 	@CrossOrigin
 	@ApiOperation(value = "update ANC Doctor Data", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/doctorData" }, method = { RequestMethod.POST })
-	public String updateANCDoctorData( @RequestBody String requestObj) {
+	public String updateANCDoctorData(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for ANC doctor data updating :" + requestObj);
@@ -207,7 +209,7 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
-			Long result = ancServiceImpl.updateANCDoctorData(jsnOBJ);
+			Long result = ancServiceImpl.updateANCDoctorData(jsnOBJ, Authorization);
 			if (null != result && result > 0) {
 				response.setResponse("Data updated successfully");
 			} else {

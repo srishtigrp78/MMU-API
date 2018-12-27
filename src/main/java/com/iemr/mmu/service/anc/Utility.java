@@ -1,7 +1,14 @@
 package com.iemr.mmu.service.anc;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,23 +41,19 @@ public class Utility {
 
 			Calendar CD = Calendar.getInstance();
 			CD.setTime(createdDate);
-			
+
 			CD.set(Calendar.HOUR_OF_DAY, 0);
 			CD.set(Calendar.MINUTE, 0);
 			CD.set(Calendar.SECOND, 0);
 			CD.set(Calendar.MILLISECOND, 0);
-			
-			
 
 			Calendar YOI = Calendar.getInstance();
 			YOI.setTime(yearOfIllness);
-			
+
 			YOI.set(Calendar.HOUR_OF_DAY, 0);
 			YOI.set(Calendar.MINUTE, 0);
 			YOI.set(Calendar.SECOND, 0);
 			YOI.set(Calendar.MILLISECOND, 0);
-			
-			
 
 			long createDate = CD.getTimeInMillis();
 			long illnessDate = YOI.getTimeInMillis();
@@ -119,5 +122,20 @@ public class Utility {
 		timePeriod.put("timePeriodUnit", timePeriodUnit);
 
 		return timePeriod;
+	}
+
+	public static Timestamp combineDateAndTimeToDateTime(String tcDate, String tcTime) throws ParseException {
+		Timestamp tcScheduleDateTime = null;
+		if (tcDate != null && tcTime != null) {
+			tcDate = tcDate.split(" ")[0];
+			LocalDate datePart = LocalDate.parse(tcDate);
+			LocalTime timePart = LocalTime.parse(tcTime);
+			LocalDateTime dateTime = LocalDateTime.of(datePart, timePart);
+			DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.SSS");
+
+			Date d = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS").parse(dateTime.format(format));
+			tcScheduleDateTime = new Timestamp(d.getTime());
+		}
+		return tcScheduleDateTime;
 	}
 }
