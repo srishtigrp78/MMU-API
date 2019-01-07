@@ -211,7 +211,7 @@ public class GeneralOPDUpdateController {
 			}
 			logger.info("Doctor data update response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Unable to modify data");
+			response.setError(5000, "Unable to modify data. " + e.getMessage());
 			logger.error("Error while updating General OPD doctor data:" + e);
 		}
 

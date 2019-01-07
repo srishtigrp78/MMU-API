@@ -55,7 +55,7 @@ public class TCRequestModel {
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
 	@Expose
-	@Column(name = "Deleted")
+	@Column(name = "Deleted", insertable = false)
 	private Boolean deleted;
 	@Expose
 	@Column(name = "Processed", insertable = false)

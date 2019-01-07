@@ -236,6 +236,10 @@ public class BeneficiaryFlowStatus {
 	private String processed;
 
 	@Expose
+	@Column(name = "BenArrivedFlag", insertable = false)
+	private Boolean benArrivedFlag;
+
+	@Expose
 	@Column(name = "TCSpecialistUserID")
 	private Integer tCSpecialistUserID;
 	@Expose
@@ -890,6 +894,14 @@ public class BeneficiaryFlowStatus {
 
 	public void settCRequestDate(Timestamp tCRequestDate) {
 		this.tCRequestDate = tCRequestDate;
+	}
+
+	public Boolean getBenArrivedFlag() {
+		return benArrivedFlag;
+	}
+
+	public void setBenArrivedFlag(Boolean benArrivedFlag) {
+		this.benArrivedFlag = benArrivedFlag;
 	}
 
 }

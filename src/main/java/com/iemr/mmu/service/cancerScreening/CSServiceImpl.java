@@ -35,7 +35,6 @@ import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
-import com.iemr.mmu.service.anc.Utility;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
@@ -684,17 +683,6 @@ public class CSServiceImpl implements CSService {
 
 			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ.getAsJsonObject("diagnosis"),
 					CommonUtilityClass.class);
-
-			if (commonUtilityClass != null && commonUtilityClass.getServiceID() != null
-					&& commonUtilityClass.getServiceID() == 4 && requestOBJ != null && requestOBJ.has("tcRequest")
-					&& requestOBJ.get("tcRequest") != null) {
-				tcRequestOBJ = InputMapper.gson().fromJson(requestOBJ.get("tcRequest"),
-						TeleconsultationRequestOBJ.class);
-				if (tcRequestOBJ != null)
-					tcRequestOBJ.setAllocationDate(Utility.combineDateAndTimeToDateTime(
-							tcRequestOBJ.getAllocationDate().toString(), tcRequestOBJ.getFromTime()));
-
-			}
 
 			Long diagnosisSuccessFlag = saveBenDiagnosisDetails(requestOBJ);
 

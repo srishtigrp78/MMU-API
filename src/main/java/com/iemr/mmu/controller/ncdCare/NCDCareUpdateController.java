@@ -146,7 +146,7 @@ public class NCDCareUpdateController {
 			}
 			logger.info("Doctor data update Response:" + response);
 		} catch (Exception e) {
-			response.setError(500, "Unable to modify data");
+			response.setError(500, "Unable to modify data. " + e.getMessage());
 			logger.error("Error while updating doctor data :" + e);
 		}
 

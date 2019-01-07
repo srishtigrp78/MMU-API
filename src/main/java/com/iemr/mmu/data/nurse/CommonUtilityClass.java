@@ -12,8 +12,10 @@ public class CommonUtilityClass {
 	private Long benVisitID;
 	private Long visitCode;
 	private Integer facilityID;
-
+	private Boolean isSpecialist;
 	private Short serviceID;
+
+	private String createdBy;
 
 	public Long getBenFlowID() {
 		return benFlowID;
@@ -101,6 +103,22 @@ public class CommonUtilityClass {
 
 	public void setServiceID(Short serviceID) {
 		this.serviceID = serviceID;
+	}
+
+	public Boolean getIsSpecialist() {
+		return isSpecialist;
+	}
+
+	public void setIsSpecialist(Boolean isSpecialist) {
+		this.isSpecialist = isSpecialist;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 
 }

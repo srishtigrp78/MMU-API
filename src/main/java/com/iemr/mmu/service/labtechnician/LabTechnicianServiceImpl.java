@@ -289,7 +289,7 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 				int i = updateBenFlowStatusFlagAfterLabResultEntry(wrapperLabResults.getLabCompleted(),
 						wrapperLabResults.getBenFlowID(), wrapperLabResults.getBeneficiaryRegID(),
 						wrapperLabResults.getVisitID(), wrapperLabResults.getNurseFlag(),
-						wrapperLabResults.getDoctorFlag());
+						wrapperLabResults.getDoctorFlag(), wrapperLabResults.getSpecialist_flag());
 			}
 
 		} else {
@@ -300,26 +300,37 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 	}
 
 	private int updateBenFlowStatusFlagAfterLabResultEntry(Boolean isLabDone, Long benFlowID, Long benRegID,
-			Long benVisitID, Short nurseFlag, Short doctorFlag) {
+			Long benVisitID, Short nurseFlag, Short doctorFlag, Short specialistFlag) {
 		int returnOBJ = 0;
 		short labFlag = (short) 0;
 
-		if (isLabDone == true) {
-			if (nurseFlag == 2) {
-				nurseFlag = 3;
-				doctorFlag = 1;
+		if (specialistFlag != null && specialistFlag == 2) {
+			if (isLabDone == true) {
+				specialistFlag = (short) 3;
 			} else {
-				if (doctorFlag == 2) {
-					doctorFlag = 3;
-				}
+				labFlag = (short) 1;
 			}
 
-			labFlag = (short) 1;
+			returnOBJ = commonBenStatusFlowServiceImpl.updateFlowAfterLabResultEntryForTCSpecialist(benFlowID, benRegID,
+					specialistFlag);
 		} else {
-			labFlag = (short) 1;
+			if (isLabDone == true) {
+				if (nurseFlag == 2) {
+					nurseFlag = 3;
+					doctorFlag = 1;
+				} else {
+					if (doctorFlag == 2) {
+						doctorFlag = 3;
+					}
+				}
+
+				labFlag = (short) 1;
+			} else {
+				labFlag = (short) 1;
+			}
+			returnOBJ = commonBenStatusFlowServiceImpl.updateFlowAfterLabResultEntry(benFlowID, benRegID, benVisitID,
+					nurseFlag, doctorFlag, labFlag);
 		}
-		returnOBJ = commonBenStatusFlowServiceImpl.updateFlowAfterLabResultEntry(benFlowID, benRegID, benVisitID,
-				nurseFlag, doctorFlag, labFlag);
 
 		return returnOBJ;
 	}

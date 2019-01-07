@@ -213,7 +213,7 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 
 	public int updateBenFlowAfterDocDataUpdate(Long benFlowID, Long benRegID, Long benID, Long benVisitID,
 			short docFlag, short pharmaFlag, short oncologistFlag, short tcSpecialistFlag, int tcUserID,
-			Timestamp tcDate) {
+			Timestamp tcDate) throws Exception {
 		int i = 0;
 		try {
 			Short pharmaF = beneficiaryFlowStatusRepo.getPharmaFlag(benFlowID);
@@ -228,6 +228,29 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 					pharmaF1, oncologistFlag, tcSpecialistFlag, tcUserID, tcDate);
 		} catch (Exception e) {
 			logger.error("Error in ben flow creation = " + e);
+			throw new Exception(e);
+		}
+		return i;
+	}
+
+	public int updateBenFlowAfterDocDataUpdateTCSpecialist(Long benFlowID, Long benRegID, Long benID, Long benVisitID,
+			short docFlag, short pharmaFlag, short oncologistFlag, short tcSpecialistFlag, int tcUserID,
+			Timestamp tcDate) throws Exception {
+		int i = 0;
+		try {
+			Short pharmaF = beneficiaryFlowStatusRepo.getPharmaFlag(benFlowID);
+			Short pharmaF1;
+
+			if (pharmaF != null && pharmaF == 1)
+				pharmaF1 = pharmaF;
+			else
+				pharmaF1 = pharmaFlag;
+
+			i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterDoctorActivityTCSpecialist(benFlowID, benRegID, benID,
+					pharmaF1, oncologistFlag, tcSpecialistFlag);
+		} catch (Exception e) {
+			logger.error("Error in ben flow creation = " + e);
+			throw new Exception(e);
 		}
 		return i;
 	}
@@ -236,6 +259,13 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 			Short doctorFlag, Short labFlag) {
 		int i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterLabResultEntry(benFlowID, benRegID, nurseFlag,
 				doctorFlag, labFlag);
+		return i;
+
+	}
+
+	public int updateFlowAfterLabResultEntryForTCSpecialist(Long benFlowID, Long benRegID, Short specialistFlag) {
+		int i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterLabResultEntryForSpecialist(benFlowID, benRegID,
+				specialistFlag);
 		return i;
 
 	}

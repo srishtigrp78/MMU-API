@@ -405,10 +405,17 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 					// code for updating specialist slot
 					int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
 							Authorization);
+					if (j > 0)
+						returnOBJ = 1;
+					else
+						throw new Exception("Sorry, selected Specialist/Slot is not available.");
+				} else {
+					returnOBJ = 1;
 				}
-				returnOBJ = 1;
 			} else
 				throw new Exception();
+		} else {
+			throw new Exception();
 		}
 		return returnOBJ;
 	}
@@ -587,10 +594,17 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 					// code for updating specialist slot
 					int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
 							Authorization);
+					if (j > 0)
+						updateSuccessFlag = benChiefComplaintID;
+					else
+						throw new Exception("Sorry, selected Specialist/Slot is not available.");
+				} else {
+					updateSuccessFlag = benChiefComplaintID;
 				}
-				updateSuccessFlag = benChiefComplaintID;
 			} else
 				throw new Exception();
+		} else {
+			throw new Exception();
 		}
 
 		return updateSuccessFlag;

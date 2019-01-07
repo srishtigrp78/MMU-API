@@ -106,7 +106,7 @@ public class GeneralOPDCreateController {
 			}
 		} catch (Exception e) {
 			logger.error("Error in doctor data saving :" + e);
-			response.setError(5000, "Unable to save data");
+			response.setError(5000, "Unable to save data. " + e.getMessage());
 		}
 		return response.toString();
 	}

@@ -108,7 +108,7 @@ public class PNCCreateController {
 
 		} catch (Exception e) {
 			logger.error("Error while saving doctor data :" + e);
-			response.setError(5000, "Unable to save data");
+			response.setError(5000, "Unable to save data. " + e.getMessage());
 		}
 		return response.toString();
 	}

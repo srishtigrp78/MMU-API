@@ -20,7 +20,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.iemr.mmu.data.anc.WrapperAncFindings;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
@@ -659,10 +661,10 @@ public class CommonDoctorServiceImpl {
 	 * @return
 	 */
 	public int updateBenFlowtableAfterDocDataUpdate(CommonUtilityClass commonUtilityClass, Boolean isTestPrescribed,
-			Boolean isMedicinePrescribed, TeleconsultationRequestOBJ tcRequestOBJ) {
-
+			Boolean isMedicinePrescribed, TeleconsultationRequestOBJ tcRequestOBJ) throws Exception {
+		int i = 0;
 		short pharmaFalg;
-		short docFlag;
+		short docFlag = (short) 0;
 		short tcSpecialistFlag = (short) 0;
 		int tcUserID = 0;
 		Timestamp tcDate = null;
@@ -672,25 +674,44 @@ public class CommonDoctorServiceImpl {
 		Long tmpBenVisitID = commonUtilityClass.getBenVisitID();
 		Long tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
 
-		if (isTestPrescribed)
-			docFlag = (short) 2;
-		else
-			docFlag = (short) 9;
+		if (commonUtilityClass.getIsSpecialist() != null && commonUtilityClass.getIsSpecialist() == true) {
+			if (isTestPrescribed)
+				tcSpecialistFlag = (short) 2;
+			else
+				tcSpecialistFlag = (short) 9;
 
-		if (isMedicinePrescribed)
-			pharmaFalg = (short) 1;
-		else
-			pharmaFalg = (short) 0;
+			if (isMedicinePrescribed)
+				pharmaFalg = (short) 1;
+			else
+				pharmaFalg = (short) 0;
 
-		if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null && tcRequestOBJ.getUserID() > 0
-				&& tcRequestOBJ.getAllocationDate() != null) {
-			tcSpecialistFlag = (short) 1;
-			tcUserID = tcRequestOBJ.getUserID();
-			tcDate = tcRequestOBJ.getAllocationDate();
+			i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdateTCSpecialist(tmpBenFlowID,
+					tmpbeneficiaryRegID, tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0,
+					tcSpecialistFlag, tcUserID, tcDate);
+		} else {
+
+			if (isTestPrescribed)
+				docFlag = (short) 2;
+			else
+				docFlag = (short) 9;
+
+			if (isMedicinePrescribed)
+				pharmaFalg = (short) 1;
+			else
+				pharmaFalg = (short) 0;
+
+			if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null && tcRequestOBJ.getUserID() > 0
+					&& tcRequestOBJ.getAllocationDate() != null) {
+				tcSpecialistFlag = (short) 1;
+				tcUserID = tcRequestOBJ.getUserID();
+				tcDate = tcRequestOBJ.getAllocationDate();
+			}
+
+			i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdate(tmpBenFlowID, tmpbeneficiaryRegID,
+					tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0, tcSpecialistFlag, tcUserID,
+					tcDate);
+
 		}
-
-		int i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdate(tmpBenFlowID, tmpbeneficiaryRegID,
-				tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0, tcSpecialistFlag, tcUserID, tcDate);
 
 		return i;
 	}
@@ -723,9 +744,15 @@ public class CommonDoctorServiceImpl {
 		HttpEntity<Object> request = new HttpEntity<Object>(requestOBJ, headers);
 		ResponseEntity<String> response = restTemplate.exchange(tcSpecialistSlotBook, HttpMethod.POST, request,
 				String.class);
+		// System.out.println(response.getBody());
 
-		if (response.getStatusCodeValue() == 200 & response.hasBody()) {
-			successFlag = 1;
+		if (response.getStatusCodeValue() == 200 && response.hasBody()) {
+			JsonObject jsnOBJ = new JsonObject();
+			JsonParser jsnParser = new JsonParser();
+			JsonElement jsnElmnt = jsnParser.parse(response.getBody());
+			jsnOBJ = jsnElmnt.getAsJsonObject();
+			if (jsnOBJ.has("statusCode") && jsnOBJ.get("statusCode").getAsInt() == 200)
+				successFlag = 1;
 		}
 		return successFlag;
 	}

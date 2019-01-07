@@ -370,11 +370,20 @@ public class ANCServiceImpl implements ANCService {
 						int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
 								Authorization);
 						// end
+						if (j > 0)
+							saveSuccessFlag = diagnosisSuccessFlag;
+						else
+							throw new Exception("Sorry, selected Specialist/Slot is not available");
+					} else {
+						saveSuccessFlag = diagnosisSuccessFlag;
 					}
 					// end
-					saveSuccessFlag = diagnosisSuccessFlag;
-				} else
+
+				} else {
 					throw new Exception();
+				}
+			} else {
+				throw new Exception();
 			}
 		} else {
 			// request OBJ is null.
@@ -1560,15 +1569,25 @@ public class ANCServiceImpl implements ANCService {
 				if (i > 0) {
 					// check for TC request created successfully or not
 					if (tcRequestStatusFlag != null && tcRequestStatusFlag > 0
-							&& tcSpecialistSlotBookingRequestOBJ != null) {
+							&& tcSpecialistSlotBookingRequestOBJ != null && commonUtilityClass.getServiceID() == 4) {
 						// code for updating specialist slot
 						int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
 								Authorization);
+						// end
+						if (j > 0)
+							updateSuccessFlag = investigationSuccessFlag;
+						else
+							throw new Exception();
+					} else {
+						updateSuccessFlag = investigationSuccessFlag;
 					}
-					updateSuccessFlag = investigationSuccessFlag;
+					// end
+
 				} else
 					throw new Exception();
 
+			} else {
+				throw new Exception();
 			}
 		} else {
 			// request OBJ is null.

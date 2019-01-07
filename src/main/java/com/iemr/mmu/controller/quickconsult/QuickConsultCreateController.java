@@ -119,7 +119,7 @@ public class QuickConsultCreateController {
 			logger.info("Quick consult doctor data save response:" + response);
 		} catch (Exception e) {
 			logger.error("Error while saving quick consult doctor data:" + e);
-			response.setError(5000, "Unable to save data");
+			response.setError(5000, "Unable to save data. " + e.getMessage());
 		}
 
 		return response.toString();

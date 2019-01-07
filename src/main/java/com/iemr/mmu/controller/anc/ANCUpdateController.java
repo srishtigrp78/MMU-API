@@ -217,7 +217,7 @@ public class ANCUpdateController {
 			}
 			logger.info("ANC doctor data update Response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Unable to modify data");
+			response.setError(5000, "Unable to modify data. " + e.getMessage());
 			logger.error("Error while updating beneficiary doctor data :" + e);
 		}
 

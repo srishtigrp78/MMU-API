@@ -347,10 +347,17 @@ public class PNCServiceImpl implements PNCService {
 						// code for updating specialist slot
 						int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
 								Authorization);
+						if (j > 0)
+							saveSuccessFlag = diagnosisSuccessFlag;
+						else
+							throw new Exception("Sorry, selected Specialist/Slot is not available");
+					} else {
+						saveSuccessFlag = diagnosisSuccessFlag;
 					}
-					saveSuccessFlag = diagnosisSuccessFlag;
 				} else
 					throw new Exception();
+			} else {
+				throw new Exception();
 			}
 		} else {
 			// request OBJ is null.
@@ -1483,11 +1490,17 @@ public class PNCServiceImpl implements PNCService {
 						// code for updating specialist slot
 						int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
 								Authorization);
+						if (j > 0)
+							updateSuccessFlag = investigationSuccessFlag;
+						else
+							throw new Exception("Sorry, selected Specialist/Slot is not available");
+					} else {
+						updateSuccessFlag = investigationSuccessFlag;
 					}
-					updateSuccessFlag = investigationSuccessFlag;
 				} else
 					throw new Exception();
-
+			} else {
+				throw new Exception();
 			}
 		} else {
 			// request OBJ is null.

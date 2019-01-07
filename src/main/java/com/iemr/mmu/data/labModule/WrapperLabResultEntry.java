@@ -20,6 +20,16 @@ public class WrapperLabResultEntry {
 	private Integer vanID;
 	private Integer parkingPlaceID;
 
+	private Short specialist_flag;
+
+	public Short getSpecialist_flag() {
+		return specialist_flag;
+	}
+
+	public void setSpecialist_flag(Short specialist_flag) {
+		this.specialist_flag = specialist_flag;
+	}
+
 	public Integer getVanID() {
 		return vanID;
 	}
