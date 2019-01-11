@@ -228,4 +228,11 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			@Param("providerServiceMapId") Integer providerServiceMapId,
 			@Param("tCSpecialistUserID") Integer tCSpecialistUserID, @Param("reqDate") Timestamp reqDate);
 
+	@Transactional
+	@Modifying
+	@Query(" UPDATE BeneficiaryFlowStatus t SET t.specialist_flag = 9 "
+			+ " WHERE t.benFlowID = :benFlowID AND t.beneficiaryRegID = :benRegID AND t.visitCode = :visitCode ")
+	public int updateBenFlowAfterTCSpcialistDoneForCanceScreening(@Param("benFlowID") Long benFlowID,
+			@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
+
 }

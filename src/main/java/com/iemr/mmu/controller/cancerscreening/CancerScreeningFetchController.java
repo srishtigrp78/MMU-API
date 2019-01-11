@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,7 +42,8 @@ public class CancerScreeningFetchController {
 
 	/**
 	 * @Objective Fetching beneficiary visit details enterted by nurse.
-	 * @param benRegID and benVisitID
+	 * @param benRegID
+	 *            and benVisitID
 	 * @return visit details in JSON format
 	 */
 
@@ -75,10 +75,11 @@ public class CancerScreeningFetchController {
 
 	/**
 	 * @Objective Fetching beneficiary history details enterted by nurse.
-	 * @param benRegID and benVisitID
+	 * @param benRegID
+	 *            and benVisitID
 	 * @return history details in JSON format
 	 */
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Cancer History details from Nurse screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenDataFrmNurseToDocHistoryScreen" }, method = { RequestMethod.POST })
@@ -105,13 +106,13 @@ public class CancerScreeningFetchController {
 		return response.toString();
 	}
 
-	
 	/**
 	 * @Objective Fetching beneficiary vital details enterted by nurse.
-	 * @param benRegID and benVisitID
+	 * @param benRegID
+	 *            and benVisitID
 	 * @return vital details in JSON format
 	 */
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Vital details from Nurse screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenDataFrmNurseToDocVitalScreen" }, method = { RequestMethod.POST })
@@ -124,7 +125,7 @@ public class CancerScreeningFetchController {
 			if (obj.length() > 1) {
 				Long benRegID = obj.getLong("benRegID");
 				Long visitCode = obj.getLong("visitCode");
-				
+
 				String s = cSServiceImpl.getBenDataFrmNurseToDocVitalScreen(benRegID, visitCode);
 				response.setResponse(s);
 			} else {
@@ -140,10 +141,11 @@ public class CancerScreeningFetchController {
 
 	/**
 	 * @Objective Fetching beneficiary examination details enterted by nurse.
-	 * @param benRegID and benVisitID
+	 * @param benRegID
+	 *            and benVisitID
 	 * @return examination details in JSON format
 	 */
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Examination details from Nurse screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenDataFrmNurseToDocExaminationScreen" }, method = { RequestMethod.POST })
@@ -170,11 +172,12 @@ public class CancerScreeningFetchController {
 	}
 
 	/**
-	 * @Objective Fetch beneficiary previous family history details enterted by nurse.
-	 * @param benRegID 
+	 * @Objective Fetch beneficiary previous family history details enterted by
+	 *            nurse.
+	 * @param benRegID
 	 * @return previous family history details in JSON format
 	 */
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Cancer Family History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenCancerFamilyHistory" }, method = { RequestMethod.POST })
@@ -203,11 +206,12 @@ public class CancerScreeningFetchController {
 	}
 
 	/**
-	 * @Objective Fetch beneficiary previous personal history details enterted by nurse.
-	 * @param benRegID 
+	 * @Objective Fetch beneficiary previous personal history details enterted by
+	 *            nurse.
+	 * @param benRegID
 	 * @return previous personal history details in JSON format
 	 */
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Cancer Personal History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenCancerPersonalHistory" }, method = { RequestMethod.POST })
@@ -236,11 +240,12 @@ public class CancerScreeningFetchController {
 	}
 
 	/**
-	 * @Objective Fetch beneficiary previous personal diet history details enterted by nurse.
-	 * @param benRegID 
+	 * @Objective Fetch beneficiary previous personal diet history details enterted
+	 *            by nurse.
+	 * @param benRegID
 	 * @return previous personal history details in JSON format
 	 */
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Cancer Personal Diet History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenCancerPersonalDietHistory" }, method = { RequestMethod.POST })
@@ -269,11 +274,12 @@ public class CancerScreeningFetchController {
 	}
 
 	/**
-	 * @Objective Fetch beneficiary previous obstetric history details enterted by nurse.
-	 * @param benRegID 
+	 * @Objective Fetch beneficiary previous obstetric history details enterted by
+	 *            nurse.
+	 * @param benRegID
 	 * @return previous obstetric history details in JSON format
 	 */
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Cancer Obstetric History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenCancerObstetricHistory" }, method = { RequestMethod.POST })
@@ -303,10 +309,11 @@ public class CancerScreeningFetchController {
 
 	/**
 	 * @Objective Fetch beneficiary diagnosis details enterted by doctor.
-	 * @param benRegID 
+	 * @param benRegID
 	 * @return diagnosis details in JSON format
 	 */
-	
+
+	@Deprecated
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Diagnosis details from Doctor screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenDataFrmDoctorDiagnosisScreen" }, method = { RequestMethod.POST })
@@ -335,10 +342,10 @@ public class CancerScreeningFetchController {
 
 	/**
 	 * @Objective Fetch beneficiary diagnosis details enterted by doctor.
-	 * @param benRegID 
+	 * @param benRegID
 	 * @return doctor details in JSON format
 	 */
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Doctor Entered Details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenCaseRecordFromDoctorCS" }, method = { RequestMethod.POST })

@@ -13,6 +13,12 @@ public class TcSpecialistSlotBookingRequestOBJ {
 	private String fromTime;
 	@Expose
 	private String toTime;
+	@Expose
+	private Long duration;
+	@Expose
+	private String modifiedBy;
+	@Expose
+	private String createdBy;
 
 	public Integer getUserID() {
 		return userID;
@@ -44,6 +50,30 @@ public class TcSpecialistSlotBookingRequestOBJ {
 
 	public void setToTime(String toTime) {
 		this.toTime = toTime;
+	}
+
+	public Long getDuration() {
+		return duration;
+	}
+
+	public void setDuration(Long duration) {
+		this.duration = duration;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 
 }

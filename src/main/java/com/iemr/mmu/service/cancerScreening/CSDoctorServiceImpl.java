@@ -1,8 +1,10 @@
 package com.iemr.mmu.service.cancerScreening;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,6 +59,10 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 		if (null != cancerDiagnosis && null != cancerDiagnosis.getInstitute()) {
 			cancerDiagnosis.setReferredToInstituteName(cancerDiagnosis.getInstitute().getInstitutionName());
 		}
+		if (cancerDiagnosis.getRefrredToAdditionalService() != null) {
+			cancerDiagnosis.setRefrredToAdditionalServiceList(Arrays
+					.stream(cancerDiagnosis.getRefrredToAdditionalService().split(",")).collect(Collectors.toList()));
+		}
 
 		return cancerDiagnosis;
 	}
@@ -85,7 +91,7 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 					cancerDiagnosis.getModifiedBy(), processed, cancerDiagnosis.getBeneficiaryRegID(),
 					cancerDiagnosis.getVisitCode());
 		} else {
-			cancerDiagnosis.setCreatedBy(cancerDiagnosis.getModifiedBy());
+			//cancerDiagnosis.setCreatedBy(cancerDiagnosis.getModifiedBy());
 			Long cancerDiagnosisRS = saveCancerDiagnosisData(cancerDiagnosis);
 			if (cancerDiagnosisRS != null && cancerDiagnosisRS > 0) {
 				response = 1;

@@ -3424,51 +3424,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		returnOBJ.put("bpList", bpList);
 		returnOBJ.put("bgList", bgList);
 
-		// if (visitCategory.equalsIgnoreCase("cancerScreening")) {
-		//
-		// } else {
-		// ArrayList<Object[]> benAnthro =
-		// benAnthropometryRepo.getBenAnthropometryDetailForGraphtrends(benRegID);
-		// ArrayList<Object[]> benVital =
-		// benPhysicalVitalRepo.getBenPhysicalVitalDetailForGraphTrends(benRegID);
-		//
-		// if (benAnthro != null && benAnthro.size() > 0) {
-		// for (Object[] objArr : benAnthro) {
-		// weightOBJ = new HashMap<>();
-		// weightOBJ.put("weight", objArr[0]);
-		// weightOBJ.put("date", objArr[1]);
-		//
-		// weightList.add(weightOBJ);
-		// }
-		// }
-		//
-		// if (benVital != null && benVital.size() > 0) {
-		// for (Object[] objArr : benVital) {
-		// if (objArr[0] != null && (Short) objArr[0] > 0 && objArr[1] != null &&
-		// (Short) objArr[1] > 0) {
-		// bpObj = new HashMap<>();
-		// bpObj.put("avgSysBP", objArr[0]);
-		// bpObj.put("avgDysBP", objArr[1]);
-		// bpObj.put("date", objArr[5]);
-		//
-		// bpList.add(bpObj);
-		// }
-		// if (objArr[2] != null || objArr[3] != null || objArr[4] != null) {
-		// bgOBJ = new HashMap<>();
-		// bgOBJ.put("bg_fasting", objArr[2]);
-		// bgOBJ.put("bg_random", objArr[3]);
-		// bgOBJ.put("bg_2hr_pp", objArr[4]);
-		// bgOBJ.put("date", objArr[5]);
-		//
-		// bgList.add(bgOBJ);
-		// }
-		// }
-		// }
-		//
-		// returnOBJ.put("weightList", weightList);
-		// returnOBJ.put("bpList", bpList);
-		// returnOBJ.put("bgList", bgList);
-		// }
+		
 		return returnOBJ;
 	}
 }

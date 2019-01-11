@@ -1,13 +1,11 @@
 package com.iemr.mmu.controller.tele_consultation;
 
-import java.sql.Timestamp;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,8 +18,8 @@ import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 
-@RequestMapping(value = "/tc")
 @RestController
+@RequestMapping(value = "/tc", headers = "Authorization")
 public class TeleConsultationController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
@@ -52,11 +50,12 @@ public class TeleConsultationController {
 	@CrossOrigin
 	@ApiOperation(value = "update beneficiary status based on request", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/cancel/benTCRequest" }, method = { RequestMethod.POST })
-	public String updateBeneficiaryStatusToCancelTCRequest(@RequestBody String requestOBJ) {
+	public String updateBeneficiaryStatusToCancelTCRequest(@RequestBody String requestOBJ,
+			@RequestHeader String Authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
 			if (requestOBJ != null) {
-				int i = teleConsultationServiceImpl.updateBeneficiaryStatusToCancelTCRequest(requestOBJ);
+				int i = teleConsultationServiceImpl.updateBeneficiaryStatusToCancelTCRequest(requestOBJ, Authorization);
 				if (i > 0)
 					response.setResponse("Beneficiary TC request cancelled successfully.");
 				else
@@ -66,7 +65,7 @@ public class TeleConsultationController {
 		} catch (Exception e) {
 			logger.error("error while updating beneficiary status for Teleconsultation cancel request = " + e);
 			response.setError(5000,
-					"Error while updating beneficiary status for for Teleconsultation cancel request = " + e);
+					"Error while updating beneficiary status for Teleconsultation cancel request = " + e);
 		}
 		return response.toString();
 	}
@@ -95,7 +94,7 @@ public class TeleConsultationController {
 	@CrossOrigin
 	@ApiOperation(value = "create TC request for beneficiary whose visit is created", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/create/benTCRequestWithVisitCode" }, method = { RequestMethod.POST })
-	public String createTCRequestForBeneficiary(@RequestBody String requestOBJ) {
+	public String createTCRequestForBeneficiary(@RequestBody String requestOBJ, @RequestHeader String Authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
 			if (requestOBJ != null) {
@@ -104,7 +103,7 @@ public class TeleConsultationController {
 				JsonElement jsnElmnt = jsnParser.parse(requestOBJ);
 				jsnOBJ = jsnElmnt.getAsJsonObject();
 
-				int i = teleConsultationServiceImpl.createTCRequestFromWorkList(jsnOBJ);
+				int i = teleConsultationServiceImpl.createTCRequestFromWorkList(jsnOBJ, Authorization);
 				if (i > 0)
 					response.setResponse("Teleconsultation request created successfully.");
 				else
@@ -119,23 +118,25 @@ public class TeleConsultationController {
 	}
 
 	// TC request List
-	@CrossOrigin()
+	@CrossOrigin
 	@ApiOperation(value = "get tc request list for a specialist", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = {
-			"/getTCRequestList/{providerServiceMapID}/{userID}/{reqDate}" }, method = {
-					RequestMethod.GET })
-	public String getTCSpecialistWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
-			@PathVariable("userID") Integer userID, @PathVariable("reqDate") String reqDate) {
+	@RequestMapping(value = { "/getTCRequestList" }, method = { RequestMethod.POST })
+	public String getTCSpecialistWorkListNew(@RequestBody String requestOBJ) {
 		OutputResponse response = new OutputResponse();
 		try {
-			if (providerServiceMapID != null && userID != null && reqDate != null) {
-				String s = teleConsultationServiceImpl.getTCRequestListBySpecialistIdAndDate(providerServiceMapID,
-						userID, reqDate);
+			if (requestOBJ != null) {
+				JsonObject jsnOBJ = new JsonObject();
+				JsonParser jsnParser = new JsonParser();
+				JsonElement jsnElmnt = jsnParser.parse(requestOBJ);
+				jsnOBJ = jsnElmnt.getAsJsonObject();
+
+				String s = teleConsultationServiceImpl.getTCRequestListBySpecialistIdAndDate(
+						jsnOBJ.get("psmID").getAsInt(), jsnOBJ.get("userID").getAsInt(),
+						jsnOBJ.get("date").getAsString());
 				if (s != null)
 					response.setResponse(s);
 			} else {
-				logger.error("Invalid request, either ProviderServiceMapID or userID or reqDate is invalid. PSMID = "
-						+ providerServiceMapID + " SID = " + userID);
+				logger.error("Invalid request, either ProviderServiceMapID or userID or reqDate is invalid");
 				response.setError(5000,
 						"Invalid request, either ProviderServiceMapID or UserID or RequestDate is invalid");
 			}

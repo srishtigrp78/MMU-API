@@ -3,6 +3,7 @@ package com.iemr.mmu.service.anc;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -11,6 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class Utility {
 
@@ -131,11 +133,29 @@ public class Utility {
 			LocalDate datePart = LocalDate.parse(tcDate);
 			LocalTime timePart = LocalTime.parse(tcTime);
 			LocalDateTime dateTime = LocalDateTime.of(datePart, timePart);
-			DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.SSS");
 
-			Date d = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS").parse(dateTime.format(format));
+			DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			TimeZone timeZone = TimeZone.getTimeZone("IST");
+
+			sdf.setTimeZone(timeZone);
+
+			Date d = sdf.parse(dateTime.format(format));
+			// Date d = new SimpleDateFormat("yyyy-MM-dd
+			// hh:mm:ss.SSS").parse(dateTime.format(format));
 			tcScheduleDateTime = new Timestamp(d.getTime());
 		}
 		return tcScheduleDateTime;
+	}
+
+	public static long timeDiff(String fromTime, String toTime) {
+		Long duration = null;
+		if (fromTime != null && toTime != null) {
+			LocalTime fromT = LocalTime.parse(fromTime);
+			LocalTime toT = LocalTime.parse(toTime);
+			Duration d = Duration.between(fromT, toT);
+			duration = d.toMinutes();
+		}
+		return duration;
 	}
 }

@@ -40,7 +40,8 @@ public class CancerScreeningCreateController {
 
 	/**
 	 * @Objective Save Cancer Screening data for nurse.
-	 * @param JSON requestObj 
+	 * @param JSON
+	 *            requestObj
 	 * @return success or failure response
 	 */
 
@@ -84,14 +85,16 @@ public class CancerScreeningCreateController {
 
 	/**
 	 * @Objective Save Cancer Screening data for doctor.
-	 * @param JSON requestObj 
+	 * @param JSON
+	 *            requestObj
 	 * @return success or failure response
 	 */
 
 	@CrossOrigin
 	@ApiOperation(value = "Save cancer screening doctor data..", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/doctorData" }, method = { RequestMethod.POST })
-	public String saveBenCancerScreeningDoctorData(@RequestBody String requestObj) {
+	public String saveBenCancerScreeningDoctorData(@RequestBody String requestObj,
+			@RequestHeader String Authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
 			logger.info("Request object for CS doctor data saving :" + requestObj);
@@ -102,7 +105,7 @@ public class CancerScreeningCreateController {
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
-				Long csDocDataSaveSuccessFlag = cSServiceImpl.saveCancerScreeningDoctorData(jsnOBJ);
+				Long csDocDataSaveSuccessFlag = cSServiceImpl.saveCancerScreeningDoctorData(jsnOBJ, Authorization);
 				if (csDocDataSaveSuccessFlag != null && csDocDataSaveSuccessFlag > 0) {
 					response.setResponse("Data saved successfully");
 				} else {

@@ -35,7 +35,7 @@ public class TCRequestModel {
 	private Timestamp requestDate;
 	@Expose
 	@Column(name = "Duration_minute")
-	private Integer duration_minute;
+	private Long duration_minute;
 	@Expose
 	@Column(name = "Status", insertable = false)
 	private String status;
@@ -55,10 +55,10 @@ public class TCRequestModel {
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
 	@Expose
-	@Column(name = "Deleted", insertable = false)
+	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
 	@Expose
-	@Column(name = "Processed", insertable = false)
+	@Column(name = "Processed", insertable = false, updatable = true)
 	private String processed;
 	@Expose
 	@Column(name = "CreatedBy")
@@ -121,11 +121,11 @@ public class TCRequestModel {
 		this.requestDate = requestDate;
 	}
 
-	public Integer getDuration_minute() {
+	public Long getDuration_minute() {
 		return duration_minute;
 	}
 
-	public void setDuration_minute(Integer duration_minute) {
+	public void setDuration_minute(Long duration_minute) {
 		this.duration_minute = duration_minute;
 	}
 

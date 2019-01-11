@@ -1,8 +1,5 @@
 package com.iemr.mmu.controller.cancerscreening;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -50,8 +46,8 @@ public class CancerScreeningUpdateController {
 	 * 
 	 * @param requestObj
 	 * @return success or failure response
-	 * @objective Replace Cancer Screening History Details entered by Nurse with
-	 *            the details entered by Doctor
+	 * @objective Replace Cancer Screening History Details entered by Nurse with the
+	 *            details entered by Doctor
 	 */
 
 	@CrossOrigin
@@ -103,8 +99,8 @@ public class CancerScreeningUpdateController {
 	 * 
 	 * @param requestObj
 	 * @return success or failure response
-	 * @objective Replace Cancer Screening Vital Details entered by Nurse with
-	 *            the details entered by Doctor
+	 * @objective Replace Cancer Screening Vital Details entered by Nurse with the
+	 *            details entered by Doctor
 	 */
 
 	@CrossOrigin
@@ -138,7 +134,7 @@ public class CancerScreeningUpdateController {
 
 		return response.toString();
 	}
-	
+
 	/**
 	 * 
 	 * @param requestObj
@@ -146,7 +142,7 @@ public class CancerScreeningUpdateController {
 	 * @objective Replace Cancer Screening examination Details entered by Nurse with
 	 *            the details entered by Doctor
 	 */
-	
+
 	@CrossOrigin
 	@ApiOperation(value = "update Ben Examination Detail", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/examinationScreen" }, method = { RequestMethod.POST })
@@ -159,7 +155,7 @@ public class CancerScreeningUpdateController {
 		JsonParser jsnParser = new JsonParser();
 		JsonElement jsnElmnt = jsnParser.parse(requestObj);
 		jsnOBJ = jsnElmnt.getAsJsonObject();
-		
+
 		try {
 			int responseObj = cSServiceImpl.updateBenExaminationDetail(jsnOBJ);
 			if (responseObj > 0) {
@@ -175,7 +171,7 @@ public class CancerScreeningUpdateController {
 
 		return response.toString();
 	}
-	
+
 	/**
 	 * 
 	 * @param requestObj
@@ -183,7 +179,7 @@ public class CancerScreeningUpdateController {
 	 * @objective update Cancer Diagnosis Details By Oncologist
 	 * 
 	 */
-	
+
 	@CrossOrigin
 	@ApiOperation(value = "update Cancer Diagnosis Details By Oncologist", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/examinationScreen/diagnosis" }, method = { RequestMethod.POST })
@@ -211,7 +207,7 @@ public class CancerScreeningUpdateController {
 
 		return response.toString();
 	}
-	
+
 	/**
 	 * 
 	 * @param requestObj
@@ -219,11 +215,11 @@ public class CancerScreeningUpdateController {
 	 * @objective Replace doctor data for the doctor next visit
 	 * 
 	 */
-	
+
 	@CrossOrigin
 	@ApiOperation(value = "update CancerScreening Doctor Data", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/doctorData" }, method = { RequestMethod.POST })
-	public String updateCancerScreeningDoctorData( @RequestBody String requestObj) {
+	public String updateCancerScreeningDoctorData(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for CS doctor data updating :" + requestObj);
@@ -234,15 +230,15 @@ public class CancerScreeningUpdateController {
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
-			Long result = cSServiceImpl.updateCancerScreeningDoctorData(jsnOBJ);
-			if (null != result && result > 0) {
+			int result = cSServiceImpl.updateCancerScreeningDoctorData(jsnOBJ);
+			if (result > 0) {
 				response.setResponse("Data updated successfully");
 			} else {
 				response.setError(500, "Unable to modify data");
 			}
 			logger.info("CS doctor data update Response:" + response);
 		} catch (Exception e) {
-			response.setError(5000, "Unable to modify data");
+			response.setError(5000, "Error while updating beneficiary data. " + e);
 			logger.error("Error while updating beneficiary doctor data :" + e);
 		}
 

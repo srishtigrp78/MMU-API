@@ -317,6 +317,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		if (commonUtilityClass != null && commonUtilityClass.getServiceID() != null
 				&& commonUtilityClass.getServiceID() == 4 && quickConsultDoctorOBJ != null
 				&& quickConsultDoctorOBJ.has("tcRequest") && quickConsultDoctorOBJ.get("tcRequest") != null) {
+
 			tcRequestOBJ = InputMapper.gson().fromJson(quickConsultDoctorOBJ.get("tcRequest"),
 					TeleconsultationRequestOBJ.class);
 
@@ -326,17 +327,30 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 
 				tcRequestOBJ.setAllocationDate(Utility.combineDateAndTimeToDateTime(
 						tcRequestOBJ.getAllocationDate().toString(), tcRequestOBJ.getFromTime()));
+
 				// tc request model
 				TCRequestModel tRequestModel = InputMapper.gson().fromJson(quickConsultDoctorOBJ, TCRequestModel.class);
 				tRequestModel.setUserID(tcRequestOBJ.getUserID());
 				tRequestModel.setRequestDate(tcRequestOBJ.getAllocationDate());
-				tcRequestStatusFlag = teleConsultationServiceImpl.createTCRequest(tRequestModel);
+				tRequestModel
+						.setDuration_minute(Utility.timeDiff(tcRequestOBJ.getFromTime(), tcRequestOBJ.getToTime()));
+
 				// tc speciaist slot booking model
 				tcSpecialistSlotBookingRequestOBJ = new TcSpecialistSlotBookingRequestOBJ();
 				tcSpecialistSlotBookingRequestOBJ.setUserID(tRequestModel.getUserID());
 				tcSpecialistSlotBookingRequestOBJ.setDate(tRequestModel.getRequestDate());
 				tcSpecialistSlotBookingRequestOBJ.setFromTime(tcRequestOBJ.getFromTime());
 				tcSpecialistSlotBookingRequestOBJ.setToTime(tcRequestOBJ.getToTime());
+				tcSpecialistSlotBookingRequestOBJ.setCreatedBy(commonUtilityClass.getCreatedBy());
+				tcSpecialistSlotBookingRequestOBJ.setModifiedBy(commonUtilityClass.getCreatedBy());
+
+				int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
+						Authorization);
+				if (j > 0)
+					tcRequestStatusFlag = teleConsultationServiceImpl.createTCRequest(tRequestModel);
+				else
+					throw new RuntimeException("Error while booking slot.");
+
 			}
 		}
 
@@ -399,23 +413,11 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 					isMedicinePrescribed, tcRequestOBJ);
 
 			if (i > 0) {
-				// check for TC request created successfully or not
-				if (tcRequestStatusFlag != null && tcRequestStatusFlag > 0
-						&& tcSpecialistSlotBookingRequestOBJ != null) {
-					// code for updating specialist slot
-					int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
-							Authorization);
-					if (j > 0)
-						returnOBJ = 1;
-					else
-						throw new Exception("Sorry, selected Specialist/Slot is not available.");
-				} else {
-					returnOBJ = 1;
-				}
+				returnOBJ = 1;
 			} else
-				throw new Exception();
+				throw new RuntimeException();
 		} else {
-			throw new Exception();
+			throw new RuntimeException();
 		}
 		return returnOBJ;
 	}
@@ -502,17 +504,31 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 
 				tcRequestOBJ.setAllocationDate(Utility.combineDateAndTimeToDateTime(
 						tcRequestOBJ.getAllocationDate().toString(), tcRequestOBJ.getFromTime()));
+
 				// tc request model
 				TCRequestModel tRequestModel = InputMapper.gson().fromJson(quickConsultDoctorOBJ, TCRequestModel.class);
 				tRequestModel.setUserID(tcRequestOBJ.getUserID());
 				tRequestModel.setRequestDate(tcRequestOBJ.getAllocationDate());
-				tcRequestStatusFlag = teleConsultationServiceImpl.createTCRequest(tRequestModel);
+				tRequestModel
+						.setDuration_minute(Utility.timeDiff(tcRequestOBJ.getFromTime(), tcRequestOBJ.getToTime()));
+
 				// tc speciaist slot booking model
 				tcSpecialistSlotBookingRequestOBJ = new TcSpecialistSlotBookingRequestOBJ();
 				tcSpecialistSlotBookingRequestOBJ.setUserID(tRequestModel.getUserID());
 				tcSpecialistSlotBookingRequestOBJ.setDate(tRequestModel.getRequestDate());
 				tcSpecialistSlotBookingRequestOBJ.setFromTime(tcRequestOBJ.getFromTime());
 				tcSpecialistSlotBookingRequestOBJ.setToTime(tcRequestOBJ.getToTime());
+				tcSpecialistSlotBookingRequestOBJ.setCreatedBy(commonUtilityClass.getCreatedBy());
+				tcSpecialistSlotBookingRequestOBJ.setModifiedBy(commonUtilityClass.getCreatedBy());
+
+				int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
+						Authorization);
+
+				if (j > 0)
+					tcRequestStatusFlag = teleConsultationServiceImpl.createTCRequest(tRequestModel);
+				else
+					throw new RuntimeException("Error while booking slot.");
+
 			}
 		}
 		Long benChiefComplaintID = saveBeneficiaryChiefComplaint(quickConsultDoctorOBJ);
@@ -588,23 +604,11 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 					isMedicinePrescribed, tcRequestOBJ);
 
 			if (i > 0) {
-				// check for TC request created successfully or not
-				if (tcRequestStatusFlag != null && tcRequestStatusFlag > 0
-						&& tcSpecialistSlotBookingRequestOBJ != null) {
-					// code for updating specialist slot
-					int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
-							Authorization);
-					if (j > 0)
-						updateSuccessFlag = benChiefComplaintID;
-					else
-						throw new Exception("Sorry, selected Specialist/Slot is not available.");
-				} else {
-					updateSuccessFlag = benChiefComplaintID;
-				}
+				updateSuccessFlag = benChiefComplaintID;
 			} else
-				throw new Exception();
+				throw new RuntimeException();
 		} else {
-			throw new Exception();
+			throw new RuntimeException();
 		}
 
 		return updateSuccessFlag;

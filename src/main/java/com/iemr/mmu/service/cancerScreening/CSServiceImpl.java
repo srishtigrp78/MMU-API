@@ -32,11 +32,16 @@ import com.iemr.mmu.data.nurse.BenPersonalCancerDietHistory;
 import com.iemr.mmu.data.nurse.BenPersonalCancerHistory;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.nurse.CommonUtilityClass;
+import com.iemr.mmu.data.tele_consultation.TCRequestModel;
+import com.iemr.mmu.data.tele_consultation.TcSpecialistSlotBookingRequestOBJ;
 import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
+import com.iemr.mmu.service.anc.Utility;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
+import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
+import com.iemr.mmu.service.tele_consultation.TeleConsultationServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
@@ -55,6 +60,10 @@ public class CSServiceImpl implements CSService {
 	private RegistrarRepoBenData registrarRepoBenData;
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
+	@Autowired
+	private TeleConsultationServiceImpl teleConsultationServiceImpl;
+	@Autowired
+	private CommonDoctorServiceImpl commonDoctorServiceImpl;
 
 	@Autowired
 	public void setBeneficiaryFlowStatusRepo(BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo) {
@@ -675,14 +684,59 @@ public class CSServiceImpl implements CSService {
 
 	// -------Create/save (Doctor)---------------------------
 	@Transactional(rollbackFor = Exception.class)
-	public Long saveCancerScreeningDoctorData(JsonObject requestOBJ) throws Exception {
+	public Long saveCancerScreeningDoctorData(JsonObject requestOBJ, String Authorization) throws Exception {
 		Long docDataSuccessFlag = null;
+		Integer tcRequestStatusFlag = null;
 
-		if (requestOBJ != null) {
+		if (requestOBJ != null && requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
+
 			TeleconsultationRequestOBJ tcRequestOBJ = null;
+			TcSpecialistSlotBookingRequestOBJ tcSpecialistSlotBookingRequestOBJ = null;
 
-			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ.getAsJsonObject("diagnosis"),
+			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
 					CommonUtilityClass.class);
+
+			if (commonUtilityClass != null && commonUtilityClass.getServiceID() != null
+					&& commonUtilityClass.getServiceID() == 4 && requestOBJ != null && requestOBJ.has("tcRequest")
+					&& requestOBJ.get("tcRequest") != null) {
+
+				tcRequestOBJ = InputMapper.gson().fromJson(requestOBJ.get("tcRequest"),
+						TeleconsultationRequestOBJ.class);
+				// create TC request
+				if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null && tcRequestOBJ.getUserID() > 0
+						&& tcRequestOBJ.getAllocationDate() != null) {
+
+					tcRequestOBJ.setAllocationDate(Utility.combineDateAndTimeToDateTime(
+							tcRequestOBJ.getAllocationDate().toString(), tcRequestOBJ.getFromTime()));
+
+					// tc request model
+					TCRequestModel tRequestModel = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
+							TCRequestModel.class);
+
+					tRequestModel.setUserID(tcRequestOBJ.getUserID());
+					tRequestModel.setRequestDate(tcRequestOBJ.getAllocationDate());
+					tRequestModel
+							.setDuration_minute(Utility.timeDiff(tcRequestOBJ.getFromTime(), tcRequestOBJ.getToTime()));
+
+					// tc speciaist slot booking model
+					tcSpecialistSlotBookingRequestOBJ = new TcSpecialistSlotBookingRequestOBJ();
+
+					tcSpecialistSlotBookingRequestOBJ.setUserID(tRequestModel.getUserID());
+					tcSpecialistSlotBookingRequestOBJ.setDate(tRequestModel.getRequestDate());
+					tcSpecialistSlotBookingRequestOBJ.setFromTime(tcRequestOBJ.getFromTime());
+					tcSpecialistSlotBookingRequestOBJ.setToTime(tcRequestOBJ.getToTime());
+					tcSpecialistSlotBookingRequestOBJ.setCreatedBy(commonUtilityClass.getCreatedBy());
+					tcSpecialistSlotBookingRequestOBJ.setModifiedBy(commonUtilityClass.getCreatedBy());
+
+					int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
+							Authorization);
+
+					if (j > 0)
+						tcRequestStatusFlag = teleConsultationServiceImpl.createTCRequest(tRequestModel);
+					else
+						throw new RuntimeException("Error while booking slot.");
+				}
+			}
 
 			Long diagnosisSuccessFlag = saveBenDiagnosisDetails(requestOBJ);
 
@@ -696,13 +750,10 @@ public class CSServiceImpl implements CSService {
 				int tcUserID = 0;
 				Timestamp tcDate = null;
 
-				if (requestOBJ.getAsJsonObject("diagnosis") != null
-						&& !requestOBJ.getAsJsonObject("diagnosis").isJsonNull()) {
-					tmpBenFlowID = commonUtilityClass.getBenFlowID();
-					tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
-					tmpBeneficiaryID = commonUtilityClass.getBeneficiaryID();
-					tmpBenVisitID = commonUtilityClass.getBenVisitID();
-				}
+				tmpBenFlowID = commonUtilityClass.getBenFlowID();
+				tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
+				tmpBeneficiaryID = commonUtilityClass.getBeneficiaryID();
+				tmpBenVisitID = commonUtilityClass.getBenVisitID();
 
 				short docFlag = (short) 9;
 				short pharmaFalg = (short) 0;
@@ -713,6 +764,7 @@ public class CSServiceImpl implements CSService {
 					tcSpecialistFlag = (short) 1;
 					tcUserID = tcRequestOBJ.getUserID();
 					tcDate = tcRequestOBJ.getAllocationDate();
+
 				}
 
 				int l = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
@@ -1096,37 +1148,50 @@ public class CSServiceImpl implements CSService {
 		return r;
 	}
 
-	// Fetch CS Doctor Details START....
+	@Deprecated
 	public String getBenDoctorDiagnosisData(Long benRegID, Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
 		resMap.put("benDiagnosisDetails", cSDoctorServiceImpl.getBenCancerDiagnosisData(benRegID, visitCode));
 		return new Gson().toJson(resMap);
 	}
-	// Fetch CS Doctor Details END....
 
+	// Fetch CS Doctor Details START....
 	public String getBenCaseRecordFromDoctorCS(Long benRegID, Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
 
 		resMap.put("diagnosis", cSDoctorServiceImpl.getBenCancerDiagnosisData(benRegID, visitCode));
-
 		return new Gson().toJson(resMap);
 	}
+	// Fetch CS Doctor Details END....
 
 	@Transactional(rollbackFor = Exception.class)
-	public Long updateCancerScreeningDoctorData(JsonObject requestOBJ) throws Exception {
-		Long updateSuccessFlag = null;
+	public int updateCancerScreeningDoctorData(JsonObject requestOBJ) throws Exception {
+		int updateSuccessFlag = 0;
 		int diagnosisSuccessFlag = 0;
 		if (requestOBJ != null) {
-
 			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
 				CancerDiagnosis cancerDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
 						CancerDiagnosis.class);
+
+				CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
+						CommonUtilityClass.class);
+
 				diagnosisSuccessFlag = cSDoctorServiceImpl.updateCancerDiagnosisDetailsByDoctor(cancerDiagnosis);
+				if (diagnosisSuccessFlag > 0) {
+					int i = beneficiaryFlowStatusRepo.updateBenFlowAfterTCSpcialistDoneForCanceScreening(
+							commonUtilityClass.getBenFlowID(), commonUtilityClass.getBeneficiaryRegID(),
+							commonUtilityClass.getVisitCode());
+					if (i > 0)
+						updateSuccessFlag = 1;
+					else
+						throw new RuntimeException("Error while updating beneficiary flow status.");
+				} else
+					throw new RuntimeException("Error while saving data.");
 			} else {
-				diagnosisSuccessFlag = 1;
+				throw new RuntimeException("Invalid request.");
 			}
 		} else {
-			// request OBJ is null.
+			throw new RuntimeException("Invalid request as it is null.");
 		}
 		return updateSuccessFlag;
 	}

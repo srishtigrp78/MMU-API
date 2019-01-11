@@ -3,13 +3,24 @@ package com.iemr.mmu.service.tele_consultation;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -18,18 +29,27 @@ import com.google.gson.JsonParser;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.data.tele_consultation.TCRequestModel;
+import com.iemr.mmu.data.tele_consultation.TcSpecialistSlotBookingRequestOBJ;
 import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.tc_consultation.TCRequestModelRepo;
 import com.iemr.mmu.service.anc.Utility;
+import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
+import com.iemr.mmu.utils.mapper.OutputMapper;
 
 @Service
+@PropertySource("classpath:myApp.properties")
 public class TeleConsultationServiceImpl implements TeleConsultationService {
+	@Value("${tcSpecialistSlotCancel}")
+	private String tcSpecialistSlotCancel;
+
 	@Autowired
 	private TCRequestModelRepo tCRequestModelRepo;
 	@Autowired
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
+	@Autowired
+	private CommonDoctorServiceImpl commonDoctorServiceImpl;
 
 	public int createTCRequest(TCRequestModel tCRequestModel) {
 		TCRequestModel tCRequestModelRS = tCRequestModelRepo.save(tCRequestModel);
@@ -61,22 +81,22 @@ public class TeleConsultationServiceImpl implements TeleConsultationService {
 			if (i > 0) {
 				int j = tCRequestModelRepo.updateBeneficiaryStatus(requestJson.get("benRegID").getAsLong(),
 						requestJson.get("visitCode").getAsLong(), "A", requestJson.get("modifiedBy").getAsString(),
-						requestJson.get("userID").getAsInt());
+						requestJson.get("userID").getAsInt(), false);
 				if (j > 0)
 					resultFlag = 1;
 				else
-					throw new Exception("Beneficiary arrival status update failed");
+					throw new RuntimeException("Beneficiary arrival status update failed");
 			} else
-				throw new Exception("Beneficiary arrival status update failed");
+				throw new RuntimeException("Beneficiary arrival status update failed");
 		} else {
-			throw new Exception("Invalid request");
+			throw new RuntimeException("Invalid request");
 		}
 
 		return resultFlag;
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public int updateBeneficiaryStatusToCancelTCRequest(String requestOBJ) throws Exception {
+	public int updateBeneficiaryStatusToCancelTCRequest(String requestOBJ, String Authorization) throws Exception {
 		int resultFlag = 0;
 		JsonObject requestJson = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -89,26 +109,93 @@ public class TeleConsultationServiceImpl implements TeleConsultationService {
 				&& !requestJson.get("visitCode").isJsonNull() && !requestJson.get("modifiedBy").isJsonNull()
 				&& !requestJson.get("userID").isJsonNull()) {
 
-			int i = beneficiaryFlowStatusRepo.updateBeneficiaryStatusToCancelRequest(
+			int i = cancelSlotForTCCancel(requestJson.get("userID").getAsInt(), requestJson.get("benRegID").getAsLong(),
+					requestJson.get("visitCode").getAsLong(), Authorization);
+
+			int j = beneficiaryFlowStatusRepo.updateBeneficiaryStatusToCancelRequest(
 					requestJson.get("benflowID").getAsLong(), requestJson.get("benRegID").getAsLong(),
 					requestJson.get("visitCode").getAsLong(), requestJson.get("modifiedBy").getAsString(),
 					requestJson.get("userID").getAsInt());
 
-			if (i > 0) {
-				int j = tCRequestModelRepo.updateBeneficiaryStatus(requestJson.get("benRegID").getAsLong(),
-						requestJson.get("visitCode").getAsLong(), "C", requestJson.get("modifiedBy").getAsString(),
-						requestJson.get("userID").getAsInt());
-				if (j > 0)
-					resultFlag = 1;
-				else
-					throw new Exception("Teleconsultation cancel request failed");
-			} else
-				throw new Exception("Teleconsultation cancel request failed");
-		} else {
-			throw new Exception("Invalid request");
-		}
+			int k = tCRequestModelRepo.updateBeneficiaryStatus(requestJson.get("benRegID").getAsLong(),
+					requestJson.get("visitCode").getAsLong(), "C", requestJson.get("modifiedBy").getAsString(),
+					requestJson.get("userID").getAsInt(), true);
+
+			if (i > 0 && j > 0 && k > 0)
+				resultFlag = 1;
+			else
+				throw new RuntimeException("Teleconsultation cancel request failed");
+
+		} else
+			throw new RuntimeException("Invalid request");
 
 		return resultFlag;
+	}
+
+	public int cancelSlotForTCCancel(int userID, long benRegID, long visitCode, String Authorization) throws Exception {
+		String fromTime = "";
+		Long duration = null;
+		int returnOBJ = 0;
+		Set<String> statusSet = new HashSet<>();
+
+		statusSet.add("N");
+		statusSet.add("A");
+		statusSet.add("O");
+
+		ArrayList<TCRequestModel> resultSetList = tCRequestModelRepo.getTcDetailsList(benRegID, visitCode, userID,
+				statusSet);
+
+		TcSpecialistSlotBookingRequestOBJ obj = new TcSpecialistSlotBookingRequestOBJ();
+
+		if (resultSetList != null && resultSetList.size() > 0) {
+			obj.setUserID(userID);
+			obj.setDate(resultSetList.get(0).getRequestDate());
+
+			if (resultSetList.get(0).getRequestDate() != null)
+				// String s = resultSetList.get(0).getRequestDate().toString().split(" ")[1];
+				fromTime = resultSetList.get(0).getRequestDate().toString().split(" ")[1];
+
+			obj.setFromTime(fromTime);
+
+			duration = resultSetList.get(0).getDuration_minute();
+			obj.setDuration(duration);
+			obj.setToTime(calculateToDate(fromTime, duration));
+
+			String requestOBJ = OutputMapper.gson().toJson(obj);
+
+			RestTemplate restTemplate = new RestTemplate();
+			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+			headers.add("Content-Type", "application/json");
+			headers.add("AUTHORIZATION", Authorization);
+			HttpEntity<Object> request = new HttpEntity<Object>(requestOBJ, headers);
+			ResponseEntity<String> response = restTemplate.exchange(tcSpecialistSlotCancel, HttpMethod.POST, request,
+					String.class);
+
+			if (response.getStatusCodeValue() == 200 && response.hasBody()) {
+				JsonObject jsnOBJ = new JsonObject();
+				JsonParser jsnParser = new JsonParser();
+				JsonElement jsnElmnt = jsnParser.parse(response.getBody());
+				jsnOBJ = jsnElmnt.getAsJsonObject();
+				if (jsnOBJ.has("statusCode") && jsnOBJ.get("statusCode").getAsInt() == 200)
+					returnOBJ = 1;
+			}
+		} else {
+			returnOBJ = 1;
+		}
+		return returnOBJ;
+	}
+
+	private String calculateToDate(String fromTime, Long duration) {
+		String toTime = "";
+
+		if (fromTime != null && duration != null) {
+			LocalTime fTime = LocalTime.parse(fromTime);
+			LocalTime tTime = fTime.plusMinutes(duration);
+
+			toTime = tTime.toString();
+		}
+
+		return toTime;
 	}
 
 	@Transactional(rollbackFor = Exception.class)
@@ -137,22 +224,23 @@ public class TeleConsultationServiceImpl implements TeleConsultationService {
 					if (tCRequestModelOBJ != null && tCRequestModelOBJ.size() > 0) {
 						returnOBJ = 1;
 					} else {
-						throw new Exception("Sorry, Beneficiary have not any active Teleconsultation session.");
+						throw new RuntimeException("Sorry, Beneficiary have not any active Teleconsultation session.");
 					}
 				} else {
-					throw new Exception("Sorry, Beneficiary have not arrived at TM spoke/center");
+					throw new RuntimeException("Sorry, Beneficiary have not arrived at TM spoke/center");
 				}
 			} else {
-				throw new Exception("No record or multiple record found in DB. Kindly contact the administrator");
+				throw new RuntimeException(
+						"No record or multiple record found in DB. Kindly contact the administrator");
 			}
 		} else {
-			throw new Exception("Invalid request.");
+			throw new RuntimeException("Invalid request.");
 		}
 		return returnOBJ;
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public int createTCRequestFromWorkList(JsonObject tcRequestOBJ) throws Exception {
+	public int createTCRequestFromWorkList(JsonObject tcRequestOBJ, String Authorization) throws Exception {
 		int returnOBJ = 0;
 		int tcRequestStatusFlag = 0;
 
@@ -169,24 +257,42 @@ public class TeleConsultationServiceImpl implements TeleConsultationService {
 			tRequestModel.setUserID(tcRequest.getUserID());
 			tRequestModel.setRequestDate(tcRequest.getAllocationDate());
 
-			// create tc request
-			tcRequestStatusFlag = createTCRequest(tRequestModel);
+			tRequestModel.setDuration_minute(Utility.timeDiff(tcRequest.getFromTime(), tcRequest.getToTime()));
 
-			if (tcRequestStatusFlag > 0) {
-				int i = beneficiaryFlowStatusRepo.updateFlagAfterTcRequestCreatedFromWorklist(
-						commonUtilityClass.getBenFlowID(), commonUtilityClass.getBeneficiaryRegID(),
-						commonUtilityClass.getVisitCode(), tRequestModel.getUserID(), tRequestModel.getRequestDate());
-				if (i > 0) {
-					returnOBJ = 1;
+			// book slot if available
+			TcSpecialistSlotBookingRequestOBJ tcSpecialistSlotBookingRequestOBJ = new TcSpecialistSlotBookingRequestOBJ();
+			tcSpecialistSlotBookingRequestOBJ.setDate(tcRequest.getAllocationDate());
+			tcSpecialistSlotBookingRequestOBJ.setUserID(tcRequest.getUserID());
+			tcSpecialistSlotBookingRequestOBJ.setFromTime(tcRequest.getFromTime());
+			tcSpecialistSlotBookingRequestOBJ.setToTime(tcRequest.getToTime());
+			tcSpecialistSlotBookingRequestOBJ.setCreatedBy(commonUtilityClass.getCreatedBy());
+			tcSpecialistSlotBookingRequestOBJ.setModifiedBy(commonUtilityClass.getCreatedBy());
+
+			int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
+					Authorization);
+			if (j > 0) {
+				// create tc request
+				tcRequestStatusFlag = createTCRequest(tRequestModel);
+
+				if (tcRequestStatusFlag > 0) {
+					int i = beneficiaryFlowStatusRepo.updateFlagAfterTcRequestCreatedFromWorklist(
+							commonUtilityClass.getBenFlowID(), commonUtilityClass.getBeneficiaryRegID(),
+							commonUtilityClass.getVisitCode(), tRequestModel.getUserID(),
+							tRequestModel.getRequestDate());
+					if (i > 0) {
+						returnOBJ = 1;
+					} else {
+						throw new RuntimeException(
+								"ERROR while updating beneficiary status for Teleconsultation request.");
+					}
 				} else {
-					throw new Exception(
-							"Teleconsultation request created but ERROR while updating the beneficiary status.");
+					throw new RuntimeException("Error while creating Teleconsultation request.");
 				}
 			} else {
-				throw new Exception("Error while creating Teleconsultation request.");
+				throw new RuntimeException("Error while Booking slot.");
 			}
 		} else {
-			throw new Exception("Invalid request.");
+			throw new RuntimeException("Invalid request.");
 		}
 		return returnOBJ;
 	}
@@ -194,8 +300,8 @@ public class TeleConsultationServiceImpl implements TeleConsultationService {
 	public String getTCRequestListBySpecialistIdAndDate(Integer providerServiceMapID, Integer userID, String reqDate)
 			throws Exception {
 		LocalDate datePart = LocalDate.parse(reqDate.split("T")[0]);
-		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.SSS");
-		Date d = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS").parse(datePart.format(format));
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		Date d = new SimpleDateFormat("yyyy-MM-dd").parse(datePart.format(format));
 		Timestamp t = new Timestamp(d.getTime());
 		ArrayList<BeneficiaryFlowStatus> tcList = beneficiaryFlowStatusRepo.getTCRequestList(providerServiceMapID,
 				userID, t);

@@ -13,7 +13,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
 import com.iemr.mmu.data.institution.Institute;
 
@@ -70,7 +69,7 @@ public class CancerDiagnosis {
 	@Column(name = "RefrredToAdditionalService")
 	private String refrredToAdditionalService;
 
-	@JsonIgnore
+	@Expose
 	@Transient
 	private List<String> refrredToAdditionalServiceList;
 
@@ -345,6 +344,14 @@ public class CancerDiagnosis {
 
 	public void setVisitCode(Long visitCode) {
 		this.visitCode = visitCode;
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
 	}
 
 }

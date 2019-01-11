@@ -230,20 +230,32 @@ public class PNCServiceImpl implements PNCService {
 
 					tcRequestOBJ.setAllocationDate(Utility.combineDateAndTimeToDateTime(
 							tcRequestOBJ.getAllocationDate().toString(), tcRequestOBJ.getFromTime()));
+
 					// tc request model
 					TCRequestModel tRequestModel = InputMapper.gson().fromJson(requestOBJ, TCRequestModel.class);
 					tRequestModel.setUserID(tcRequestOBJ.getUserID());
 					tRequestModel.setRequestDate(tcRequestOBJ.getAllocationDate());
-					tcRequestStatusFlag = teleConsultationServiceImpl.createTCRequest(tRequestModel);
+					tRequestModel
+							.setDuration_minute(Utility.timeDiff(tcRequestOBJ.getFromTime(), tcRequestOBJ.getToTime()));
+
 					// tc speciaist slot booking model
 					tcSpecialistSlotBookingRequestOBJ = new TcSpecialistSlotBookingRequestOBJ();
 					tcSpecialistSlotBookingRequestOBJ.setUserID(tRequestModel.getUserID());
 					tcSpecialistSlotBookingRequestOBJ.setDate(tRequestModel.getRequestDate());
 					tcSpecialistSlotBookingRequestOBJ.setFromTime(tcRequestOBJ.getFromTime());
 					tcSpecialistSlotBookingRequestOBJ.setToTime(tcRequestOBJ.getToTime());
+					tcSpecialistSlotBookingRequestOBJ.setCreatedBy(commonUtilityClass.getCreatedBy());
+					tcSpecialistSlotBookingRequestOBJ.setModifiedBy(commonUtilityClass.getCreatedBy());
+
+					int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
+							Authorization);
+					if (j > 0)
+						tcRequestStatusFlag = teleConsultationServiceImpl.createTCRequest(tRequestModel);
+					else
+						throw new RuntimeException("Error while booking slot.");
+
 				}
 			}
-
 			JsonArray testList = null;
 			JsonArray drugList = null;
 
@@ -341,23 +353,11 @@ public class PNCServiceImpl implements PNCService {
 						isMedicinePrescribed, tcRequestOBJ);
 
 				if (i > 0) {
-					// check for TC request created successfully or not
-					if (tcRequestStatusFlag != null && tcRequestStatusFlag > 0
-							&& tcSpecialistSlotBookingRequestOBJ != null) {
-						// code for updating specialist slot
-						int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
-								Authorization);
-						if (j > 0)
-							saveSuccessFlag = diagnosisSuccessFlag;
-						else
-							throw new Exception("Sorry, selected Specialist/Slot is not available");
-					} else {
-						saveSuccessFlag = diagnosisSuccessFlag;
-					}
+					saveSuccessFlag = diagnosisSuccessFlag;
 				} else
-					throw new Exception();
+					throw new RuntimeException();
 			} else {
-				throw new Exception();
+				throw new RuntimeException();
 			}
 		} else {
 			// request OBJ is null.
@@ -1363,17 +1363,30 @@ public class PNCServiceImpl implements PNCService {
 
 					tcRequestOBJ.setAllocationDate(Utility.combineDateAndTimeToDateTime(
 							tcRequestOBJ.getAllocationDate().toString(), tcRequestOBJ.getFromTime()));
+
 					// tc request model
 					TCRequestModel tRequestModel = InputMapper.gson().fromJson(requestOBJ, TCRequestModel.class);
 					tRequestModel.setUserID(tcRequestOBJ.getUserID());
 					tRequestModel.setRequestDate(tcRequestOBJ.getAllocationDate());
-					tcRequestStatusFlag = teleConsultationServiceImpl.createTCRequest(tRequestModel);
+					tRequestModel
+							.setDuration_minute(Utility.timeDiff(tcRequestOBJ.getFromTime(), tcRequestOBJ.getToTime()));
+
 					// tc speciaist slot booking model
 					tcSpecialistSlotBookingRequestOBJ = new TcSpecialistSlotBookingRequestOBJ();
 					tcSpecialistSlotBookingRequestOBJ.setUserID(tRequestModel.getUserID());
 					tcSpecialistSlotBookingRequestOBJ.setDate(tRequestModel.getRequestDate());
 					tcSpecialistSlotBookingRequestOBJ.setFromTime(tcRequestOBJ.getFromTime());
 					tcSpecialistSlotBookingRequestOBJ.setToTime(tcRequestOBJ.getToTime());
+					tcSpecialistSlotBookingRequestOBJ.setCreatedBy(commonUtilityClass.getCreatedBy());
+					tcSpecialistSlotBookingRequestOBJ.setModifiedBy(commonUtilityClass.getCreatedBy());
+
+					int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
+							Authorization);
+					if (j > 0)
+						tcRequestStatusFlag = teleConsultationServiceImpl.createTCRequest(tRequestModel);
+					else
+						throw new RuntimeException("Error while booking slot.");
+
 				}
 			}
 
@@ -1484,23 +1497,11 @@ public class PNCServiceImpl implements PNCService {
 						isTestPrescribed, isMedicinePrescribed, tcRequestOBJ);
 
 				if (i > 0) {
-					// check for TC request created successfully or not
-					if (tcRequestStatusFlag != null && tcRequestStatusFlag > 0
-							&& tcSpecialistSlotBookingRequestOBJ != null) {
-						// code for updating specialist slot
-						int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
-								Authorization);
-						if (j > 0)
-							updateSuccessFlag = investigationSuccessFlag;
-						else
-							throw new Exception("Sorry, selected Specialist/Slot is not available");
-					} else {
-						updateSuccessFlag = investigationSuccessFlag;
-					}
+					updateSuccessFlag = investigationSuccessFlag;
 				} else
-					throw new Exception();
+					throw new RuntimeException();
 			} else {
-				throw new Exception();
+				throw new RuntimeException();
 			}
 		} else {
 			// request OBJ is null.

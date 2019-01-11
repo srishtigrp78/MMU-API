@@ -87,7 +87,9 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 
 		if (orderedLabTestList != null && orderedLabTestList.size() > 0) {
 			for (V_benLabTestOrderedDetails obj : orderedLabTestList) {
-				if (procDetails == null || procDetails.containsValue(obj.getProcedureID()) == false) {
+
+				if (procDetails == null || (procDetails.containsKey("procedureID")
+						&& !obj.getProcedureID().equals(procDetails.get("procedureID")))) {
 					procDetails = new HashMap<>();
 					compList = new ArrayList<>();
 
@@ -97,6 +99,11 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 					procDetails.put("procedureType", "Laboratory");
 					procDetails.put("prescriptionID", obj.getPrescriptionID());
 
+					System.out.println(procDetails.get("procedureID"));
+					if (procDetails.get("procedureID") instanceof Integer
+							&& obj.getProcedureID() == procDetails.get("procedureID")) {
+						System.out.println("hello");
+					}
 					if (procDetails.containsKey("compListDetails") == false) {
 						compList = new ArrayList<>();
 						compDetails = new HashMap<>();
@@ -149,7 +156,10 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 					returnOBJ.add(procDetails);
 
 				} else {
-					if (compDetails == null || compDetails.get("testComponentID") != obj.getTestComponentID()) {
+
+					if (compDetails == null || (compDetails.containsKey("testComponentID")
+							&& !obj.getTestComponentID().equals(compDetails.get("testComponentID")))) {
+
 						compDetails = new HashMap<>();
 						compDetails.put("testComponentID", obj.getTestComponentID());
 						compDetails.put("testComponentName", obj.getTestComponentName());

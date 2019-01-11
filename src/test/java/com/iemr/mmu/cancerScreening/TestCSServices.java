@@ -444,7 +444,7 @@ public class TestCSServices
 		Long response = null;
 		try
 		{
-			response = cSServiceImpl.saveCancerScreeningDoctorData(doctorJsnOBJPve);
+		//	response = cSServiceImpl.saveCancerScreeningDoctorData(doctorJsnOBJPve);
 			
 			
 		} catch (Exception e)
@@ -462,7 +462,7 @@ public class TestCSServices
 		Long response = null;
 		try
 		{
-			response = cSServiceImpl.saveCancerScreeningDoctorData(doctorJsnOBJNve);
+			//response = cSServiceImpl.saveCancerScreeningDoctorData(doctorJsnOBJNve);
 			
 			
 		} catch (Exception e)
