@@ -219,9 +219,9 @@ public class LabResultEntry {
 
 		if (comingList != null && comingList.size() > 0) {
 			for (LabResultEntry obj : comingList) {
-				if (procedureId == null || procedureId != obj.getProcedureID()) {
+				if (procedureId == null || obj.getProcedureID().intValue() != procedureId) {
 
-					procedureId = obj.getProcedureID();
+					procedureId = obj.getProcedureID().intValue();
 
 					tmpOBJ = new LabResultEntry();
 					tmpOBJ.setPrescriptionID(obj.getPrescriptionID());
@@ -246,7 +246,7 @@ public class LabResultEntry {
 					returnList.add(tmpOBJ);
 
 				} else {
-					compDetails = new HashMap<String, Object>();
+				//	compDetails = new HashMap<String, Object>();
 					// compDetails.put("resultEntryDate", obj.getCreatedDate());
 					compDetails.put("testComponentID", obj.getTestComponentID());
 					compDetails.put("componentName", obj.getTestComponentMaster().getTestComponentName());

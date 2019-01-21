@@ -224,10 +224,10 @@ public class TeleConsultationServiceImpl implements TeleConsultationService {
 					if (tCRequestModelOBJ != null && tCRequestModelOBJ.size() > 0) {
 						returnOBJ = 1;
 					} else {
-						throw new RuntimeException("Sorry, Beneficiary have not any active Teleconsultation session.");
+						throw new RuntimeException("Sorry, Beneficiary has not any active Teleconsultation session.");
 					}
 				} else {
-					throw new RuntimeException("Sorry, Beneficiary have not arrived at TM spoke/center");
+					throw new RuntimeException("Sorry, Beneficiary has not arrived at TM spoke/center");
 				}
 			} else {
 				throw new RuntimeException(
