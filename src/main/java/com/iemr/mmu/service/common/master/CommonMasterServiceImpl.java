@@ -114,7 +114,7 @@ public class CommonMasterServiceImpl implements CommonMaterService {
 
 	@Override
 	public String getMasterDataForDoctor(Integer visitCategoryID, Integer providerServiceMapID, String gender,
-			Integer facilityID) {
+			Integer facilityID, Integer vanID) {
 		String doctorMasterData = null;
 		if (null != visitCategoryID) {
 			switch (visitCategoryID) {
@@ -135,27 +135,27 @@ public class CommonMasterServiceImpl implements CommonMaterService {
 				// 3 : NCD care
 				// TODO: NCD Care Master Data call
 				doctorMasterData = ancMasterDataServiceImpl.getCommonDoctorMasterDataForGenopdAncNcdcarePnc(
-						visitCategoryID, providerServiceMapID, gender, facilityID);
+						visitCategoryID, providerServiceMapID, gender, facilityID, vanID);
 			}
 				break;
 			case 4: {
 				// 4 : ANC
 				doctorMasterData = ancMasterDataServiceImpl.getCommonDoctorMasterDataForGenopdAncNcdcarePnc(
-						visitCategoryID, providerServiceMapID, gender, facilityID);
+						visitCategoryID, providerServiceMapID, gender, facilityID, vanID);
 			}
 				break;
 			case 5: {
 				// 5 : PNC
 				// TODO: PNC Master Data call - tmprlly calling ANC master Data
 				doctorMasterData = ancMasterDataServiceImpl.getCommonDoctorMasterDataForGenopdAncNcdcarePnc(
-						visitCategoryID, providerServiceMapID, gender, facilityID);
+						visitCategoryID, providerServiceMapID, gender, facilityID, vanID);
 			}
 				break;
 			case 6: {
 				// 6 : General OPD
 				// TODO: General OPD Master Data call - tmprlly calling ANC master Data
 				doctorMasterData = ancMasterDataServiceImpl.getCommonDoctorMasterDataForGenopdAncNcdcarePnc(
-						visitCategoryID, providerServiceMapID, gender, facilityID);
+						visitCategoryID, providerServiceMapID, gender, facilityID, vanID);
 			}
 				break;
 			case 7: {
@@ -167,7 +167,7 @@ public class CommonMasterServiceImpl implements CommonMaterService {
 
 				// ne298657 have commented the code on 27-07-2018
 				doctorMasterData = ancMasterDataServiceImpl.getCommonDoctorMasterDataForGenopdAncNcdcarePnc(
-						visitCategoryID, providerServiceMapID, gender, facilityID);
+						visitCategoryID, providerServiceMapID, gender, facilityID, vanID);
 			}
 				break;
 			default: {

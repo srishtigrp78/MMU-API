@@ -144,7 +144,7 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			@Param("providerServiceMapId") Integer providerServiceMapId);
 
 	@Query("SELECT t from BeneficiaryFlowStatus t WHERE t.pharmacist_flag = 1 "
-			+ "  AND t.providerServiceMapId= :providerServiceMapId AND doctorFlag = 9 "
+			+ "  AND t.providerServiceMapId= :providerServiceMapId AND (doctorFlag = 9 OR specialist_flag = 9) "
 			+ "  ORDER BY consultationDate DESC ")
 	public ArrayList<BeneficiaryFlowStatus> getPharmaWorkListNew(
 			@Param("providerServiceMapId") Integer providerServiceMapId);

@@ -59,7 +59,7 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 		if (null != cancerDiagnosis && null != cancerDiagnosis.getInstitute()) {
 			cancerDiagnosis.setReferredToInstituteName(cancerDiagnosis.getInstitute().getInstitutionName());
 		}
-		if (cancerDiagnosis.getRefrredToAdditionalService() != null) {
+		if (cancerDiagnosis!= null && cancerDiagnosis.getRefrredToAdditionalService() != null) {
 			cancerDiagnosis.setRefrredToAdditionalServiceList(Arrays
 					.stream(cancerDiagnosis.getRefrredToAdditionalService().split(",")).collect(Collectors.toList()));
 		}

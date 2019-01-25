@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.iemr.mmu.service.common.master.CommonMasterServiceImpl;
-import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
@@ -22,7 +21,7 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(value = "/master", headers = "Authorization")
 /** Objective: provides master data based on given visitCategory */
 public class CommonMasterController {
-	
+
 	private Logger logger = LoggerFactory.getLogger(CommonMasterController.class);
 
 	private CommonMasterServiceImpl commonMasterServiceImpl;
@@ -71,15 +70,15 @@ public class CommonMasterController {
 	 * @return doctor master data for the provided visitCategoryID
 	 */
 	@ApiOperation(value = "Master Data API for Doctor", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = "/doctor/masterData/{visitCategoryID}/{providerServiceMapID}/{gender}/{facilityID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
+	@RequestMapping(value = "/doctor/masterData/{visitCategoryID}/{providerServiceMapID}/{gender}/{facilityID}/{vanID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
 	public String DoctorMasterData(@PathVariable("visitCategoryID") Integer visitCategoryID,
 			@PathVariable("providerServiceMapID") Integer providerServiceMapID, @PathVariable("gender") String gender,
-			@PathVariable("facilityID") Integer facilityID) {
+			@PathVariable("facilityID") Integer facilityID, @PathVariable("vanID") Integer vanID) {
 		logger.info("Doctor master Data for categoryID:" + visitCategoryID + " and providerServiceMapID:"
 				+ providerServiceMapID);
 		OutputResponse response = new OutputResponse();
 		response.setResponse(commonMasterServiceImpl.getMasterDataForDoctor(visitCategoryID, providerServiceMapID,
-				gender, facilityID));
+				gender, facilityID, vanID));
 		logger.info("Doctor master Data for categoryID:" + response.toString());
 		return response.toString();
 	}

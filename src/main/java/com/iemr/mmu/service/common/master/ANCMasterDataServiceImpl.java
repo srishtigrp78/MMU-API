@@ -52,6 +52,7 @@ import com.iemr.mmu.repo.doctor.DrugDoseMasterRepo;
 import com.iemr.mmu.repo.doctor.DrugDurationUnitMasterRepo;
 import com.iemr.mmu.repo.doctor.DrugFrequencyMasterRepo;
 import com.iemr.mmu.repo.labModule.ProcedureRepo;
+import com.iemr.mmu.repo.login.MasterVanRepo;
 import com.iemr.mmu.repo.masterrepo.anc.AllergicReactionTypesRepo;
 import com.iemr.mmu.repo.masterrepo.anc.BloodGroupsRepo;
 import com.iemr.mmu.repo.masterrepo.anc.ChildVaccinationsRepo;
@@ -146,6 +147,9 @@ public class ANCMasterDataServiceImpl {
 	private ItemFormMasterRepo itemFormMasterRepo;
 	private RouteOfAdminRepo routeOfAdminRepo;
 	private V_DrugPrescriptionRepo v_DrugPrescriptionRepo;
+
+	@Autowired
+	private MasterVanRepo masterVanRepo;
 
 	@Autowired
 	public void setV_DrugPrescriptionRepo(V_DrugPrescriptionRepo v_DrugPrescriptionRepo) {
@@ -557,7 +561,7 @@ public class ANCMasterDataServiceImpl {
 	}
 
 	public String getCommonDoctorMasterDataForGenopdAncNcdcarePnc(Integer visitCategoryID, int psmID, String gender,
-			Integer facilityID) {
+			Integer facilityID, Integer vanID) {
 		Map<String, Object> resMap = new HashMap<>();
 
 		if (visitCategoryID != 7) {
@@ -585,6 +589,12 @@ public class ANCMasterDataServiceImpl {
 		ArrayList<Object[]> roaList = routeOfAdminRepo.getRouteOfAdminList();
 
 		ArrayList<V_DrugPrescription> itemList = new ArrayList<>();
+		if (facilityID == null || facilityID <= 0) {
+			Integer fID = masterVanRepo.getFacilityID(vanID);
+			if (fID != null && fID > 0)
+				facilityID = fID;
+		}
+
 		itemList = v_DrugPrescriptionRepo.getItemListForFacility(facilityID);
 
 		resMap.put("drugFormMaster", ItemFormMaster.getItemFormList(ifmList));
