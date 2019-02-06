@@ -2,6 +2,7 @@ package com.iemr.mmu.repo.benFlowStatus;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -179,8 +180,9 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	@Query("SELECT benFlowID, beneficiaryRegID, visitCode, "
 			+ " benVisitDate, benVisitNo, VisitReason, VisitCategory  from BeneficiaryFlowStatus "
 			+ "  WHERE beneficiaryRegID = :beneficiaryRegID AND ((doctorFlag = 9) "
-			+ " OR (nurseFlag = 9 AND doctorFlag = 0))  ORDER BY benVisitDate DESC ")
-	public ArrayList<Object[]> getBenPreviousHistory(@Param("beneficiaryRegID") Long beneficiaryRegID);
+			+ " OR (nurseFlag = 9 AND doctorFlag = 0)) AND providerServiceMapId IN :psmIDList  ORDER BY benVisitDate DESC ")
+	public ArrayList<Object[]> getBenPreviousHistory(@Param("beneficiaryRegID") Long beneficiaryRegID,
+			@Param("psmIDList") List<Integer> psmIDList);
 
 	@Query(" SELECT COUNT(benFlowID) FROM BeneficiaryFlowStatus "
 			+ " WHERE beneficiaryRegID = :beneficiaryRegID AND VisitCategory = 'NCD screening' ")

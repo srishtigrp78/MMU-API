@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
+import com.iemr.mmu.repo.provider.ProviderServiceMappingRepo;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
 import com.iemr.mmu.service.cancerScreening.CSNurseServiceImpl;
 import com.iemr.mmu.service.cancerScreening.CSServiceImpl;
@@ -34,6 +35,8 @@ public class CommonServiceImpl implements CommonService {
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private CSNurseServiceImpl cSNurseServiceImpl;
 	private CSServiceImpl csServiceImpl;
+	@Autowired
+	private ProviderServiceMappingRepo providerServiceMappingRepo;
 
 	@Autowired
 	public void setCsServiceImpl(CSServiceImpl csServiceImpl) {
@@ -314,11 +317,14 @@ public class CommonServiceImpl implements CommonService {
 	 */
 	public String getBenPreviousVisitDataForCaseRecord(String comingRequest) throws IEMRException {
 		CommonUtilityClass obj = InputMapper.gson().fromJson(comingRequest, CommonUtilityClass.class);
-		//List<Short> flagList = new ArrayList<>();
+		// List<Short> flagList = new ArrayList<>();
 		// flagList.add((short) 9);
 		// flagList.add((short) 3);
 
-		ArrayList<Object[]> resultList = beneficiaryFlowStatusRepo.getBenPreviousHistory(obj.getBeneficiaryRegID());
+		List<Integer> psmIDList = providerServiceMappingRepo.getProviderServiceMapIdForServiceID((short) 2);
+		psmIDList.add(0);
+		ArrayList<Object[]> resultList = beneficiaryFlowStatusRepo.getBenPreviousHistory(obj.getBeneficiaryRegID(),
+				psmIDList);
 
 		return new Gson().toJson(BeneficiaryFlowStatus.getBeneficiaryPastVisitHistory(resultList));
 	}
