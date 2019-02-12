@@ -126,6 +126,7 @@ public class ANCDiagnosis {
 	@Transient
 	@Expose
 	private String externalInvestigation;
+	
 
 	public String getExternalInvestigation() {
 		return externalInvestigation;
