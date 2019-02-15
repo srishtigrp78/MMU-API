@@ -133,6 +133,8 @@ public class CommonServiceImpl implements CommonService {
 		caseSheetData.put("BeneficiaryData",
 				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
 
+		caseSheetData.put("serviceID", 2);
+
 		return caseSheetData.toString();
 	}
 
@@ -151,6 +153,8 @@ public class CommonServiceImpl implements CommonService {
 				new Gson().toJson(cSNurseServiceImpl.getCancerExaminationImageAnnotationCasesheet(
 						benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitCode())));
 
+		caseSheetData.put("serviceID", 2);
+
 		return caseSheetData.toString();
 	}
 
@@ -165,6 +169,8 @@ public class CommonServiceImpl implements CommonService {
 
 		caseSheetData.put("BeneficiaryData",
 				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
+
+		caseSheetData.put("serviceID", 2);
 
 		return caseSheetData.toString();
 	}
@@ -181,6 +187,8 @@ public class CommonServiceImpl implements CommonService {
 		caseSheetData.put("BeneficiaryData",
 				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
 
+		caseSheetData.put("serviceID", 2);
+
 		return caseSheetData.toString();
 	}
 
@@ -196,6 +204,8 @@ public class CommonServiceImpl implements CommonService {
 		caseSheetData.put("BeneficiaryData",
 				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
 
+		caseSheetData.put("serviceID", 2);
+
 		return caseSheetData.toString();
 	}
 
@@ -210,6 +220,8 @@ public class CommonServiceImpl implements CommonService {
 
 		caseSheetData.put("BeneficiaryData",
 				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
+
+		caseSheetData.put("serviceID", 2);
 
 		return caseSheetData.toString();
 	}
