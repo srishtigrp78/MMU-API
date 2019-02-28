@@ -43,13 +43,16 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	@Value("${dataSyncUploadUrl}")
 	private String dataSyncUploadUrl;
 
+	@Value("${BATCH_SIZE}")
+	private int BATCH_SIZE;
+
 	@Autowired
 	private DataSyncRepository dataSyncRepository;
 	@Autowired
 	private DataSyncGroupsRepo dataSyncGroupsRepo;
 
 	// batch size for data upload
-	private static final int BATCH_SIZE = 30;
+	// private static final int BATCH_SIZE = 30;
 
 	/**
 	 * 
