@@ -162,14 +162,15 @@ public class PNCServiceImpl implements PNCService {
 					examtnSaveSuccessFlag = saveBenExaminationDetails(requestOBJ.getAsJsonObject("examinationDetails"),
 							benVisitID, benVisitCode);
 
-				i = commonNurseServiceImpl.updateBeneficiaryStatus('N', tmpOBJ.get("beneficiaryRegID").getAsLong());
+				// i = commonNurseServiceImpl.updateBeneficiaryStatus('N',
+				// tmpOBJ.get("beneficiaryRegID").getAsLong());
 			} else {
 				// Error in visit details saving or it is null
 			}
 			if ((null != historySaveSuccessFlag && historySaveSuccessFlag > 0)
 					&& (null != pncSaveSuccessFlag && pncSaveSuccessFlag > 0)
 					&& (null != vitalSaveSuccessFlag && vitalSaveSuccessFlag > 0)
-					&& (null != examtnSaveSuccessFlag && examtnSaveSuccessFlag > 0) && (i != null)) {
+					&& (null != examtnSaveSuccessFlag && examtnSaveSuccessFlag > 0)) {
 
 				saveSuccessFlag = historySaveSuccessFlag;
 
