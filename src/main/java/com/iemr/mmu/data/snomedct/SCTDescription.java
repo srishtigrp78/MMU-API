@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
@@ -42,6 +43,9 @@ public class SCTDescription {
 	@Expose
 	@Column(name = "CaseSignificanceID")
 	private String caseSignificanceID;
+
+	@Transient
+	private Integer pageNo;
 
 	public SCTDescription() {
 		super();
@@ -113,7 +117,13 @@ public class SCTDescription {
 	public void setConceptID(String conceptID) {
 		this.conceptID = conceptID;
 	}
-	
-	
+
+	public Integer getPageNo() {
+		return pageNo;
+	}
+
+	public void setPageNo(Integer pageNo) {
+		this.pageNo = pageNo;
+	}
 
 }

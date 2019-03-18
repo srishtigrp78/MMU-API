@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.iemr.mmu.data.reports.Report_ChildrenCases;
 import com.iemr.mmu.data.reports.Report_LabTestsResult;
 import com.iemr.mmu.data.reports.Report_PatientAttended;
 import com.iemr.mmu.data.reports.Report_PatientInfo;
@@ -48,6 +49,11 @@ public class ReportCheckPostImpl implements ReportCheckPost {
 
 			case 6:
 				reportData = report_Patientinfo(request.getFromDate(), request.getToDate(), request.getVanID(),
+						request.getProviderServiceMapID());
+				break;
+
+			case 7:
+				reportData = report_ChildrenCases(request.getFromDate(), request.getToDate(), request.getVanID(),
 						request.getProviderServiceMapID());
 				break;
 
@@ -126,6 +132,24 @@ public class ReportCheckPostImpl implements ReportCheckPost {
 			ArrayList<Object[]> RS = reportMasterRepo.get_report_PatientInfo(fromDate, toDate, psmID, vanID);
 			if (RS != null && RS.size() > 0)
 				report_PI = Report_PatientInfo.getReport_PatientInfoReport(RS);
+		}
+		return OutputMapper.gson().toJson(report_PI);
+	}
+
+	private String report_ChildrenCases(Timestamp fromDate, Timestamp toDate, Integer vanID, Integer psmID)
+			throws Exception {
+		ArrayList<Report_ChildrenCases> report_PI = new ArrayList<>();
+
+		// Gson gson = new GsonBuilder().serializeNulls().create();
+
+		if (fromDate == null || toDate == null || vanID == null || psmID == null)
+			throw new Exception("Some parameter/parameters is/are missing.");
+		else {
+			if (vanID == 0)
+				vanID = null;
+			ArrayList<Object[]> RS = reportMasterRepo.get_report_SP_ChildrenCases(fromDate, toDate, psmID, vanID);
+			if (RS != null && RS.size() > 0)
+				report_PI = Report_ChildrenCases.getReport_ChildrenCasesReport(RS);
 		}
 		return OutputMapper.gson().toJson(report_PI);
 	}

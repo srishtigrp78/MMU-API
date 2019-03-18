@@ -113,8 +113,8 @@ public class TestCSServices
 		cSServiceImpl.setCsOncologistServiceImpl(csOncologistServiceImpl);
 		//cSServiceImpl.setRegistrarServiceImpl(registrarServiceImpl);
 		
-		commonNurseServiceImpl.setBenVisitDetailRepo(benVisitDetailRepoMock);
-		commonNurseServiceImpl.setRegistrarRepoBenData(registrarRepoBenDataMock);
+//		commonNurseServiceImpl.setBenVisitDetailRepo(benVisitDetailRepoMock);
+//		commonNurseServiceImpl.setRegistrarRepoBenData(registrarRepoBenDataMock);
 		
 		cSNurseServiceImpl.setBenVisitDetailRepo(benVisitDetailRepoMock);
 		cSNurseServiceImpl.setBenFamilyCancerHistoryRepo(benFamilyCancerHistoryRepoMock);
