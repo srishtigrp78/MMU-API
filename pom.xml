@@ -195,11 +195,11 @@
 			<optional>true</optional>
 		</dependency>
 
-		<dependency>
-			<groupId>com.openkm</groupId>
-			<artifactId>sdk4j</artifactId>
-			<version>1.0</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.openkm</groupId> -->
+<!-- 			<artifactId>sdk4j</artifactId> -->
+<!-- 			<version>1.0</version> -->
+<!-- 		</dependency> -->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -227,11 +227,11 @@
 	</dependencies>
 
 	<repositories>
-		<repository>
-			<id>openkm.com</id>
-			<name>OpenKM Maven Repository</name>
-			<url>http://maven.openkm.com/maven2</url>
-		</repository>
+<!-- 		<repository> -->
+<!-- 			<id>openkm.com</id> -->
+<!-- 			<name>OpenKM Maven Repository</name> -->
+<!-- 			<url>http://maven.openkm.com/maven2</url> -->
+<!-- 		</repository> -->
 	</repositories>
 
 
