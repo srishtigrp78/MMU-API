@@ -18,7 +18,7 @@ public class SCTDescription {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Expose
+	// @Expose
 	@Column(name = "sctDesID")
 	private Long sctDesID;
 
@@ -28,7 +28,7 @@ public class SCTDescription {
 	 * @Column(name = "sctCode") private String sctCode;
 	 */
 
-	@Expose
+	// @Expose
 	@Column(name = "Active")
 	private String active;
 
@@ -40,7 +40,7 @@ public class SCTDescription {
 	@Column(name = "Term")
 	private String term;
 
-	@Expose
+	// @Expose
 	@Column(name = "CaseSignificanceID")
 	private String caseSignificanceID;
 

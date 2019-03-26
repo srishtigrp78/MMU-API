@@ -23,8 +23,9 @@ public interface ANCDiagnosisRepo extends CrudRepository<ANCDiagnosis, Long> {
 	public ArrayList<Object[]> getANCDiagnosisDetails(@Param("benRegID") Long benRegID,
 			@Param("visitCode") Long visitCode);
 
-	@Query("SELECT processed from ANCDiagnosis"
-			+ " WHERE beneficiaryRegID=:benRegID "
+	ArrayList<ANCDiagnosis> findByBeneficiaryRegIDAndVisitCode(Long benRegID, Long visitCode);
+
+	@Query("SELECT processed from ANCDiagnosis" + " WHERE beneficiaryRegID=:benRegID "
 			+ " AND visitCode = :visitCode AND prescriptionID = :prescriptionID")
 	public String getANCDiagnosisStatus(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode,
 			@Param("prescriptionID") Long prescriptionID);
@@ -33,7 +34,8 @@ public interface ANCDiagnosisRepo extends CrudRepository<ANCDiagnosis, Long> {
 	@Modifying
 	@Query("update ANCDiagnosis set highRiskStatus=:highRiskStatus, highRiskCondition=:highRiskCondition, "
 			+ "complicationOfCurrentPregnancy=:complicationOfCurrentPregnancy, isMaternalDeath=:isMaternalDeath, placeOfDeath=:placeOfDeath,"
-			+ "dateOfDeath=:dateOfDeath, causeOfDeath=:causeOfDeath, modifiedBy=:modifiedBy, processed=:processed "
+			+ " dateOfDeath=:dateOfDeath, causeOfDeath=:causeOfDeath, modifiedBy=:modifiedBy, processed=:processed, "
+			+ " otherCurrPregComplication = :othrPrgComp "
 			+ "where visitCode=:visitCode AND beneficiaryRegID=:beneficiaryRegID")
 	public int updateANCDiagnosis(@Param("highRiskStatus") String highRiskStatus,
 			@Param("highRiskCondition") String highRiskCondition,
@@ -41,5 +43,6 @@ public interface ANCDiagnosisRepo extends CrudRepository<ANCDiagnosis, Long> {
 			@Param("isMaternalDeath") Boolean isMaternalDeath, @Param("placeOfDeath") String placeOfDeath,
 			@Param("dateOfDeath") Date dateOfDeath, @Param("causeOfDeath") String causeOfDeath,
 			@Param("modifiedBy") String modifiedBy, @Param("processed") String processed,
-			@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("visitCode") Long visitCode);
+			@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("visitCode") Long visitCode,
+			@Param("othrPrgComp") String othrPrgComp);
 }
