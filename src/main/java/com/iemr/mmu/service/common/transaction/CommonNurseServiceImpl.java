@@ -5,11 +5,14 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
@@ -89,7 +92,18 @@ import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
+@PropertySource("classpath:myApp.properties")
 public class CommonNurseServiceImpl implements CommonNurseService {
+
+	@Value("${pharmaWL}")
+	private Integer pharmaWL;
+	@Value("${labWL}")
+	private Integer labWL;
+	@Value("${radioWL}")
+	private Integer radioWL;
+	@Value("${oncoWL}")
+	private Integer oncoWL;
+
 	@Autowired
 	private BenVisitDetailRepo benVisitDetailRepo;
 	@Autowired
@@ -2732,37 +2746,72 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	}
 
 	// New Nurse worklist.... 26-03-2018
-	public String getNurseWorkListNew(Integer providerServiceMapId) {
-		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getNurseWorklistNew(providerServiceMapId);
+	public String getNurseWorkListNew(Integer providerServiceMapId, Integer vanID) {
+		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getNurseWorklistNew(providerServiceMapId,
+				vanID);
 
 		return new Gson().toJson(obj);
 	}
 
 	// New Lab worklist.... 26-03-2018
-	public String getLabWorkListNew(Integer providerServiceMapId) {
-		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getLabWorklistNew(providerServiceMapId);
+	public String getLabWorkListNew(Integer providerServiceMapId, Integer vanID) {
+		Calendar cal = Calendar.getInstance();
+
+		if (labWL != null && labWL > 0 && labWL <= 30)
+			cal.add(Calendar.DAY_OF_YEAR, -labWL);
+		else
+			cal.add(Calendar.DAY_OF_YEAR, -7);
+		long sevenDaysAgo = cal.getTimeInMillis();
+
+		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getLabWorklistNew(providerServiceMapId,
+				new Timestamp(sevenDaysAgo), vanID);
 
 		return new Gson().toJson(obj);
 	}
 
 	// New radiologist worklist.... 26-03-2018
-	public String getRadiologistWorkListNew(Integer providerServiceMapId) {
-		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo
-				.getRadiologistWorkListNew(providerServiceMapId);
+	public String getRadiologistWorkListNew(Integer providerServiceMapId, Integer vanID) {
+		Calendar cal = Calendar.getInstance();
+		if (radioWL != null && radioWL > 0 && radioWL <= 30)
+			cal.add(Calendar.DAY_OF_YEAR, -radioWL);
+		else
+			cal.add(Calendar.DAY_OF_YEAR, -7);
+		long sevenDaysAgo = cal.getTimeInMillis();
+
+		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getRadiologistWorkListNew(providerServiceMapId,
+				new Timestamp(sevenDaysAgo), vanID);
 
 		return new Gson().toJson(obj);
 	}
 
 	// New oncologist worklist.... 26-03-2018
-	public String getOncologistWorkListNew(Integer providerServiceMapId) {
-		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getOncologistWorkListNew(providerServiceMapId);
+	public String getOncologistWorkListNew(Integer providerServiceMapId, Integer vanID) {
+
+		Calendar cal = Calendar.getInstance();
+		if (oncoWL != null && oncoWL > 0 && oncoWL <= 30)
+			cal.add(Calendar.DAY_OF_YEAR, -oncoWL);
+		else
+			cal.add(Calendar.DAY_OF_YEAR, -7);
+		long sevenDaysAgo = cal.getTimeInMillis();
+
+		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getOncologistWorkListNew(providerServiceMapId,
+				new Timestamp(sevenDaysAgo), vanID);
 
 		return new Gson().toJson(obj);
 	}
 
 	// New pharma worklist.... 26-03-2018
-	public String getPharmaWorkListNew(Integer providerServiceMapId) {
-		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getPharmaWorkListNew(providerServiceMapId);
+	public String getPharmaWorkListNew(Integer providerServiceMapId, Integer vanID) {
+
+		Calendar cal = Calendar.getInstance();
+		if (pharmaWL != null && pharmaWL > 0 && pharmaWL <= 30)
+			cal.add(Calendar.DAY_OF_YEAR, -pharmaWL);
+		else
+			cal.add(Calendar.DAY_OF_YEAR, -7);
+		long sevenDaysAgo = cal.getTimeInMillis();
+
+		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getPharmaWorkListNew(providerServiceMapId,
+				new Timestamp(sevenDaysAgo), vanID);
 
 		return new Gson().toJson(obj);
 	}

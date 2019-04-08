@@ -3,6 +3,7 @@ package com.iemr.mmu.service.common.transaction;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +63,9 @@ public class CommonDoctorServiceImpl {
 
 	@Value("${tcSpecialistSlotBook}")
 	private String tcSpecialistSlotBook;
+
+	@Value("${docWL}")
+	private Integer docWL;
 
 	private BenClinicalObservationsRepo benClinicalObservationsRepo;
 	private BenChiefComplaintRepo benChiefComplaintRepo;
@@ -295,12 +299,20 @@ public class CommonDoctorServiceImpl {
 	}
 
 	// New doc work-list service
-	public String getDocWorkListNew(Integer providerServiceMapId, Integer serviceID) {
+	public String getDocWorkListNew(Integer providerServiceMapId, Integer serviceID, Integer vanID) {
+
+		Calendar cal = Calendar.getInstance();
+		if (docWL != null && docWL > 0 && docWL <= 30)
+			cal.add(Calendar.DAY_OF_YEAR, -docWL);
+		else
+			cal.add(Calendar.DAY_OF_YEAR, -7);
+		long sevenDaysAgo = cal.getTimeInMillis();
 
 		ArrayList<BeneficiaryFlowStatus> docWorkList = new ArrayList<>();
 		// MMU doc work-list
 		if (serviceID != null && serviceID == 2) {
-			docWorkList = beneficiaryFlowStatusRepo.getDocWorkListNew(providerServiceMapId);
+			docWorkList = beneficiaryFlowStatusRepo.getDocWorkListNew(providerServiceMapId, new Timestamp(sevenDaysAgo),
+					vanID);
 		}
 		// TC doc work-list
 		else if (serviceID != null && serviceID == 4) {
