@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.iemr.mmu.data.reports.Report_ANC;
+import com.iemr.mmu.data.reports.Report_ANCHighRisk;
 import com.iemr.mmu.data.reports.Report_ChildrenCases;
 import com.iemr.mmu.data.reports.Report_LabTestsResult;
 import com.iemr.mmu.data.reports.Report_PatientAttended;
@@ -42,8 +44,8 @@ public class ReportCheckPostImpl implements ReportCheckPost {
 						request.getProviderServiceMapID());
 				break;
 
-			case 8:
-				reportData = report_LabTestResult(request.getFromDate(), request.getToDate(), request.getVanID(),
+			case 5:
+				reportData = report_ANC(request.getFromDate(), request.getToDate(), request.getVanID(),
 						request.getProviderServiceMapID());
 				break;
 
@@ -54,6 +56,16 @@ public class ReportCheckPostImpl implements ReportCheckPost {
 
 			case 7:
 				reportData = report_ChildrenCases(request.getFromDate(), request.getToDate(), request.getVanID(),
+						request.getProviderServiceMapID());
+				break;
+
+			case 8:
+				reportData = report_LabTestResult(request.getFromDate(), request.getToDate(), request.getVanID(),
+						request.getProviderServiceMapID());
+				break;
+
+			case 9:
+				reportData = report_ANCHighRisk(request.getFromDate(), request.getToDate(), request.getVanID(),
 						request.getProviderServiceMapID());
 				break;
 
@@ -152,5 +164,40 @@ public class ReportCheckPostImpl implements ReportCheckPost {
 				report_PI = Report_ChildrenCases.getReport_ChildrenCasesReport(RS);
 		}
 		return OutputMapper.gson().toJson(report_PI);
+	}
+
+	private String report_ANC(Timestamp fromDate, Timestamp toDate, Integer vanID, Integer psmID) throws Exception {
+		ArrayList<Report_ANC> report_ANC = new ArrayList<>();
+
+		// Gson gson = new GsonBuilder().serializeNulls().create();
+
+		if (fromDate == null || toDate == null || vanID == null || psmID == null)
+			throw new Exception("Some parameter/parameters is/are missing.");
+		else {
+			if (vanID == 0)
+				vanID = null;
+			ArrayList<Object[]> RS = reportMasterRepo.get_report_SP_ANC(fromDate, toDate, psmID, vanID);
+			if (RS != null && RS.size() > 0)
+				report_ANC = Report_ANC.getReport_ANC(RS);
+		}
+		return OutputMapper.gson().toJson(report_ANC);
+	}
+
+	private String report_ANCHighRisk(Timestamp fromDate, Timestamp toDate, Integer vanID, Integer psmID)
+			throws Exception {
+		ArrayList<Report_ANCHighRisk> report_ANCHighRisk = new ArrayList<>();
+
+		// Gson gson = new GsonBuilder().serializeNulls().create();
+
+		if (fromDate == null || toDate == null || vanID == null || psmID == null)
+			throw new Exception("Some parameter/parameters is/are missing.");
+		else {
+			if (vanID == 0)
+				vanID = null;
+			ArrayList<Object[]> RS = reportMasterRepo.get_report_SP_ANCHighRisk(fromDate, toDate, psmID, vanID);
+			if (RS != null && RS.size() > 0)
+				report_ANCHighRisk = Report_ANCHighRisk.getReport_ANChighRisk(RS);
+		}
+		return OutputMapper.gson().toJson(report_ANCHighRisk);
 	}
 }

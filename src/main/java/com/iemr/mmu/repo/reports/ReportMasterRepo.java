@@ -33,4 +33,12 @@ public interface ReportMasterRepo extends CrudRepository<ReportMaster, Integer> 
 	@Query(value = " CALL db_reporting.SP_ChildrenCases(:fromDate, :toDate, :psmID, :vanID) ", nativeQuery = true)
 	ArrayList<Object[]> get_report_SP_ChildrenCases(@Param("fromDate") Timestamp fromDate,
 			@Param("toDate") Timestamp toDate, @Param("psmID") Integer psmID, @Param("vanID") Integer vanID);
+
+	@Query(value = " CALL db_reporting.SP_ANC(:fromDate, :toDate, :psmID, :vanID) ", nativeQuery = true)
+	ArrayList<Object[]> get_report_SP_ANC(@Param("fromDate") Timestamp fromDate, @Param("toDate") Timestamp toDate,
+			@Param("psmID") Integer psmID, @Param("vanID") Integer vanID);
+
+	@Query(value = " CALL db_reporting.SP_ANCHighRisk(:fromDate, :toDate, :psmID, :vanID) ", nativeQuery = true)
+	ArrayList<Object[]> get_report_SP_ANCHighRisk(@Param("fromDate") Timestamp fromDate,
+			@Param("toDate") Timestamp toDate, @Param("psmID") Integer psmID, @Param("vanID") Integer vanID);
 }
