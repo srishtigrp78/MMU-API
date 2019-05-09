@@ -32,6 +32,8 @@
 		<source-properties>src/main/environment/common_${environment}.properties</source-properties>
 		<hostname-dev>10.208.122.38</hostname-dev>
 		<port-dev>9990</port-dev>
+		<hostname-test>10.208.122.32</hostname-test>
+		<port-test>9990</port-test>
 		<hostname-uat>deviemr.piramalswasthya.org</hostname-uat>
 		<port-uat>9990</port-uat>
 		<hostname-dev>10.208.122.38</hostname-dev>
@@ -135,11 +137,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>21.0</version>
@@ -152,6 +149,7 @@
 			<!-- <version>2.7.0</version> -->
 			<scope>compile</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
@@ -164,17 +162,6 @@
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<!--<version>20160212</version> -->
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.datatype</groupId>
-			<artifactId>jackson-datatype-joda</artifactId>
-			<!-- <version>2.4.0</version> -->
-		</dependency>
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<!-- <version>2.7.1</version> -->
 		</dependency>
 
 		<dependency>
@@ -193,44 +180,53 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>2.7.1</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
 			<version>2.2.1</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz-jobs</artifactId>
 			<version>2.2.1</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-cache</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
+
 		<dependency>
 			<groupId>com.openkm</groupId>
 			<artifactId>sdk4j</artifactId>
 			<version>1.0</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-redis</artifactId>
 			<version>1.7.11.RELEASE</version>
 		</dependency>
+
 		<dependency>
 			<groupId>biz.paluch.redis</groupId>
 			<artifactId>lettuce</artifactId>
 			<version>3.5.0.Final</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.session</groupId>
 			<artifactId>spring-session</artifactId>

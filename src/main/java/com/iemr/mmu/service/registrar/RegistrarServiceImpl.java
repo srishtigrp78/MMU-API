@@ -53,7 +53,7 @@ import com.iemr.mmu.utils.response.OutputResponse;
  *
  */
 @Service
-@PropertySource("classpath:myApp.properties")
+@PropertySource("classpath:application.properties")
 public class RegistrarServiceImpl implements RegistrarService {
 	@Value("${registrationUrl}")
 	private String registrationUrl;
@@ -319,9 +319,9 @@ public class RegistrarServiceImpl implements RegistrarService {
 				districtID = v_BenAdvanceSearch.getDistrictID() + "";
 			}
 			/*
-			 * reistrarRepoBenSearch.getAdvanceBenSearchList(benID,
-			 * benFirstName, benLastName, benGenderID, fatherName, phoneNo,
-			 * aadharNo, govIDNo, districtID);
+			 * reistrarRepoBenSearch.getAdvanceBenSearchList(benID, benFirstName,
+			 * benLastName, benGenderID, fatherName, phoneNo, aadharNo, govIDNo,
+			 * districtID);
 			 */
 			ArrayList<Object[]> resList = reistrarRepoBenSearch.getAdvanceBenSearchList(benID, benFirstName,
 					benLastName, phoneNo, aadharNo, govIDNo, stateID, districtID);

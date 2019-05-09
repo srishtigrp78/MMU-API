@@ -127,12 +127,13 @@ public class NCDCareServiceImpl implements NCDCareService {
 				vitalSaveSuccessFlag = saveBenNCDCareVitalDetails(requestOBJ.getAsJsonObject("vitalDetails"),
 						benVisitID, benVisitCode);
 
-				i = commonNurseServiceImpl.updateBeneficiaryStatus('N', tmpOBJ.get("beneficiaryRegID").getAsLong());
+				// i = commonNurseServiceImpl.updateBeneficiaryStatus('N',
+				// tmpOBJ.get("beneficiaryRegID").getAsLong());
 			} else {
 				// Error in visit details saving or it is null
 			}
 			if ((null != historySaveSuccessFlag && historySaveSuccessFlag > 0)
-					&& (null != vitalSaveSuccessFlag && vitalSaveSuccessFlag > 0) && (i != null)) {
+					&& (null != vitalSaveSuccessFlag && vitalSaveSuccessFlag > 0)) {
 				saveSuccessFlag = historySaveSuccessFlag;
 
 				/**

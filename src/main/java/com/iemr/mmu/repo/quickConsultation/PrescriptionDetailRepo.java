@@ -21,6 +21,8 @@ public interface PrescriptionDetailRepo extends CrudRepository<PrescriptionDetai
 			+ " ORDER BY createdDate DESC ")
 	public ArrayList<Object[]> getBenPrescription(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 
+	public ArrayList<PrescriptionDetail> findByBeneficiaryRegIDAndVisitCode(Long benRegID, Long visitCode);
+
 	@Query(" SELECT prescriptionID, beneficiaryRegID, benVisitID, providerServiceMapID, diagnosisProvided, instruction, "
 			+ " visitCode FROM PrescriptionDetail ba "
 			+ " WHERE ba.beneficiaryRegID = :benRegID AND ba.visitCode = :visitCode "

@@ -6,4 +6,6 @@ public interface SnomedService {
 
 	public SCTDescription findSnomedCTRecordFromTerm(String term);
 
+	public String findSnomedCTRecordList(SCTDescription sctdescription) throws Exception;
+
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.iemr.mmu.data.login.MasterVan;
 import com.iemr.mmu.data.login.ServicePointVillageMapping;
 import com.iemr.mmu.data.login.UserVanSpDetails_View;
 import com.iemr.mmu.repo.login.MasterVanRepo;
@@ -166,5 +167,21 @@ public class IemrMmuLoginServiceImpl implements IemrMmuLoginService {
 		resMap.put("UserLocDetails", parkingPlaceLocationMap);
 		// 1.1
 		return new Gson().toJson(resMap);
+	}
+
+	public String getVanMaster(Integer psmID) throws Exception {
+		MasterVan mVan;
+		ArrayList<MasterVan> vanMasterList = new ArrayList<>();
+		mVan = new MasterVan(0, "All");
+		vanMasterList.add(mVan);
+		ArrayList<Object[]> vanMaster = masterVanRepo.getVanMaster(psmID);
+
+		if (vanMaster != null && vanMaster.size() > 0) {
+			for (Object[] arr : vanMaster) {
+				mVan = new MasterVan((Integer) arr[0], (String) arr[1]);
+				vanMasterList.add(mVan);
+			}
+		}
+		return new Gson().toJson(vanMasterList);
 	}
 }

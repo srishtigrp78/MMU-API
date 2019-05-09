@@ -264,8 +264,8 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 						.saveBeneficiaryPhysicalVitalDetails(benPhysicalVitalDetail);
 				if (benAnthropometryID != null && benAnthropometryID > 0 && benPhysicalVitalID != null
 						&& benPhysicalVitalID > 0) {
-					Integer i = commonNurseServiceImpl.updateBeneficiaryStatus('N',
-							benVisitDetailsOBJ.getBeneficiaryRegID());
+					// Integer i = commonNurseServiceImpl.updateBeneficiaryStatus('N',
+					// benVisitDetailsOBJ.getBeneficiaryRegID());
 
 					returnOBJ = 1;
 

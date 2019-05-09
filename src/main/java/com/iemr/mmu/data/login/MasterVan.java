@@ -55,6 +55,11 @@ public class MasterVan {
 		this.userParkingplaceMapping = userParkingplaceMapping;
 	}
 
+	public MasterVan(Integer vanID, String vehicalNo) {
+		this.vanID = vanID;
+		this.vehicalNo = vehicalNo;
+	}
+
 	public Boolean getIsFacility() {
 		return isFacility;
 	}

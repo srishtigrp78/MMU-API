@@ -5,11 +5,14 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
@@ -52,6 +55,7 @@ import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.data.registrar.WrapperRegWorklist;
+import com.iemr.mmu.data.snomedct.SCTDescription;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.nurse.BenAnthropometryRepo;
 import com.iemr.mmu.repo.nurse.BenCancerVitalDetailRepo;
@@ -88,216 +92,86 @@ import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
+@PropertySource("classpath:application.properties")
 public class CommonNurseServiceImpl implements CommonNurseService {
+
+	@Value("${pharmaWL}")
+	private Integer pharmaWL;
+	@Value("${labWL}")
+	private Integer labWL;
+	@Value("${radioWL}")
+	private Integer radioWL;
+	@Value("${oncoWL}")
+	private Integer oncoWL;
+
+	@Autowired
 	private BenVisitDetailRepo benVisitDetailRepo;
+	@Autowired
 	private BenChiefComplaintRepo benChiefComplaintRepo;
+	@Autowired
 	private BenMedHistoryRepo benMedHistoryRepo;
+	@Autowired
 	private BencomrbidityCondRepo bencomrbidityCondRepo;
+	@Autowired
 	private BenMedicationHistoryRepo benMedicationHistoryRepo;
+	@Autowired
 	private FemaleObstetricHistoryRepo femaleObstetricHistoryRepo;
+	@Autowired
 	private BenMenstrualDetailsRepo benMenstrualDetailsRepo;
+	@Autowired
 	private BenFamilyHistoryRepo benFamilyHistoryRepo;
+	@Autowired
 	private BenPersonalHabitRepo benPersonalHabitRepo;
+	@Autowired
 	private BenAllergyHistoryRepo benAllergyHistoryRepo;
+	@Autowired
 	private ChildOptionalVaccineDetailRepo childOptionalVaccineDetailRepo;
+	@Autowired
 	private ChildVaccineDetail1Repo childVaccineDetail1Repo;
+	@Autowired
 	private BenAnthropometryRepo benAnthropometryRepo;
+	@Autowired
 	private BenPhysicalVitalRepo benPhysicalVitalRepo;
+	@Autowired
 	private PhyGeneralExaminationRepo phyGeneralExaminationRepo;
+	@Autowired
 	private PhyHeadToToeExaminationRepo phyHeadToToeExaminationRepo;
+	@Autowired
 	private SysGastrointestinalExaminationRepo sysGastrointestinalExaminationRepo;
+	@Autowired
 	private SysCardiovascularExaminationRepo sysCardiovascularExaminationRepo;
+	@Autowired
 	private SysRespiratoryExaminationRepo sysRespiratoryExaminationRepo;
+	@Autowired
 	private SysCentralNervousExaminationRepo sysCentralNervousExaminationRepo;
+	@Autowired
 	private SysMusculoskeletalSystemExaminationRepo sysMusculoskeletalSystemExaminationRepo;
+	@Autowired
 	private SysGenitourinarySystemExaminationRepo sysGenitourinarySystemExaminationRepo;
+	@Autowired
 	private RegistrarRepoBenData registrarRepoBenData;
+	@Autowired
 	private PrescriptionDetailRepo prescriptionDetailRepo;
+	@Autowired
 	private LabTestOrderDetailRepo labTestOrderDetailRepo;
+	@Autowired
 	private PrescribedDrugDetailRepo prescribedDrugDetailRepo;
+	@Autowired
 	private ReistrarRepoBenSearch reistrarRepoBenSearch;
+	@Autowired
 	private BenAdherenceRepo benAdherenceRepo;
+	@Autowired
 	private BenChildDevelopmentHistoryRepo benChildDevelopmentHistoryRepo;
+	@Autowired
 	private ChildFeedingDetailsRepo childFeedingDetailsRepo;
+	@Autowired
 	private PerinatalHistoryRepo perinatalHistoryRepo;
+	@Autowired
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
-
+	@Autowired
 	private BenCancerVitalDetailRepo benCancerVitalDetailRepo;
-
+	@Autowired
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
-
-	@Autowired
-	public void setCommonDoctorServiceImpl(CommonDoctorServiceImpl commonDoctorServiceImpl) {
-		this.commonDoctorServiceImpl = commonDoctorServiceImpl;
-	}
-
-	@Autowired
-	public void setBenCancerVitalDetailRepo(BenCancerVitalDetailRepo benCancerVitalDetailRepo) {
-		this.benCancerVitalDetailRepo = benCancerVitalDetailRepo;
-	}
-
-	@Autowired
-	public void setBeneficiaryFlowStatusRepo(BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo) {
-		this.beneficiaryFlowStatusRepo = beneficiaryFlowStatusRepo;
-	}
-
-	@Autowired
-	public void setBenChildDevelopmentHistoryRepo(BenChildDevelopmentHistoryRepo benChildDevelopmentHistoryRepo) {
-		this.benChildDevelopmentHistoryRepo = benChildDevelopmentHistoryRepo;
-	}
-
-	@Autowired
-	public void setChildFeedingDetailsRepo(ChildFeedingDetailsRepo childFeedingDetailsRepo) {
-		this.childFeedingDetailsRepo = childFeedingDetailsRepo;
-	}
-
-	@Autowired
-	public void setPerinatalHistoryRepo(PerinatalHistoryRepo perinatalHistoryRepo) {
-		this.perinatalHistoryRepo = perinatalHistoryRepo;
-	}
-
-	@Autowired
-	public void setBenAdherenceRepo(BenAdherenceRepo benAdherenceRepo) {
-		this.benAdherenceRepo = benAdherenceRepo;
-	}
-
-	@Autowired
-	public void setReistrarRepoBenSearch(ReistrarRepoBenSearch reistrarRepoBenSearch) {
-		this.reistrarRepoBenSearch = reistrarRepoBenSearch;
-	}
-
-	@Autowired
-	public void setPrescribedDrugDetailRepo(PrescribedDrugDetailRepo prescribedDrugDetailRepo) {
-		this.prescribedDrugDetailRepo = prescribedDrugDetailRepo;
-	}
-
-	@Autowired
-	public void setLabTestOrderDetailRepo(LabTestOrderDetailRepo labTestOrderDetailRepo) {
-		this.labTestOrderDetailRepo = labTestOrderDetailRepo;
-	}
-
-	@Autowired
-	public void setPrescriptionDetailRepo(PrescriptionDetailRepo prescriptionDetailRepo) {
-		this.prescriptionDetailRepo = prescriptionDetailRepo;
-	}
-
-	@Autowired
-	public void setPhyGeneralExaminationRepo(PhyGeneralExaminationRepo phyGeneralExaminationRepo) {
-		this.phyGeneralExaminationRepo = phyGeneralExaminationRepo;
-	}
-
-	@Autowired
-	public void setRegistrarRepoBenData(RegistrarRepoBenData registrarRepoBenData) {
-		this.registrarRepoBenData = registrarRepoBenData;
-	}
-
-	@Autowired
-	public void setSysGenitourinarySystemExaminationRepo(
-			SysGenitourinarySystemExaminationRepo sysGenitourinarySystemExaminationRepo) {
-		this.sysGenitourinarySystemExaminationRepo = sysGenitourinarySystemExaminationRepo;
-	}
-
-	@Autowired
-	public void setSysMusculoskeletalSystemExaminationRepo(
-			SysMusculoskeletalSystemExaminationRepo sysMusculoskeletalSystemExaminationRepo) {
-		this.sysMusculoskeletalSystemExaminationRepo = sysMusculoskeletalSystemExaminationRepo;
-	}
-
-	@Autowired
-	public void setSysCentralNervousExaminationRepo(SysCentralNervousExaminationRepo sysCentralNervousExaminationRepo) {
-		this.sysCentralNervousExaminationRepo = sysCentralNervousExaminationRepo;
-	}
-
-	@Autowired
-	public void setSysRespiratoryExaminationRepo(SysRespiratoryExaminationRepo sysRespiratoryExaminationRepo) {
-		this.sysRespiratoryExaminationRepo = sysRespiratoryExaminationRepo;
-	}
-
-	@Autowired
-	public void setSysCardiovascularExaminationRepo(SysCardiovascularExaminationRepo sysCardiovascularExaminationRepo) {
-		this.sysCardiovascularExaminationRepo = sysCardiovascularExaminationRepo;
-	}
-
-	@Autowired
-	public void setSysGastrointestinalExaminationRepo(
-			SysGastrointestinalExaminationRepo sysGastrointestinalExaminationRepo) {
-		this.sysGastrointestinalExaminationRepo = sysGastrointestinalExaminationRepo;
-	}
-
-	@Autowired
-	public void setPhyHeadToToeExaminationRepo(PhyHeadToToeExaminationRepo phyHeadToToeExaminationRepo) {
-		this.phyHeadToToeExaminationRepo = phyHeadToToeExaminationRepo;
-	}
-
-	@Autowired
-	public void setBenAnthropometryRepo(BenAnthropometryRepo benAnthropometryRepo) {
-		this.benAnthropometryRepo = benAnthropometryRepo;
-	}
-
-	@Autowired
-	public void setBenPhysicalVitalRepo(BenPhysicalVitalRepo benPhysicalVitalRepo) {
-		this.benPhysicalVitalRepo = benPhysicalVitalRepo;
-	}
-
-	@Autowired
-	public void setChildVaccineDetail1Repo(ChildVaccineDetail1Repo childVaccineDetail1Repo) {
-		this.childVaccineDetail1Repo = childVaccineDetail1Repo;
-	}
-
-	@Autowired
-	public void setChildOptionalVaccineDetailRepo(ChildOptionalVaccineDetailRepo childOptionalVaccineDetailRepo) {
-		this.childOptionalVaccineDetailRepo = childOptionalVaccineDetailRepo;
-	}
-
-	@Autowired
-	public void setBenAllergyHistoryRepo(BenAllergyHistoryRepo benAllergyHistoryRepo) {
-		this.benAllergyHistoryRepo = benAllergyHistoryRepo;
-	}
-
-	@Autowired
-	public void setBenPersonalHabitRepo(BenPersonalHabitRepo benPersonalHabitRepo) {
-		this.benPersonalHabitRepo = benPersonalHabitRepo;
-	}
-
-	@Autowired
-	public void setBenFamilyHistoryRepo(BenFamilyHistoryRepo benFamilyHistoryRepo) {
-		this.benFamilyHistoryRepo = benFamilyHistoryRepo;
-	}
-
-	@Autowired
-	public void setBenMenstrualDetailsRepo(BenMenstrualDetailsRepo benMenstrualDetailsRepo) {
-		this.benMenstrualDetailsRepo = benMenstrualDetailsRepo;
-	}
-
-	@Autowired
-	public void setFemaleObstetricHistoryRepo(FemaleObstetricHistoryRepo femaleObstetricHistoryRepo) {
-		this.femaleObstetricHistoryRepo = femaleObstetricHistoryRepo;
-	}
-
-	@Autowired
-	public void setBenMedicationHistoryRepo(BenMedicationHistoryRepo benMedicationHistoryRepo) {
-		this.benMedicationHistoryRepo = benMedicationHistoryRepo;
-	}
-
-	@Autowired
-	public void setBencomrbidityCondRepo(BencomrbidityCondRepo bencomrbidityCondRepo) {
-		this.bencomrbidityCondRepo = bencomrbidityCondRepo;
-	}
-
-	@Autowired
-	public void setBenMedHistoryRepo(BenMedHistoryRepo benMedHistoryRepo) {
-		this.benMedHistoryRepo = benMedHistoryRepo;
-	}
-
-	@Autowired
-	public void setBenChiefComplaintRepo(BenChiefComplaintRepo benChiefComplaintRepo) {
-		this.benChiefComplaintRepo = benChiefComplaintRepo;
-	}
-
-	@Autowired
-	public void setBenVisitDetailRepo(BenVisitDetailRepo benVisitDetailRepo) {
-		this.benVisitDetailRepo = benVisitDetailRepo;
-	}
 
 	public Integer updateBeneficiaryStatus(Character c, Long benRegID) {
 		Integer i = registrarRepoBenData.updateBenFlowStatus(c, benRegID);
@@ -737,39 +611,6 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			benPhysicalVitalDetail.setAverageSystolicBP((short) (sysBP / j));
 			benPhysicalVitalDetail.setAverageDiastolicBP((short) (dysBP / j));
 		}
-		/**
-		 * 
-		 * 
-		 * Short systolicBP_1stReading =
-		 * benPhysicalVitalDetail.getSystolicBP_1stReading(); Short
-		 * diastolicBP_1stReading = benPhysicalVitalDetail.getDiastolicBP_1stReading();
-		 * if (systolicBP_1stReading != null && diastolicBP_1stReading != null) {
-		 * averageSystolicList.add(systolicBP_1stReading);
-		 * averageDiastolicList.add(diastolicBP_1stReading); }
-		 * 
-		 * Short systolicBP_2ndReading =
-		 * benPhysicalVitalDetail.getSystolicBP_2ndReading(); Short
-		 * diastolicBP_2ndReading = benPhysicalVitalDetail.getDiastolicBP_2ndReading();
-		 * if (systolicBP_2ndReading != null && diastolicBP_2ndReading != null) {
-		 * averageSystolicList.add(systolicBP_2ndReading);
-		 * averageDiastolicList.add(diastolicBP_2ndReading); }
-		 * 
-		 * Short systolicBP_3rdReading =
-		 * benPhysicalVitalDetail.getSystolicBP_3rdReading(); Short
-		 * diastolicBP_3rdReading = benPhysicalVitalDetail.getDiastolicBP_3rdReading();
-		 * if (systolicBP_3rdReading != null && diastolicBP_3rdReading != null) {
-		 * averageSystolicList.add(systolicBP_3rdReading);
-		 * averageDiastolicList.add(diastolicBP_3rdReading); }
-		 * 
-		 * Short averageSystolic = (short) ((averageSystolicList.stream().mapToInt(i ->
-		 * i.shortValue()).sum()) / averageSystolicList.size()); Short averageDiastolic
-		 * = (short) ((averageDiastolicList.stream().mapToInt(i ->
-		 * i.shortValue()).sum()) / averageDiastolicList.size());
-		 * 
-		 * benPhysicalVitalDetail.setAverageSystolicBP(averageSystolic);
-		 * benPhysicalVitalDetail.setAverageDiastolicBP(averageDiastolic);
-		 * 
-		 */
 
 		BenPhysicalVitalDetail response = benPhysicalVitalRepo.save(benPhysicalVitalDetail);
 		if (response != null)
@@ -2473,23 +2314,50 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	public Long saveBeneficiaryPrescription(JsonObject caseSheet) throws Exception {
 
 		PrescriptionDetail prescriptionDetail = InputMapper.gson().fromJson(caseSheet, PrescriptionDetail.class);
-		String[] snomedCTArr = commonDoctorServiceImpl.getSnomedCTcode(prescriptionDetail.getDiagnosisProvided());
-		if (snomedCTArr != null && snomedCTArr.length > 1) {
-			prescriptionDetail.setDiagnosisProvided_SCTCode(snomedCTArr[0]);
-			prescriptionDetail.setDiagnosisProvided_SCTTerm(snomedCTArr[0]);
-		}
-		prescriptionDetail.setPrescriptionID(null);
+		// String[] snomedCTArr =
+		// commonDoctorServiceImpl.getSnomedCTcode(prescriptionDetail.getDiagnosisProvided());
+		// if (snomedCTArr != null && snomedCTArr.length > 1) {
+		// prescriptionDetail.setDiagnosisProvided_SCTCode(snomedCTArr[0]);
+		// prescriptionDetail.setDiagnosisProvided_SCTTerm(snomedCTArr[1]);
+		// }
+		// prescriptionDetail.setPrescriptionID(null);
 		return saveBenPrescription(prescriptionDetail);
 	}
 
 	public Long saveBenPrescription(PrescriptionDetail prescription) {
 		Long r = null;
 		prescription.setPrescriptionID(null);
-		String[] snomedCTArr = commonDoctorServiceImpl.getSnomedCTcode(prescription.getDiagnosisProvided());
-		if (snomedCTArr != null && snomedCTArr.length > 1) {
-			prescription.setDiagnosisProvided_SCTCode(snomedCTArr[0]);
-			prescription.setDiagnosisProvided_SCTTerm(snomedCTArr[0]);
+
+		StringBuilder pdTerm = new StringBuilder();
+		StringBuilder pdConceptID = new StringBuilder();
+
+		if (prescription != null && prescription.getProvisionalDiagnosisList() != null
+				&& prescription.getProvisionalDiagnosisList().size() > 0) {
+			int pointer = 1;
+			for (SCTDescription obj : prescription.getProvisionalDiagnosisList()) {
+				if (obj.getTerm() != null) {
+					if (pointer == prescription.getProvisionalDiagnosisList().size()) {
+						pdTerm.append(obj.getTerm());
+						if (obj.getConceptID() != null)
+							pdConceptID.append(obj.getConceptID());
+						else
+							pdConceptID.append("N/A");
+					} else {
+						pdTerm.append(obj.getTerm()).append("  ||  ");
+						if (obj.getConceptID() != null)
+							pdConceptID.append(obj.getConceptID()).append("  ||  ");
+						else
+							pdConceptID.append("N/A").append("  ||  ");
+					}
+				}
+				pointer++;
+			}
+			prescription.setDiagnosisProvided(pdTerm.toString());
+			prescription.setDiagnosisProvided_SCTCode(pdConceptID.toString());
+			// prescription.setDiagnosisProvided_SCTTerm(pdTerm.toString());
+
 		}
+
 		PrescriptionDetail prescriptionRS = prescriptionDetailRepo.save(prescription);
 		if (prescriptionRS != null && prescriptionRS.getPrescriptionID() > 0) {
 			r = prescriptionRS.getPrescriptionID();
@@ -2499,10 +2367,36 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 	public int updatePrescription(PrescriptionDetail prescription) {
 		int i = 0;
-		String[] snomedCTArr = commonDoctorServiceImpl.getSnomedCTcode(prescription.getDiagnosisProvided());
-		if (snomedCTArr != null && snomedCTArr.length > 1) {
-			prescription.setDiagnosisProvided_SCTCode(snomedCTArr[0]);
-			prescription.setDiagnosisProvided_SCTTerm(snomedCTArr[0]);
+
+		// SnomedCT new code
+		StringBuilder pdTerm = new StringBuilder();
+		StringBuilder pdConceptID = new StringBuilder();
+
+		if (prescription != null && prescription.getProvisionalDiagnosisList() != null
+				&& prescription.getProvisionalDiagnosisList().size() > 0) {
+			int pointer = 1;
+			for (SCTDescription obj : prescription.getProvisionalDiagnosisList()) {
+				if (obj.getTerm() != null) {
+					if (pointer == prescription.getProvisionalDiagnosisList().size()) {
+						pdTerm.append(obj.getTerm());
+						if (obj.getConceptID() != null)
+							pdConceptID.append(obj.getConceptID());
+						else
+							pdConceptID.append("N/A");
+					} else {
+						pdTerm.append(obj.getTerm()).append("  ||  ");
+						if (obj.getConceptID() != null)
+							pdConceptID.append(obj.getConceptID()).append("  ||  ");
+						else
+							pdConceptID.append("N/A").append("  ||  ");
+					}
+				}
+				pointer++;
+			}
+			prescription.setDiagnosisProvided(pdTerm.toString());
+			prescription.setDiagnosisProvided_SCTCode(pdConceptID.toString());
+			// prescription.setDiagnosisProvided_SCTTerm(pdTerm.toString());
+
 		}
 
 		String processed = prescriptionDetailRepo.getGeneralOPDDiagnosisStatus(prescription.getBeneficiaryRegID(),
@@ -2852,37 +2746,72 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	}
 
 	// New Nurse worklist.... 26-03-2018
-	public String getNurseWorkListNew(Integer providerServiceMapId) {
-		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getNurseWorklistNew(providerServiceMapId);
+	public String getNurseWorkListNew(Integer providerServiceMapId, Integer vanID) {
+		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getNurseWorklistNew(providerServiceMapId,
+				vanID);
 
 		return new Gson().toJson(obj);
 	}
 
 	// New Lab worklist.... 26-03-2018
-	public String getLabWorkListNew(Integer providerServiceMapId) {
-		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getLabWorklistNew(providerServiceMapId);
+	public String getLabWorkListNew(Integer providerServiceMapId, Integer vanID) {
+		Calendar cal = Calendar.getInstance();
+
+		if (labWL != null && labWL > 0 && labWL <= 30)
+			cal.add(Calendar.DAY_OF_YEAR, -labWL);
+		else
+			cal.add(Calendar.DAY_OF_YEAR, -7);
+		long sevenDaysAgo = cal.getTimeInMillis();
+
+		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getLabWorklistNew(providerServiceMapId,
+				new Timestamp(sevenDaysAgo), vanID);
 
 		return new Gson().toJson(obj);
 	}
 
 	// New radiologist worklist.... 26-03-2018
-	public String getRadiologistWorkListNew(Integer providerServiceMapId) {
-		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo
-				.getRadiologistWorkListNew(providerServiceMapId);
+	public String getRadiologistWorkListNew(Integer providerServiceMapId, Integer vanID) {
+		Calendar cal = Calendar.getInstance();
+		if (radioWL != null && radioWL > 0 && radioWL <= 30)
+			cal.add(Calendar.DAY_OF_YEAR, -radioWL);
+		else
+			cal.add(Calendar.DAY_OF_YEAR, -7);
+		long sevenDaysAgo = cal.getTimeInMillis();
+
+		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getRadiologistWorkListNew(providerServiceMapId,
+				new Timestamp(sevenDaysAgo), vanID);
 
 		return new Gson().toJson(obj);
 	}
 
 	// New oncologist worklist.... 26-03-2018
-	public String getOncologistWorkListNew(Integer providerServiceMapId) {
-		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getOncologistWorkListNew(providerServiceMapId);
+	public String getOncologistWorkListNew(Integer providerServiceMapId, Integer vanID) {
+
+		Calendar cal = Calendar.getInstance();
+		if (oncoWL != null && oncoWL > 0 && oncoWL <= 30)
+			cal.add(Calendar.DAY_OF_YEAR, -oncoWL);
+		else
+			cal.add(Calendar.DAY_OF_YEAR, -7);
+		long sevenDaysAgo = cal.getTimeInMillis();
+
+		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getOncologistWorkListNew(providerServiceMapId,
+				new Timestamp(sevenDaysAgo), vanID);
 
 		return new Gson().toJson(obj);
 	}
 
 	// New pharma worklist.... 26-03-2018
-	public String getPharmaWorkListNew(Integer providerServiceMapId) {
-		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getPharmaWorkListNew(providerServiceMapId);
+	public String getPharmaWorkListNew(Integer providerServiceMapId, Integer vanID) {
+
+		Calendar cal = Calendar.getInstance();
+		if (pharmaWL != null && pharmaWL > 0 && pharmaWL <= 30)
+			cal.add(Calendar.DAY_OF_YEAR, -pharmaWL);
+		else
+			cal.add(Calendar.DAY_OF_YEAR, -7);
+		long sevenDaysAgo = cal.getTimeInMillis();
+
+		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getPharmaWorkListNew(providerServiceMapId,
+				new Timestamp(sevenDaysAgo), vanID);
 
 		return new Gson().toJson(obj);
 	}
@@ -3424,7 +3353,6 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		returnOBJ.put("bpList", bpList);
 		returnOBJ.put("bgList", bgList);
 
-		
 		return returnOBJ;
 	}
 }

@@ -9,7 +9,8 @@ public class OutputMapper {
 	public OutputMapper() {
 		if (builder == null) {
 			builder = new GsonBuilder();
-			builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+			//builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+			builder.setDateFormat("dd-MM-yyyy h:mm a ");
 			builder.excludeFieldsWithoutExposeAnnotation();
 			builder.serializeNulls();
 		}
