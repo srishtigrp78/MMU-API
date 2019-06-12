@@ -41,12 +41,25 @@ public class DataSyncRepository {
 		String baseQuery;
 		List<Map<String, Object>> resultSetList = new ArrayList<>();
 
-		if (table.equalsIgnoreCase("m_beneficiaryregidmapping")) {
+		if (table != null && table.equalsIgnoreCase("m_beneficiaryregidmapping")) {
 			baseQuery = " SELECT " + columnNames + " FROM " + schema + "." + table
 					+ " WHERE provisioned is true AND processed != 'P' AND vanID is not null ";
 		} else {
-			baseQuery = " SELECT " + columnNames + " FROM " + schema + "." + table
-					+ " WHERE processed != 'P' AND vanID is not null ";
+			if (table != null && (table.equalsIgnoreCase("t_patientissue")
+					|| table.equalsIgnoreCase("t_physicalstockentry") || table.equalsIgnoreCase("t_stockadjustment")
+					|| table.equalsIgnoreCase("t_saitemmapping") || table.equalsIgnoreCase("t_stocktransfer")
+					|| table.equalsIgnoreCase("t_patientreturn") || table.equalsIgnoreCase("t_facilityconsumption")
+					|| table.equalsIgnoreCase("t_indent") || table.equalsIgnoreCase("t_indentorder")
+					|| table.equalsIgnoreCase("t_indentissue") || table.equalsIgnoreCase("t_itemstockentry")
+					|| table.equalsIgnoreCase("t_itemstockexit"))) {
+
+				baseQuery = " SELECT " + columnNames + " FROM " + schema + "." + table
+						+ " WHERE processed != 'P' AND SyncFacilityID is not null  ";
+
+			} else {
+				baseQuery = " SELECT " + columnNames + " FROM " + schema + "." + table
+						+ " WHERE processed != 'P' AND vanID is not null ";
+			}
 
 		}
 		// resultSetList = jdbcTemplate.queryForList(baseQuery, "P");
@@ -66,7 +79,7 @@ public class DataSyncRepository {
 		String query = " UPDATE " + schemaName + "." + tableName
 				+ " SET processed = 'P' , SyncedDate = now(), Syncedby = '" + user + "' WHERE " + autoIncreamentColumn
 				+ " IN (" + vanSerialNos + ")";
-		System.out.println("hello");
+		// System.out.println("hello");
 
 		int i = jdbcTemplate.update(query);
 

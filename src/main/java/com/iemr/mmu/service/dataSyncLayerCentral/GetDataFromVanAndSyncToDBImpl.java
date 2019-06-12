@@ -28,8 +28,11 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 		// feed sync request
 		SyncUploadDataDigester syncUploadDataDigester = InputMapper.gson().fromJson(requestOBJ,
 				SyncUploadDataDigester.class);
-		if (syncUploadDataDigester != null && syncUploadDataDigester.getTableName() != null
-				&& syncUploadDataDigester.getTableName().equalsIgnoreCase("m_beneficiaryregidmapping")) {
+
+		String syncTableName = syncUploadDataDigester.getTableName();
+
+		if (syncUploadDataDigester != null && syncTableName != null
+				&& syncTableName.equalsIgnoreCase("m_beneficiaryregidmapping")) {
 			String s = update_M_BeneficiaryRegIdMapping_for_provisioned_benID(syncUploadDataDigester);
 			return s;
 		} else {
@@ -84,8 +87,31 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 				if (recordCheck == 0) {
 					syncDataListInsert.add(objArr);
 				} else {
-					objArr[pointer] = String.valueOf(map.get(syncUploadDataDigester.getVanAutoIncColumnName()));
-					objArr[pointer + 1] = String.valueOf(map.get("VanID"));
+					/** commented because already we have two variable with same value **/
+
+					// objArr[pointer] =
+					// String.valueOf(map.get(syncUploadDataDigester.getVanAutoIncColumnName()));
+					// objArr[pointer + 1] = String.valueOf(map.get("VanID"));
+
+					objArr[pointer] = String.valueOf(vanSerialNo);
+
+					if (syncTableName.equalsIgnoreCase("t_patientissue")
+							|| syncTableName.equalsIgnoreCase("t_physicalstockentry")
+							|| syncTableName.equalsIgnoreCase("t_stockadjustment")
+							|| syncTableName.equalsIgnoreCase("t_saitemmapping")
+							|| syncTableName.equalsIgnoreCase("t_stocktransfer")
+							|| syncTableName.equalsIgnoreCase("t_patientreturn")
+							|| syncTableName.equalsIgnoreCase("t_facilityconsumption")
+							|| syncTableName.equalsIgnoreCase("t_indent")
+							|| syncTableName.equalsIgnoreCase("t_indentorder")
+							|| syncTableName.equalsIgnoreCase("t_indentissue")
+							|| syncTableName.equalsIgnoreCase("t_itemstockentry")
+							|| syncTableName.equalsIgnoreCase("t_itemstockexit")) {
+
+						objArr[pointer + 1] = String.valueOf(map.get("SyncFacilityID"));
+					} else
+						objArr[pointer + 1] = String.valueOf(vanID);
+
 					syncDataListUpdate.add(objArr);
 				}
 
@@ -197,6 +223,7 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 	}
 
 	public String getQueryToUpdateDataToServerDB(String schemaName, String tableName, String serverColumns) {
+		String query;
 		String[] columnsArr = null;
 		if (serverColumns != null)
 			columnsArr = serverColumns.split(",");
@@ -215,8 +242,20 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 			}
 		}
 
-		String query = " UPDATE  " + schemaName + "." + tableName + " SET " + preparedStatementSetter
-				+ " WHERE VanSerialNo = ? AND VanID = ? ";
+		if (tableName.equalsIgnoreCase("t_patientissue") || tableName.equalsIgnoreCase("t_physicalstockentry")
+				|| tableName.equalsIgnoreCase("t_stockadjustment") || tableName.equalsIgnoreCase("t_saitemmapping")
+				|| tableName.equalsIgnoreCase("t_stocktransfer") || tableName.equalsIgnoreCase("t_patientreturn")
+				|| tableName.equalsIgnoreCase("t_facilityconsumption") || tableName.equalsIgnoreCase("t_indent")
+				|| tableName.equalsIgnoreCase("t_indentorder") || tableName.equalsIgnoreCase("t_indentissue")
+				|| tableName.equalsIgnoreCase("t_itemstockentry") || tableName.equalsIgnoreCase("t_itemstockexit")) {
+
+			query = " UPDATE  " + schemaName + "." + tableName + " SET " + preparedStatementSetter
+					+ " WHERE VanSerialNo = ? AND VanID = ? ";
+
+		} else {
+			query = " UPDATE  " + schemaName + "." + tableName + " SET " + preparedStatementSetter
+					+ " WHERE VanSerialNo = ? AND SyncFacilityID = ? ";
+		}
 
 		return query;
 	}
