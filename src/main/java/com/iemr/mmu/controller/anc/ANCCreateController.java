@@ -30,8 +30,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping(value = "/ANC", headers = "Authorization")
 public class ANCCreateController {
-	// temp t
-	// tesss
+	// test
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
 	private ANCServiceImpl ancServiceImpl;
@@ -114,7 +113,7 @@ public class ANCCreateController {
 
 		} catch (Exception e) {
 			logger.error("Error while saving doctor data:" + e);
-			response.setError(5000, "Unable to save data. " +e.getMessage());
+			response.setError(5000, "Unable to save data. " + e.getMessage());
 		}
 		return response.toString();
 	}
