@@ -30,9 +30,8 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping(value = "/ANC", headers = "Authorization")
 public class ANCCreateController {
-	// test
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-
+	// test
 	private ANCServiceImpl ancServiceImpl;
 
 	@Autowired
