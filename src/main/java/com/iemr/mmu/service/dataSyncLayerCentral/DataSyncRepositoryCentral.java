@@ -31,10 +31,28 @@ public class DataSyncRepositoryCentral {
 
 	// Data Upload Repository
 	public int checkRecordIsAlreadyPresentOrNot(String schemaName, String tableName, String vanSerialNo, String vanID,
-			String vanAutoIncColumnName) {
+			String vanAutoIncColumnName, int syncFacilityID) {
 		jdbcTemplate = getJdbcTemplate();
-		String query = " SELECT " + vanAutoIncColumnName + " FROM " + schemaName + "." + tableName
-				+ " WHERE VanSerialNo = " + vanSerialNo + " AND VanID = " + vanID;
+
+		String query;
+
+		if ((tableName.equalsIgnoreCase("t_patientissue") || tableName.equalsIgnoreCase("t_physicalstockentry")
+				|| tableName.equalsIgnoreCase("t_stockadjustment") || tableName.equalsIgnoreCase("t_saitemmapping")
+				|| tableName.equalsIgnoreCase("t_stocktransfer") || tableName.equalsIgnoreCase("t_patientreturn")
+				|| tableName.equalsIgnoreCase("t_facilityconsumption") || tableName.equalsIgnoreCase("t_indent")
+				|| tableName.equalsIgnoreCase("t_indentorder") || tableName.equalsIgnoreCase("t_indentissue")
+				|| tableName.equalsIgnoreCase("t_itemstockentry") || tableName.equalsIgnoreCase("t_itemstockexit"))
+				&& syncFacilityID > 0) {
+
+			query = " SELECT " + vanAutoIncColumnName + " FROM " + schemaName + "." + tableName
+					+ " WHERE VanSerialNo = " + vanSerialNo + " AND SyncFacilityID = " + syncFacilityID;
+		}
+
+		else {
+			query = " SELECT " + vanAutoIncColumnName + " FROM " + schemaName + "." + tableName
+					+ " WHERE VanSerialNo = " + vanSerialNo + " AND VanID = " + vanID;
+		}
+
 		List<Map<String, Object>> resultSet = jdbcTemplate.queryForList(query);
 		if (resultSet != null && resultSet.size() > 0)
 			return 1;

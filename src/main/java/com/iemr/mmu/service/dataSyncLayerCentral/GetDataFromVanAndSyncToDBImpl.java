@@ -49,6 +49,8 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 			String vanSerialNo;
 			String vanID;
 			int recordCheck;
+			int syncFacilityID = 0;
+
 			for (Map<String, Object> map : dataToBesync) {
 				pointer = 0;
 				recordCheck = 0;
@@ -61,9 +63,12 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 				map.replace("SyncedBy", syncUploadDataDigester.getSyncedBy());
 				map.replace("SyncedDate", String.valueOf(LocalDateTime.now()));
 
+				if (map.containsKey("SyncFacilityID"))
+					syncFacilityID = (int) map.get("SyncFacilityID");
+
 				recordCheck = dataSyncRepositoryCentral.checkRecordIsAlreadyPresentOrNot(
 						syncUploadDataDigester.getSchemaName(), syncUploadDataDigester.getTableName(), vanSerialNo,
-						vanID, syncUploadDataDigester.getVanAutoIncColumnName());
+						vanID, syncUploadDataDigester.getVanAutoIncColumnName(), syncFacilityID);
 
 				if (recordCheck == 0) {
 					objArr = new Object[map.size()];
@@ -95,7 +100,7 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 
 					objArr[pointer] = String.valueOf(vanSerialNo);
 
-					if (syncTableName.equalsIgnoreCase("t_patientissue")
+					if ((syncTableName.equalsIgnoreCase("t_patientissue")
 							|| syncTableName.equalsIgnoreCase("t_physicalstockentry")
 							|| syncTableName.equalsIgnoreCase("t_stockadjustment")
 							|| syncTableName.equalsIgnoreCase("t_saitemmapping")
@@ -106,7 +111,8 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 							|| syncTableName.equalsIgnoreCase("t_indentorder")
 							|| syncTableName.equalsIgnoreCase("t_indentissue")
 							|| syncTableName.equalsIgnoreCase("t_itemstockentry")
-							|| syncTableName.equalsIgnoreCase("t_itemstockexit")) {
+							|| syncTableName.equalsIgnoreCase("t_itemstockexit"))
+							&& map.containsKey("SyncFacilityID")) {
 
 						objArr[pointer + 1] = String.valueOf(map.get("SyncFacilityID"));
 					} else
@@ -250,11 +256,10 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 				|| tableName.equalsIgnoreCase("t_itemstockentry") || tableName.equalsIgnoreCase("t_itemstockexit")) {
 
 			query = " UPDATE  " + schemaName + "." + tableName + " SET " + preparedStatementSetter
-					+ " WHERE VanSerialNo = ? AND VanID = ? ";
-
+					+ " WHERE VanSerialNo = ? AND SyncFacilityID = ? ";
 		} else {
 			query = " UPDATE  " + schemaName + "." + tableName + " SET " + preparedStatementSetter
-					+ " WHERE VanSerialNo = ? AND SyncFacilityID = ? ";
+					+ " WHERE VanSerialNo = ? AND VanID = ? ";
 		}
 
 		return query;

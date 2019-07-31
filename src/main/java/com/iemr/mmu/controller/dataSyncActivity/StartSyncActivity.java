@@ -113,8 +113,7 @@ public class StartSyncActivity {
 					response.setError(5000, s);
 			} else {
 				response.setError(5000,
-						"vanID / providerServiceMapID or both are missing,"
-						+ " Kindly contact the administrator.");
+						"vanID / providerServiceMapID or both are missing," + " Kindly contact the administrator.");
 			}
 
 		} catch (Exception e) {
@@ -154,6 +153,31 @@ public class StartSyncActivity {
 				response.setResponse(s);
 			else
 				response.setError(5000, "Error while getting van details.");
+		} catch (Exception e) {
+			logger.error("Error while getting van details : " + e);
+			response.setError(e);
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin()
+	@ApiOperation(value = "call Central API To Generate BenID And import To Local", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/callCentralAPIToGenerateBenIDAndimportToLocal" }, method = { RequestMethod.POST })
+	public String callCentralAPIToGenerateBenIDAndimportToLocal(@RequestBody String requestOBJ,
+			@RequestHeader(value = "Authorization") String Authorization,
+			@RequestHeader(value = "ServerAuthorization") String ServerAuthorization) {
+		OutputResponse response = new OutputResponse();
+		try {
+			int i = downloadDataFromServerImpl.callCentralAPIToGenerateBenIDAndimportToLocal(requestOBJ, Authorization,
+					ServerAuthorization);
+			if (i == 0) {
+				response.setError(5000, "Error while generating UNIQUE_ID at central server");
+			} else {
+				if (i == 1) {
+					response.setError(5000, "UNIQUE_ID generated successfully, but error while importing to local");
+				} else if (i == 2)
+					response.setResponse("UNIQUE_ID generated and imported successfully");
+			}
 		} catch (Exception e) {
 			logger.error("Error while getting van details : " + e);
 			response.setError(e);

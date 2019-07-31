@@ -43,6 +43,14 @@ public class DownloadDataFromServerImpl implements DownloadDataFromServer {
 	@Autowired
 	private TempVanRepo tempVanRepo;
 
+	// ben gen URL
+	@Value("${benGenUrlCentral}")
+	private String benGenUrlCentral;
+
+	// ben import URL
+	@Value("${benImportUrlLocal}")
+	private String benImportUrlLocal;
+
 	public static int progressCounter = 0;
 	public static int totalCounter = 0;
 	public static StringBuilder failedMasters;
@@ -270,5 +278,48 @@ public class DownloadDataFromServerImpl implements DownloadDataFromServer {
 		} else {
 			throw new Exception("There are more than 1 van available. Kindly contact the administrator.");
 		}
+	}
+
+	public int callCentralAPIToGenerateBenIDAndimportToLocal(String requestOBJ, String Authorization,
+			String ServerAuthorization) throws Exception {
+		int i = 0;
+		// Rest template
+		RestTemplate restTemplate = new RestTemplate();
+
+		// Multivalue map for headers with content-type and auth key
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+		headers.add("Content-Type", "application/json");
+		headers.add("AUTHORIZATION", ServerAuthorization);
+		HttpEntity<Object> request = new HttpEntity<Object>(requestOBJ, headers);
+
+		// Call rest-template to call central API to generate UNIQUE ID at central
+		ResponseEntity<String> response = restTemplate.exchange(benGenUrlCentral, HttpMethod.POST, request,
+				String.class);
+
+		if (response != null && response.hasBody()) {
+			JSONObject obj = new JSONObject(response.getBody());
+			if (obj != null && obj.has("data") && obj.has("statusCode") && obj.getInt("statusCode") == 200) {
+				// Consume the response from API and call local identity api to save data
+				MultiValueMap<String, String> headers1 = new LinkedMultiValueMap<String, String>();
+				headers1.add("Content-Type", "application/json");
+				headers1.add("AUTHORIZATION", Authorization);
+				HttpEntity<Object> request1 = new HttpEntity<Object>(obj.get("data").toString(), headers1);
+
+				i = 1;
+				// Call rest-template to call central API to generate UNIQUE ID at central
+				ResponseEntity<String> response1 = restTemplate.exchange(benImportUrlLocal, HttpMethod.POST, request1,
+						String.class);
+				if (response1 != null && response1.hasBody()) {
+					JSONObject obj1 = new JSONObject(response1.getBody());
+					if (obj1 != null && obj1.has("data") && obj1.has("statusCode")
+							&& obj1.getInt("statusCode") == 200) {
+						i = 2;
+					}
+				}
+
+			}
+		}
+
+		return i;
 	}
 }

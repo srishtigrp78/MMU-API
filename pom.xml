@@ -41,8 +41,8 @@
 		<username>admin</username>
 		<password>ad@min123</password>
 
-		<hostname-test>10.208.122.32</hostname-test>
-		<port-test>9990</port-test>
+<!-- 		<hostname-test>10.208.122.32</hostname-test> -->
+<!-- 		<port-test>9990</port-test> -->
 		
 		<server-id>wildfly-${environment}</server-id>
 		<server-hostname>{hostname-${environment}}</server-hostname>
