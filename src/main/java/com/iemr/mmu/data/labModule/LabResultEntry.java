@@ -156,6 +156,10 @@ public class LabResultEntry {
 
 	@Expose
 	@Transient
+	private Integer[] fileIDs;
+
+	@Expose
+	@Transient
 	private Date date;
 
 	public Date getDate() {
@@ -510,6 +514,14 @@ public class LabResultEntry {
 
 	public void setVanID(Integer vanID) {
 		this.vanID = vanID;
+	}
+
+	public Integer[] getFileIDs() {
+		return fileIDs;
+	}
+
+	public void setFileIDs(Integer[] fileIDs) {
+		this.fileIDs = fileIDs;
 	}
 
 }

@@ -1,6 +1,14 @@
 package com.iemr.mmu.service.common.transaction;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
+import com.iemr.mmu.data.common.DocFileManager;
 import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.provider.ProviderServiceMappingRepo;
@@ -342,4 +351,58 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	// end of Fetch beneficiary previous visit details for case-record
+
+	// files upload/save start
+	public String saveFiles(List<DocFileManager> docFileManagerList) throws IOException {
+		String[] reponse;
+		String basePath = "E:/iEMR/temp/145";
+		String currDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+
+		File file = new File(basePath + "/" + currDate);
+
+		if (docFileManagerList.size() > 0) {
+			if (file.isDirectory()) {
+				reponse = createFile(docFileManagerList, basePath, currDate);
+			} else {
+				// create a new directory
+				Files.createDirectories(Paths.get(basePath + "/" + currDate));
+				reponse = createFile(docFileManagerList, basePath, currDate);
+			}
+		} else
+			reponse = new String[1];
+
+		return new Gson().toJson(reponse);
+	}
+
+	private String[] createFile(List<DocFileManager> docFileManagerList, String basePath, String currDate)
+			throws IOException {
+		String[] returnOBJ = new String[docFileManagerList.size()];
+		int i = 0;
+		for (DocFileManager dFM : docFileManagerList) {
+			if (dFM.getFileName() != null && dFM.getFileExtension() != null) {
+				dFM.setFileName(dFM.getFileName().replace("`", "").replace("'", "").replace("$", "").replace("\\", "")
+						.replace("/", "").replace("~", "").replace("`", "").replace("!", "").replace("@", "")
+						.replace("#", "").replace("$", "").replace("%", "").replace("^", "").replace("&", "")
+						.replace("*", "").replace("(", "").replace(")", "").replace("{", "").replace("}", "")
+						.replace("[", "").replace("]", "").replace("|", "").replace("\\", "").replace(":", "")
+						.replace(";", "").replace("-", "").replace("_", "").replace("+", "").replace("=", "")
+						.replace("\"", "").replace("'", ""));
+				FileOutputStream FOS = new FileOutputStream(basePath + "/" + currDate + "/" + dFM.getFileName()
+						+ System.currentTimeMillis() + dFM.getFileExtension());
+
+				FOS.write(Base64.getDecoder().decode(dFM.getFileContent()));
+
+				returnOBJ[i] = basePath + "/" + currDate + "/" + dFM.getFileName() + System.currentTimeMillis()
+						+ dFM.getFileExtension();
+
+				FOS.flush();
+				FOS.close();
+			}
+
+			i++;
+		}
+		return returnOBJ;
+	}
+
+	// End files upload/save start
 }

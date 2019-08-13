@@ -199,6 +199,16 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		}
 		beneficiaryVisitDetail.setVisitNo(benVisitCount);
 
+		// file id, comma seperated
+		String[] docIdArr = beneficiaryVisitDetail.getFiles();
+		StringBuilder sb = new StringBuilder();
+		if (docIdArr != null && docIdArr.length > 0) {
+			for (String s : docIdArr) {
+				sb.append(s + ",");
+			}
+		}
+		beneficiaryVisitDetail.setReportFilePath(sb.toString());
+
 		response = benVisitDetailRepo.save(beneficiaryVisitDetail);
 
 		if (response != null) {
