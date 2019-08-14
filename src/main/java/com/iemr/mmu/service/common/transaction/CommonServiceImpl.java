@@ -355,6 +355,7 @@ public class CommonServiceImpl implements CommonService {
 	// files upload/save start
 	public String saveFiles(List<DocFileManager> docFileManagerList) throws IOException {
 		String[] reponse;
+		// this will come from property file
 		String basePath = "E:/iEMR/temp/145";
 		String currDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 

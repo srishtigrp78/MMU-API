@@ -17,6 +17,7 @@ import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
+import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
@@ -28,6 +29,9 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
+
+	@Autowired
+	private BenVisitDetailRepo benVisitDetailRepo;
 
 	@Autowired
 	public void setBeneficiaryFlowStatusRepo(BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo) {
@@ -175,6 +179,19 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 				.updateANCAnthropometryDetails(anthropometryDetail);
 		Integer updateANCPhysicalVitalDetails = commonNurseServiceImpl
 				.updateANCPhysicalVitalDetails(physicalVitalDetail);
+
+		// add file/doc id
+		String[] docIdArr = ncdScreening.getFileIDs();
+		StringBuilder sb = new StringBuilder();
+		if (docIdArr != null && docIdArr.length > 0) {
+			for (String i : docIdArr) {
+				sb.append(i + ",");
+			}
+		}
+		// update file path in db
+		if (sb.length() > 0)
+			benVisitDetailRepo.updateFileID(sb.toString(), ncdScreening.getBeneficiaryRegID(),
+					ncdScreening.getVisitCode());
 
 		if (null != updateANCAnthropometryDetails && null != updateANCPhysicalVitalDetails
 				&& null != updateNCDScreeningDetails) {

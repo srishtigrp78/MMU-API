@@ -156,7 +156,7 @@ public class LabResultEntry {
 
 	@Expose
 	@Transient
-	private Integer[] fileIDs;
+	private String[] fileIDs;
 
 	@Expose
 	@Transient
@@ -241,6 +241,28 @@ public class LabResultEntry {
 					compDetails.put("testResultValue", obj.getTestResultValue());
 					compDetails.put("testResultUnit", obj.getTestResultUnit());
 					compDetails.put("testReportFilePath", obj.getTestReportFilePath());
+
+					// file id array from string
+					String fileIds[];
+					Map<String, String> fileMap;
+					ArrayList<Map<String, String>> fileList = new ArrayList<>();
+					if (obj.getTestReportFilePath() != null && obj.getTestReportFilePath().trim().length() > 0) {
+						String fileIdsTemp[] = obj.getTestReportFilePath().split(",");
+						fileIds = new String[fileIdsTemp.length];
+						for (String str : fileIdsTemp) {
+							if (str != null && str.trim().length() > 0) {
+								String[] tempArr = str.split("\\/");
+								fileMap = new HashMap<>();
+								fileMap.put("filePath", str);
+								fileMap.put("fileName", tempArr[tempArr.length - 1]);
+
+								fileList.add(fileMap);
+							}
+						}
+					}
+
+					compDetails.put("fileIDs", fileList);
+
 					compDetails.put("remarks", obj.getRemarks());
 
 					componentList = new ArrayList<>();
@@ -257,6 +279,28 @@ public class LabResultEntry {
 					compDetails.put("testResultValue", obj.getTestResultValue());
 					compDetails.put("testResultUnit", obj.getTestResultUnit());
 					compDetails.put("testReportFilePath", obj.getTestReportFilePath());
+
+					// file id array from string
+					String fileIds[];
+					Map<String, String> fileMap;
+					ArrayList<Map<String, String>> fileList = new ArrayList<>();
+					if (obj.getTestReportFilePath() != null && obj.getTestReportFilePath().trim().length() > 0) {
+						String fileIdsTemp[] = obj.getTestReportFilePath().split(",");
+						fileIds = new String[fileIdsTemp.length];
+						for (String str : fileIdsTemp) {
+							if (str != null && str.trim().length() > 0) {
+								String[] tempArr = str.split("\\/");
+								fileMap = new HashMap<>();
+								fileMap.put("filePath", str);
+								fileMap.put("fileName", tempArr[tempArr.length - 1]);
+
+								fileList.add(fileMap);
+							}
+						}
+					}
+
+					compDetails.put("fileIDs", fileList);
+
 					compDetails.put("remarks", obj.getRemarks());
 					componentList.add(compDetails);
 				}
@@ -516,11 +560,11 @@ public class LabResultEntry {
 		this.vanID = vanID;
 	}
 
-	public Integer[] getFileIDs() {
+	public String[] getFileIDs() {
 		return fileIDs;
 	}
 
-	public void setFileIDs(Integer[] fileIDs) {
+	public void setFileIDs(String[] fileIDs) {
 		this.fileIDs = fileIDs;
 	}
 

@@ -427,10 +427,10 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 				labResultEntry.setParkingPlaceID(wrapperLabResults.getParkingPlaceID());
 
 				// add file/doc id
-				Integer[] docIdArr = labResultEntry.getFileIDs();
+				String[] docIdArr = labResultEntry.getFileIDs();
 				StringBuilder sb = new StringBuilder();
 				if (docIdArr != null && docIdArr.length > 0) {
-					for (Integer i : docIdArr) {
+					for (String i : docIdArr) {
 						sb.append(i + ",");
 					}
 				}

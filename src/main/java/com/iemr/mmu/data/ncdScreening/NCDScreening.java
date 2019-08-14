@@ -142,6 +142,10 @@ public class NCDScreening {
 	@Transient
 	private Long benFlowID;
 
+	@Expose
+	@Transient
+	private String[] fileIDs;
+
 	public Long getID() {
 		return ID;
 	}
@@ -388,6 +392,14 @@ public class NCDScreening {
 
 	public void setVanID(Integer vanID) {
 		this.vanID = vanID;
+	}
+
+	public String[] getFileIDs() {
+		return fileIDs;
+	}
+
+	public void setFileIDs(String[] fileIDs) {
+		this.fileIDs = fileIDs;
 	}
 
 }

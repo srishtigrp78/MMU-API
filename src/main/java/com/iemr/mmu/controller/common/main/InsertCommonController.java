@@ -28,7 +28,7 @@ public class InsertCommonController {
 	private CommonServiceImpl commonServiceImpl;
 
 	@CrossOrigin()
-	@ApiOperation(value = "provides doctor worklist", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "save beneficairy documents locally", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/saveFiles" }, method = { RequestMethod.POST })
 	public String saveFiles(@RequestBody String request) {
 		OutputResponse response = new OutputResponse();
