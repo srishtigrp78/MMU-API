@@ -1,9 +1,15 @@
 package com.iemr.mmu.controller.common.main;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -744,5 +750,32 @@ public class FetchCommonController {
 			response.setError(5000, "Error while getting TC specialist future scheduled worklist");
 		}
 		return response.toString();
+	}
+
+	@ApiOperation(value = "download file from file system", consumes = "application/json", produces = "application/octet-stream")
+	@RequestMapping(value = { "/downloadFile" }, method = RequestMethod.POST)
+	public ResponseEntity<Resource> downloadFile(@RequestBody String file, HttpServletRequest request)
+			throws Exception {
+		String contentType = null;
+		Resource resource = null;
+		if (file != null) {
+			JSONObject obj = new JSONObject(file);
+			if (obj != null && obj.has("fileName") & obj.has("filePath"))
+				;
+			resource = commonServiceImpl.loadFileAsResource(obj.getString("fileName"), obj.getString("filePath"));
+
+			try {
+				contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+			} catch (Exception e) {
+			}
+			if (contentType == null)
+				contentType = "applicaiton/octet-stream";
+
+			return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
+					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment: filename =" + resource.getFilename())
+					.body(resource);
+		} else
+			throw new Exception("Invalid request...!");
+
 	}
 }

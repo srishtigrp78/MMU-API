@@ -243,12 +243,12 @@ public class LabResultEntry {
 					compDetails.put("testReportFilePath", obj.getTestReportFilePath());
 
 					// file id array from string
-					String fileIds[];
+					// String fileIds[];
 					Map<String, String> fileMap;
 					ArrayList<Map<String, String>> fileList = new ArrayList<>();
 					if (obj.getTestReportFilePath() != null && obj.getTestReportFilePath().trim().length() > 0) {
 						String fileIdsTemp[] = obj.getTestReportFilePath().split(",");
-						fileIds = new String[fileIdsTemp.length];
+						// fileIds = new String[fileIdsTemp.length];
 						for (String str : fileIdsTemp) {
 							if (str != null && str.trim().length() > 0) {
 								String[] tempArr = str.split("\\/");
@@ -281,12 +281,12 @@ public class LabResultEntry {
 					compDetails.put("testReportFilePath", obj.getTestReportFilePath());
 
 					// file id array from string
-					String fileIds[];
+					// String fileIds[];
 					Map<String, String> fileMap;
 					ArrayList<Map<String, String>> fileList = new ArrayList<>();
 					if (obj.getTestReportFilePath() != null && obj.getTestReportFilePath().trim().length() > 0) {
 						String fileIdsTemp[] = obj.getTestReportFilePath().split(",");
-						fileIds = new String[fileIdsTemp.length];
+						// fileIds = new String[fileIdsTemp.length];
 						for (String str : fileIdsTemp) {
 							if (str != null && str.trim().length() > 0) {
 								String[] tempArr = str.split("\\/");

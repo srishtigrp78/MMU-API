@@ -1,9 +1,11 @@
 package com.iemr.mmu.service.common.transaction;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -14,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
@@ -34,6 +38,12 @@ import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
 public class CommonServiceImpl implements CommonService {
+
+	// private final Path fileStorageLocation;
+	//
+	// public CommonServiceImpl() {
+	// this.fileStorageLocation = Paths.get
+	// }
 
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
 	private ANCServiceImpl ancServiceImpl;
@@ -353,15 +363,18 @@ public class CommonServiceImpl implements CommonService {
 	// end of Fetch beneficiary previous visit details for case-record
 
 	// files upload/save start
+	@Override
 	public String saveFiles(List<DocFileManager> docFileManagerList) throws IOException {
 		String[] reponse;
 		// this will come from property file
-		String basePath = "E:/iEMR/temp/145";
+		String basePath = "C:/apps/Neeraj/mmuDoc";
+
 		String currDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
-		File file = new File(basePath + "/" + currDate);
-
 		if (docFileManagerList.size() > 0) {
+			basePath += docFileManagerList.get(0).getVanID();
+			File file = new File(basePath + "/" + currDate);
+
 			if (file.isDirectory()) {
 				reponse = createFile(docFileManagerList, basePath, currDate);
 			} else {
@@ -403,6 +416,21 @@ public class CommonServiceImpl implements CommonService {
 			i++;
 		}
 		return returnOBJ;
+	}
+
+	// load file as resource
+	@Override
+	public Resource loadFileAsResource(String file, String path) throws IOException {
+		try {
+			Path filePath = Paths.get(path).normalize();
+			Resource resource = new UrlResource(filePath.toUri());
+			if (resource.exists())
+				return resource;
+			else
+				throw new FileNotFoundException();
+		} catch (Exception e) {
+			throw new FileNotFoundException();
+		}
 	}
 
 	// End files upload/save start

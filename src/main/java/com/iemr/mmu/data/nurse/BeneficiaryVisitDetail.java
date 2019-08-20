@@ -1,6 +1,8 @@
 package com.iemr.mmu.data.nurse;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -146,7 +148,11 @@ public class BeneficiaryVisitDetail {
 
 	@Expose
 	@Transient
-	private String[] files;
+	private String[] fileIDs;
+
+	@Expose
+	@Transient
+	private ArrayList<Map<String, String>> files;
 
 	public BeneficiaryVisitDetail() {
 		super();
@@ -490,11 +496,19 @@ public class BeneficiaryVisitDetail {
 		this.reservedForChange = reservedForChange;
 	}
 
-	public String[] getFiles() {
+	public String[] getFileIDs() {
+		return fileIDs;
+	}
+
+	public void setFileIDs(String[] fileIDs) {
+		this.fileIDs = fileIDs;
+	}
+
+	public ArrayList<Map<String, String>> getFiles() {
 		return files;
 	}
 
-	public void setFiles(String[] files) {
+	public void setFiles(ArrayList<Map<String, String>> files) {
 		this.files = files;
 	}
 
