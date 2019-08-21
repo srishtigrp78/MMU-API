@@ -408,8 +408,8 @@ public class CommonServiceImpl implements CommonService {
 				FOS.write(Base64.getDecoder().decode(dFM.getFileContent()));
 
 				responseMap.put("fileName", dFM.getFileName());
-				responseMap.put("filePath", basePath + "/" + currDate + "/" + dFM.getFileName()
-						+ System.currentTimeMillis() + dFM.getFileExtension());
+				responseMap.put("filePath", basePath + "/" + currDate + "/" + dFM.getFileName());
+//						+ System.currentTimeMillis() + dFM.getFileExtension());
 //				returnOBJ[i] = basePath + "/" + currDate + "/" + dFM.getFileName() + System.currentTimeMillis()
 //						+ dFM.getFileExtension();
 
