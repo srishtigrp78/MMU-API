@@ -365,7 +365,7 @@ public class CommonServiceImpl implements CommonService {
 	// files upload/save start
 	@Override
 	public String saveFiles(List<DocFileManager> docFileManagerList) throws IOException {
-		String[] reponse;
+		ArrayList<Map<String, String>> responseList = new ArrayList<>();
 		// this will come from property file
 		String basePath = "C:/apps/Neeraj/mmuDoc";
 
@@ -376,24 +376,25 @@ public class CommonServiceImpl implements CommonService {
 			File file = new File(basePath + "/" + currDate);
 
 			if (file.isDirectory()) {
-				reponse = createFile(docFileManagerList, basePath, currDate);
+				responseList = createFile(docFileManagerList, basePath, currDate);
 			} else {
 				// create a new directory
 				Files.createDirectories(Paths.get(basePath + "/" + currDate));
-				reponse = createFile(docFileManagerList, basePath, currDate);
+				responseList = createFile(docFileManagerList, basePath, currDate);
 			}
-		} else
-			reponse = new String[1];
+		}
 
-		return new Gson().toJson(reponse);
+		return new Gson().toJson(responseList);
 	}
 
-	private String[] createFile(List<DocFileManager> docFileManagerList, String basePath, String currDate)
-			throws IOException {
-		String[] returnOBJ = new String[docFileManagerList.size()];
-		int i = 0;
+	private ArrayList<Map<String, String>> createFile(List<DocFileManager> docFileManagerList, String basePath,
+			String currDate) throws IOException {
+		ArrayList<Map<String, String>> responseList = new ArrayList<>();
+		Map<String, String> responseMap;
+
 		for (DocFileManager dFM : docFileManagerList) {
 			if (dFM.getFileName() != null && dFM.getFileExtension() != null) {
+				responseMap = new HashMap<>();
 				dFM.setFileName(dFM.getFileName().replace("`", "").replace("'", "").replace("$", "").replace("\\", "")
 						.replace("/", "").replace("~", "").replace("`", "").replace("!", "").replace("@", "")
 						.replace("#", "").replace("$", "").replace("%", "").replace("^", "").replace("&", "")
@@ -406,16 +407,18 @@ public class CommonServiceImpl implements CommonService {
 
 				FOS.write(Base64.getDecoder().decode(dFM.getFileContent()));
 
-				returnOBJ[i] = basePath + "/" + currDate + "/" + dFM.getFileName() + System.currentTimeMillis()
-						+ dFM.getFileExtension();
+				responseMap.put("fileName", dFM.getFileName());
+				responseMap.put("filePath", basePath + "/" + currDate + "/" + dFM.getFileName()
+						+ System.currentTimeMillis() + dFM.getFileExtension());
+//				returnOBJ[i] = basePath + "/" + currDate + "/" + dFM.getFileName() + System.currentTimeMillis()
+//						+ dFM.getFileExtension();
 
 				FOS.flush();
 				FOS.close();
+				responseList.add(responseMap);
 			}
-
-			i++;
 		}
-		return returnOBJ;
+		return responseList;
 	}
 
 	// load file as resource
