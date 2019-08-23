@@ -402,8 +402,7 @@ public class CommonServiceImpl implements CommonService {
 						.replace("[", "").replace("]", "").replace("|", "").replace("\\", "").replace(":", "")
 						.replace(";", "").replace("-", "").replace("_", "").replace("+", "").replace("=", "")
 						.replace("\"", "").replace("'", ""));
-				FileOutputStream FOS = new FileOutputStream(basePath + "/" + currDate + "/" + dFM.getFileName()
-						+ System.currentTimeMillis() + dFM.getFileExtension());
+				FileOutputStream FOS = new FileOutputStream(basePath + "/" + currDate + "/" + dFM.getFileName());
 
 				FOS.write(Base64.getDecoder().decode(dFM.getFileContent()));
 
