@@ -1,12 +1,16 @@
 package com.iemr.mmu.controller.common.main;
 
+import java.io.File;
+import java.io.FileInputStream;
+
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +26,7 @@ import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonServiceImpl;
+import com.iemr.mmu.utils.MediaTypeUtils;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
@@ -37,6 +42,9 @@ public class FetchCommonController {
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private CommonServiceImpl commonServiceImpl;
+
+	@Autowired
+	private ServletContext servletContext;
 
 	@Autowired
 	public void setCommonServiceImpl(CommonServiceImpl commonServiceImpl) {
@@ -754,28 +762,52 @@ public class FetchCommonController {
 
 	@ApiOperation(value = "download file from file system", consumes = "application/json", produces = "application/octet-stream")
 	@RequestMapping(value = { "/downloadFile" }, method = RequestMethod.POST)
-	public ResponseEntity<Resource> downloadFile(@RequestBody String file, HttpServletRequest request)
+	public ResponseEntity<InputStreamResource> downloadFile(@RequestBody String requestOBJ, HttpServletRequest request)
 			throws Exception {
-		String contentType = null;
-		Resource resource = null;
-		if (file != null) {
-			JSONObject obj = new JSONObject(file);
-			if (obj != null && obj.has("fileName") & obj.has("filePath"))
-				;
-			resource = commonServiceImpl.loadFileAsResource(obj.getString("fileName"), obj.getString("filePath"));
+		JSONObject obj = new JSONObject(requestOBJ);
+		try {
+//		String contentType = null;
+//		Resource resource = null;
+//		if (file != null) {
+//			JSONObject obj = new JSONObject(file);
+//			if (obj != null && obj.has("fileName") & obj.has("filePath"))
+//				;
+//			resource = commonServiceImpl.loadFileAsResource(obj.getString("fileName"), obj.getString("filePath"));
+//
+////			try {
+////				contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+////			} catch (Exception e) {
+////			}
+//			if (contentType == null)
+//				contentType = "applicaiton/octet-stream";
+//
+//			return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
+//					.contentLength(resource.getFile().getTotalSpace())
+//					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment: filename =" + resource.getFile().getName())
+//					.body(resource);
+//		} else
+//			throw new Exception("Invalid request...!");
 
-			try {
-				contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-			} catch (Exception e) {
-			}
-			if (contentType == null)
-				contentType = "applicaiton/octet-stream";
+			MediaType mediaType = MediaTypeUtils.getMediaTypeForFileName(this.servletContext,
+					obj.getString("fileName"));
+			System.out.println("fileName: " + obj.getString("fileName"));
+			System.out.println("mediaType: " + mediaType);
 
-			return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
-					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment: filename =" + resource.getFilename())
+			File file = new File(obj.getString("filePath"));
+			InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+
+			return ResponseEntity.ok()
+					// Content-Disposition
+					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + obj.getString("fileName"))
+					// Content-Type
+					.contentType(mediaType)
+					// Contet-Length
+					.contentLength(file.length()) //
 					.body(resource);
-		} else
-			throw new Exception("Invalid request...!");
+		} catch (Exception e) {
+			logger.error("error while downloading file..." + obj.getString("fileName"));
+			throw new Exception("Error while downloading file. Please contact administrator..");
+		}
 
 	}
 }
