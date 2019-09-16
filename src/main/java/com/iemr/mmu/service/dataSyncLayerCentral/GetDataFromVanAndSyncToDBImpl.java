@@ -63,6 +63,44 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 				map.replace("SyncedBy", syncUploadDataDigester.getSyncedBy());
 				map.replace("SyncedDate", String.valueOf(LocalDateTime.now()));
 
+				// if same facilityID change processed flag to "P" else don't alter
+				if (syncUploadDataDigester.getFacilityID() != null) {
+					switch (syncTableName) {
+					case "t_indent": {
+						if (map.containsKey("FromFacilityID") && map.get("FromFacilityID") != null
+								&& Integer.parseInt(map.get("FromFacilityID").toString()) == syncUploadDataDigester
+										.getFacilityID())
+							map.replace("Processed", "P");
+					}
+					case "t_indentorder": {
+						if (map.containsKey("FromFacilityID") && map.get("FromFacilityID") != null
+								&& Integer.parseInt(map.get("FromFacilityID").toString()) == syncUploadDataDigester
+										.getFacilityID())
+							map.replace("Processed", "P");
+					}
+					case "t_indentissue": {
+						if (map.containsKey("ToFacilityID") && map.get("ToFacilityID") != null && Integer
+								.parseInt(map.get("ToFacilityID").toString()) == syncUploadDataDigester.getFacilityID())
+							map.replace("Processed", "P");
+					}
+					// here a change in rule, will compare with toFacilityID
+					case "t_stocktransfer": {
+						if (map.containsKey("TransferToFacilityID") && map.get("TransferToFacilityID") != null
+								&& Integer.parseInt(map.get("TransferToFacilityID")
+										.toString()) == syncUploadDataDigester.getFacilityID())
+							map.replace("Processed", "P");
+					}
+					case "t_itemstockentry": {
+						if (map.containsKey("FacilityID") && map.get("FacilityID") != null && Integer
+								.parseInt(map.get("FacilityID").toString()) == syncUploadDataDigester.getFacilityID())
+							map.replace("Processed", "P");
+					}
+					default:
+
+					}
+
+				}
+
 				if (map.containsKey("SyncFacilityID"))
 					syncFacilityID = (int) map.get("SyncFacilityID");
 
@@ -120,7 +158,7 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 
 					syncDataListUpdate.add(objArr);
 				}
-
+				// System.out.println("hello......");
 			}
 
 			int[] i = null;

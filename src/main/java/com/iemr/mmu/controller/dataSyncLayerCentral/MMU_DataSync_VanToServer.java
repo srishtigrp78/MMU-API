@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.iemr.mmu.data.syncActivity_syncLayer.SyncDownloadMaster;
+import com.iemr.mmu.data.syncActivity_syncLayer.SyncUploadDataDigester;
+import com.iemr.mmu.service.dataSyncLayerCentral.FetchDownloadDataImpl;
 import com.iemr.mmu.service.dataSyncLayerCentral.GetDataFromVanAndSyncToDBImpl;
 import com.iemr.mmu.service.dataSyncLayerCentral.GetMasterDataFromCentralForVanImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
@@ -34,6 +36,8 @@ public class MMU_DataSync_VanToServer {
 	private GetDataFromVanAndSyncToDBImpl getDataFromVanAndSyncToDBImpl;
 	@Autowired
 	private GetMasterDataFromCentralForVanImpl getMasterDataFromCentralForVanImpl;
+	@Autowired
+	private FetchDownloadDataImpl fetchDownloadDataImpl;
 
 	@CrossOrigin()
 	@ApiOperation(value = "sync data from van-to-server", consumes = "application/json", produces = "application/json")
@@ -72,6 +76,59 @@ public class MMU_DataSync_VanToServer {
 				response.setError(5000, "Invalid request");
 			}
 		} catch (Exception e) {
+			response.setError(e);
+		}
+		return response.toStringWithSerialization();
+	}
+
+	@CrossOrigin()
+	@ApiOperation(value = "download data from server-to-van Transactional", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/server-to-van-transactional" }, method = { RequestMethod.POST })
+	public String dataDownloadFromServerTransactional(@RequestBody SyncUploadDataDigester syncUploadDataDigester,
+			@RequestHeader(value = "Authorization") String Authorization) {
+		OutputResponse response = new OutputResponse();
+		try {
+			if (syncUploadDataDigester != null) {
+				String s = fetchDownloadDataImpl.getDownloadData(syncUploadDataDigester);
+				if (s != null)
+					response.setResponse(s);
+				else
+					response.setError(5000, "Error in data download for table " + syncUploadDataDigester.getSchemaName()
+							+ "." + syncUploadDataDigester.getTableName());
+			} else {
+				response.setError(5000, "Invalid request");
+			}
+		} catch (Exception e) {
+			logger.error(e + " - Error in data download for table " + syncUploadDataDigester.getSchemaName() + "."
+					+ syncUploadDataDigester.getTableName());
+			response.setError(e);
+		}
+		return response.toStringWithSerialization();
+	}
+
+	@CrossOrigin()
+	@ApiOperation(value = "update processed flag at central post successfull download ", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/updateProcessedFlagPostDownload" }, method = { RequestMethod.POST })
+	public String updateProcessedFlagPostDownload(@RequestBody SyncUploadDataDigester syncUploadDataDigester,
+			@RequestHeader(value = "Authorization") String Authorization) {
+		OutputResponse response = new OutputResponse();
+		try {
+			if (syncUploadDataDigester != null) {
+				int i = fetchDownloadDataImpl.updateProcessedFlagPostSuccessfullDownload(syncUploadDataDigester);
+				if (i > 0)
+					response.setResponse("success");
+				else
+					response.setError(5000,
+							"Error while updating flag. Please contact administrator "
+									+ syncUploadDataDigester.getSchemaName() + "."
+									+ syncUploadDataDigester.getTableName() + "." + syncUploadDataDigester.getIds());
+			} else {
+				response.setError(5000, "Invalid request");
+			}
+		} catch (Exception e) {
+			logger.error(e + " - Error while updating flag. Please contact administrator "
+					+ syncUploadDataDigester.getSchemaName() + "." + syncUploadDataDigester.getTableName() + "."
+					+ syncUploadDataDigester.getIds());
 			response.setError(e);
 		}
 		return response.toStringWithSerialization();

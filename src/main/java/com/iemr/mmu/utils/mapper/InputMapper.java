@@ -20,6 +20,7 @@ import com.iemr.mmu.utils.exception.IEMRException;
 @Service
 public class InputMapper {
 	static GsonBuilder builder;
+	static GsonBuilder builder1;
 	ExclusionStrategy strategy;
 	Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	// @Autowired
@@ -37,6 +38,16 @@ public class InputMapper {
 		if (builder == null) {
 			builder = new GsonBuilder();
 			builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+			// builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+			// builder.addDeserializationExclusionStrategy(strategy)
+		}
+	}
+
+	public InputMapper(int flag) {
+		if (builder1 == null) {
+			builder1 = new GsonBuilder();
+			builder1.setDateFormat("MMMM dd, yyyy HH:mm:ss");
+			// builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 			// builder.addDeserializationExclusionStrategy(strategy)
 		}
 	}
@@ -46,6 +57,10 @@ public class InputMapper {
 	 */
 	public static InputMapper gson() {
 		return new InputMapper();
+	}
+
+	public static InputMapper gson(int flag) {
+		return new InputMapper(flag);
 	}
 
 	/**
@@ -62,13 +77,16 @@ public class InputMapper {
 		return builder.create().fromJson(json, classOfT);
 	}
 
+	public <T> T fromJson(String json, Class<T> classOfT, int flag) throws IEMRException {
+		return builder1.create().fromJson(json, classOfT);
+	}
+
 	/**
 	 * @param json
-	 * @throws IEMRException
-	 *             This function will check for the following things and throws
-	 *             login exception if any one fails 1. Get the session details
-	 *             from the redis 2. IP address in request and the logged in IP
-	 *             address should be same.
+	 * @throws IEMRException This function will check for the following things and
+	 *                       throws login exception if any one fails 1. Get the
+	 *                       session details from the redis 2. IP address in request
+	 *                       and the logged in IP address should be same.
 	 */
 	// private void valildate(String json) throws IEMRException
 	// {

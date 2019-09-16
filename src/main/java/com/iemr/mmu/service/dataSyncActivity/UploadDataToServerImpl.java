@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.iemr.mmu.data.syncActivity_syncLayer.DataSyncGroups;
 import com.iemr.mmu.data.syncActivity_syncLayer.SyncUtilityClass;
+import com.iemr.mmu.repo.login.MasterVanRepo;
 import com.iemr.mmu.repo.syncActivity_syncLayer.DataSyncGroupsRepo;
 
 /***
@@ -50,6 +51,8 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	private DataSyncRepository dataSyncRepository;
 	@Autowired
 	private DataSyncGroupsRepo dataSyncGroupsRepo;
+	@Autowired
+	private MasterVanRepo masterVanRepo;
 
 	// batch size for data upload
 	// private static final int BATCH_SIZE = 30;
@@ -61,10 +64,10 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	 * @return
 	 */
 	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = { Exception.class })
-	public String getDataToSyncToServer(Integer groupID, String user, String Authorization) throws Exception {
+	public String getDataToSyncToServer(int vanID, int groupID, String user, String Authorization) throws Exception {
 
 		String syncData = null;
-		syncData = syncIntercepter(groupID, user, Authorization);
+		syncData = syncIntercepter(vanID, groupID, user, Authorization);
 
 		return syncData;
 	}
@@ -74,10 +77,10 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	 * @param Authorization
 	 * @return
 	 */
-	public String syncIntercepter(Integer groupID, String user, String Authorization) throws Exception {
+	public String syncIntercepter(int vanID, int groupID, String user, String Authorization) throws Exception {
 
 		// sync activity trigger
-		String serverAcknowledgement = startDataSync(groupID, user, Authorization);
+		String serverAcknowledgement = startDataSync(vanID, groupID, user, Authorization);
 
 		return serverAcknowledgement;
 	}
@@ -89,7 +92,7 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	 * @return
 	 */
 
-	private String startDataSync(Integer groupID, String user, String Authorization) throws Exception {
+	private String startDataSync(int vanID, Integer groupID, String user, String Authorization) throws Exception {
 		String serverAcknowledgement = null;
 		// fetch table-name, van-side-columns, server-side-columns
 		List<SyncUtilityClass> syncUtilityClassList = getVanAndServerColumns(groupID);
@@ -110,7 +113,7 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 					// get data for each batch
 					syncDataBatch = getBatchOfAskedSizeDataToSync(syncData, startIndex, BATCH_SIZE);
 					// for each batch sync data to central server
-					serverAcknowledgement = syncDataToServer(obj.getSchemaName(), obj.getTableName(),
+					serverAcknowledgement = syncDataToServer(vanID, obj.getSchemaName(), obj.getTableName(),
 							obj.getVanAutoIncColumnName(), obj.getServerColumnName(), syncDataBatch, user,
 							Authorization);
 					startIndex += BATCH_SIZE;
@@ -120,7 +123,7 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 					// get data for extra data from batch
 					syncDataBatch = getBatchOfAskedSizeDataToSync(syncData, startIndex, remainder);
 					// for extra data from batch sync data to central server
-					serverAcknowledgement = syncDataToServer(obj.getSchemaName(), obj.getTableName(),
+					serverAcknowledgement = syncDataToServer(vanID, obj.getSchemaName(), obj.getTableName(),
 							obj.getVanAutoIncColumnName(), obj.getServerColumnName(), syncDataBatch, user,
 							Authorization);
 				}
@@ -184,11 +187,13 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	 * @return
 	 */
 
-	public String syncDataToServer(String schemaName, String tableName, String vanAutoIncColumnName,
+	public String syncDataToServer(int vanID, String schemaName, String tableName, String vanAutoIncColumnName,
 			String serverColumns, List<Map<String, Object>> dataToBesync, String user, String Authorization)
 			throws Exception {
 
 		RestTemplate restTemplate = new RestTemplate();
+
+		Integer facilityID = masterVanRepo.getFacilityID(vanID);
 
 		// serialize null
 		GsonBuilder gsonBuilder = new GsonBuilder();
@@ -202,6 +207,8 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 		dataMap.put("serverColumns", serverColumns);
 		dataMap.put("syncData", dataToBesync);
 		dataMap.put("syncedBy", user);
+		if (facilityID != null)
+			dataMap.put("facilityID", facilityID);
 
 		String requestOBJ = gson.toJson(dataMap);
 

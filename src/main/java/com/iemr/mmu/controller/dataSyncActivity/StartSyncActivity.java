@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 import com.iemr.mmu.service.dataSyncActivity.DownloadDataFromServerImpl;
+import com.iemr.mmu.service.dataSyncActivity.DownloadDataFromServerTransactionalImpl;
 import com.iemr.mmu.service.dataSyncActivity.UploadDataToServerImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
 
@@ -38,6 +39,8 @@ public class StartSyncActivity {
 	private UploadDataToServerImpl uploadDataToServerImpl;
 	@Autowired
 	private DownloadDataFromServerImpl downloadDataFromServerImpl;
+	@Autowired
+	private DownloadDataFromServerTransactionalImpl downloadDataFromServerTransactionalImpl;
 
 	@CrossOrigin()
 	@ApiOperation(value = "start data sync from Van to Server", consumes = "application/json", produces = "application/json")
@@ -50,9 +53,9 @@ public class StartSyncActivity {
 			// System.out.println(LocalDateTime.now());
 			JSONObject obj = new JSONObject(requestOBJ);
 			if (obj != null && obj.has("groupID") && obj.get("groupID") != null && obj.has("user")
-					&& obj.get("user") != null) {
-				String s = uploadDataToServerImpl.getDataToSyncToServer(obj.getInt("groupID"), obj.getString("user"),
-						ServerAuthorization);
+					&& obj.get("user") != null && obj.has("vanID") && obj.get("vanID") != null) {
+				String s = uploadDataToServerImpl.getDataToSyncToServer(obj.getInt("vanID"), obj.getInt("groupID"),
+						obj.getString("user"), ServerAuthorization);
 				if (s != null)
 					response.setResponse(s);
 				else
@@ -184,4 +187,29 @@ public class StartSyncActivity {
 		}
 		return response.toString();
 	}
+
+	@CrossOrigin()
+	@ApiOperation(value = "call Central API To download transaction data To Local", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/downloadTransactionToLocal" }, method = { RequestMethod.POST })
+	public String downloadTransactionToLocal(@RequestBody String requestOBJ,
+			@RequestHeader(value = "ServerAuthorization") String ServerAuthorization) {
+		OutputResponse response = new OutputResponse();
+		try {
+			JSONObject obj = new JSONObject(requestOBJ);
+			if (obj != null && obj.has("vanID") && obj.get("vanID") != null) {
+				int i = downloadDataFromServerTransactionalImpl.downloadTransactionalData(obj.getInt("vanID"),
+						ServerAuthorization);
+
+				if (i > 0)
+					response.setResponse("Success");
+				else
+					response.setError(5000, "Issue in download. Please contact administrator");
+			}
+		} catch (Exception e) {
+			logger.error("Error while downloading inventory transaction data : " + e);
+			response.setError(e);
+		}
+		return response.toString();
+	}
+
 }

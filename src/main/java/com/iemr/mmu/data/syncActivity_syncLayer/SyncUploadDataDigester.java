@@ -9,7 +9,29 @@ public class SyncUploadDataDigester {
 	private String vanAutoIncColumnName;
 	private String serverColumns;
 	private String syncedBy;
+	private Integer facilityID;
+	// private Long vanSerialNo;
+	// private Integer syncFacilityID;
 	private List<Map<String, Object>> syncData;
+
+	private List<Long> ids;
+
+	public SyncUploadDataDigester() {
+	}
+
+	public SyncUploadDataDigester(String schemaName, String tableName, Integer facilityID) {
+		super();
+		this.schemaName = schemaName;
+		this.tableName = tableName;
+		this.facilityID = facilityID;
+	}
+
+	public SyncUploadDataDigester(String schemaName, String tableName, List<Long> ids) {
+		super();
+		this.schemaName = schemaName;
+		this.tableName = tableName;
+		this.ids = ids;
+	}
 
 	public String getSchemaName() {
 		return schemaName;
@@ -57,6 +79,22 @@ public class SyncUploadDataDigester {
 
 	public void setSyncedBy(String syncedBy) {
 		this.syncedBy = syncedBy;
+	}
+
+	public Integer getFacilityID() {
+		return facilityID;
+	}
+
+	public void setFacilityID(Integer facilityID) {
+		this.facilityID = facilityID;
+	}
+
+	public List<Long> getIds() {
+		return ids;
+	}
+
+	public void setIds(List<Long> ids) {
+		this.ids = ids;
 	}
 
 }
