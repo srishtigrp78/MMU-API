@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -37,13 +39,11 @@ import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
+@PropertySource("classpath:application.properties")
 public class CommonServiceImpl implements CommonService {
 
-	// private final Path fileStorageLocation;
-	//
-	// public CommonServiceImpl() {
-	// this.fileStorageLocation = Paths.get
-	// }
+	@Value("${fileBasePath}")
+	private String fileBasePath;
 
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
 	private ANCServiceImpl ancServiceImpl;
@@ -367,7 +367,8 @@ public class CommonServiceImpl implements CommonService {
 	public String saveFiles(List<DocFileManager> docFileManagerList) throws IOException {
 		ArrayList<Map<String, String>> responseList = new ArrayList<>();
 		// this will come from property file
-		String basePath = "C:/apps/Neeraj/mmuDoc";
+		// String basePath = "C:/apps/Neeraj/mmuDoc";
+		String basePath = fileBasePath;
 
 		String currDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
