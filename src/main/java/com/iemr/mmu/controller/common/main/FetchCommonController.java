@@ -769,7 +769,7 @@ public class FetchCommonController {
 			throws Exception {
 		JSONObject obj = new JSONObject(requestOBJ);
 		try {
-//		String contentType = null;
+//	/	String contentType = null;
 //		Resource resource = null;
 //		if (file != null) {
 //			JSONObject obj = new JSONObject(file);
