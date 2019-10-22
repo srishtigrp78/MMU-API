@@ -762,6 +762,7 @@ public class FetchCommonController {
 		return response.toString();
 	}
 
+	@CrossOrigin()
 	@ApiOperation(value = "download file from file system", consumes = "application/json", produces = "application/octet-stream")
 	@RequestMapping(value = { "/downloadFile" }, method = RequestMethod.POST)
 	public ResponseEntity<InputStreamResource> downloadFile(@RequestBody String requestOBJ, HttpServletRequest request)
