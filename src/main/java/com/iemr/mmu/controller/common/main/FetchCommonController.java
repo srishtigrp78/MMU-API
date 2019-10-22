@@ -2,6 +2,7 @@ package com.iemr.mmu.controller.common.main;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Collections;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -796,14 +798,20 @@ public class FetchCommonController {
 			File file = new File(obj.getString("filePath"));
 			InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 
-			return ResponseEntity.ok()
-					// Content-Disposition
-					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + obj.getString("fileName"))
-					// Content-Type
-					.contentType(mediaType)
-					// Contet-Length
-					.contentLength(file.length()) //
-					.body(resource);
+			String filename = obj.getString("fileName");
+			HttpHeaders headers = new HttpHeaders();
+			headers.setAccessControlExposeHeaders(Collections.singletonList("Content-Disposition"));
+			headers.set("Content-Disposition", "attachment; filename=" + filename);
+			return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+
+//			return ResponseEntity.ok()
+//					// Content-Disposition
+//					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + obj.getString("fileName"))
+//					// Content-Type
+//					.contentType(mediaType)
+//					// Contet-Length
+//					.contentLength(file.length()) //
+//					.body(resource);
 		} catch (Exception e) {
 			logger.error("error while downloading file..." + obj.getString("fileName"));
 			throw new Exception("Error while downloading file. Please contact administrator..");
