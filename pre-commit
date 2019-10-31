@@ -2,11 +2,11 @@
 echo "HOOK RUNNING"
 
 #Please enter Project name here
-ProjectName="HISSVC-Wards"
+ProjectName="Piramal-mmu-api"
 
-#mvn sonar:sonar  -Dsonar.projectKey=$ProjectName  -Dsonar.host.url=http://10.152.3.142:9000 -Dsonar.login=ee95ff25a556fb19dbfa90ea8b83643fc5b347f7 -Dsonar.java.binaries=src/main
+mvn sonar:sonar  -Dsonar.projectKey=$ProjectName  -Dsonar.host.url=http://10.152.3.142:9000 -Dsonar.login=ee95ff25a556fb19dbfa90ea8b83643fc5b347f7 -Dsonar.java.binaries=src/main
 echo "Waiting for SonarQube Analysis"
-#sleep 2m
+sleep 2m
 
 MY_MESSAGE=$(curl --request GET http://10.152.3.142:9000/api/qualitygates/project_status?projectKey=$ProjectName)
 echo "SonarQube Analysis completed"
