@@ -30,10 +30,10 @@ echo $MY_MESSAGE
    echo "http://10.152.3.142:9000/dashboard?id="$ProjectName "***"
    exit 1; 
 
-  #elif [[ $MY_MESSAGE == *'"errors":[{"msg":"Component key'* ]] 
-   #then
-   #echo "***Project name not found in SonarQube server. Please provide Valid Project Name.***"  
-   #exit 1;        
+  elif [[ $MY_MESSAGE == *'"errors":[{"msg":"Component key'* ]] 
+   then
+   echo "***Project name not found in SonarQube server. Please provide Valid Project Name.***"  
+   exit 0;        
    
   else
   echo "server error" 
