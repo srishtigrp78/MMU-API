@@ -1,5 +1,6 @@
 package com.iemr.mmu.utils;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
@@ -18,6 +19,10 @@ import com.iemr.mmu.utils.validator.Validator;
 
 @Configuration
 public class IEMRApplBeans {
+
+	private @Value("${spring.redis.host}") String redisHost;
+	private @Value("${spring.redis.port}") int redisPort;
+
 	@Bean
 	public KMService getOpenKMService() {
 		KMService kmService = new OpenKMServiceImpl();
@@ -70,14 +75,14 @@ public class IEMRApplBeans {
 
 	@Bean
 	public LettuceConnectionFactory connectionFactory() {
-		return new LettuceConnectionFactory();
+		return new LettuceConnectionFactory(redisHost, redisPort);
 	}
 	// }
 
-	@Bean
-	public RedisHttpSessionConfiguration redisSession() {
-		return new RedisHttpSessionConfiguration();
-	}
+//	@Bean
+//	public RedisHttpSessionConfiguration redisSession() {
+//		return new RedisHttpSessionConfiguration();
+//	}
 
 	// @Bean
 	// public HTTPRequestInterceptor myInterceptor()
