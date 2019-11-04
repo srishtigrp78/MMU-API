@@ -1,0 +1,43 @@
+#!/bin/sh
+echo "HOOK RUNNING"
+
+#Please enter Project name here
+ProjectName="Piramal-mmu-api"
+
+mvn sonar:sonar  -Dsonar.projectKey=$ProjectName  -Dsonar.host.url=http://10.152.3.142:9000 -Dsonar.login=ee95ff25a556fb19dbfa90ea8b83643fc5b347f7 -Dsonar.java.binaries=src/main
+echo "Waiting for SonarQube Analysis"
+sleep 2m
+
+MY_MESSAGE=$(curl --request GET http://10.152.3.142:9000/api/qualitygates/project_status?projectKey=$ProjectName)
+echo "SonarQube Analysis completed"
+echo $ProjectName
+echo $MY_MESSAGE
+
+ if [[ $MY_MESSAGE == *'"projectStatus":{"status":"OK","conditions"'* ]]; then
+ echo
+ echo
+  echo "***Quality Gate Succeeded***" 
+  echo
+  echo
+   exit 0; 
+   
+   elif [[ $MY_MESSAGE == *'ERROR'* ]] 
+   then
+   echo 
+   echo 
+   echo "***Quality gate failed. Please check and fix the issues by reviewing the same."
+   echo "You can browse below Project URL to check new Bugs"
+   echo "http://10.152.3.142:9000/dashboard?id="$ProjectName "***"
+   exit 1; 
+
+  elif [[ $MY_MESSAGE == *'"errors":[{"msg":"Component key'* ]] 
+   then
+   echo "***Project name not found in SonarQube server. Please provide Valid Project Name.***"  
+   exit 0;        
+   
+  else
+  echo "server error" 
+  exit 1;
+ fi
+
+echo "HOOK completed"
