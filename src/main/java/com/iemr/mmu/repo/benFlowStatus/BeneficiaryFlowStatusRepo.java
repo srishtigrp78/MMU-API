@@ -248,4 +248,6 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	public int updateBenFlowAfterTCSpcialistDoneForCanceScreening(@Param("benFlowID") Long benFlowID,
 			@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 
+	@Query(" SELECT benName, Date(dOB), genderID FROM BeneficiaryFlowStatus WHERE benFlowID = :benFlowID ")
+	public ArrayList<Object[]> getBenDataForCareStream(@Param("benFlowID") Long benFlowID);
 }

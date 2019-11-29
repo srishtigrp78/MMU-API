@@ -73,8 +73,18 @@ public class CSCarestreamServiceImpl implements CSCarestreamService {
 			else
 				gender = "T";
 
-			requestOBJ.put("firstName", objArr[0]);
-			requestOBJ.put("LastName", objArr[1]);
+//			requestOBJ.put("firstName", objArr[0]);
+//			requestOBJ.put("LastName", objArr[1]);
+
+			String[] arr = String.valueOf(objArr[0]).split(" ", 2);
+
+			if (arr != null && arr.length > 0)
+				requestOBJ.put("firstName", arr[0]);
+
+			if (arr != null && arr.length >= 2) {
+				requestOBJ.put("LastName", arr[1]);
+			}
+
 			requestOBJ.put("patientID", benRegID);
 			requestOBJ.put("acc", benVisitID);
 			requestOBJ.put("gender", gender);
