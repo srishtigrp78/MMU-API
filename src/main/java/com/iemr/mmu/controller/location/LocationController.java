@@ -87,6 +87,8 @@ public class LocationController {
 		logger.info("districtBlockMaster" + response.toString());
 		return response.toString();
 	}
+	
+	
 
 	@ApiOperation(value = "Village master from block id", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/get/villageMasterFromBlockID/{blockID}", method = RequestMethod.GET)
@@ -188,6 +190,36 @@ public class LocationController {
 			e.printStackTrace();
 			response.setError(5000, "Error while getting location data");
 		}
+		return response.toString();
+	}
+	
+/*New code-fetch villages*/
+	
+	/*@RequestMapping(value = "/get/VillageStateMaster", method = RequestMethod.GET)
+	public String getVillageStateMaster(@PathVariable("stateID") Integer stateID) {
+		
+		response = new OutputResponse();
+		String s = locationServiceImpl.getVillageStateList(stateID);
+		if (s != null)
+			response.setResponse(s);
+		else
+			response.setError(5000, "Error while getting district blocks");
+		
+		return response.toString();
+	}*/
+	
+	/*New code-fetch districts and taluks */
+	@CrossOrigin()
+	@RequestMapping(value = "/get/DistrictTalukMaster/{districtBranchID}", method = RequestMethod.GET)
+	public String getDistrictTalukMaster(@PathVariable("districtBranchID") Integer districtBranchID) {
+		
+		response = new OutputResponse();
+		String s = locationServiceImpl.getDistrictTalukList(districtBranchID);
+		if (s != null)
+			response.setResponse(s);
+		else
+			response.setError(5000, "Error while getting district blocks");
+		
 		return response.toString();
 	}
 }

@@ -13,4 +13,7 @@ public interface LocationService {
 	public String getParkingPlaceList(Integer districtBlockID);
 
 	public String getServicePointPlaceList(Integer parkingPlaceID);
-}
+
+	public String getDistrictTalukList(Integer districtBranchID);
+
+	}
