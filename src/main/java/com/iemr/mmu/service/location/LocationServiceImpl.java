@@ -231,6 +231,15 @@ public class LocationServiceImpl implements LocationService {
 				stateList.add(states);
 			}
 		}
+		// Village list for servicepoint
+		ArrayList<ServicePointVillageMapping> villageList = new ArrayList<>();
+		List<Object[]> villageMasterList = servicePointVillageMappingRepo.getServicePointVillages(spID);
+		if (villageMasterList != null && villageMasterList.size() > 0) {
+			for (Object[] objArr : villageMasterList) {
+				ServicePointVillageMapping villages = new ServicePointVillageMapping((Integer) objArr[0], (String) objArr[1]);
+				villageList.add(villages);
+			}
+		}
 		// village masters from service point
 		// List<Object[]> servicePointVillageList =
 		// servicePointVillageMappingRepo.getServicePointVillages(spID);
@@ -248,6 +257,7 @@ public class LocationServiceImpl implements LocationService {
 
 		resMap.put("otherLoc", getDefaultLocDetails(objList));
 		resMap.put("stateMaster", stateList);
+		resMap.put("villageList", villageList);
 		// resMap.put("villageMaster", villageList);
 
 		return new Gson().toJson(resMap);
@@ -277,4 +287,59 @@ public class LocationServiceImpl implements LocationService {
 		return returnObj;
 
 	}
+	
+	/*New code-fetching villages*/
+	/*@Override
+	public String getVillageStateList(Integer stateID) {
+		
+		ArrayList<Object[]> villageStateMasterList = districtBranchMasterRepo.getVillageStateList(stateID);
+		ArrayList<Object> villageList = new ArrayList<>();
+		if (villageStateMasterList != null && villageStateMasterList.size() > 0) {
+			for (Object[] objArr : villageStateMasterList) {
+				DistrictBranchMapping districtBranch = new DistrictBranchMapping((Integer) objArr[0], (String) objArr[1]);
+				villageList.add(districtBranch);
+			}
+		}
+		
+			return new Gson().toJson(villageList);
+		
+		
+	}*/
+	/*New code-fetching district and Taluk*/
+	@Override
+	public String getDistrictTalukList(Integer districtBranchID) {
+		
+		ArrayList<Object[]> districtTalukeMasterList = districtBranchMasterRepo.getDistrictTalukList(districtBranchID);
+		/*ArrayList<Object> distTalukList = new ArrayList<>();
+		if (districtTalukeMasterList != null && districtTalukeMasterList.size() > 0) {
+			for (Object[] objArr : districtTalukeMasterList) {
+				DistrictBranchMapping districtBranch = new DistrictBranchMapping((String) objArr[0], (Integer) objArr[1]);
+				distTalukList.add(districtBranch);
+				DistrictBlock districtblock = new DistrictBlock((String) objArr[2], (Integer) objArr[3]);
+				distTalukList.add(districtblock);
+				
+			}
+		}*/
+		
+			//return new Gson().toJson(distTalukList);
+		//Map<String, Object> resMap = new HashMap<>();
+		ArrayList<Object> distTalukList = new ArrayList<>();
+		Map<String, Object> distTalukMap= new HashMap<String, Object>();
+		if (districtTalukeMasterList != null && districtTalukeMasterList.size() > 0) {
+			for (Object[] objArr : districtTalukeMasterList) {
+				distTalukMap.put("blockName", objArr[0]);
+				distTalukMap.put("blockID", objArr[1]);
+				distTalukMap.put("districtName", objArr[2]);
+			distTalukMap.put("districtID", objArr[3]);
+				distTalukList.add(distTalukMap);
+			//resMap.put("districtTalukDetails",distTalukMap);
+			}
+			
+		}
+		//return new Gson().toJson(resMap);
+		return new Gson().toJson(distTalukList);
+		
+		
+	}
+	
 }

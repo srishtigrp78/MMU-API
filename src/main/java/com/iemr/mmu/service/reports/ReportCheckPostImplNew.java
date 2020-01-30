@@ -281,7 +281,7 @@ public class ReportCheckPostImplNew implements ReportCheckPost {
 			
 			
 			ArrayList<Object[]> RS2 = reportMasterRepo.get_report_SP_LabTestresult(fromDate, toDate, psmID, vanID);
-			System.out.println("From Rs " + RS1.size());
+			
 			if (RS2 != null && RS2.size() > 0) {
 //				if (RS1.size() > 0) {
 					for (Report_ModifiedAnc rmANC : report_PatientVisitInfo)

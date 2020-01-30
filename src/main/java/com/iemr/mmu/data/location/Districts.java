@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
@@ -50,6 +51,13 @@ public class Districts {
 	@JoinColumn(unique = true, insertable = false, name = "StateID", updatable = false)
 	@JsonIgnore
 	private States states;
+	/*@Expose
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(updatable = false, insertable = false, name = "stateID")
+	private States states;
+	@Expose
+	@Transient
+	String stateName;*/
 
 	@Expose
 	@ManyToOne(fetch = FetchType.LAZY)

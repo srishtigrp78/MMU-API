@@ -5,12 +5,16 @@ import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.iemr.mmu.utils.mapper.OutputMapper;
@@ -53,7 +57,19 @@ public class DistrictBranchMapping {
 	private String modifiedBy;
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
-
+	/*@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(unique = true, insertable = false, name = "blockID", updatable = false)
+	@JsonIgnore
+	private DistrictBlock districtblock;*/
+	
+	@Expose
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(updatable = false, insertable = false, name = "blockID")
+	private DistrictBlock districtBlock;
+	@Expose
+	@Transient
+	String blockName;
+	
 	@Transient
 	private OutputMapper outputMapper = new OutputMapper();
 
@@ -64,6 +80,11 @@ public class DistrictBranchMapping {
 		this.districtBranchID = DistrictBranchID;
 		this.villageName = VillageName;
 	}
+	/*public DistrictBranchMapping(String blockName,Integer blockID ) {
+		this.blockName=blockName;
+		this.blockID=blockID;
+	}*/
+	
 
 	public static String getVillageList(ArrayList<Object[]> resList) {
 		DistrictBranchMapping villOBJ = null;

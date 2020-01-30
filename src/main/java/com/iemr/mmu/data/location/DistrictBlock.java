@@ -4,12 +4,16 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
 import com.iemr.mmu.utils.mapper.OutputMapper;
 
@@ -43,7 +47,17 @@ public class DistrictBlock {
 	private String modifiedBy;
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
-
+  
+	
+	@Expose
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(updatable = false, insertable = false, name = "districtID")
+	private Districts districts;
+	@Expose
+	@Transient
+	String districtName;
+	
+	
 	@Transient
 	private OutputMapper outputMapper = new OutputMapper();
 
@@ -54,6 +68,10 @@ public class DistrictBlock {
 		this.blockID = BlockID;
 		this.blockName = BlockName;
 	}
+/*	public DistrictBlock( String districtName,Integer districtID) {
+		this.districtName = districtName;
+		this.districtID = districtID;
+	}*/
 
 	public Integer getBlockID() {
 		return this.blockID;

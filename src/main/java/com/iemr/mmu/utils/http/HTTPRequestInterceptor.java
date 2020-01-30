@@ -70,7 +70,7 @@ public class HTTPRequestInterceptor extends HandlerInterceptorAdapter {
 					status = false;
 					break;
 				default:
-					String remoteAddress = request.getHeader("X-FORWARDED-FOR");
+				  String remoteAddress = request.getHeader("X-FORWARDED-FOR");
 					if (remoteAddress == null || remoteAddress.trim().length() == 0) {
 						remoteAddress = request.getRemoteAddr();
 					}
