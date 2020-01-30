@@ -1,5 +1,10 @@
 package com.iemr.mmu.service.reports;
 
+/*public class ReportCheckPostImplNew {
+
+}*/
+/*package com.iemr.mmu.service.reports;
+*/
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
@@ -27,7 +32,7 @@ import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.mapper.OutputMapper;
 
 @Service
-public class ReportCheckPostImpl implements ReportCheckPost {
+public class ReportCheckPostImplNew implements ReportCheckPost {
 
 	@Autowired
 	private ReportMasterRepo reportMasterRepo;
@@ -76,7 +81,10 @@ public class ReportCheckPostImpl implements ReportCheckPost {
 						request.getProviderServiceMapID());
 				break;
 
-			
+			case 11:
+				reportData = report_PatientVisitInfo(request.getFromDate(), request.getToDate(), request.getVanID(),
+						request.getProviderServiceMapID());
+				break;
 
 			default:// default statement
 			}
@@ -210,6 +218,239 @@ public class ReportCheckPostImpl implements ReportCheckPost {
 		return OutputMapper.gson().toJson(report_ANCHighRisk);
 	}
 
-	
-	
+	private String report_PatientVisitInfo(Timestamp fromDate, Timestamp toDate, Integer vanID, Integer psmID)
+			throws Exception {
+		ArrayList<Report_ModifiedAnc> report_PatientVisitInfo = new ArrayList<>();
+		ArrayList<Report_ModifiedAnc> temp_reportRS = new ArrayList<>();
+		ArrayList<Report_ModifiedAnc> temp_reportRS1 = new ArrayList<>();
+		ArrayList<Object[]> FinalRS = new ArrayList<>();
+
+		// Gson gson = new GsonBuilder().serializeNulls().create();
+
+		if (fromDate == null || toDate == null || vanID == null || psmID == null)
+			throw new Exception("Some parameter/parameters is/are missing.");
+		else {
+			if (vanID == 0)
+				vanID = null;
+			int sno=1;
+			ArrayList<Object[]> RS = reportMasterRepo.get_report_SP_PatientVisitInfo(fromDate, toDate, psmID, vanID);
+			if (RS != null && RS.size() > 0) {
+				report_PatientVisitInfo = Report_ModifiedAnc.getReport_modifiedAnc(RS);
+				for (Report_ModifiedAnc rmANC : report_PatientVisitInfo)
+				{
+					rmANC.setSno(sno);
+					sno++;
+				}
+                
+			}
+            
+			ArrayList<Object[]> RS1 = reportMasterRepo.get_report_SP_PhyVitals(fromDate, toDate, psmID, vanID);
+			
+			
+			 
+			if (RS1 != null && RS1.size() > 0) {
+				if (RS.size() > 0) {
+					for (Object[] rs1 : RS1) {
+						for (Report_ModifiedAnc rmANC : report_PatientVisitInfo) {
+							if (rs1[3].equals(rmANC.getVisitCode()) && rs1[0].equals(rmANC.getBeneficiaryRegId())) {
+								rmANC.setTemperature((BigDecimal) rs1[4]);
+								rmANC.setPulseRate((Short) rs1[5]);
+								rmANC.setRespiratoryRate((Short) rs1[6]);
+								rmANC.setSystolicBP_1stReading((Short) rs1[7]);
+								rmANC.setDiastolicBP_1stReading((Short) rs1[8]);
+								rmANC.setAverageSystolicBP((Short) rs1[9]);
+								rmANC.setAverageDiastolicBP((Short) rs1[10]);
+								rmANC.setBloodGlucose_Random((Short) rs1[14]);
+								rmANC.setWeight_Kg((BigDecimal) rs1[17]);
+								rmANC.setHeight_cm((BigDecimal) rs1[18]);
+								rmANC.setBmi((BigDecimal) rs1[19]);
+								rmANC.setClinicalObservation((String) rs1[20]);
+								rmANC.setOtherSymptoms((String) rs1[21]);
+								rmANC.setTobaccoUseStatus((String) rs1[22]);
+								rmANC.setAlcoholIntakeStatus((String) rs1[23]);
+								rmANC.setChiefComplaint((String) rs1[24]);
+								break;
+							}
+						}
+					}
+				} else {
+					report_PatientVisitInfo.addAll(Report_ModifiedAnc.getReport_modifiedAnc3(RS1));
+				}
+
+			}
+			
+			
+			ArrayList<Object[]> RS2 = reportMasterRepo.get_report_SP_LabTestresult(fromDate, toDate, psmID, vanID);
+			System.out.println("From Rs " + RS1.size());
+			if (RS2 != null && RS2.size() > 0) {
+//				if (RS1.size() > 0) {
+					for (Report_ModifiedAnc rmANC : report_PatientVisitInfo)
+					 {
+						for (Object[] rs2 : RS2)
+						 {
+							if (rs2[2].equals(rmANC.getVisitCode()) && rs2[0].equals(rmANC.getBeneficiaryRegId())) {
+								
+								if(rs2[5].equals("Urobilinogen"))
+								{
+									rmANC.setUrobilinogen((String) rs2[6]);
+								}
+								if(rs2[5].equals("Bilirubin"))
+								{
+									rmANC.setBilirubin((String) rs2[6]);
+								}
+								if(rs2[5].equals("Ketone bodies"))
+								{
+									rmANC.setKetoneBodies((String) rs2[6]);
+								}
+								if(rs2[5].equals("Glucose"))
+								{
+									rmANC.setGlucose((String) rs2[6]);
+								}
+								if(rs2[5].equals("Creatinine"))
+								{
+									rmANC.setCreatinine((String) rs2[6]);
+								}
+								if(rs2[5].equals("Albumin"))
+								{
+									rmANC.setAlbumin((String) rs2[6]);
+								}
+								if(rs2[5].equals("Calcium"))
+								{
+									rmANC.setCalcium((String) rs2[6]);
+								}
+								if(rs2[5].equals("Protein"))
+								{
+									rmANC.setProtein((String) rs2[6]);
+								}
+								if(rs2[5].equals("Leukocyte"))
+								{
+									rmANC.setLeukocyte((String) rs2[6]);
+								}
+								if(rs2[5].equals("Malaria")||rs2[5].equals("Dengue"))
+								{
+									rmANC.setRDTforMalaria_Dengue((String) rs2[6]);
+								}
+								if(rs2[5].equals("Random blood glucose"))
+								{
+									rmANC.setRBS((String) rs2[6]);
+								}
+								if(rs2[5].equals("Haemoglobin"))
+								{
+									rmANC.setHB((String) rs2[6]);
+								}
+								if(rs2[5].equals("Hemoglobin A1c"))
+								{
+									rmANC.setHba1c((String) rs2[6]);
+								}
+								if(rs2[5].equals("Urine Albumin"))
+								{
+									rmANC.setUrineAlbumin((String) rs2[6]);
+								}
+								if(rs2[5].equals("Urine sugar analysis set"))
+								{
+									rmANC.setUrineSugar((String) rs2[6]);
+								}
+								if(rs2[5].equals("Urine pregnancy test"))
+								{
+									rmANC.setUrinePregnancyTest((String) rs2[6]);
+								}
+							
+								
+								
+								break;
+							}
+						}
+					}
+//				} else {
+//					report_PatientVisitInfo.addAll(Report_ModifiedAnc.getReport_modifiedAnc1(RS2));
+//				}
+
+			}
+			
+			ArrayList<Object[]> RS3 = reportMasterRepo.get_report_SP_PrescribedDrug(fromDate, toDate, psmID, vanID);
+			
+			if (RS3 != null && RS3.size() > 0) {
+//				if (RS2.size() > 0) {
+					for (Report_ModifiedAnc rmANC : report_PatientVisitInfo)
+					 {
+						for (Object[] rs3 : RS3)
+						 {
+							int count=1;
+							if (rs3[3].equals(rmANC.getVisitCode()) && rs3[0].equals(rmANC.getBeneficiaryRegId()) && count<11) {
+								rmANC.setReferredToInstituteID((Integer) rs3[10]);
+								rmANC.setReferredToInstitute((String) rs3[11]);
+								rmANC.setDiagnosisProvided((String) rs3[9]);
+								switch(count)
+								{
+								case 1:
+									rmANC.setDrug_1((String) rs3[4]);
+									rmANC.setDrug_prescribed1((Integer) rs3[6]);
+									break;
+									
+								case 2:
+									rmANC.setDrug_2((String) rs3[4]);
+									rmANC.setDrug_prescribed2((Integer) rs3[6]);
+									break;
+									
+								case 3:
+									rmANC.setDrug_3((String) rs3[4]);
+									rmANC.setDrug_prescribed3((Integer) rs3[6]);	
+									break;
+									
+								case 4:
+									rmANC.setDrug_4((String) rs3[4]);
+									rmANC.setDrug_prescribed4((Integer) rs3[6]);
+									break;
+									
+								case 5:
+									rmANC.setDrug_5((String) rs3[4]);
+									rmANC.setDrug_prescribed5((Integer) rs3[6]);
+									break;
+									
+								case 6:
+									rmANC.setDrug_6((String) rs3[4]);
+									rmANC.setDrug_prescribed6((Integer) rs3[6]);
+									break;
+									
+								case 7:
+									rmANC.setDrug_7((String) rs3[4]);
+									rmANC.setDrug_prescribed7((Integer) rs3[6]);	
+									break;
+									
+								case 8:
+									rmANC.setDrug_8((String) rs3[4]);
+									rmANC.setDrug_prescribed8((Integer) rs3[6]);
+									break;
+									
+								case 9:
+									rmANC.setDrug_9((String) rs3[4]);
+									rmANC.setDrug_prescribed9((Integer) rs3[6]);
+									break;
+									
+								case 10:
+									rmANC.setDrug_10((String) rs3[4]);
+									rmANC.setDrug_prescribed10((Integer) rs3[6]);	
+									break;
+									
+								default :	
+									
+								}
+								count++;
+								
+								break;
+							}
+						}
+					}
+//				} else {
+//					report_PatientVisitInfo.addAll(Report_ModifiedAnc.getReport_modifiedAnc2(RS3));
+//				}
+			}
+			
+
+
+		
+
+			return OutputMapper.gson().toJson(report_PatientVisitInfo);
+		}
+	}
 }

@@ -37,8 +37,33 @@ public interface ReportMasterRepo extends CrudRepository<ReportMaster, Integer> 
 	@Query(value = " CALL db_reporting.SP_ANC(:fromDate, :toDate, :psmID, :vanID) ", nativeQuery = true)
 	ArrayList<Object[]> get_report_SP_ANC(@Param("fromDate") Timestamp fromDate, @Param("toDate") Timestamp toDate,
 			@Param("psmID") Integer psmID, @Param("vanID") Integer vanID);
+	
+//	@Query(value = " CALL db_reporting.SP_PatientVisitInfo(:fromDate, :toDate, :psmID, :vanID) ", nativeQuery = true)
+//	ArrayList<Object[]> get_report_SP_ANC(@Param("fromDate") Timestamp fromDate, @Param("toDate") Timestamp toDate,
+//			@Param("psmID") Integer psmID, @Param("vanID") Integer vanID);
 
 	@Query(value = " CALL db_reporting.SP_ANCHighRisk(:fromDate, :toDate, :psmID, :vanID) ", nativeQuery = true)
 	ArrayList<Object[]> get_report_SP_ANCHighRisk(@Param("fromDate") Timestamp fromDate,
 			@Param("toDate") Timestamp toDate, @Param("psmID") Integer psmID, @Param("vanID") Integer vanID);
+	
+	
+	  @Query(value =" CALL db_reporting.SP_PatientVisitInfo_SPARSHA(:fromDate, :toDate, :psmID, :vanID) ", nativeQuery= true)
+	  ArrayList<Object[]> get_report_SP_PatientVisitInfo(@Param("fromDate") Timestamp fromDate,
+		     @Param("toDate") Timestamp toDate, @Param("psmID") Integer psmID, @Param("vanID") Integer vanID);
+	  
+	  @Query(value =" CALL db_reporting.SP_LabTestresult_SPARSHA(:fromDate, :toDate, :psmID, :vanID) ", nativeQuery= true)
+	  ArrayList<Object[]> get_report_SP_LabTestresult(@Param("fromDate") Timestamp fromDate,
+		     @Param("toDate") Timestamp toDate, @Param("psmID") Integer psmID, @Param("vanID") Integer vanID);
+	 
+	  @Query(value =" CALL db_reporting.SP_PrescribedDrug_SPARSHA(:fromDate, :toDate, :psmID, :vanID) ", nativeQuery= true)
+	  ArrayList<Object[]> get_report_SP_PrescribedDrug(@Param("fromDate") Timestamp fromDate,
+		     @Param("toDate") Timestamp toDate, @Param("psmID") Integer psmID, @Param("vanID") Integer vanID);
+	  
+	  @Query(value =" CALL db_reporting.SP_PhyVitals_SPARSHA(:fromDate, :toDate, :psmID, :vanID) ", nativeQuery= true)
+	  ArrayList<Object[]> get_report_SP_PhyVitals(@Param("fromDate") Timestamp fromDate,
+		     @Param("toDate") Timestamp toDate, @Param("psmID") Integer psmID, @Param("vanID") Integer vanID);
+	  
+	  
+	  
+	  
 }

@@ -57,6 +57,20 @@ public class Report_ANC {
 	private String ServiceName;
 
 	private Timestamp CreatedDate;
+	
+	private String CreatedBy;
+	
+	private String Religion;
+	@Expose
+	private String Community;
+	@Expose
+	private String MartialStatus;
+	@Expose
+	private String IncomeStatus;
+	@Expose
+	private String Occupation;
+	
+	
 
 	public Report_ANC() {
 
@@ -97,6 +111,7 @@ public class Report_ANC {
 		this.ServiceName = serviceName;
 		this.CreatedDate = createdDate;
 		this.VisitOrRevisit = visit_revisit;
+	
 	}
 
 	public static ArrayList<Report_ANC> getReport_ANC(ArrayList<Object[]> objArr) {

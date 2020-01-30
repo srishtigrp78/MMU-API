@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.iemr.mmu.controller.registrar.master.RegistrarMasterController;
 import com.iemr.mmu.service.reports.ReportCheckPostImpl;
+import com.iemr.mmu.service.reports.ReportCheckPostImplNew;
 import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
@@ -43,6 +44,31 @@ public class ReportGateway {
 		}
 		return response.toStringWithSerialization();
 	}
+	
+	
+		@Autowired
+		private ReportCheckPostImplNew reportCheckPostImplNew;
+
+		@CrossOrigin()
+		@ApiOperation(value = "", consumes = "application/json", produces = "application/json")
+		@RequestMapping(value = { "/getReportNew" }, method = { RequestMethod.POST })
+		public String getReportByReportID1(@RequestBody String requestOBJ) {
+			OutputResponse response = new OutputResponse();
+
+			try {
+				if (requestOBJ != null)
+					response.setResponse(reportCheckPostImplNew.reportHandler(requestOBJ));
+				else
+					response.setError(5000, "Invalid request");
+
+			} catch (Exception e) {
+				logger.error("Error occurred while fetching report : " + e);
+				response.setError(5000, "Error occurred while fetching report is : " + e);
+			}
+			return response.toStringWithSerialization();
+		}
+	
+	
 
 	@CrossOrigin()
 	@ApiOperation(value = "Get Report Master", consumes = "application/json", produces = "application/json")
@@ -65,4 +91,6 @@ public class ReportGateway {
 		}
 		return response.toString();
 	}
+	
+	
 }
