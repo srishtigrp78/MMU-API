@@ -20,7 +20,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>     
-		<build.timestamp>2020-03-25 17:17:22.990128</build.timestamp>
+		<build.timestamp>${maven.build.timestamp}</build.timestamp>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>		
 		<java.version>1.8</java.version>
 		<m2e.apt.activation>jdt_apt</m2e.apt.activation>
