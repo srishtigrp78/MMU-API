@@ -124,6 +124,10 @@ public class CancerDiagnosis {
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
+	
+	@Expose
+	@Column(name = "revisitdate")
+	private Timestamp revisitDate;
 
 	public CancerDiagnosis() {
 		super();
@@ -132,7 +136,8 @@ public class CancerDiagnosis {
 
 	public CancerDiagnosis(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			String provisionalDiagnosisPrimaryDoctor, String provisionalDiagnosisOncologist, String remarks,
-			Integer referredToInstituteID, String referredToInstituteName, String refrredToAdditionalService) {
+			Integer referredToInstituteID, String referredToInstituteName, String refrredToAdditionalService
+			, Timestamp revisitDate) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -144,6 +149,7 @@ public class CancerDiagnosis {
 		this.referredToInstituteID = referredToInstituteID;
 		this.referredToInstituteName = referredToInstituteName;
 		this.refrredToAdditionalService = refrredToAdditionalService;
+		this.revisitDate = revisitDate;
 	}
 
 	public Long getID() {
@@ -216,6 +222,15 @@ public class CancerDiagnosis {
 
 	public void setRefrredToAdditionalService(String refrredToAdditionalService) {
 		this.refrredToAdditionalService = refrredToAdditionalService;
+	}
+	
+
+	public Timestamp getRevisitDate() {
+		return revisitDate;
+	}
+
+	public void setRevisitDate(Timestamp revisitDate) {
+		this.revisitDate = revisitDate;
 	}
 
 	public Boolean getDeleted() {
@@ -353,5 +368,6 @@ public class CancerDiagnosis {
 	public void setVanID(Integer vanID) {
 		this.vanID = vanID;
 	}
+	
 
 }

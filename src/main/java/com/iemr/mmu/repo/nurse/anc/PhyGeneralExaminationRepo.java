@@ -32,6 +32,7 @@ public interface PhyGeneralExaminationRepo extends CrudRepository<PhyGeneralExam
 			+ " typeOfDangerSign =:typeOfDangerSign, pallor=:pallor, jaundice=:jaundice, "
 			+ "cyanosis=:cyanosis, clubbing=:clubbing, lymphadenopathy=:lymphadenopathy, lymphnodesInvolved=:lymphnodesInvolved, "
 			+ "typeOfLymphadenopathy=:typeOfLymphadenopathy, edema=:edema, extentOfEdema=:extentOfEdema, edemaType=:edemaType,"
+			+ "quickening=:quickening, foetalMovements=:foetalMovements,"
 			+ " modifiedBy=:modifiedBy, processed=:processed where beneficiaryRegID=:benRegID and visitCode = :visitCode ")
 	public int updatePhyGeneralExamination(@Param("consciousness") String consciousness,
 			@Param("coherence") String coherence,
@@ -51,6 +52,8 @@ public interface PhyGeneralExaminationRepo extends CrudRepository<PhyGeneralExam
 			@Param("edema") String edema,
 			@Param("extentOfEdema") String extentOfEdema,
 			@Param("edemaType") String edemaType,
+			@Param("quickening") String quickening,
+			@Param("foetalMovements") String foetalMovements,
 			@Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed,
 			@Param("benRegID") Long benRegID,
