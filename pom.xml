@@ -20,9 +20,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<!--<build.timestamp>2020-03-25 17:17:22.990128</build.timestamp>
-        <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>-->
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>        
 		<java.version>1.8</java.version>
 
 		<m2e.apt.activation>jdt_apt</m2e.apt.activation>
@@ -359,19 +357,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
-			<!--<plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.6</version>
-                <configuration>
-                    <webResources>
-                        <resource>
-                            <filtering>true</filtering>
-                            <directory>src/packaging/</directory>
-                        </resource>
-                    </webResources>
-                </configuration>
-            </plugin>-->
+			</plugin>			
 		</plugins>
 	</build>
 	<dependencyManagement>
