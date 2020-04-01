@@ -542,12 +542,12 @@ public class TestCommonServices {
 				Matchers.anyShort(), Matchers.anyShort(), Matchers.anyString(), Matchers.anyString(),
 				Matchers.anyString(), Matchers.anyString(), Matchers.anyLong(), Matchers.anyLong())).thenReturn(1);
 
-		when(phyGeneralExaminationRepoMock.updatePhyGeneralExamination(Matchers.anyVararg(), Matchers.anyString(),
-				Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(),
-				Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(),
-				Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(),
-				Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(),
-				Matchers.anyString(), Matchers.anyString(), Matchers.anyLong(), Matchers.anyLong())).thenReturn(1);
+//		when(phyGeneralExaminationRepoMock.updatePhyGeneralExamination(Matchers.anyVararg(), Matchers.anyString(),
+//				Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(),
+//				Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(),
+//				Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(),
+//				Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(),
+//				Matchers.anyString(), Matchers.anyString(), Matchers.anyLong(), Matchers.anyLong())).thenReturn(1);
 
 		when(phyHeadToToeExaminationRepoMock.updatePhyHeadToToeExamination(Matchers.anyString(), Matchers.anyString(),
 				Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(),

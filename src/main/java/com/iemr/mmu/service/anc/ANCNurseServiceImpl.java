@@ -364,7 +364,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 					obstetricExamination.getFetalMovements(), obstetricExamination.getFetalHeartSounds(),
 					obstetricExamination.getFetalHeartRate_BeatsPerMinute(),
 					obstetricExamination.getFetalPositionOrLie(), obstetricExamination.getFetalPresentation(),
-					obstetricExamination.getAbdominalScars(), obstetricExamination.getModifiedBy(), processed,
+					obstetricExamination.getAbdominalScars(), obstetricExamination.getModifiedBy(),
+					obstetricExamination.getSfh() ,processed,
 					obstetricExamination.getBeneficiaryRegID(), obstetricExamination.getVisitCode());
 		}
 		return r;
