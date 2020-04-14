@@ -576,8 +576,10 @@ public Long saveBenReferDetails(JsonObject obj) throws IEMRException {
 			} else {
 				processed = "N";
 			}
+			if(referDetails.getReferredToInstituteID() != null ||
+					referDetails.getReferredToInstituteName() != null || referDetails.getRevisitDate()!= null) {
 			benReferDetailsRepo.updateReferredInstituteName(referDetails.getReferredToInstituteID(),
-					referDetails.getReferredToInstituteName(),referDetails.getRevisitDate(), (Long) obj[0], processed);
+					referDetails.getReferredToInstituteName(),referDetails.getRevisitDate(), (Long) obj[0], processed);}
 		}
 
 		if (referDetails.getRefrredToAdditionalServiceList() != null
