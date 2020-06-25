@@ -1,5 +1,6 @@
 package com.iemr.mmu.repo.doctor;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -38,12 +39,13 @@ public interface CancerDiagnosisRepo extends CrudRepository<CancerDiagnosis, Lon
 	@Modifying
 	@Query(" update CancerDiagnosis set provisionalDiagnosisPrimaryDoctor=:provisionalDiagnosisPrimaryDoctor, remarks=:remarks, "
 			+ "referredToInstituteID=:referredToInstituteID, refrredToAdditionalService=:refrredToAdditionalService, "
-			+ "modifiedBy=:modifiedBy, processed=:processed "
+			+ "revisitDate=:revisitDate, modifiedBy=:modifiedBy, processed=:processed "
 			+ "WHERE beneficiaryRegID =:beneficiaryRegID AND visitCode =:visitCode")
 	public int updateCancerDiagnosisDetailsByDoctor(@Param("provisionalDiagnosisPrimaryDoctor") String provisionalDiagnosisPrimaryDoctor,
 			@Param("remarks") String remarks,
 			@Param("referredToInstituteID") Integer referredToInstituteID,
 			@Param("refrredToAdditionalService") String refrredToAdditionalService,
+			@Param("revisitDate") Timestamp revisitDate,
 			@Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed,
 			@Param("beneficiaryRegID") Long beneficiaryRegID, 

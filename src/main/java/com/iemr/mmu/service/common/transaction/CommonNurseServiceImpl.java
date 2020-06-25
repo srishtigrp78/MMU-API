@@ -2196,7 +2196,8 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					generalExamination.getClubbing(), generalExamination.getLymphadenopathy(),
 					generalExamination.getLymphnodesInvolved(), generalExamination.getTypeOfLymphadenopathy(),
 					generalExamination.getEdema(), generalExamination.getExtentOfEdema(),
-					generalExamination.getEdemaType(), generalExamination.getModifiedBy(), processed,
+					generalExamination.getEdemaType(),generalExamination.getQuickening(),generalExamination.getFoetalMovements(),
+					generalExamination.getModifiedBy(), processed,
 					generalExamination.getBeneficiaryRegID(), generalExamination.getVisitCode());
 		}
 		return response;

@@ -113,6 +113,14 @@ public class PhyGeneralExamination {
 	private String edemaType;
 	
 	@Expose
+	@Column(name = "Quickening")
+	private String quickening;
+	
+	@Expose
+	@Column(name = "Foetal_movements")
+	private String foetalMovements;
+
+	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
 
@@ -450,6 +458,21 @@ public class PhyGeneralExamination {
 
 	public void setVisitCode(Long visitCode) {
 		this.visitCode = visitCode;
+	}
+	public String getQuickening() {
+		return quickening;
+	}
+
+	public void setQuickening(String quickening) {
+		this.quickening = quickening;
+	}
+
+	public String getFoetalMovements() {
+		return foetalMovements;
+	}
+
+	public void setFoetalMovements(String foetalMovements) {
+		this.foetalMovements = foetalMovements;
 	}
 	
 }

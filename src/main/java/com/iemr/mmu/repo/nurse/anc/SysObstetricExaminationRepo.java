@@ -28,7 +28,7 @@ public interface SysObstetricExaminationRepo extends CrudRepository<SysObstetric
 	@Query("update SysObstetricExamination set fundalHeight=:fundalHeight, fHAndPOA_Status=:fHAndPOA_Status, fHAndPOA_Interpretation=:fHAndPOA_Interpretation, "
 			+ "fetalMovements=:fetalMovements, fetalHeartSounds=:fetalHeartSounds, fetalHeartRate_BeatsPerMinute=:fetalHeartRate_BeatsPerMinute, "
 			+ "fetalPositionOrLie=:fetalPositionOrLie, fetalPresentation=:fetalPresentation, abdominalScars=:abdominalScars , modifiedBy=:modifiedBy, "
-			+ "processed=:processed where beneficiaryRegID=:benRegID and visitCode = :visitCode ")
+			+ "sfh=:sfh, processed=:processed where beneficiaryRegID=:benRegID and visitCode = :visitCode ")
 	public int updateSysObstetricExamination(@Param("fundalHeight") String fundalHeight,
 			@Param("fHAndPOA_Status") String fHAndPOA_Status,
 			@Param("fHAndPOA_Interpretation") String fHAndPOA_Interpretation,
@@ -39,6 +39,7 @@ public interface SysObstetricExaminationRepo extends CrudRepository<SysObstetric
 			@Param("fetalPresentation") String fetalPresentation,
 			@Param("abdominalScars") String abdominalScars,
 			@Param("modifiedBy") String modifiedBy,
+			@Param("sfh") Double sfh,
 			@Param("processed") String processed,
 			@Param("benRegID") Long benRegID,
 			@Param("visitCode") Long visitCode);

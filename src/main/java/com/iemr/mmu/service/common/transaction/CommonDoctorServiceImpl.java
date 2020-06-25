@@ -375,7 +375,8 @@ public class CommonDoctorServiceImpl {
 
 	}
 
-	public Long saveBenReferDetails(JsonObject obj) throws IEMRException {
+
+public Long saveBenReferDetails(JsonObject obj) throws IEMRException {
 		Long ID = null;
 		BenReferDetails referDetails = InputMapper.gson().fromJson(obj, BenReferDetails.class);
 		List<BenReferDetails> referDetailsList = new ArrayList<BenReferDetails>();
@@ -404,12 +405,13 @@ public class CommonDoctorServiceImpl {
 						referDetailsTemp.setReferredToInstituteID(referDetails.getReferredToInstituteID());
 						referDetailsTemp.setReferredToInstituteName(referDetails.getReferredToInstituteName());
 					}
-
+                    if (referDetails.getRevisitDate() != null)
+						referDetailsTemp.setRevisitDate(referDetails.getRevisitDate()); 
 					referDetailsList.add(referDetailsTemp);
 				}
 			}
 		} else {
-			if (referDetails.getReferredToInstituteName() != null)
+			if (referDetails.getReferredToInstituteName() != null || referDetails.getRevisitDate() != null)
 				referDetailsList.add(referDetails);
 		}
 
@@ -574,8 +576,10 @@ public class CommonDoctorServiceImpl {
 			} else {
 				processed = "N";
 			}
+			if(referDetails.getReferredToInstituteID() != null ||
+					referDetails.getReferredToInstituteName() != null || referDetails.getRevisitDate()!= null) {
 			benReferDetailsRepo.updateReferredInstituteName(referDetails.getReferredToInstituteID(),
-					referDetails.getReferredToInstituteName(), (Long) obj[0], processed);
+					referDetails.getReferredToInstituteName(),referDetails.getRevisitDate(), (Long) obj[0], processed);}
 		}
 
 		if (referDetails.getRefrredToAdditionalServiceList() != null
@@ -593,15 +597,18 @@ public class CommonDoctorServiceImpl {
 						referDetailsTemp.setReferredToInstituteID(referDetails.getReferredToInstituteID());
 						referDetailsTemp.setReferredToInstituteName(referDetails.getReferredToInstituteName());
 					}
-
 					referDetailsTemp.setServiceID(sm.getServiceID());
 					referDetailsTemp.setServiceName(sm.getServiceName());
+					
+				    if (referDetails.getRevisitDate() != null)
+				                        referDetailsTemp.setRevisitDate(referDetails.getRevisitDate());
 
+					
 					referDetailsList.add(referDetailsTemp);
 				}
 			}
 		} else {
-			if (referDetails.getReferredToInstituteName() != null)
+			if (referDetails.getReferredToInstituteName() != null || referDetails.getRevisitDate() != null)
 				referDetailsList.add(referDetails);
 		}
 

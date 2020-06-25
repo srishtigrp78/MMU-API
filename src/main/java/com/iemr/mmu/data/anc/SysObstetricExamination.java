@@ -333,4 +333,15 @@ public class SysObstetricExamination {
 		this.visitCode = visitCode;
 	}
 	
+	@Expose
+	@Column(name = "sfh")
+	private Double sfh;
+
+	public Double getSfh() {
+		return sfh;
+	}
+
+	public void setSfh(Double sfh) {
+		this.sfh = sfh;
+	}
 }
