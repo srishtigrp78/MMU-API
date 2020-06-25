@@ -79,6 +79,9 @@ import com.iemr.mmu.repo.masterrepo.anc.PregDurationRepo;
 import com.iemr.mmu.repo.masterrepo.anc.PregOutcomeRepo;
 import com.iemr.mmu.repo.masterrepo.anc.ServiceMasterRepo;
 import com.iemr.mmu.repo.masterrepo.anc.SurgeryTypesRepo;
+import com.iemr.mmu.repo.masterrepo.covid19.CovidContactHistoryMasterRepo;
+import com.iemr.mmu.repo.masterrepo.covid19.CovidRecommnedationMasterRepo;
+import com.iemr.mmu.repo.masterrepo.covid19.CovidSymptomsMasterRepo;
 import com.iemr.mmu.repo.masterrepo.doctor.InstituteRepo;
 import com.iemr.mmu.repo.masterrepo.doctor.ItemFormMasterRepo;
 import com.iemr.mmu.repo.masterrepo.doctor.RouteOfAdminRepo;
@@ -138,6 +141,12 @@ public class ANCMasterDataServiceImpl {
 	private NCDCareTypeRepo ncdCareTypeRepo;
 
 	private ProcedureRepo procedureRepo;
+	@Autowired
+	private CovidSymptomsMasterRepo covidSymptomsMasterRepo;
+	@Autowired
+	private CovidContactHistoryMasterRepo covidContactHistoryMasterRepo;
+	@Autowired
+	private CovidRecommnedationMasterRepo covidRecommnedationMasterRepo;
 
 	// private TempMasterDrugRepo tempMasterDrugRepo;
 
@@ -556,7 +565,11 @@ public class ANCMasterDataServiceImpl {
 
 		resMap.put("procedures", ProcedureData.getProcedures(procedures));
 		resMap.put("vaccineMasterData", OptionalVaccinations.getOptionalVaccinations(optionalVaccinations));
-
+		if (visitCategoryID == 8 || visitCategoryID == 10) {
+			resMap.put("covidSymptomsMaster", covidSymptomsMasterRepo.findByDeleted(false));
+			resMap.put("covidContactHistoryMaster", covidContactHistoryMasterRepo.findByDeleted(false));
+			resMap.put("covidRecommendationMaster", covidRecommnedationMasterRepo.findByDeleted(false));
+		}
 		return new Gson().toJson(resMap);
 	}
 
