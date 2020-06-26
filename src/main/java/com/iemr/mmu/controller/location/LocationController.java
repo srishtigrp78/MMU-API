@@ -44,6 +44,33 @@ public class LocationController {
 		logger.info("stateMaster" + response.toString());
 		return response.toString();
 	}
+	@ApiOperation(value = "country master for beneficiary", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/get/countryMaster", method = RequestMethod.GET)
+	public String getCountryMaster() {
+		logger.info("get country master ...");
+		response = new OutputResponse();
+		String s = locationServiceImpl.getCountryList();
+		if (s != null)
+			response.setResponse(s);
+		else
+			response.setError(5000, "Error while getting country");
+		// logger.info("country list" + response.toString());
+		return response.toString();
+	}
+
+	@ApiOperation(value = "country city master for beneficiary", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/get/countryCityMaster/{countryID}/", method = RequestMethod.GET)
+	public String getCountryCityMaster(@PathVariable("countryID") Integer countryID) {
+		logger.info("get country citymaster ...");
+		response = new OutputResponse();
+		String s = locationServiceImpl.getCountryCityList(countryID);
+		if (s != null)
+			response.setResponse(s);
+		else
+			response.setError(5000, "Error while getting country city");
+		// logger.info("country list" + response.toString());
+		return response.toString();
+	}
 
 	@Deprecated
 	@ApiOperation(value = "Zone master for beneficiary", consumes = "application/json", produces = "application/json")
