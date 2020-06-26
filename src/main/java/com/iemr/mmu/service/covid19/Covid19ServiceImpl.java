@@ -1,5 +1,6 @@
 package com.iemr.mmu.service.covid19;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.BenAllergyHistory;
 import com.iemr.mmu.data.anc.BenChildDevelopmentHistory;
@@ -26,6 +28,7 @@ import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.nurse.CommonUtilityClass;
+import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.repo.nurse.covid19.Covid19BenFeedbackRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
@@ -566,5 +569,520 @@ public class Covid19ServiceImpl implements Covid19Service {
 
 		return rs;
 	}
+	/**
+	 * Update Services
+	 */
+
+	/**
+	 * 
+	 * @param requestOBJ
+	 * @return success or failure flag for General OPD History updating by Doctor
+	 */
+	@Transactional(rollbackFor = Exception.class)
+	public int updateBenHistoryDetails(JsonObject historyOBJ) throws Exception {
+		int pastHistorySuccessFlag = 0;
+		int comrbidSuccessFlag = 0;
+		int medicationSuccessFlag = 0;
+		int personalHistorySuccessFlag = 0;
+		int allergyHistorySuccessFlag = 0;
+		int familyHistorySuccessFlag = 0;
+		int menstrualHistorySuccessFlag = 0;
+		int obstetricSuccessFlag = 0;
+		int childVaccineSuccessFlag = 0;
+		int childFeedingSuccessFlag = 0;
+		int perinatalHistorySuccessFlag = 0;
+		int developmentHistorySuccessFlag = 0;
+		int immunizationSuccessFlag = 0;
+
+		// Update Past History
+		if (historyOBJ != null && historyOBJ.has("pastHistory") && !historyOBJ.get("pastHistory").isJsonNull()) {
+			BenMedHistory benMedHistory = InputMapper.gson().fromJson(historyOBJ.get("pastHistory"),
+					BenMedHistory.class);
+			pastHistorySuccessFlag = commonNurseServiceImpl.updateBenPastHistoryDetails(benMedHistory);
+
+		} else {
+			pastHistorySuccessFlag = 1;
+		}
+
+		// Update Comorbidity/concurrent Conditions
+		if (historyOBJ != null && historyOBJ.has("comorbidConditions")
+				&& !historyOBJ.get("comorbidConditions").isJsonNull()) {
+			WrapperComorbidCondDetails wrapperComorbidCondDetails = InputMapper.gson()
+					.fromJson(historyOBJ.get("comorbidConditions"), WrapperComorbidCondDetails.class);
+			comrbidSuccessFlag = commonNurseServiceImpl.updateBenComorbidConditions(wrapperComorbidCondDetails);
+		} else {
+			comrbidSuccessFlag = 1;
+		}
+
+		// Update Medication History
+		if (historyOBJ != null && historyOBJ.has("medicationHistory")
+				&& !historyOBJ.get("medicationHistory").isJsonNull()) {
+			WrapperMedicationHistory wrapperMedicationHistory = InputMapper.gson()
+					.fromJson(historyOBJ.get("medicationHistory"), WrapperMedicationHistory.class);
+			medicationSuccessFlag = commonNurseServiceImpl.updateBenMedicationHistory(wrapperMedicationHistory);
+		} else {
+			medicationSuccessFlag = 1;
+		}
+		// Update Personal History
+		if (historyOBJ != null && historyOBJ.has("personalHistory")
+				&& !historyOBJ.get("personalHistory").isJsonNull()) {
+			// Update Ben Personal Habits..
+			BenPersonalHabit personalHabit = InputMapper.gson().fromJson(historyOBJ.get("personalHistory"),
+					BenPersonalHabit.class);
+
+			personalHistorySuccessFlag = commonNurseServiceImpl.updateBenPersonalHistory(personalHabit);
+
+			// Update Ben Allergy History..
+			BenAllergyHistory benAllergyHistory = InputMapper.gson().fromJson(historyOBJ.get("personalHistory"),
+					BenAllergyHistory.class);
+			allergyHistorySuccessFlag = commonNurseServiceImpl.updateBenAllergicHistory(benAllergyHistory);
+
+		} else {
+			allergyHistorySuccessFlag = 1;
+			personalHistorySuccessFlag = 1;
+		}
+
+		// Update Family History
+		if (historyOBJ != null && historyOBJ.has("familyHistory") && !historyOBJ.get("familyHistory").isJsonNull()) {
+			BenFamilyHistory benFamilyHistory = InputMapper.gson().fromJson(historyOBJ.get("familyHistory"),
+					BenFamilyHistory.class);
+			familyHistorySuccessFlag = commonNurseServiceImpl.updateBenFamilyHistory(benFamilyHistory);
+		} else {
+			familyHistorySuccessFlag = 1;
+		}
+
+		// Update Menstrual History
+		if (historyOBJ != null && historyOBJ.has("menstrualHistory")
+				&& !historyOBJ.get("menstrualHistory").isJsonNull()) {
+			BenMenstrualDetails menstrualDetails = InputMapper.gson().fromJson(historyOBJ.get("menstrualHistory"),
+					BenMenstrualDetails.class);
+			menstrualHistorySuccessFlag = commonNurseServiceImpl.updateMenstrualHistory(menstrualDetails);
+		} else {
+			menstrualHistorySuccessFlag = 1;
+		}
+
+		// Update Past Obstetric History
+		if (historyOBJ != null && historyOBJ.has("femaleObstetricHistory")
+				&& !historyOBJ.get("femaleObstetricHistory").isJsonNull()) {
+			WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory = InputMapper.gson()
+					.fromJson(historyOBJ.get("femaleObstetricHistory"), WrapperFemaleObstetricHistory.class);
+
+			obstetricSuccessFlag = commonNurseServiceImpl.updatePastObstetricHistory(wrapperFemaleObstetricHistory);
+		} else {
+			obstetricSuccessFlag = 1;
+		}
+
+		if (historyOBJ != null && historyOBJ.has("immunizationHistory")
+				&& !historyOBJ.get("immunizationHistory").isJsonNull()) {
+
+			JsonObject immunizationHistory = historyOBJ.getAsJsonObject("immunizationHistory");
+			if (immunizationHistory.get("immunizationList") != null
+					&& immunizationHistory.getAsJsonArray("immunizationList").size() > 0) {
+				WrapperImmunizationHistory wrapperImmunizationHistory = InputMapper.gson()
+						.fromJson(historyOBJ.get("immunizationHistory"), WrapperImmunizationHistory.class);
+				immunizationSuccessFlag = commonNurseServiceImpl
+						.updateChildImmunizationDetail(wrapperImmunizationHistory);
+			} else {
+				immunizationSuccessFlag = 1;
+			}
+		} else {
+			immunizationSuccessFlag = 1;
+		}
+
+		// Update Other/Optional Vaccines History
+		if (historyOBJ != null && historyOBJ.has("childVaccineDetails")
+				&& !historyOBJ.get("childVaccineDetails").isJsonNull()) {
+			WrapperChildOptionalVaccineDetail wrapperChildVaccineDetail = InputMapper.gson()
+					.fromJson(historyOBJ.get("childVaccineDetails"), WrapperChildOptionalVaccineDetail.class);
+			childVaccineSuccessFlag = commonNurseServiceImpl
+					.updateChildOptionalVaccineDetail(wrapperChildVaccineDetail);
+		} else {
+			childVaccineSuccessFlag = 1;
+		}
+
+		// Update ChildFeeding History
+		if (historyOBJ != null && historyOBJ.has("feedingHistory") && !historyOBJ.get("feedingHistory").isJsonNull()) {
+			ChildFeedingDetails childFeedingDetails = InputMapper.gson().fromJson(historyOBJ.get("feedingHistory"),
+					ChildFeedingDetails.class);
+
+			if (null != childFeedingDetails) {
+				childFeedingSuccessFlag = commonNurseServiceImpl.updateChildFeedingHistory(childFeedingDetails);
+			}
+
+		} else {
+			childFeedingSuccessFlag = 1;
+		}
+
+		// Update Perinatal History
+		if (historyOBJ != null && historyOBJ.has("perinatalHistroy")
+				&& !historyOBJ.get("perinatalHistroy").isJsonNull()) {
+			PerinatalHistory perinatalHistory = InputMapper.gson().fromJson(historyOBJ.get("perinatalHistroy"),
+					PerinatalHistory.class);
+
+			if (null != perinatalHistory) {
+				perinatalHistorySuccessFlag = commonNurseServiceImpl.updatePerinatalHistory(perinatalHistory);
+			}
+
+		} else {
+			perinatalHistorySuccessFlag = 1;
+		}
+
+		// Update Development History
+		if (historyOBJ != null && historyOBJ.has("developmentHistory")
+				&& !historyOBJ.get("developmentHistory").isJsonNull()) {
+			BenChildDevelopmentHistory benChildDevelopmentHistory = InputMapper.gson()
+					.fromJson(historyOBJ.get("developmentHistory"), BenChildDevelopmentHistory.class);
+
+			if (null != benChildDevelopmentHistory) {
+				developmentHistorySuccessFlag = commonNurseServiceImpl
+						.updateChildDevelopmentHistory(benChildDevelopmentHistory);
+			}
+
+		} else {
+			developmentHistorySuccessFlag = 1;
+		}
+
+		int historyUpdateSuccessFlag = 0;
+
+		if (pastHistorySuccessFlag > 0 && comrbidSuccessFlag > 0 && medicationSuccessFlag > 0
+				&& allergyHistorySuccessFlag > 0 && familyHistorySuccessFlag > 0 && obstetricSuccessFlag > 0
+				&& childVaccineSuccessFlag > 0 && personalHistorySuccessFlag > 0 && menstrualHistorySuccessFlag > 0
+				&& immunizationSuccessFlag > 0 && childFeedingSuccessFlag > 0 && perinatalHistorySuccessFlag > 0
+				&& developmentHistorySuccessFlag > 0) {
+
+			historyUpdateSuccessFlag = pastHistorySuccessFlag;
+		}
+		return historyUpdateSuccessFlag;
+	}
+
+	/**
+	 * 
+	 * @param requestOBJ
+	 * @return success or failure flag for vitals data updating
+	 */
+	@Transactional(rollbackFor = Exception.class)
+	public int updateBenVitalDetails(JsonObject vitalDetailsOBJ) throws Exception {
+		int vitalSuccessFlag = 0;
+		int anthropometrySuccessFlag = 0;
+		int phyVitalSuccessFlag = 0;
+		// Save Physical Anthropometry && Physical Vital Details
+		if (vitalDetailsOBJ != null) {
+			BenAnthropometryDetail benAnthropometryDetail = InputMapper.gson().fromJson(vitalDetailsOBJ,
+					BenAnthropometryDetail.class);
+			BenPhysicalVitalDetail benPhysicalVitalDetail = InputMapper.gson().fromJson(vitalDetailsOBJ,
+					BenPhysicalVitalDetail.class);
+
+			anthropometrySuccessFlag = commonNurseServiceImpl.updateANCAnthropometryDetails(benAnthropometryDetail);
+			phyVitalSuccessFlag = commonNurseServiceImpl.updateANCPhysicalVitalDetails(benPhysicalVitalDetail);
+
+			if (anthropometrySuccessFlag > 0 && phyVitalSuccessFlag > 0) {
+				vitalSuccessFlag = anthropometrySuccessFlag;
+			}
+		} else {
+			vitalSuccessFlag = 1;
+		}
+
+		return vitalSuccessFlag;
+	}
+
+//	@Transactional(rollbackFor = Exception.class)
+//	public Long updateCovid19DoctorData(JsonObject requestOBJ, String Authorization) throws Exception {
+//		Long updateSuccessFlag = null;
+//		Long prescriptionID = null;
+//		Long investigationSuccessFlag = null;
+//		Integer findingSuccessFlag = null;
+//		Integer prescriptionSuccessFlag = null;
+//		Long referSaveSuccessFlag = null;
+//
+//		if (requestOBJ != null) {
+//			TeleconsultationRequestOBJ tcRequestOBJ = null;
+//			// TcSpecialistSlotBookingRequestOBJ tcSpecialistSlotBookingRequestOBJ = null;
+//			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
+//
+//			//tcRequestOBJ = commonServiceImpl.createTcRequest(requestOBJ, commonUtilityClass, Authorization);
+//
+//			JsonArray testList = null;
+//			JsonArray drugList = null;
+//
+//			Boolean isTestPrescribed = false;
+//			Boolean isMedicinePrescribed = false;
+//
+//			// checking if test is prescribed
+//			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull()
+//					&& requestOBJ.get("investigation") != null) {
+//				testList = requestOBJ.getAsJsonObject("investigation").getAsJsonArray("laboratoryList");
+//				if (testList != null && !testList.isJsonNull() && testList.size() > 0)
+//					isTestPrescribed = true;
+//			}
+//
+//			// checking if medicine is prescribed
+//			if (requestOBJ.has("prescription") && !requestOBJ.get("prescription").isJsonNull()
+//					&& requestOBJ.get("prescription") != null) {
+//				drugList = requestOBJ.getAsJsonArray("prescription");
+//				if (drugList != null && !drugList.isJsonNull() && drugList.size() > 0) {
+//					isMedicinePrescribed = true;
+//				}
+//			}
+//
+//			if (requestOBJ.has("findings") && !requestOBJ.get("findings").isJsonNull()) {
+//
+//				WrapperAncFindings wrapperAncFindings = InputMapper.gson().fromJson(requestOBJ.get("findings"),
+//						WrapperAncFindings.class);
+//				findingSuccessFlag = commonDoctorServiceImpl.updateDocFindings(wrapperAncFindings);
+//
+//			} else {
+//				findingSuccessFlag = 1;
+//			}
+//
+//			// generate WrapperBenInvestigationANC OBJ
+//			WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
+//					.fromJson(requestOBJ.get("investigation"), WrapperBenInvestigationANC.class);
+//
+//			// generate prescription OBJ & diagnosis OBJ
+//			PrescriptionDetail prescriptionDetail = null;
+//
+//			String instruction = null;
+//			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()
+//					&& requestOBJ.get("diagnosis").getAsJsonObject().has("specialistDiagnosis")
+//					&& !requestOBJ.get("diagnosis").getAsJsonObject().get("specialistDiagnosis").isJsonNull()) {
+//				instruction = requestOBJ.get("diagnosis").getAsJsonObject().get("specialistDiagnosis").getAsString();
+//			}
+//
+//			String doctorDiagnosis = null;
+//			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()
+//					&& requestOBJ.get("diagnosis").getAsJsonObject().has("doctorDiagnosis")
+//					&& !requestOBJ.get("diagnosis").getAsJsonObject().get("doctorDiagnosis").isJsonNull()) {
+//				doctorDiagnosis = requestOBJ.get("diagnosis").getAsJsonObject().get("doctorDiagnosis").getAsString();
+//			}
+//
+//			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
+//				prescriptionDetail = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), PrescriptionDetail.class);
+//				prescriptionDetail.setExternalInvestigation(wrapperBenInvestigationANC.getExternalInvestigations());
+//				prescriptionID = prescriptionDetail.getPrescriptionID();
+//
+//				if (commonUtilityClass.getIsSpecialist() && instruction != null)
+//					prescriptionDetail.setInstruction(instruction);
+//
+//				if (!commonUtilityClass.getIsSpecialist() && doctorDiagnosis != null)
+//					prescriptionDetail.setDiagnosisProvided(doctorDiagnosis);
+//			}
+//
+//			// update prescription
+//			if (prescriptionDetail != null) {
+//				int p = commonNurseServiceImpl.updatePrescription(prescriptionDetail);
+//			}
+//
+//			// update prescribed lab test
+//			if (isTestPrescribed) {
+//				wrapperBenInvestigationANC.setPrescriptionID(prescriptionID);
+//				investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationANC);
+//			} else {
+//				investigationSuccessFlag = new Long(1);
+//			}
+//
+//			// update prescribed medicine
+//			if (isMedicinePrescribed) {
+//				PrescribedDrugDetail[] prescribedDrugDetail = InputMapper.gson()
+//						.fromJson(requestOBJ.get("prescription"), PrescribedDrugDetail[].class);
+//				List<PrescribedDrugDetail> prescribedDrugDetailList = Arrays.asList(prescribedDrugDetail);
+//
+//				for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
+//					tmpObj.setPrescriptionID(prescriptionID);
+//					tmpObj.setBeneficiaryRegID(commonUtilityClass.getBeneficiaryRegID());
+//					tmpObj.setBenVisitID(commonUtilityClass.getBenVisitID());
+//					tmpObj.setVisitCode(commonUtilityClass.getVisitCode());
+//					tmpObj.setProviderServiceMapID(commonUtilityClass.getProviderServiceMapID());
+//				}
+//				Integer r = commonNurseServiceImpl.saveBenPrescribedDrugsList(prescribedDrugDetailList);
+//				if (r > 0 && r != null) {
+//					prescriptionSuccessFlag = r;
+//				}
+//			} else {
+//				prescriptionSuccessFlag = 1;
+//			}
+//
+//			// update referral
+//			if (requestOBJ.has("refer") && !requestOBJ.get("refer").isJsonNull()) {
+//				referSaveSuccessFlag = commonDoctorServiceImpl
+//						.updateBenReferDetails(requestOBJ.get("refer").getAsJsonObject());
+//			} else {
+//				referSaveSuccessFlag = new Long(1);
+//			}
+//
+//			// check if all data updated successfully
+//			if ((findingSuccessFlag != null && findingSuccessFlag > 0)
+//					&& (investigationSuccessFlag != null && investigationSuccessFlag > 0)
+//					&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)
+//					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
+//
+//				// call method to update beneficiary flow table
+//				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataUpdate(commonUtilityClass,
+//						isTestPrescribed, isMedicinePrescribed, tcRequestOBJ);
+//
+//				if (i > 0)
+//					updateSuccessFlag = investigationSuccessFlag;
+//				else
+//					throw new RuntimeException("Error occurred while saving data. Beneficiary status update failed");
+//
+////				if (i > 0 && tcRequestOBJ != null && tcRequestOBJ.getWalkIn() == false) {
+////					int k = sMSGatewayServiceImpl.smsSenderGateway("schedule", commonUtilityClass.getBeneficiaryRegID(),
+////							tcRequestOBJ.getSpecializationID(), tcRequestOBJ.getTmRequestID(), null,
+////							commonUtilityClass.getCreatedBy(),
+////							tcRequestOBJ.getAllocationDate() != null ? String.valueOf(tcRequestOBJ.getAllocationDate())
+////									: "",
+////							null, Authorization);
+////				}
+//
+//			} else {
+//				throw new RuntimeException();
+//			}
+//		} else {
+//			// request OBJ is null.
+//		}
+//		return updateSuccessFlag;
+//	}
+	
+	public String getBenVisitDetailsFrmNurseCovid19(Long benRegID, Long visitCode) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		BeneficiaryVisitDetail visitDetail = commonNurseServiceImpl.getCSVisitDetails(benRegID, visitCode);
+		Covid19BenFeedback covid19BenFeedback = getCovidDetails(benRegID, visitCode);
+
+		resMap.put("covid19NurseVisitDetail", new Gson().toJson(visitDetail));
+		resMap.put("covidDetails", new Gson().toJson(covid19BenFeedback));
+
+//		resMap.put("BenAdherence", commonNurseServiceImpl.getBenAdherence(benRegID, visitCode));
+//
+//		resMap.put("Investigation", commonNurseServiceImpl.getLabTestOrders(benRegID, visitCode));
+
+		return resMap.toString();
+	}
+	
+	private Covid19BenFeedback getCovidDetails(Long benRegID, Long visitCode) {
+		Covid19BenFeedback obj = covid19BenFeedbackRepo.findByBeneficiaryRegIDAndVisitCode(benRegID, visitCode);
+		if (obj != null) {
+			if (obj.getSymptoms_db() != null) {
+				String[] symptomsArr = obj.getSymptoms_db().split("\\|\\|");
+				if (symptomsArr != null)
+					obj.setSymptoms(symptomsArr);
+			}
+
+			if (obj.getTravelType() != null) {
+				String[] treavelTypeArr = obj.getTravelType().split("\\|\\|");
+				if (treavelTypeArr != null)
+					obj.setTravelList(treavelTypeArr);
+			}
+			if (obj.getcOVID19_contact_history() != null) {
+				String[] contactHistoryArr = obj.getcOVID19_contact_history().split("\\|\\|");
+				if (contactHistoryArr != null)
+					obj.setContactStatus(contactHistoryArr);
+			}
+
+			if (obj.getRecommendation_db() != null) {
+				ArrayList<String[]> recommendationList = new ArrayList<>();
+				String[] recommendationArr = obj.getRecommendation_db().split("\\|\\|");
+				if (recommendationArr != null) {
+					recommendationList.add(recommendationArr);
+					obj.setRecommendation((recommendationList));
+				}
+			}
+
+			if (obj.getSuspectedStatus() != null) {
+				if (obj.getSuspectedStatus())
+					obj.setSuspectedStatusUI("YES");
+				else
+					obj.setSuspectedStatusUI("NO");
+			}
+
+		}
+		return obj;
+	}
+
+	public String getBenCovid19HistoryDetails(Long benRegID, Long visitCode) {
+		Map<String, Object> HistoryDetailsMap = new HashMap<String, Object>();
+
+		HistoryDetailsMap.put("PastHistory", commonNurseServiceImpl.getPastHistoryData(benRegID, visitCode));
+		HistoryDetailsMap.put("ComorbidityConditions",
+				commonNurseServiceImpl.getComorbidityConditionsHistory(benRegID, visitCode));
+		HistoryDetailsMap.put("MedicationHistory", commonNurseServiceImpl.getMedicationHistory(benRegID, visitCode));
+		HistoryDetailsMap.put("PersonalHistory", commonNurseServiceImpl.getPersonalHistory(benRegID, visitCode));
+		HistoryDetailsMap.put("FamilyHistory", commonNurseServiceImpl.getFamilyHistory(benRegID, visitCode));
+		HistoryDetailsMap.put("MenstrualHistory", commonNurseServiceImpl.getMenstrualHistory(benRegID, visitCode));
+		HistoryDetailsMap.put("FemaleObstetricHistory",
+				commonNurseServiceImpl.getFemaleObstetricHistory(benRegID, visitCode));
+		HistoryDetailsMap.put("ImmunizationHistory",
+				commonNurseServiceImpl.getImmunizationHistory(benRegID, visitCode));
+		HistoryDetailsMap.put("childOptionalVaccineHistory",
+				commonNurseServiceImpl.getChildOptionalVaccineHistory(benRegID, visitCode));
+		HistoryDetailsMap.put("DevelopmentHistory", commonNurseServiceImpl.getDevelopmentHistory(benRegID, visitCode));
+		HistoryDetailsMap.put("PerinatalHistory", commonNurseServiceImpl.getPerinatalHistory(benRegID, visitCode));
+		HistoryDetailsMap.put("FeedingHistory", commonNurseServiceImpl.getFeedingHistory(benRegID, visitCode));
+
+		return new Gson().toJson(HistoryDetailsMap);
+	}
+	public String getBeneficiaryVitalDetails(Long beneficiaryRegID, Long visitCode) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("benAnthropometryDetail",
+				commonNurseServiceImpl.getBeneficiaryPhysicalAnthropometryDetails(beneficiaryRegID, visitCode));
+		resMap.put("benPhysicalVitalDetail",
+				commonNurseServiceImpl.getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, visitCode));
+
+		return resMap.toString();
+	}
+	public String getBenCaseRecordFromDoctorCovid19(Long benRegID, Long visitCode) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, visitCode));
+
+		// resMap.put("diagnosis",
+		// ncdCareDoctorServiceImpl.getNCDCareDiagnosisDetails(benRegID, visitCode));
+
+		resMap.put("diagnosis", getCovidDiagnosisData(benRegID, visitCode));
+
+		resMap.put("investigation", commonDoctorServiceImpl.getInvestigationDetails(benRegID, visitCode));
+
+		resMap.put("prescription", commonDoctorServiceImpl.getPrescribedDrugs(benRegID, visitCode));
+
+		resMap.put("Refer", commonDoctorServiceImpl.getReferralDetails(benRegID, visitCode));
+
+		resMap.put("LabReport",
+				new Gson().toJson(labTechnicianServiceImpl.getLabResultDataForBen(benRegID, visitCode)));
+
+		resMap.put("GraphData", new Gson().toJson(commonNurseServiceImpl.getGraphicalTrendData(benRegID, "ncdCare")));
+
+		resMap.put("ArchivedVisitcodeForLabResult",
+				labTechnicianServiceImpl.getLast_3_ArchivedTestVisitList(benRegID, visitCode));
+
+		return resMap.toString();
+	}
+	private String getCovidDiagnosisData(Long benRegID, Long visitCode) {
+		Map<String, Object> diagnosisMap = new HashMap<>();
+		ArrayList<PrescriptionDetail> obj = prescriptionDetailRepo.findByBeneficiaryRegIDAndVisitCode(benRegID,
+				visitCode);
+		if (obj != null && obj.size() > 0) {
+			diagnosisMap.put("doctorDiagnonsis", obj.get(0).getDiagnosisProvided());
+			diagnosisMap.put("specialistDiagnosis", obj.get(0).getInstruction());
+			diagnosisMap.put("prescriptionID", obj.get(0).getPrescriptionID());
+			diagnosisMap.put("beneficiaryRegID", obj.get(0).getBeneficiaryRegID());
+			diagnosisMap.put("visitCode", obj.get(0).getVisitCode());
+			diagnosisMap.put("vanID", obj.get(0).getVanID());
+			diagnosisMap.put("providerServiceMapID", obj.get(0).getProviderServiceMapID());
+			diagnosisMap.put("parkingPlaceID", obj.get(0).getParkingPlaceID());
+			diagnosisMap.put("createdBy", obj.get(0).getCreatedBy());
+		} else {
+			diagnosisMap.put("doctorDiagnonsis", null);
+			diagnosisMap.put("specialistDiagnosis", null);
+			diagnosisMap.put("prescriptionID", null);
+			diagnosisMap.put("beneficiaryRegID", null);
+			diagnosisMap.put("visitCode", null);
+			diagnosisMap.put("vanID", null);
+			diagnosisMap.put("providerServiceMapID", null);
+			diagnosisMap.put("parkingPlaceID", null);
+			diagnosisMap.put("createdBy", null);
+		}
+		return new Gson().toJson(diagnosisMap);
+	}
+
 
 }
