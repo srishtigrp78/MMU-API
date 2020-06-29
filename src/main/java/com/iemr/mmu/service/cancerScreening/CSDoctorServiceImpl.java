@@ -88,7 +88,7 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 			response = cancerDiagnosisRepo.updateCancerDiagnosisDetailsByDoctor(
 					cancerDiagnosis.getProvisionalDiagnosisPrimaryDoctor(), cancerDiagnosis.getRemarks(),
 					cancerDiagnosis.getReferredToInstituteID(), cancerDiagnosis.getRefrredToAdditionalService(),cancerDiagnosis.getRevisitDate(),
-					cancerDiagnosis.getModifiedBy(), processed, cancerDiagnosis.getBeneficiaryRegID(),
+					cancerDiagnosis.getReferralReason() ,cancerDiagnosis.getModifiedBy(), processed, cancerDiagnosis.getBeneficiaryRegID(),
 					cancerDiagnosis.getVisitCode());
 		} else {
 			//cancerDiagnosis.setCreatedBy(cancerDiagnosis.getModifiedBy());
