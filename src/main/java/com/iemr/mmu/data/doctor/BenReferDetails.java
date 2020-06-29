@@ -117,6 +117,18 @@ public class BenReferDetails {
 	@Column(name = "revisitdate")
 	private Timestamp revisitDate;
 
+	@Expose
+	@Column(name = "referralreason")
+	private String referralReason;
+	
+	public String getReferralReason() {
+		return referralReason;
+	}
+
+	public void setReferralReason(String referralReason) {
+		this.referralReason = referralReason;
+	}
+
 	public Long getBenReferID() {
 		return benReferID;
 	}

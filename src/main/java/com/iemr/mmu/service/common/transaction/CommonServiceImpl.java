@@ -148,6 +148,23 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData;
 	}
 
+	private String getCovid19_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
+		Map<String, Object> caseSheetData = new HashMap<>();
+
+		caseSheetData.put("nurseData", covid19ServiceImpl.getBenCovidNurseData(benFlowOBJ.getBeneficiaryRegID(),
+				benFlowOBJ.getBenVisitCode()));
+
+		caseSheetData.put("doctorData", covid19ServiceImpl
+				.getBenCaseRecordFromDoctorCovid19(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitCode()));
+
+		caseSheetData.put("BeneficiaryData",
+				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
+
+		caseSheetData.put("serviceID", 4);
+
+		return caseSheetData.toString();
+	}
+
 	private String getANC_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
@@ -253,23 +270,7 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData.toString();
 	}
 
-	private String getCovid19_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
-		Map<String, Object> caseSheetData = new HashMap<>();
-
-		caseSheetData.put("nurseData", covid19ServiceImpl.getBenCovidNurseData(benFlowOBJ.getBeneficiaryRegID(),
-				benFlowOBJ.getBenVisitCode()));
-
-		caseSheetData.put("doctorData", covid19ServiceImpl
-				.getBenCaseRecordFromDoctorCovid19(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitCode()));
-
-		caseSheetData.put("BeneficiaryData",
-				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
-
-		caseSheetData.put("serviceID", 4);
-
-		return caseSheetData.toString();
-	}
-	private String getBenDetails(Long benFlowID, Long benRegID) {
+		private String getBenDetails(Long benFlowID, Long benRegID) {
 		ArrayList<Object[]> tmpOBJ = beneficiaryFlowStatusRepo.getBenDetailsForLeftSidePanel(benRegID, benFlowID);
 		BeneficiaryFlowStatus obj = BeneficiaryFlowStatus.getBeneficiaryFlowStatusForLeftPanel(tmpOBJ);
 		return new Gson().toJson(obj);
