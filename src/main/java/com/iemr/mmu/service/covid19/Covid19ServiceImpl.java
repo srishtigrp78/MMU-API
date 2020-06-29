@@ -1220,5 +1220,20 @@ public class Covid19ServiceImpl implements Covid19Service {
 
 		return saveSuccessFlag;
 	}
+	//---------------------End of save doctor--------------------
+	
+	// get nurse data For Covid19
+		public String getBenCovidNurseData(Long benRegID, Long visitCode) {
+			Map<String, Object> resMap = new HashMap<>();
+
+			resMap.put("covidDetails", new Gson().toJson(getCovidDetails(benRegID, visitCode)));
+
+			resMap.put("vitals", getBeneficiaryVitalDetails(benRegID, visitCode));
+
+			resMap.put("history", getBenCovid19HistoryDetails(benRegID, visitCode));
+
+			return resMap.toString();
+		}
+	
 
 }
