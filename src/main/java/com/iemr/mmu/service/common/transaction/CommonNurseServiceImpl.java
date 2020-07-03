@@ -2196,8 +2196,8 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					generalExamination.getClubbing(), generalExamination.getLymphadenopathy(),
 					generalExamination.getLymphnodesInvolved(), generalExamination.getTypeOfLymphadenopathy(),
 					generalExamination.getEdema(), generalExamination.getExtentOfEdema(),
-					generalExamination.getEdemaType(),generalExamination.getQuickening(),generalExamination.getFoetalMovements(),
-					generalExamination.getModifiedBy(), processed,
+					generalExamination.getEdemaType(), generalExamination.getQuickening(),
+					generalExamination.getFoetalMovements(), generalExamination.getModifiedBy(), processed,
 					generalExamination.getBeneficiaryRegID(), generalExamination.getVisitCode());
 		}
 		return response;
@@ -2338,6 +2338,25 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		prescriptionDetail.setVanID(vanID);
 		prescriptionDetail.setParkingPlaceID(parkingPlaceID);
 
+		Long prescriptionID = saveBenPrescription(prescriptionDetail);
+		return prescriptionID;
+	}
+
+	// save prescription of covid19
+	public Long savePrescriptionDetailsCovid19(Long benRegID, Long benVisitID, Integer psmID, String createdBy,
+			String externalInvestigation, Long benVisitCode, Integer vanID, Integer parkingPlaceID,
+			String doctorDiagnosis) {
+		PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
+		prescriptionDetail.setBeneficiaryRegID(benRegID);
+		prescriptionDetail.setBenVisitID(benVisitID);
+		prescriptionDetail.setVisitCode(benVisitCode);
+		prescriptionDetail.setProviderServiceMapID(psmID);
+		prescriptionDetail.setCreatedBy(createdBy);
+		prescriptionDetail.setExternalInvestigation(externalInvestigation);
+		prescriptionDetail.setVanID(vanID);
+		prescriptionDetail.setParkingPlaceID(parkingPlaceID);
+		if (doctorDiagnosis != null)
+			prescriptionDetail.setDiagnosisProvided(doctorDiagnosis);
 		Long prescriptionID = saveBenPrescription(prescriptionDetail);
 		return prescriptionID;
 	}

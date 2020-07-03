@@ -125,9 +125,21 @@ public class CancerDiagnosis {
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
 	
+	public String getReferralReason() {
+		return referralReason;
+	}
+
+	public void setReferralReason(String referralReason) {
+		this.referralReason = referralReason;
+	}
+
 	@Expose
 	@Column(name = "revisitdate")
 	private Timestamp revisitDate;
+	
+	@Expose
+	@Column(name = "referralReason")
+	private String referralReason;
 
 	public CancerDiagnosis() {
 		super();
@@ -137,7 +149,7 @@ public class CancerDiagnosis {
 	public CancerDiagnosis(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			String provisionalDiagnosisPrimaryDoctor, String provisionalDiagnosisOncologist, String remarks,
 			Integer referredToInstituteID, String referredToInstituteName, String refrredToAdditionalService
-			, Timestamp revisitDate) {
+			, Timestamp revisitDate, String referralReason) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -150,6 +162,7 @@ public class CancerDiagnosis {
 		this.referredToInstituteName = referredToInstituteName;
 		this.refrredToAdditionalService = refrredToAdditionalService;
 		this.revisitDate = revisitDate;
+		this.referralReason = referralReason;
 	}
 
 	public Long getID() {

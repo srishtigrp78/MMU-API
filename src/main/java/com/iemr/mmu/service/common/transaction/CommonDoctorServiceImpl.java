@@ -408,10 +408,13 @@ public Long saveBenReferDetails(JsonObject obj) throws IEMRException {
                     if (referDetails.getRevisitDate() != null)
 						referDetailsTemp.setRevisitDate(referDetails.getRevisitDate()); 
 					referDetailsList.add(referDetailsTemp);
+					
+					if (referDetails.getReferralReason() != null)
+						referDetailsTemp.setReferralReason(referDetails.getReferralReason());
 				}
 			}
 		} else {
-			if (referDetails.getReferredToInstituteName() != null || referDetails.getRevisitDate() != null)
+			if (referDetails.getReferredToInstituteName() != null || referDetails.getRevisitDate() != null  || referDetails.getReferralReason() != null)
 				referDetailsList.add(referDetails);
 		}
 

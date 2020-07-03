@@ -39,13 +39,14 @@ public interface CancerDiagnosisRepo extends CrudRepository<CancerDiagnosis, Lon
 	@Modifying
 	@Query(" update CancerDiagnosis set provisionalDiagnosisPrimaryDoctor=:provisionalDiagnosisPrimaryDoctor, remarks=:remarks, "
 			+ "referredToInstituteID=:referredToInstituteID, refrredToAdditionalService=:refrredToAdditionalService, "
-			+ "revisitDate=:revisitDate, modifiedBy=:modifiedBy, processed=:processed "
+			+ "revisitDate=:revisitDate,referralReason=:referralReason, modifiedBy=:modifiedBy, processed=:processed "
 			+ "WHERE beneficiaryRegID =:beneficiaryRegID AND visitCode =:visitCode")
 	public int updateCancerDiagnosisDetailsByDoctor(@Param("provisionalDiagnosisPrimaryDoctor") String provisionalDiagnosisPrimaryDoctor,
 			@Param("remarks") String remarks,
 			@Param("referredToInstituteID") Integer referredToInstituteID,
 			@Param("refrredToAdditionalService") String refrredToAdditionalService,
 			@Param("revisitDate") Timestamp revisitDate,
+			@Param("referralReason") String referralReason,
 			@Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed,
 			@Param("beneficiaryRegID") Long beneficiaryRegID, 

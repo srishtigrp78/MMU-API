@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.iemr.mmu.data.location.Country;
+import com.iemr.mmu.data.location.CountryCityMaster;
 import com.iemr.mmu.data.location.DistrictBlock;
 import com.iemr.mmu.data.location.DistrictBranchMapping;
 import com.iemr.mmu.data.location.Districts;
@@ -18,6 +20,8 @@ import com.iemr.mmu.data.location.ZoneMaster;
 import com.iemr.mmu.data.login.MasterServicePoint;
 import com.iemr.mmu.data.login.ParkingPlace;
 import com.iemr.mmu.data.login.ServicePointVillageMapping;
+import com.iemr.mmu.repo.location.CountryCityMasterRepo;
+import com.iemr.mmu.repo.location.CountryMasterRepo;
 import com.iemr.mmu.repo.location.DistrictBlockMasterRepo;
 import com.iemr.mmu.repo.location.DistrictBranchMasterRepo;
 import com.iemr.mmu.repo.location.DistrictMasterRepo;
@@ -31,6 +35,10 @@ import com.iemr.mmu.repo.login.ServicePointVillageMappingRepo;
 
 @Service
 public class LocationServiceImpl implements LocationService {
+	@Autowired
+	private CountryMasterRepo countryMasterRepo;
+	@Autowired
+	private CountryCityMasterRepo countryCityMasterRepo;
 
 	private StateMasterRepo stateMasterRepo;
 	private ZoneMasterRepo zoneMasterRepo;
@@ -106,6 +114,22 @@ public class LocationServiceImpl implements LocationService {
 			}
 		}
 		return new Gson().toJson(stateList);
+	}
+	@Override
+	public String getCountryList() {
+
+		ArrayList<Country> stateMasterList = countryMasterRepo.findByDeleted(false);
+
+		return new Gson().toJson(stateMasterList);
+	}
+
+	@Override
+	public String getCountryCityList(Integer countryID) {
+
+		ArrayList<CountryCityMaster> countryCityList = countryCityMasterRepo.findByCountryIDAndDeleted(countryID,
+				false);
+
+		return new Gson().toJson(countryCityList);
 	}
 
 	@Override

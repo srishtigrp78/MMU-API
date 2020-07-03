@@ -117,6 +117,18 @@ public class BenReferDetails {
 	@Column(name = "revisitdate")
 	private Timestamp revisitDate;
 
+	@Expose
+	@Column(name = "referralreason")
+	private String referralReason;
+	
+	public String getReferralReason() {
+		return referralReason;
+	}
+
+	public void setReferralReason(String referralReason) {
+		this.referralReason = referralReason;
+	}
+
 	public Long getBenReferID() {
 		return benReferID;
 	}
@@ -309,7 +321,7 @@ public class BenReferDetails {
 
 	public BenReferDetails(Long benReferID, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			Integer referredToInstituteID, String referredToInstituteName, Short serviceID, String serviceName,
-			Long visitCode, Timestamp revisitDate) {
+			Long visitCode, Timestamp revisitDate, String referralReason) {
 		super();
 		this.benReferID = benReferID;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -321,6 +333,7 @@ public class BenReferDetails {
 		this.serviceName = serviceName;
 		this.visitCode = visitCode;
 		this.revisitDate = revisitDate;
+		this.referralReason = referralReason;
 	}
 
 	public static BenReferDetails getBenReferDetails(ArrayList<Object[]> resList) {
@@ -330,7 +343,7 @@ public class BenReferDetails {
 
 			Object[] obj1 = resList.get(0);
 			cOBJ = new BenReferDetails((Long) obj1[0], (Long) obj1[1], (Long) obj1[2], (Integer) obj1[3],
-					(Integer) obj1[4], (String) obj1[5], (Short) obj1[6], (String) obj1[7], (Long) obj1[8], (Timestamp) obj1[9]);
+					(Integer) obj1[4], (String) obj1[5], (Short) obj1[6], (String) obj1[7], (Long) obj1[8], (Timestamp) obj1[9],(String) obj1[10]);
 			ArrayList<ServiceMaster> servicesList = new ArrayList<ServiceMaster>();
 			for (Object[] obj : resList) {
 				if (null != obj[6]) {
