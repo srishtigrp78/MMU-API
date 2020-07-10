@@ -41,6 +41,7 @@ import com.iemr.mmu.data.masterdata.anc.PregOutcome;
 import com.iemr.mmu.data.masterdata.anc.ServiceMaster;
 import com.iemr.mmu.data.masterdata.anc.SurgeryTypes;
 import com.iemr.mmu.data.masterdata.doctor.ItemFormMaster;
+import com.iemr.mmu.data.masterdata.doctor.ItemMaster;
 import com.iemr.mmu.data.masterdata.doctor.RouteOfAdmin;
 import com.iemr.mmu.data.masterdata.doctor.V_DrugPrescription;
 import com.iemr.mmu.data.masterdata.ncdcare.NCDCareType;
@@ -84,6 +85,7 @@ import com.iemr.mmu.repo.masterrepo.covid19.CovidRecommnedationMasterRepo;
 import com.iemr.mmu.repo.masterrepo.covid19.CovidSymptomsMasterRepo;
 import com.iemr.mmu.repo.masterrepo.doctor.InstituteRepo;
 import com.iemr.mmu.repo.masterrepo.doctor.ItemFormMasterRepo;
+import com.iemr.mmu.repo.masterrepo.doctor.ItemMasterRepo;
 import com.iemr.mmu.repo.masterrepo.doctor.RouteOfAdminRepo;
 import com.iemr.mmu.repo.masterrepo.doctor.V_DrugPrescriptionRepo;
 import com.iemr.mmu.repo.masterrepo.ncdCare.NCDCareTypeRepo;
@@ -151,7 +153,9 @@ public class ANCMasterDataServiceImpl {
 	// private TempMasterDrugRepo tempMasterDrugRepo;
 
 	private OptionalVaccinationsRepo optionalVaccinationsRepo;
-
+    
+	@Autowired
+	 private ItemMasterRepo itemMasterRepo;
 	// private ItemMasterRepo itemMasterRepo;
 	private ItemFormMasterRepo itemFormMasterRepo;
 	private RouteOfAdminRepo routeOfAdminRepo;
@@ -600,6 +604,11 @@ public class ANCMasterDataServiceImpl {
 		ArrayList<Object[]> ddumList = drugDurationUnitMasterRepo.getDrugDurationUnitMaster();
 		ArrayList<Object[]> dfrmList = drugFrequencyMasterRepo.getDrugFrequencyMaster();
 		ArrayList<Object[]> roaList = routeOfAdminRepo.getRouteOfAdminList();
+		ArrayList<ItemMaster> NonedlList=itemMasterRepo.searchEdl(psmID);
+		for(int i=0;i<NonedlList.size();i++)
+		{
+			NonedlList.get(i).setUnitOfMeasurement(NonedlList.get(i).getUom().getuOMName());
+		}
 
 		ArrayList<V_DrugPrescription> itemList = new ArrayList<>();
 		if (facilityID == null || facilityID <= 0) {
@@ -616,6 +625,7 @@ public class ANCMasterDataServiceImpl {
 		resMap.put("drugFrequencyMaster", DrugFrequencyMaster.getDrugFrequencyMaster(dfrmList));
 		resMap.put("routeOfAdmin", RouteOfAdmin.getRouteOfAdminList(roaList));
 		resMap.put("itemMaster", itemList);
+		resMap.put("NonEdlMaster", NonedlList);
 
 		// NCD Care specific master data
 		if (visitCategoryID == 3) {
