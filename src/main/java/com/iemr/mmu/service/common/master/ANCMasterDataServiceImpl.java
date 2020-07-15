@@ -38,6 +38,7 @@ import com.iemr.mmu.data.masterdata.anc.OptionalVaccinations;
 import com.iemr.mmu.data.masterdata.anc.PersonalHabitType;
 import com.iemr.mmu.data.masterdata.anc.PregDuration;
 import com.iemr.mmu.data.masterdata.anc.PregOutcome;
+import com.iemr.mmu.data.masterdata.anc.ServiceFacilityMaster;
 import com.iemr.mmu.data.masterdata.anc.ServiceMaster;
 import com.iemr.mmu.data.masterdata.anc.SurgeryTypes;
 import com.iemr.mmu.data.masterdata.doctor.ItemFormMaster;
@@ -78,6 +79,7 @@ import com.iemr.mmu.repo.masterrepo.anc.OptionalVaccinationsRepo;
 import com.iemr.mmu.repo.masterrepo.anc.PersonalHabitTypeRepo;
 import com.iemr.mmu.repo.masterrepo.anc.PregDurationRepo;
 import com.iemr.mmu.repo.masterrepo.anc.PregOutcomeRepo;
+import com.iemr.mmu.repo.masterrepo.anc.ServiceFacilityMasterRepo;
 import com.iemr.mmu.repo.masterrepo.anc.ServiceMasterRepo;
 import com.iemr.mmu.repo.masterrepo.anc.SurgeryTypesRepo;
 import com.iemr.mmu.repo.masterrepo.covid19.CovidContactHistoryMasterRepo;
@@ -415,6 +417,9 @@ public class ANCMasterDataServiceImpl {
 	public void setComplicationTypesRepo(ComplicationTypesRepo complicationTypesRepo) {
 		this.complicationTypesRepo = complicationTypesRepo;
 	}
+	
+	@Autowired
+	private ServiceFacilityMasterRepo serviceFacilityMasterRepo;
 
 	public String getCommonNurseMasterDataForGenopdAncNcdcarePnc(Integer visitCategoryID, Integer providerServiceMapID,
 			String gender) {
@@ -475,6 +480,18 @@ public class ANCMasterDataServiceImpl {
 		// newborn and birth complications are same
 		// ArrayList<Object[]> newBornComplications =
 		// complicationTypesRepo.getComplicationTypes("Birth Complication");
+		
+		// newely added masters, 10-07-2020
+				ArrayList<Object[]> typeOfAbbortion = complicationTypesRepo.getComplicationTypes("typeOfAbortion");
+				ArrayList<Object[]> postAbortionComplications = complicationTypesRepo
+						.getComplicationTypes("PostAbortionComplications");
+
+				ArrayList<ServiceFacilityMaster> serviceFacility = serviceFacilityMasterRepo.findByDeleted(false);
+
+				resMap.put("typeOfAbortion", ComplicationTypes.getComplicationTypes(typeOfAbbortion, 0));
+				resMap.put("postAbortionComplications", ComplicationTypes.getComplicationTypes(postAbortionComplications, 0));
+				resMap.put("serviceFacilities", serviceFacility);
+				
 
 		// existing
 		ArrayList<Object[]> ccList = chiefComplaintMasterRepo.getChiefComplaintMaster();

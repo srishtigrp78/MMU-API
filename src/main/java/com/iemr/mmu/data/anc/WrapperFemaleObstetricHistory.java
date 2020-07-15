@@ -90,7 +90,8 @@ public class WrapperFemaleObstetricHistory {
 							(String) obj[15], (String) obj[16], (String) obj[17], (Short) obj[18], (String) obj[19],
 							(String) obj[20], (String) obj[21], (String) obj[22], (Short) obj[23], (String) obj[24],
 							(String) obj[25], (String) obj[26], (Short) obj[27], (String) obj[28], (String) obj[29],
-							(Long) obj[30]);
+							(Long) obj[30], (Integer) obj[31], (String) obj[32], (Integer) obj[33], (Integer) obj[34],
+							(String) obj[35], (String) obj[36], (String) obj[37]);
 
 					WFO.femaleObstetricHistoryList.add(obstetricHistory);
 
