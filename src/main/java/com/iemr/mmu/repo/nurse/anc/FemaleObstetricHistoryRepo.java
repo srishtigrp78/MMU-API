@@ -26,7 +26,9 @@ public interface FemaleObstetricHistoryRepo extends CrudRepository<FemaleObstetr
 			+ "durationType, deliveryTypeID, deliveryType, deliveryPlaceID, deliveryPlace, otherDeliveryPlace, deliveryComplicationID, "
 			+ "deliveryComplicationType, otherDeliveryComplication, pregOutcomeID, pregOutcome, postpartumComplicationID, "
 			+ " postpartumComplicationType, otherPostpartumCompType, postNatalComplicationID, postNatalComplication, otherPostNatalComplication,"
-			+ " congenitalAnomalies, newBornComplicationID, newBornComplication, otherNewBornComplication, visitCode from "
+			+ " congenitalAnomalies, newBornComplicationID, newBornComplication, otherNewBornComplication, visitCode, "
+			+ " abortionTypeID, postAbortionComplication_db, pregDuration, typeofFacilityID, "
+			+ " postAbortionComplicationsValues,typeOfAbortionValue, serviceFacilityValue FROM "
 			+ "FemaleObstetricHistory a where a.beneficiaryRegID = :beneficiaryRegID and deleted = false AND visitCode = :visitCode")
 	public ArrayList<Object[]> getBenFemaleObstetricHistoryDetail(@Param("beneficiaryRegID") Long beneficiaryRegID, 
 			@Param("visitCode") Long visitCode);
