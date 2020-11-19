@@ -156,6 +156,8 @@ public class WrapperImmunizationHistory {
 				vaccines = new HashMap<String, Object>();
 				vaccines.put("vaccine", (String) obj[4]);
 				vaccines.put("status", (Boolean) obj[5]);
+				vaccines.put("sctCode",(String)obj[7]);
+				vaccines.put("sctTerm",(String)obj[8]);
 				vaccinesList.add(vaccines);
 				childVaccine.setVaccines(vaccinesList);
 
