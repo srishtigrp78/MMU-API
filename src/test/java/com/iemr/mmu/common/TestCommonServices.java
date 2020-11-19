@@ -528,7 +528,7 @@ public class TestCommonServices {
 
 		when(childVaccineDetail1RepoMock.updateChildANCImmunization(Matchers.any(), Matchers.anyString(),
 				Matchers.anyString(), Matchers.anyLong(), Matchers.anyLong(), Matchers.anyString(),
-				Matchers.anyString())).thenReturn(1);
+				Matchers.anyString(),Matchers.anyString(),Matchers.anyString())).thenReturn(1);
 
 		when(benAnthropometryRepoMock.updateANCCareDetails(Matchers.anyDouble(), Matchers.anyDouble(),
 				Matchers.anyDouble(), Matchers.anyDouble(), Matchers.anyDouble(), Matchers.anyDouble(),
