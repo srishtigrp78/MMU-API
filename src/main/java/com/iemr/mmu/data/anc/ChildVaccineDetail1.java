@@ -129,6 +129,14 @@ public class ChildVaccineDetail1 {
 
 	@Transient
 	private Date captureDate;
+	
+	@Expose
+	@Column(name = "sctCode")
+	private String sctCode;
+	
+	@Expose
+	@Column(name = "SctTerm")
+	private String sctTerm;
 
 	public Integer getVanID() {
 		return vanID;
@@ -376,6 +384,22 @@ public class ChildVaccineDetail1 {
 
 	public void setID(Long iD) {
 		ID = iD;
+	}
+
+	public String getSctCode() {
+		return sctCode;
+	}
+
+	public void setSctCode(String sctCode) {
+		this.sctCode = sctCode;
+	}
+
+	public String getSctTerm() {
+		return sctTerm;
+	}
+
+	public void setSctTerm(String sctTerm) {
+		this.sctTerm = sctTerm;
 	}
 
 }
