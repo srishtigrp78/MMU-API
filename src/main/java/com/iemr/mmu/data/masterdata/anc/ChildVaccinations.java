@@ -67,6 +67,7 @@ public class ChildVaccinations {
 		this.vaccinationTime = vaccinationTime;
 		this.vaccineName = vaccineName;
 		this.sctCode = sctCode;
+		this.sctTerm = sctTerm;
 	}
 	
 	public static ArrayList<ChildVaccinations> getChildVaccinations(ArrayList<Object[]> resList) {
