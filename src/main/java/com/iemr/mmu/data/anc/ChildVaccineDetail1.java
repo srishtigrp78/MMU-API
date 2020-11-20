@@ -359,11 +359,13 @@ public class ChildVaccineDetail1 {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ChildVaccineDetail1(String defaultReceivingAge, String vaccineName, Boolean status) {
+	public ChildVaccineDetail1(String defaultReceivingAge, String vaccineName, Boolean status,String sctCode, String sctTerm) {
 		super();
 		this.defaultReceivingAge = defaultReceivingAge;
 		this.vaccineName = vaccineName;
 		this.status = status;
+		this.sctCode = sctCode;
+		this.sctTerm = sctTerm;
 	}
 
 	public ChildVaccineDetail1(Date createdDate, String defaultReceivingAge, String vaccineName, Boolean status) {
