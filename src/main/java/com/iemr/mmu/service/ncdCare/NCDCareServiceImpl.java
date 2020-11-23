@@ -915,6 +915,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 			obstetricSuccessFlag = 1;
 		}
 
+		// update immunization history
 		if (historyOBJ != null && historyOBJ.has("immunizationHistory")
 				&& !historyOBJ.get("immunizationHistory").isJsonNull()) {
 
