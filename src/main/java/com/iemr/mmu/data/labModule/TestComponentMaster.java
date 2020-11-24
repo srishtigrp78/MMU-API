@@ -71,6 +71,17 @@ public class TestComponentMaster {
 	@Expose
 	@Column(name = "Loinc_Num")
 	private String lionicNum;
+	@Expose
+	@Column(name = "loinc_Component")
+	private String lionicTerm;
+	public String getLionicTerm() {
+		return lionicTerm;
+	}
+
+	public void setLionicTerm(String lionicTerm) {
+		this.lionicTerm = lionicTerm;
+	}
+
 	public String getLionicNum() {
 		return lionicNum;
 	}

@@ -58,16 +58,26 @@ public class DiseaseType {
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
 
-	public DiseaseType(Short diseaseTypeID, String diseaseType) {
+	@Expose
+	@Column(name = "Sctcode")
+	private String snomedCode;
+
+	@Expose
+	@Column(name = "SctTerm")
+	private String snomedTerm;
+	
+	public DiseaseType(Short diseaseTypeID, String diseaseType, String snomedCode, String snomedTerm) {
 		super();
 		this.diseaseTypeID = diseaseTypeID;
 		this.diseaseType = diseaseType;
+		this.snomedCode = snomedCode;
+		this.snomedTerm = snomedTerm;
 	}
 
 	public static ArrayList<DiseaseType> getDiseaseTypes(ArrayList<Object[]> resList) {
 		ArrayList<DiseaseType> resArray = new ArrayList<DiseaseType>();
 		for (Object[] obj : resList) {
-			DiseaseType cOBJ = new DiseaseType((Short) obj[0], (String) obj[1]);
+			DiseaseType cOBJ = new DiseaseType((Short) obj[0], (String) obj[1], (String) obj[2], (String) obj[3]);
 			resArray.add(cOBJ);
 		}
 		return resArray;
