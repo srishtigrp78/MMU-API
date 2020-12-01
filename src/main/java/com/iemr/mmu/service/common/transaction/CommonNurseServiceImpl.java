@@ -2025,7 +2025,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		Integer r = 0;
 		int delRes = 0;
 		if (null != benAllergyHistory) {
-
+			
 			ArrayList<Object[]> benAllergyHistoryStatuses = benAllergyHistoryRepo.getBenAllergyHistoryStatus(
 					benAllergyHistory.getBeneficiaryRegID(), benAllergyHistory.getVisitCode());
 
