@@ -496,6 +496,8 @@ public class BenFamilyHistory {
 				familyDisease.put("diseaseTypeID", familyDetails.getDiseaseTypeID());
 				familyDisease.put("diseaseType", familyDetails.getDiseaseType());
 				familyDisease.put("otherDiseaseType", familyDetails.getOtherDiseaseType());
+				familyDisease.put("snomedCode", familyDetails.getSnomedCode());
+				familyDisease.put("snomedTerm", familyDetails.getSnomedTerm());
 
 				if (null != familyDetails.getFamilyMember()) {
 					String[] familyMembers = familyDetails.getFamilyMember().split(",");
