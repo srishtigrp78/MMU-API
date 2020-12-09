@@ -3478,4 +3478,21 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		return returnOBJ;
 	}
+
+	public int updateBenFamilyHistoryNCDScreening(BenFamilyHistory benFamilyHistory) {
+		// TODO Auto-generated method stub
+		int familyHistorySuccessFlag = 0;
+
+		ArrayList<BenFamilyHistory> familyHistoryList = benFamilyHistory.getBenFamilyHistory();
+		if (familyHistoryList.size() > 0) {
+			ArrayList<BenFamilyHistory> res = (ArrayList<BenFamilyHistory>) benFamilyHistoryRepo
+					.save(familyHistoryList);
+			if (familyHistoryList.size() == res.size()) {
+				familyHistorySuccessFlag = 1;
+			}
+		} else {
+			familyHistorySuccessFlag = 0;
+		}
+		return familyHistorySuccessFlag;
+	}
 }

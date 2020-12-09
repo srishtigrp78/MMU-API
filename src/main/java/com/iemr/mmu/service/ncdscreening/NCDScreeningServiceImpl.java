@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.iemr.mmu.data.anc.BenFamilyHistory;
 import com.iemr.mmu.data.ncdScreening.NCDScreening;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
@@ -237,6 +238,28 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		Long visitCount = beneficiaryFlowStatusRepo.getNcdScreeningVisitCount(beneficiaryRegID);
 		returnMap.put("ncdScreeningVisitCount", visitCount + 1);
 		return new Gson().toJson(returnMap);
+	}
+
+	@Override
+	public Integer UpdateNCDScreeningHistory(JsonObject historyOBJ) throws Exception {
+
+		int familyHistorySuccessFlag = 0;
+		int historyUpdatedSuccessfully = 0;
+
+		// Update Family History
+		if (historyOBJ != null && historyOBJ.has("familyHistory") && !historyOBJ.get("familyHistory").isJsonNull()) {
+			BenFamilyHistory benFamilyHistory = InputMapper.gson().fromJson(historyOBJ.get("familyHistory"),
+					BenFamilyHistory.class);
+
+			familyHistorySuccessFlag = commonNurseServiceImpl.updateBenFamilyHistoryNCDScreening(benFamilyHistory);
+		} else {
+			familyHistorySuccessFlag = 0;
+		}
+
+		if(familyHistorySuccessFlag > 0) {
+			historyUpdatedSuccessfully = 1;
+		}
+		return historyUpdatedSuccessfully;
 	}
 
 }
