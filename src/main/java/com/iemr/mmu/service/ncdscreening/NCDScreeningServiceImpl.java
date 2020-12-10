@@ -765,28 +765,26 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 	}
 	
 	public String getBenHistoryDetails(Long benRegID, Long visitCode) {
-		Map<String, Object> HistoryDetailsMap = new HashMap<String, Object>();
+		Map<String, Object> HistoryDetailsMap = new HashMap<>();
 
-		HistoryDetailsMap.put("PastHistory", commonNurseServiceImpl.getPastHistoryData(benRegID, visitCode));
-		HistoryDetailsMap.put("ComorbidityConditions",
-				commonNurseServiceImpl.getComorbidityConditionsHistory(benRegID, visitCode));
-		HistoryDetailsMap.put("MedicationHistory", commonNurseServiceImpl.getMedicationHistory(benRegID, visitCode));
-		HistoryDetailsMap.put("PersonalHistory", commonNurseServiceImpl.getPersonalHistory(benRegID, visitCode));
-		HistoryDetailsMap.put("FamilyHistory", commonNurseServiceImpl.getFamilyHistory(benRegID, visitCode));
-		HistoryDetailsMap.put("MenstrualHistory", commonNurseServiceImpl.getMenstrualHistory(benRegID, visitCode));
-		HistoryDetailsMap.put("FemaleObstetricHistory",
-				commonNurseServiceImpl.getFemaleObstetricHistory(benRegID, visitCode));
-		HistoryDetailsMap.put("ImmunizationHistory",
-				commonNurseServiceImpl.getImmunizationHistory(benRegID, visitCode));
-		HistoryDetailsMap.put("childOptionalVaccineHistory",
-				commonNurseServiceImpl.getChildOptionalVaccineHistory(benRegID, visitCode));
+		
+		HistoryDetailsMap.put("FamilyHistory", commonNurseServiceImpl.getFamilyHistoryDetail(benRegID, visitCode));
+		HistoryDetailsMap.put("PhysicalHistory", commonNurseServiceImpl.getPhysicalActivityType(benRegID, visitCode));
+		
 
-		HistoryDetailsMap.put("DevelopmentHistory", commonNurseServiceImpl.getDevelopmentHistory(benRegID, visitCode));
-		HistoryDetailsMap.put("PerinatalHistory", commonNurseServiceImpl.getPerinatalHistory(benRegID, visitCode));
-		HistoryDetailsMap.put("FeedingHistory", commonNurseServiceImpl.getFeedingHistory(benRegID, visitCode));
-
-		return new Gson().toJson(HistoryDetailsMap);
+		return HistoryDetailsMap.toString();
 	}
+	
+	public String getBenIdrsDetailsFrmNurse(Long beneficiaryRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("IDRSDetail",
+				commonNurseServiceImpl.getBeneficiaryIdrsDetails(beneficiaryRegID, benVisitID));
+		
+
+		return resMap.toString();
+	}
+
 
 	
 	public String getBeneficiaryVitalDetails(Long beneficiaryRegID, Long benVisitID) {
