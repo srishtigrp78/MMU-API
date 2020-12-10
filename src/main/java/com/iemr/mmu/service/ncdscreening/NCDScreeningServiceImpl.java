@@ -470,6 +470,8 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 					IDRSData[] ar=idrsDetail.getQuestionArray();
 					for(int i=0;i<ar.length;i++)
 					{
+						 idrsDetail = InputMapper.gson().fromJson(idrsDetailsOBJ,
+								IDRSData.class);
 						idrsDetail.setIdrsQuestionID(ar[i].getIdrsQuestionID());
 						idrsDetail.setAnswer(ar[i].getAnswer());
 						idrsDetail.setQuestion(ar[i].getQuestion());
