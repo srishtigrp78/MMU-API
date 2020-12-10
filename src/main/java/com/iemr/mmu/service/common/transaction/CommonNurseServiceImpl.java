@@ -3589,6 +3589,11 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 //			if (familyHistoryList.size() == res.size()) {
 //				familyHistorySuccessFlag = 1;
 //			}
+		if(physicalActivityType.getID() != null) 
+			physicalActivityType.setProcessed("U");
+		else
+			physicalActivityType.setProcessed("N");
+		physicalActivityType.setDeleted(false);
 		PhysicalActivityType physicalActivityTypeRes = physicalActivityTypeRepo
 				.save(physicalActivityType);
 		if(physicalActivityTypeRes != null) {

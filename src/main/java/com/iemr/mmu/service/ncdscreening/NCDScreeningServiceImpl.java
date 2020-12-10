@@ -834,7 +834,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		
 		//Update Physical Activity
 		if (historyOBJ != null && historyOBJ.has("physicalActivityHistory") && !historyOBJ.get("physicalActivityHistory").isJsonNull()) {
-			PhysicalActivityType physicalActivityType = InputMapper.gson().fromJson(historyOBJ.get("familyHistory"),
+			PhysicalActivityType physicalActivityType = InputMapper.gson().fromJson(historyOBJ.get("physicalActivityHistory"),
 					PhysicalActivityType.class);
 			
 			physicalActivitySuccessFlag = commonNurseServiceImpl.updateBenPhysicalActivityHistoryNCDScreening(physicalActivityType);
