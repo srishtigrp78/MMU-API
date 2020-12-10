@@ -46,6 +46,8 @@ import com.iemr.mmu.data.anc.WrapperFemaleObstetricHistory;
 import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
+import com.iemr.mmu.data.ncdScreening.IDRSData;
+import com.iemr.mmu.data.ncdScreening.PhysicalActivityType;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
@@ -83,6 +85,8 @@ import com.iemr.mmu.repo.nurse.anc.SysGastrointestinalExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.SysGenitourinarySystemExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.SysMusculoskeletalSystemExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.SysRespiratoryExaminationRepo;
+import com.iemr.mmu.repo.nurse.ncdscreening.IDRSDataRepo;
+import com.iemr.mmu.repo.nurse.ncdscreening.PhysicalActivityTypeRepo;
 import com.iemr.mmu.repo.quickConsultation.BenChiefComplaintRepo;
 import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
@@ -172,7 +176,10 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	private BenCancerVitalDetailRepo benCancerVitalDetailRepo;
 	@Autowired
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
-
+	 @Autowired
+	    private IDRSDataRepo iDrsDataRepo;
+	    @Autowired
+	    private PhysicalActivityTypeRepo physicalActivityaRepo;
 	public Integer updateBeneficiaryStatus(Character c, Long benRegID) {
 		Integer i = registrarRepoBenData.updateBenFlowStatus(c, benRegID);
 		return i;
@@ -723,7 +730,20 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		}
 		return r;
 	}
-
+	public Long saveIDRS(IDRSData idrsDetail) {
+		IDRSData response = iDrsDataRepo.save(idrsDetail);
+		if (response != null)
+			return response.getId();
+		else
+			return null;
+	}
+	public Long savePhysicalActivity(PhysicalActivityType physicalActivityDetail) {
+		PhysicalActivityType response = physicalActivityaRepo.save(physicalActivityDetail);
+		if (response != null)
+			return response.getpAID();
+		else
+			return null;
+	}
 	public int updateANCPhysicalVitalDetails(BenPhysicalVitalDetail physicalVitalDetail) {
 		Integer r = 0;
 		if (null != physicalVitalDetail) {
