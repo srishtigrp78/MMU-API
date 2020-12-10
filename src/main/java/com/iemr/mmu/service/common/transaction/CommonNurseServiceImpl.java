@@ -1666,18 +1666,21 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		return familyHistoryDetails;
 	}
 	
-	public String getFamilyHistoryDetail(Long beneficiaryRegID, Long visitCode) {
-		BenFamilyHistory familyHistory = benFamilyHistoryRepo.getBenFamilyHistoryDetails(beneficiaryRegID, visitCode);
-		
+	public BenFamilyHistory getFamilyHistoryDetail(Long beneficiaryRegID, Long visitCode) {
+//		BenFamilyHistory familyHistory = benFamilyHistoryRepo.getBenFamilyHistoryDetails(beneficiaryRegID, visitCode);
+//		
+//
+//		return new Gson().toJson(familyHistory);
+		ArrayList<Object[]> familyHistory = benFamilyHistoryRepo.getBenFamilyHisDetail(beneficiaryRegID, visitCode);
+		BenFamilyHistory familyHistoryDetails = BenFamilyHistory.getBenFamilyHist(familyHistory);
 
-		return new Gson().toJson(familyHistory);
-		
+		return familyHistoryDetails;
 		
 	}
 	
-	public String getPhysicalActivityType(Long beneficiaryRegID, Long visitCode) {
+	public PhysicalActivityType getPhysicalActivityType(Long beneficiaryRegID, Long visitCode) {
 		PhysicalActivityType phyHistory = physicalActivityTypeRepo.getBenPhysicalHistoryDetails(beneficiaryRegID, visitCode);
-		return new Gson().toJson(phyHistory);
+		return phyHistory;
 		
 	}
 	

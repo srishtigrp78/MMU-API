@@ -765,14 +765,15 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 	}
 	
 	public String getBenHistoryDetails(Long benRegID, Long visitCode) {
-		Map<String, Object> HistoryDetailsMap = new HashMap<>();
+		
+		Map<String, Object> HistoryDetailsMap = new HashMap<String, Object>();
 
 		
 		HistoryDetailsMap.put("FamilyHistory", commonNurseServiceImpl.getFamilyHistoryDetail(benRegID, visitCode));
-		HistoryDetailsMap.put("PhysicalHistory", commonNurseServiceImpl.getPhysicalActivityType(benRegID, visitCode));
+		HistoryDetailsMap.put("PhysicalActivityHistory", commonNurseServiceImpl.getPhysicalActivityType(benRegID, visitCode));
 		
 
-		return HistoryDetailsMap.toString();
+		return new Gson().toJson(HistoryDetailsMap);
 	}
 	
 	public String getBenIdrsDetailsFrmNurse(Long beneficiaryRegID, Long benVisitID) {
