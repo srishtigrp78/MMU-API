@@ -508,7 +508,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 			PhysicalActivityType physicalActivityDetail = InputMapper.gson().fromJson(physicalActivityDetailsOBJ,
 					PhysicalActivityType.class);
 
-			if (null != physicalActivityDetail && physicalActivityDetail.getActivityType() !=null && physicalActivityDetail.getPhysicalActivityType() != null) {
+			if (null != physicalActivityDetail && (physicalActivityDetail.getActivityType() !=null || physicalActivityDetail.getPhysicalActivityType() != null)) {
 				physicalActivityDetail.setBenVisitID(benVisitID);
 				physicalActivityDetail.setVisitCode(benVisitCode);
 				physicalActivityFlag = commonNurseServiceImpl
@@ -807,6 +807,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 
 		int familyHistorySuccessFlag = 0;
 		int historyUpdatedSuccessfully = 0;
+		int physicalActivitySuccessFlag = 0;
 
 		// Update Family History
 		if (historyOBJ != null && historyOBJ.has("familyHistory") && !historyOBJ.get("familyHistory").isJsonNull()) {
@@ -817,8 +818,19 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		} else {
 			familyHistorySuccessFlag = 0;
 		}
+		
+		//Update Physical Activity
+		if (historyOBJ != null && historyOBJ.has("physicalActivityHistory") && !historyOBJ.get("physicalActivityHistory").isJsonNull()) {
+			PhysicalActivityType physicalActivityType = InputMapper.gson().fromJson(historyOBJ.get("familyHistory"),
+					PhysicalActivityType.class);
+			
+			physicalActivitySuccessFlag = commonNurseServiceImpl.updateBenPhysicalActivityHistoryNCDScreening(physicalActivityType);
+		}else {
+			physicalActivitySuccessFlag = 0;
+		}
+		
 
-		if(familyHistorySuccessFlag > 0) {
+		if(familyHistorySuccessFlag > 0 && physicalActivitySuccessFlag > 0) {
 			historyUpdatedSuccessfully = 1;
 		}
 		return historyUpdatedSuccessfully;
