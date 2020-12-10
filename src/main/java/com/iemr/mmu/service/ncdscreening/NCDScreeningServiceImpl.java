@@ -463,7 +463,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		if (idrsDetailsOBJ != null) {
 			IDRSData idrsDetail = InputMapper.gson().fromJson(idrsDetailsOBJ,
 					IDRSData.class);
-
+            String temp=""; 
 			if (null != idrsDetail) {
 				if(idrsDetail.getQuestionArray()!=null && idrsDetail.getQuestionArray().length>0)
 				{
@@ -477,7 +477,18 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 						idrsDetail.setBenVisitID(benVisitID);
 						idrsDetail.setVisitCode(benVisitCode);
 						if(idrsDetail.getSuspectArray()!=null)
-						idrsDetail.setSuspectedDisease(idrsDetail.getSuspectArray().toString());
+						{
+							for(int a=0;a<idrsDetail.getSuspectArray().length;a++)
+					    	{
+					    		if(a==idrsDetail.getSuspectArray().length-1)
+					    		temp+=idrsDetail.getSuspectArray()[a];
+					    		else
+					    		temp=temp+idrsDetail.getSuspectArray()[a]+",";
+					    	}
+							if(temp.equalsIgnoreCase(""))
+								temp=null;
+							idrsDetail.setSuspectedDisease(temp);
+						}
 						idrsFlag = commonNurseServiceImpl
 								.saveIDRS(idrsDetail);
 					}
