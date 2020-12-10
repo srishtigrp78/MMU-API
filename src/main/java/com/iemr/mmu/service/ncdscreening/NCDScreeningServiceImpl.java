@@ -508,7 +508,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 			PhysicalActivityType physicalActivityDetail = InputMapper.gson().fromJson(physicalActivityDetailsOBJ,
 					PhysicalActivityType.class);
 
-			if (null != physicalActivityDetail) {
+			if (null != physicalActivityDetail && physicalActivityDetail.getActivityType() !=null && physicalActivityDetail.getPhysicalActivityType() != null) {
 				physicalActivityDetail.setBenVisitID(benVisitID);
 				physicalActivityDetail.setVisitCode(benVisitCode);
 				physicalActivityFlag = commonNurseServiceImpl
@@ -767,14 +767,15 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 	}
 	
 	public String getBenHistoryDetails(Long benRegID, Long visitCode) {
-		Map<String, Object> HistoryDetailsMap = new HashMap<>();
+		
+		Map<String, Object> HistoryDetailsMap = new HashMap<String, Object>();
 
 		
 		HistoryDetailsMap.put("FamilyHistory", commonNurseServiceImpl.getFamilyHistoryDetail(benRegID, visitCode));
-		HistoryDetailsMap.put("PhysicalHistory", commonNurseServiceImpl.getPhysicalActivityType(benRegID, visitCode));
+		HistoryDetailsMap.put("PhysicalActivityHistory", commonNurseServiceImpl.getPhysicalActivityType(benRegID, visitCode));
 		
 
-		return HistoryDetailsMap.toString();
+		return new Gson().toJson(HistoryDetailsMap);
 	}
 	
 	public String getBenIdrsDetailsFrmNurse(Long beneficiaryRegID, Long benVisitID) {
