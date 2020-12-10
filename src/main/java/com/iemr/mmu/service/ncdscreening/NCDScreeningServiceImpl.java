@@ -752,6 +752,54 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		returnMap.put("ncdScreeningVisitCount", visitCount + 1);
 		return new Gson().toJson(returnMap);
 	}
+	
+	/// --------------- Start of Fetching NCD Screening Nurse Data ----------------
+	public String getBenVisitDetailsFrmNurseNCDScreening(Long benRegID, Long visitCode) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		BeneficiaryVisitDetail visitDetail = commonNurseServiceImpl.getCSVisitDetails(benRegID, visitCode);
+
+		resMap.put("NCDScreeningNurseVisitDetail", new Gson().toJson(visitDetail));
+
+		resMap.put("BenChiefComplaints", commonNurseServiceImpl.getBenChiefComplaints(benRegID, visitCode));
+
+		return resMap.toString();
+	}
+	
+	public String getBenHistoryDetails(Long benRegID, Long visitCode) {
+		Map<String, Object> HistoryDetailsMap = new HashMap<>();
+
+		
+		HistoryDetailsMap.put("FamilyHistory", commonNurseServiceImpl.getFamilyHistoryDetail(benRegID, visitCode));
+		HistoryDetailsMap.put("PhysicalHistory", commonNurseServiceImpl.getPhysicalActivityType(benRegID, visitCode));
+		
+
+		return HistoryDetailsMap.toString();
+	}
+	
+	public String getBenIdrsDetailsFrmNurse(Long beneficiaryRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("IDRSDetail",
+				commonNurseServiceImpl.getBeneficiaryIdrsDetails(beneficiaryRegID, benVisitID));
+		
+
+		return resMap.toString();
+	}
+
+
+	
+	public String getBeneficiaryVitalDetails(Long beneficiaryRegID, Long benVisitID) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("benAnthropometryDetail",
+				commonNurseServiceImpl.getBeneficiaryPhysicalAnthropometryDetails(beneficiaryRegID, benVisitID));
+		resMap.put("benPhysicalVitalDetail",
+				commonNurseServiceImpl.getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, benVisitID));
+
+		return resMap.toString();
+	}
+
 
 	@Override
 	public Integer UpdateNCDScreeningHistory(JsonObject historyOBJ) throws Exception {

@@ -176,10 +176,12 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	private BenCancerVitalDetailRepo benCancerVitalDetailRepo;
 	@Autowired
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
+	@Autowired
+	private PhysicalActivityTypeRepo physicalActivityTypeRepo;
+	
 	 @Autowired
-	    private IDRSDataRepo iDrsDataRepo;
-	    @Autowired
-	    private PhysicalActivityTypeRepo physicalActivityaRepo;
+	    private IDRSDataRepo iDRSDataRepo;
+	 
 	public Integer updateBeneficiaryStatus(Character c, Long benRegID) {
 		Integer i = registrarRepoBenData.updateBenFlowStatus(c, benRegID);
 		return i;
@@ -731,14 +733,14 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		return r;
 	}
 	public Long saveIDRS(IDRSData idrsDetail) {
-		IDRSData response = iDrsDataRepo.save(idrsDetail);
+		IDRSData response = iDRSDataRepo.save(idrsDetail);
 		if (response != null)
 			return response.getId();
 		else
 			return null;
 	}
 	public Long savePhysicalActivity(PhysicalActivityType physicalActivityDetail) {
-		PhysicalActivityType response = physicalActivityaRepo.save(physicalActivityDetail);
+		PhysicalActivityType response = physicalActivityTypeRepo.save(physicalActivityDetail);
 		if (response != null)
 			return response.getpAID();
 		else
@@ -1251,6 +1253,43 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		return new Gson().toJson(response);
 
 	}
+	
+	public String fetchBenPhysicalHistory(Long beneficiaryRegID) {
+		ArrayList<Object[]> benPhysicalHistory = physicalActivityTypeRepo.getBenPhysicalHistoryDetail(beneficiaryRegID);
+
+		Map<String, Object> response = new HashMap<String, Object>();
+		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
+		Map<String, Object> column = new HashMap<String, Object>();
+
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "captureDate");
+		columns.add(column);
+		
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Activity Type");
+		column.put("keyName", "activityType");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Physical Activity Type");
+		column.put("keyName", "physicalActivityType");
+		columns.add(column);
+		
+		ArrayList<PhysicalActivityType> familyHistory = new ArrayList<PhysicalActivityType>();
+		if (null != benPhysicalHistory) {
+			for (Object[] obj : benPhysicalHistory) {
+				PhysicalActivityType phyhistory = new PhysicalActivityType((Date) obj[0], (String) obj[1], (String) obj[2]);
+				familyHistory.add(phyhistory);
+			}
+		}
+		
+		response.put("columns", columns);
+		response.put("data", familyHistory);
+		return new Gson().toJson(response);
+
+	}
+
 
 	public String fetchBenMenstrualHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> benMenstrualDetails = benMenstrualDetailsRepo.getBenMenstrualDetail(beneficiaryRegID);
@@ -1625,6 +1664,27 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		BenFamilyHistory familyHistoryDetails = BenFamilyHistory.getBenFamilyHistory(familyHistory);
 
 		return familyHistoryDetails;
+	}
+	
+	public String getFamilyHistoryDetail(Long beneficiaryRegID, Long visitCode) {
+		BenFamilyHistory familyHistory = benFamilyHistoryRepo.getBenFamilyHistoryDetails(beneficiaryRegID, visitCode);
+		
+
+		return new Gson().toJson(familyHistory);
+		
+		
+	}
+	
+	public String getPhysicalActivityType(Long beneficiaryRegID, Long visitCode) {
+		PhysicalActivityType phyHistory = physicalActivityTypeRepo.getBenPhysicalHistoryDetails(beneficiaryRegID, visitCode);
+		return new Gson().toJson(phyHistory);
+		
+	}
+	
+	public String getBeneficiaryIdrsDetails(Long beneficiaryRegID, Long visitCode) {
+		IDRSData idrsDetail = iDRSDataRepo.getBenIdrsDetails(beneficiaryRegID,
+				visitCode);
+		return new Gson().toJson(idrsDetail);
 	}
 
 	public BenMenstrualDetails getMenstrualHistory(Long beneficiaryRegID, Long visitCode) {

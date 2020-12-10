@@ -143,6 +143,14 @@ public class ItemMaster {
 	@Transient
 	private String unitOfMeasurement;
 	
+	@Expose
+	@Column(name = "Sctcode")
+	private String sctCode;
+	
+	@Expose
+	@Column(name = "SctTerm")
+	private String sctTerm;
+	
 //	@Transient
 //	private OutputMapper outputMapper = new OutputMapper();
 //
