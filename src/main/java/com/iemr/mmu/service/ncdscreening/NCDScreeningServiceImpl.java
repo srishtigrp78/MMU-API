@@ -506,7 +506,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 			PhysicalActivityType physicalActivityDetail = InputMapper.gson().fromJson(physicalActivityDetailsOBJ,
 					PhysicalActivityType.class);
 
-			if (null != physicalActivityDetail) {
+			if (null != physicalActivityDetail && physicalActivityDetail.getActivityType() !=null && physicalActivityDetail.getPhysicalActivityType() != null) {
 				physicalActivityDetail.setBenVisitID(benVisitID);
 				physicalActivityDetail.setVisitCode(benVisitCode);
 				physicalActivityFlag = commonNurseServiceImpl
