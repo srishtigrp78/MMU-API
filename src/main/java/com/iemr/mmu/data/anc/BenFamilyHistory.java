@@ -551,10 +551,11 @@ public class BenFamilyHistory {
 			List<Map<String, Object>> familyDiseaseList = new ArrayList<Map<String, Object>>();
 
 			for (Object[] obj : familyHistory) {
-				BenFamilyHistory familyDetails = new BenFamilyHistory((String) obj[4], (Short) obj[5], (String) obj[6],
+				BenFamilyHistory familyDetails = new BenFamilyHistory((Long) obj[0],(String) obj[4], (Short) obj[5], (String) obj[6],
 						(String) obj[7], (String) obj[12], (String) obj[13]);
 
 				Map<String, Object> familyDisease = new HashMap<String, Object>();
+				familyDisease.put("ID", familyDetails.getID());
 				familyDisease.put("diseaseTypeID", familyDetails.getDiseaseTypeID());
 				familyDisease.put("diseaseType", familyDetails.getDiseaseType());
 				familyDisease.put("otherDiseaseType", familyDetails.getOtherDiseaseType());
