@@ -1,6 +1,7 @@
 package com.iemr.mmu.service.ncdscreening;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.BenFamilyHistory;
@@ -23,6 +25,8 @@ import com.iemr.mmu.data.anc.BenMenstrualDetails;
 import com.iemr.mmu.data.anc.BenPersonalHabit;
 import com.iemr.mmu.data.anc.ChildFeedingDetails;
 import com.iemr.mmu.data.anc.PerinatalHistory;
+import com.iemr.mmu.data.anc.WrapperAncFindings;
+import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.anc.WrapperChildOptionalVaccineDetail;
 import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
 import com.iemr.mmu.data.anc.WrapperFemaleObstetricHistory;
@@ -36,11 +40,20 @@ import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
+import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
+import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
+import com.iemr.mmu.data.tele_consultation.TCRequestModel;
+import com.iemr.mmu.data.tele_consultation.TcSpecialistSlotBookingRequestOBJ;
 import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
+import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
+import com.iemr.mmu.service.anc.Utility;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
+import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
+import com.iemr.mmu.service.labtechnician.LabTechnicianServiceImpl;
+import com.iemr.mmu.service.tele_consultation.TeleConsultationServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
@@ -50,9 +63,23 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
+	private CommonDoctorServiceImpl commonDoctorServiceImpl;
+	private LabTechnicianServiceImpl labTechnicianServiceImpl;
+	
+	@Autowired
+	private PrescriptionDetailRepo prescriptionDetailRepo;
+	
+	@Autowired
+	private TeleConsultationServiceImpl teleConsultationServiceImpl;
 
 	@Autowired
 	private BenVisitDetailRepo benVisitDetailRepo;
+	
+	@Autowired
+	public void setLabTechnicianServiceImpl(LabTechnicianServiceImpl labTechnicianServiceImpl) {
+		this.labTechnicianServiceImpl = labTechnicianServiceImpl;
+	}
+
 
 	@Autowired
 	public void setBeneficiaryFlowStatusRepo(BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo) {
@@ -72,6 +99,11 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 	@Autowired
 	public void setNcdScreeningNurseServiceImpl(NCDScreeningNurseServiceImpl ncdScreeningNurseServiceImpl) {
 		this.ncdScreeningNurseServiceImpl = ncdScreeningNurseServiceImpl;
+	}
+	
+	@Autowired
+	public void setCommonDoctorServiceImpl(CommonDoctorServiceImpl commonDoctorServiceImpl) {
+		this.commonDoctorServiceImpl = commonDoctorServiceImpl;
 	}
 
 	@Override
@@ -932,6 +964,231 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		return idrsFlag;
 
         
+	}
+
+	@Transactional(rollbackFor = Exception.class)
+	public Long saveDoctorData(JsonObject requestOBJ, String Authorization) throws Exception {
+		Long saveSuccessFlag = null;
+		Long prescriptionID = null;
+		Long investigationSuccessFlag = null;
+		Integer findingSuccessFlag = null;
+		Integer prescriptionSuccessFlag = null;
+		Long referSaveSuccessFlag = null;
+		Integer tcRequestStatusFlag = null;
+
+		if (requestOBJ != null) {
+			TeleconsultationRequestOBJ tcRequestOBJ = null;
+			TcSpecialistSlotBookingRequestOBJ tcSpecialistSlotBookingRequestOBJ = null;
+			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
+
+			if (commonUtilityClass != null && commonUtilityClass.getServiceID() != null
+					&& commonUtilityClass.getServiceID() == 4 && requestOBJ != null && requestOBJ.has("tcRequest")
+					&& requestOBJ.get("tcRequest") != null) {
+				tcRequestOBJ = InputMapper.gson().fromJson(requestOBJ.get("tcRequest"),
+						TeleconsultationRequestOBJ.class);
+
+				// create TC request
+				if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null && tcRequestOBJ.getUserID() > 0
+						&& tcRequestOBJ.getAllocationDate() != null) {
+
+					tcRequestOBJ.setAllocationDate(Utility.combineDateAndTimeToDateTime(
+							tcRequestOBJ.getAllocationDate().toString(), tcRequestOBJ.getFromTime()));
+
+					// tc request model
+					TCRequestModel tRequestModel = InputMapper.gson().fromJson(requestOBJ, TCRequestModel.class);
+					tRequestModel.setUserID(tcRequestOBJ.getUserID());
+					tRequestModel.setRequestDate(tcRequestOBJ.getAllocationDate());
+					tRequestModel
+							.setDuration_minute(Utility.timeDiff(tcRequestOBJ.getFromTime(), tcRequestOBJ.getToTime()));
+
+					// tc speciaist slot booking model
+					tcSpecialistSlotBookingRequestOBJ = new TcSpecialistSlotBookingRequestOBJ();
+					tcSpecialistSlotBookingRequestOBJ.setUserID(tRequestModel.getUserID());
+					tcSpecialistSlotBookingRequestOBJ.setDate(tRequestModel.getRequestDate());
+					tcSpecialistSlotBookingRequestOBJ.setFromTime(tcRequestOBJ.getFromTime());
+					tcSpecialistSlotBookingRequestOBJ.setToTime(tcRequestOBJ.getToTime());
+					tcSpecialistSlotBookingRequestOBJ.setCreatedBy(commonUtilityClass.getCreatedBy());
+					tcSpecialistSlotBookingRequestOBJ.setModifiedBy(commonUtilityClass.getCreatedBy());
+
+					int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
+							Authorization);
+					if (j > 0)
+						tcRequestStatusFlag = teleConsultationServiceImpl.createTCRequest(tRequestModel);
+					else
+						throw new RuntimeException("Error while booking slot.");
+
+				}
+			}
+
+			JsonArray testList = null;
+			JsonArray drugList = null;
+
+			Boolean isTestPrescribed = false;
+			Boolean isMedicinePrescribed = false;
+
+			// checking if test is prescribed
+			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull()
+					&& requestOBJ.get("investigation") != null) {
+				testList = requestOBJ.getAsJsonObject("investigation").getAsJsonArray("laboratoryList");
+				if (testList != null && !testList.isJsonNull() && testList.size() > 0)
+					isTestPrescribed = true;
+			}
+
+			// checking if medicine is prescribed
+			if (requestOBJ.has("prescription") && !requestOBJ.get("prescription").isJsonNull()
+					&& requestOBJ.get("prescription") != null) {
+				drugList = requestOBJ.getAsJsonArray("prescription");
+				if (drugList != null && !drugList.isJsonNull() && drugList.size() > 0) {
+					isMedicinePrescribed = true;
+				}
+			}
+
+			// save findings
+			if (requestOBJ.has("findings") && !requestOBJ.get("findings").isJsonNull()) {
+				WrapperAncFindings wrapperNCDScreeningFindings = InputMapper.gson().fromJson(requestOBJ.get("findings"),WrapperAncFindings.class);
+				findingSuccessFlag = commonDoctorServiceImpl.saveDocFindings(wrapperNCDScreeningFindings);
+
+			} else {
+				findingSuccessFlag = 1;
+			}
+			// save doctor diagnosis
+			String doctorDiagnosis = null;
+			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()
+					&& requestOBJ.get("diagnosis").getAsJsonObject().has("doctorDiagnosis")
+					&& !requestOBJ.get("diagnosis").getAsJsonObject().get("doctorDiagnosis").isJsonNull()) {
+				doctorDiagnosis = requestOBJ.get("diagnosis").getAsJsonObject().get("doctorDiagnosis").getAsString();
+			}
+
+			
+			// generate prescription
+			WrapperBenInvestigationANC wrapperBenInvestigationNCDScreening = InputMapper.gson()
+					.fromJson(requestOBJ.get("investigation"), WrapperBenInvestigationANC.class);
+			prescriptionID = commonNurseServiceImpl.savePrescriptionDetailsCovid19(
+					wrapperBenInvestigationNCDScreening.getBeneficiaryRegID(), wrapperBenInvestigationNCDScreening.getBenVisitID(),
+					wrapperBenInvestigationNCDScreening.getProviderServiceMapID(), wrapperBenInvestigationNCDScreening.getCreatedBy(),
+					wrapperBenInvestigationNCDScreening.getExternalInvestigations(), wrapperBenInvestigationNCDScreening.getVisitCode(),
+					wrapperBenInvestigationNCDScreening.getVanID(), wrapperBenInvestigationNCDScreening.getParkingPlaceID(),
+					doctorDiagnosis);
+
+		
+			
+			
+
+			// save prescribed lab test
+			if (isTestPrescribed) {
+				wrapperBenInvestigationNCDScreening.setPrescriptionID(prescriptionID);
+				investigationSuccessFlag = commonNurseServiceImpl.saveBenInvestigation(wrapperBenInvestigationNCDScreening);
+			} else {
+				investigationSuccessFlag = new Long(1);
+			}
+
+			// save prescribed medicine
+			if (isMedicinePrescribed) {
+				PrescribedDrugDetail[] prescribedDrugDetail = InputMapper.gson()
+						.fromJson(requestOBJ.get("prescription"), PrescribedDrugDetail[].class);
+				List<PrescribedDrugDetail> prescribedDrugDetailList = Arrays.asList(prescribedDrugDetail);
+
+				for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
+					tmpObj.setPrescriptionID(prescriptionID);
+					tmpObj.setBeneficiaryRegID(commonUtilityClass.getBeneficiaryRegID());
+					tmpObj.setBenVisitID(commonUtilityClass.getBenVisitID());
+					tmpObj.setVisitCode(commonUtilityClass.getVisitCode());
+					tmpObj.setProviderServiceMapID(commonUtilityClass.getProviderServiceMapID());
+				}
+				Integer r = commonNurseServiceImpl.saveBenPrescribedDrugsList(prescribedDrugDetailList);
+				if (r > 0 && r != null) {
+					prescriptionSuccessFlag = r;
+				}
+
+			} else {
+				prescriptionSuccessFlag = 1;
+			}
+
+			// save referral details
+			if (requestOBJ.has("refer") && !requestOBJ.get("refer").isJsonNull()) {
+				referSaveSuccessFlag = commonDoctorServiceImpl
+						.saveBenReferDetails(requestOBJ.get("refer").getAsJsonObject());
+			} else {
+				referSaveSuccessFlag = new Long(1);
+			}
+
+			// check if all requested data saved properly
+			if ((findingSuccessFlag != null && findingSuccessFlag > 0)
+					&& (investigationSuccessFlag != null && investigationSuccessFlag > 0)
+					&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)
+					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
+
+				// call method to update beneficiary flow table
+				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataSave(commonUtilityClass, isTestPrescribed,
+						isMedicinePrescribed, tcRequestOBJ);
+
+				if (i > 0) {
+
+					saveSuccessFlag = investigationSuccessFlag;
+				} else
+					throw new RuntimeException();
+			} else {
+				throw new RuntimeException();
+			}
+		} else {
+			// request OBJ is null.
+		}
+		return saveSuccessFlag;
+	}
+	/// --------------- END of saving doctor data ------------------------
+	
+	public String getBenCaseRecordFromDoctorNCDScreening(Long benRegID, Long visitCode) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, visitCode));
+
+//		resMap.put("diagnosis", ncdCareDoctorServiceImpl.getNCDCareDiagnosisDetails(benRegID, visitCode));
+		
+		resMap.put("diagnosis", getNCDDiagnosisData(benRegID, visitCode));
+
+		resMap.put("investigation", commonDoctorServiceImpl.getInvestigationDetails(benRegID, visitCode));
+
+		resMap.put("prescription", commonDoctorServiceImpl.getPrescribedDrugs(benRegID, visitCode));
+
+		resMap.put("Refer", commonDoctorServiceImpl.getReferralDetails(benRegID, visitCode));
+
+		resMap.put("LabReport",
+				new Gson().toJson(labTechnicianServiceImpl.getLabResultDataForBen(benRegID, visitCode)));
+
+		resMap.put("GraphData", new Gson().toJson(commonNurseServiceImpl.getGraphicalTrendData(benRegID, "ncdCare")));
+
+		resMap.put("ArchivedVisitcodeForLabResult",
+				labTechnicianServiceImpl.getLast_3_ArchivedTestVisitList(benRegID, visitCode));
+
+		return resMap.toString();
+	}
+	
+	private String getNCDDiagnosisData(Long benRegID, Long visitCode) {
+		Map<String, Object> diagnosisMap = new HashMap<>();
+		ArrayList<PrescriptionDetail> obj = prescriptionDetailRepo.findByBeneficiaryRegIDAndVisitCode(benRegID,
+				visitCode);
+		if (obj != null && obj.size() > 0) {
+			diagnosisMap.put("doctorDiagnonsis", obj.get(0).getDiagnosisProvided());
+			diagnosisMap.put("specialistDiagnosis", obj.get(0).getInstruction());
+			diagnosisMap.put("prescriptionID", obj.get(0).getPrescriptionID());
+			diagnosisMap.put("beneficiaryRegID", obj.get(0).getBeneficiaryRegID());
+			diagnosisMap.put("visitCode", obj.get(0).getVisitCode());
+			diagnosisMap.put("vanID", obj.get(0).getVanID());
+			diagnosisMap.put("providerServiceMapID", obj.get(0).getProviderServiceMapID());
+			diagnosisMap.put("parkingPlaceID", obj.get(0).getParkingPlaceID());
+			diagnosisMap.put("createdBy", obj.get(0).getCreatedBy());
+		} else {
+			diagnosisMap.put("doctorDiagnonsis", null);
+			diagnosisMap.put("specialistDiagnosis", null);
+			diagnosisMap.put("prescriptionID", null);
+			diagnosisMap.put("beneficiaryRegID", null);
+			diagnosisMap.put("visitCode", null);
+			diagnosisMap.put("vanID", null);
+			diagnosisMap.put("providerServiceMapID", null);
+			diagnosisMap.put("parkingPlaceID", null);
+			diagnosisMap.put("createdBy", null);
+		}
+		return new Gson().toJson(diagnosisMap);
 	}
 
 }
