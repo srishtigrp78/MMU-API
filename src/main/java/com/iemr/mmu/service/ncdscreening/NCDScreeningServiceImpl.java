@@ -823,7 +823,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 				commonNurseServiceImpl.getBeneficiaryIdrsDetails(beneficiaryRegID, benVisitID));
 		
 
-		return resMap.toString();
+		return new Gson().toJson(resMap);
 	}
 
 
