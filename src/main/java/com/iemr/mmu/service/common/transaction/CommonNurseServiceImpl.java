@@ -46,6 +46,8 @@ import com.iemr.mmu.data.anc.WrapperFemaleObstetricHistory;
 import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
+import com.iemr.mmu.data.ncdScreening.IDRSData;
+import com.iemr.mmu.data.ncdScreening.PhysicalActivityType;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
@@ -83,6 +85,8 @@ import com.iemr.mmu.repo.nurse.anc.SysGastrointestinalExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.SysGenitourinarySystemExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.SysMusculoskeletalSystemExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.SysRespiratoryExaminationRepo;
+import com.iemr.mmu.repo.nurse.ncdscreening.IDRSDataRepo;
+import com.iemr.mmu.repo.nurse.ncdscreening.PhysicalActivityTypeRepo;
 import com.iemr.mmu.repo.quickConsultation.BenChiefComplaintRepo;
 import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
@@ -172,7 +176,12 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	private BenCancerVitalDetailRepo benCancerVitalDetailRepo;
 	@Autowired
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
-
+	@Autowired
+	private PhysicalActivityTypeRepo physicalActivityTypeRepo;
+	
+	 @Autowired
+	    private IDRSDataRepo iDRSDataRepo;
+	 
 	public Integer updateBeneficiaryStatus(Character c, Long benRegID) {
 		Integer i = registrarRepoBenData.updateBenFlowStatus(c, benRegID);
 		return i;
@@ -723,7 +732,20 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		}
 		return r;
 	}
-
+	public Long saveIDRS(IDRSData idrsDetail) {
+		IDRSData response = iDRSDataRepo.save(idrsDetail);
+		if (response != null)
+			return response.getId();
+		else
+			return null;
+	}
+	public Long savePhysicalActivity(PhysicalActivityType physicalActivityDetail) {
+		PhysicalActivityType response = physicalActivityTypeRepo.save(physicalActivityDetail);
+		if (response != null)
+			return response.getpAID();
+		else
+			return null;
+	}
 	public int updateANCPhysicalVitalDetails(BenPhysicalVitalDetail physicalVitalDetail) {
 		Integer r = 0;
 		if (null != physicalVitalDetail) {
@@ -1231,6 +1253,43 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		return new Gson().toJson(response);
 
 	}
+	
+	public String fetchBenPhysicalHistory(Long beneficiaryRegID) {
+		ArrayList<Object[]> benPhysicalHistory = physicalActivityTypeRepo.getBenPhysicalHistoryDetail(beneficiaryRegID);
+
+		Map<String, Object> response = new HashMap<String, Object>();
+		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
+		Map<String, Object> column = new HashMap<String, Object>();
+
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "captureDate");
+		columns.add(column);
+		
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Activity Type");
+		column.put("keyName", "activityType");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Physical Activity Type");
+		column.put("keyName", "physicalActivityType");
+		columns.add(column);
+		
+		ArrayList<PhysicalActivityType> familyHistory = new ArrayList<PhysicalActivityType>();
+		if (null != benPhysicalHistory) {
+			for (Object[] obj : benPhysicalHistory) {
+				PhysicalActivityType phyhistory = new PhysicalActivityType((Date) obj[0], (String) obj[1], (String) obj[2]);
+				familyHistory.add(phyhistory);
+			}
+		}
+		
+		response.put("columns", columns);
+		response.put("data", familyHistory);
+		return new Gson().toJson(response);
+
+	}
+
 
 	public String fetchBenMenstrualHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> benMenstrualDetails = benMenstrualDetailsRepo.getBenMenstrualDetail(beneficiaryRegID);
@@ -1605,6 +1664,30 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		BenFamilyHistory familyHistoryDetails = BenFamilyHistory.getBenFamilyHistory(familyHistory);
 
 		return familyHistoryDetails;
+	}
+	
+	public BenFamilyHistory getFamilyHistoryDetail(Long beneficiaryRegID, Long visitCode) {
+//		BenFamilyHistory familyHistory = benFamilyHistoryRepo.getBenFamilyHistoryDetails(beneficiaryRegID, visitCode);
+//		
+//
+//		return new Gson().toJson(familyHistory);
+		ArrayList<Object[]> familyHistory = benFamilyHistoryRepo.getBenFamilyHisDetail(beneficiaryRegID, visitCode);
+		BenFamilyHistory familyHistoryDetails = BenFamilyHistory.getBenFamilyHist(familyHistory);
+
+		return familyHistoryDetails;
+		
+	}
+	
+	public PhysicalActivityType getPhysicalActivityType(Long beneficiaryRegID, Long visitCode) {
+		PhysicalActivityType phyHistory = physicalActivityTypeRepo.getBenPhysicalHistoryDetails(beneficiaryRegID, visitCode);
+		return phyHistory;
+		
+	}
+	
+	public String getBeneficiaryIdrsDetails(Long beneficiaryRegID, Long visitCode) {
+		IDRSData idrsDetail = iDRSDataRepo.getBenIdrsDetails(beneficiaryRegID,
+				visitCode);
+		return new Gson().toJson(idrsDetail);
 	}
 
 	public BenMenstrualDetails getMenstrualHistory(Long beneficiaryRegID, Long visitCode) {
@@ -3477,5 +3560,47 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		returnOBJ.put("bgList", bgList);
 
 		return returnOBJ;
+	}
+
+	public int updateBenFamilyHistoryNCDScreening(BenFamilyHistory benFamilyHistory) {
+		// TODO Auto-generated method stub
+		int familyHistorySuccessFlag = 0;
+
+		ArrayList<BenFamilyHistory> familyHistoryList = benFamilyHistory.getBenFamilyHistory();
+		if (familyHistoryList.size() > 0) {
+			ArrayList<BenFamilyHistory> res = (ArrayList<BenFamilyHistory>) benFamilyHistoryRepo
+					.save(familyHistoryList);
+			if (familyHistoryList.size() == res.size()) {
+				familyHistorySuccessFlag = 1;
+			}
+		} else {
+			familyHistorySuccessFlag = 0;
+		}
+		return familyHistorySuccessFlag;
+	}
+	public int updateBenPhysicalActivityHistoryNCDScreening(PhysicalActivityType physicalActivityType) {
+		// TODO Auto-generated method stub
+		int pysicalActivityHistorySuccessFlag = 0;
+
+//		ArrayList<BenFamilyHistory> familyHistoryList = benFamilyHistory.getBenFamilyHistory();
+//		if (familyHistoryList.size() > 0) {
+//			ArrayList<BenFamilyHistory> res = (ArrayList<BenFamilyHistory>) benFamilyHistoryRepo
+//					.save(familyHistoryList);
+//			if (familyHistoryList.size() == res.size()) {
+//				familyHistorySuccessFlag = 1;
+//			}
+		if(physicalActivityType.getID() != null) 
+			physicalActivityType.setProcessed("U");
+		else
+			physicalActivityType.setProcessed("N");
+		physicalActivityType.setDeleted(false);
+		PhysicalActivityType physicalActivityTypeRes = physicalActivityTypeRepo
+				.save(physicalActivityType);
+		if(physicalActivityTypeRes != null) {
+			pysicalActivityHistorySuccessFlag = 1;
+		} else {
+			pysicalActivityHistorySuccessFlag = 0;
+		}
+		return pysicalActivityHistorySuccessFlag;
 	}
 }
