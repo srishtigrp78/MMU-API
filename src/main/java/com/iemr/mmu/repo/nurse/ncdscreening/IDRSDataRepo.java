@@ -1,5 +1,7 @@
 package com.iemr.mmu.repo.nurse.ncdscreening;
 
+import java.util.ArrayList;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -12,4 +14,9 @@ public interface IDRSDataRepo extends CrudRepository<IDRSData, Long> {
 	@Query("select a from IDRSData a where a.beneficiaryRegID = :beneficiaryRegID and  a.visitCode = :visitCode")
 	public IDRSData getBenIdrsDetails(@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("visitCode") Long visitCode);
+	
+	@Query(" SELECT id,beneficiaryRegID, benVisitID, providerServiceMapID, idrsQuestionID, idrsScore, question, answer, "
+			+ "suspectedDisease, visitCode FROM IDRSData "
+			+ " WHERE beneficiaryRegID = :benRegID AND deleted = false AND visitCode = :visitCode")
+	public ArrayList<Object[]> getBenIdrsDetail(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 }
