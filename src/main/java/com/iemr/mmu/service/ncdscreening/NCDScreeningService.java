@@ -13,4 +13,6 @@ public interface NCDScreeningService {
 
 	public Integer UpdateNCDScreeningHistory(JsonObject requestOBJ) throws Exception;
 	
+	public Long UpdateIDRSScreen(JsonObject requestOBJ) throws Exception;
+	
 }

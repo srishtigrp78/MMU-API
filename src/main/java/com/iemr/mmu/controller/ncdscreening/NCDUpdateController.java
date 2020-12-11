@@ -146,4 +146,33 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 		return response.toString();
 	}
 	
-}
+	//Shubham Shekhar,11-12-2020,WDF
+		@CrossOrigin
+		@ApiOperation(value = "update History Data in Doctor screen", consumes = "application/json", produces = "application/json")
+		@RequestMapping(value = { "/update/idrsScreen" }, method = { RequestMethod.POST })
+		public String updateIDRSScreen(@RequestBody String requestObj) {
+
+			OutputResponse response = new OutputResponse();
+			logger.info("Request object for history data updating :" + requestObj);
+
+			JsonObject jsnOBJ = new JsonObject();
+			JsonParser jsnParser = new JsonParser();
+			JsonElement jsnElmnt = jsnParser.parse(requestObj);
+			jsnOBJ = jsnElmnt.getAsJsonObject();
+
+			try {
+				Long result = ncdScreeningService.UpdateIDRSScreen(jsnOBJ);
+				if (result!=null && result > 0) {				
+					response.setResponse("Data updated successfully");
+				} else {
+					response.setError(500, "Unable to modify data");
+				}
+				logger.info("IDRS data update Response:" + response);
+			} catch (Exception e) {
+				response.setError(5000, "Unable to modify data");
+				logger.error("Error while updating history data :" + e);
+			}
+
+			return response.toString();
+		}
+	}
