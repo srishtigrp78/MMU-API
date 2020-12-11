@@ -739,6 +739,31 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		return result;
 
 	}
+	
+	@Transactional(rollbackFor = Exception.class)
+	public int updateBenVitalDetails(JsonObject vitalDetailsOBJ) throws Exception {
+		int vitalSuccessFlag = 0;
+		int anthropometrySuccessFlag = 0;
+		int phyVitalSuccessFlag = 0;
+		// Save Physical Anthropometry && Physical Vital Details
+		if (vitalDetailsOBJ != null) {
+			BenAnthropometryDetail benAnthropometryDetail = InputMapper.gson().fromJson(vitalDetailsOBJ,
+					BenAnthropometryDetail.class);
+			BenPhysicalVitalDetail benPhysicalVitalDetail = InputMapper.gson().fromJson(vitalDetailsOBJ,
+					BenPhysicalVitalDetail.class);
+
+			anthropometrySuccessFlag = commonNurseServiceImpl.updateANCAnthropometryDetails(benAnthropometryDetail);
+			phyVitalSuccessFlag = commonNurseServiceImpl.updateANCPhysicalVitalDetails(benPhysicalVitalDetail);
+
+			if (anthropometrySuccessFlag > 0 && phyVitalSuccessFlag > 0) {
+				vitalSuccessFlag = anthropometrySuccessFlag;
+			}
+		} else {
+			vitalSuccessFlag = 1;
+		}
+
+		return vitalSuccessFlag;
+	}
 
 	@Override
 	public String getNCDScreeningDetails(Long beneficiaryRegID, Long visitCode) {
