@@ -1684,10 +1684,13 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		
 	}
 	
-	public String getBeneficiaryIdrsDetails(Long beneficiaryRegID, Long visitCode) {
-		IDRSData idrsDetail = iDRSDataRepo.getBenIdrsDetails(beneficiaryRegID,
-				visitCode);
-		return new Gson().toJson(idrsDetail);
+	
+public IDRSData getBeneficiaryIdrsDetails(Long beneficiaryRegID, Long visitCode) {
+		
+		
+		ArrayList<Object[]> idrsDetails = iDRSDataRepo.getBenIdrsDetail(beneficiaryRegID,visitCode);
+		IDRSData idrsDetail = IDRSData.getIDRSData(idrsDetails);
+		return idrsDetail;
 	}
 
 	public BenMenstrualDetails getMenstrualHistory(Long beneficiaryRegID, Long visitCode) {
