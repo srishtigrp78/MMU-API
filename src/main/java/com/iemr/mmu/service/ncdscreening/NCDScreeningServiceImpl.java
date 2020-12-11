@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.iemr.mmu.data.anc.BenFamilyHistory;
+
 import com.iemr.mmu.data.anc.BenAllergyHistory;
 import com.iemr.mmu.data.anc.BenChildDevelopmentHistory;
 import com.iemr.mmu.data.anc.BenFamilyHistory;
@@ -461,13 +463,15 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		if (idrsDetailsOBJ != null) {
 			IDRSData idrsDetail = InputMapper.gson().fromJson(idrsDetailsOBJ,
 					IDRSData.class);
-
+            String temp=""; 
 			if (null != idrsDetail) {
 				if(idrsDetail.getQuestionArray()!=null && idrsDetail.getQuestionArray().length>0)
 				{
 					IDRSData[] ar=idrsDetail.getQuestionArray();
 					for(int i=0;i<ar.length;i++)
 					{
+						 idrsDetail = InputMapper.gson().fromJson(idrsDetailsOBJ,
+								IDRSData.class);temp="";
 						idrsDetail.setIdrsQuestionID(ar[i].getIdrsQuestionID());
 						idrsDetail.setAnswer(ar[i].getAnswer());
 						idrsDetail.setQuestion(ar[i].getQuestion());
@@ -475,7 +479,18 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 						idrsDetail.setBenVisitID(benVisitID);
 						idrsDetail.setVisitCode(benVisitCode);
 						if(idrsDetail.getSuspectArray()!=null)
-						idrsDetail.setSuspectedDisease(idrsDetail.getSuspectArray().toString());
+						{
+							for(int a=0;a<idrsDetail.getSuspectArray().length;a++)
+					    	{
+					    		if(a==idrsDetail.getSuspectArray().length-1)
+					    		temp+=idrsDetail.getSuspectArray()[a];
+					    		else
+					    		temp=temp+idrsDetail.getSuspectArray()[a]+",";
+					    	}
+							if(temp.equalsIgnoreCase(""))
+								temp=null;
+							idrsDetail.setSuspectedDisease(temp);
+						}
 						idrsFlag = commonNurseServiceImpl
 								.saveIDRS(idrsDetail);
 					}
@@ -506,7 +521,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 			PhysicalActivityType physicalActivityDetail = InputMapper.gson().fromJson(physicalActivityDetailsOBJ,
 					PhysicalActivityType.class);
 
-			if (null != physicalActivityDetail && physicalActivityDetail.getActivityType() !=null && physicalActivityDetail.getPhysicalActivityType() != null) {
+			if (null != physicalActivityDetail && (physicalActivityDetail.getActivityType() !=null || physicalActivityDetail.getPhysicalActivityType() != null)) {
 				physicalActivityDetail.setBenVisitID(benVisitID);
 				physicalActivityDetail.setVisitCode(benVisitCode);
 				physicalActivityFlag = commonNurseServiceImpl
@@ -799,5 +814,41 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		return resMap.toString();
 	}
 
+
+	@Override
+	public Integer UpdateNCDScreeningHistory(JsonObject historyOBJ) throws Exception {
+
+		int familyHistorySuccessFlag = 0;
+		int historyUpdatedSuccessfully = 0;
+		int physicalActivitySuccessFlag = 0;
+
+		// Update Family History
+		if (historyOBJ != null && historyOBJ.has("familyHistory") && !historyOBJ.get("familyHistory").isJsonNull()) {
+			BenFamilyHistory benFamilyHistory = InputMapper.gson().fromJson(historyOBJ.get("familyHistory"),
+					BenFamilyHistory.class);
+
+			familyHistorySuccessFlag = commonNurseServiceImpl.updateBenFamilyHistoryNCDScreening(benFamilyHistory);
+		} else {
+			familyHistorySuccessFlag = 0;
+		}
+		
+		//Update Physical Activity
+		if (historyOBJ != null && historyOBJ.has("physicalActivityHistory") && !historyOBJ.get("physicalActivityHistory").isJsonNull()) {
+			PhysicalActivityType physicalActivityType = InputMapper.gson().fromJson(historyOBJ.get("physicalActivityHistory"),
+					PhysicalActivityType.class);
+			
+			physicalActivitySuccessFlag = commonNurseServiceImpl.updateBenPhysicalActivityHistoryNCDScreening(physicalActivityType);
+		}else {
+			physicalActivitySuccessFlag = 0;
+		}
+		
+
+		if(familyHistorySuccessFlag > 0 && physicalActivitySuccessFlag > 0) {
+			historyUpdatedSuccessfully = 1;
+		}
+		return historyUpdatedSuccessfully;
+	}
+
+	
 
 }

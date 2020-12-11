@@ -242,5 +242,13 @@ public class PhysicalActivityType {
 		
 	}
 
+	public Long getID() {
+		return ID;
+	}
+
+	public void setID(Long iD) {
+		ID = iD;
+	}
+
 }
 
