@@ -178,10 +178,10 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
 	@Autowired
 	private PhysicalActivityTypeRepo physicalActivityTypeRepo;
-	
-	 @Autowired
-	    private IDRSDataRepo iDRSDataRepo;
-	 
+
+	@Autowired
+	private IDRSDataRepo iDRSDataRepo;
+
 	public Integer updateBeneficiaryStatus(Character c, Long benRegID) {
 		Integer i = registrarRepoBenData.updateBenFlowStatus(c, benRegID);
 		return i;
@@ -433,7 +433,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		StringBuilder deliComplicationName;
 		StringBuilder postpartumComplicationID;
 		StringBuilder postpartumComplicationName;
-		
+
 		StringBuilder postAbortionComp;
 		StringBuilder postAbortionCompValues;
 
@@ -499,7 +499,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					}
 				}
 			}
-			
+
 			if (obj.getPostAbortionComplication() != null && obj.getPostAbortionComplication().size() > 0) {
 				int pointer = 1;
 				for (Map<String, Object> postAbortionCompMap : obj.getPostAbortionComplication()) {
@@ -732,6 +732,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		}
 		return r;
 	}
+
 	public Long saveIDRS(IDRSData idrsDetail) {
 		IDRSData response = iDRSDataRepo.save(idrsDetail);
 		if (response != null)
@@ -739,6 +740,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		else
 			return null;
 	}
+
 	public Long savePhysicalActivity(PhysicalActivityType physicalActivityDetail) {
 		PhysicalActivityType response = physicalActivityTypeRepo.save(physicalActivityDetail);
 		if (response != null)
@@ -746,6 +748,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		else
 			return null;
 	}
+
 	public int updateANCPhysicalVitalDetails(BenPhysicalVitalDetail physicalVitalDetail) {
 		Integer r = 0;
 		if (null != physicalVitalDetail) {
@@ -1253,7 +1256,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		return new Gson().toJson(response);
 
 	}
-	
+
 	public String fetchBenPhysicalHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> benPhysicalHistory = physicalActivityTypeRepo.getBenPhysicalHistoryDetail(beneficiaryRegID);
 
@@ -1265,7 +1268,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		column.put("columnName", "Date of Capture");
 		column.put("keyName", "captureDate");
 		columns.add(column);
-		
+
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Activity Type");
 		column.put("keyName", "activityType");
@@ -1275,21 +1278,21 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		column.put("columnName", "Physical Activity Type");
 		column.put("keyName", "physicalActivityType");
 		columns.add(column);
-		
+
 		ArrayList<PhysicalActivityType> familyHistory = new ArrayList<PhysicalActivityType>();
 		if (null != benPhysicalHistory) {
 			for (Object[] obj : benPhysicalHistory) {
-				PhysicalActivityType phyhistory = new PhysicalActivityType((Date) obj[0], (String) obj[1], (String) obj[2]);
+				PhysicalActivityType phyhistory = new PhysicalActivityType((Date) obj[0], (String) obj[1],
+						(String) obj[2]);
 				familyHistory.add(phyhistory);
 			}
 		}
-		
+
 		response.put("columns", columns);
 		response.put("data", familyHistory);
 		return new Gson().toJson(response);
 
 	}
-
 
 	public String fetchBenMenstrualHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> benMenstrualDetails = benMenstrualDetailsRepo.getBenMenstrualDetail(beneficiaryRegID);
@@ -1665,7 +1668,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		return familyHistoryDetails;
 	}
-	
+
 	public BenFamilyHistory getFamilyHistoryDetail(Long beneficiaryRegID, Long visitCode) {
 //		BenFamilyHistory familyHistory = benFamilyHistoryRepo.getBenFamilyHistoryDetails(beneficiaryRegID, visitCode);
 //		
@@ -1675,20 +1678,19 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		BenFamilyHistory familyHistoryDetails = BenFamilyHistory.getBenFamilyHist(familyHistory);
 
 		return familyHistoryDetails;
-		
+
 	}
-	
+
 	public PhysicalActivityType getPhysicalActivityType(Long beneficiaryRegID, Long visitCode) {
-		PhysicalActivityType phyHistory = physicalActivityTypeRepo.getBenPhysicalHistoryDetails(beneficiaryRegID, visitCode);
+		PhysicalActivityType phyHistory = physicalActivityTypeRepo.getBenPhysicalHistoryDetails(beneficiaryRegID,
+				visitCode);
 		return phyHistory;
-		
+
 	}
-	
-	
-public IDRSData getBeneficiaryIdrsDetails(Long beneficiaryRegID, Long visitCode) {
-		
-		
-		ArrayList<Object[]> idrsDetails = iDRSDataRepo.getBenIdrsDetail(beneficiaryRegID,visitCode);
+
+	public IDRSData getBeneficiaryIdrsDetails(Long beneficiaryRegID, Long visitCode) {
+
+		ArrayList<Object[]> idrsDetails = iDRSDataRepo.getBenIdrsDetail(beneficiaryRegID, visitCode);
 		IDRSData idrsDetail = IDRSData.getIDRSData(idrsDetails);
 		return idrsDetail;
 	}
@@ -1818,7 +1820,7 @@ public IDRSData getBeneficiaryIdrsDetails(Long beneficiaryRegID, Long visitCode)
 					}
 
 				}
-				
+
 				if (obj.getPostAbortionComplication_db() != null) {
 					ArrayList<Map<String, Object>> postAborCompList = new ArrayList<>();
 					Map<String, Object> postAborCompMap;
@@ -2111,7 +2113,7 @@ public IDRSData getBeneficiaryIdrsDetails(Long beneficiaryRegID, Long visitCode)
 		Integer r = 0;
 		int delRes = 0;
 		if (null != benAllergyHistory) {
-			
+
 			ArrayList<Object[]> benAllergyHistoryStatuses = benAllergyHistoryRepo.getBenAllergyHistoryStatus(
 					benAllergyHistory.getBeneficiaryRegID(), benAllergyHistory.getVisitCode());
 
@@ -2318,7 +2320,8 @@ public IDRSData getBeneficiaryIdrsDetails(Long beneficiaryRegID, Long visitCode)
 				r = childVaccineDetail1Repo.updateChildANCImmunization(childVaccineDetail.getStatus(),
 						childVaccineDetail.getModifiedBy(), processed, childVaccineDetail.getBeneficiaryRegID(),
 						childVaccineDetail.getVisitCode(), childVaccineDetail.getDefaultReceivingAge(),
-						childVaccineDetail.getVaccineName(), childVaccineDetail.getSctCode(),childVaccineDetail.getSctTerm());
+						childVaccineDetail.getVaccineName(), childVaccineDetail.getSctCode(),
+						childVaccineDetail.getSctTerm());
 			}
 		}
 		return r;
@@ -3581,6 +3584,7 @@ public IDRSData getBeneficiaryIdrsDetails(Long beneficiaryRegID, Long visitCode)
 		}
 		return familyHistorySuccessFlag;
 	}
+
 	public int updateBenPhysicalActivityHistoryNCDScreening(PhysicalActivityType physicalActivityType) {
 		// TODO Auto-generated method stub
 		int pysicalActivityHistorySuccessFlag = 0;
@@ -3592,18 +3596,98 @@ public IDRSData getBeneficiaryIdrsDetails(Long beneficiaryRegID, Long visitCode)
 //			if (familyHistoryList.size() == res.size()) {
 //				familyHistorySuccessFlag = 1;
 //			}
-		if(physicalActivityType.getID() != null) 
+		if (physicalActivityType.getID() != null)
 			physicalActivityType.setProcessed("U");
 		else
 			physicalActivityType.setProcessed("N");
 		physicalActivityType.setDeleted(false);
-		PhysicalActivityType physicalActivityTypeRes = physicalActivityTypeRepo
-				.save(physicalActivityType);
-		if(physicalActivityTypeRes != null) {
+		PhysicalActivityType physicalActivityTypeRes = physicalActivityTypeRepo.save(physicalActivityType);
+		if (physicalActivityTypeRes != null) {
 			pysicalActivityHistorySuccessFlag = 1;
 		} else {
 			pysicalActivityHistorySuccessFlag = 0;
 		}
 		return pysicalActivityHistorySuccessFlag;
 	}
+
+	// get Ben Symptomatic Questionnaire Details
+	@Override
+	public String getBenSymptomaticData(Long benRegID) throws Exception {
+		Map<String, Object> responseMap = new HashMap<>();
+		ArrayList<Map<String, Object>> ansList = new ArrayList<>();
+		// get date before 3 month
+		java.util.Date referenceDate = new java.util.Date();
+		Calendar c = Calendar.getInstance();
+		c.setTime(referenceDate);
+		c.add(Calendar.MONTH, -3);
+		Timestamp t = new Timestamp(c.getTimeInMillis());
+
+		Map<String, Object> questionAnsMap;
+
+		ArrayList<IDRSData> resultSet = iDRSDataRepo.getBenIdrsDetailsLast_3_Month(benRegID, t);
+		if (resultSet != null && resultSet.size() > 0) {
+			Long visitCode = null;
+			for (IDRSData i : resultSet) {
+				if (visitCode == null || i.getVisitCode().equals(visitCode)) {
+					questionAnsMap = new HashMap<>();
+					visitCode = i.getVisitCode();
+					questionAnsMap.put("qID", i.getIdrsQuestionID());
+					questionAnsMap.put("qANS", i.getAnswer());
+
+					ansList.add(questionAnsMap);
+				} else
+					break;
+			}
+
+		}
+
+		// is diabetic check for ben
+		Integer i = iDRSDataRepo.isDiabeticCheck(benRegID);
+
+		responseMap.put("questionariesData", ansList);
+		if (i != null && i > 0)
+			responseMap.put("isDiabetic", true);
+		else
+			responseMap.put("isDiabetic", false);
+
+		return new Gson().toJson(responseMap);
+	}
+
+	@Override
+	public String getBenPreviousDiabetesData(Long benRegID) throws Exception {
+
+		Map<String, Object> response = new HashMap<String, Object>();
+
+		ArrayList<IDRSData> resultSet = new ArrayList<>();
+
+		Map<String, String> column;
+		ArrayList<Map<String, String>> columns = new ArrayList<>();
+
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "createdDate");
+		columns.add(column);
+
+		column = new HashMap<>();
+		column.put("columnName", "Visit Code");
+		column.put("keyName", "visitCode");
+		columns.add(column);
+
+		column = new HashMap<>();
+		column.put("columnName", "Question");
+		column.put("keyName", "question");
+		columns.add(column);
+
+		column = new HashMap<>();
+		column.put("columnName", "Answer");
+		column.put("keyName", "answer");
+		columns.add(column);
+
+		resultSet = iDRSDataRepo.getBenPreviousDiabetesDetails(benRegID);
+
+		response.put("columns", columns);
+		response.put("data", resultSet);
+		return new Gson().toJson(response);
+	}
+
 }

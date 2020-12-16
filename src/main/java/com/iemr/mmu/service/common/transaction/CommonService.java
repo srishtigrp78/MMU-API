@@ -11,4 +11,8 @@ public interface CommonService {
 	public String saveFiles(List<DocFileManager> docFileManagerList) throws IOException;
 
 	public Resource loadFileAsResource(String file, String path) throws IOException;
+
+	public String getBenSymptomaticQuestionnaireDetailsData(Long beneficiaryRegID) throws Exception;
+
+	public String getBenPreviousDiabetesData(Long beneficiaryRegID) throws Exception;
 }
