@@ -52,6 +52,7 @@ import com.iemr.mmu.service.anc.Utility;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
+import com.iemr.mmu.service.common.transaction.CommonServiceImpl;
 import com.iemr.mmu.service.labtechnician.LabTechnicianServiceImpl;
 import com.iemr.mmu.service.tele_consultation.TeleConsultationServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
@@ -65,6 +66,9 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
 	private LabTechnicianServiceImpl labTechnicianServiceImpl;
+	
+	@Autowired
+	private CommonServiceImpl commonServiceImpl;
 	
 	@Autowired
 	private PrescriptionDetailRepo prescriptionDetailRepo;
@@ -105,7 +109,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 	public void setCommonDoctorServiceImpl(CommonDoctorServiceImpl commonDoctorServiceImpl) {
 		this.commonDoctorServiceImpl = commonDoctorServiceImpl;
 	}
-
+	
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public Long saveNCDScreeningNurseData(JsonObject requestOBJ, String Authorization) throws Exception {
@@ -1190,5 +1194,18 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		}
 		return new Gson().toJson(diagnosisMap);
 	}
+	
+	public String getBenNCDScreeningNurseData(Long benRegID, Long visitCode) {
+		Map<String, Object> resMap = new HashMap<>();
+
+		resMap.put("vitals", getBeneficiaryVitalDetails(benRegID, visitCode));
+
+		resMap.put("history", getBenHistoryDetails(benRegID, visitCode));
+		
+		resMap.put("idrs", getBenIdrsDetailsFrmNurse(benRegID, visitCode));
+
+		return resMap.toString();
+	}
+
 
 }
