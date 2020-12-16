@@ -38,6 +38,7 @@ import com.iemr.mmu.service.pnc.PNCServiceImpl;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
+import com.iemr.mmu.service.ncdscreening.NCDScreeningServiceImpl;
 
 @Service
 @PropertySource("classpath:application.properties")
@@ -58,8 +59,14 @@ public class CommonServiceImpl implements CommonService {
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private CSNurseServiceImpl cSNurseServiceImpl;
 	private CSServiceImpl csServiceImpl;
+	private NCDScreeningServiceImpl ncdScreeningServiceImpl;
 	@Autowired
 	private ProviderServiceMappingRepo providerServiceMappingRepo;
+	
+	@Autowired
+	public void setNcdScreeningServiceImpl(NCDScreeningServiceImpl ncdScreeningServiceImpl) {
+		this.ncdScreeningServiceImpl = ncdScreeningServiceImpl;
+	}
 
 	@Autowired
 	public void setCsServiceImpl(CSServiceImpl csServiceImpl) {
@@ -140,6 +147,11 @@ public class CommonServiceImpl implements CommonService {
 				caseSheetData = getCovid19_PrintData(benFlowOBJ);
 			}
 				break;
+				
+			case "NCD screening": {
+				caseSheetData = getNCDScreening_PrintData(benFlowOBJ);
+			}
+				break;		
 			default: {
 				caseSheetData = "Invalid VisitCategory";
 			}
@@ -261,6 +273,23 @@ public class CommonServiceImpl implements CommonService {
 
 		caseSheetData.put("doctorData", quickConsultationServiceImpl.getBenCaseRecordFromDoctorQuickConsult(
 				benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitCode()));
+
+		caseSheetData.put("BeneficiaryData",
+				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
+
+		caseSheetData.put("serviceID", 2);
+
+		return caseSheetData.toString();
+	}
+	
+	private String getNCDScreening_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
+		Map<String, Object> caseSheetData = new HashMap<>();
+
+		caseSheetData.put("nurseData", ncdScreeningServiceImpl.getBenNCDScreeningNurseData(benFlowOBJ.getBeneficiaryRegID(),
+				benFlowOBJ.getBenVisitCode()));
+
+		caseSheetData.put("doctorData", ncdScreeningServiceImpl
+				.getBenCaseRecordFromDoctorNCDScreening(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitCode()));
 
 		caseSheetData.put("BeneficiaryData",
 				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
