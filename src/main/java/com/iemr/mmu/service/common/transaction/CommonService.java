@@ -13,4 +13,6 @@ public interface CommonService {
 	public Resource loadFileAsResource(String file, String path) throws IOException;
 
 	public String getBenSymptomaticQuestionnaireDetailsData(Long beneficiaryRegID) throws Exception;
+
+	public String getBenPreviousDiabetesData(Long beneficiaryRegID) throws Exception;
 }
