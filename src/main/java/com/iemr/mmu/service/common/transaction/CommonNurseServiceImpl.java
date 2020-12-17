@@ -579,7 +579,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	public Long saveBenFamilyHistory(BenFamilyHistory benFamilyHistory) {
 		Long familyHistorySuccessFlag = null;
 
-		ArrayList<BenFamilyHistory> familyHistoryList = benFamilyHistory.getBenFamilyHistory();
+		ArrayList<BenFamilyHistory> familyHistoryList = benFamilyHistory.getBenFamilyHist();
 		if (familyHistoryList.size() > 0) {
 			ArrayList<BenFamilyHistory> res = (ArrayList<BenFamilyHistory>) benFamilyHistoryRepo
 					.save(familyHistoryList);
