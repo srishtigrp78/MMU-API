@@ -3572,7 +3572,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		// TODO Auto-generated method stub
 		int familyHistorySuccessFlag = 0;
 
-		ArrayList<BenFamilyHistory> familyHistoryList = benFamilyHistory.getBenFamilyHistory();
+		ArrayList<BenFamilyHistory> familyHistoryList = benFamilyHistory.getBenFamilyHist();
 		if (familyHistoryList.size() > 0) {
 			ArrayList<BenFamilyHistory> res = (ArrayList<BenFamilyHistory>) benFamilyHistoryRepo
 					.save(familyHistoryList);
