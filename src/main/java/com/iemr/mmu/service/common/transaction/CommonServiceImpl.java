@@ -34,11 +34,11 @@ import com.iemr.mmu.service.cancerScreening.CSServiceImpl;
 import com.iemr.mmu.service.covid19.Covid19ServiceImpl;
 import com.iemr.mmu.service.generalOPD.GeneralOPDServiceImpl;
 import com.iemr.mmu.service.ncdCare.NCDCareServiceImpl;
+import com.iemr.mmu.service.ncdscreening.NCDScreeningServiceImpl;
 import com.iemr.mmu.service.pnc.PNCServiceImpl;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
-import com.iemr.mmu.service.ncdscreening.NCDScreeningServiceImpl;
 
 @Service
 @PropertySource("classpath:application.properties")
@@ -46,7 +46,7 @@ public class CommonServiceImpl implements CommonService {
 
 	@Value("${fileBasePath}")
 	private String fileBasePath;
-	
+
 	@Autowired
 	private Covid19ServiceImpl covid19ServiceImpl;
 
@@ -62,7 +62,7 @@ public class CommonServiceImpl implements CommonService {
 	private NCDScreeningServiceImpl ncdScreeningServiceImpl;
 	@Autowired
 	private ProviderServiceMappingRepo providerServiceMappingRepo;
-	
+
 	@Autowired
 	public void setNcdScreeningServiceImpl(NCDScreeningServiceImpl ncdScreeningServiceImpl) {
 		this.ncdScreeningServiceImpl = ncdScreeningServiceImpl;
@@ -147,11 +147,11 @@ public class CommonServiceImpl implements CommonService {
 				caseSheetData = getCovid19_PrintData(benFlowOBJ);
 			}
 				break;
-				
+
 			case "NCD screening": {
 				caseSheetData = getNCDScreening_PrintData(benFlowOBJ);
 			}
-				break;		
+				break;
 			default: {
 				caseSheetData = "Invalid VisitCategory";
 			}
@@ -281,15 +281,15 @@ public class CommonServiceImpl implements CommonService {
 
 		return caseSheetData.toString();
 	}
-	
+
 	private String getNCDScreening_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
-		caseSheetData.put("nurseData", ncdScreeningServiceImpl.getBenNCDScreeningNurseData(benFlowOBJ.getBeneficiaryRegID(),
-				benFlowOBJ.getBenVisitCode()));
+		caseSheetData.put("nurseData", ncdScreeningServiceImpl
+				.getBenNCDScreeningNurseData(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitCode()));
 
-		caseSheetData.put("doctorData", ncdScreeningServiceImpl
-				.getBenCaseRecordFromDoctorNCDScreening(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitCode()));
+		caseSheetData.put("doctorData", ncdScreeningServiceImpl.getBenCaseRecordFromDoctorNCDScreening(
+				benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitCode()));
 
 		caseSheetData.put("BeneficiaryData",
 				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
@@ -299,7 +299,7 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData.toString();
 	}
 
-		private String getBenDetails(Long benFlowID, Long benRegID) {
+	private String getBenDetails(Long benFlowID, Long benRegID) {
 		ArrayList<Object[]> tmpOBJ = beneficiaryFlowStatusRepo.getBenDetailsForLeftSidePanel(benRegID, benFlowID);
 		BeneficiaryFlowStatus obj = BeneficiaryFlowStatus.getBeneficiaryFlowStatusForLeftPanel(tmpOBJ);
 		return new Gson().toJson(obj);
@@ -352,13 +352,12 @@ public class CommonServiceImpl implements CommonService {
 		return commonNurseServiceImpl.fetchBenPersonalFamilyHistory(beneficiaryRegID);
 	}
 	/// ------- End of Fetch beneficiary all Family history data ------
-	
+
 	// ------- Fetch beneficiary all Physical history data ---------------
 	public String getBenPhysicalHistory(Long beneficiaryRegID) {
 		return commonNurseServiceImpl.fetchBenPhysicalHistory(beneficiaryRegID);
-}
+	}
 /// ------- End of Fetch beneficiary all Physical history data ------
-
 
 	// ------- Fetch beneficiary all Menstrual history data -----------
 	public String getMenstrualHistoryData(Long beneficiaryRegID) {
@@ -501,4 +500,18 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	// End files upload/save start
+
+	// get
+
+	@Override
+	public String getBenSymptomaticQuestionnaireDetailsData(Long beneficiaryRegID) throws Exception {
+		return commonNurseServiceImpl.getBenSymptomaticData(beneficiaryRegID);
+
+	}
+
+	@Override
+	public String getBenPreviousDiabetesData(Long beneficiaryRegID) throws Exception {
+		return commonNurseServiceImpl.getBenPreviousDiabetesData(beneficiaryRegID);
+
+	}
 }
