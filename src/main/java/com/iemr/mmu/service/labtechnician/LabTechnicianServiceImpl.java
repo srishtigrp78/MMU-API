@@ -244,7 +244,8 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 				procedureCompDetails.put("procedureDesc", obj.getProcedureDesc());
 				procedureCompDetails.put("procedureType", "Radiology");
 				procedureCompDetails.put("prescriptionID", obj.getPrescriptionID());
-
+				procedureCompDetails.put("isMandatory", obj.getIsMandatory());
+				
 				compDetails.put("testComponentID", obj.getTestComponentID());
 				compDetails.put("testComponentName", obj.getTestComponentName());
 				compDetails.put("testComponentDesc", obj.getTestComponentDesc());
@@ -388,7 +389,8 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 						LabResultEntry labCompResult = new LabResultEntry();
 						labCompResult.setPrescriptionID(labResult.getPrescriptionID());
 						labCompResult.setProcedureID(labResult.getProcedureID());
-
+						labCompResult.setStripsNotAvailable(labResult.getStripsNotAvailable());
+						
 						if (null != comp.get("testComponentID") && !comp.get("testComponentID").toString().isEmpty()
 								&& null != comp.get("testResultValue")
 								&& !comp.get("testResultValue").toString().isEmpty()) {
