@@ -162,6 +162,18 @@ public class LabResultEntry {
 	@Transient
 	private Date date;
 
+	@Expose
+	@Column(name = "stripsNotAvailable")
+	private Boolean stripsNotAvailable;
+	
+	public Boolean getStripsNotAvailable() {
+		return stripsNotAvailable;
+	}
+
+	public void setStripsNotAvailable(Boolean stripsNotAvailable) {
+		this.stripsNotAvailable = stripsNotAvailable;
+	}
+
 	public Date getDate() {
 		return date;
 	}
@@ -245,6 +257,7 @@ public class LabResultEntry {
 					compDetails.put("testResultValue", obj.getTestResultValue());
 					compDetails.put("testResultUnit", obj.getTestResultUnit());
 					compDetails.put("testReportFilePath", obj.getTestReportFilePath());
+					compDetails.put("stripsNotAvailable", obj.getStripsNotAvailable());
 
 					// file id array from string
 					// String fileIds[];
@@ -287,6 +300,7 @@ public class LabResultEntry {
 					compDetails.put("testResultValue", obj.getTestResultValue());
 					compDetails.put("testResultUnit", obj.getTestResultUnit());
 					compDetails.put("testReportFilePath", obj.getTestReportFilePath());
+					compDetails.put("stripsNotAvailable", obj.getStripsNotAvailable());
 
 					// file id array from string
 					// String fileIds[];

@@ -244,7 +244,8 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 				procedureCompDetails.put("procedureDesc", obj.getProcedureDesc());
 				procedureCompDetails.put("procedureType", "Radiology");
 				procedureCompDetails.put("prescriptionID", obj.getPrescriptionID());
-
+				procedureCompDetails.put("isMandatory", obj.getIsMandatory());
+				
 				compDetails.put("testComponentID", obj.getTestComponentID());
 				compDetails.put("testComponentName", obj.getTestComponentName());
 				compDetails.put("testComponentDesc", obj.getTestComponentDesc());
@@ -388,11 +389,15 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 						LabResultEntry labCompResult = new LabResultEntry();
 						labCompResult.setPrescriptionID(labResult.getPrescriptionID());
 						labCompResult.setProcedureID(labResult.getProcedureID());
-
+						labCompResult.setStripsNotAvailable(labResult.getStripsNotAvailable());
+						
 						if (null != comp.get("testComponentID") && !comp.get("testComponentID").toString().isEmpty()
-								&& null != comp.get("testResultValue")
-								&& !comp.get("testResultValue").toString().isEmpty()) {
+								&& ((null != comp.get("testResultValue") && !comp.get("testResultValue").toString().isEmpty()) 
+										|| (null != comp.get("stripsNotAvailable") && comp.get("stripsNotAvailable").toString().equalsIgnoreCase("true")))) {
 							labCompResult.setTestComponentID(Integer.parseInt(comp.get("testComponentID")));
+							
+							if (comp.containsKey("testResultValue") && comp.get("testResultValue") != null
+									&& !comp.get("testResultValue").isEmpty())
 							labCompResult.setTestResultValue(comp.get("testResultValue").toString());
 
 							if (comp.containsKey("testResultUnit") && comp.get("testResultUnit") != null
@@ -401,9 +406,12 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 
 							if (comp.containsKey("remarks") && comp.get("remarks") != null
 									&& !comp.get("remarks").isEmpty())
-
 								labCompResult.setRemarks(comp.get("remarks"));
 
+							if (comp.containsKey("stripsNotAvailable") && comp.get("stripsNotAvailable") != null
+									&& comp.get("stripsNotAvailable").toString().equalsIgnoreCase("true"))
+								labCompResult.setStripsNotAvailable(Boolean.valueOf(comp.get("stripsNotAvailable")));
+							
 							labCompResult.setBeneficiaryRegID(wrapperLabResults.getBeneficiaryRegID());
 							labCompResult.setBenVisitID(wrapperLabResults.getVisitID());
 							labCompResult.setVisitCode(wrapperLabResults.getVisitCode());
