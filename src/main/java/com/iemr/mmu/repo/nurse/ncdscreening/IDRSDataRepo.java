@@ -27,7 +27,7 @@ public interface IDRSDataRepo extends CrudRepository<IDRSData, Long> {
 
 	@Query("select a from IDRSData a where a.beneficiaryRegID = :beneficiaryRegID AND a.createdDate >= :tDate "
 			+ " AND a.diseaseQuestionType "
-			+ " IN ('Epilepsy', 'Asthma', 'Malaria Screening', 'Vision Screening', 'Tuberculosis Screening') "
+			+ " IN ('Asthma', 'Malaria Screening', 'Tuberculosis Screening') "
 			+ " ORDER BY Date(a.createdDate) DESC, a.visitCode ")
 	public ArrayList<IDRSData> getBenIdrsDetailsLast_3_Month(@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("tDate") Timestamp tDate);
@@ -38,7 +38,11 @@ public interface IDRSDataRepo extends CrudRepository<IDRSData, Long> {
 	@Query("select a from IDRSData a where a.beneficiaryRegID = :beneficiaryRegID AND a.diseaseQuestionType = 'Diabetes' "
 			+ " ORDER BY Date(a.createdDate) DESC  ")
 	public ArrayList<IDRSData> getBenPreviousDiabetesDetails(@Param("beneficiaryRegID") Long beneficiaryRegID);
+	@Query(value="select count(a.idrsid) from t_idrsdetails a where BeneficiaryRegID= :beneficiaryRegID and SuspectedDiseases like '%vision%' ",nativeQuery=true)
+	public Integer isDefectiveVisionCheck(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	
+	@Query(value="select count(a.idrsid) from t_idrsdetails a where BeneficiaryRegID= :beneficiaryRegID and SuspectedDiseases like '%epilepsy%' ",nativeQuery=true)
+	public Integer isEpilepsyCheck(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	@Transactional
 	@Modifying
 	@Query("UPDATE IDRSData SET idrsScore = :idrsScore WHERE beneficiaryRegID = :beneficiaryRegID AND visitCode = :visitCode")
