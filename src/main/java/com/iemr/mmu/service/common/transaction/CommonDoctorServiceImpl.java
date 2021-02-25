@@ -67,6 +67,11 @@ public class CommonDoctorServiceImpl {
 	@Value("${docWL}")
 	private Integer docWL;
 
+	@Value("${tmReferCheckValue}")
+	private String tmReferCheckValue;
+
+	private int TMReferred = 0;
+
 	private BenClinicalObservationsRepo benClinicalObservationsRepo;
 	private BenChiefComplaintRepo benChiefComplaintRepo;
 	private DocWorkListRepo docWorkListRepo;
@@ -375,8 +380,7 @@ public class CommonDoctorServiceImpl {
 
 	}
 
-
-public Long saveBenReferDetails(JsonObject obj) throws IEMRException {
+	public Long saveBenReferDetails(JsonObject obj) throws IEMRException {
 		Long ID = null;
 		BenReferDetails referDetails = InputMapper.gson().fromJson(obj, BenReferDetails.class);
 		List<BenReferDetails> referDetailsList = new ArrayList<BenReferDetails>();
@@ -400,21 +404,26 @@ public Long saveBenReferDetails(JsonObject obj) throws IEMRException {
 					referDetailsTemp.setServiceID(sm.getServiceID());
 					referDetailsTemp.setServiceName(sm.getServiceName());
 
+					if (sm.getServiceName().equalsIgnoreCase(tmReferCheckValue)) {
+						TMReferred = 1;
+					}
+
 					if (referDetails.getReferredToInstituteID() != null
 							&& referDetails.getReferredToInstituteName() != null) {
 						referDetailsTemp.setReferredToInstituteID(referDetails.getReferredToInstituteID());
 						referDetailsTemp.setReferredToInstituteName(referDetails.getReferredToInstituteName());
 					}
-                    if (referDetails.getRevisitDate() != null)
-						referDetailsTemp.setRevisitDate(referDetails.getRevisitDate()); 
+					if (referDetails.getRevisitDate() != null)
+						referDetailsTemp.setRevisitDate(referDetails.getRevisitDate());
 					referDetailsList.add(referDetailsTemp);
-					
+
 					if (referDetails.getReferralReason() != null)
 						referDetailsTemp.setReferralReason(referDetails.getReferralReason());
 				}
 			}
 		} else {
-			if (referDetails.getReferredToInstituteName() != null || referDetails.getRevisitDate() != null  || referDetails.getReferralReason() != null)
+			if (referDetails.getReferredToInstituteName() != null || referDetails.getRevisitDate() != null
+					|| referDetails.getReferralReason() != null)
 				referDetailsList.add(referDetails);
 		}
 
@@ -579,10 +588,12 @@ public Long saveBenReferDetails(JsonObject obj) throws IEMRException {
 			} else {
 				processed = "N";
 			}
-			if(referDetails.getReferredToInstituteID() != null ||
-					referDetails.getReferredToInstituteName() != null || referDetails.getRevisitDate()!= null) {
-			benReferDetailsRepo.updateReferredInstituteName(referDetails.getReferredToInstituteID(),
-					referDetails.getReferredToInstituteName(),referDetails.getRevisitDate(), (Long) obj[0], processed);}
+			if (referDetails.getReferredToInstituteID() != null || referDetails.getReferredToInstituteName() != null
+					|| referDetails.getRevisitDate() != null) {
+				benReferDetailsRepo.updateReferredInstituteName(referDetails.getReferredToInstituteID(),
+						referDetails.getReferredToInstituteName(), referDetails.getRevisitDate(), (Long) obj[0],
+						processed);
+			}
 		}
 
 		if (referDetails.getRefrredToAdditionalServiceList() != null
@@ -602,11 +613,10 @@ public Long saveBenReferDetails(JsonObject obj) throws IEMRException {
 					}
 					referDetailsTemp.setServiceID(sm.getServiceID());
 					referDetailsTemp.setServiceName(sm.getServiceName());
-					
-				    if (referDetails.getRevisitDate() != null)
-				                        referDetailsTemp.setRevisitDate(referDetails.getRevisitDate());
 
-					
+					if (referDetails.getRevisitDate() != null)
+						referDetailsTemp.setRevisitDate(referDetails.getRevisitDate());
+
 					referDetailsList.add(referDetailsTemp);
 				}
 			}
@@ -664,6 +674,10 @@ public Long saveBenReferDetails(JsonObject obj) throws IEMRException {
 			tcUserID = tcRequestOBJ.getUserID();
 			tcDate = tcRequestOBJ.getAllocationDate();
 
+		}
+
+		if (TMReferred == 1) {
+			tcSpecialistFlag = (short) 100;
 		}
 
 		int i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
