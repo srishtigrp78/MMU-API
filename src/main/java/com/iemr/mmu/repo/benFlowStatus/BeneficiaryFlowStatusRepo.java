@@ -250,4 +250,14 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 
 	@Query(" SELECT benName, Date(dOB), genderID FROM BeneficiaryFlowStatus WHERE benFlowID = :benFlowID ")
 	public ArrayList<Object[]> getBenDataForCareStream(@Param("benFlowID") Long benFlowID);
+	
+	@Query("SELECT  t from BeneficiaryFlowStatus t WHERE (t.specialist_flag = 100) AND t.deleted = false "
+			+ " AND t.providerServiceMapId = :providerServiceMapId "
+			+ " AND t.vanID = :vanID ORDER BY t.visitDate DESC ")
+	public ArrayList<BeneficiaryFlowStatus> getNurseWorklistTMreferred(
+			@Param("providerServiceMapId") Integer providerServiceMapId, @Param("vanID") Integer vanID);
+	//Query to check TM visit is done for referred case....Shubham Shekhar
+//	@Query(value="SELECT count(ben_flow_id) FROM db_iemr.i_ben_flow_outreach i where i.referred_visitcode = :visitCode and specialist_flag=9"
+//			,nativeQuery=true)
+//	public Integer isTMvisitDone(@Param("visitCode") Long visitCode);
 }

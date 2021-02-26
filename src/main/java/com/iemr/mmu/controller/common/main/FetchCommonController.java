@@ -169,6 +169,32 @@ public class FetchCommonController {
 		}
 		return response.toString();
 	}
+	/**
+	 * @author SH20094090
+	 * @param providerServiceMapID
+	 * @param vanID
+	 * @return
+	 */
+	@CrossOrigin()
+	@ApiOperation(value = "Get Nurse worklist TM referred", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getNurseWorklistTMreferred/{providerServiceMapID}/{serviceID}/{vanID}" }, method = {
+			RequestMethod.GET })
+	public String getNurseWorklistTMreferred(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
+			@PathVariable("vanID") Integer vanID) {
+		OutputResponse response = new OutputResponse();
+		try {
+			String s = commonNurseServiceImpl.getNurseWorkListTMReferred(providerServiceMapID, vanID);
+			if (s != null)
+				response.setResponse(s);
+			else
+				response.setError(5000, "Error while getting nurse worklist");
+		} catch (Exception e) {
+			// e.printStackTrace();
+			logger.error("Error in getNurseWorklist:" + e);
+			response.setError(5000, "Error while getting nurse worklist");
+		}
+		return response.toString();
+	}
 
 	@CrossOrigin()
 	@ApiOperation(value = "Get Doctor Entered Previous significant Findings", consumes = "application/json", produces = "application/json")

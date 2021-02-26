@@ -2979,7 +2979,23 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		return new Gson().toJson(obj);
 	}
-
+	// New Nurse worklist for TM referred patients.... 26-02-2021
+		public String getNurseWorkListTMReferred(Integer providerServiceMapId, Integer vanID) {
+			ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getNurseWorklistTMreferred(providerServiceMapId,
+					vanID);
+			//Integer count=0;
+//           for(int i=0;i<obj.size();i++)
+//           {
+//        	   count=0;
+//        	   if(obj.get(i).getVisitCode()!=null)
+//        	   count=beneficiaryFlowStatusRepo.isTMvisitDone(obj.get(i).getVisitCode());
+//        	   if(count>0)
+//        		   obj.get(i).setIsTMVisitDone(true);
+//        	   else
+//        		   obj.get(i).setIsTMVisitDone(false);
+//           }
+			return new Gson().toJson(obj);
+		}
 	// New Lab worklist.... 26-03-2018
 	public String getLabWorkListNew(Integer providerServiceMapId, Integer vanID) {
 		Calendar cal = Calendar.getInstance();
