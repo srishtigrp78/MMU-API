@@ -260,4 +260,12 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 //	@Query(value="SELECT count(ben_flow_id) FROM db_iemr.i_ben_flow_outreach i where i.referred_visitcode = :visitCode and specialist_flag=9"
 //			,nativeQuery=true)
 //	public Integer isTMvisitDone(@Param("visitCode") Long visitCode);
+	
+	@Query("SELECT t from BeneficiaryFlowStatus t where t.referredVisitCode = :mmuVisitCode")
+	public BeneficiaryFlowStatus getTMVisitDetails(@Param("mmuVisitCode") Long mmuVisitCode);
+	
+	@Transactional
+	@Modifying
+	@Query("UPDATE BeneficiaryFlowStatus t SET t.isCaseSheetdownloaded = true WHERE t.visitCode = :mmuVisitCode")
+	public int updateDownloadFlag(@Param("mmuVisitCode") Long mmuVisitCode);
 }
