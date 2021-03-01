@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
+import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
 import com.iemr.mmu.utils.mapper.InputMapper;
@@ -87,7 +88,27 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 		}
 		return i;
 	}
-
+	public int updateBenFlowtableAfterNurseSaveForTMReferred(CommonUtilityClass commonUtilityClass, Boolean isTMCDone) {
+		// TODO Auto-generated method stub
+		int i = 0;
+		try {
+			Long tmpBenFlowID = commonUtilityClass.getBenFlowID();
+			Long tmpBeneficiaryID = commonUtilityClass.getBeneficiaryID();
+			Long tmpBenVisitID = commonUtilityClass.getBenVisitID();
+			Long tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
+		    Short specialistFlag=null;
+			if(isTMCDone)
+				specialistFlag=200;
+			else
+				specialistFlag=300;
+			i = beneficiaryFlowStatusRepo.updateBenFlowStatusTMReferred(tmpBenFlowID, tmpbeneficiaryRegID, specialistFlag);
+			// System.out.println("hello");
+		} catch (Exception e) {
+			// e.printStackTrace();
+			logger.error("Error in ben flow creation = " + e);
+		}
+		return i;
+	}
 	public int updateBenFlowNurseAfterNurseUpdateNCD_Screening(Long benFlowID, Long benRegID, Short nurseFlag) {
 		int i = 0;
 		try {

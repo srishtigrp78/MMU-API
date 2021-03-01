@@ -793,4 +793,6 @@ public class CommonDoctorServiceImpl {
 		return successFlag;
 	}
 
+	
+
 }

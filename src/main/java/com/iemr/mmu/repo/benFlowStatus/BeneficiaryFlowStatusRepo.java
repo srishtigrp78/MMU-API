@@ -41,7 +41,13 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			@Param("labIteration") Short labIteration, @Param("radiologistFlag") Short radiologistFlag,
 			@Param("oncologistFlag") Short oncologistFlag, @Param("benVisitCode") Long benVisitCode,
 			@Param("vanID") Integer vanID);
-
+	@Transactional
+	@Modifying
+	@Query("UPDATE BeneficiaryFlowStatus t set t.specialist_flag = :specialistFlag "
+			+ "  WHERE t.benFlowID = :benFlowID AND t.beneficiaryRegID = :benRegID  ")
+	public int updateBenFlowStatusTMReferred(@Param("benFlowID") Long benFlowID,
+			@Param("benRegID") Long benRegID,@Param("specialistFlag") Short specialistFlag);
+	
 	@Query("SELECT  t.benFlowID, t.beneficiaryRegID, t.visitDate, t.benName, t.age, t.ben_age_val, t.genderID, t.genderName, "
 			+ " t.villageName, t.districtName, t.beneficiaryID, t.servicePointName, t.VisitReason, t.VisitCategory, t.benVisitID,  "
 			+ " t.registrationDate, t.benVisitDate, t.visitCode, t.consultationDate FROM BeneficiaryFlowStatus t "
@@ -251,11 +257,11 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	@Query(" SELECT benName, Date(dOB), genderID FROM BeneficiaryFlowStatus WHERE benFlowID = :benFlowID ")
 	public ArrayList<Object[]> getBenDataForCareStream(@Param("benFlowID") Long benFlowID);
 	
-	@Query("SELECT  t from BeneficiaryFlowStatus t WHERE (t.specialist_flag = 100) AND t.deleted = false "
-			+ " AND t.providerServiceMapId = :providerServiceMapId "
+	@Query("SELECT  t from BeneficiaryFlowStatus t WHERE (t.specialist_flag = 100 OR t.specialist_flag = 200) AND t.deleted = false "
+			+ " AND t.providerServiceMapId = :providerServiceMapId AND t.benVisitDate >= Date(:fromDate) "
 			+ " AND t.vanID = :vanID ORDER BY t.visitDate DESC ")
 	public ArrayList<BeneficiaryFlowStatus> getNurseWorklistTMreferred(
-			@Param("providerServiceMapId") Integer providerServiceMapId, @Param("vanID") Integer vanID);
+			@Param("providerServiceMapId") Integer providerServiceMapId, @Param("vanID") Integer vanID,@Param("fromDate") Timestamp fromDate);
 	//Query to check TM visit is done for referred case....Shubham Shekhar
 //	@Query(value="SELECT count(ben_flow_id) FROM db_iemr.i_ben_flow_outreach i where i.referred_visitcode = :visitCode and specialist_flag=9"
 //			,nativeQuery=true)
