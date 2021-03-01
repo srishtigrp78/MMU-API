@@ -39,7 +39,9 @@ public interface PrescriptionDetailRepo extends CrudRepository<PrescriptionDetai
 			+ " WHERE BeneficiaryRegID=:benRegID AND VisitCode = :visitCode ORDER BY CreatedDate DESC LIMIT 1")
 	public String getExternalinvestigationForVisitCode(@Param("benRegID") Long benRegID,
 			@Param("visitCode") Long visitCode);
-
+	@Query("SELECT prescriptionID from PrescriptionDetail a where a.visitCode= :visitCode")
+	public Long getPrescriptionID(
+			@Param("visitCode") Long visitCode);
 	@Transactional
 	@Modifying
 	@Query("update PrescriptionDetail set diagnosisProvided=:diagnosisProvided, "
