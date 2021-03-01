@@ -107,7 +107,8 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	private Integer radioWL;
 	@Value("${oncoWL}")
 	private Integer oncoWL;
-
+	@Value("${TMReferredWL}")
+	private Integer TMReferredWL;
 	@Autowired
 	private BenVisitDetailRepo benVisitDetailRepo;
 	@Autowired
@@ -2981,8 +2982,11 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	}
 	// New Nurse worklist for TM referred patients.... 26-02-2021
 		public String getNurseWorkListTMReferred(Integer providerServiceMapId, Integer vanID) {
+			Calendar cal = Calendar.getInstance();
+			cal.add(Calendar.DAY_OF_YEAR, -TMReferredWL);
+			long startTime = cal.getTimeInMillis();
 			ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getNurseWorklistTMreferred(providerServiceMapId,
-					vanID);
+					vanID,new Timestamp(startTime));
 			//Integer count=0;
 //           for(int i=0;i<obj.size();i++)
 //           {
