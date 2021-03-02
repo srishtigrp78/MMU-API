@@ -973,4 +973,32 @@ public class FetchCommonController {
 
 		return response.toString();
 	}
+	
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary previous Referral history", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenPreviousReferralHistoryDetails" }, method = { RequestMethod.POST })
+	public String getBenPreviousReferralHistoryDetails(
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("Get Beneficiary previous Referral history request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID")) {
+				Long benRegID = obj.getLong("benRegID");
+				String s = commonServiceImpl.getBenPreviousReferralData(benRegID);
+				response.setResponse(s);
+
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid request");
+			}
+			logger.info("Get Beneficiary previous Referral history response:" + response);
+		} catch (Exception e) {
+			response.setError(5000, "Error while getting details");
+			logger.error("Error in Get Beneficiary previous Referral history:" + e);
+		}
+		return response.toString();
+	}
 }
