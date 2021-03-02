@@ -37,10 +37,10 @@ public class IDRSData {
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
 	
-	 @OneToOne(fetch = FetchType.EAGER)
-		@JoinColumn(name = "visitCode", insertable = false, updatable = false)
-		@Expose
-		private BeneficiaryFlowStatus beneficiaryFlowStatus;
+//	 @OneToOne(fetch = FetchType.EAGER)
+//		@JoinColumn(name = "visitCode", insertable = false, updatable = false)
+//		@Expose
+//		private BeneficiaryFlowStatus beneficiaryFlowStatus;
 	 
 	@Expose
 	@Column(name = "ProviderServiceMapID")
