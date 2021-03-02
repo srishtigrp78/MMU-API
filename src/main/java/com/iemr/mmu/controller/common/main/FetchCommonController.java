@@ -169,6 +169,7 @@ public class FetchCommonController {
 		}
 		return response.toString();
 	}
+
 	/**
 	 * @author SH20094090
 	 * @param providerServiceMapID
@@ -921,6 +922,55 @@ public class FetchCommonController {
 			response.setError(5000, "Error while getting details");
 			logger.error("Error in Get Beneficiary previous Diabetes history:" + e);
 		}
+		return response.toString();
+	}
+
+	/***
+	 * @author DU20091017
+	 * @param comingRequest
+	 * @param Authorization
+	 * @return
+	 */
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary TM case sheet", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/get/Case-sheet/TMReferredprintData" }, method = { RequestMethod.POST })
+	public String getTMReferredPrintData(
+			@ApiParam(value = "{\r\n" + "  \"VisitCategory\": \"String\",\r\n" + "  \"benFlowID\": \"Integer\",\r\n"
+					+ "  \"benVisitID\": \"Integer\",\r\n" + "  \"beneficiaryRegID\": \"Long\",\r\n"
+					+ "  \"visitCode\": \"Long\"\r\n" + "}") @RequestBody String comingRequest,
+			@RequestHeader(value = "Authorization") String Authorization) {
+
+		OutputResponse response = new OutputResponse();
+		try {
+			if (comingRequest != null) {
+				BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingRequest, BeneficiaryFlowStatus.class);
+				String casesheetData = null;
+				//to check whether case sheet is already downloaded or not
+				String caseSheetStatus = commonServiceImpl.checkIsCaseSheetDownloaded(obj.getBenVisitCode());
+				
+				if (caseSheetStatus != null && caseSheetStatus.equalsIgnoreCase("success")) {
+
+					//fetch case sheet from downloaded table
+					casesheetData = commonServiceImpl.getTmCaseSheetOffline(obj);
+
+				} else if (caseSheetStatus.equalsIgnoreCase("failure")) {
+
+					// fetch case sheet using case sheet API.
+					BeneficiaryFlowStatus tmVisitCodeObj = commonServiceImpl.getTmVisitCode(obj.getBenVisitCode());
+					casesheetData = commonServiceImpl.getTmCaseSheet(tmVisitCodeObj, obj, Authorization);
+
+				}
+				if (casesheetData != null)
+					response.setResponse(casesheetData);
+				else
+					response.setError(5000, "Error in processing request");
+
+			} else
+				response.setError(5000, "Invalid request");
+		} catch (Exception e) {
+			logger.error("" + e);
+		}
+
 		return response.toString();
 	}
 }
