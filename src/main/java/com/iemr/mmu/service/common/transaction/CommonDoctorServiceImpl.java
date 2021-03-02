@@ -743,6 +743,11 @@ public class CommonDoctorServiceImpl {
 				tcDate = tcRequestOBJ.getAllocationDate();
 			}
 
+			short specialistValue = beneficiaryFlowStatusRepo.specialistFlagValue(commonUtilityClass.getVisitCode());
+			
+			if(specialistValue > 0)
+				tcSpecialistFlag = specialistValue;
+			
 			i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdate(tmpBenFlowID, tmpbeneficiaryRegID,
 					tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0, tcSpecialistFlag, tcUserID,
 					tcDate);

@@ -267,6 +267,9 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 //			,nativeQuery=true)
 //	public Integer isTMvisitDone(@Param("visitCode") Long visitCode);
 	
+	@Query("SELECT t.isCaseSheetdownloaded from BeneficiaryFlowStatus t where t.visitCode = :mmuVisitCode")
+	public Boolean checkIsCaseSheetDownloaded(@Param("mmuVisitCode") Long mmuVisitCode);
+	
 	@Query("SELECT t from BeneficiaryFlowStatus t where t.referredVisitCode = :mmuVisitCode")
 	public BeneficiaryFlowStatus getTMVisitDetails(@Param("mmuVisitCode") Long mmuVisitCode);
 	
@@ -274,4 +277,7 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	@Modifying
 	@Query("UPDATE BeneficiaryFlowStatus t SET t.isCaseSheetdownloaded = true WHERE t.visitCode = :mmuVisitCode")
 	public int updateDownloadFlag(@Param("mmuVisitCode") Long mmuVisitCode);
+	
+	@Query("SELECT t.specialist_flag from BeneficiaryFlowStatus t where t.visitCode = :mmuVisitCode")
+	public short specialistFlagValue(@Param("mmuVisitCode") Long mmuVisitCode);
 }

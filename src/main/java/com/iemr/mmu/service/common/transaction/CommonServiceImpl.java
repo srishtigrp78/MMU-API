@@ -520,6 +520,14 @@ public class CommonServiceImpl implements CommonService {
 
 	}
 
+	public String checkIsCaseSheetDownloaded(Long mmuVisitCode) throws IEMRException {
+		Boolean check = beneficiaryFlowStatusRepo.checkIsCaseSheetDownloaded(mmuVisitCode);
+		if(check != null && check == true)
+			return "success";
+		else
+			return "failure";
+	}
+
 	public BeneficiaryFlowStatus getTmVisitCode(Long mmuVisitCode) throws Exception {
 		BeneficiaryFlowStatus tmVisitCode = beneficiaryFlowStatusRepo.getTMVisitDetails(mmuVisitCode);
 		return tmVisitCode;
@@ -553,7 +561,7 @@ public class CommonServiceImpl implements CommonService {
 
 				if (response != null) {
 //					mmuBenFlowOBJ.setIsCaseSheetdownloaded(true);
-					 updated = beneficiaryFlowStatusRepo.updateDownloadFlag(mmuBenFlowOBJ.getVisitCode());
+					updated = beneficiaryFlowStatusRepo.updateDownloadFlag(mmuBenFlowOBJ.getVisitCode());
 				}
 
 			}
@@ -564,22 +572,23 @@ public class CommonServiceImpl implements CommonService {
 
 //		if(updateDownloadedFlag != null && tmCaseSheet != null)
 
-		if(updated > 0 && tmCaseSheet != null)
+		if (updated > 0 && tmCaseSheet != null)
 			return tmCaseSheet;
-		else 
+		else
 			return null;
-		
+
 	}
-	
-	public String getTmCaseSheetOffline(BeneficiaryFlowStatus mmuBenFlowOBJ) throws IEMRException{
-		
-		DownloadedCaseSheet caseSheetResponse = downloadedCaseSheetRepo.getTmCaseSheetFromOffline(mmuBenFlowOBJ.getVisitCode());
+
+	public String getTmCaseSheetOffline(BeneficiaryFlowStatus mmuBenFlowOBJ) throws IEMRException {
+
+		DownloadedCaseSheet caseSheetResponse = downloadedCaseSheetRepo
+				.getTmCaseSheetFromOffline(mmuBenFlowOBJ.getVisitCode());
 		String response = null;
 		try {
-			if(caseSheetResponse != null)
+			if (caseSheetResponse != null)
 				response = caseSheetResponse.getTmCaseSheetResponse();
-		}catch(Exception e) {
-			new IEMRException("Error in fetching case Sheet in offline mode : " , e);
+		} catch (Exception e) {
+			new IEMRException("Error in fetching case Sheet in offline mode : ", e);
 		}
 		return response;
 	}

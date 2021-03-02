@@ -925,6 +925,12 @@ public class FetchCommonController {
 		return response.toString();
 	}
 
+	/***
+	 * @author DU20091017
+	 * @param comingRequest
+	 * @param Authorization
+	 * @return
+	 */
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary TM case sheet", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/get/Case-sheet/TMReferredprintData" }, method = { RequestMethod.POST })
@@ -939,18 +945,26 @@ public class FetchCommonController {
 			if (comingRequest != null) {
 				BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingRequest, BeneficiaryFlowStatus.class);
 				String casesheetData = null;
-				if(obj.getIsCaseSheetdownloaded() != null && obj.getIsCaseSheetdownloaded() == true) {
+				//to check whether case sheet is already downloaded or not
+				String caseSheetStatus = commonServiceImpl.checkIsCaseSheetDownloaded(obj.getBenVisitCode());
+				
+				if (caseSheetStatus != null && caseSheetStatus.equalsIgnoreCase("success")) {
+
+					//fetch case sheet from downloaded table
 					casesheetData = commonServiceImpl.getTmCaseSheetOffline(obj);
-				}else {
+
+				} else if (caseSheetStatus.equalsIgnoreCase("failure")) {
+
+					// fetch case sheet using case sheet API.
 					BeneficiaryFlowStatus tmVisitCodeObj = commonServiceImpl.getTmVisitCode(obj.getBenVisitCode());
-					
-					casesheetData = commonServiceImpl.getTmCaseSheet(tmVisitCodeObj,obj, Authorization);
+					casesheetData = commonServiceImpl.getTmCaseSheet(tmVisitCodeObj, obj, Authorization);
+
 				}
-				if(casesheetData != null)
+				if (casesheetData != null)
 					response.setResponse(casesheetData);
 				else
-					response.setError(5000,"Error in processing request");
-				
+					response.setError(5000, "Error in processing request");
+
 			} else
 				response.setError(5000, "Invalid request");
 		} catch (Exception e) {
