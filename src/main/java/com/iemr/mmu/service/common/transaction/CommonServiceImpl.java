@@ -557,17 +557,23 @@ public class CommonServiceImpl implements CommonService {
 				saveTmCaseSheetRes.setTmCaseSheetResponse(tmCaseSheet);
 				saveTmCaseSheetRes.setCreatedBy(TmBenFlowOBJ.getModified_by());
 
-				DownloadedCaseSheet response = downloadedCaseSheetRepo.save(saveTmCaseSheetRes);
+				if(TmBenFlowOBJ.getSpecialist_flag() == 9) {
+					DownloadedCaseSheet responseDownloaded = downloadedCaseSheetRepo.save(saveTmCaseSheetRes);
 
-				if (response != null) {
-//					mmuBenFlowOBJ.setIsCaseSheetdownloaded(true);
-					updated = beneficiaryFlowStatusRepo.updateDownloadFlag(mmuBenFlowOBJ.getVisitCode());
-				}
-
+					if (responseDownloaded != null) {
+//						mmuBenFlowOBJ.setIsCaseSheetdownloaded(true);
+						updated = beneficiaryFlowStatusRepo.updateDownloadFlag(mmuBenFlowOBJ.getVisitCode());
+					}
+				}else
+					throw new IEMRException("Tele-Consultation is not done");
 			}
 
-		} catch (Exception e) {
-			new IEMRException("error in getting case Sheet", e);
+		}catch(IEMRException e) { 
+			throw new IEMRException(e.getMessage());
+		}
+		
+		catch (Exception e) {
+			throw new IEMRException("Error in fetching TM Case-Sheet : " + e);
 		}
 
 //		if(updateDownloadedFlag != null && tmCaseSheet != null)

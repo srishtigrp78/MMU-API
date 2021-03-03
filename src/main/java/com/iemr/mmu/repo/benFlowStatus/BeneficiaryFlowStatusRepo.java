@@ -259,7 +259,7 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	
 	@Query("SELECT  t from BeneficiaryFlowStatus t WHERE (t.specialist_flag = 100 OR t.specialist_flag = 200) AND t.deleted = false "
 			+ " AND t.providerServiceMapId = :providerServiceMapId AND t.benVisitDate >= Date(:fromDate) "
-			+ " AND t.vanID = :vanID ORDER BY t.visitDate DESC ")
+			+ " AND t.vanID = :vanID AND t.referredVisitCode is null ORDER BY t.visitDate DESC ")
 	public ArrayList<BeneficiaryFlowStatus> getNurseWorklistTMreferred(
 			@Param("providerServiceMapId") Integer providerServiceMapId, @Param("vanID") Integer vanID,@Param("fromDate") Timestamp fromDate);
 	//Query to check TM visit is done for referred case....Shubham Shekhar
@@ -278,6 +278,6 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	@Query("UPDATE BeneficiaryFlowStatus t SET t.isCaseSheetdownloaded = true WHERE t.visitCode = :mmuVisitCode")
 	public int updateDownloadFlag(@Param("mmuVisitCode") Long mmuVisitCode);
 	
-	@Query("SELECT t.specialist_flag from BeneficiaryFlowStatus t where t.visitCode = :mmuVisitCode")
-	public short specialistFlagValue(@Param("mmuVisitCode") Long mmuVisitCode);
+	@Query("SELECT t from BeneficiaryFlowStatus t where t.visitCode = :mmuVisitCode")
+	public BeneficiaryFlowStatus specialistFlagAndCategoryValue(@Param("mmuVisitCode") Long mmuVisitCode);
 }

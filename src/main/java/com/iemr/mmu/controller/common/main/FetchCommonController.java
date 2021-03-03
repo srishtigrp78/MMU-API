@@ -957,18 +957,20 @@ public class FetchCommonController {
 
 					// fetch case sheet using case sheet API.
 					BeneficiaryFlowStatus tmVisitCodeObj = commonServiceImpl.getTmVisitCode(obj.getBenVisitCode());
-					casesheetData = commonServiceImpl.getTmCaseSheet(tmVisitCodeObj, obj, Authorization);
+					if(tmVisitCodeObj != null)
+						casesheetData = commonServiceImpl.getTmCaseSheet(tmVisitCodeObj, obj, Authorization);
 
 				}
 				if (casesheetData != null)
 					response.setResponse(casesheetData);
 				else
-					response.setError(5000, "Error in processing request");
+					response.setError(5000, "Error in fetching TM Case-Sheet");
 
 			} else
 				response.setError(5000, "Invalid request");
 		} catch (Exception e) {
 			logger.error("" + e);
+			response.setError(5000, e.getMessage());
 		}
 
 		return response.toString();

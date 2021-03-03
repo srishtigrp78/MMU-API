@@ -677,7 +677,11 @@ public class CommonDoctorServiceImpl {
 		}
 
 		if (TMReferred == 1) {
-			tcSpecialistFlag = (short) 100;
+			
+			BeneficiaryFlowStatus specialistValue = beneficiaryFlowStatusRepo.specialistFlagAndCategoryValue(commonUtilityClass.getVisitCode());
+			
+			if(specialistValue != null && specialistValue.getVisitCategory() != null && specialistValue.getVisitCategory().equalsIgnoreCase("NCD screening"))
+				tcSpecialistFlag = (short) 100;
 		}
 
 		int i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
@@ -743,10 +747,10 @@ public class CommonDoctorServiceImpl {
 				tcDate = tcRequestOBJ.getAllocationDate();
 			}
 
-			short specialistValue = beneficiaryFlowStatusRepo.specialistFlagValue(commonUtilityClass.getVisitCode());
+			BeneficiaryFlowStatus specialistValue = beneficiaryFlowStatusRepo.specialistFlagAndCategoryValue(commonUtilityClass.getVisitCode());
 			
-			if(specialistValue > 0)
-				tcSpecialistFlag = specialistValue;
+			if(specialistValue != null && specialistValue.getSpecialist_flag() > 0)
+				tcSpecialistFlag = specialistValue.getSpecialist_flag();
 			
 			i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdate(tmpBenFlowID, tmpbeneficiaryRegID,
 					tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0, tcSpecialistFlag, tcUserID,
