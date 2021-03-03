@@ -598,4 +598,10 @@ public class CommonServiceImpl implements CommonService {
 		}
 		return response;
 	}
+	
+	@Override
+	public String getBenPreviousReferralData(Long beneficiaryRegID) throws Exception {
+		return commonNurseServiceImpl.getBenPreviousReferralData(beneficiaryRegID);
+
+	}
 }

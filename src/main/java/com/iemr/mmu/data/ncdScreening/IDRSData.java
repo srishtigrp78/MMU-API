@@ -367,6 +367,14 @@ public class IDRSData {
 		
 	}
 	
+	public IDRSData(Long visitCode,Timestamp createdDate,String suspected)
+	{
+		super();
+		this.visitCode=visitCode;
+		this.createdDate=createdDate;
+		this.suspectedDisease=suspected;
+	}
+	
 	
 	public static IDRSData getIDRSData(ArrayList<Object[]> idrsHistory) {
 		IDRSData benIdrsHistory = null;

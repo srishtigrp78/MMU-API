@@ -3744,5 +3744,46 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		response.put("data", resultSet);
 		return new Gson().toJson(response);
 	}
+	
+	@Override
+	public String getBenPreviousReferralData(Long benRegID) throws Exception {
+
+		Map<String, Object> response = new HashMap<String, Object>();
+
+		ArrayList<Object[]> resultSet = new ArrayList<>();
+		ArrayList<IDRSData> resultSet1 = new ArrayList<>();
+        IDRSData idrs=new IDRSData();
+		Map<String, String> column;
+		ArrayList<Map<String, String>> columns = new ArrayList<>();
+
+		column = new HashMap<>();
+		column.put("columnName", "Date of Referral");
+		column.put("keyName", "createdDate");
+		columns.add(column);
+
+		column = new HashMap<>();
+		column.put("columnName", "Visit Code");
+		column.put("keyName", "visitCode");
+		columns.add(column);
+
+		column = new HashMap<>();
+		column.put("columnName", "Suspected Diseases");
+		column.put("keyName", "suspectedDisease");
+		columns.add(column);
+
+		resultSet = iDRSDataRepo.getBenPreviousReferredDetails(benRegID);
+		
+        if(resultSet !=null )
+        {
+        	for(Object[] obj :resultSet)
+        	{
+        		idrs=new IDRSData(((BigInteger) obj[0]).longValue(),(Timestamp)obj[1],(String)obj[2]);
+        		resultSet1.add(idrs);
+        	}
+        }
+        	response.put("data", resultSet1);
+		response.put("columns", columns);
+		return new Gson().toJson(response);
+	}
 
 }
