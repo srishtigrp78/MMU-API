@@ -54,6 +54,7 @@ import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonServiceImpl;
 import com.iemr.mmu.service.labtechnician.LabTechnicianServiceImpl;
 import com.iemr.mmu.service.tele_consultation.TeleConsultationServiceImpl;
+import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
@@ -118,61 +119,16 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public Long saveNCDScreeningNurseData(JsonObject requestOBJ, String Authorization) throws Exception {
-
-//		Integer result = null;
-//
-//		if (jsonObject != null && jsonObject.has("visitDetails") && jsonObject.has("ncdScreeningDetails")) {
-//			// JsonElement visitDetails = jsonObject.get("visitDetails");
-//			// JsonElement ncdScreeningDetails =
-//			// jsonObject.get("ncdScreeningDetails");
-//			CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(jsonObject, CommonUtilityClass.class);
-//			Long benFlowID = nurseUtilityClass.getBenFlowID();
-//
-//			BeneficiaryVisitDetail beneficiaryVisitDetail = InputMapper.gson().fromJson(jsonObject.get("visitDetails"),
-//					BeneficiaryVisitDetail.class);
-//
-//			NCDScreening ncdScreening = InputMapper.gson().fromJson(jsonObject.get("ncdScreeningDetails"),
-//					NCDScreening.class);
-//
-//			if (ncdScreening.getNextScreeningDate() != null)
-//				ncdScreening.setNextScreeningDateDB(Timestamp
-//						.valueOf(ncdScreening.getNextScreeningDate().replaceAll("T", " ").replaceAll("Z", " ")));
-//
-//			Long visitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(beneficiaryVisitDetail);
-//
-//			// 11-06-2018 visit code
-//			Long benVisitCode = commonNurseServiceImpl.generateVisitCode(visitID, nurseUtilityClass.getVanID(),
-//					nurseUtilityClass.getSessionID());
-//
-//			if (null != visitID) {
-//
-//				Long vitalSuccessFlag = saveNCDScreeningVitalDetails(jsonObject, visitID, benVisitCode);
-//				Long saveNCDScreeningDetails = null;
-//				ncdScreening.setBenVisitID(visitID);
-//				ncdScreening.setVisitCode(benVisitCode);
-//				saveNCDScreeningDetails = ncdScreeningNurseServiceImpl.saveNCDScreeningDetails(ncdScreening);
-//
-//				if (null != vitalSuccessFlag && null != saveNCDScreeningDetails) {
-//
-//					int i = updateBenFlowNurseAfterNurseActivityANC(beneficiaryVisitDetail.getBeneficiaryRegID(),
-//							visitID, benFlowID, beneficiaryVisitDetail.getVisitReason(),
-//							beneficiaryVisitDetail.getVisitCategory(), ncdScreening.getIsScreeningComplete(),
-//							benVisitCode, nurseUtilityClass.getVanID());
-//
-//					result = 1;
-//				} else {
-//					throw new RuntimeException("Error occurred while saving data");
-//				}
-//			} else
-//				throw new RuntimeException("Error occurred while creating beneficiary visit");
-//		} else {
-//			throw new Exception("Invalid input");
-//		}
-//		return result;
 		// Shubham Shekhar,9-12-2020,WDF
 		Long saveSuccessFlag = null;
 		TeleconsultationRequestOBJ tcRequestOBJ = null;
 		// check if visit details data is not null
+		if(requestOBJ != null && requestOBJ.has("isTMCDone") && !requestOBJ.get("isTMCDone").isJsonNull())
+		{
+			saveSuccessFlag=saveNCDNurseTMReferred(requestOBJ,Authorization);
+		}
+		else
+		{
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
 			CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
 			// Call method to save visit details data
@@ -247,8 +203,75 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		} else {
 			throw new Exception("Invalid input");
 		}
+		}
 		return saveSuccessFlag;
 
+	}
+
+	private Long saveNCDNurseTMReferred(JsonObject requestOBJ, String authorization) throws IEMRException {
+		Long saveSuccessFlag = null;
+		Integer prescriptionSuccessFlag = null;
+		Long referSaveSuccessFlag = null;
+		boolean isMedicinePrescribed=false;
+		// TODO Auto-generated method stub
+		if(requestOBJ!=null)
+		{
+			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
+		if (requestOBJ.has("prescription") && !requestOBJ.get("prescription").isJsonNull()
+				&& requestOBJ.get("prescription") != null) {
+			JsonArray drugList = requestOBJ.getAsJsonArray("prescription");
+			if (drugList != null && !drugList.isJsonNull() && drugList.size() > 0) {
+				isMedicinePrescribed = true;
+			}
+		}
+		if (isMedicinePrescribed) {
+			PrescribedDrugDetail[] prescribedDrugDetail = InputMapper.gson()
+					.fromJson(requestOBJ.get("prescription"), PrescribedDrugDetail[].class);
+            Long presID=prescriptionDetailRepo.getPrescriptionID(commonUtilityClass.getVisitCode());
+			List<PrescribedDrugDetail> prescribedDrugDetailList = Arrays.asList(prescribedDrugDetail);
+
+			if (prescribedDrugDetailList.size() > 0) {
+				for (PrescribedDrugDetail tmpObj : prescribedDrugDetailList) {
+					tmpObj.setPrescriptionID(presID);
+					tmpObj.setBeneficiaryRegID(commonUtilityClass.getBeneficiaryRegID());
+					tmpObj.setBenVisitID(commonUtilityClass.getBenVisitID());
+					tmpObj.setVisitCode(commonUtilityClass.getVisitCode());
+					tmpObj.setProviderServiceMapID(commonUtilityClass.getProviderServiceMapID());
+				}
+
+				Integer r = commonNurseServiceImpl.saveBenPrescribedDrugsList(prescribedDrugDetailList);
+				if (r > 0 && r != null) {
+					prescriptionSuccessFlag = r;
+				}
+
+			} else {
+				prescriptionSuccessFlag = 1;
+			}
+		} else {
+			prescriptionSuccessFlag = 1;
+		}
+		
+		// save referral details
+		if (requestOBJ.has("refer") && !requestOBJ.get("refer").isJsonNull()) {
+			referSaveSuccessFlag = commonDoctorServiceImpl
+					.saveBenReferDetails(requestOBJ.get("refer").getAsJsonObject());
+		} else {
+			referSaveSuccessFlag = new Long(1);
+		}
+		if (requestOBJ.has("isTMCDone") && !requestOBJ.get("isTMCDone").isJsonNull()
+				&& requestOBJ.get("isTMCDone") != null
+				&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)
+				&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
+			Boolean isTMCDone=requestOBJ.get("isTMCDone").getAsBoolean();
+        int i = commonBenStatusFlowServiceImpl.updateBenFlowtableAfterNurseSaveForTMReferred(commonUtilityClass,
+        		isTMCDone);
+			if (i > 0) {
+				saveSuccessFlag = referSaveSuccessFlag;
+			} else
+				throw new RuntimeException();
+		}
+		}
+		return saveSuccessFlag;
 	}
 
 	/**

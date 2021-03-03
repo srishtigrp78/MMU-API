@@ -170,6 +170,33 @@ public class FetchCommonController {
 		return response.toString();
 	}
 
+	/**
+	 * @author SH20094090
+	 * @param providerServiceMapID
+	 * @param vanID
+	 * @return
+	 */
+	@CrossOrigin()
+	@ApiOperation(value = "Get Nurse worklist TM referred", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getNurseWorklistTMreferred/{providerServiceMapID}/{serviceID}/{vanID}" }, method = {
+			RequestMethod.GET })
+	public String getNurseWorklistTMreferred(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
+			@PathVariable("vanID") Integer vanID) {
+		OutputResponse response = new OutputResponse();
+		try {
+			String s = commonNurseServiceImpl.getNurseWorkListTMReferred(providerServiceMapID, vanID);
+			if (s != null)
+				response.setResponse(s);
+			else
+				response.setError(5000, "Error while getting nurse worklist");
+		} catch (Exception e) {
+			// e.printStackTrace();
+			logger.error("Error in getNurseWorklist:" + e);
+			response.setError(5000, "Error while getting nurse worklist");
+		}
+		return response.toString();
+	}
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Doctor Entered Previous significant Findings", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getDoctorPreviousSignificantFindings" }, method = { RequestMethod.POST })
@@ -894,6 +921,85 @@ public class FetchCommonController {
 		} catch (Exception e) {
 			response.setError(5000, "Error while getting details");
 			logger.error("Error in Get Beneficiary previous Diabetes history:" + e);
+		}
+		return response.toString();
+	}
+
+	/***
+	 * @author DU20091017
+	 * @param comingRequest
+	 * @param Authorization
+	 * @return
+	 */
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary TM case sheet", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/get/Case-sheet/TMReferredprintData" }, method = { RequestMethod.POST })
+	public String getTMReferredPrintData(
+			@ApiParam(value = "{\r\n" + "  \"VisitCategory\": \"String\",\r\n" + "  \"benFlowID\": \"Integer\",\r\n"
+					+ "  \"benVisitID\": \"Integer\",\r\n" + "  \"beneficiaryRegID\": \"Long\",\r\n"
+					+ "  \"visitCode\": \"Long\"\r\n" + "}") @RequestBody String comingRequest,
+			@RequestHeader(value = "Authorization") String Authorization) {
+
+		OutputResponse response = new OutputResponse();
+		try {
+			if (comingRequest != null) {
+				BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingRequest, BeneficiaryFlowStatus.class);
+				String casesheetData = null;
+				//to check whether case sheet is already downloaded or not
+				String caseSheetStatus = commonServiceImpl.checkIsCaseSheetDownloaded(obj.getBenVisitCode());
+				
+				if (caseSheetStatus != null && caseSheetStatus.equalsIgnoreCase("success")) {
+
+					//fetch case sheet from downloaded table
+					casesheetData = commonServiceImpl.getTmCaseSheetOffline(obj);
+
+				} else if (caseSheetStatus.equalsIgnoreCase("failure")) {
+
+					// fetch case sheet using case sheet API.
+					BeneficiaryFlowStatus tmVisitCodeObj = commonServiceImpl.getTmVisitCode(obj.getBenVisitCode());
+					if(tmVisitCodeObj != null)
+						casesheetData = commonServiceImpl.getTmCaseSheet(tmVisitCodeObj, obj, Authorization);
+
+				}
+				if (casesheetData != null)
+					response.setResponse(casesheetData);
+				else
+					response.setError(5000, "Error in fetching TM Case-Sheet");
+
+			} else
+				response.setError(5000, "Invalid request");
+		} catch (Exception e) {
+			logger.error("" + e);
+			response.setError(5000, e.getMessage());
+		}
+
+		return response.toString();
+	}
+	
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary previous Referral history", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenPreviousReferralHistoryDetails" }, method = { RequestMethod.POST })
+	public String getBenPreviousReferralHistoryDetails(
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("Get Beneficiary previous Referral history request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID")) {
+				Long benRegID = obj.getLong("benRegID");
+				String s = commonServiceImpl.getBenPreviousReferralData(benRegID);
+				response.setResponse(s);
+
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid request");
+			}
+			logger.info("Get Beneficiary previous Referral history response:" + response);
+		} catch (Exception e) {
+			response.setError(5000, "Error while getting details");
+			logger.error("Error in Get Beneficiary previous Referral history:" + e);
 		}
 		return response.toString();
 	}

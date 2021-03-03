@@ -26,8 +26,10 @@ import com.google.gson.Gson;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.common.DocFileManager;
 import com.iemr.mmu.data.nurse.CommonUtilityClass;
+import com.iemr.mmu.data.syncActivity_syncLayer.DownloadedCaseSheet;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.provider.ProviderServiceMappingRepo;
+import com.iemr.mmu.repo.syncActivity_syncLayer.DownloadedCaseSheetRepo;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
 import com.iemr.mmu.service.cancerScreening.CSNurseServiceImpl;
 import com.iemr.mmu.service.cancerScreening.CSServiceImpl;
@@ -62,6 +64,9 @@ public class CommonServiceImpl implements CommonService {
 	private NCDScreeningServiceImpl ncdScreeningServiceImpl;
 	@Autowired
 	private ProviderServiceMappingRepo providerServiceMappingRepo;
+
+	@Autowired
+	private DownloadedCaseSheetRepo downloadedCaseSheetRepo;
 
 	@Autowired
 	public void setNcdScreeningServiceImpl(NCDScreeningServiceImpl ncdScreeningServiceImpl) {
@@ -512,6 +517,91 @@ public class CommonServiceImpl implements CommonService {
 	@Override
 	public String getBenPreviousDiabetesData(Long beneficiaryRegID) throws Exception {
 		return commonNurseServiceImpl.getBenPreviousDiabetesData(beneficiaryRegID);
+
+	}
+
+	public String checkIsCaseSheetDownloaded(Long mmuVisitCode) throws IEMRException {
+		Boolean check = beneficiaryFlowStatusRepo.checkIsCaseSheetDownloaded(mmuVisitCode);
+		if(check != null && check == true)
+			return "success";
+		else
+			return "failure";
+	}
+
+	public BeneficiaryFlowStatus getTmVisitCode(Long mmuVisitCode) throws Exception {
+		BeneficiaryFlowStatus tmVisitCode = beneficiaryFlowStatusRepo.getTMVisitDetails(mmuVisitCode);
+		return tmVisitCode;
+//		return commonNurseServiceImpl.getBenPreviousDiabetesData(beneficiaryRegID);
+
+	}
+
+	public String getTmCaseSheet(BeneficiaryFlowStatus TmBenFlowOBJ, BeneficiaryFlowStatus mmuBenFlowOBJ,
+			String Authorization) throws IEMRException {
+
+		BeneficiaryFlowStatus reqobj = new BeneficiaryFlowStatus();
+		reqobj.setVisitCode(TmBenFlowOBJ.getVisitCode());
+		reqobj.setVisitCategory(TmBenFlowOBJ.getVisitCategory());
+		reqobj.setBenFlowID(TmBenFlowOBJ.getBenFlowID());
+		reqobj.setBenVisitID(TmBenFlowOBJ.getBenVisitID());
+		reqobj.setBeneficiaryRegID(TmBenFlowOBJ.getBeneficiaryRegID());
+
+		// get TM case sheet by passing the TM details
+		String tmCaseSheet = getCaseSheetPrintDataForBeneficiary(reqobj, Authorization);
+		int updated = 0;
+		try {
+			if (tmCaseSheet != null) {
+
+				DownloadedCaseSheet saveTmCaseSheetRes = new DownloadedCaseSheet();
+				saveTmCaseSheetRes.setTmVisitCode(TmBenFlowOBJ.getVisitCode());
+				saveTmCaseSheetRes.setMmuVisitCode(mmuBenFlowOBJ.getVisitCode());
+				saveTmCaseSheetRes.setTmCaseSheetResponse(tmCaseSheet);
+				saveTmCaseSheetRes.setCreatedBy(TmBenFlowOBJ.getModified_by());
+
+				if(TmBenFlowOBJ.getSpecialist_flag() == 9) {
+					DownloadedCaseSheet responseDownloaded = downloadedCaseSheetRepo.save(saveTmCaseSheetRes);
+
+					if (responseDownloaded != null) {
+//						mmuBenFlowOBJ.setIsCaseSheetdownloaded(true);
+						updated = beneficiaryFlowStatusRepo.updateDownloadFlag(mmuBenFlowOBJ.getVisitCode());
+					}
+				}else
+					throw new IEMRException("Tele-Consultation is not done");
+			}
+
+		}catch(IEMRException e) { 
+			throw new IEMRException(e.getMessage());
+		}
+		
+		catch (Exception e) {
+			throw new IEMRException("Error in fetching TM Case-Sheet : " + e);
+		}
+
+//		if(updateDownloadedFlag != null && tmCaseSheet != null)
+
+		if (updated > 0 && tmCaseSheet != null)
+			return tmCaseSheet;
+		else
+			return null;
+
+	}
+
+	public String getTmCaseSheetOffline(BeneficiaryFlowStatus mmuBenFlowOBJ) throws IEMRException {
+
+		DownloadedCaseSheet caseSheetResponse = downloadedCaseSheetRepo
+				.getTmCaseSheetFromOffline(mmuBenFlowOBJ.getVisitCode());
+		String response = null;
+		try {
+			if (caseSheetResponse != null)
+				response = caseSheetResponse.getTmCaseSheetResponse();
+		} catch (Exception e) {
+			new IEMRException("Error in fetching case Sheet in offline mode : ", e);
+		}
+		return response;
+	}
+	
+	@Override
+	public String getBenPreviousReferralData(Long beneficiaryRegID) throws Exception {
+		return commonNurseServiceImpl.getBenPreviousReferralData(beneficiaryRegID);
 
 	}
 }

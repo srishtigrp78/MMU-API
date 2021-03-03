@@ -8,13 +8,17 @@ import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 import com.iemr.mmu.data.anc.BenFamilyHistory;
+import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.covid19.Covid19BenFeedback;
 @Entity
 @Table(name = "t_idrsDetails")
@@ -32,7 +36,12 @@ public class IDRSData {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-
+	
+//	 @OneToOne(fetch = FetchType.EAGER)
+//		@JoinColumn(name = "visitCode", insertable = false, updatable = false)
+//		@Expose
+//		private BeneficiaryFlowStatus beneficiaryFlowStatus;
+	 
 	@Expose
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
@@ -356,6 +365,14 @@ public class IDRSData {
 		this.suspectedDisease = suspectedDisease;
 		
 		
+	}
+	
+	public IDRSData(Long visitCode,Timestamp createdDate,String suspected)
+	{
+		super();
+		this.visitCode=visitCode;
+		this.createdDate=createdDate;
+		this.suspectedDisease=suspected;
 	}
 	
 	

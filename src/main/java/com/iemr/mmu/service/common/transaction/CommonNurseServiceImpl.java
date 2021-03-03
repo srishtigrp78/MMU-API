@@ -107,7 +107,8 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	private Integer radioWL;
 	@Value("${oncoWL}")
 	private Integer oncoWL;
-
+	@Value("${TMReferredWL}")
+	private Integer TMReferredWL;
 	@Autowired
 	private BenVisitDetailRepo benVisitDetailRepo;
 	@Autowired
@@ -2979,7 +2980,26 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		return new Gson().toJson(obj);
 	}
-
+	// New Nurse worklist for TM referred patients.... 26-02-2021
+		public String getNurseWorkListTMReferred(Integer providerServiceMapId, Integer vanID) {
+			Calendar cal = Calendar.getInstance();
+			cal.add(Calendar.DAY_OF_YEAR, -TMReferredWL);
+			long startTime = cal.getTimeInMillis();
+			ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getNurseWorklistTMreferred(providerServiceMapId,
+					vanID,new Timestamp(startTime));
+			//Integer count=0;
+//           for(int i=0;i<obj.size();i++)
+//           {
+//        	   count=0;
+//        	   if(obj.get(i).getVisitCode()!=null)
+//        	   count=beneficiaryFlowStatusRepo.isTMvisitDone(obj.get(i).getVisitCode());
+//        	   if(count>0)
+//        		   obj.get(i).setIsTMVisitDone(true);
+//        	   else
+//        		   obj.get(i).setIsTMVisitDone(false);
+//           }
+			return new Gson().toJson(obj);
+		}
 	// New Lab worklist.... 26-03-2018
 	public String getLabWorkListNew(Integer providerServiceMapId, Integer vanID) {
 		Calendar cal = Calendar.getInstance();
@@ -3665,11 +3685,22 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		// is diabetic check for ben
 		Integer i = iDRSDataRepo.isDiabeticCheck(benRegID);
 
-		responseMap.put("questionariesData", ansList);
-		if (i != null && i > 0)
-			responseMap.put("isDiabetic", true);
-		else
-			responseMap.put("isDiabetic", false);
+		 Integer epilepsy=iDRSDataRepo.isEpilepsyCheck(benRegID);
+	        Integer vision=iDRSDataRepo.isDefectiveVisionCheck(benRegID);
+			responseMap.put("questionariesData", ansList);
+			if (i != null && i > 0)
+				responseMap.put("isDiabetic", true);
+			else
+				responseMap.put("isDiabetic", false);
+			if (epilepsy != null && epilepsy > 0)
+				responseMap.put("isEpilepsy", true);
+			else
+				responseMap.put("isEpilepsy", false);
+			if (vision != null && vision > 0)
+				responseMap.put("isDefectiveVision", true);
+			else
+				responseMap.put("isDefectiveVision", false);
+
 
 		if (suspectedDisease != null)
 			responseMap.put("suspectedDisease", suspectedDisease);
@@ -3711,6 +3742,47 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		response.put("columns", columns);
 		response.put("data", resultSet);
+		return new Gson().toJson(response);
+	}
+	
+	@Override
+	public String getBenPreviousReferralData(Long benRegID) throws Exception {
+
+		Map<String, Object> response = new HashMap<String, Object>();
+
+		ArrayList<Object[]> resultSet = new ArrayList<>();
+		ArrayList<IDRSData> resultSet1 = new ArrayList<>();
+        IDRSData idrs=new IDRSData();
+		Map<String, String> column;
+		ArrayList<Map<String, String>> columns = new ArrayList<>();
+
+		column = new HashMap<>();
+		column.put("columnName", "Date of Referral");
+		column.put("keyName", "createdDate");
+		columns.add(column);
+
+		column = new HashMap<>();
+		column.put("columnName", "Visit Code");
+		column.put("keyName", "visitCode");
+		columns.add(column);
+
+		column = new HashMap<>();
+		column.put("columnName", "Suspected Diseases");
+		column.put("keyName", "suspectedDisease");
+		columns.add(column);
+
+		resultSet = iDRSDataRepo.getBenPreviousReferredDetails(benRegID);
+		
+        if(resultSet !=null )
+        {
+        	for(Object[] obj :resultSet)
+        	{
+        		idrs=new IDRSData(((BigInteger) obj[0]).longValue(),(Timestamp)obj[1],(String)obj[2]);
+        		resultSet1.add(idrs);
+        	}
+        }
+        	response.put("data", resultSet1);
+		response.put("columns", columns);
 		return new Gson().toJson(response);
 	}
 

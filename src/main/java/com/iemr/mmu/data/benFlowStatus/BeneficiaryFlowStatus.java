@@ -245,7 +245,14 @@ public class BeneficiaryFlowStatus {
 	@Expose
 	@Column(name = "TCRequestDate")
 	private Timestamp tCRequestDate;
-
+	@Expose
+	@Column(name = "referred_visitcode")
+	private Long referredVisitCode;
+	
+	@Expose
+	@Column(name = "isCaseSheetdownloaded")
+	private Boolean isCaseSheetdownloaded;
+	
 	@Transient
 	private I_bendemographics i_bendemographics;
 	@Transient
@@ -268,6 +275,24 @@ public class BeneficiaryFlowStatus {
 	private Boolean passToNurse;
 	@Transient
 	private String bloodGroup;
+    @Transient
+    Boolean isTMVisitDone;
+    
+	public Long getReferredVisitCode() {
+		return referredVisitCode;
+	}
+
+	public void setReferredVisitCode(Long referredVisitCode) {
+		this.referredVisitCode = referredVisitCode;
+	}
+
+	public Boolean getIsTMVisitDone() {
+		return isTMVisitDone;
+	}
+
+	public void setIsTMVisitDone(Boolean isTMVisitDone) {
+		this.isTMVisitDone = isTMVisitDone;
+	}
 
 	public BeneficiaryFlowStatus() {
 	}
@@ -902,6 +927,14 @@ public class BeneficiaryFlowStatus {
 
 	public void setBenArrivedFlag(Boolean benArrivedFlag) {
 		this.benArrivedFlag = benArrivedFlag;
+	}
+
+	public Boolean getIsCaseSheetdownloaded() {
+		return isCaseSheetdownloaded;
+	}
+
+	public void setIsCaseSheetdownloaded(Boolean isCaseSheetdownloaded) {
+		this.isCaseSheetdownloaded = isCaseSheetdownloaded;
 	}
 
 }
