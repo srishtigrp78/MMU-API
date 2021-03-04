@@ -964,7 +964,7 @@ public class FetchCommonController {
 				if (casesheetData != null)
 					response.setResponse(casesheetData);
 				else
-					response.setError(5000, "Error in fetching TM Case-Sheet");
+					response.setError(5000, "Beneficiary pending for Tele-Consultation");
 
 			} else
 				response.setError(5000, "Invalid request");
