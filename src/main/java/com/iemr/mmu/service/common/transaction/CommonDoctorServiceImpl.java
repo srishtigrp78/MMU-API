@@ -433,7 +433,74 @@ public class CommonDoctorServiceImpl {
 		}
 		return ID;
 	}
+	public Long saveBenReferDetailsTMreferred(JsonObject obj1) throws IEMRException {
+		Long ID = null;
+		int delRes = 0;
+		BenReferDetails referDetails = InputMapper.gson().fromJson(obj1, BenReferDetails.class);
+		List<BenReferDetails> referDetailsList = new ArrayList<BenReferDetails>();
 
+		BenReferDetails referDetailsTemp = null;
+        int u=benReferDetailsRepo.updateReferredInstituteNameTMReferred(referDetails.getReferredToInstituteID(),
+				referDetails.getReferredToInstituteName(), referDetails.getVisitCode(),
+				"U");
+//		ArrayList<Object[]> benReferDetailsStatuses = benReferDetailsRepo
+//				.getBenReferDetailsStatus(referDetails.getBeneficiaryRegID(), referDetails.getVisitCode());
+//
+//		for (Object[] obj : benReferDetailsStatuses) {
+//			String processed = (String) obj[1];
+//			if (null != processed && !"N".equals(processed)) {
+//				processed = "U";
+//			} else {
+//				processed = "N";
+//			}
+//			if (referDetails.getReferredToInstituteID() != null || referDetails.getReferredToInstituteName() != null
+//					) {
+//				benReferDetailsRepo.updateReferredInstituteNameTMReferred(referDetails.getReferredToInstituteID(),
+//						referDetails.getReferredToInstituteName(), referDetails.getVisitCode(),
+//						processed);
+//			}
+//		}
+
+		if (referDetails.getRefrredToAdditionalServiceList() != null
+				&& referDetails.getRefrredToAdditionalServiceList().size() > 0) {
+			for (ServiceMaster sm : referDetails.getRefrredToAdditionalServiceList()) {
+				if (sm.getServiceName() != null) {
+					referDetailsTemp = new BenReferDetails();
+					referDetailsTemp.setBeneficiaryRegID(referDetails.getBeneficiaryRegID());
+					referDetailsTemp.setBenVisitID(referDetails.getBenVisitID());
+					referDetailsTemp.setProviderServiceMapID(referDetails.getProviderServiceMapID());
+					referDetailsTemp.setVisitCode(referDetails.getVisitCode());
+					referDetailsTemp.setCreatedBy(referDetails.getCreatedBy());
+					if (referDetails.getReferredToInstituteID() != null
+							&& referDetails.getReferredToInstituteName() != null) {
+						referDetailsTemp.setReferredToInstituteID(referDetails.getReferredToInstituteID());
+						referDetailsTemp.setReferredToInstituteName(referDetails.getReferredToInstituteName());
+					}
+					referDetailsTemp.setServiceID(sm.getServiceID());
+					referDetailsTemp.setServiceName(sm.getServiceName());
+
+					if (referDetails.getRevisitDate() != null)
+						referDetailsTemp.setRevisitDate(referDetails.getRevisitDate());
+
+					referDetailsList.add(referDetailsTemp);
+				}
+			}
+		} else {
+			if (referDetails.getReferredToInstituteName() != null || referDetails.getRevisitDate() != null)
+				referDetailsList.add(referDetails);
+		}
+        if(u>0)
+        	ID=Long.valueOf(u);
+        else
+        {
+		ArrayList<BenReferDetails> res = (ArrayList<BenReferDetails>) benReferDetailsRepo.save(referDetailsList);
+		if (referDetailsList.size() == res.size()) {
+			ID = new Long(1);
+		}
+        }
+		return ID;
+
+	}
 	public String getFindingsDetails(Long beneficiaryRegID, Long visitCode) {
 		ArrayList<Object[]> clinicalObservationsList = benClinicalObservationsRepo.getFindingsData(beneficiaryRegID,
 				visitCode);

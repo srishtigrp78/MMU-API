@@ -36,4 +36,12 @@ public interface BenReferDetailsRepo extends CrudRepository<BenReferDetails, Lon
 	public int updateReferredInstituteName(@Param("referredToInstituteID") Integer referredToInstituteID,
 			@Param("referredToInstituteName") String referredToInstituteName,@Param("revisitDate") Timestamp revisitDate,
 			@Param("benReferID") Long benReferID, @Param("processed") String processed);
+	@Modifying
+	@Transactional
+	@Query(" Update BenReferDetails  set referredToInstituteID=:referredToInstituteID, "
+			+ "referredToInstituteName=:referredToInstituteName, processed=:processed "
+			+ "WHERE visitCode =:visitCode")
+	public int updateReferredInstituteNameTMReferred(@Param("referredToInstituteID") Integer referredToInstituteID,
+			@Param("referredToInstituteName") String referredToInstituteName,
+			@Param("visitCode") Long visitCode, @Param("processed") String processed);
 }

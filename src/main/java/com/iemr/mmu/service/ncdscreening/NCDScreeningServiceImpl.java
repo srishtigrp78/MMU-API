@@ -254,7 +254,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		// save referral details
 		if (requestOBJ.has("refer") && !requestOBJ.get("refer").isJsonNull()) {
 			referSaveSuccessFlag = commonDoctorServiceImpl
-					.saveBenReferDetails(requestOBJ.get("refer").getAsJsonObject());
+					.saveBenReferDetailsTMreferred(requestOBJ.get("refer").getAsJsonObject());
 		} else {
 			referSaveSuccessFlag = new Long(1);
 		}

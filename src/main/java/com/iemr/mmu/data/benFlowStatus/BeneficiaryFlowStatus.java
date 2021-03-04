@@ -277,6 +277,8 @@ public class BeneficiaryFlowStatus {
 	private String bloodGroup;
     @Transient
     Boolean isTMVisitDone;
+    @Transient
+    String Auth;
     
 	public Long getReferredVisitCode() {
 		return referredVisitCode;
@@ -935,6 +937,14 @@ public class BeneficiaryFlowStatus {
 
 	public void setIsCaseSheetdownloaded(Boolean isCaseSheetdownloaded) {
 		this.isCaseSheetdownloaded = isCaseSheetdownloaded;
+	}
+
+	public String getAuth() {
+		return Auth;
+	}
+
+	public void setAuth(String auth) {
+		Auth = auth;
 	}
 
 }

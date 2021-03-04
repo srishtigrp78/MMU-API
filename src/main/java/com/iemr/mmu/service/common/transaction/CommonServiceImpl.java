@@ -15,14 +15,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.common.DocFileManager;
 import com.iemr.mmu.data.nurse.CommonUtilityClass;
@@ -48,6 +58,9 @@ public class CommonServiceImpl implements CommonService {
 
 	@Value("${fileBasePath}")
 	private String fileBasePath;
+
+	@Value("${tmcentralserver}")
+	private String tmcentralserver;
 
 	@Autowired
 	private Covid19ServiceImpl covid19ServiceImpl;
@@ -522,7 +535,7 @@ public class CommonServiceImpl implements CommonService {
 
 	public String checkIsCaseSheetDownloaded(Long mmuVisitCode) throws IEMRException {
 		Boolean check = beneficiaryFlowStatusRepo.checkIsCaseSheetDownloaded(mmuVisitCode);
-		if(check != null && check == true)
+		if (check != null && check == true)
 			return "success";
 		else
 			return "failure";
@@ -547,38 +560,10 @@ public class CommonServiceImpl implements CommonService {
 
 		// get TM case sheet by passing the TM details
 		String tmCaseSheet = getCaseSheetPrintDataForBeneficiary(reqobj, Authorization);
-		int updated = 0;
-		try {
-			if (tmCaseSheet != null) {
-
-				DownloadedCaseSheet saveTmCaseSheetRes = new DownloadedCaseSheet();
-				saveTmCaseSheetRes.setTmVisitCode(TmBenFlowOBJ.getVisitCode());
-				saveTmCaseSheetRes.setMmuVisitCode(mmuBenFlowOBJ.getVisitCode());
-				saveTmCaseSheetRes.setTmCaseSheetResponse(tmCaseSheet);
-				saveTmCaseSheetRes.setCreatedBy(TmBenFlowOBJ.getModified_by());
-
-				if(TmBenFlowOBJ.getSpecialist_flag() == 9) {
-					DownloadedCaseSheet responseDownloaded = downloadedCaseSheetRepo.save(saveTmCaseSheetRes);
-
-					if (responseDownloaded != null) {
-//						mmuBenFlowOBJ.setIsCaseSheetdownloaded(true);
-						updated = beneficiaryFlowStatusRepo.updateDownloadFlag(mmuBenFlowOBJ.getVisitCode());
-					}
-				}else
-					throw new IEMRException("Tele-Consultation is not completed");
-			}
-
-		}catch(IEMRException e) { 
-			throw new IEMRException(e.getMessage());
-		}
-		
-		catch (Exception e) {
-			throw new IEMRException("Error in fetching TM Case-Sheet : " + e);
-		}
 
 //		if(updateDownloadedFlag != null && tmCaseSheet != null)
 
-		if (updated > 0 && tmCaseSheet != null)
+		if (tmCaseSheet != null)
 			return tmCaseSheet;
 		else
 			return null;
@@ -598,10 +583,116 @@ public class CommonServiceImpl implements CommonService {
 		}
 		return response;
 	}
-	
+
 	@Override
 	public String getBenPreviousReferralData(Long beneficiaryRegID) throws Exception {
 		return commonNurseServiceImpl.getBenPreviousReferralData(beneficiaryRegID);
 
+	}
+
+	@Override
+	public String getCaseSheetFromCentralServer(String mmuBenFlowReq, String authCentralServer) throws Exception {
+
+		String tmCaseSheet = null;
+		String tmCaseSheetError = null;
+		Long tmVisitCode = null;
+		String createdBy = null;
+		int updated = 0;
+		try {
+			RestTemplate restTemplate = new RestTemplate();
+			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+			headers.add("Content-Type", "application/json");
+			headers.add("AUTHORIZATION", authCentralServer);
+			HttpEntity<Object> request = new HttpEntity<Object>(mmuBenFlowReq, headers);
+			ResponseEntity<String> response = restTemplate.exchange(tmcentralserver, HttpMethod.POST, request,
+					String.class);
+
+			if (response.getStatusCodeValue() == 200 & response.hasBody()) {
+				String responseStr = response.getBody();
+				JSONObject responseOBJ = new JSONObject(responseStr);
+				JsonObject jsnOBJ = new JsonObject();
+				JsonParser jsnParser = new JsonParser();
+				JsonElement jsnElmnt = jsnParser.parse(responseStr);
+				jsnOBJ = jsnElmnt.getAsJsonObject();
+				
+				if(jsnOBJ.get("statusCode").getAsLong() == 200){
+					tmCaseSheet = jsnOBJ.getAsJsonObject("data").toString();
+					tmVisitCode = jsnOBJ.getAsJsonObject("data").getAsJsonObject("nurseData").getAsJsonObject("history")
+							.getAsJsonObject("PhysicalActivityHistory").get("visitCode").getAsLong();
+					createdBy = jsnOBJ.getAsJsonObject("data").getAsJsonObject("nurseData").getAsJsonObject("history")
+							.getAsJsonObject("PhysicalActivityHistory").get("createdBy").getAsString();
+				}
+						
+				else if (jsnOBJ.get("statusCode").getAsLong() == 5000) {
+					
+					throw new IEMRException(jsnOBJ.get("errorMessage").getAsString());
+
+				} else if (jsnOBJ.get("statusCode").getAsLong() == 5002){
+					
+					throw new Exception(jsnOBJ.get("errorMessage").getAsString());
+				}
+			}
+			try {
+
+				if (tmCaseSheet != null) {
+					BeneficiaryFlowStatus objMMU = InputMapper.gson().fromJson(mmuBenFlowReq,
+							BeneficiaryFlowStatus.class);
+					DownloadedCaseSheet saveTmCaseSheetRes = new DownloadedCaseSheet();
+					saveTmCaseSheetRes.setTmVisitCode(tmVisitCode);
+					saveTmCaseSheetRes.setMmuVisitCode(objMMU.getVisitCode());
+					saveTmCaseSheetRes.setTmCaseSheetResponse(tmCaseSheet);
+					saveTmCaseSheetRes.setCreatedBy(createdBy);
+
+					DownloadedCaseSheet responseDownloaded = downloadedCaseSheetRepo.save(saveTmCaseSheetRes);
+
+					if (responseDownloaded != null) {
+						updated = beneficiaryFlowStatusRepo.updateDownloadFlag(objMMU.getVisitCode());
+						if (updated == 0)
+							throw new IEMRException("Error in updating the download flag for mmu visitcode");
+					}
+				}
+
+			} catch (IEMRException e) {
+				throw new IEMRException(e.getMessage());
+			}
+
+			catch (Exception e) {
+				throw new IEMRException("Error in fetching TM Case-Sheet : " + e);
+			}
+		} catch (IEMRException e) {
+			throw new IEMRException(e.getMessage());
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+
+		if (tmCaseSheet != null)
+			return tmCaseSheet;
+		else
+			return null;
+	}
+
+	@Override
+	public String getCaseSheetOfTm(String mmuBenFlowReq, String authCentralServer) throws Exception {
+
+		String casesheetData = null;
+		BeneficiaryFlowStatus objMMU = InputMapper.gson().fromJson(mmuBenFlowReq, BeneficiaryFlowStatus.class);
+		BeneficiaryFlowStatus tmVisitCodeObj = getTmVisitCode(objMMU.getBenVisitCode());
+
+		try {
+			if (tmVisitCodeObj != null) {
+				if (tmVisitCodeObj.getSpecialist_flag() == 9) {
+					casesheetData = getTmCaseSheet(tmVisitCodeObj, objMMU, authCentralServer);
+				} else
+					throw new IEMRException("Tele-Consultation is not completed");
+
+			}
+		} catch (IEMRException e) {
+			throw new IEMRException(e.getMessage());
+		}
+
+		if (casesheetData != null) {
+			return casesheetData;
+		} else
+			return null;
 	}
 }
