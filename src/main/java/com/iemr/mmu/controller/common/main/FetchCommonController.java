@@ -27,6 +27,7 @@ import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonServiceImpl;
 import com.iemr.mmu.utils.MediaTypeUtils;
+import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
@@ -943,6 +944,7 @@ public class FetchCommonController {
 		OutputResponse response = new OutputResponse();
 		try {
 			if (comingRequest != null) {
+				
 				BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingRequest, BeneficiaryFlowStatus.class);
 				String casesheetData = null;
 				//to check whether case sheet is already downloaded or not
@@ -955,10 +957,11 @@ public class FetchCommonController {
 
 				} else if (caseSheetStatus.equalsIgnoreCase("failure")) {
 
+					casesheetData = commonServiceImpl.getCaseSheetFromCentralServer(comingRequest,obj.getAuth());
 					// fetch case sheet using case sheet API.
-					BeneficiaryFlowStatus tmVisitCodeObj = commonServiceImpl.getTmVisitCode(obj.getBenVisitCode());
-					if(tmVisitCodeObj != null)
-						casesheetData = commonServiceImpl.getTmCaseSheet(tmVisitCodeObj, obj, Authorization);
+//					BeneficiaryFlowStatus tmVisitCodeObj = commonServiceImpl.getTmVisitCode(obj.getBenVisitCode());
+//					if(tmVisitCodeObj != null)
+//						casesheetData = commonServiceImpl.getTmCaseSheet(tmVisitCodeObj, obj, Authorization);
 
 				}
 				if (casesheetData != null)
@@ -968,9 +971,12 @@ public class FetchCommonController {
 
 			} else
 				response.setError(5000, "Invalid request");
-		} catch (Exception e) {
-			logger.error("" + e);
+		}catch(IEMRException e ) {
 			response.setError(5000, e.getMessage());
+		}
+		catch (Exception e) {
+			logger.error("" + e);
+			response.setError(5002, e.getMessage());
 		}
 
 		return response.toString();
@@ -981,6 +987,7 @@ public class FetchCommonController {
 	@ApiOperation(value = "Get Beneficiary previous Referral history", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenPreviousReferralHistoryDetails" }, method = { RequestMethod.POST })
 	public String getBenPreviousReferralHistoryDetails(
+
 			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
@@ -1002,5 +1009,36 @@ public class FetchCommonController {
 			logger.error("Error in Get Beneficiary previous Referral history:" + e);
 		}
 		return response.toString();
+	}
+
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary TM case sheet", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/get/Case-sheet/centralServerTMCaseSheet" }, method = { RequestMethod.POST })
+	public String getTMCaseSheetFromCentralServer(
+			@ApiParam(value = "{\r\n" + "  \"VisitCategory\": \"String\",\r\n" + "  \"benFlowID\": \"Integer\",\r\n"
+					+ "  \"benVisitID\": \"Integer\",\r\n" + "  \"beneficiaryRegID\": \"Long\",\r\n"
+					+ "  \"visitCode\": \"Long\"\r\n" + "}") @RequestBody String comingRequest,
+			@RequestHeader(value = "Authorization") String Authorization) {
+		OutputResponse response = new OutputResponse();
+		
+		try {
+			if (comingRequest != null) {
+				
+				String caseSheetFromCentralServer = commonServiceImpl.getCaseSheetOfTm(comingRequest,Authorization);
+				
+				if (caseSheetFromCentralServer != null)
+					response.setResponse(caseSheetFromCentralServer);
+				else
+					response.setError(5000, "Beneficiary pending for Tele-Consultation");
+
+			} else
+				response.setError(5000, "Invalid request");
+		} catch (Exception e) {
+			logger.error("" + e);
+			response.setError(5000, e.getMessage());
+		}
+
+		return response.toString();
+		
 	}
 }
