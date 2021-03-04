@@ -565,7 +565,7 @@ public class CommonServiceImpl implements CommonService {
 						updated = beneficiaryFlowStatusRepo.updateDownloadFlag(mmuBenFlowOBJ.getVisitCode());
 					}
 				}else
-					throw new IEMRException("Tele-Consultation is not done");
+					throw new IEMRException("Tele-Consultation is not completed");
 			}
 
 		}catch(IEMRException e) { 
