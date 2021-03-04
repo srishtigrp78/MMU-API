@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.springframework.core.io.Resource;
 
+import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.common.DocFileManager;
+import com.iemr.mmu.utils.exception.IEMRException;
 
 public interface CommonService {
 	public String saveFiles(List<DocFileManager> docFileManagerList) throws IOException;
@@ -17,4 +19,8 @@ public interface CommonService {
 	public String getBenPreviousDiabetesData(Long beneficiaryRegID) throws Exception;
 
 	public String getBenPreviousReferralData(Long beneficiaryRegID) throws Exception;
+
+	String getCaseSheetFromCentralServer(String mmuBenFlowOBJ, String authCentralServer) throws Exception;
+
+	String getCaseSheetOfTm(String mmuBenFlowReq, String authCentralServer) throws Exception;
 }
