@@ -972,11 +972,12 @@ public class FetchCommonController {
 			} else
 				response.setError(5000, "Invalid request");
 		}catch(IEMRException e ) {
+			logger.error("iemrexception : " + e);
 			response.setError(5000, e.getMessage());
 		}
 		catch (Exception e) {
-			logger.error("" + e);
-			response.setError(5002, e.getMessage());
+			logger.error("Exception : " + e);
+			response.setError(5003, e.getMessage());
 		}
 
 		return response.toString();

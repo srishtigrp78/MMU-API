@@ -614,22 +614,24 @@ public class CommonServiceImpl implements CommonService {
 				JsonParser jsnParser = new JsonParser();
 				JsonElement jsnElmnt = jsnParser.parse(responseStr);
 				jsnOBJ = jsnElmnt.getAsJsonObject();
-				
-				if(jsnOBJ.get("statusCode").getAsLong() == 200){
+
+				if (jsnOBJ.get("statusCode").getAsLong() == 200) {
 					tmCaseSheet = jsnOBJ.getAsJsonObject("data").toString();
 					tmVisitCode = jsnOBJ.getAsJsonObject("data").getAsJsonObject("nurseData").getAsJsonObject("history")
 							.getAsJsonObject("PhysicalActivityHistory").get("visitCode").getAsLong();
 					createdBy = jsnOBJ.getAsJsonObject("data").getAsJsonObject("nurseData").getAsJsonObject("history")
 							.getAsJsonObject("PhysicalActivityHistory").get("createdBy").getAsString();
 				}
-						
+
 				else if (jsnOBJ.get("statusCode").getAsLong() == 5000) {
-					
+
 					throw new IEMRException(jsnOBJ.get("errorMessage").getAsString());
 
-				} else if (jsnOBJ.get("statusCode").getAsLong() == 5002){
-					
+				} else if (jsnOBJ.get("statusCode").getAsLong() == 5002) {
+
 					throw new Exception(jsnOBJ.get("errorMessage").getAsString());
+				} else {
+					throw new IEMRException(jsnOBJ.get("errorMessage").getAsString());
 				}
 			}
 			try {
