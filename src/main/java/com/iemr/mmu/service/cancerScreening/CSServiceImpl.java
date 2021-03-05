@@ -768,20 +768,8 @@ public class CSServiceImpl implements CSService {
 					tcUserID = tcRequestOBJ.getUserID();
 					tcDate = tcRequestOBJ.getAllocationDate();
 
-				}
+				}		
 				
-				CancerDiagnosis cancerDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), CancerDiagnosis.class);
-				List<String> refrredToAdditionalServiceList= cancerDiagnosis.getRefrredToAdditionalServiceList();
-				for(String serviceList : refrredToAdditionalServiceList)
-				{
-					if(serviceList.equalsIgnoreCase(tmReferCheckValue))
-					{
-						tcSpecialistFlag = (short)100;
-						break;
-					}
-				}
-				
-
 				int l = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
 						tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, oncologistFlag, tcSpecialistFlag,
 						tcUserID, tcDate);
