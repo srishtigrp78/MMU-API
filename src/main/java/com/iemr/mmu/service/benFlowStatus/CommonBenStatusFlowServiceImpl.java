@@ -88,7 +88,7 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 		}
 		return i;
 	}
-	public int updateBenFlowtableAfterNurseSaveForTMReferred(CommonUtilityClass commonUtilityClass, Boolean isTMCDone) {
+	public int updateBenFlowtableAfterNurseSaveForTMReferred(CommonUtilityClass commonUtilityClass, Boolean isTMCDone, Boolean isMedicinePrescribed) {
 		// TODO Auto-generated method stub
 		int i = 0;
 		try {
@@ -97,11 +97,18 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 			Long tmpBenVisitID = commonUtilityClass.getBenVisitID();
 			Long tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
 		    Short specialistFlag=null;
+		    Short pharmaFalg = null;
 			if(isTMCDone)
 				specialistFlag=200;
 			else
 				specialistFlag=300;
-			i = beneficiaryFlowStatusRepo.updateBenFlowStatusTMReferred(tmpBenFlowID, tmpbeneficiaryRegID, specialistFlag);
+			
+			if (isMedicinePrescribed) {
+				pharmaFalg = 1;
+			} else {
+				pharmaFalg = 0;
+			}
+			i = beneficiaryFlowStatusRepo.updateBenFlowStatusTMReferred(tmpBenFlowID, tmpbeneficiaryRegID, specialistFlag, pharmaFalg);
 			// System.out.println("hello");
 		} catch (Exception e) {
 			// e.printStackTrace();
