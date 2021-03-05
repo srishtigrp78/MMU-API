@@ -264,7 +264,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 				&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
 			Boolean isTMCDone=requestOBJ.get("isTMCDone").getAsBoolean();
         int i = commonBenStatusFlowServiceImpl.updateBenFlowtableAfterNurseSaveForTMReferred(commonUtilityClass,
-        		isTMCDone);
+        		isTMCDone,isMedicinePrescribed);
 			if (i > 0) {
 				saveSuccessFlag = referSaveSuccessFlag;
 			} else

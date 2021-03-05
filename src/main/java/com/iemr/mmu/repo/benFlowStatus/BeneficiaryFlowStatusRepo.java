@@ -43,10 +43,10 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			@Param("vanID") Integer vanID);
 	@Transactional
 	@Modifying
-	@Query("UPDATE BeneficiaryFlowStatus t set t.specialist_flag = :specialistFlag "
+	@Query("UPDATE BeneficiaryFlowStatus t set t.specialist_flag = :specialistFlag , t.pharmacist_flag = :pharmacistflag "
 			+ "  WHERE t.benFlowID = :benFlowID AND t.beneficiaryRegID = :benRegID  ")
 	public int updateBenFlowStatusTMReferred(@Param("benFlowID") Long benFlowID,
-			@Param("benRegID") Long benRegID,@Param("specialistFlag") Short specialistFlag);
+			@Param("benRegID") Long benRegID,@Param("specialistFlag") Short specialistFlag,@Param("pharmacistflag") Short pharmacistflag);
 	
 	@Query("SELECT  t.benFlowID, t.beneficiaryRegID, t.visitDate, t.benName, t.age, t.ben_age_val, t.genderID, t.genderName, "
 			+ " t.villageName, t.districtName, t.beneficiaryID, t.servicePointName, t.VisitReason, t.VisitCategory, t.benVisitID,  "
