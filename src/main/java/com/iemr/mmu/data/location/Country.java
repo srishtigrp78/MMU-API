@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.annotation.sqlinjection.SQLInjectionSafe;
 import com.iemr.mmu.utils.mapper.OutputMapper;
 
 @Entity
@@ -22,7 +23,7 @@ public class Country {
 	@Expose
 	private Integer countryID;
 	
-
+	@SQLInjectionSafe
 	@Column(name = "CountryName")
 	@Expose
 	private String countryName;
