@@ -1,13 +1,17 @@
 package com.iemr.mmu.data.nurse;
 
+import com.iemr.mmu.annotation.sqlinjection.SQLInjectionSafe;
+
 public class CommonUtilityClass {
 	private Long benFlowID;
 	private Long beneficiaryID;
 	private Integer sessionID;
 	private Integer parkingPlaceID;
+	@SQLInjectionSafe
 	private Integer vanID;
 
 	private Long beneficiaryRegID;
+	@SQLInjectionSafe
 	private Integer providerServiceMapID;
 	private Long benVisitID;
 	private Long visitCode;
