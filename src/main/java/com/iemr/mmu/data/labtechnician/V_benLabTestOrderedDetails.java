@@ -13,7 +13,7 @@ import com.iemr.mmu.annotation.sqlinjection.SQLInjectionSafe;
 public class V_benLabTestOrderedDetails {
 	@Id
 	private String id;
-	@SQLInjectionSafe
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
