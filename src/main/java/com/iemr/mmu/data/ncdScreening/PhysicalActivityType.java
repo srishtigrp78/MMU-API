@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.annotation.sqlinjection.SQLInjectionSafe;
 
 @Entity
 @Table(name = "t_physicalActivity")
@@ -24,6 +25,7 @@ public class PhysicalActivityType {
 	@Expose
 	@Column(name = "PAID")
 	private Long pAID;
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;

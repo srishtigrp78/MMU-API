@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.annotation.sqlinjection.SQLInjectionSafe;
+
 
 @Entity
 @Table(name = "t_phy_anthropometry")
@@ -18,7 +20,7 @@ public class BenAnthropometryDetail {
 	@Expose
 	@Column(name = "ID")
 	private Long ID;
-
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;

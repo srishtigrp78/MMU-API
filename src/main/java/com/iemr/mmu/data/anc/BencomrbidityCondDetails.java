@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.annotation.sqlinjection.SQLInjectionSafe;
 
 @Entity
 @Table(name = "t_bencomorbiditycondition")
@@ -21,7 +22,7 @@ public class BencomrbidityCondDetails {
 	@Expose
 	@Column(name = "ID")
 	private Long ID;
-
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
@@ -61,7 +62,7 @@ public class BencomrbidityCondDetails {
 	@Transient
 	@Expose
 	private Integer timePeriodAgo;
-
+    @SQLInjectionSafe
 	@Transient
 	@Expose
 	private String timePeriodUnit;
