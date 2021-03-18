@@ -40,7 +40,6 @@ public class HTTPRequestInterceptor extends HandlerInterceptorAdapter {
 		String authorization = request.getHeader("Authorization");
 		logger.debug("RequestURI::" + request.getRequestURI() + " || Authorization ::" + authorization
 				+ " || method :: " + request.getMethod());
-		response.setHeader("x-frame-options","SAMEORIGIN");
 		if (!request.getMethod().equalsIgnoreCase("OPTIONS")) {
 			try {
 				String[] requestURIParts = request.getRequestURI().split("/");
@@ -86,7 +85,6 @@ public class HTTPRequestInterceptor extends HandlerInterceptorAdapter {
 				response.setContentLength(output.toString().length());
 				response.setHeader("Access-Control-Allow-Origin", "*");
 				response.getOutputStream().print(output.toString());
-				response.setHeader("x-frame-options","SAMEORIGIN");
 
 				status = false;
 			}
@@ -101,7 +99,6 @@ public class HTTPRequestInterceptor extends HandlerInterceptorAdapter {
 			logger.debug("In postHandle we are Intercepting the Request");
 			String authorization = request.getHeader("Authorization");
 			logger.debug("RequestURI::" + request.getRequestURI() + " || Authorization ::" + authorization);
-			response.setHeader("x-frame-options","SAMEORIGIN");
 			if (authorization != null) {
 				sessionObject.updateSessionObject(authorization, sessionObject.getSessionObject(authorization));
 			}
