@@ -308,7 +308,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 				ancCareDetailsOBJ.getPretermDeliveries_P(), ancCareDetailsOBJ.getAbortions_A(),
 				ancCareDetailsOBJ.getLivebirths_L(), ancCareDetailsOBJ.getBloodGroup(),
 				ancCareDetailsOBJ.getModifiedBy(), processed, ancCareDetailsOBJ.getBeneficiaryRegID(),
-				ancCareDetailsOBJ.getVisitCode());
+				ancCareDetailsOBJ.getVisitCode(), ancCareDetailsOBJ.getStillBirth());
 		return r;
 	}
 
@@ -365,8 +365,8 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 					obstetricExamination.getFetalHeartRate_BeatsPerMinute(),
 					obstetricExamination.getFetalPositionOrLie(), obstetricExamination.getFetalPresentation(),
 					obstetricExamination.getAbdominalScars(), obstetricExamination.getModifiedBy(),
-					obstetricExamination.getSfh() ,processed,
-					obstetricExamination.getBeneficiaryRegID(), obstetricExamination.getVisitCode());
+					obstetricExamination.getSfh(), processed, obstetricExamination.getBeneficiaryRegID(),
+					obstetricExamination.getVisitCode());
 		}
 		return r;
 	}
