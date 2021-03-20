@@ -6,7 +6,7 @@ public interface ANCService {
 
 	public Long saveANCNurseData(JsonObject requestOBJ) throws Exception;
 
-	//int UpdateANCVisitDetails(JsonObject jsnOBJ) throws Exception;
+	// int UpdateANCVisitDetails(JsonObject jsnOBJ) throws Exception;
 
 	String getBenVisitDetailsFrmNurseANC(Long benRegID, Long visitCode);
 
@@ -17,5 +17,7 @@ public interface ANCService {
 	String getBeneficiaryVitalDetails(Long beneficiaryRegID, Long visitCode);
 
 	String getBenANCDetailsFrmNurseANC(Long benRegID, Long visitCode);
+
+	String getHRPStatus(Long benRegID, Long visitCode) throws Exception;
 
 }

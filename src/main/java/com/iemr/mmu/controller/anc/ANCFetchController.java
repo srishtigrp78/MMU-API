@@ -238,4 +238,35 @@ public class ANCFetchController {
 		}
 		return response.toString();
 	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Check HRP- (High Risk Pregnancy) status for ANC beneficiary", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getHRPStatus" }, method = { RequestMethod.POST })
+	@Transactional(rollbackFor = Exception.class)
+	public String getHRPStatus(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("Request object for doctor data fetching :" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
+				Long benRegID = obj.getLong("benRegID");
+				Long visitCode = obj.getLong("visitCode");
+
+				String res = ancServiceImpl.getHRPStatus(benRegID, visitCode);
+				if (res != null)
+					response.setResponse(res);
+				else
+					response.setError(5000, "error in getting HRP status");
+			} else {
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
+			}
+		} catch (Exception e) {
+			response.setError(5000, "error in getting HRP status");
+			logger.error("error in getting HRP status : " + e);
+		}
+		return response.toString();
+	}
 }
