@@ -41,13 +41,14 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			@Param("labIteration") Short labIteration, @Param("radiologistFlag") Short radiologistFlag,
 			@Param("oncologistFlag") Short oncologistFlag, @Param("benVisitCode") Long benVisitCode,
 			@Param("vanID") Integer vanID);
+
 	@Transactional
 	@Modifying
 	@Query("UPDATE BeneficiaryFlowStatus t set t.specialist_flag = :specialistFlag , t.pharmacist_flag = :pharmacistflag "
 			+ "  WHERE t.benFlowID = :benFlowID AND t.beneficiaryRegID = :benRegID  ")
-	public int updateBenFlowStatusTMReferred(@Param("benFlowID") Long benFlowID,
-			@Param("benRegID") Long benRegID,@Param("specialistFlag") Short specialistFlag,@Param("pharmacistflag") Short pharmacistflag);
-	
+	public int updateBenFlowStatusTMReferred(@Param("benFlowID") Long benFlowID, @Param("benRegID") Long benRegID,
+			@Param("specialistFlag") Short specialistFlag, @Param("pharmacistflag") Short pharmacistflag);
+
 	@Query("SELECT  t.benFlowID, t.beneficiaryRegID, t.visitDate, t.benName, t.age, t.ben_age_val, t.genderID, t.genderName, "
 			+ " t.villageName, t.districtName, t.beneficiaryID, t.servicePointName, t.VisitReason, t.VisitCategory, t.benVisitID,  "
 			+ " t.registrationDate, t.benVisitDate, t.visitCode, t.consultationDate FROM BeneficiaryFlowStatus t "
@@ -256,28 +257,34 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 
 	@Query(" SELECT benName, Date(dOB), genderID FROM BeneficiaryFlowStatus WHERE benFlowID = :benFlowID ")
 	public ArrayList<Object[]> getBenDataForCareStream(@Param("benFlowID") Long benFlowID);
-	
+
 	@Query("SELECT  t from BeneficiaryFlowStatus t WHERE (t.specialist_flag = 100 OR t.specialist_flag = 200) AND t.deleted = false "
 			+ " AND t.providerServiceMapId = :providerServiceMapId AND t.benVisitDate >= Date(:fromDate) "
 			+ " AND t.vanID = :vanID AND t.referredVisitCode is null ORDER BY t.visitDate DESC ")
 	public ArrayList<BeneficiaryFlowStatus> getNurseWorklistTMreferred(
-			@Param("providerServiceMapId") Integer providerServiceMapId, @Param("vanID") Integer vanID,@Param("fromDate") Timestamp fromDate);
-	//Query to check TM visit is done for referred case....Shubham Shekhar
+			@Param("providerServiceMapId") Integer providerServiceMapId, @Param("vanID") Integer vanID,
+			@Param("fromDate") Timestamp fromDate);
+	// Query to check TM visit is done for referred case....Shubham Shekhar
 //	@Query(value="SELECT count(ben_flow_id) FROM db_iemr.i_ben_flow_outreach i where i.referred_visitcode = :visitCode and specialist_flag=9"
 //			,nativeQuery=true)
 //	public Integer isTMvisitDone(@Param("visitCode") Long visitCode);
-	
+
 	@Query("SELECT t.isCaseSheetdownloaded from BeneficiaryFlowStatus t where t.visitCode = :mmuVisitCode")
 	public Boolean checkIsCaseSheetDownloaded(@Param("mmuVisitCode") Long mmuVisitCode);
-	
+
 	@Query("SELECT t from BeneficiaryFlowStatus t where t.referredVisitCode = :mmuVisitCode")
 	public BeneficiaryFlowStatus getTMVisitDetails(@Param("mmuVisitCode") Long mmuVisitCode);
-	
+
 	@Transactional
 	@Modifying
 	@Query("UPDATE BeneficiaryFlowStatus t SET t.isCaseSheetdownloaded = true WHERE t.visitCode = :mmuVisitCode")
 	public int updateDownloadFlag(@Param("mmuVisitCode") Long mmuVisitCode);
-	
+
 	@Query("SELECT t from BeneficiaryFlowStatus t where t.visitCode = :mmuVisitCode")
 	public BeneficiaryFlowStatus specialistFlagAndCategoryValue(@Param("mmuVisitCode") Long mmuVisitCode);
+
+	// get ben age, HRP
+	@Query(nativeQuery = true, value = " SELECT ben_dob FROM i_ben_flow_outreach WHERE beneficiary_reg_id = :benRegID "
+			+ " AND ben_gender_val = 2 AND ben_dob is not null order by ben_flow_id DESC LIMIT 1 ")
+	public Timestamp getBenAgeVal(@Param("benRegID") Long benRegID);
 }
