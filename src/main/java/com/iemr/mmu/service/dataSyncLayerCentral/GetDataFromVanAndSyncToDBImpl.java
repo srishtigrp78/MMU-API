@@ -1,5 +1,8 @@
 package com.iemr.mmu.service.dataSyncLayerCentral;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,39 +64,58 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 				vanID = String.valueOf(map.get("VanID"));
 
 				map.replace("SyncedBy", syncUploadDataDigester.getSyncedBy());
-				map.replace("SyncedDate", String.valueOf(LocalDateTime.now()));
+
+//				Timestamp sqlTS = new Timestamp(System.currentTimeMillis());
+//		        java.util.Date utilDate = new java.util.Date(sqlTS.getTime());
+//		   
+//		        DateFormat df = new SimpleDateFormat("YY-MM-dd hh:mm:ss");
+//		        System.out.println("Date formatted         : " + df.format(utilDate));
+		        map.replace("date_format(SyncedDate,'%Y-%m-%d %H:%i:%s')", String.valueOf(LocalDateTime.now()));
+//				map.replace("SyncedDate", String.valueOf(LocalDateTime.now()));
 
 				// if same facilityID change processed flag to "P" else don't alter
 				if (syncUploadDataDigester.getFacilityID() != null) {
+					Double changeDoubleToIntegerID = 0.0;
 					switch (syncTableName) {
 					case "t_indent": {
-						if (map.containsKey("FromFacilityID") && map.get("FromFacilityID") != null
-								&& Integer.parseInt(map.get("FromFacilityID").toString()) == syncUploadDataDigester
-										.getFacilityID())
-							map.replace("Processed", "P");
+						if (map.containsKey("FromFacilityID") && map.get("FromFacilityID") != null) {
+							changeDoubleToIntegerID = (Double) map.get("FromFacilityID");
+							if (changeDoubleToIntegerID.intValue() == syncUploadDataDigester.getFacilityID())
+								map.replace("Processed", "P");
+						}
+							
 					}
 					case "t_indentorder": {
-						if (map.containsKey("FromFacilityID") && map.get("FromFacilityID") != null
-								&& Integer.parseInt(map.get("FromFacilityID").toString()) == syncUploadDataDigester
-										.getFacilityID())
+						if (map.containsKey("FromFacilityID") && map.get("FromFacilityID") != null)
+							changeDoubleToIntegerID = (Double) map.get("FromFacilityID");
+						if (changeDoubleToIntegerID.intValue() == syncUploadDataDigester.getFacilityID())
 							map.replace("Processed", "P");
 					}
 					case "t_indentissue": {
-						if (map.containsKey("ToFacilityID") && map.get("ToFacilityID") != null && Integer
-								.parseInt(map.get("ToFacilityID").toString()) == syncUploadDataDigester.getFacilityID())
-							map.replace("Processed", "P");
+						if (map.containsKey("ToFacilityID") && map.get("ToFacilityID") != null) {
+							changeDoubleToIntegerID = (Double) map.get("ToFacilityID");
+							if (changeDoubleToIntegerID.intValue() == syncUploadDataDigester.getFacilityID())
+								map.replace("Processed", "P");
+						}
+							
 					}
 					// here a change in rule, will compare with toFacilityID
 					case "t_stocktransfer": {
-						if (map.containsKey("TransferToFacilityID") && map.get("TransferToFacilityID") != null
-								&& Integer.parseInt(map.get("TransferToFacilityID")
-										.toString()) == syncUploadDataDigester.getFacilityID())
-							map.replace("Processed", "P");
+						if (map.containsKey("TransferToFacilityID") && map.get("TransferToFacilityID") != null) {
+							changeDoubleToIntegerID = (Double) map.get("TransferToFacilityID");
+							if (changeDoubleToIntegerID.intValue() == syncUploadDataDigester.getFacilityID())
+								map.replace("Processed", "P");
+						}
+							
 					}
 					case "t_itemstockentry": {
-						if (map.containsKey("FacilityID") && map.get("FacilityID") != null && Integer
-								.parseInt(map.get("FacilityID").toString()) == syncUploadDataDigester.getFacilityID())
-							map.replace("Processed", "P");
+
+						if (map.containsKey("FacilityID") && map.get("FacilityID") != null) {
+							changeDoubleToIntegerID = (Double) map.get("FacilityID");
+							if (changeDoubleToIntegerID.intValue() == syncUploadDataDigester.getFacilityID())
+								map.replace("Processed", "P");
+						}
+
 					}
 					default:
 
@@ -101,8 +123,10 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 
 				}
 
-				if (map.containsKey("SyncFacilityID"))
-					syncFacilityID = (int) map.get("SyncFacilityID");
+				if (map.containsKey("SyncFacilityID")) {
+					double syncFaciltyID = (double) map.get("SyncFacilityID");
+					syncFacilityID = (int) syncFaciltyID;
+				}
 
 				recordCheck = dataSyncRepositoryCentral.checkRecordIsAlreadyPresentOrNot(
 						syncUploadDataDigester.getSchemaName(), syncUploadDataDigester.getTableName(), vanSerialNo,
@@ -191,7 +215,7 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 		}
 
 	}
-
+	
 	public String update_M_BeneficiaryRegIdMapping_for_provisioned_benID(
 			SyncUploadDataDigester syncUploadDataDigester) {
 		String returnOBJ = null;
