@@ -939,7 +939,8 @@ public class FetchCommonController {
 			@ApiParam(value = "{\r\n" + "  \"VisitCategory\": \"String\",\r\n" + "  \"benFlowID\": \"Integer\",\r\n"
 					+ "  \"benVisitID\": \"Integer\",\r\n" + "  \"beneficiaryRegID\": \"Long\",\r\n"
 					+ "  \"visitCode\": \"Long\"\r\n" + "}") @RequestBody String comingRequest,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String Authorization,
+			@RequestHeader(value = "ServerAuthorization") String ServerAuthorization) {
 
 		OutputResponse response = new OutputResponse();
 		try {
@@ -957,7 +958,7 @@ public class FetchCommonController {
 
 				} else if (caseSheetStatus.equalsIgnoreCase("failure")) {
 
-					casesheetData = commonServiceImpl.getCaseSheetFromCentralServer(comingRequest,obj.getAuth());
+					casesheetData = commonServiceImpl.getCaseSheetFromCentralServer(comingRequest,ServerAuthorization);
 					// fetch case sheet using case sheet API.
 //					BeneficiaryFlowStatus tmVisitCodeObj = commonServiceImpl.getTmVisitCode(obj.getBenVisitCode());
 //					if(tmVisitCodeObj != null)
