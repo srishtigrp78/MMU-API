@@ -834,11 +834,15 @@ public class CommonDoctorServiceImpl {
 				
 				if(specialistValue != null && specialistValue.getVisitCategory() != null && specialistValue.getVisitCategory().equalsIgnoreCase("NCD screening"))
 					tcSpecialistFlag = (short) 100;
+				i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdateWDF(tmpBenFlowID, tmpbeneficiaryRegID,
+						tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0, tcSpecialistFlag, tcUserID,
+						tcDate);
 			}
 			
-			i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdate(tmpBenFlowID, tmpbeneficiaryRegID,
-					tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0, tcSpecialistFlag, tcUserID,
-					tcDate);
+			else
+				i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdate(tmpBenFlowID, tmpbeneficiaryRegID,
+						tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0, tcSpecialistFlag, tcUserID,
+						tcDate);
 
 		}
 
