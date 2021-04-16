@@ -407,6 +407,10 @@ public class CommonDoctorServiceImpl {
 					if (sm.getServiceName().equalsIgnoreCase(tmReferCheckValue)) {
 						TMReferred = 1;
 					}
+					else
+					{
+						TMReferred = 0;
+					}
 
 					if (referDetails.getReferredToInstituteID() != null
 							&& referDetails.getReferredToInstituteName() != null) {
@@ -425,6 +429,7 @@ public class CommonDoctorServiceImpl {
 			if (referDetails.getReferredToInstituteName() != null || referDetails.getRevisitDate() != null
 					|| referDetails.getReferralReason() != null)
 				referDetailsList.add(referDetails);
+			TMReferred = 0;
 		}
 
 		ArrayList<BenReferDetails> res = (ArrayList<BenReferDetails>) benReferDetailsRepo.save(referDetailsList);
@@ -681,6 +686,14 @@ public class CommonDoctorServiceImpl {
 					referDetailsTemp.setServiceID(sm.getServiceID());
 					referDetailsTemp.setServiceName(sm.getServiceName());
 
+					if (sm.getServiceName().equalsIgnoreCase(tmReferCheckValue)) {
+						TMReferred = 1;
+					}
+					else
+					{
+						TMReferred = 0;
+					}
+					
 					if (referDetails.getRevisitDate() != null)
 						referDetailsTemp.setRevisitDate(referDetails.getRevisitDate());
 
@@ -690,6 +703,7 @@ public class CommonDoctorServiceImpl {
 		} else {
 			if (referDetails.getReferredToInstituteName() != null || referDetails.getRevisitDate() != null)
 				referDetailsList.add(referDetails);
+			    TMReferred = 0;
 		}
 
 		ArrayList<BenReferDetails> res = (ArrayList<BenReferDetails>) benReferDetailsRepo.save(referDetailsList);
