@@ -36,6 +36,10 @@ public interface IDRSDataRepo extends CrudRepository<IDRSData, Long> {
 	@Query(value="select count(a.idrsid) from t_idrsDetails a inner join i_ben_flow_outreach b on a.visitcode=b.beneficiary_visit_code where (b.specialist_flag=9 OR b.doctor_flag=9) and a.BeneficiaryRegID = :beneficiaryRegID and a.isDiabetic is true "
 			,nativeQuery=true)
 	public Integer isDiabeticCheck(@Param("beneficiaryRegID") Long beneficiaryRegID);
+	
+	@Query(value="select count(a.idrsid) from t_idrsDetails a inner join i_ben_flow_outreach b on a.visitcode=b.beneficiary_visit_code where (b.specialist_flag=9 OR b.doctor_flag=9) and a.BeneficiaryRegID = :beneficiaryRegID and a.isHypertension is true "
+			,nativeQuery=true)
+	public Integer isHypertensionCheck(@Param("beneficiaryRegID") Long beneficiaryRegID);
 
 	@Query("select a from IDRSData a where a.beneficiaryRegID = :beneficiaryRegID AND a.diseaseQuestionType = 'Diabetes' "
 			+ " ORDER BY Date(a.createdDate) DESC  ")

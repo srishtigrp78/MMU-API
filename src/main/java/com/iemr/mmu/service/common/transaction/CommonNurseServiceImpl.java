@@ -3684,6 +3684,9 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		// is diabetic check for ben
 		Integer i = iDRSDataRepo.isDiabeticCheck(benRegID);
+		
+		// is hypertension check for ben
+		Integer j = iDRSDataRepo.isHypertensionCheck(benRegID);
 
 		 Integer epilepsy=iDRSDataRepo.isEpilepsyCheck(benRegID);
 	        Integer vision=iDRSDataRepo.isDefectiveVisionCheck(benRegID);
@@ -3692,6 +3695,10 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 				responseMap.put("isDiabetic", true);
 			else
 				responseMap.put("isDiabetic", false);
+			if (j != null && i > 0)
+				responseMap.put("isHypertension", true);
+			else
+				responseMap.put("isHypertension", false);
 			if (epilepsy != null && epilepsy > 0)
 				responseMap.put("isEpilepsy", true);
 			else
