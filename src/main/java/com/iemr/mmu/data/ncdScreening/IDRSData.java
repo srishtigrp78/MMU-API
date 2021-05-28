@@ -62,11 +62,17 @@ public class IDRSData {
 	@Column(name = "SuspectedDiseases")
 	private String suspectedDisease;
 	
+	@Expose
+	@Column(name = "ConfirmedDiseases")
+	private String confirmedDisease;
+	
     @Transient
     private IDRSData[] questionArray;
     @Transient
     private String[] suspectArray;
 	
+    @Transient
+    private String[] confirmArray;
 
 	@Transient
 	@Expose
@@ -121,6 +127,22 @@ public class IDRSData {
 	@Column(name = "isDiabetic")
 	private Boolean isDiabetic;
 	
+	public String getConfirmedDisease() {
+		return confirmedDisease;
+	}
+
+	public void setConfirmedDisease(String confirmedDisease) {
+		this.confirmedDisease = confirmedDisease;
+	}
+
+	public String[] getConfirmArray() {
+		return confirmArray;
+	}
+
+	public void setConfirmArray(String[] confirmArray) {
+		this.confirmArray = confirmArray;
+	}
+
 	public String[] getSuspectArray() {
 		return suspectArray;
 	}
