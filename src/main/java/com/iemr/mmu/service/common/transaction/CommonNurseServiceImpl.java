@@ -3659,6 +3659,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		Map<String, Object> questionAnsMap;
 		String suspectedDisease = null;
+		String confirmedDisease = null;
 		ArrayList<IDRSData> resultSet = iDRSDataRepo.getBenIdrsDetailsLast_3_Month(benRegID, t);
 
 		if (resultSet != null && resultSet.size() > 0) {
@@ -3673,6 +3674,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 					if (pointer == 0)
 						suspectedDisease = i.getSuspectedDisease();
+					    confirmedDisease = i.getConfirmedDisease();
 
 					ansList.add(questionAnsMap);
 					pointer++;
@@ -3711,6 +3713,9 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		if (suspectedDisease != null)
 			responseMap.put("suspectedDisease", suspectedDisease);
+		
+		if (confirmedDisease != null)
+			responseMap.put("confirmedDisease", confirmedDisease);
 
 		return new Gson().toJson(responseMap);
 	}
