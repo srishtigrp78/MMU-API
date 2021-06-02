@@ -568,6 +568,19 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 				} else {
 					idrsDetail.setBenVisitID(benVisitID);
 					idrsDetail.setVisitCode(benVisitCode);
+					
+					if (idrsDetail.getConfirmArray() != null && idrsDetail.getConfirmArray().length > 0) {
+						for (int a = 0; a < idrsDetail.getConfirmArray().length; a++) {
+							if (a == idrsDetail.getConfirmArray().length - 1)
+								temp1 += idrsDetail.getConfirmArray()[a];
+							else
+								temp1 = temp1 + idrsDetail.getConfirmArray()[a] + ",";
+						}
+						if (temp1.equalsIgnoreCase(""))
+							temp1 = null;
+						idrsDetail.setConfirmedDisease(temp1);
+					}
+					
 					idrsFlag = commonNurseServiceImpl.saveIDRS(idrsDetail);
 				}
 
