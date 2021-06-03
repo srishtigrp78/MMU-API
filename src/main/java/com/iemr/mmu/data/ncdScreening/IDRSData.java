@@ -62,11 +62,17 @@ public class IDRSData {
 	@Column(name = "SuspectedDiseases")
 	private String suspectedDisease;
 	
+	@Expose
+	@Column(name = "ConfirmedDiseases")
+	private String confirmedDisease;
+	
     @Transient
     private IDRSData[] questionArray;
     @Transient
     private String[] suspectArray;
 	
+    @Transient
+    private String[] confirmArray;
 
 	@Transient
 	@Expose
@@ -121,6 +127,22 @@ public class IDRSData {
 	@Column(name = "isDiabetic")
 	private Boolean isDiabetic;
 	
+	public String getConfirmedDisease() {
+		return confirmedDisease;
+	}
+
+	public void setConfirmedDisease(String confirmedDisease) {
+		this.confirmedDisease = confirmedDisease;
+	}
+
+	public String[] getConfirmArray() {
+		return confirmArray;
+	}
+
+	public void setConfirmArray(String[] confirmArray) {
+		this.confirmArray = confirmArray;
+	}
+
 	public String[] getSuspectArray() {
 		return suspectArray;
 	}
@@ -336,13 +358,14 @@ public class IDRSData {
 	}
 	
 	public IDRSData(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,Integer idrsScore, String suspectedDisease,
-			 Long visitCode) {
+			 String confirmedDisease, Long visitCode) {
 		super();
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
 		this.providerServiceMapID = providerServiceMapID;
 		this.idrsScore = idrsScore;
 		this.suspectedDisease = suspectedDisease;
+		this.confirmedDisease = confirmedDisease;
 		this.visitCode = visitCode;
 		
 	}
@@ -382,7 +405,7 @@ public class IDRSData {
 		if (null != idrsHistory && idrsHistory.size() > 0) {
 			Object[] obj1 = idrsHistory.get(0);
 
-			benIdrsHistory = new IDRSData((Long) obj1[1], (Long) obj1[2], (Integer) obj1[3],(Integer) obj1[5], (String) obj1[8],
+			benIdrsHistory = new IDRSData((Long) obj1[1], (Long) obj1[2], (Integer) obj1[3],(Integer) obj1[5], (String) obj1[8], (String) obj1[11],
 					 (Long) obj1[9]);
 
 			List<Map<String, Object>> idrsDetails = new ArrayList<Map<String, Object>>();
@@ -393,8 +416,7 @@ public class IDRSData {
 
 				Map<String, Object> idrsData = new HashMap<String, Object>();
 				idrsData.put("ID", idDetails.getId());
-				idrsData.put("idrsQuestionId", idDetails.getIdrsQuestionID());
-				
+				idrsData.put("idrsQuestionId", idDetails.getIdrsQuestionID());	
 				
 				idrsData.put("question", idDetails.getQuestion());
 				idrsData.put("answer", idDetails.getAnswer());

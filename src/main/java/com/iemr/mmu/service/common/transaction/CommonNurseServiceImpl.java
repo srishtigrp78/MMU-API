@@ -3659,6 +3659,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		Map<String, Object> questionAnsMap;
 		String suspectedDisease = null;
+		String confirmedDisease = null;
 		ArrayList<IDRSData> resultSet = iDRSDataRepo.getBenIdrsDetailsLast_3_Month(benRegID, t);
 
 		if (resultSet != null && resultSet.size() > 0) {
@@ -3673,6 +3674,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 					if (pointer == 0)
 						suspectedDisease = i.getSuspectedDisease();
+					    confirmedDisease = i.getConfirmedDisease();
 
 					ansList.add(questionAnsMap);
 					pointer++;
@@ -3684,14 +3686,26 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		// is diabetic check for ben
 		Integer i = iDRSDataRepo.isDiabeticCheck(benRegID);
+		
+		// is hypertension check for ben
+		Integer j = iDRSDataRepo.isHypertensionCheck(benRegID);
 
 		 Integer epilepsy=iDRSDataRepo.isEpilepsyCheck(benRegID);
 	        Integer vision=iDRSDataRepo.isDefectiveVisionCheck(benRegID);
+	        Integer hypertension = iDRSDataRepo.isHypertensionCheck(benRegID);
 			responseMap.put("questionariesData", ansList);
 			if (i != null && i > 0)
 				responseMap.put("isDiabetic", true);
 			else
 				responseMap.put("isDiabetic", false);
+			if (j != null && i > 0)
+				responseMap.put("isHypertension", true);
+			else
+				responseMap.put("isHypertension", false);
+			if (hypertension != null && hypertension > 0)
+				responseMap.put("isHypertension", true);
+			else
+				responseMap.put("isHypertension", false);
 			if (epilepsy != null && epilepsy > 0)
 				responseMap.put("isEpilepsy", true);
 			else
@@ -3704,6 +3718,9 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		if (suspectedDisease != null)
 			responseMap.put("suspectedDisease", suspectedDisease);
+		
+		if (confirmedDisease != null)
+			responseMap.put("confirmedDisease", confirmedDisease);
 
 		return new Gson().toJson(responseMap);
 	}
