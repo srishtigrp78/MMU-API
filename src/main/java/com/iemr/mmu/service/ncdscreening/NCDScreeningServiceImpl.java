@@ -527,13 +527,14 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		// Save Physical Anthropometry && Physical Vital Details
 		if (idrsDetailsOBJ != null) {
 			IDRSData idrsDetail = InputMapper.gson().fromJson(idrsDetailsOBJ, IDRSData.class);
-			String temp = "";
+			String temp = "", temp1 = "";
 			if (null != idrsDetail) {
 				if (idrsDetail.getQuestionArray() != null && idrsDetail.getQuestionArray().length > 0) {
 					IDRSData[] ar = idrsDetail.getQuestionArray();
 					for (int i = 0; i < ar.length; i++) {
 						idrsDetail = InputMapper.gson().fromJson(idrsDetailsOBJ, IDRSData.class);
 						temp = "";
+						temp1 = "";
 						idrsDetail.setIdrsQuestionID(ar[i].getIdrsQuestionID());
 						idrsDetail.setAnswer(ar[i].getAnswer());
 						idrsDetail.setQuestion(ar[i].getQuestion());
@@ -551,11 +552,35 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 								temp = null;
 							idrsDetail.setSuspectedDisease(temp);
 						}
+						if (idrsDetail.getConfirmArray() != null && idrsDetail.getConfirmArray().length > 0) {
+							for (int a = 0; a < idrsDetail.getConfirmArray().length; a++) {
+								if (a == idrsDetail.getConfirmArray().length - 1)
+									temp1 += idrsDetail.getConfirmArray()[a];
+								else
+									temp1 = temp1 + idrsDetail.getConfirmArray()[a] + ",";
+							}
+							if (temp1.equalsIgnoreCase(""))
+								temp1 = null;
+							idrsDetail.setConfirmedDisease(temp1);
+						}
 						idrsFlag = commonNurseServiceImpl.saveIDRS(idrsDetail);
 					}
 				} else {
 					idrsDetail.setBenVisitID(benVisitID);
 					idrsDetail.setVisitCode(benVisitCode);
+					
+					if (idrsDetail.getConfirmArray() != null && idrsDetail.getConfirmArray().length > 0) {
+						for (int a = 0; a < idrsDetail.getConfirmArray().length; a++) {
+							if (a == idrsDetail.getConfirmArray().length - 1)
+								temp1 += idrsDetail.getConfirmArray()[a];
+							else
+								temp1 = temp1 + idrsDetail.getConfirmArray()[a] + ",";
+						}
+						if (temp1.equalsIgnoreCase(""))
+							temp1 = null;
+						idrsDetail.setConfirmedDisease(temp1);
+					}
+					
 					idrsFlag = commonNurseServiceImpl.saveIDRS(idrsDetail);
 				}
 
@@ -933,13 +958,13 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		Long idrsFlag = null;
 		if (idrsOBJ != null && idrsOBJ.has("idrsDetails") && !idrsOBJ.get("idrsDetails").isJsonNull()) {
 			IDRSData idrsDetail1 = InputMapper.gson().fromJson(idrsOBJ.get("idrsDetails"), IDRSData.class);
-			String temp = "";
+			String temp = "",temp1="";
 			if (null != idrsDetail1) {
 				if (idrsDetail1.getQuestionArray() != null && idrsDetail1.getQuestionArray().length > 0) {
 					IDRSData[] ar = idrsDetail1.getQuestionArray();
 					for (int i = 0; i < ar.length; i++) {
 						IDRSData idrsDetail = InputMapper.gson().fromJson(idrsOBJ.get("idrsDetails"), IDRSData.class);
-						temp = "";
+						temp = "";temp1 = "";
 						idrsDetail.setIdrsQuestionID(ar[i].getIdrsQuestionID());
 						idrsDetail.setId(ar[i].getId());
 						idrsDetail.setAnswer(ar[i].getAnswer());
@@ -958,6 +983,19 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 							if (temp.equalsIgnoreCase(""))
 								temp = null;
 							idrsDetail.setSuspectedDisease(temp);
+						}
+						if(idrsDetail.getConfirmArray()!=null && idrsDetail.getConfirmArray().length >0)
+						{
+							for(int a=0;a<idrsDetail.getConfirmArray().length;a++)
+					    	{
+					    		if(a==idrsDetail.getConfirmArray().length-1)
+					    		temp1+=idrsDetail.getConfirmArray()[a];
+					    		else
+					    		temp1=temp1+idrsDetail.getConfirmArray()[a]+",";
+					    	}
+							if(temp1.equalsIgnoreCase(""))
+								temp1=null;
+							idrsDetail.setConfirmedDisease(temp1);
 						}
 						idrsFlag = commonNurseServiceImpl.saveIDRS(idrsDetail);
 					}
