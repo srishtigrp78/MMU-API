@@ -28,6 +28,7 @@ import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonServiceImpl;
 import com.iemr.mmu.utils.MediaTypeUtils;
 import com.iemr.mmu.utils.exception.IEMRException;
+import com.iemr.mmu.utils.exception.IEMRLoginException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
@@ -942,6 +943,7 @@ public class FetchCommonController {
 			@RequestHeader(value = "Authorization") String Authorization,
 			@RequestHeader(value = "ServerAuthorization") String ServerAuthorization) {
 		OutputResponse response = new OutputResponse();
+		logger.info("getTMReferredPrintData request - " + comingRequest);
 		try {
 			if (comingRequest != null) {
 				BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingRequest, BeneficiaryFlowStatus.class);
@@ -962,11 +964,15 @@ public class FetchCommonController {
 					response.setError(5000, "Beneficiary pending for Tele-Consultation");
 			} else
 				response.setError(5000, "Invalid request");
-		} catch (IEMRException e) {
-			logger.error("iemrexception : " + e);
+		}catch (IEMRLoginException e) {
+			logger.error("getTMReferredPrintData IEMRLoginException : " + e);
+			response.setError(5003, e.getMessage());
+		}
+		catch (IEMRException e) {
+			logger.error("getTMReferredPrintData iemrexception : " + e);
 			response.setError(5000, e.getMessage());
 		} catch (Exception e) {
-			logger.error("Error on getTMReferredPrintData : " + e);
+			logger.error("Error on getTMReferredPrintData Exception : " + e);
 			response.setError(5000, "Error in getting case sheet - "+ e.getMessage());
 		}
 		return response.toString();
@@ -1010,6 +1016,7 @@ public class FetchCommonController {
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
 
+		logger.info("getTMCaseSheetFromCentralServer request - " + comingRequest);
 		try {
 			if (comingRequest != null) {
 
@@ -1022,12 +1029,16 @@ public class FetchCommonController {
 
 			} else
 				response.setError(5000, "Invalid request");
-		} catch (IEMRException e) {
-			logger.error("getTMCaseSheetFromCentralServer - " + e);
+		}catch (IEMRLoginException e) {
+			logger.error("getTMCaseSheetFromCentralServer login exception- " + e);
+			response.setError(5002, e.getMessage());
+		} 
+		catch (IEMRException e) {
+			logger.error("getTMCaseSheetFromCentralServer IEMR exception - " + e);
 			response.setError(5000, e.getMessage());
 		}
 		catch (Exception e) {
-			logger.error("getTMCaseSheetFromCentralServer - " + e);
+			logger.error("getTMCaseSheetFromCentralServer Exception - " + e);
 			response.setError(5000,"Error in MMU central server case sheet" + e.getMessage());
 		}
 

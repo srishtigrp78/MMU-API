@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -51,12 +53,14 @@ import com.iemr.mmu.service.ncdscreening.NCDScreeningServiceImpl;
 import com.iemr.mmu.service.pnc.PNCServiceImpl;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
 import com.iemr.mmu.utils.exception.IEMRException;
+import com.iemr.mmu.utils.exception.IEMRLoginException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
 @PropertySource("classpath:application.properties")
 public class CommonServiceImpl implements CommonService {
 
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	@Value("${fileBasePath}")
 	private String fileBasePath;
 
@@ -556,7 +560,7 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	public String getTmCaseSheet(BeneficiaryFlowStatus TmBenFlowOBJ, BeneficiaryFlowStatus mmuBenFlowOBJ,
-			String Authorization) throws IEMRException {
+			String Authorization) throws IEMRException,IEMRLoginException,Exception {
 
 //		BeneficiaryFlowStatus tmReqobj = new BeneficiaryFlowStatus();
 //		tmReqobj.setVisitCode(TmBenFlowOBJ.getVisitCode());
@@ -565,7 +569,7 @@ public class CommonServiceImpl implements CommonService {
 //		tmReqobj.setBenVisitID(TmBenFlowOBJ.getBenVisitID());
 //		tmReqobj.setBeneficiaryRegID(TmBenFlowOBJ.getBeneficiaryRegID());
 
-		HashMap<String,String> tmReqObj = new HashMap<String,String>();
+		HashMap<String, String> tmReqObj = new HashMap<String, String>();
 		tmReqObj.put("visitCode", String.valueOf(TmBenFlowOBJ.getVisitCode()));
 		tmReqObj.put("VisitCategory", String.valueOf(TmBenFlowOBJ.getVisitCategory()));
 		tmReqObj.put("benFlowID", String.valueOf(TmBenFlowOBJ.getBenFlowID()));
@@ -574,6 +578,7 @@ public class CommonServiceImpl implements CommonService {
 		// get TM case sheet by passing the TM details
 //			String tmCaseSheet = getCaseSheetPrintDataForBeneficiary(tmReqobj, Authorization);
 
+		logger.info("TM print data request obj - " + new Gson().toJson(tmReqObj));
 		// get TM case sheet by passing TM details
 		RestTemplate restTemplate = new RestTemplate();
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
@@ -589,7 +594,13 @@ public class CommonServiceImpl implements CommonService {
 			JsonParser jsnParser = new JsonParser();
 			JsonElement jsnElmnt = jsnParser.parse(tmCaseSheet);
 			jsnOBJ = jsnElmnt.getAsJsonObject();
-			return jsnOBJ.getAsJsonObject("data").toString();
+			if(jsnOBJ.get("statusCode").getAsLong() == 5002) {
+				throw new IEMRLoginException(jsnOBJ.get("errorMessage").getAsString());
+			}
+			else if (jsnOBJ.get("statusCode").getAsLong() != 200) {
+				throw new IEMRException(jsnOBJ.get("errorMessage").getAsString());
+			} else
+				return jsnOBJ.getAsJsonObject("data").toString();
 		} else
 			throw new IEMRException("Error in getting the response from TM print API" + response.getBody());
 
@@ -616,7 +627,7 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	@Override
-	public String getCaseSheetFromCentralServer(String mmuBenFlowReq, String authCentralServer) throws IEMRException {
+	public String getCaseSheetFromCentralServer(String mmuBenFlowReq, String authCentralServer) throws IEMRException,IEMRLoginException {
 
 		String tmCaseSheet = null;
 		Long tmVisitCode = null;
@@ -641,15 +652,20 @@ public class CommonServiceImpl implements CommonService {
 			JsonElement jsnElmnt = jsnParser.parse(responseStr);
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
-			if (jsnOBJ.get("statusCode").getAsLong() == 200) {
-				tmCaseSheet = jsnOBJ.getAsJsonObject("data").getAsJsonObject("data").toString();
+			if(jsnOBJ.get("statusCode").getAsLong() == 5002 ) {
+				throw new IEMRLoginException(jsnOBJ.get("errorMessage").getAsString());
+			}
+			else if (jsnOBJ.get("statusCode").getAsLong() != 200) {
+				throw new IEMRException(jsnOBJ.get("errorMessage").getAsString());
+			} else {
+				tmCaseSheet = jsnOBJ.getAsJsonObject("data").toString();
 				tmVisitCode = jsnOBJ.getAsJsonObject("data").getAsJsonObject("nurseData").getAsJsonObject("history")
 						.getAsJsonObject("PhysicalActivityHistory").get("visitCode").getAsLong();
 				createdBy = jsnOBJ.getAsJsonObject("data").getAsJsonObject("nurseData").getAsJsonObject("history")
 						.getAsJsonObject("PhysicalActivityHistory").get("createdBy").getAsString();
 				if (jsnOBJ.getAsJsonObject("data").getAsJsonObject("nurseData").getAsJsonObject("idrs")
 						.getAsJsonObject("IDRSDetail").get("confirmedDisease") != null) {
-					confirmedDisease = jsnOBJ.getAsJsonObject("data").getAsJsonObject("data").getAsJsonObject("nurseData")
+					confirmedDisease = jsnOBJ.getAsJsonObject("data").getAsJsonObject("nurseData")
 							.getAsJsonObject("idrs").getAsJsonObject("IDRSDetail").get("confirmedDisease")
 							.getAsString();
 				}
@@ -661,18 +677,6 @@ public class CommonServiceImpl implements CommonService {
 				}
 
 			}
-
-			else if (jsnOBJ.get("statusCode").getAsLong() == 5000) {
-
-				throw new IEMRException(jsnOBJ.get("errorMessage").getAsString());
-
-			} else if (jsnOBJ.get("statusCode").getAsLong() == 5002) {
-
-				throw new IEMRException(jsnOBJ.get("errorMessage").getAsString());
-			} else {
-				throw new IEMRException(jsnOBJ.get("errorMessage").getAsString());
-			}
-
 			if (tmCaseSheet != null) {
 				BeneficiaryFlowStatus objMMU = InputMapper.gson().fromJson(mmuBenFlowReq, BeneficiaryFlowStatus.class);
 				DownloadedCaseSheet saveTmCaseSheetRes = new DownloadedCaseSheet();
@@ -713,7 +717,7 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	@Override
-	public String getCaseSheetOfTm(String mmuBenFlowReq, String authCentralServer) throws IEMRException {
+	public String getCaseSheetOfTm(String mmuBenFlowReq, String authCentralServer) throws Exception {
 
 		String casesheetData = null;
 		BeneficiaryFlowStatus objMMU = InputMapper.gson().fromJson(mmuBenFlowReq, BeneficiaryFlowStatus.class);
