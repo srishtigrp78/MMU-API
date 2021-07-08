@@ -28,6 +28,7 @@ import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonServiceImpl;
 import com.iemr.mmu.utils.MediaTypeUtils;
 import com.iemr.mmu.utils.exception.IEMRException;
+import com.iemr.mmu.utils.exception.IEMRLoginException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
@@ -935,45 +936,48 @@ public class FetchCommonController {
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary TM case sheet", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/get/Case-sheet/TMReferredprintData" }, method = { RequestMethod.POST })
-	 public String getTMReferredPrintData(
-	            @ApiParam(value = "{\r\n" + "  \"VisitCategory\": \"String\",\r\n" + "  \"benFlowID\": \"Integer\",\r\n"
-	                    + "  \"benVisitID\": \"Integer\",\r\n" + "  \"beneficiaryRegID\": \"Long\",\r\n"
-	                    + "  \"visitCode\": \"Long\"\r\n" + "}") @RequestBody String comingRequest,
-	            @RequestHeader(value = "Authorization") String Authorization) {
-	        OutputResponse response = new OutputResponse();
-	        try {
-	            if (comingRequest != null) {
-	                BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingRequest, BeneficiaryFlowStatus.class);
-	                String casesheetData = null;
-	                //to check whether case sheet is already downloaded or not
-	                String caseSheetStatus = commonServiceImpl.checkIsCaseSheetDownloaded(obj.getBenVisitCode());
-	                if (caseSheetStatus != null && caseSheetStatus.equalsIgnoreCase("success")) {
-	                    //fetch case sheet from downloaded table
-	                    casesheetData = commonServiceImpl.getTmCaseSheetOffline(obj);
-	                } else if (caseSheetStatus.equalsIgnoreCase("failure")) {
-	                    casesheetData = commonServiceImpl.getCaseSheetFromCentralServer(comingRequest,obj.getAuth());
-	                    // fetch case sheet using case sheet API.
-//	                    BeneficiaryFlowStatus tmVisitCodeObj = commonServiceImpl.getTmVisitCode(obj.getBenVisitCode());
-//	                    if(tmVisitCodeObj != null)
-//	                        casesheetData = commonServiceImpl.getTmCaseSheet(tmVisitCodeObj, obj, Authorization);
-	                }
-	                if (casesheetData != null)
-	                    response.setResponse(casesheetData);
-	                else
-	                    response.setError(5000, "Beneficiary pending for Tele-Consultation");
-	            } else
-	                response.setError(5000, "Invalid request");
-	        }catch(IEMRException e ) {
-	            logger.error("iemrexception : " + e);
-	            response.setError(5000, e.getMessage());
-	        }
-	        catch (Exception e) {
-	            logger.error("Exception : " + e);
-	            response.setError(5003, e.getMessage());
-	        }
-	        return response.toString();
-	    }
-	
+	public String getTMReferredPrintData(
+			@ApiParam(value = "{\r\n" + "  \"VisitCategory\": \"String\",\r\n" + "  \"benFlowID\": \"Integer\",\r\n"
+					+ "  \"benVisitID\": \"Integer\",\r\n" + "  \"beneficiaryRegID\": \"Long\",\r\n"
+					+ "  \"visitCode\": \"Long\"\r\n" + "}") @RequestBody String comingRequest,
+			@RequestHeader(value = "Authorization") String Authorization,
+			@RequestHeader(value = "ServerAuthorization") String ServerAuthorization) {
+		OutputResponse response = new OutputResponse();
+		logger.info("getTMReferredPrintData request - " + comingRequest);
+		try {
+			if (comingRequest != null) {
+				BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingRequest, BeneficiaryFlowStatus.class);
+				String casesheetData = null;
+
+				// to check whether case sheet is already downloaded or not
+				int caseSheetStatus = commonServiceImpl.checkIsCaseSheetDownloaded(obj.getBenVisitCode());
+
+				if (caseSheetStatus == 1 ) {
+					// fetch case sheet from downloaded table
+					casesheetData = commonServiceImpl.getTmCaseSheetOffline(obj);
+				} else if (caseSheetStatus == 0) {
+					casesheetData = commonServiceImpl.getCaseSheetFromCentralServer(comingRequest, ServerAuthorization);
+				}
+				if (casesheetData != null)
+					response.setResponse(casesheetData);
+				else
+					response.setError(5000, "Beneficiary pending for Tele-Consultation");
+			} else
+				response.setError(5000, "Invalid request");
+		}catch (IEMRLoginException e) {
+			logger.error("getTMReferredPrintData IEMRLoginException : " + e);
+			response.setError(5003, e.getMessage());
+		}
+		catch (IEMRException e) {
+			logger.error("getTMReferredPrintData iemrexception : " + e);
+			response.setError(5000, e.getMessage());
+		} catch (Exception e) {
+			logger.error("Error on getTMReferredPrintData Exception : " + e);
+			response.setError(5000, "Error in getting case sheet - "+ e.getMessage());
+		}
+		return response.toString();
+	}
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary previous Referral history", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenPreviousReferralHistoryDetails" }, method = { RequestMethod.POST })
@@ -1011,12 +1015,13 @@ public class FetchCommonController {
 					+ "  \"visitCode\": \"Long\"\r\n" + "}") @RequestBody String comingRequest,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
-		
+
+		logger.info("getTMCaseSheetFromCentralServer request - " + comingRequest);
 		try {
 			if (comingRequest != null) {
-				
-				String caseSheetFromCentralServer = commonServiceImpl.getCaseSheetOfTm(comingRequest,Authorization);
-				
+
+				String caseSheetFromCentralServer = commonServiceImpl.getCaseSheetOfTm(comingRequest, Authorization);
+
 				if (caseSheetFromCentralServer != null)
 					response.setResponse(caseSheetFromCentralServer);
 				else
@@ -1024,12 +1029,20 @@ public class FetchCommonController {
 
 			} else
 				response.setError(5000, "Invalid request");
-		} catch (Exception e) {
-			logger.error("" + e);
+		}catch (IEMRLoginException e) {
+			logger.error("getTMCaseSheetFromCentralServer login exception- " + e);
+			response.setError(5002, e.getMessage());
+		} 
+		catch (IEMRException e) {
+			logger.error("getTMCaseSheetFromCentralServer IEMR exception - " + e);
 			response.setError(5000, e.getMessage());
+		}
+		catch (Exception e) {
+			logger.error("getTMCaseSheetFromCentralServer Exception - " + e);
+			response.setError(5000,"Error in MMU central server case sheet" + e.getMessage());
 		}
 
 		return response.toString();
-		
+
 	}
 }
