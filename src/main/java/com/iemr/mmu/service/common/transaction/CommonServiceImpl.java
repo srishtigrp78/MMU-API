@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -38,6 +40,7 @@ import com.iemr.mmu.data.common.DocFileManager;
 import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.data.syncActivity_syncLayer.DownloadedCaseSheet;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
+import com.iemr.mmu.repo.nurse.ncdscreening.IDRSDataRepo;
 import com.iemr.mmu.repo.provider.ProviderServiceMappingRepo;
 import com.iemr.mmu.repo.syncActivity_syncLayer.DownloadedCaseSheetRepo;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
@@ -50,17 +53,22 @@ import com.iemr.mmu.service.ncdscreening.NCDScreeningServiceImpl;
 import com.iemr.mmu.service.pnc.PNCServiceImpl;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
 import com.iemr.mmu.utils.exception.IEMRException;
+import com.iemr.mmu.utils.exception.IEMRLoginException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
 @PropertySource("classpath:application.properties")
 public class CommonServiceImpl implements CommonService {
 
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	@Value("${fileBasePath}")
 	private String fileBasePath;
 
-	@Value("${tmcentralserver}")
-	private String tmcentralserver;
+	@Value("${mmucentralserver}")
+	private String mmuCentralServer;
+
+	@Value("${tmCentralServer}")
+	private String tmCentralServer;
 
 	@Autowired
 	private Covid19ServiceImpl covid19ServiceImpl;
@@ -80,6 +88,9 @@ public class CommonServiceImpl implements CommonService {
 
 	@Autowired
 	private DownloadedCaseSheetRepo downloadedCaseSheetRepo;
+
+	@Autowired
+	private IDRSDataRepo iDRSDataRepo;
 
 	@Autowired
 	public void setNcdScreeningServiceImpl(NCDScreeningServiceImpl ncdScreeningServiceImpl) {
@@ -533,15 +544,15 @@ public class CommonServiceImpl implements CommonService {
 
 	}
 
-	public String checkIsCaseSheetDownloaded(Long mmuVisitCode) throws IEMRException {
+	public int checkIsCaseSheetDownloaded(Long mmuVisitCode) throws IEMRException {
 		Boolean check = beneficiaryFlowStatusRepo.checkIsCaseSheetDownloaded(mmuVisitCode);
 		if (check != null && check == true)
-			return "success";
+			return 1;
 		else
-			return "failure";
+			return 0;
 	}
 
-	public BeneficiaryFlowStatus getTmVisitCode(Long mmuVisitCode) throws Exception {
+	public BeneficiaryFlowStatus getTmVisitCode(Long mmuVisitCode) throws IEMRException {
 		BeneficiaryFlowStatus tmVisitCode = beneficiaryFlowStatusRepo.getTMVisitDetails(mmuVisitCode);
 		return tmVisitCode;
 //		return commonNurseServiceImpl.getBenPreviousDiabetesData(beneficiaryRegID);
@@ -549,38 +560,63 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	public String getTmCaseSheet(BeneficiaryFlowStatus TmBenFlowOBJ, BeneficiaryFlowStatus mmuBenFlowOBJ,
-			String Authorization) throws IEMRException {
+			String Authorization) throws IEMRException,IEMRLoginException,Exception {
 
-		BeneficiaryFlowStatus reqobj = new BeneficiaryFlowStatus();
-		reqobj.setVisitCode(TmBenFlowOBJ.getVisitCode());
-		reqobj.setVisitCategory(TmBenFlowOBJ.getVisitCategory());
-		reqobj.setBenFlowID(TmBenFlowOBJ.getBenFlowID());
-		reqobj.setBenVisitID(TmBenFlowOBJ.getBenVisitID());
-		reqobj.setBeneficiaryRegID(TmBenFlowOBJ.getBeneficiaryRegID());
+//		BeneficiaryFlowStatus tmReqobj = new BeneficiaryFlowStatus();
+//		tmReqobj.setVisitCode(TmBenFlowOBJ.getVisitCode());
+//		tmReqobj.setVisitCategory(TmBenFlowOBJ.getVisitCategory());
+//		tmReqobj.setBenFlowID(TmBenFlowOBJ.getBenFlowID());
+//		tmReqobj.setBenVisitID(TmBenFlowOBJ.getBenVisitID());
+//		tmReqobj.setBeneficiaryRegID(TmBenFlowOBJ.getBeneficiaryRegID());
 
+		HashMap<String, String> tmReqObj = new HashMap<String, String>();
+		tmReqObj.put("visitCode", String.valueOf(TmBenFlowOBJ.getVisitCode()));
+		tmReqObj.put("VisitCategory", String.valueOf(TmBenFlowOBJ.getVisitCategory()));
+		tmReqObj.put("benFlowID", String.valueOf(TmBenFlowOBJ.getBenFlowID()));
+		tmReqObj.put("benVisitID", String.valueOf(TmBenFlowOBJ.getBenVisitID()));
+		tmReqObj.put("beneficiaryRegID", String.valueOf(TmBenFlowOBJ.getBeneficiaryRegID()));
 		// get TM case sheet by passing the TM details
-		String tmCaseSheet = getCaseSheetPrintDataForBeneficiary(reqobj, Authorization);
+//			String tmCaseSheet = getCaseSheetPrintDataForBeneficiary(tmReqobj, Authorization);
 
-//		if(updateDownloadedFlag != null && tmCaseSheet != null)
+		logger.info("TM print data request obj - " + new Gson().toJson(tmReqObj));
+		// get TM case sheet by passing TM details
+		RestTemplate restTemplate = new RestTemplate();
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+		headers.add("Content-Type", "application/json");
+		headers.add("AUTHORIZATION", Authorization);
+		HttpEntity<Object> request = new HttpEntity<Object>(new Gson().toJson(tmReqObj), headers);
+		ResponseEntity<String> response = restTemplate.exchange(tmCentralServer, HttpMethod.POST, request,
+				String.class);
 
-		if (tmCaseSheet != null)
-			return tmCaseSheet;
-		else
-			return null;
+		if (response.getStatusCodeValue() == 200 & response.hasBody()) {
+			String tmCaseSheet = response.getBody();
+			JsonObject jsnOBJ = new JsonObject();
+			JsonParser jsnParser = new JsonParser();
+			JsonElement jsnElmnt = jsnParser.parse(tmCaseSheet);
+			jsnOBJ = jsnElmnt.getAsJsonObject();
+			if(jsnOBJ.get("statusCode").getAsLong() == 5002) {
+				throw new IEMRLoginException(jsnOBJ.get("errorMessage").getAsString());
+			}
+			else if (jsnOBJ.get("statusCode").getAsLong() != 200) {
+				throw new IEMRException(jsnOBJ.get("errorMessage").getAsString());
+			} else
+				return jsnOBJ.getAsJsonObject("data").toString();
+		} else
+			throw new IEMRException("Error in getting the response from TM print API" + response.getBody());
 
 	}
 
 	public String getTmCaseSheetOffline(BeneficiaryFlowStatus mmuBenFlowOBJ) throws IEMRException {
 
+		String response = null;
 		DownloadedCaseSheet caseSheetResponse = downloadedCaseSheetRepo
 				.getTmCaseSheetFromOffline(mmuBenFlowOBJ.getVisitCode());
-		String response = null;
-		try {
-			if (caseSheetResponse != null)
-				response = caseSheetResponse.getTmCaseSheetResponse();
-		} catch (Exception e) {
-			new IEMRException("Error in fetching case Sheet in offline mode : ", e);
-		}
+
+		if (caseSheetResponse != null)
+			response = caseSheetResponse.getTmCaseSheetResponse();
+		else
+			throw new IEMRException("Error in fetching case Sheet in offline mode");
+
 		return response;
 	}
 
@@ -591,86 +627,93 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	@Override
-	public String getCaseSheetFromCentralServer(String mmuBenFlowReq, String authCentralServer) throws Exception {
+	public String getCaseSheetFromCentralServer(String mmuBenFlowReq, String authCentralServer) throws IEMRException,IEMRLoginException {
 
 		String tmCaseSheet = null;
-		String tmCaseSheetError = null;
 		Long tmVisitCode = null;
 		String createdBy = null;
+		String confirmedDisease = null;
+		String suspectedDisease = null;
 		int updated = 0;
-		try {
-			RestTemplate restTemplate = new RestTemplate();
-			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-			headers.add("Content-Type", "application/json");
-			headers.add("AUTHORIZATION", authCentralServer);
-			HttpEntity<Object> request = new HttpEntity<Object>(mmuBenFlowReq, headers);
-			ResponseEntity<String> response = restTemplate.exchange(tmcentralserver, HttpMethod.POST, request,
-					String.class);
+		int allDataUpdated = 0;
+		RestTemplate restTemplate = new RestTemplate();
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+		headers.add("Content-Type", "application/json");
+		headers.add("AUTHORIZATION", authCentralServer);
+		HttpEntity<Object> request = new HttpEntity<Object>(mmuBenFlowReq, headers);
+		ResponseEntity<String> response = restTemplate.exchange(mmuCentralServer, HttpMethod.POST, request,
+				String.class);
 
-			if (response.getStatusCodeValue() == 200 & response.hasBody()) {
-				String responseStr = response.getBody();
-				JSONObject responseOBJ = new JSONObject(responseStr);
-				JsonObject jsnOBJ = new JsonObject();
-				JsonParser jsnParser = new JsonParser();
-				JsonElement jsnElmnt = jsnParser.parse(responseStr);
-				jsnOBJ = jsnElmnt.getAsJsonObject();
+		if (response.getStatusCodeValue() == 200 & response.hasBody()) {
+			String responseStr = response.getBody();
+			JSONObject responseOBJ = new JSONObject(responseStr);
+			JsonObject jsnOBJ = new JsonObject();
+			JsonParser jsnParser = new JsonParser();
+			JsonElement jsnElmnt = jsnParser.parse(responseStr);
+			jsnOBJ = jsnElmnt.getAsJsonObject();
 
-				if (jsnOBJ.get("statusCode").getAsLong() == 200) {
-					tmCaseSheet = jsnOBJ.getAsJsonObject("data").toString();
-					tmVisitCode = jsnOBJ.getAsJsonObject("data").getAsJsonObject("nurseData").getAsJsonObject("history")
-							.getAsJsonObject("PhysicalActivityHistory").get("visitCode").getAsLong();
-					createdBy = jsnOBJ.getAsJsonObject("data").getAsJsonObject("nurseData").getAsJsonObject("history")
-							.getAsJsonObject("PhysicalActivityHistory").get("createdBy").getAsString();
+			if(jsnOBJ.get("statusCode").getAsLong() == 5002 ) {
+				throw new IEMRLoginException(jsnOBJ.get("errorMessage").getAsString());
+			}
+			else if (jsnOBJ.get("statusCode").getAsLong() != 200) {
+				throw new IEMRException(jsnOBJ.get("errorMessage").getAsString());
+			} else {
+				tmCaseSheet = jsnOBJ.getAsJsonObject("data").toString();
+				tmVisitCode = jsnOBJ.getAsJsonObject("data").getAsJsonObject("nurseData").getAsJsonObject("history")
+						.getAsJsonObject("PhysicalActivityHistory").get("visitCode").getAsLong();
+				createdBy = jsnOBJ.getAsJsonObject("data").getAsJsonObject("nurseData").getAsJsonObject("history")
+						.getAsJsonObject("PhysicalActivityHistory").get("createdBy").getAsString();
+				if (jsnOBJ.getAsJsonObject("data").getAsJsonObject("nurseData").getAsJsonObject("idrs")
+						.getAsJsonObject("IDRSDetail").get("confirmedDisease") != null) {
+					confirmedDisease = jsnOBJ.getAsJsonObject("data").getAsJsonObject("nurseData")
+							.getAsJsonObject("idrs").getAsJsonObject("IDRSDetail").get("confirmedDisease")
+							.getAsString();
+				}
+				if (jsnOBJ.getAsJsonObject("data").getAsJsonObject("nurseData").getAsJsonObject("idrs")
+						.getAsJsonObject("IDRSDetail").get("suspectedDisease") != null) {
+					suspectedDisease = jsnOBJ.getAsJsonObject("data").getAsJsonObject("nurseData")
+							.getAsJsonObject("idrs").getAsJsonObject("IDRSDetail").get("suspectedDisease")
+							.getAsString();
 				}
 
-				else if (jsnOBJ.get("statusCode").getAsLong() == 5000) {
-
-					throw new IEMRException(jsnOBJ.get("errorMessage").getAsString());
-
-				} else if (jsnOBJ.get("statusCode").getAsLong() == 5002) {
-
-					throw new Exception(jsnOBJ.get("errorMessage").getAsString());
-				} else {
-					throw new IEMRException(jsnOBJ.get("errorMessage").getAsString());
-				}
 			}
-			try {
+			if (tmCaseSheet != null) {
+				BeneficiaryFlowStatus objMMU = InputMapper.gson().fromJson(mmuBenFlowReq, BeneficiaryFlowStatus.class);
+				DownloadedCaseSheet saveTmCaseSheetRes = new DownloadedCaseSheet();
+				saveTmCaseSheetRes.setTmVisitCode(tmVisitCode);
+				saveTmCaseSheetRes.setMmuVisitCode(objMMU.getVisitCode());
+				saveTmCaseSheetRes.setTmCaseSheetResponse(tmCaseSheet);
+				saveTmCaseSheetRes.setCreatedBy(createdBy);
 
-				if (tmCaseSheet != null) {
-					BeneficiaryFlowStatus objMMU = InputMapper.gson().fromJson(mmuBenFlowReq,
-							BeneficiaryFlowStatus.class);
-					DownloadedCaseSheet saveTmCaseSheetRes = new DownloadedCaseSheet();
-					saveTmCaseSheetRes.setTmVisitCode(tmVisitCode);
-					saveTmCaseSheetRes.setMmuVisitCode(objMMU.getVisitCode());
-					saveTmCaseSheetRes.setTmCaseSheetResponse(tmCaseSheet);
-					saveTmCaseSheetRes.setCreatedBy(createdBy);
+				DownloadedCaseSheet responseDownloaded = downloadedCaseSheetRepo.save(saveTmCaseSheetRes);
 
-					DownloadedCaseSheet responseDownloaded = downloadedCaseSheetRepo.save(saveTmCaseSheetRes);
-
-					if (responseDownloaded != null) {
-						updated = beneficiaryFlowStatusRepo.updateDownloadFlag(objMMU.getVisitCode());
-						if (updated == 0)
-							throw new IEMRException("Error in updating the download flag for mmu visitcode");
-					}
+				if (responseDownloaded != null) {
+					updated = beneficiaryFlowStatusRepo.updateDownloadFlag(objMMU.getVisitCode());
+					if (updated > 0) {
+						int diseaseUpdated = updateConfirmedDisease(confirmedDisease, suspectedDisease,
+								saveTmCaseSheetRes.getMmuVisitCode());
+						if (diseaseUpdated > 0) {
+							allDataUpdated = 1;
+						} else if (diseaseUpdated == 0)
+							throw new IEMRException("Error in updating the confirmed and suspected disease");
+					} else if (updated == 0)
+						throw new IEMRException("Error in updating the download flag for mmu visitcode");
 				}
 
-			} catch (IEMRException e) {
-				throw new IEMRException(e.getMessage());
 			}
-
-			catch (Exception e) {
-				throw new IEMRException("Error in fetching TM Case-Sheet : " + e);
-			}
-		} catch (IEMRException e) {
-			throw new IEMRException(e.getMessage());
-		} catch (Exception e) {
-			throw new Exception(e.getMessage());
-		}
-
-		if (tmCaseSheet != null)
+		} else
+			throw new IEMRException("Error in getting data from central server - " + response.getBody());
+		if (allDataUpdated > 0)
 			return tmCaseSheet;
 		else
-			return null;
+			throw new IEMRException("Error in showing the caseSheet");
+
+	}
+
+	public int updateConfirmedDisease(String confirmedDiasese, String suspectedDisease, Long MMUVisitCode) {
+		int diseaseUpdated = iDRSDataRepo.updateConfirmedAndSuspectedDisease(confirmedDiasese, suspectedDisease,
+				MMUVisitCode);
+		return diseaseUpdated;
 	}
 
 	@Override
@@ -678,23 +721,19 @@ public class CommonServiceImpl implements CommonService {
 
 		String casesheetData = null;
 		BeneficiaryFlowStatus objMMU = InputMapper.gson().fromJson(mmuBenFlowReq, BeneficiaryFlowStatus.class);
+
+		// gets TM visit Code
 		BeneficiaryFlowStatus tmVisitCodeObj = getTmVisitCode(objMMU.getBenVisitCode());
 
-		try {
-			if (tmVisitCodeObj != null) {
-				if (tmVisitCodeObj.getSpecialist_flag() == 9) {
-					casesheetData = getTmCaseSheet(tmVisitCodeObj, objMMU, authCentralServer);
-				} else
-					throw new IEMRException("Tele-Consultation is not completed");
+		if (tmVisitCodeObj != null) {
+			if (tmVisitCodeObj.getSpecialist_flag() == 9) {
+				casesheetData = getTmCaseSheet(tmVisitCodeObj, objMMU, authCentralServer);
+				return casesheetData;
+			} else
+				throw new IEMRException("Tele-Consultation is not completed");
 
-			}
-		} catch (IEMRException e) {
-			throw new IEMRException(e.getMessage());
-		}
-
-		if (casesheetData != null) {
-			return casesheetData;
 		} else
-			return null;
+			throw new IEMRException("Error in getting TM details");
+
 	}
 }
