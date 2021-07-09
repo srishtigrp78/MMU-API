@@ -568,7 +568,18 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 				} else {
 					idrsDetail.setBenVisitID(benVisitID);
 					idrsDetail.setVisitCode(benVisitCode);
-					
+					if (idrsDetail.getSuspectArray() != null && idrsDetail.getSuspectArray().length > 0) {
+						for (int a = 0; a < idrsDetail.getSuspectArray().length; a++) {
+							if (a == idrsDetail.getSuspectArray().length - 1)
+								temp1 += idrsDetail.getSuspectArray()[a];
+							else
+								temp1 = temp1 + idrsDetail.getSuspectArray()[a] + ",";
+						}
+						if (temp1.equalsIgnoreCase(""))
+							temp1 = null;
+						idrsDetail.setSuspectedDisease(temp1);
+					}
+					temp1="";
 					if (idrsDetail.getConfirmArray() != null && idrsDetail.getConfirmArray().length > 0) {
 						for (int a = 0; a < idrsDetail.getConfirmArray().length; a++) {
 							if (a == idrsDetail.getConfirmArray().length - 1)
@@ -1002,6 +1013,28 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 				} else {
 //					idrsDetail.setBenVisitID(benVisitID);
 //					idrsDetail.setVisitCode(benVisitCode);
+					int success1=0;
+					if(idrsDetail1.getSuspectArray()!=null && idrsDetail1.getSuspectArray().length >0)
+					{
+						for(int a=0;a<idrsDetail1.getSuspectArray().length;a++)
+				    	{
+				    		if(a==idrsDetail1.getSuspectArray().length-1)
+				    		temp1+=idrsDetail1.getSuspectArray()[a];
+				    		else
+				    		temp1=temp1+idrsDetail1.getSuspectArray()[a]+",";
+				    	}
+						if(temp1.equalsIgnoreCase(""))
+							temp1=null;
+						if(temp1!=null)
+						{
+							success1=iDrsDataRepo.updateSuspectedDiseases(idrsDetail1.getBeneficiaryRegID(), idrsDetail1.getVisitCode(), temp1);
+						}
+							
+						if(success1 > 0) {
+							idrsFlag = new Long(1);
+						}
+					}
+				
 					if (idrsDetail1.getIdrsScore() != null) {
 						int success = iDrsDataRepo.updateIdrsScore(idrsDetail1.getBeneficiaryRegID(),
 								idrsDetail1.getVisitCode(), idrsDetail1.getIdrsScore());
