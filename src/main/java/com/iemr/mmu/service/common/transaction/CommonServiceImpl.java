@@ -32,6 +32,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -39,10 +40,12 @@ import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.common.DocFileManager;
 import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.data.syncActivity_syncLayer.DownloadedCaseSheet;
+import com.iemr.mmu.data.syncActivity_syncLayer.EmployeeSignature;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.nurse.ncdscreening.IDRSDataRepo;
 import com.iemr.mmu.repo.provider.ProviderServiceMappingRepo;
 import com.iemr.mmu.repo.syncActivity_syncLayer.DownloadedCaseSheetRepo;
+import com.iemr.mmu.repo.syncActivity_syncLayer.EmployeeSignatureRepo;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
 import com.iemr.mmu.service.cancerScreening.CSNurseServiceImpl;
 import com.iemr.mmu.service.cancerScreening.CSServiceImpl;
@@ -53,7 +56,6 @@ import com.iemr.mmu.service.ncdscreening.NCDScreeningServiceImpl;
 import com.iemr.mmu.service.pnc.PNCServiceImpl;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
 import com.iemr.mmu.utils.exception.IEMRException;
-import com.iemr.mmu.utils.exception.IEMRLoginException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
@@ -69,6 +71,9 @@ public class CommonServiceImpl implements CommonService {
 
 	@Value("${tmCentralServer}")
 	private String tmCentralServer;
+
+	@Value("${specialistSign}")
+	private String specialistSign;
 
 	@Autowired
 	private Covid19ServiceImpl covid19ServiceImpl;
@@ -91,6 +96,9 @@ public class CommonServiceImpl implements CommonService {
 
 	@Autowired
 	private IDRSDataRepo iDRSDataRepo;
+
+	@Autowired
+	private EmployeeSignatureRepo employeeSignatureRepo;
 
 	@Autowired
 	public void setNcdScreeningServiceImpl(NCDScreeningServiceImpl ncdScreeningServiceImpl) {
@@ -559,15 +567,10 @@ public class CommonServiceImpl implements CommonService {
 
 	}
 
-	public String getTmCaseSheet(BeneficiaryFlowStatus TmBenFlowOBJ, BeneficiaryFlowStatus mmuBenFlowOBJ,
-			String Authorization) throws IEMRException,IEMRLoginException,Exception {
+	public ArrayList<String> getTmCaseSheet(BeneficiaryFlowStatus TmBenFlowOBJ, BeneficiaryFlowStatus mmuBenFlowOBJ,
+			String Authorization) throws IEMRException, Exception {
 
-//		BeneficiaryFlowStatus tmReqobj = new BeneficiaryFlowStatus();
-//		tmReqobj.setVisitCode(TmBenFlowOBJ.getVisitCode());
-//		tmReqobj.setVisitCategory(TmBenFlowOBJ.getVisitCategory());
-//		tmReqobj.setBenFlowID(TmBenFlowOBJ.getBenFlowID());
-//		tmReqobj.setBenVisitID(TmBenFlowOBJ.getBenVisitID());
-//		tmReqobj.setBeneficiaryRegID(TmBenFlowOBJ.getBeneficiaryRegID());
+		ArrayList<String> caseSheetAndSign = new ArrayList<String>();
 
 		HashMap<String, String> tmReqObj = new HashMap<String, String>();
 		tmReqObj.put("visitCode", String.valueOf(TmBenFlowOBJ.getVisitCode()));
@@ -575,35 +578,41 @@ public class CommonServiceImpl implements CommonService {
 		tmReqObj.put("benFlowID", String.valueOf(TmBenFlowOBJ.getBenFlowID()));
 		tmReqObj.put("benVisitID", String.valueOf(TmBenFlowOBJ.getBenVisitID()));
 		tmReqObj.put("beneficiaryRegID", String.valueOf(TmBenFlowOBJ.getBeneficiaryRegID()));
-		// get TM case sheet by passing the TM details
-//			String tmCaseSheet = getCaseSheetPrintDataForBeneficiary(tmReqobj, Authorization);
 
 		logger.info("TM print data request obj - " + new Gson().toJson(tmReqObj));
+
 		// get TM case sheet by passing TM details
-		RestTemplate restTemplate = new RestTemplate();
-		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-		headers.add("Content-Type", "application/json");
-		headers.add("AUTHORIZATION", Authorization);
-		HttpEntity<Object> request = new HttpEntity<Object>(new Gson().toJson(tmReqObj), headers);
-		ResponseEntity<String> response = restTemplate.exchange(tmCentralServer, HttpMethod.POST, request,
-				String.class);
+		ResponseEntity<String> response = restTemplatePost(tmCentralServer, Authorization, new Gson().toJson(tmReqObj));
 
 		if (response.getStatusCodeValue() == 200 & response.hasBody()) {
-			String tmCaseSheet = response.getBody();
-			JsonObject jsnOBJ = new JsonObject();
-			JsonParser jsnParser = new JsonParser();
-			JsonElement jsnElmnt = jsnParser.parse(tmCaseSheet);
-			jsnOBJ = jsnElmnt.getAsJsonObject();
-			if(jsnOBJ.get("statusCode").getAsLong() == 5002) {
-				throw new IEMRLoginException(jsnOBJ.get("errorMessage").getAsString());
-			}
-			else if (jsnOBJ.get("statusCode").getAsLong() != 200) {
+			JsonObject jsnOBJ = getJsonObj(response);
+			if (jsnOBJ.get("statusCode").getAsLong() == 5002) {
+				throw new IEMRException(jsnOBJ.get("errorMessage").getAsString(), 5002);
+			} else if (jsnOBJ.get("statusCode").getAsLong() != 200) {
 				throw new IEMRException(jsnOBJ.get("errorMessage").getAsString());
-			} else
-				return jsnOBJ.getAsJsonObject("data").toString();
+			} else {
+				// adding casesheet to array
+				caseSheetAndSign.add(jsnOBJ.getAsJsonObject("data").toString());
+				if (jsnOBJ.getAsJsonObject("data").getAsJsonObject("BeneficiaryData")
+						.get("tCSpecialistUserID") != null) {
+					int specialistUserID = jsnOBJ.getAsJsonObject("data").getAsJsonObject("BeneficiaryData")
+							.get("tCSpecialistUserID").getAsInt();
+					ResponseEntity<String> responseSign = restTemplateGet(specialistSign + "/" + specialistUserID,
+							Authorization);
+					JsonObject signJsonResponse = getJsonObj(responseSign);
+					if (signJsonResponse.get("statusCode").getAsLong() == 200) {
+						// adding sign response to array
+						caseSheetAndSign.add(signJsonResponse.getAsJsonObject("data").toString());
+					}
+
+				}
+
+			}
+
 		} else
 			throw new IEMRException("Error in getting the response from TM print API" + response.getBody());
 
+		return caseSheetAndSign;
 	}
 
 	public String getTmCaseSheetOffline(BeneficiaryFlowStatus mmuBenFlowOBJ) throws IEMRException {
@@ -627,7 +636,7 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	@Override
-	public String getCaseSheetFromCentralServer(String mmuBenFlowReq, String authCentralServer) throws IEMRException,IEMRLoginException {
+	public String getCaseSheetFromCentralServer(String mmuBenFlowReq, String authCentralServer) throws IEMRException {
 
 		String tmCaseSheet = null;
 		Long tmVisitCode = null;
@@ -636,44 +645,47 @@ public class CommonServiceImpl implements CommonService {
 		String suspectedDisease = null;
 		int updated = 0;
 		int allDataUpdated = 0;
-		RestTemplate restTemplate = new RestTemplate();
-		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-		headers.add("Content-Type", "application/json");
-		headers.add("AUTHORIZATION", authCentralServer);
-		HttpEntity<Object> request = new HttpEntity<Object>(mmuBenFlowReq, headers);
-		ResponseEntity<String> response = restTemplate.exchange(mmuCentralServer, HttpMethod.POST, request,
-				String.class);
+
+		ResponseEntity<String> response = restTemplatePost(mmuCentralServer, authCentralServer, mmuBenFlowReq);
 
 		if (response.getStatusCodeValue() == 200 & response.hasBody()) {
-			String responseStr = response.getBody();
-			JSONObject responseOBJ = new JSONObject(responseStr);
-			JsonObject jsnOBJ = new JsonObject();
-			JsonParser jsnParser = new JsonParser();
-			JsonElement jsnElmnt = jsnParser.parse(responseStr);
-			jsnOBJ = jsnElmnt.getAsJsonObject();
 
-			if(jsnOBJ.get("statusCode").getAsLong() == 5002 ) {
-				throw new IEMRLoginException(jsnOBJ.get("errorMessage").getAsString());
-			}
-			else if (jsnOBJ.get("statusCode").getAsLong() != 200) {
+			JsonObject jsnOBJ = getJsonObj(response);
+			if (jsnOBJ.get("statusCode").getAsLong() == 5002) {
+				throw new IEMRException(jsnOBJ.get("errorMessage").getAsString(), 5002);
+			} else if (jsnOBJ.get("statusCode").getAsLong() != 200) {
 				throw new IEMRException(jsnOBJ.get("errorMessage").getAsString());
 			} else {
-				tmCaseSheet = jsnOBJ.getAsJsonObject("data").toString();
-				tmVisitCode = jsnOBJ.getAsJsonObject("data").getAsJsonObject("nurseData").getAsJsonObject("history")
+				int sizeOfArray = jsnOBJ.get("data").getAsJsonArray().size();
+
+				tmCaseSheet = jsnOBJ.get("data").getAsJsonArray().get(0).toString();
+				JsonObject tmCaseSheetJsonObj = jsnOBJ.get("data").getAsJsonArray().get(0).getAsJsonObject();
+				tmVisitCode = tmCaseSheetJsonObj.getAsJsonObject("nurseData").getAsJsonObject("history")
 						.getAsJsonObject("PhysicalActivityHistory").get("visitCode").getAsLong();
-				createdBy = jsnOBJ.getAsJsonObject("data").getAsJsonObject("nurseData").getAsJsonObject("history")
+				createdBy = tmCaseSheetJsonObj.getAsJsonObject("nurseData").getAsJsonObject("history")
 						.getAsJsonObject("PhysicalActivityHistory").get("createdBy").getAsString();
-				if (jsnOBJ.getAsJsonObject("data").getAsJsonObject("nurseData").getAsJsonObject("idrs")
+				if (tmCaseSheetJsonObj.getAsJsonObject("nurseData").getAsJsonObject("idrs")
 						.getAsJsonObject("IDRSDetail").get("confirmedDisease") != null) {
-					confirmedDisease = jsnOBJ.getAsJsonObject("data").getAsJsonObject("nurseData")
-							.getAsJsonObject("idrs").getAsJsonObject("IDRSDetail").get("confirmedDisease")
-							.getAsString();
+					confirmedDisease = tmCaseSheetJsonObj.getAsJsonObject("nurseData").getAsJsonObject("idrs")
+							.getAsJsonObject("IDRSDetail").get("confirmedDisease").getAsString();
 				}
-				if (jsnOBJ.getAsJsonObject("data").getAsJsonObject("nurseData").getAsJsonObject("idrs")
+				if (tmCaseSheetJsonObj.getAsJsonObject("nurseData").getAsJsonObject("idrs")
 						.getAsJsonObject("IDRSDetail").get("suspectedDisease") != null) {
-					suspectedDisease = jsnOBJ.getAsJsonObject("data").getAsJsonObject("nurseData")
-							.getAsJsonObject("idrs").getAsJsonObject("IDRSDetail").get("suspectedDisease")
-							.getAsString();
+					suspectedDisease = tmCaseSheetJsonObj.getAsJsonObject("nurseData").getAsJsonObject("idrs")
+							.getAsJsonObject("IDRSDetail").get("suspectedDisease").getAsString();
+				}
+
+				// checks whether signature is present or not.
+				if (sizeOfArray == 2) {
+					String signatureRes = jsnOBJ.get("data").getAsJsonArray().get(1).toString();
+					EmployeeSignature specialistSign = InputMapper.gson().fromJson(signatureRes,
+							EmployeeSignature.class);
+
+					JsonObject signJsonObj = jsnOBJ.get("data").getAsJsonArray().get(1).getAsJsonObject();
+					EmployeeSignature userSign = employeeSignatureRepo.findOneByUserID(specialistSign.getUserID());
+					if (userSign == null) {
+						employeeSignatureRepo.save(specialistSign);
+					}
 				}
 
 			}
@@ -719,7 +731,7 @@ public class CommonServiceImpl implements CommonService {
 	@Override
 	public String getCaseSheetOfTm(String mmuBenFlowReq, String authCentralServer) throws Exception {
 
-		String casesheetData = null;
+		ArrayList<String> casesheetData = null;
 		BeneficiaryFlowStatus objMMU = InputMapper.gson().fromJson(mmuBenFlowReq, BeneficiaryFlowStatus.class);
 
 		// gets TM visit Code
@@ -728,12 +740,41 @@ public class CommonServiceImpl implements CommonService {
 		if (tmVisitCodeObj != null) {
 			if (tmVisitCodeObj.getSpecialist_flag() == 9) {
 				casesheetData = getTmCaseSheet(tmVisitCodeObj, objMMU, authCentralServer);
-				return casesheetData;
+				return casesheetData.toString();
 			} else
 				throw new IEMRException("Tele-Consultation is not completed");
 
 		} else
-			throw new IEMRException("Error in getting TM details");
+			throw new IEMRException("Patient is waiting in Tele-Medicine worklist");
 
+	}
+
+	public ResponseEntity<String> restTemplatePost(String URL, String authorization, String reqObj) {
+		RestTemplate restTemplate = new RestTemplate();
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+		headers.add("Content-Type", "application/json");
+		headers.add("AUTHORIZATION", authorization);
+		HttpEntity<Object> request = new HttpEntity<Object>(reqObj, headers);
+		ResponseEntity<String> response = restTemplate.exchange(URL, HttpMethod.POST, request, String.class);
+		return response;
+	}
+
+	public ResponseEntity<String> restTemplateGet(String URL, String authorization) {
+		RestTemplate restTemplate = new RestTemplate();
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+		headers.add("Content-Type", "application/json");
+		headers.add("AUTHORIZATION", authorization);
+		HttpEntity<Object> request = new HttpEntity<Object>("", headers);
+		ResponseEntity<String> response = restTemplate.exchange(URL, HttpMethod.GET, request, String.class);
+		return response;
+	}
+
+	public JsonObject getJsonObj(ResponseEntity<String> convertToJsonObj) {
+		String jsonToConvert = convertToJsonObj.getBody();
+		JsonObject jsnOBJ = new JsonObject();
+		JsonParser jsnParser = new JsonParser();
+		JsonElement jsnElmnt = jsnParser.parse(jsonToConvert);
+		jsnOBJ = jsnElmnt.getAsJsonObject();
+		return jsnOBJ;
 	}
 }
