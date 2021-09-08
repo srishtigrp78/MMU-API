@@ -107,7 +107,9 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 					procDetails.put("isLabProcedure", obj.getIsLabProcedure());
 					procDetails.put("discoveryCode", obj.getDiscoveryCode());
 					procDetails.put("isMandatory", obj.getIsMandatory());
-					
+					procDetails.put("calibrationStartAPI", obj.getCalibrationStartAPI());
+					procDetails.put("calibrationStatusAPI", obj.getCalibrationStatusAPI());
+					procDetails.put("calibrationEndAPI", obj.getCalibrationEndAPI());
 					// System.out.println(procDetails.get("procedureID"));
 //					if (procDetails.get("procedureID") instanceof Integer
 //							&& obj.getProcedureID() == procDetails.get("procedureID")) {
