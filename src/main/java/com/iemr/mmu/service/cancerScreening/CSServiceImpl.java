@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,7 @@ import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
 public class CSServiceImpl implements CSService {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
 	@Value("${registrarQuickSearchByIdUrl}")
 	private String registrarQuickSearchByIdUrl;
@@ -753,10 +756,13 @@ public class CSServiceImpl implements CSService {
 				int tcUserID = 0;
 				Timestamp tcDate = null;
 
+			    if (commonUtilityClass != null)
+			    {
 				tmpBenFlowID = commonUtilityClass.getBenFlowID();
 				tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
 				tmpBeneficiaryID = commonUtilityClass.getBeneficiaryID();
 				tmpBenVisitID = commonUtilityClass.getBenVisitID();
+			    }
 
 				short docFlag = (short) 9;
 				short pharmaFalg = (short) 0;
@@ -1043,7 +1049,8 @@ public class CSServiceImpl implements CSService {
 				visitCode = obj.getLong("visitCode");
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error(e.getMessage());
+
 			}
 
 			caseSheetData = getBenDataForCaseSheet(benFlowID, benRegID, visitCode, Authorization);

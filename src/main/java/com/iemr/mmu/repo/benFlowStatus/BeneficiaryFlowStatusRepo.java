@@ -299,19 +299,5 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			+ " AND ben_gender_val = 2 AND ben_dob is not null order by ben_flow_id DESC LIMIT 1 ")
 	public Timestamp getBenAgeVal(@Param("benRegID") Long benRegID);
 	
-	/**
-	 * updaing lab technicain flag to 11 from 10 , as soon as recieve response from fetosense
-	 * 
-	 * @author DU20091017
-	 * @param lab_technician_flag
-	 * @param visitCode
-	 * @param benRegID
-	 * @return
-	 */
-	@Transactional
-	@Modifying
-	@Query("UPDATE BeneficiaryFlowStatus t set  t.lab_technician_flag = :lab_technician_flag "
-			+ " WHERE t.beneficiaryRegID = :benRegID AND t.visitCode =:visitCode ")
-	public int updateLabTechnicianFlag(@Param("lab_technician_flag") Short lab_technician_flag,@Param("visitCode") Long visitCode,
-			@Param("benRegID") Long benRegID);
+	
 }

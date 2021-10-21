@@ -94,10 +94,14 @@ import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
 import com.iemr.mmu.utils.mapper.InputMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 @PropertySource("classpath:application.properties")
 public class CommonNurseServiceImpl implements CommonNurseService {
+	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
 	@Value("${pharmaWL}")
 	private Integer pharmaWL;
@@ -294,7 +298,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					beneficiaryVisitDetail.getBenVisitID());
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 
 		}
 		return response;
@@ -323,7 +327,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		// String fileIds[];
 		Map<String, String> fileMap;
 		ArrayList<Map<String, String>> fileList = new ArrayList<>();
-		if (benVisitDetailsOBJ.getReportFilePath() != null
+		if (benVisitDetailsOBJ != null && benVisitDetailsOBJ.getReportFilePath() != null
 				&& benVisitDetailsOBJ.getReportFilePath().trim().length() > 0) {
 			String fileIdsTemp[] = benVisitDetailsOBJ.getReportFilePath().split(",");
 			// fileIds = new String[fileIdsTemp.length];
@@ -338,7 +342,9 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 				}
 			}
 		}
+	  if (benVisitDetailsOBJ1 != null) {
 		benVisitDetailsOBJ1.setFiles(fileList);
+	  }
 
 		return benVisitDetailsOBJ1;
 	}

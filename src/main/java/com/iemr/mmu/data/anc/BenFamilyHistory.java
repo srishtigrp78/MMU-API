@@ -3,6 +3,7 @@ package com.iemr.mmu.data.anc;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -463,10 +464,12 @@ public class BenFamilyHistory {
 		if (null != familyDiseaseList) {
 			for (Map<String, Object> disease : familyDiseaseList) {
 				BenFamilyHistory benFamilyHistory = new BenFamilyHistory();
-				if(disease.get("ID") != null) {
-					benFamilyHistory.setID((new Double((Double) disease.get("ID"))).longValue());
+				
+				if (disease.containsKey("ID") && disease.get("ID") != null) {					
+					benFamilyHistory.setID(((Double) disease.get("ID")).longValue());
+
 				}
-					
+
 				benFamilyHistory.setBeneficiaryRegID(beneficiaryRegID);
 				benFamilyHistory.setBenVisitID(benVisitID);
 				benFamilyHistory.setVisitCode(visitCode);
@@ -601,7 +604,7 @@ public class BenFamilyHistory {
 				familyDisease.put("snomedCode", familyDetails.getSnomedCode());
 				familyDisease.put("snomedTerm", familyDetails.getSnomedTerm());
 
-				if (null != familyDetails.getFamilyMember()) {
+				if (null != familyDetails.getFamilyMember() && familyDetails.getFamilyMember().length()>0) {
 					String[] familyMembers = familyDetails.getFamilyMember().split(",");
 
 					List<String> familyMembersList = new ArrayList<String>();
@@ -609,6 +612,10 @@ public class BenFamilyHistory {
 						familyMembersList.add(familyMember);
 					}
 					familyDisease.put("familyMembers", familyMembersList);
+				}
+				else
+				{
+					familyDisease.put("familyMembers",Arrays.asList());
 				}
 				familyDiseaseList.add(familyDisease);
 			}

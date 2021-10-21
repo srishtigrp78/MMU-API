@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpEntity;
@@ -21,7 +23,7 @@ import com.google.gson.Gson;
 @Service
 @PropertySource("classpath:application.properties")
 public class CSCarestreamServiceImpl implements CSCarestreamService {
-
+	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 	@Value("${carestreamOrderCreateURL}")
 	private String carestreamOrderCreateURL;
 
@@ -49,7 +51,7 @@ public class CSCarestreamServiceImpl implements CSCarestreamService {
 			}
 			// System.out.println("hello");
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return responseData;
 	}

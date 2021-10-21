@@ -33,7 +33,7 @@ public class FileSyncController {
 			 response.setResponse(data);
 			 logger.info("getServerCredential response "+response.toString());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			response.setError(e);
 
 		}
@@ -56,7 +56,7 @@ public class FileSyncController {
 			 response.setResponse(data);
 			 logger.info("syncFiles response "+response.toString());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			response.setError(e);
 
 		}

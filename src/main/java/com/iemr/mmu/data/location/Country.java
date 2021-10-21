@@ -52,14 +52,14 @@ public class Country {
 	}
 
 	public Country(Integer countryID, String countryName, String countryCode, String Continent) {
-		this.countryID = Integer.valueOf(countryID);
+		this.countryID = countryID;
 		this.countryName = countryName;
 		this.countryCode = countryCode;
 		this.continent = Continent;
 	}
 
 	public Country(Integer countryID, String countryName) {
-		this.countryID = Integer.valueOf(countryID);
+		this.countryID = countryID;
 		this.countryName = countryName;
 	}
 

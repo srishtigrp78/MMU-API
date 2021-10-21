@@ -489,7 +489,11 @@ public class CommonServiceImpl implements CommonService {
 			String currDate) throws IOException {
 		ArrayList<Map<String, String>> responseList = new ArrayList<>();
 		Map<String, String> responseMap;
-
+		FileOutputStream FOS = null;
+		try
+		{
+		
+		
 		for (DocFileManager dFM : docFileManagerList) {
 			if (dFM.getFileName() != null && dFM.getFileExtension() != null) {
 				responseMap = new HashMap<>();
@@ -502,7 +506,7 @@ public class CommonServiceImpl implements CommonService {
 						.replace("\"", "").replace("'", ""));
 
 				Long currTimestamp = System.currentTimeMillis();
-				FileOutputStream FOS = new FileOutputStream(
+				FOS = new FileOutputStream(
 						basePath + "/" + currDate + "/" + currTimestamp + dFM.getFileName());
 
 				FOS.write(Base64.getDecoder().decode(dFM.getFileContent()));
@@ -514,11 +518,26 @@ public class CommonServiceImpl implements CommonService {
 //						+ dFM.getFileExtension();
 
 				FOS.flush();
-				FOS.close();
+				
+				
 				responseList.add(responseMap);
 			}
+			
+			if(FOS!=null)
+    			FOS.close();
 		}
+		}
+		catch(Exception e)
+    	{
+    		logger.error(e.getMessage());
+    	}
+    	finally
+    	{
+    		if(FOS!=null)
+    			FOS.close();
+    	}
 		return responseList;
+		
 	}
 
 	// load file as resource

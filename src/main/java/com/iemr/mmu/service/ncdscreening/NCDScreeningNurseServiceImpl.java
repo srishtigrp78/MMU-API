@@ -82,14 +82,13 @@ public class NCDScreeningNurseServiceImpl implements NCDScreeningNurseService {
 
 		}
 
-		if (ncdScreeningDetails.getNextScreeningDateDB() != null)
+		
+			if (ncdScreeningDetails != null && ncdScreeningDetails.getNextScreeningDateDB() != null)
 			ncdScreeningDetails.setNextScreeningDate(ncdScreeningDetails.getNextScreeningDateDB().toString());
 
-		if (null != ncdScreeningDetails) {
+	
 			return new Gson().toJson(ncdScreeningDetails);
-		} else {
-			return null;
-		}
+	
 	}
 
 	@Override

@@ -16,9 +16,13 @@ import org.springframework.web.client.RestTemplate;
 
 import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataMultiPart;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.io.IOException;
 
 @Component
 public class HttpUtils {
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	public static final String AUTHORIZATION = "Authorization";
 	private String server;
 	// @Autowired
@@ -106,7 +110,7 @@ public class HttpUtils {
 		return body;
 	}
 
-	public String uploadFile(String uri, String data, HashMap<String, Object> header) {
+	public String uploadFile(String uri, String data, HashMap<String, Object> header) throws IOException {
 		String body;
 		HttpHeaders headers = new HttpHeaders();
 		if (header.containsKey(headers.AUTHORIZATION)) {
@@ -120,9 +124,13 @@ public class HttpUtils {
 		ResponseEntity<String> responseEntity = new ResponseEntity(HttpStatus.BAD_REQUEST);
 		if (headers.getContentType().toString().equals(MediaType.MULTIPART_FORM_DATA_TYPE.toString())) {
 			HttpEntity<FormDataMultiPart> requestEntity;
+			FormDataMultiPart multiPart = null;
+			FileInputStream is = null;
+
 			try {
-				FormDataMultiPart multiPart = new FormDataMultiPart();
-				FileInputStream is = new FileInputStream(data);
+				multiPart = new FormDataMultiPart();
+				is = new FileInputStream(data);
+
 				FormDataBodyPart filePart = new FormDataBodyPart("content", is,
 						MediaType.APPLICATION_OCTET_STREAM_TYPE);
 				multiPart.bodyPart(filePart);
@@ -133,8 +141,14 @@ public class HttpUtils {
 																						// headers);
 				responseEntity = rest.exchange(uri, HttpMethod.POST, requestEntity, String.class);
 			} catch (FileNotFoundException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage());
+			}finally {
+				if (multiPart != null)
+					multiPart.close();
+				if (is != null)
+					is.close();
 			}
+
 		} else {
 			HttpEntity<String> requestEntity;
 			requestEntity = new HttpEntity<String>(data, headers);

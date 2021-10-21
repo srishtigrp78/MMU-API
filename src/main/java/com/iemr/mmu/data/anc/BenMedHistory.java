@@ -459,10 +459,13 @@ public class BenMedHistory {
 						benMedHistory.setOtherSurgeryType(surgery.get("otherSurgeryType").toString());
 					}
 				}
-
-				String surgeryTimePeriodUnit = (String) surgery.get("timePeriodUnit");
+				String surgeryTimePeriodUnit=null;
+              if(surgery != null)
+              {
+			 	surgeryTimePeriodUnit = (String) surgery.get("timePeriodUnit");
+              }
 				Integer surgeryTimePeriodAgo = 0;
-				if (null != surgery.get("timePeriodAgo")) {
+				if (surgery != null && null != surgery.get("timePeriodAgo")) {
 					surgeryTimePeriodAgo = Integer.parseInt(surgery.get("timePeriodAgo").toString());
 				}
 				benMedHistory
