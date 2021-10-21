@@ -1,6 +1,7 @@
 package com.iemr.mmu.service.ncdCare;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,16 @@ public class NCDCareDoctorServiceImpl implements NCDCareDoctorService {
 	public long saveNCDDiagnosisData(NCDCareDiagnosis ncdDiagnosis) {
 		long res = 0;
 
+		if (ncdDiagnosis.getNcdScreeningConditionArray() != null
+				&& ncdDiagnosis.getNcdScreeningConditionArray().length > 0) {
+			StringBuilder sb = new StringBuilder();
+			for (String s : ncdDiagnosis.getNcdScreeningConditionArray()) {
+				sb.append(s).append("||");
+			}
+			ncdDiagnosis.setNcdScreeningCondition((sb.delete((sb.length() - 2), (sb.length()))).toString());
+		} else
+			ncdDiagnosis.setNcdScreeningCondition(null);
+
 		NCDCareDiagnosis diagnosis = ncdCareDiagnosisRepo.save(ncdDiagnosis);
 		if (null != diagnosis) {
 			res = diagnosis.getID();
@@ -41,6 +52,19 @@ public class NCDCareDoctorServiceImpl implements NCDCareDoctorService {
 				visitCode);
 		ArrayList<Object[]> resList = ncdCareDiagnosisRepo.getNCDCareDiagnosisDetails(beneficiaryRegID, visitCode);
 		NCDCareDiagnosis ncdCareDiagnosisDetails = NCDCareDiagnosis.getNCDCareDiagnosisDetails(resList);
+
+		// 07-09-2021 parsing the || seperated ncd_condition to array of string, if
+		// condition
+		// 07-09-2021
+
+		if (ncdCareDiagnosisDetails != null && ncdCareDiagnosisDetails.getNcdScreeningCondition() != null
+				&& ncdCareDiagnosisDetails.getNcdScreeningCondition().length() > 0) {
+
+			String[] ncdConditionArr = ncdCareDiagnosisDetails.getNcdScreeningCondition().split(Pattern.quote("||"));
+			if (ncdConditionArr != null)
+				ncdCareDiagnosisDetails.setNcdScreeningConditionArray(ncdConditionArr);
+		}
+
 		if (externalInvestigation != null)
 			ncdCareDiagnosisDetails.setExternalInvestigation(externalInvestigation);
 		return new Gson().toJson(ncdCareDiagnosisDetails);
@@ -55,8 +79,20 @@ public class NCDCareDoctorServiceImpl implements NCDCareDoctorService {
 			processed = "U";
 		}
 
-		ncdCareDiagnosis.setProcessed(processed);
+		if (ncdCareDiagnosis.getNcdScreeningConditionArray() != null
+				&& ncdCareDiagnosis.getNcdScreeningConditionArray().length > 0) {
+			StringBuilder sb = new StringBuilder();
+			for (String s : ncdCareDiagnosis.getNcdScreeningConditionArray()) {
+				sb.append(s).append("||");
+			}
+			ncdCareDiagnosis.setNcdScreeningCondition((sb.delete((sb.length() - 2), (sb.length()))).toString());
+		} else
+			ncdCareDiagnosis.setNcdScreeningCondition(null);
+
+		// ncdCareDiagnosis.setProcessed(processed);
 		if (processed != null) {
+			// 07-09-2021, moved below line from outside if block to inside for null check
+			ncdCareDiagnosis.setProcessed(processed);
 			res = ncdCareDiagnosisRepo.updateNCDCareDiagnosis(ncdCareDiagnosis.getNcdCareCondition(),
 					ncdCareDiagnosis.getNcdComplication(), ncdCareDiagnosis.getNcdCareType(),
 					ncdCareDiagnosis.getCreatedBy(), ncdCareDiagnosis.getProcessed(),
