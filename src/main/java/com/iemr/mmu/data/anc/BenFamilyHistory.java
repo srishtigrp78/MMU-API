@@ -604,7 +604,7 @@ public class BenFamilyHistory {
 				familyDisease.put("snomedCode", familyDetails.getSnomedCode());
 				familyDisease.put("snomedTerm", familyDetails.getSnomedTerm());
 
-				if (null != familyDetails.getFamilyMember() && familyDetails.getFamilyMember().length()>0) {
+				if (null != familyDetails.getFamilyMember()) {
 					String[] familyMembers = familyDetails.getFamilyMember().split(",");
 
 					List<String> familyMembersList = new ArrayList<String>();
@@ -613,10 +613,7 @@ public class BenFamilyHistory {
 					}
 					familyDisease.put("familyMembers", familyMembersList);
 				}
-				else
-				{
-					familyDisease.put("familyMembers",Arrays.asList());
-				}
+			
 				familyDiseaseList.add(familyDisease);
 			}
 			benfamilyHistory.setFamilyDiseaseList(familyDiseaseList);
