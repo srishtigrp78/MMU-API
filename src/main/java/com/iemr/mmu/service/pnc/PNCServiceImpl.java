@@ -428,6 +428,8 @@ public class PNCServiceImpl implements PNCService {
 		Long familyHistorySuccessFlag = null;
 		int menstrualHistorySuccessFlag = 0;
 		Long obstetricSuccessFlag = null;
+		Long immunizationSuccessFlag = null;
+		Long childVaccineSuccessFlag = null;
 
 		// Save Past History
 		if (pncHistoryOBJ != null && pncHistoryOBJ.has("pastHistory")
@@ -562,6 +564,49 @@ public class PNCServiceImpl implements PNCService {
 		} else {
 			obstetricSuccessFlag = new Long(1);
 		}
+		
+		/** For Female above 12 and below 16 years.. **/
+		// Save Immunization History
+		if (pncHistoryOBJ != null && pncHistoryOBJ.has("immunizationHistory")
+				&& !pncHistoryOBJ.get("immunizationHistory").isJsonNull()) {
+			WrapperImmunizationHistory wrapperImmunizationHistory = InputMapper.gson()
+					.fromJson(pncHistoryOBJ.get("immunizationHistory"), WrapperImmunizationHistory.class);
+			if (null != wrapperImmunizationHistory) {
+				wrapperImmunizationHistory.setBenVisitID(benVisitID);
+				wrapperImmunizationHistory.setVisitCode(benVisitCode);
+				immunizationSuccessFlag = commonNurseServiceImpl.saveImmunizationHistory(wrapperImmunizationHistory);
+				// immunizationSuccessFlag =
+				// ancNurseServiceImpl.saveANCImmunizationHistory(wrapperImmunizationHistory);
+			} else {
+
+				// ImmunizationList Data not Available
+			}
+
+		} else {
+			immunizationSuccessFlag = new Long(1);
+		}
+		
+		// Save Other/Optional Vaccines History
+				if (pncHistoryOBJ != null && pncHistoryOBJ.has("childVaccineDetails")
+						&& !pncHistoryOBJ.get("childVaccineDetails").isJsonNull()) {
+					WrapperChildOptionalVaccineDetail wrapperChildVaccineDetail = InputMapper.gson()
+							.fromJson(pncHistoryOBJ.get("childVaccineDetails"), WrapperChildOptionalVaccineDetail.class);
+					if (null != wrapperChildVaccineDetail) {
+						wrapperChildVaccineDetail.setBenVisitID(benVisitID);
+						wrapperChildVaccineDetail.setVisitCode(benVisitCode);
+						childVaccineSuccessFlag = commonNurseServiceImpl
+								.saveChildOptionalVaccineDetail(wrapperChildVaccineDetail);
+						// childVaccineSuccessFlag =
+						// ancNurseServiceImpl.saveChildOptionalVaccineDetail(wrapperChildVaccineDetail);
+					} else {
+						// Child Optional Vaccine Detail not provided.
+					}
+
+				} else {
+					childVaccineSuccessFlag = new Long(1);
+				}
+		
+		
 
 		Long historySuccessFlag = null;
 
@@ -570,7 +615,9 @@ public class PNCServiceImpl implements PNCService {
 				&& (null != medicationSuccessFlag && medicationSuccessFlag > 0)
 				&& (null != allergyHistorySuccessFlag && allergyHistorySuccessFlag > 0)
 				&& (null != familyHistorySuccessFlag && familyHistorySuccessFlag > 0)
-				&& (null != obstetricSuccessFlag && obstetricSuccessFlag > 0) && personalHistorySuccessFlag > 0
+				&& (null != obstetricSuccessFlag && obstetricSuccessFlag > 0) 
+				&& (null != immunizationSuccessFlag && immunizationSuccessFlag > 0)
+				&& (null != childVaccineSuccessFlag && childVaccineSuccessFlag > 0) && personalHistorySuccessFlag > 0
 				&& menstrualHistorySuccessFlag > 0) {
 			historySuccessFlag = pastHistorySuccessFlag;
 		}

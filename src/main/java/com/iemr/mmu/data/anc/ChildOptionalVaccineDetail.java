@@ -48,6 +48,10 @@ public class ChildOptionalVaccineDetail {
 	private String vaccineName;
 
 	@Expose
+	@Column(name = "otherVaccineName")
+	private @SQLInjectionSafe String otherVaccineName;
+
+	@Expose
 	@Column(name = "Status")
 	private String status;
 
@@ -322,11 +326,12 @@ public class ChildOptionalVaccineDetail {
 		this.reservedForChange = reservedForChange;
 	}
 
-	public ChildOptionalVaccineDetail(String defaultReceivingAge, String vaccineName, String status,
+	public ChildOptionalVaccineDetail(String defaultReceivingAge, String vaccineName, String otherVaccineName, String status,
 			Timestamp receivedDate, String actualReceivingAge, String receivedFacilityName,String sctCode,String sctTerm) {
 		super();
 		this.defaultReceivingAge = defaultReceivingAge;
 		this.vaccineName = vaccineName;
+		this.otherVaccineName = otherVaccineName;
 		this.status = status;
 		this.receivedDate = receivedDate;
 		this.actualReceivingAge = actualReceivingAge;
@@ -335,12 +340,13 @@ public class ChildOptionalVaccineDetail {
 		this.sctTerm = sctTerm;
 	}
 
-	public ChildOptionalVaccineDetail(Date createdDate, String defaultReceivingAge, String vaccineName, String status,
+	public ChildOptionalVaccineDetail(Date createdDate, String defaultReceivingAge, String vaccineName, String otherVaccineName, String status,
 			Timestamp receivedDate, String actualReceivingAge, String receivedFacilityName) {
 		super();
 		this.captureDate = createdDate;
 		this.defaultReceivingAge = defaultReceivingAge;
 		this.vaccineName = vaccineName;
+		this.otherVaccineName = otherVaccineName;
 		this.status = status;
 		this.receivedDate = receivedDate;
 		this.actualReceivingAge = actualReceivingAge;
