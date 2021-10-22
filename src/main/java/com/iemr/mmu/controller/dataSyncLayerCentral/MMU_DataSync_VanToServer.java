@@ -99,8 +99,11 @@ public class MMU_DataSync_VanToServer {
 				response.setError(5000, "Invalid request");
 			}
 		} catch (Exception e) {
+			if(syncUploadDataDigester != null)
+			{
 			logger.error(e + " - Error in data download for table " + syncUploadDataDigester.getSchemaName() + "."
 					+ syncUploadDataDigester.getTableName());
+			}
 			response.setError(e);
 		}
 		return response.toStringWithSerialization();
@@ -126,9 +129,12 @@ public class MMU_DataSync_VanToServer {
 				response.setError(5000, "Invalid request");
 			}
 		} catch (Exception e) {
+			if(syncUploadDataDigester != null)
+			{
 			logger.error(e + " - Error while updating flag. Please contact administrator "
 					+ syncUploadDataDigester.getSchemaName() + "." + syncUploadDataDigester.getTableName() + "."
 					+ syncUploadDataDigester.getIds());
+			}
 			response.setError(e);
 		}
 		return response.toStringWithSerialization();

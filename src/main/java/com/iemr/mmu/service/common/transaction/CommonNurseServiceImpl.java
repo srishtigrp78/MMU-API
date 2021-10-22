@@ -94,10 +94,14 @@ import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
 import com.iemr.mmu.utils.mapper.InputMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 @PropertySource("classpath:application.properties")
 public class CommonNurseServiceImpl implements CommonNurseService {
+	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
 	@Value("${pharmaWL}")
 	private Integer pharmaWL;
@@ -294,7 +298,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					beneficiaryVisitDetail.getBenVisitID());
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 
 		}
 		return response;
@@ -323,7 +327,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		// String fileIds[];
 		Map<String, String> fileMap;
 		ArrayList<Map<String, String>> fileList = new ArrayList<>();
-		if (benVisitDetailsOBJ.getReportFilePath() != null
+		if (benVisitDetailsOBJ != null && benVisitDetailsOBJ.getReportFilePath() != null
 				&& benVisitDetailsOBJ.getReportFilePath().trim().length() > 0) {
 			String fileIdsTemp[] = benVisitDetailsOBJ.getReportFilePath().split(",");
 			// fileIds = new String[fileIdsTemp.length];
@@ -338,7 +342,9 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 				}
 			}
 		}
+	  if (benVisitDetailsOBJ1 != null) {
 		benVisitDetailsOBJ1.setFiles(fileList);
+	  }
 
 		return benVisitDetailsOBJ1;
 	}
@@ -1591,6 +1597,11 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		column.put("columnName", "Vaccine Name");
 		column.put("keyName", "vaccineName");
 		columns.add(column);
+		
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Other Vaccine Name");
+		column.put("keyName", "otherVaccineName");
+		columns.add(column);
 
 		/** Later we will enable these two if needed **/
 		/*
@@ -1615,7 +1626,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		if (null != childOptionalVaccineDetail) {
 			for (Object[] obj : childOptionalVaccineDetail) {
 				ChildOptionalVaccineDetail history = new ChildOptionalVaccineDetail((Date) obj[0], (String) obj[1],
-						(String) obj[2], (String) obj[3], (Timestamp) obj[4], (String) obj[5], (String) obj[6]);
+						(String) obj[2], (String) obj[3], (String) obj[4], (Timestamp) obj[5], (String) obj[6], (String) obj[7]);
 				childOptionalVaccineDetails.add(history);
 			}
 		}

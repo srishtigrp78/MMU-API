@@ -10,6 +10,8 @@ import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.iemr.mmu.data.doctor.CancerAbdominalExamination;
@@ -43,6 +45,7 @@ import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
 
 @Service
 public class CSNurseServiceImpl implements CSNurseService {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 	private BenFamilyCancerHistoryRepo benFamilyCancerHistoryRepo;
 	private BenPersonalCancerHistoryRepo benPersonalCancerHistoryRepo;
 	private BenPersonalCancerDietHistoryRepo benPersonalCancerDietHistoryRepo;
@@ -276,7 +279,8 @@ public class CSNurseServiceImpl implements CSNurseService {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
+
 
 		}
 		return response;
@@ -310,7 +314,8 @@ public class CSNurseServiceImpl implements CSNurseService {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
+
 
 		}
 		return response;
@@ -363,7 +368,8 @@ public class CSNurseServiceImpl implements CSNurseService {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
+
 
 		}
 		return response;
@@ -413,7 +419,8 @@ public class CSNurseServiceImpl implements CSNurseService {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
+
 
 		}
 		return response;
@@ -598,7 +605,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 			int a = 0;
 			int b = 0;
 
-			ArrayList<Map<String, Object>> markerList = null;
+			ArrayList<Map<String, Object>> markerList = new ArrayList<>();
 			Map<String, Object> markerMap;
 
 			WrapperCancerExamImgAnotasn wrapperCancerExamImgAnotasnOBJ = null;
@@ -633,7 +640,9 @@ public class CSNurseServiceImpl implements CSNurseService {
 					markerMap.put("point", obj.getPoint());
 
 					markerList.add(markerMap);
-					wrapperCancerExamImgAnotasnOBJ.setMarkers(markerList);
+					if (wrapperCancerExamImgAnotasnOBJ != null)
+						wrapperCancerExamImgAnotasnOBJ.setMarkers(markerList);
+
 				}
 
 				a = b;
@@ -1056,11 +1065,8 @@ public class CSNurseServiceImpl implements CSNurseService {
 		List<CancerLymphNodeDetails> response = (List<CancerLymphNodeDetails>) cancerLymphNodeExaminationRepo
 				.save(cancerLymphNodeDetails);
 		if (null != response && response.size() > 0) {
-			for (CancerLymphNodeDetails obj : response) {
-				if (obj.getID() > 0)
-					responseData = obj.getID();
-				break;
-			}
+
+			responseData = response.get(response.size() - 1).getID();
 		}
 		return responseData;
 	}
@@ -1235,7 +1241,8 @@ public class CSNurseServiceImpl implements CSNurseService {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
+
 
 		}
 		return response;
@@ -1315,7 +1322,8 @@ public class CSNurseServiceImpl implements CSNurseService {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
+
 
 		}
 		return response;
@@ -1394,7 +1402,8 @@ public class CSNurseServiceImpl implements CSNurseService {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
+
 
 		}
 		return response;
@@ -1439,7 +1448,8 @@ public class CSNurseServiceImpl implements CSNurseService {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
+
 
 		}
 		return response;
@@ -1487,7 +1497,8 @@ public class CSNurseServiceImpl implements CSNurseService {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
+
 
 		}
 		return response;
@@ -1538,7 +1549,8 @@ public class CSNurseServiceImpl implements CSNurseService {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
+
 
 		}
 		return response;
@@ -1627,7 +1639,8 @@ public class CSNurseServiceImpl implements CSNurseService {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
+
 
 		}
 		return response;

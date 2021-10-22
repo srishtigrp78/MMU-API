@@ -512,11 +512,12 @@ public class BenAllergyHistory {
 				List<Map<String, String>> reactionTypesList = new ArrayList<Map<String, String>>();
 				Map<String, String> reactionTypes = null;
 
-				if (null != allergicReactionTypes && allergicReactionTypes.length > 0) {
+				if (allergicReactionTypeIDs != null && null != allergicReactionTypes && allergicReactionTypes.length > 0) {
 					for (int i = 0; i < allergicReactionTypes.length; i++) {
 						reactionTypes = new HashMap<String, String>();
 						reactionTypes.put("name", allergicReactionTypes[i]);
-						reactionTypes.put("allergicReactionTypeID", allergicReactionTypeIDs[i]);
+					    reactionTypes.put("allergicReactionTypeID", allergicReactionTypeIDs[i]);
+				
 
 						reactionTypesList.add(reactionTypes);
 					}
