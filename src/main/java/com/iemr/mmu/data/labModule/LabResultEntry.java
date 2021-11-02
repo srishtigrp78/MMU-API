@@ -237,7 +237,7 @@ public class LabResultEntry {
 			for (LabResultEntry obj : comingList) {
 				if (procedureId == null || obj.getProcedureID().intValue() != procedureId) {
 
-					procedureId = obj.getProcedureID().intValue();
+					procedureId = obj.getProcedureID();
 
 					tmpOBJ = new LabResultEntry();
 					tmpOBJ.setPrescriptionID(obj.getPrescriptionID());

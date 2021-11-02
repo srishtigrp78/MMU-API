@@ -3,6 +3,8 @@ package com.iemr.mmu.service.common.master;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,7 @@ import com.iemr.mmu.repo.masterrepo.doctor.PreMalignantLesionMasterRepo;
 
 @Service
 public class DoctorMasterDataServiceImpl implements DoctorMasterDataService {
-
+	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 	@Autowired
 	private PreMalignantLesionMasterRepo preMalignantLesionMasterRepo;
 
@@ -48,7 +50,7 @@ public class DoctorMasterDataServiceImpl implements DoctorMasterDataService {
 			resMap.put("additionalServices", ServiceMaster.getServiceMaster(additionalServices));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 
 		return new Gson().toJson(resMap);

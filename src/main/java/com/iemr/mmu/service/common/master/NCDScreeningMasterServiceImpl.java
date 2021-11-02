@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,7 @@ import com.iemr.mmu.repo.labModule.ProcedureRepo;
 
 @Service
 public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService {
-
+	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 	private NCDScreeningConditionRepo ncdScreeningConditionRepo;
 	private NCDScreeningReasonRepo ncdScreeningReasonRepo;
 	private BPAndDiabeticStatusRepo bpAndDiabeticStatusRepo;
@@ -82,7 +84,7 @@ public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService 
 		try {
 			ncdScreeningConditions = ncdScreeningConditionRepo.getNCDScreeningConditions();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return ncdScreeningConditions;
 	}
@@ -93,7 +95,7 @@ public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService 
 		try {
 			ncdScreeningReasons = ncdScreeningReasonRepo.getNCDScreeningReasons();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return ncdScreeningReasons;
 	}
@@ -104,7 +106,7 @@ public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService 
 		try {
 			bpAndDiabeticStatus = bpAndDiabeticStatusRepo.getBPAndDiabeticStatus(isBPStatus);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return bpAndDiabeticStatus;
 	}
@@ -115,7 +117,7 @@ public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService 
 		try {
 			labTests = labTestMasterRepo.getTestsBYVisitCategory("NCD Screening");
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return labTests;
 	}
@@ -126,7 +128,7 @@ public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService 
 		try {
 			ccList = chiefComplaintMasterRepo.getChiefComplaintMaster();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return ccList;
 	}

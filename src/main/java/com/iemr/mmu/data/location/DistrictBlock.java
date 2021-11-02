@@ -78,7 +78,7 @@ public class DistrictBlock {
 	}
 
 	public void setBlockID(Integer blockID) {
-		this.blockID = Integer.valueOf(blockID);
+		this.blockID = blockID;
 	}
 
 	public Integer getDistrictID() {
@@ -86,7 +86,7 @@ public class DistrictBlock {
 	}
 
 	public void setDistrictID(Integer districtID) {
-		this.districtID = Integer.valueOf(districtID);
+		this.districtID = districtID;
 	}
 
 	public String getBlockName() {
@@ -102,7 +102,7 @@ public class DistrictBlock {
 	}
 
 	public void setStateID(Integer stateID) {
-		this.stateID = Integer.valueOf(stateID);
+		this.stateID = stateID;
 	}
 
 	public Boolean isDeleted() {

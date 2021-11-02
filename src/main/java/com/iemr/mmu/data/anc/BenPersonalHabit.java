@@ -719,8 +719,11 @@ public class BenPersonalHabit {
 						tobaccoInfo.put("duration", timePeriod.get("timePeriodAgo").toString());
 					else
 						tobaccoInfo.put("duration", null);
+					
+					if (timePeriod != null && timePeriod.containsKey("timePeriodUnit")
+							&& timePeriod.get("timePeriodUnit") != null)
 
-					tobaccoInfo.put("durationUnit", timePeriod.get("timePeriodUnit").toString());
+					    tobaccoInfo.put("durationUnit", timePeriod.get("timePeriodUnit").toString());
 
 					tobaccoList.add(tobaccoInfo);
 				}
@@ -742,7 +745,10 @@ public class BenPersonalHabit {
 						alcoholInfo.put("duration", null);
 
 					// alcoholInfo.put("duration", timePeriodAgo.toString());
-					alcoholInfo.put("durationUnit", timePeriod.get("timePeriodUnit").toString());
+					if (timePeriod != null && timePeriod.containsKey("timePeriodUnit")
+							&& timePeriod.get("timePeriodUnit") != null)
+
+					  alcoholInfo.put("durationUnit", timePeriod.get("timePeriodUnit").toString());
 
 					alcoholList.add(alcoholInfo);
 				}

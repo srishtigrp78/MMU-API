@@ -18,9 +18,13 @@ import com.iemr.mmu.repo.masterrepo.nurse.CancerPersonalHabitMasterRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.FamilyMemberMasterRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.VisitCategoryMasterRepo;
 import com.iemr.mmu.repo.masterrepo.nurse.VisitReasonMasterRepo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class NurseMasterDataServiceImpl implements NurseMasterDataService {
+	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
 	@Autowired
 	private CancerDiseaseMasterRepo cancerDiseaseMasterRepo;
@@ -93,7 +97,7 @@ public class NurseMasterDataServiceImpl implements NurseMasterDataService {
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 
 		//System.out.println(new Gson().toJson(resMap));

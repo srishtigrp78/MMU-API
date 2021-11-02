@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,6 +45,9 @@ import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
 @Service
 @PropertySource("classpath:application.properties")
 public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterData {
+	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
+	
 	@Value("${getBenImageFromIdentity}")
 	private String getBenImageFromIdentity;
 
@@ -138,7 +143,7 @@ public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterDat
 			resMap.put("religionMaster", ReligionMaster.getReligionMasterData(rm));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 
 		// System.out.println("helloo");

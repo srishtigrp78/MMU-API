@@ -79,7 +79,7 @@ public class FileSyncServiceImpl implements FileSyncService{
 
 	
 	@Override
-	public String syncFiles(String ServerAuthorization) throws IEMRException {
+	public String syncFiles(String ServerAuthorization) throws IEMRException, IOException {
 		logger.info("File Sync activity Started");
 		HashMap<String, Object> header = new HashMap<>();
 		if (ServerAuthorization != null)
@@ -114,6 +114,8 @@ public class FileSyncServiceImpl implements FileSyncService{
 		logger.info("fileSync deleteAccessCommand - >"+ deleteAccessCommand);
 		
 		Runtime rt = Runtime.getRuntime();
+		FileInputStream fstream = null;
+		 
 		try 
 		{
 			Process pr1= rt.exec(createAccessCommand);
@@ -127,11 +129,14 @@ public class FileSyncServiceImpl implements FileSyncService{
 				Thread.sleep(35000);
 				 logger.info("File Sync activity wakeup");
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage());
+				 Thread.currentThread().interrupt();
 			}
 			
-			FileInputStream fstream = new FileInputStream(fileSynclogspath.substring(2) + logFileName);
-			   BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+			   fstream = new FileInputStream(fileSynclogspath.substring(2) + logFileName);
+		
+			    try (BufferedReader br = new BufferedReader(new InputStreamReader(fstream))) {
+			   
 			   String strLine;
 			   /* read log line by line */
 			   while ((strLine = br.readLine()) != null)   {
@@ -147,15 +152,20 @@ public class FileSyncServiceImpl implements FileSyncService{
 			     }
 			    
 			   }
-			   fstream.close();
+			  
+			 }
 		    	 pr1.destroy();
 		    	 pr2.destroy();
 		    	 pr3.destroy();
 		} 
 		catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			logger.info("File Sync activity Failed. Log File Name - "+logFileName.substring(1));
 			return "File Sync activity Failed. Log File Name - "+logFileName.substring(1);
+		}finally {
+			if (fstream != null)
+				 fstream.close();
+		
 		}
 		
 		logger.info("File Sync activity Completed");
@@ -173,7 +183,8 @@ public class FileSyncServiceImpl implements FileSyncService{
 				Thread.sleep(1000);
 				 logger.info("File Sync activity wakeup");
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage());
+				 Thread.currentThread().interrupt();
 			}
 		}
 	}

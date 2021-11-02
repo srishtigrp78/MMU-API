@@ -132,12 +132,13 @@ public class StartSyncActivity {
 	public String checkMastersDownloadProgress() {
 		OutputResponse response = new OutputResponse();
 		try {
-			Map<String, Object> resultMap = new HashMap<>();
-			resultMap.put("percentage", Math.floor(
-					((DownloadDataFromServerImpl.progressCounter * 100) / DownloadDataFromServerImpl.totalCounter)));
-			resultMap.put("failedMasterCount", DownloadDataFromServerImpl.failedCounter);
-			resultMap.put("failedMasters", DownloadDataFromServerImpl.failedMasters);
-			response.setResponse(new Gson().toJson(resultMap));
+//			Map<String, Object> resultMap = new HashMap<>();
+//			resultMap.put("percentage", Math.floor(
+//					((DownloadDataFromServerImpl.progressCounter * 100) / DownloadDataFromServerImpl.totalCounter)));
+//			resultMap.put("failedMasterCount", DownloadDataFromServerImpl.failedCounter);
+//			resultMap.put("failedMasters", DownloadDataFromServerImpl.failedMasters);
+//			response.setResponse(new Gson().toJson(resultMap));
+			response.setResponse(new Gson().toJson(downloadDataFromServerImpl.getDownloadStatus()));
 		} catch (Exception e) {
 			logger.error("Error in Master data Download progress check : " + e);
 			response.setError(e);
