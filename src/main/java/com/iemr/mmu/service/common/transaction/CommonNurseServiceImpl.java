@@ -46,6 +46,7 @@ import com.iemr.mmu.data.anc.WrapperFemaleObstetricHistory;
 import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
+import com.iemr.mmu.data.bmi.BmiCalculation;
 import com.iemr.mmu.data.ncdScreening.IDRSData;
 import com.iemr.mmu.data.ncdScreening.PhysicalActivityType;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
@@ -59,6 +60,7 @@ import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.data.registrar.WrapperRegWorklist;
 import com.iemr.mmu.data.snomedct.SCTDescription;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
+import com.iemr.mmu.repo.bmiCalculation.BMICalculationRepo;
 import com.iemr.mmu.repo.nurse.BenAnthropometryRepo;
 import com.iemr.mmu.repo.nurse.BenCancerVitalDetailRepo;
 import com.iemr.mmu.repo.nurse.BenPhysicalVitalRepo;
@@ -93,6 +95,7 @@ import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
+import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -186,7 +189,8 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 	@Autowired
 	private IDRSDataRepo iDRSDataRepo;
-
+	@Autowired
+	private BMICalculationRepo bmiCalculationRepo;
 	public Integer updateBeneficiaryStatus(Character c, Long benRegID) {
 		Integer i = registrarRepoBenData.updateBenFlowStatus(c, benRegID);
 		return i;
@@ -3814,5 +3818,50 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		response.put("columns", columns);
 		return new Gson().toJson(response);
 	}
-
+	@Override
+	public String calculateBMIStatus(String request) throws IEMRException {
+		String result="";
+		Map<String,String> map=new HashMap<String,String>();
+		try
+		{
+		BmiCalculation bmiMap = InputMapper.gson().fromJson(request, BmiCalculation.class);
+		if(bmiMap !=null && bmiMap.getYearMonth() !=null && bmiMap.getGender() !=null && bmiMap.getBmi() != 0.0d)
+		{
+			String[] ar=bmiMap.getYearMonth().split(" ");
+			if(ar !=null && ar.length>0)
+			{
+				Integer years=Integer.valueOf(ar[0]);
+				Integer months=Integer.valueOf(ar[3]);
+				Integer totalMonths=(years * 12) + months;
+				BmiCalculation calc=bmiCalculationRepo.getBMIDetails(totalMonths, bmiMap.getGender());
+				if(calc == null)
+					throw new IEMRException("No data found for this category");
+				if(calc!=null && bmiMap.getBmi() >= calc.getN1SD() && bmiMap.getBmi() < bmiMap.getP1SD())
+					result="Normal";
+				else if(calc!=null && bmiMap.getBmi() >=calc.getN2SD() && bmiMap.getBmi() < calc.getN1SD())
+					result="Mild malnourished";
+				else if(calc!=null && bmiMap.getBmi() >= calc.getN3SD() && bmiMap.getBmi() < calc.getN2SD())
+					result ="Moderately Malnourished";
+				else if(calc!=null && bmiMap.getBmi() < calc.getN3SD())
+					result="Severly Malnourished";
+				else if(calc!=null && bmiMap.getBmi() >= calc.getP1SD() && bmiMap.getBmi() < calc.getP2SD())
+					result="Overweight";
+				else if(calc!=null && bmiMap.getBmi() >= calc.getP2SD() && bmiMap.getBmi() < calc.getP3SD())
+					result="Obese";
+				else if(calc!=null && bmiMap.getBmi() >= calc.getP3SD())
+					result="Severly Obese";
+			}
+		}
+		}catch(Exception e)
+		{
+			throw new IEMRException("Error while calculating BMI status:"+e.getMessage());
+		}
+		if(result != null)
+		{
+			map.put("bmiStatus",result);
+			 return new Gson().toJson(map);
+		}
+		else
+			throw new IEMRException("Error while calculating BMI status");
+	}
 }
