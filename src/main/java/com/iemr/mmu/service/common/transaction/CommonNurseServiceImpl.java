@@ -800,6 +800,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					physicalVitalDetail.getBloodGlucose_2hr_PP(), physicalVitalDetail.getBloodGlucose_NotSpecified(),
 					physicalVitalDetail.getDiabeticStatusID(), physicalVitalDetail.getDiabeticStatus(),
 					physicalVitalDetail.getCapillaryRefillTime(), physicalVitalDetail.getModifiedBy(), processed,
+					physicalVitalDetail.getRbsTestResult(),physicalVitalDetail.getRbsTestRemarks(),physicalVitalDetail.getsPO2(),
 					physicalVitalDetail.getBeneficiaryRegID(), physicalVitalDetail.getVisitCode());
 
 		}
