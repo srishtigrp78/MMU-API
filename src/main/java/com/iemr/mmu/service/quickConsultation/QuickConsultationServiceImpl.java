@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.data.tele_consultation.TCRequestModel;
 import com.iemr.mmu.data.tele_consultation.TcSpecialistSlotBookingRequestOBJ;
 import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
+import com.iemr.mmu.repo.nurse.BenPhysicalVitalRepo;
 import com.iemr.mmu.repo.quickConsultation.BenChiefComplaintRepo;
 import com.iemr.mmu.repo.quickConsultation.BenClinicalObservationsRepo;
 import com.iemr.mmu.repo.quickConsultation.ExternalTestOrderRepo;
@@ -89,6 +91,9 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	public void setCommonNurseServiceImpl(CommonNurseServiceImpl commonNurseServiceImpl) {
 		this.commonNurseServiceImpl = commonNurseServiceImpl;
 	}
+	
+	@Autowired
+	private BenPhysicalVitalRepo benPhysicalVitalRepo;
 
 	// @Autowired
 	// public void setBeneficiaryVisitDetail(BenVisitDetailRepo benVisitDetailRepo)
@@ -308,6 +313,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		Integer prescriptionSuccessFlag = null;
 		Integer investigationSuccessFlag = null;
 		Integer tcRequestStatusFlag = null;
+		Integer vitalsRBSTestFlag = null;
 
 		TeleconsultationRequestOBJ tcRequestOBJ = null;
 		TcSpecialistSlotBookingRequestOBJ tcSpecialistSlotBookingRequestOBJ = null;
@@ -401,12 +407,33 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 			investigationSuccessFlag = 1;
 		}
 
+		
+		//Updating Vitals RBS Test Result
+		BenPhysicalVitalDetail physicalVitalDet = InputMapper.gson().fromJson(quickConsultDoctorOBJ,
+				BenPhysicalVitalDetail.class);
+		int r = 0;
+		if(quickConsultDoctorOBJ.has("rbsTestResult") || quickConsultDoctorOBJ.has("rbsTestRemarks"))
+		{
+			
+			r = benPhysicalVitalRepo.updatePhysicalVitalDetailsQCDoctor(physicalVitalDet.getRbsTestResult(), physicalVitalDet.getRbsTestRemarks(),
+					                         physicalVitalDet.getBeneficiaryRegID(),physicalVitalDet.getVisitCode());
+			if(r>0)
+			{
+				vitalsRBSTestFlag=1;
+			}
+		}
+		else
+		{
+			vitalsRBSTestFlag=1;
+		}
+		
 		// check if all data updated successfully
 		if ((null != benChiefComplaintID && benChiefComplaintID > 0)
 				&& (null != clinicalObservationID && clinicalObservationID > 0)
 				&& (prescriptionID != null && prescriptionID > 0)
 				&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)
-				&& (investigationSuccessFlag != null && investigationSuccessFlag > 0)) {
+				&& (investigationSuccessFlag != null && investigationSuccessFlag > 0)
+				&& (vitalsRBSTestFlag != null && vitalsRBSTestFlag > 0)) {
 
 			// call method to update beneficiary flow table
 			int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataSave(commonUtilityClass, isTestPrescribed,
@@ -484,6 +511,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		Long prescriptionID = null;
 		Long prescribedDrugSuccessFlag = null;
 		Long labTestOrderSuccessFlag = null;
+		Long vitalsRBSTestFlag=null;
 
 		Integer tcRequestStatusFlag = null;
 
@@ -593,11 +621,31 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		} else {
 			labTestOrderSuccessFlag = new Long(1);
 		}
+		
+		//Updating Vitals RBS Test Result
+				BenPhysicalVitalDetail physicalVitalDet = InputMapper.gson().fromJson(quickConsultDoctorOBJ,
+						BenPhysicalVitalDetail.class);
+				int r = 0;
+				if(quickConsultDoctorOBJ.has("rbsTestResult") || quickConsultDoctorOBJ.has("rbsTestRemarks"))
+				{
+					
+					r = benPhysicalVitalRepo.updatePhysicalVitalDetailsQCDoctor(physicalVitalDet.getRbsTestResult(), physicalVitalDet.getRbsTestRemarks(),
+							                         physicalVitalDet.getBeneficiaryRegID(),physicalVitalDet.getVisitCode());
+					if(r>0)
+					{
+						vitalsRBSTestFlag=new Long(1);
+					}
+				}
+				else
+				{
+					vitalsRBSTestFlag=new Long(1);
+				}
 
 		if ((null != benChiefComplaintID && benChiefComplaintID > 0)
 				&& (null != clinicalObservationID && clinicalObservationID > 0)
 				&& (null != prescribedDrugSuccessFlag && prescribedDrugSuccessFlag > 0)
-				&& (null != labTestOrderSuccessFlag && labTestOrderSuccessFlag > 0)) {
+				&& (null != labTestOrderSuccessFlag && labTestOrderSuccessFlag > 0)
+				&& (null != vitalsRBSTestFlag && vitalsRBSTestFlag > 0)) {
 
 			// call method to update beneficiary flow table
 			int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataUpdate(commonUtilityClass, isTestPrescribed,
