@@ -27,6 +27,7 @@ import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonServiceImpl;
 import com.iemr.mmu.utils.MediaTypeUtils;
+import com.iemr.mmu.utils.AESEncryption.AESEncryptionDecryption;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
@@ -816,13 +817,18 @@ public class FetchCommonController {
 //					.body(resource);
 //		} else
 //			throw new Exception("Invalid request...!");
+			
+			if( obj.has("fileName") && obj.has("filePath") && obj.get("fileName") != null && obj.get("filePath") != null ){
 
 			MediaType mediaType = MediaTypeUtils.getMediaTypeForFileName(this.servletContext,
 					obj.getString("fileName"));
 //			System.out.println("fileName: " + obj.getString("fileName"));
 //			System.out.println("mediaType: " + mediaType);
+			
+			String decryptFilePath = AESEncryptionDecryption.decrypt(obj.getString("filePath"));
 
-			File file = new File(obj.getString("filePath"));
+			File file = new File(decryptFilePath);
+			//File file = new File(obj.getString("filePath"));
 			InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 
 //			String filename = obj.getString("fileName");
@@ -830,7 +836,7 @@ public class FetchCommonController {
 //			headers.setAccessControlExposeHeaders(Collections.singletonList("Content-Disposition"));
 //			headers.set("Content-Disposition", "attachment; filename=" + filename);
 //			return new ResponseEntity<>(resource, headers, HttpStatus.OK);
-
+			
 			return ResponseEntity.ok()
 					// Content-Disposition
 					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + obj.getString("fileName"))
@@ -838,6 +844,10 @@ public class FetchCommonController {
 					.contentType(mediaType)
 					// Contet-Length
 					.contentLength(file.length()).body(resource);
+			}
+			else {
+				throw new Exception("Invalid file name or file path");
+			}
 		} catch (Exception e) {
 			logger.error("error while downloading file..." + obj.getString("fileName"));
 			throw new Exception("Error while downloading file. Please contact administrator..");

@@ -12,10 +12,12 @@ import javax.crypto.spec.SecretKeySpec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AESEncryptionDecryptionServiceImpl implements AESEncryptionDecryptionService {
-	
+import com.iemr.mmu.utils.config.ConfigProperties;
 
-	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+public class AESEncryptionDecryption {
+	
+	//private static Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+	private static Logger logger = LoggerFactory.getLogger(ConfigProperties.class);
 	private static SecretKeySpec secretKey;
 	private static byte[] key;
 	final static String secret = "amrith$%2022@&*piramalswasthya!#";
@@ -33,7 +35,7 @@ public class AESEncryptionDecryptionServiceImpl implements AESEncryptionDecrypti
 		}
 	}
 
-	@Override
+
 	public String encrypt(String strToEncrypt) throws Exception {
 		 String encryptedString=null;
 		try {
@@ -48,8 +50,8 @@ public class AESEncryptionDecryptionServiceImpl implements AESEncryptionDecrypti
 		return encryptedString;
 	}
 
-	@Override
-	public String decrypt(String strToDecrypt) throws Exception {
+
+	public static String decrypt(String strToDecrypt) throws Exception {
 		 String decryptedString=null;
 		try {
 			setKey(secret);
