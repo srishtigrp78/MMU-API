@@ -14,6 +14,14 @@ import org.slf4j.LoggerFactory;
 
 import com.iemr.mmu.utils.config.ConfigProperties;
 
+/*
+*
+*
+DE40034072 - Internal path disclosure - AES Encryption and Decryption
+*
+*
+*/
+
 public class AESEncryptionDecryption {
 	
 	//private static Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
@@ -36,7 +44,7 @@ public class AESEncryptionDecryption {
 	}
 
 
-	public String encrypt(String strToEncrypt) throws Exception {
+	public static String encrypt(String strToEncrypt) throws Exception {
 		 String encryptedString=null;
 		try {
 			setKey(secret);

@@ -55,6 +55,7 @@ import com.iemr.mmu.service.ncdCare.NCDCareServiceImpl;
 import com.iemr.mmu.service.ncdscreening.NCDScreeningServiceImpl;
 import com.iemr.mmu.service.pnc.PNCServiceImpl;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
+import com.iemr.mmu.utils.AESEncryption.AESEncryptionDecryption;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
@@ -461,7 +462,7 @@ public class CommonServiceImpl implements CommonService {
 
 	// files upload/save start
 	@Override
-	public String saveFiles(List<DocFileManager> docFileManagerList) throws IOException {
+	public String saveFiles(List<DocFileManager> docFileManagerList) throws Exception {
 		ArrayList<Map<String, String>> responseList = new ArrayList<>();
 		// this will come from property file
 		// String basePath = "C:/apps/Neeraj/mmuDoc";
@@ -481,7 +482,17 @@ public class CommonServiceImpl implements CommonService {
 				responseList = createFile(docFileManagerList, basePath, currDate);
 			}
 		}
-
+/*
+ *
+ *
+ AN40085822 - Internal path disclosure -encryption
+ *
+ *
+ */
+		for (Map<String, String> obj : responseList) {
+			String encryptedFilePath = AESEncryptionDecryption.encrypt(obj.get("filePath"));
+			obj.put("filePath",encryptedFilePath);
+		}
 		return new Gson().toJson(responseList);
 	}
 

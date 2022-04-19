@@ -818,6 +818,13 @@ public class FetchCommonController {
 //		} else
 //			throw new Exception("Invalid request...!");
 			
+/*
+ *
+ *
+ KA40094929 - Internal path disclosure - Decryption
+ *
+ *
+ */
 			if( obj.has("fileName") && obj.has("filePath") && obj.get("fileName") != null && obj.get("filePath") != null ){
 
 			MediaType mediaType = MediaTypeUtils.getMediaTypeForFileName(this.servletContext,
