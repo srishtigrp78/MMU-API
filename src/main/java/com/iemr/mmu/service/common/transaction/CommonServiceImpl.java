@@ -154,7 +154,7 @@ public class CommonServiceImpl implements CommonService {
 		this.beneficiaryFlowStatusRepo = beneficiaryFlowStatusRepo;
 	}
 
-	public String getCaseSheetPrintDataForBeneficiary(BeneficiaryFlowStatus benFlowOBJ, String Authorization) {
+	public String getCaseSheetPrintDataForBeneficiary(BeneficiaryFlowStatus benFlowOBJ, String Authorization) throws Exception {
 		String visitCategory = benFlowOBJ.getVisitCategory();
 		String caseSheetData = null;
 
@@ -201,7 +201,7 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData;
 	}
 
-	private String getCovid19_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
+	private String getCovid19_PrintData(BeneficiaryFlowStatus benFlowOBJ) throws Exception {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData", covid19ServiceImpl.getBenCovidNurseData(benFlowOBJ.getBeneficiaryRegID(),
@@ -218,7 +218,7 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData.toString();
 	}
 
-	private String getANC_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
+	private String getANC_PrintData(BeneficiaryFlowStatus benFlowOBJ) throws Exception {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData",
@@ -255,7 +255,7 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData.toString();
 	}
 
-	private String getGenOPD_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
+	private String getGenOPD_PrintData(BeneficiaryFlowStatus benFlowOBJ) throws Exception {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData", generalOPDServiceImpl.getBenGeneralOPDNurseData(benFlowOBJ.getBeneficiaryRegID(),
@@ -272,7 +272,7 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData.toString();
 	}
 
-	private String getNCDcare_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
+	private String getNCDcare_PrintData(BeneficiaryFlowStatus benFlowOBJ) throws Exception {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData", ncdCareServiceImpl.getBenNCDCareNurseData(benFlowOBJ.getBeneficiaryRegID(),
@@ -289,7 +289,7 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData.toString();
 	}
 
-	private String getPNC_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
+	private String getPNC_PrintData(BeneficiaryFlowStatus benFlowOBJ) throws Exception {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData",
@@ -306,7 +306,7 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData.toString();
 	}
 
-	private String getQC_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
+	private String getQC_PrintData(BeneficiaryFlowStatus benFlowOBJ) throws Exception {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData", quickConsultationServiceImpl
@@ -323,7 +323,7 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData.toString();
 	}
 
-	private String getNCDScreening_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
+	private String getNCDScreening_PrintData(BeneficiaryFlowStatus benFlowOBJ) throws Exception {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData", ncdScreeningServiceImpl

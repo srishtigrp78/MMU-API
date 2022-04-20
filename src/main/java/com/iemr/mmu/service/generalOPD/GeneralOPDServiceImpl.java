@@ -917,7 +917,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	/// ------------------- END of saving doctor data ------------------------
 
 	/// --------------- Start of Fetching GeneralOPD Nurse Data ----------------
-	public String getBenVisitDetailsFrmNurseGOPD(Long benRegID, Long visitCode) {
+	public String getBenVisitDetailsFrmNurseGOPD(Long benRegID, Long visitCode) throws Exception {
 		Map<String, Object> resMap = new HashMap<>();
 
 		BeneficiaryVisitDetail visitDetail = commonNurseServiceImpl.getCSVisitDetails(benRegID, visitCode);
@@ -1348,7 +1348,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		return resMap.toString();
 	}
 
-	public String getBenCaseRecordFromDoctorGeneralOPD(Long benRegID, Long visitCode) {
+	public String getBenCaseRecordFromDoctorGeneralOPD(Long benRegID, Long visitCode) throws Exception {
 		Map<String, Object> resMap = new HashMap<>();
 
 		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, visitCode));

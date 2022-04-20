@@ -450,7 +450,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	}
 
 	// ------- Start Fetch (Nurse data to Doctor screen) ----------------
-	public String getBenDataFrmNurseToDocVisitDetailsScreen(Long benRegID, Long visitCode) {
+	public String getBenDataFrmNurseToDocVisitDetailsScreen(Long benRegID, Long visitCode) throws Exception {
 		Map<String, Object> resMap = new HashMap<>();
 		BeneficiaryVisitDetail benVisitDetailsOBJ = commonNurseServiceImpl.getCSVisitDetails(benRegID, visitCode);
 
@@ -483,7 +483,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	}
 	// ------- END of Fetch (Nurse data to Doctor screen) ----------------
 
-	public String getBenCaseRecordFromDoctorQuickConsult(Long benRegID, Long visitCode) {
+	public String getBenCaseRecordFromDoctorQuickConsult(Long benRegID, Long visitCode) throws Exception {
 		Map<String, Object> resMap = new HashMap<>();
 		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, visitCode));
 		resMap.put("diagnosis", generalOPDDoctorServiceImpl.getGeneralOPDDiagnosisDetails(benRegID, visitCode));

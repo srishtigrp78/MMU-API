@@ -18,11 +18,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.utils.AESEncryption.AESEncryptionDecryption;
 
 @Entity
 @Table(name = "t_lab_testresult")
 public class LabResultEntry {
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -225,11 +229,12 @@ public class LabResultEntry {
 		this.procedureName = procedureName;
 	}
 
-	public static ArrayList<LabResultEntry> getLabResultEntry(ArrayList<LabResultEntry> comingList) {
+	public static ArrayList<LabResultEntry> getLabResultEntry(ArrayList<LabResultEntry> comingList) throws Exception {
 		ArrayList<LabResultEntry> returnList = new ArrayList<>();
 		Integer procedureId = null;
 		Map<String, Object> compDetails = null;
 		ArrayList<Map<String, Object>> componentList = null;
+		AESEncryptionDecryption aESEncryptionDecryption=new AESEncryptionDecryption();
 
 		LabResultEntry tmpOBJ;
 
@@ -259,6 +264,7 @@ public class LabResultEntry {
 					compDetails.put("testReportFilePath", obj.getTestReportFilePath());
 					compDetails.put("stripsNotAvailable", obj.getStripsNotAvailable());
 
+					
 					// file id array from string
 					// String fileIds[];
 					Map<String, String> fileMap;
@@ -268,7 +274,11 @@ public class LabResultEntry {
 						// fileIds = new String[fileIdsTemp.length];
 						for (String str : fileIdsTemp) {
 							if (str != null && str.trim().length() > 0) {
-								String[] tempArr = str.split("\\/");
+								
+								//DE40034072,20-04-2022, decrypting internal file path
+								String decryptedFilePath = null;
+								decryptedFilePath = aESEncryptionDecryption.decrypt(str);
+								String[] tempArr = decryptedFilePath.split("\\/");
 								fileMap = new HashMap<>();
 								fileMap.put("filePath", str);
 								fileMap.put("fileName", tempArr[tempArr.length - 1]);
@@ -311,7 +321,10 @@ public class LabResultEntry {
 						// fileIds = new String[fileIdsTemp.length];
 						for (String str : fileIdsTemp) {
 							if (str != null && str.trim().length() > 0) {
-								String[] tempArr = str.split("\\/");
+								//DE40034072,20-04-2022, decrypting internal file path
+								String decryptedFilePath = null;
+								decryptedFilePath = aESEncryptionDecryption.decrypt(str);
+								String[] tempArr = decryptedFilePath.split("\\/");
 								fileMap = new HashMap<>();
 								fileMap.put("filePath", str);
 								fileMap.put("fileName", tempArr[tempArr.length - 1]);

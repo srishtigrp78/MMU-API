@@ -523,7 +523,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 		return vitalSuccessFlag;
 	}
 
-	public String getBenVisitDetailsFrmNurseNCDCare(Long benRegID, Long visitCode) {
+	public String getBenVisitDetailsFrmNurseNCDCare(Long benRegID, Long visitCode) throws Exception {
 		Map<String, Object> resMap = new HashMap<>();
 
 		BeneficiaryVisitDetail visitDetail = commonNurseServiceImpl.getCSVisitDetails(benRegID, visitCode);
@@ -1039,7 +1039,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 		return resMap.toString();
 	}
 
-	public String getBenCaseRecordFromDoctorNCDCare(Long benRegID, Long visitCode) {
+	public String getBenCaseRecordFromDoctorNCDCare(Long benRegID, Long visitCode) throws Exception {
 		Map<String, Object> resMap = new HashMap<>();
 
 		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, visitCode));

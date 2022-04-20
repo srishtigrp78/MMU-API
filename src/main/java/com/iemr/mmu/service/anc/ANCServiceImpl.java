@@ -938,7 +938,7 @@ public class ANCServiceImpl implements ANCService {
 	// ----------Fetch ANC (Nurse) --------------------------------------
 
 	@Override
-	public String getBenVisitDetailsFrmNurseANC(Long benRegID, Long visitCode) {
+	public String getBenVisitDetailsFrmNurseANC(Long benRegID, Long visitCode) throws Exception {
 		Map<String, Object> resMap = new HashMap<>();
 
 		BeneficiaryVisitDetail visitDetail = commonNurseServiceImpl.getCSVisitDetails(benRegID, visitCode);
@@ -1410,7 +1410,7 @@ public class ANCServiceImpl implements ANCService {
 	}
 
 	// get ANC doctor data for update
-	public String getBenCaseRecordFromDoctorANC(Long benRegID, Long visitCode) {
+	public String getBenCaseRecordFromDoctorANC(Long benRegID, Long visitCode) throws Exception {
 		Map<String, Object> resMap = new HashMap<>();
 
 		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, visitCode));

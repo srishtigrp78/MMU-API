@@ -887,7 +887,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 	}
 
 	/// --------------- Start of Fetching NCD Screening Nurse Data ----------------
-	public String getBenVisitDetailsFrmNurseNCDScreening(Long benRegID, Long visitCode) {
+	public String getBenVisitDetailsFrmNurseNCDScreening(Long benRegID, Long visitCode) throws Exception {
 		Map<String, Object> resMap = new HashMap<>();
 
 		BeneficiaryVisitDetail visitDetail = commonNurseServiceImpl.getCSVisitDetails(benRegID, visitCode);
@@ -1230,7 +1230,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 	}
 	/// --------------- END of saving doctor data ------------------------
 
-	public String getBenCaseRecordFromDoctorNCDScreening(Long benRegID, Long visitCode) {
+	public String getBenCaseRecordFromDoctorNCDScreening(Long benRegID, Long visitCode) throws Exception {
 		Map<String, Object> resMap = new HashMap<>();
 
 		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, visitCode));

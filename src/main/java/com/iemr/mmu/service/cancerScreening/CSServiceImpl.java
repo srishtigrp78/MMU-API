@@ -624,7 +624,7 @@ public class CSServiceImpl implements CSService {
 	/// ------- End of Update (Nurse data from Doctor screen)-----------
 
 	// ------- Fetch (Nurse data to Doctor screen) ----------------
-	public String getBenDataFrmNurseToDocVisitDetailsScreen(Long benRegID, Long visitCode) {
+	public String getBenDataFrmNurseToDocVisitDetailsScreen(Long benRegID, Long visitCode) throws Exception {
 		Map<String, Object> resMap = new HashMap<>();
 		BeneficiaryVisitDetail benVisitDetailsOBJ = commonNurseServiceImpl.getCSVisitDetails(benRegID, visitCode);
 
