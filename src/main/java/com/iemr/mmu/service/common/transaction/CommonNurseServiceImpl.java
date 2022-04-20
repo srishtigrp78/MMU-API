@@ -95,6 +95,7 @@ import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
+import com.iemr.mmu.utils.AESEncryption.AESEncryptionDecryption;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import org.slf4j.Logger;
@@ -186,6 +187,9 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
 	@Autowired
 	private PhysicalActivityTypeRepo physicalActivityTypeRepo;
+	
+	@Autowired
+	private AESEncryptionDecryption aESEncryptionDecryption;
 
 	@Autowired
 	private IDRSDataRepo iDRSDataRepo;
@@ -309,7 +313,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 	}
 
-	public BeneficiaryVisitDetail getCSVisitDetails(Long benRegID, Long visitCode) {
+	public BeneficiaryVisitDetail getCSVisitDetails(Long benRegID, Long visitCode) throws Exception {
 		BeneficiaryVisitDetail benVisitDetailsOBJ = benVisitDetailRepo.getVisitDetails(benRegID, visitCode);
 
 		BeneficiaryVisitDetail benVisitDetailsOBJ1 = null;
@@ -329,22 +333,42 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		}
 
 		// String fileIds[];
+		
 		Map<String, String> fileMap;
 		ArrayList<Map<String, String>> fileList = new ArrayList<>();
 		if (benVisitDetailsOBJ != null && benVisitDetailsOBJ.getReportFilePath() != null
 				&& benVisitDetailsOBJ.getReportFilePath().trim().length() > 0) {
+			
+			
+			 
 			String fileIdsTemp[] = benVisitDetailsOBJ.getReportFilePath().split(",");
-			// fileIds = new String[fileIdsTemp.length];
-			for (String str : fileIdsTemp) {
-				if (str != null && str.trim().length() > 0) {
-					String[] tempArr = str.split("\\/");
-					fileMap = new HashMap<>();
-					fileMap.put("filePath", str);
-					fileMap.put("fileName", tempArr[tempArr.length - 1]);
+				// fileIds = new String[fileIdsTemp.length];
+				for (String str : fileIdsTemp) {
+					if (str != null && str.trim().length() > 0) {
+						//DE40034072,20-04-2022, decrypting internal file path
+					String decryptedFilePath = null;
+					decryptedFilePath = aESEncryptionDecryption.decrypt(str);
+						String[] tempArr = decryptedFilePath.split("\\/");
+						fileMap = new HashMap<>();
+						fileMap.put("filePath", str);
+						fileMap.put("fileName", tempArr[tempArr.length - 1]);
 
-					fileList.add(fileMap);
+						fileList.add(fileMap);
+					}
 				}
-			}
+			
+//			String fileIdsTemp[] = benVisitDetailsOBJ.getReportFilePath().split(",");
+//			// fileIds = new String[fileIdsTemp.length];
+//			for (String str : fileIdsTemp) {
+//				if (str != null && str.trim().length() > 0) {
+//					String[] tempArr = str.split("\\/");
+//					fileMap = new HashMap<>();
+//					fileMap.put("filePath", str);
+//					fileMap.put("fileName", tempArr[tempArr.length - 1]);
+//
+//					fileList.add(fileMap);
+//				}
+//			}
 		}
 	  if (benVisitDetailsOBJ1 != null) {
 		benVisitDetailsOBJ1.setFiles(fileList);

@@ -950,7 +950,7 @@ public class Covid19ServiceImpl implements Covid19Service {
 		return updateSuccessFlag;
 	}
 
-	public String getBenVisitDetailsFrmNurseCovid19(Long benRegID, Long visitCode) {
+	public String getBenVisitDetailsFrmNurseCovid19(Long benRegID, Long visitCode) throws Exception {
 		Map<String, Object> resMap = new HashMap<>();
 
 		BeneficiaryVisitDetail visitDetail = commonNurseServiceImpl.getCSVisitDetails(benRegID, visitCode);
@@ -1052,7 +1052,7 @@ public class Covid19ServiceImpl implements Covid19Service {
 		return resMap.toString();
 	}
 
-	public String getBenCaseRecordFromDoctorCovid19(Long benRegID, Long visitCode) {
+	public String getBenCaseRecordFromDoctorCovid19(Long benRegID, Long visitCode) throws Exception {
 		Map<String, Object> resMap = new HashMap<>();
 
 		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, visitCode));

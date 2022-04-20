@@ -40,7 +40,7 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 		this.v_benLabTestOrderedDetailsRepo = v_benLabTestOrderedDetailsRepo;
 	}
 
-	public String getBenePrescribedProcedureDetails(Long benRegID, Long visitCode) {
+	public String getBenePrescribedProcedureDetails(Long benRegID, Long visitCode) throws Exception {
 		Map<String, Object> returnOBJ = new HashMap<>();
 
 		ArrayList<Object> radiologyList;
@@ -222,7 +222,7 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 		return returnOBJ;
 	}
 
-	public ArrayList<LabResultEntry> getLabResultDataForBen(Long benRegID, Long visitCode) {
+	public ArrayList<LabResultEntry> getLabResultDataForBen(Long benRegID, Long visitCode) throws Exception {
 		ArrayList<LabResultEntry> procedureResults = new ArrayList<>();
 		procedureResults = labResultEntryRepo.findByBeneficiaryRegIDAndVisitCodeOrderByProcedureIDAsc(benRegID,
 				visitCode);
@@ -474,7 +474,7 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 		return new Gson().toJson(LabResultEntry.getVisitCodeAndDate(visitCodeList));
 	}
 
-	public String getLabResultForVisitcode(Long benRegID, Long visitCode) {
+	public String getLabResultForVisitcode(Long benRegID, Long visitCode) throws Exception {
 		ArrayList<LabResultEntry> labResultList = getLabResultDataForBen(benRegID, visitCode);
 		return new Gson().toJson(labResultList);
 	}

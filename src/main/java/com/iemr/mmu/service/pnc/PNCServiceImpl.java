@@ -847,7 +847,7 @@ public class PNCServiceImpl implements PNCService {
 	// ----------Fetch ANC (Nurse) --------------------------------------
 
 	@Override
-	public String getBenVisitDetailsFrmNursePNC(Long benRegID, Long visitCode) {
+	public String getBenVisitDetailsFrmNursePNC(Long benRegID, Long visitCode) throws Exception {
 		Map<String, Object> resMap = new HashMap<>();
 
 		BeneficiaryVisitDetail visitDetail = commonNurseServiceImpl.getCSVisitDetails(benRegID, visitCode);
@@ -1359,7 +1359,7 @@ public class PNCServiceImpl implements PNCService {
 		return resMap.toString();
 	}
 
-	public String getBenCaseRecordFromDoctorPNC(Long benRegID, Long visitCode) {
+	public String getBenCaseRecordFromDoctorPNC(Long benRegID, Long visitCode) throws Exception {
 		Map<String, Object> resMap = new HashMap<>();
 
 		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, visitCode));

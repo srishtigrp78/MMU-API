@@ -55,6 +55,7 @@ import com.iemr.mmu.service.ncdCare.NCDCareServiceImpl;
 import com.iemr.mmu.service.ncdscreening.NCDScreeningServiceImpl;
 import com.iemr.mmu.service.pnc.PNCServiceImpl;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
+import com.iemr.mmu.utils.AESEncryption.AESEncryptionDecryption;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
@@ -77,6 +78,9 @@ public class CommonServiceImpl implements CommonService {
 
 	@Autowired
 	private Covid19ServiceImpl covid19ServiceImpl;
+	
+	@Autowired
+	private AESEncryptionDecryption aESEncryptionDecryption;
 
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
 	private ANCServiceImpl ancServiceImpl;
@@ -150,7 +154,7 @@ public class CommonServiceImpl implements CommonService {
 		this.beneficiaryFlowStatusRepo = beneficiaryFlowStatusRepo;
 	}
 
-	public String getCaseSheetPrintDataForBeneficiary(BeneficiaryFlowStatus benFlowOBJ, String Authorization) {
+	public String getCaseSheetPrintDataForBeneficiary(BeneficiaryFlowStatus benFlowOBJ, String Authorization) throws Exception {
 		String visitCategory = benFlowOBJ.getVisitCategory();
 		String caseSheetData = null;
 
@@ -197,7 +201,7 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData;
 	}
 
-	private String getCovid19_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
+	private String getCovid19_PrintData(BeneficiaryFlowStatus benFlowOBJ) throws Exception {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData", covid19ServiceImpl.getBenCovidNurseData(benFlowOBJ.getBeneficiaryRegID(),
@@ -214,7 +218,7 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData.toString();
 	}
 
-	private String getANC_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
+	private String getANC_PrintData(BeneficiaryFlowStatus benFlowOBJ) throws Exception {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData",
@@ -251,7 +255,7 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData.toString();
 	}
 
-	private String getGenOPD_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
+	private String getGenOPD_PrintData(BeneficiaryFlowStatus benFlowOBJ) throws Exception {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData", generalOPDServiceImpl.getBenGeneralOPDNurseData(benFlowOBJ.getBeneficiaryRegID(),
@@ -268,7 +272,7 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData.toString();
 	}
 
-	private String getNCDcare_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
+	private String getNCDcare_PrintData(BeneficiaryFlowStatus benFlowOBJ) throws Exception {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData", ncdCareServiceImpl.getBenNCDCareNurseData(benFlowOBJ.getBeneficiaryRegID(),
@@ -285,7 +289,7 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData.toString();
 	}
 
-	private String getPNC_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
+	private String getPNC_PrintData(BeneficiaryFlowStatus benFlowOBJ) throws Exception {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData",
@@ -302,7 +306,7 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData.toString();
 	}
 
-	private String getQC_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
+	private String getQC_PrintData(BeneficiaryFlowStatus benFlowOBJ) throws Exception {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData", quickConsultationServiceImpl
@@ -319,7 +323,7 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData.toString();
 	}
 
-	private String getNCDScreening_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
+	private String getNCDScreening_PrintData(BeneficiaryFlowStatus benFlowOBJ) throws Exception {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData", ncdScreeningServiceImpl
@@ -461,7 +465,7 @@ public class CommonServiceImpl implements CommonService {
 
 	// files upload/save start
 	@Override
-	public String saveFiles(List<DocFileManager> docFileManagerList) throws IOException {
+	public String saveFiles(List<DocFileManager> docFileManagerList) throws Exception {
 		ArrayList<Map<String, String>> responseList = new ArrayList<>();
 		// this will come from property file
 		// String basePath = "C:/apps/Neeraj/mmuDoc";
@@ -481,7 +485,17 @@ public class CommonServiceImpl implements CommonService {
 				responseList = createFile(docFileManagerList, basePath, currDate);
 			}
 		}
-
+/*
+ *
+ *
+ AN40085822 - Internal path disclosure -encryption
+ *
+ *
+ */
+		for (Map<String, String> obj : responseList) {
+			String encryptedFilePath = aESEncryptionDecryption.encrypt(obj.get("filePath"));
+			obj.put("filePath",encryptedFilePath);
+		}
 		return new Gson().toJson(responseList);
 	}
 
