@@ -78,6 +78,9 @@ public class CommonServiceImpl implements CommonService {
 
 	@Autowired
 	private Covid19ServiceImpl covid19ServiceImpl;
+	
+	@Autowired
+	private AESEncryptionDecryption aESEncryptionDecryption;
 
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
 	private ANCServiceImpl ancServiceImpl;
@@ -490,7 +493,7 @@ public class CommonServiceImpl implements CommonService {
  *
  */
 		for (Map<String, String> obj : responseList) {
-			String encryptedFilePath = AESEncryptionDecryption.encrypt(obj.get("filePath"));
+			String encryptedFilePath = aESEncryptionDecryption.encrypt(obj.get("filePath"));
 			obj.put("filePath",encryptedFilePath);
 		}
 		return new Gson().toJson(responseList);

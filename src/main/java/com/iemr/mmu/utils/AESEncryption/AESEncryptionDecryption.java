@@ -11,6 +11,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.iemr.mmu.utils.config.ConfigProperties;
 
@@ -21,16 +22,16 @@ DE40034072 - Internal path disclosure - AES Encryption and Decryption
 *
 *
 */
-
+@Component
 public class AESEncryptionDecryption {
 	
-	//private static Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-	private static Logger logger = LoggerFactory.getLogger(ConfigProperties.class);
-	private static SecretKeySpec secretKey;
-	private static byte[] key;
-	final static String secret = "amrith$%2022@&*piramalswasthya!#";
 
-	public static void setKey(final String myKey) {
+	private  Logger logger = LoggerFactory.getLogger(ConfigProperties.class);
+	private static SecretKeySpec secretKey;
+	private  byte[] key;
+	final String secret = "amrith$%2022@&*piramal@@swasthya!#";
+
+	public  void setKey(String myKey) {
 		MessageDigest sha = null;
 		try {
 			key = myKey.getBytes("UTF-8");
@@ -44,10 +45,11 @@ public class AESEncryptionDecryption {
 	}
 
 
-	public static String encrypt(String strToEncrypt) throws Exception {
+	public  String encrypt(String strToEncrypt) throws Exception {
 		 String encryptedString=null;
 		try {
-			setKey(secret);
+			if (secretKey == null)
+			     setKey(secret);
 			Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
 			cipher.init(Cipher.ENCRYPT_MODE, secretKey);
 			encryptedString= Base64.getEncoder().encodeToString(cipher.doFinal(strToEncrypt.getBytes("UTF-8")));
@@ -59,10 +61,11 @@ public class AESEncryptionDecryption {
 	}
 
 
-	public static String decrypt(String strToDecrypt) throws Exception {
+	public  String decrypt(String strToDecrypt) throws Exception {
 		 String decryptedString=null;
 		try {
-			setKey(secret);
+			if (secretKey == null)
+				setKey(secret);
 			Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
 			cipher.init(Cipher.DECRYPT_MODE, secretKey);
 			decryptedString= new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));

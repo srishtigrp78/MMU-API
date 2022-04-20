@@ -47,6 +47,9 @@ public class FetchCommonController {
 
 	@Autowired
 	private ServletContext servletContext;
+	
+	@Autowired
+	private AESEncryptionDecryption aESEncryptionDecryption;
 
 	@Autowired
 	public void setCommonServiceImpl(CommonServiceImpl commonServiceImpl) {
@@ -832,7 +835,7 @@ public class FetchCommonController {
 //			System.out.println("fileName: " + obj.getString("fileName"));
 //			System.out.println("mediaType: " + mediaType);
 			
-			String decryptFilePath = AESEncryptionDecryption.decrypt(obj.getString("filePath"));
+			String decryptFilePath = aESEncryptionDecryption.decrypt(obj.getString("filePath"));
 
 			File file = new File(decryptFilePath);
 			//File file = new File(obj.getString("filePath"));
