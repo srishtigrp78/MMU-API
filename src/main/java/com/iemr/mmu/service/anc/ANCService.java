@@ -8,7 +8,7 @@ public interface ANCService {
 
 	// int UpdateANCVisitDetails(JsonObject jsnOBJ) throws Exception;
 
-	String getBenVisitDetailsFrmNurseANC(Long benRegID, Long visitCode);
+	String getBenVisitDetailsFrmNurseANC(Long benRegID, Long visitCode) throws Exception;
 
 	String getBenANCHistoryDetails(Long benRegID, Long visitCode);
 
