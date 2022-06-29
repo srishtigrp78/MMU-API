@@ -22,11 +22,19 @@ import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 @Repository
 @RestResource(exported = false)
 public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlowStatus, Long> {
+//	@Query("SELECT  t from BeneficiaryFlowStatus t WHERE (t.nurseFlag = 1 OR t.nurseFlag = 100) AND t.deleted = false "
+//			+ " AND Date(t.visitDate)  = curdate() AND t.providerServiceMapId = :providerServiceMapId "
+//			+ " AND t.vanID = :vanID ORDER BY t.visitDate DESC ")
+//	public ArrayList<BeneficiaryFlowStatus> getNurseWorklistNew(
+//			@Param("providerServiceMapId") Integer providerServiceMapId, @Param("vanID") Integer vanID);
+	
 	@Query("SELECT  t from BeneficiaryFlowStatus t WHERE (t.nurseFlag = 1 OR t.nurseFlag = 100) AND t.deleted = false "
-			+ " AND Date(t.visitDate)  = curdate() AND t.providerServiceMapId = :providerServiceMapId "
+			+ " AND Date(t.visitDate)  >= Date(:fromDate) AND t.providerServiceMapId = :providerServiceMapId "
 			+ " AND t.vanID = :vanID ORDER BY t.visitDate DESC ")
 	public ArrayList<BeneficiaryFlowStatus> getNurseWorklistNew(
-			@Param("providerServiceMapId") Integer providerServiceMapId, @Param("vanID") Integer vanID);
+			@Param("providerServiceMapId") Integer providerServiceMapId, @Param("vanID") Integer vanID,@Param("fromDate") Timestamp fromDate);
+	
+	
 
 	@Transactional
 	@Modifying
@@ -105,11 +113,18 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			@Param("providerServiceMapId") Integer providerServiceMapId,
 			@Param("tCSpecialistUserID") Integer tCSpecialistUserID);
 
+//	@Query("SELECT  t.benFlowID from BeneficiaryFlowStatus t WHERE t.beneficiaryRegID = :benRegID "
+//			+ "AND t.providerServiceMapId = :provoderSerMapID AND t.vanID = :vanID AND "
+//			+ " (t.nurseFlag = 1 OR t.nurseFlag = 100) AND Date(t.visitDate)  = curdate() AND t.deleted = false")
+//	public ArrayList<Long> checkBenAlreadyInNurseWorkList(@Param("benRegID") Long benRegID,
+//			@Param("provoderSerMapID") Integer provoderSerMapID, @Param("vanID") Integer vanID);
+	
 	@Query("SELECT  t.benFlowID from BeneficiaryFlowStatus t WHERE t.beneficiaryRegID = :benRegID "
 			+ "AND t.providerServiceMapId = :provoderSerMapID AND t.vanID = :vanID AND "
-			+ " (t.nurseFlag = 1 OR t.nurseFlag = 100) AND Date(t.visitDate)  = curdate() AND t.deleted = false")
+			+ " (t.nurseFlag = 1 OR t.nurseFlag = 100) AND Date(t.visitDate) >= Date(:fromDate) AND t.deleted = false")
 	public ArrayList<Long> checkBenAlreadyInNurseWorkList(@Param("benRegID") Long benRegID,
-			@Param("provoderSerMapID") Integer provoderSerMapID, @Param("vanID") Integer vanID);
+			@Param("provoderSerMapID") Integer provoderSerMapID, @Param("vanID") Integer vanID,@Param("fromDate") Timestamp fromDate);
+
 
 	@Query("SELECT t from BeneficiaryFlowStatus t WHERE (t.nurseFlag = 2 OR t.doctorFlag = 2 OR t.specialist_flag = 2) "
 			+ " AND t.benVisitDate >= Date(:fromDate) AND t.vanID = :vanID AND t.deleted = false "
