@@ -18,15 +18,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.google.gson.annotations.Expose;
 import com.iemr.mmu.utils.AESEncryption.AESEncryptionDecryption;
 
 @Entity
 @Table(name = "t_lab_testresult")
 public class LabResultEntry {
-	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -79,7 +76,7 @@ public class LabResultEntry {
 	private String remarks;
 
 	@Transient
-	private List<Map<String, String>> compList;
+	private List<Map<String, Object>> compList;
 
 	@Expose
 	@Column(name = "Deleted", insertable = false)
@@ -169,7 +166,31 @@ public class LabResultEntry {
 	@Expose
 	@Column(name = "stripsNotAvailable")
 	private Boolean stripsNotAvailable;
-	
+
+	@Expose
+	@Column(name = "Ecgabnormalities")
+	private String ecgAbnormalitiesDB;
+
+	@Expose
+	@Transient
+	private String[] ecgAbnormalities;
+
+	public String getEcgAbnormalitiesDB() {
+		return ecgAbnormalitiesDB;
+	}
+
+	public void setEcgAbnormalitiesDB(String ecgAbnormalitiesDB) {
+		this.ecgAbnormalitiesDB = ecgAbnormalitiesDB;
+	}
+
+	public String[] getEcgAbnormalities() {
+		return ecgAbnormalities;
+	}
+
+	public void setEcgAbnormalities(String[] ecgAbnormalities) {
+		this.ecgAbnormalities = ecgAbnormalities;
+	}
+
 	public Boolean getStripsNotAvailable() {
 		return stripsNotAvailable;
 	}
@@ -234,7 +255,7 @@ public class LabResultEntry {
 		Integer procedureId = null;
 		Map<String, Object> compDetails = null;
 		ArrayList<Map<String, Object>> componentList = null;
-		AESEncryptionDecryption aESEncryptionDecryption=new AESEncryptionDecryption();
+		AESEncryptionDecryption aESEncryptionDecryption = new AESEncryptionDecryption();
 
 		LabResultEntry tmpOBJ;
 
@@ -255,16 +276,20 @@ public class LabResultEntry {
 					// compDetails.put("resultEntryDate", obj.getCreatedDate());
 					compDetails.put("testComponentID", obj.getTestComponentID());
 					compDetails.put("componentName", obj.getTestComponentMaster().getTestComponentName());
-					//Shubham Shekhar,16-11-2020,lionic code added to casesheet
+					// Shubham Shekhar,16-11-2020,lionic code added to casesheet
 					compDetails.put("loincName", obj.getTestComponentMaster().getLionicNum());
 					compDetails.put("loincTerm", obj.getTestComponentMaster().getLionicTerm());
-					
+
 					compDetails.put("testResultValue", obj.getTestResultValue());
 					compDetails.put("testResultUnit", obj.getTestResultUnit());
 					compDetails.put("testReportFilePath", obj.getTestReportFilePath());
 					compDetails.put("stripsNotAvailable", obj.getStripsNotAvailable());
 
-					
+					if (obj.getEcgAbnormalitiesDB() != null) {
+						compDetails.put("ecgAbnormalitiesDB", obj.getEcgAbnormalitiesDB());
+						compDetails.put("ecgAbnormalities", obj.getEcgAbnormalitiesDB().split("\\|\\|"));
+					}
+
 					// file id array from string
 					// String fileIds[];
 					Map<String, String> fileMap;
@@ -274,8 +299,8 @@ public class LabResultEntry {
 						// fileIds = new String[fileIdsTemp.length];
 						for (String str : fileIdsTemp) {
 							if (str != null && str.trim().length() > 0) {
-								
-								//DE40034072,20-04-2022, decrypting internal file path
+
+								// DE40034072,20-04-2022, decrypting internal file path
 								String decryptedFilePath = null;
 								decryptedFilePath = aESEncryptionDecryption.decrypt(str);
 								String[] tempArr = decryptedFilePath.split("\\/");
@@ -303,14 +328,19 @@ public class LabResultEntry {
 					// compDetails.put("resultEntryDate", obj.getCreatedDate());
 					compDetails.put("testComponentID", obj.getTestComponentID());
 					compDetails.put("componentName", obj.getTestComponentMaster().getTestComponentName());
-					//Shubham Shekhar,16-11-2020,lionic code added to casesheet
+					// Shubham Shekhar,16-11-2020,lionic code added to casesheet
 					compDetails.put("loincName", obj.getTestComponentMaster().getLionicNum());
 					compDetails.put("loincTerm", obj.getTestComponentMaster().getLionicTerm());
-					
+
 					compDetails.put("testResultValue", obj.getTestResultValue());
 					compDetails.put("testResultUnit", obj.getTestResultUnit());
 					compDetails.put("testReportFilePath", obj.getTestReportFilePath());
 					compDetails.put("stripsNotAvailable", obj.getStripsNotAvailable());
+					
+					if (obj.getEcgAbnormalitiesDB() != null) {
+						compDetails.put("ecgAbnormalitiesDB", obj.getEcgAbnormalitiesDB());
+						compDetails.put("ecgAbnormalities", obj.getEcgAbnormalitiesDB().split("\\|\\|"));
+					}
 
 					// file id array from string
 					// String fileIds[];
@@ -321,7 +351,7 @@ public class LabResultEntry {
 						// fileIds = new String[fileIdsTemp.length];
 						for (String str : fileIdsTemp) {
 							if (str != null && str.trim().length() > 0) {
-								//DE40034072,20-04-2022, decrypting internal file path
+								// DE40034072,20-04-2022, decrypting internal file path
 								String decryptedFilePath = null;
 								decryptedFilePath = aESEncryptionDecryption.decrypt(str);
 								String[] tempArr = decryptedFilePath.split("\\/");
@@ -579,11 +609,11 @@ public class LabResultEntry {
 		this.reservedForChange = reservedForChange;
 	}
 
-	public List<Map<String, String>> getCompList() {
+	public List<Map<String, Object>> getCompList() {
 		return compList;
 	}
 
-	public void setCompList(List<Map<String, String>> compList) {
+	public void setCompList(List<Map<String, Object>> compList) {
 		this.compList = compList;
 	}
 
