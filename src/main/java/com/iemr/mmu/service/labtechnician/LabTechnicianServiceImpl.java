@@ -162,7 +162,6 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 						compDetails.put("componentCode", obj.getComponentCode());
 						compDetails.put("iotProcedureID", obj.getIOTProcedureID());
 						compDetails.put("componentUnit", obj.getComponentUnit());
-						
 
 						compOption = new HashMap<>();
 						compOptionList = new ArrayList<>();
@@ -247,7 +246,7 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 				procedureCompDetails.put("procedureDesc", obj.getProcedureDesc());
 				procedureCompDetails.put("procedureType", "Radiology");
 				procedureCompDetails.put("prescriptionID", obj.getPrescriptionID());
-				
+
 				compDetails.put("testComponentID", obj.getTestComponentID());
 				compDetails.put("testComponentName", obj.getTestComponentName());
 				compDetails.put("testComponentDesc", obj.getTestComponentDesc());
@@ -385,35 +384,56 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 						&& wrapperLabResults.getRadiologyTestResults().size() > 0)) {
 			List<LabResultEntry> labResultsListNew = new ArrayList<LabResultEntry>();
 			for (LabResultEntry labResult : labResultsList) {
-				List<Map<String, String>> compResult = labResult.getCompList();
+				List<Map<String, Object>> compResult = labResult.getCompList();
 				if (null != compResult && compResult.size() > 0) {
-					for (Map<String, String> comp : compResult) {
+					for (Map<String, Object> comp : compResult) {
 						LabResultEntry labCompResult = new LabResultEntry();
 						labCompResult.setPrescriptionID(labResult.getPrescriptionID());
 						labCompResult.setProcedureID(labResult.getProcedureID());
 						labCompResult.setStripsNotAvailable(labResult.getStripsNotAvailable());
-						
-						if (null != comp.get("testComponentID") && !comp.get("testComponentID").toString().isEmpty()
-								&& ((null != comp.get("testResultValue") && !comp.get("testResultValue").toString().isEmpty()) 
-										|| (null != comp.get("stripsNotAvailable") && comp.get("stripsNotAvailable").toString().equalsIgnoreCase("true")))) {
-							labCompResult.setTestComponentID(Integer.parseInt(comp.get("testComponentID")));
-							
+
+						if (null != comp.get("testComponentID")
+								&& !String.valueOf(comp.get("testComponentID")).isEmpty()
+								&& ((null != comp.get("testResultValue")
+										&& !comp.get("testResultValue").toString().isEmpty())
+										|| (null != comp.get("stripsNotAvailable") && comp.get("stripsNotAvailable")
+												.toString().equalsIgnoreCase("true")))) {
+							labCompResult.setTestComponentID(
+									(int) Double.parseDouble(comp.get("testComponentID").toString()));
+
 							if (comp.containsKey("testResultValue") && comp.get("testResultValue") != null
-									&& !comp.get("testResultValue").isEmpty())
-							labCompResult.setTestResultValue(comp.get("testResultValue").toString());
+									&& !String.valueOf(comp.get("testResultValue")).isEmpty())
+								labCompResult.setTestResultValue(comp.get("testResultValue").toString());
 
 							if (comp.containsKey("testResultUnit") && comp.get("testResultUnit") != null
-									&& !comp.get("testResultUnit").isEmpty())
-								labCompResult.setTestResultUnit(comp.get("testResultUnit"));
+									&& !String.valueOf(comp.get("testResultUnit")).isEmpty())
+								labCompResult.setTestResultUnit(String.valueOf(comp.get("testResultUnit")));
 
 							if (comp.containsKey("remarks") && comp.get("remarks") != null
-									&& !comp.get("remarks").isEmpty())
-								labCompResult.setRemarks(comp.get("remarks"));
+									&& !String.valueOf(comp.get("remarks")).isEmpty())
+								labCompResult.setRemarks(String.valueOf(comp.get("remarks")));
 
 							if (comp.containsKey("stripsNotAvailable") && comp.get("stripsNotAvailable") != null
 									&& comp.get("stripsNotAvailable").toString().equalsIgnoreCase("true"))
-								labCompResult.setStripsNotAvailable(Boolean.valueOf(comp.get("stripsNotAvailable")));
-							
+								labCompResult.setStripsNotAvailable(
+										Boolean.valueOf(String.valueOf(comp.get("stripsNotAvailable"))));
+
+							if (comp.containsKey("ecgAbnormalities") && comp.get("ecgAbnormalities") != null) {
+								List<String> ecgAbnormalitiesList = (List<String>) comp.get("ecgAbnormalities");
+								// String[] ecgAbnormalities = (String[]) comp.get("ecgAbnormalities");
+
+								if (ecgAbnormalitiesList != null && ecgAbnormalitiesList.size() > 0) {
+									StringBuilder sb = new StringBuilder();
+									for (String abnormility : ecgAbnormalitiesList) {
+										sb.append(abnormility).append("||");
+
+									}
+									if (sb.length() > 2)
+										labCompResult.setEcgAbnormalitiesDB(sb.substring(0, sb.length() - 2));
+
+								}
+							}
+
 							labCompResult.setBeneficiaryRegID(wrapperLabResults.getBeneficiaryRegID());
 							labCompResult.setBenVisitID(wrapperLabResults.getVisitID());
 							labCompResult.setVisitCode(wrapperLabResults.getVisitCode());
