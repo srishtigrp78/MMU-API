@@ -1,7 +1,13 @@
 package com.iemr.mmu.service.common.master;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.google.gson.Gson;
+import com.iemr.mmu.data.labtechnician.M_ECGabnormalities;
+import com.iemr.mmu.repo.labtechnician.M_ECGabnormalitiesRepo;
 
 @Service
 public class CommonMasterServiceImpl implements CommonMaterService {
@@ -13,6 +19,9 @@ public class CommonMasterServiceImpl implements CommonMaterService {
 	private NCDScreeningMasterServiceImpl ncdScreeningServiceImpl;
 	private QCMasterDataServiceImpl qCMasterDataServiceImpl;
 	private NCDCareMasterDataServiceImpl ncdCareMasterDataServiceImpl;
+
+	@Autowired
+	private M_ECGabnormalitiesRepo m_ECGabnormalitiesRepo;
 
 	@Autowired
 	public void setNcdCareMasterDataServiceImpl(NCDCareMasterDataServiceImpl ncdCareMasterDataServiceImpl) {
@@ -67,7 +76,8 @@ public class CommonMasterServiceImpl implements CommonMaterService {
 				break;
 			case 2: {
 				// 2 : NCD screening
-				nurseMasterData = ncdScreeningServiceImpl.getNCDScreeningMasterData(visitCategoryID, providerServiceMapID, gender);
+				nurseMasterData = ncdScreeningServiceImpl.getNCDScreeningMasterData(visitCategoryID,
+						providerServiceMapID, gender);
 			}
 				break;
 			case 3: {
@@ -203,6 +213,12 @@ public class CommonMasterServiceImpl implements CommonMaterService {
 			doctorMasterData = "Invalid VisitCategoryID";
 		}
 		return doctorMasterData;
+	}
+
+	public String getECGAbnormalities() throws Exception {
+		List<M_ECGabnormalities> resultList = m_ECGabnormalitiesRepo.findByDeleted(false);
+
+		return new Gson().toJson(resultList);
 	}
 
 }

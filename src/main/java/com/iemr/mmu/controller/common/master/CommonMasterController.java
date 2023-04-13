@@ -83,4 +83,18 @@ public class CommonMasterController {
 		return response.toString();
 	}
 
+	@ApiOperation(value = "getECGAbnormalities", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/ecgAbnormalities", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
+	public String getECGAbnormalities() {
+
+		OutputResponse response = new OutputResponse();
+		try {
+			response.setResponse(commonMasterServiceImpl.getECGAbnormalities());
+		} catch (Exception e) {
+			response.setError(5000, e.getLocalizedMessage());
+		}
+		return response.toString();
+
+	}
+
 }
