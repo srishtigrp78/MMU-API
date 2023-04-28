@@ -189,7 +189,8 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 				/**
 				 * We have to write new code to update ben status flow new logic
 				 */
-				int J = updateBenStatusFlagAfterNurseSaveSuccess(tmpOBJ, benVisitID, benFlowID, benVisitCode,
+				//System.out.println("updateBenStatusFlagAfterNurseSaveSuccess"+tmpOBJ+"---"+benVisitID+" : "+benFlowID+":"+benVisitCode +Integer.toString(nurseUtilityClass.getVanID()));
+				int J =  updateBenStatusFlagAfterNurseSaveSuccess(tmpOBJ, benVisitID, benFlowID, benVisitCode,
 						nurseUtilityClass.getVanID());
 
 				if (J > 0)
@@ -531,14 +532,43 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 			if (null != idrsDetail) {
 				if (idrsDetail.getQuestionArray() != null && idrsDetail.getQuestionArray().length > 0) {
 					IDRSData[] ar = idrsDetail.getQuestionArray();
-					for (int i = 0; i < ar.length; i++) {
-						idrsDetail = InputMapper.gson().fromJson(idrsDetailsOBJ, IDRSData.class);
-						temp = "";
-						temp1 = "";
-						idrsDetail.setIdrsQuestionID(ar[i].getIdrsQuestionID());
-						idrsDetail.setAnswer(ar[i].getAnswer());
-						idrsDetail.setQuestion(ar[i].getQuestion());
-						idrsDetail.setDiseaseQuestionType(ar[i].getDiseaseQuestionType());
+					StringBuffer questionIds = new StringBuffer();
+					StringBuffer questions = new StringBuffer();
+					StringBuffer answers = new StringBuffer();
+				    StringBuffer diseaseQuestionTypes = new StringBuffer();
+				    idrsDetail = InputMapper.gson().fromJson(idrsDetailsOBJ, IDRSData.class);
+					temp = "";
+					temp1 = "";
+				    for (int i = 0; i < ar.length; i++) {
+													
+						
+						  if(i<ar.length-1) questionIds.append(ar[i].getIdrsQuestionID()).append(",");
+						  else questionIds.append(ar[i].getIdrsQuestionID());
+						  
+						  
+						  if(i<ar.length-1) questions.append(ar[i].getQuestion()).append(","); else
+						  questions.append(ar[i].getQuestion());
+						  
+						  
+						  if(i<ar.length-1) answers.append(ar[i].getAnswer()).append(","); else
+						  answers.append(ar[i].getAnswer()); 
+						  
+						  if(i<ar.length-1)
+						  diseaseQuestionTypes.append(ar[i].getDiseaseQuestionType()).append(","); else
+						  diseaseQuestionTypes.append(ar[i].getDiseaseQuestionType());
+						 
+						 
+					}
+						
+				    idrsDetail.setQuestionIds(questionIds.toString());
+				    idrsDetail.setQuestions(questions.toString());
+				    idrsDetail.setAnswers(answers.toString());
+				    idrsDetail.setDiseaseQuestionTypes(diseaseQuestionTypes.toString());
+				    
+						idrsDetail.setIdrsQuestionID(ar[0].getIdrsQuestionID());
+						idrsDetail.setAnswer(ar[0].getAnswer());
+						idrsDetail.setQuestion(ar[0].getQuestion());
+						idrsDetail.setDiseaseQuestionType(ar[0].getDiseaseQuestionType());
 						idrsDetail.setBenVisitID(benVisitID);
 						idrsDetail.setVisitCode(benVisitCode);
 						if (idrsDetail.getSuspectArray() != null && idrsDetail.getSuspectArray().length > 0) {
@@ -564,7 +594,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 							idrsDetail.setConfirmedDisease(temp1);
 						}
 						idrsFlag = commonNurseServiceImpl.saveIDRS(idrsDetail);
-					}
+					//}
 				} else {
 					idrsDetail.setBenVisitID(benVisitID);
 					idrsDetail.setVisitCode(benVisitCode);
@@ -973,17 +1003,44 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 			if (null != idrsDetail1) {
 				if (idrsDetail1.getQuestionArray() != null && idrsDetail1.getQuestionArray().length > 0) {
 					IDRSData[] ar = idrsDetail1.getQuestionArray();
+					StringBuffer questionIds = new StringBuffer();
+					StringBuffer questions = new StringBuffer();
+					StringBuffer answers = new StringBuffer();
+				    StringBuffer diseaseQuestionTypes = new StringBuffer();
+				    IDRSData idrsDetail = InputMapper.gson().fromJson(idrsOBJ.get("idrsDetails"), IDRSData.class);
+					temp = "";temp1 = "";
+					
 					for (int i = 0; i < ar.length; i++) {
-						IDRSData idrsDetail = InputMapper.gson().fromJson(idrsOBJ.get("idrsDetails"), IDRSData.class);
-						temp = "";temp1 = "";
-						idrsDetail.setIdrsQuestionID(ar[i].getIdrsQuestionID());
-						idrsDetail.setId(ar[i].getId());
-						idrsDetail.setAnswer(ar[i].getAnswer());
-						idrsDetail.setQuestion(ar[i].getQuestion());
-						idrsDetail.setDiseaseQuestionType(ar[i].getDiseaseQuestionType());
+						
+						if(i<ar.length-1) questionIds.append(ar[i].getIdrsQuestionID()).append(",");
+						  else questionIds.append(ar[i].getIdrsQuestionID());
+						 
+						  
+						  if(i<ar.length-1) questions.append(ar[i].getQuestion()).append(","); else
+						  questions.append(ar[i].getQuestion());
+						  
+						  
+						  if(i<ar.length-1) answers.append(ar[i].getAnswer()).append(","); else
+						  answers.append(ar[i].getAnswer());
+						  
+						  if(i<ar.length-1)
+						  diseaseQuestionTypes.append(ar[i].getDiseaseQuestionType()).append(","); else
+						  diseaseQuestionTypes.append(ar[i].getDiseaseQuestionType());
+						 
+					}	
+					 idrsDetail.setQuestionIds(questionIds.toString());
+					 idrsDetail.setQuestions(questions.toString());
+					 idrsDetail.setAnswers(answers.toString());
+					 idrsDetail.setDiseaseQuestionTypes(diseaseQuestionTypes.toString());
+					 
+						idrsDetail.setIdrsQuestionID(ar[0].getIdrsQuestionID());
+						idrsDetail.setId(ar[0].getId());
+						idrsDetail.setAnswer(ar[0].getAnswer());
+						idrsDetail.setQuestion(ar[0].getQuestion());
+						idrsDetail.setDiseaseQuestionType(ar[0].getDiseaseQuestionType());
 //						idrsDetail.setBenVisitID(idrsDetail1.getBenVisitID());
 //						idrsDetail.setVisitCode(idrsDetail1.getVisitCode());
-
+					
 						if (idrsDetail.getSuspectArray() != null && idrsDetail.getSuspectArray().length > 0) {
 							for (int a = 0; a < idrsDetail.getSuspectArray().length; a++) {
 								if (a == idrsDetail.getSuspectArray().length - 1)
@@ -1009,7 +1066,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 							idrsDetail.setConfirmedDisease(temp1);
 						}
 						idrsFlag = commonNurseServiceImpl.saveIDRS(idrsDetail);
-					}
+					//}
 				} else {
 //					idrsDetail.setBenVisitID(benVisitID);
 //					idrsDetail.setVisitCode(benVisitCode);
