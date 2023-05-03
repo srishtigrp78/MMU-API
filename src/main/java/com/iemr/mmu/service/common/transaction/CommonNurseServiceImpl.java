@@ -3806,9 +3806,57 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		columns.add(column);
 
 		resultSet = iDRSDataRepo.getBenPreviousDiabetesDetails(benRegID);
-
+		
+		ArrayList<IDRSData> resultSet1=new ArrayList<>();
+		int j=0;
+			for(IDRSData obj:resultSet) {
+				String dq=obj.getDiseaseQuestionTypes().toString();
+				String an=obj.getAnswers();
+				String qu=obj.getQuestions();
+				String quid=obj.getQuestionIds();
+				
+				if(dq.contains("Diabetes"))
+				{
+					String[]dqs =(String[]) dq.split(",");
+					String[]ans =(String[]) an.split(",");
+					String[]qus =(String[]) qu.split(",");
+					String[]quids =(String[]) quid.split(",");
+					
+			
+					  for(int i=0;i<dqs.length;i++) {
+						 
+					  if(dqs[i].equals("Diabetes")) {
+						  IDRSData idrsdata=new IDRSData();
+						  idrsdata.setId(obj.getId());
+						  idrsdata.setBeneficiaryRegID(obj.getBeneficiaryRegID());
+						  idrsdata.setBenVisitID(obj.getBenVisitID());
+						  idrsdata.setProviderServiceMapID(obj.getProviderServiceMapID());
+						  idrsdata.setIdrsScore(obj.getIdrsScore());
+						  idrsdata.setSuspectedDisease(obj.getSuspectedDisease());
+						  idrsdata.setConfirmedDisease(obj.getConfirmedDisease());
+						  idrsdata.setDeleted(obj.getDeleted());
+						  idrsdata.setProcessed(obj.getProcessed());
+						  idrsdata.setCreatedBy(obj.getCreatedBy());
+						  idrsdata.setCreatedDate(obj.getCreatedDate());
+						  idrsdata.setLastModDate(obj.getLastModDate());
+						  idrsdata.setVanID(obj.getVanID());
+						  idrsdata.setParkingPlaceID(obj.getParkingPlaceID());
+						  idrsdata.setIsDiabetic(obj.getIsDiabetic());
+						  idrsdata.setAnswer(ans[i]);
+						  idrsdata.setQuestionIds(quids[i]);
+						  idrsdata.setQuestion(qus[i]);
+						  idrsdata.setDiseaseQuestionTypes(dqs[i]);
+						 // resultSet1.set(j, idrsdata);
+						  resultSet1.add(idrsdata);
+						  j++;
+					  }
+					  }
+					 
+				}
+		}
+		
 		response.put("columns", columns);
-		response.put("data", resultSet);
+		response.put("data", resultSet1);
 		return new Gson().toJson(response);
 	}
 	

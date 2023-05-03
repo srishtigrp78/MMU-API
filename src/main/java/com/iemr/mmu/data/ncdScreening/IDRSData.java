@@ -455,10 +455,10 @@ public class IDRSData {
 			String[] answars = ((String) obj1[14].toString()).split(",");
 			String[] dqs = ((String) obj1[15].toString()).split(",");
 
-			Long a = (long) 0;
+			//Long a = (long) 0;
 			for (int i = 0; i < questionsId.length; i++) {
 
-				IDRSData idDetails = new IDRSData((Long) a, Integer.parseInt(questionsId[i]), questions[i], answars[i],
+				IDRSData idDetails = new IDRSData((Long) obj1[0], Integer.parseInt(questionsId[i]), questions[i], answars[i],
 						dqs[i]);
 
 				Map<String, Object> idrsData = new HashMap<String, Object>();
@@ -470,7 +470,7 @@ public class IDRSData {
 				idrsData.put("suspectDisease", idDetails.getDiseaseQuestionType());
 
 				idrsDetails.add(idrsData);
-				a++;
+				//a++;
 			}
 
 			/*
