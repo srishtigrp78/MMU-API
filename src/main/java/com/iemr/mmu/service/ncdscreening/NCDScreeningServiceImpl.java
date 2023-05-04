@@ -190,7 +190,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 				 * We have to write new code to update ben status flow new logic
 				 */
 				//System.out.println("updateBenStatusFlagAfterNurseSaveSuccess"+tmpOBJ+"---"+benVisitID+" : "+benFlowID+":"+benVisitCode +Integer.toString(nurseUtilityClass.getVanID()));
-				int J =  updateBenStatusFlagAfterNurseSaveSuccess(tmpOBJ, benVisitID, benFlowID, benVisitCode,
+				int J =   updateBenStatusFlagAfterNurseSaveSuccess(tmpOBJ, benVisitID, benFlowID, benVisitCode,
 						nurseUtilityClass.getVanID());
 
 				if (J > 0)
@@ -1008,9 +1008,12 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 					StringBuffer answers = new StringBuffer();
 				    StringBuffer diseaseQuestionTypes = new StringBuffer();
 				    IDRSData idrsDetail = InputMapper.gson().fromJson(idrsOBJ.get("idrsDetails"), IDRSData.class);
-					temp = "";temp1 = "";
+					temp = "";temp1 = ""; Long temp2= null;
 					
 					for (int i = 0; i < ar.length; i++) {
+						if(temp2==null && ar[i].getId()!=null) {
+							temp2=ar[i].getId();
+						}
 						
 						if(i<ar.length-1) questionIds.append(ar[i].getIdrsQuestionID()).append(",");
 						  else questionIds.append(ar[i].getIdrsQuestionID());
@@ -1026,18 +1029,19 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 						  if(i<ar.length-1)
 						  diseaseQuestionTypes.append(ar[i].getDiseaseQuestionType()).append(","); else
 						  diseaseQuestionTypes.append(ar[i].getDiseaseQuestionType());
-						 
+						 						 
 					}	
 					 idrsDetail.setQuestionIds(questionIds.toString());
 					 idrsDetail.setQuestions(questions.toString());
 					 idrsDetail.setAnswers(answers.toString());
 					 idrsDetail.setDiseaseQuestionTypes(diseaseQuestionTypes.toString());
 					 
-						idrsDetail.setIdrsQuestionID(ar[0].getIdrsQuestionID());
-						idrsDetail.setId(ar[0].getId());
-						idrsDetail.setAnswer(ar[0].getAnswer());
-						idrsDetail.setQuestion(ar[0].getQuestion());
-						idrsDetail.setDiseaseQuestionType(ar[0].getDiseaseQuestionType());
+						//idrsDetail.setIdrsQuestionID(ar[0].getIdrsQuestionID());
+					 if(temp2!=null)
+						idrsDetail.setId(temp2);
+						//idrsDetail.setAnswer(ar[0].getAnswer());
+						//idrsDetail.setQuestion(ar[0].getQuestion());
+						//idrsDetail.setDiseaseQuestionType(ar[0].getDiseaseQuestionType());
 //						idrsDetail.setBenVisitID(idrsDetail1.getBenVisitID());
 //						idrsDetail.setVisitCode(idrsDetail1.getVisitCode());
 					
