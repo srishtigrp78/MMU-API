@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -3817,10 +3818,10 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 				
 				if(dq.contains("Diabetes"))
 				{
-					String[]dqs =(String[]) dq.split(",");
-					String[]ans =(String[]) an.split(",");
-					String[]qus =(String[]) qu.split(",");
-					String[]quids =(String[]) quid.split(",");
+					String[]dqs =(String[]) dq.split(Pattern.quote("||"));
+					String[]ans =(String[]) an.split(Pattern.quote("||"));
+					String[]qus =(String[]) qu.split(Pattern.quote("||"));
+					String[]quids =(String[]) quid.split(Pattern.quote("||"));
 					
 			
 					  for(int i=0;i<dqs.length;i++) {

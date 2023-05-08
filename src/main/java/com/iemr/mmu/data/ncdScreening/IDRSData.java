@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -450,10 +451,10 @@ public class IDRSData {
 					(String) obj1[8], (String) obj1[11], (Long) obj1[9]);
 
 			List<Map<String, Object>> idrsDetails = new ArrayList<Map<String, Object>>();
-			String[] questionsId = ((String) obj1[12].toString()).split(",");
-			String[] questions = ((String) obj1[13].toString()).split(",");
-			String[] answars = ((String) obj1[14].toString()).split(",");
-			String[] dqs = ((String) obj1[15].toString()).split(",");
+			String[] questionsId = ((String) obj1[12].toString()).split(Pattern.quote("||"));
+			String[] questions = ((String) obj1[13].toString()).split(Pattern.quote("||"));
+			String[] answars = ((String) obj1[14].toString()).split(Pattern.quote("||"));
+			String[] dqs = ((String) obj1[15].toString()).split(Pattern.quote("||"));
 
 			//Long a = (long) 0;
 			for (int i = 0; i < questionsId.length; i++) {

@@ -189,8 +189,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 				/**
 				 * We have to write new code to update ben status flow new logic
 				 */
-				//System.out.println("updateBenStatusFlagAfterNurseSaveSuccess"+tmpOBJ+"---"+benVisitID+" : "+benFlowID+":"+benVisitCode +Integer.toString(nurseUtilityClass.getVanID()));
-				int J =   updateBenStatusFlagAfterNurseSaveSuccess(tmpOBJ, benVisitID, benFlowID, benVisitCode,
+				int J =  updateBenStatusFlagAfterNurseSaveSuccess(tmpOBJ, benVisitID, benFlowID, benVisitCode,
 						nurseUtilityClass.getVanID());
 
 				if (J > 0)
@@ -542,19 +541,19 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 				    for (int i = 0; i < ar.length; i++) {
 													
 						
-						  if(i<ar.length-1) questionIds.append(ar[i].getIdrsQuestionID()).append(",");
+						  if(i<ar.length-1) questionIds.append(ar[i].getIdrsQuestionID()).append("||");
 						  else questionIds.append(ar[i].getIdrsQuestionID());
 						  
 						  
-						  if(i<ar.length-1) questions.append(ar[i].getQuestion()).append(","); else
+						  if(i<ar.length-1) questions.append(ar[i].getQuestion()).append("||"); else
 						  questions.append(ar[i].getQuestion());
 						  
 						  
-						  if(i<ar.length-1) answers.append(ar[i].getAnswer()).append(","); else
+						  if(i<ar.length-1) answers.append(ar[i].getAnswer()).append("||"); else
 						  answers.append(ar[i].getAnswer()); 
 						  
 						  if(i<ar.length-1)
-						  diseaseQuestionTypes.append(ar[i].getDiseaseQuestionType()).append(","); else
+						  diseaseQuestionTypes.append(ar[i].getDiseaseQuestionType()).append("||"); else
 						  diseaseQuestionTypes.append(ar[i].getDiseaseQuestionType());
 						 
 						 
@@ -1015,19 +1014,19 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 							temp2=ar[i].getId();
 						}
 						
-						if(i<ar.length-1) questionIds.append(ar[i].getIdrsQuestionID()).append(",");
+						if(i<ar.length-1) questionIds.append(ar[i].getIdrsQuestionID()).append("||");
 						  else questionIds.append(ar[i].getIdrsQuestionID());
 						 
 						  
-						  if(i<ar.length-1) questions.append(ar[i].getQuestion()).append(","); else
+						  if(i<ar.length-1) questions.append(ar[i].getQuestion()).append("||"); else
 						  questions.append(ar[i].getQuestion());
 						  
 						  
-						  if(i<ar.length-1) answers.append(ar[i].getAnswer()).append(","); else
+						  if(i<ar.length-1) answers.append(ar[i].getAnswer()).append("||"); else
 						  answers.append(ar[i].getAnswer());
 						  
 						  if(i<ar.length-1)
-						  diseaseQuestionTypes.append(ar[i].getDiseaseQuestionType()).append(","); else
+						  diseaseQuestionTypes.append(ar[i].getDiseaseQuestionType()).append("||"); else
 						  diseaseQuestionTypes.append(ar[i].getDiseaseQuestionType());
 						 						 
 					}	
