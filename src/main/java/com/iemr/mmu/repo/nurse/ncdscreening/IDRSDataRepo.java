@@ -23,7 +23,7 @@ public interface IDRSDataRepo extends CrudRepository<IDRSData, Long> {
 			@Param("visitCode") Long visitCode);
 
 	@Query(" SELECT id,beneficiaryRegID, benVisitID, providerServiceMapID, idrsQuestionID, idrsScore, question, answer, "
-			+ "suspectedDisease, visitCode, diseaseQuestionType, confirmedDisease,questionIds,questions,answers,diseaseQuestionTypes FROM IDRSData "
+			+ "suspectedDisease, visitCode, diseaseQuestionType, confirmedDisease,questionIds FROM IDRSData "
 			+ " WHERE beneficiaryRegID = :benRegID AND deleted = false AND visitCode = :visitCode")
 	public ArrayList<Object[]> getBenIdrsDetail(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 

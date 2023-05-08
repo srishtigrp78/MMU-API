@@ -24,7 +24,7 @@ import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.covid19.Covid19BenFeedback;
 
 @Entity
-@Table(name = "t_idrsdetails_datasync") /* t_idrsdetails_datasync */
+@Table(name = "t_idrsdetails") /* t_idrsdetails_datasync */
 /* t_idrsDetails */
 public class IDRSData {
 	@Id
@@ -133,6 +133,8 @@ public class IDRSData {
 	@Expose
 	@Column(name = "Questionids")
 	private String questionIds;
+	
+/*	
 	@Expose
 	@Column(name = "Questions", columnDefinition = "TEXT")
 	private String questions;
@@ -143,13 +145,7 @@ public class IDRSData {
 	@Column(name = "DiseaseQuestionTypes")
 	private String diseaseQuestionTypes;
 
-	public String getQuestionIds() {
-		return questionIds;
-	}
-
-	public void setQuestionIds(String questionIds) {
-		this.questionIds = questionIds;
-	}
+	
 
 	public String getQuestions() {
 		return questions;
@@ -174,7 +170,15 @@ public class IDRSData {
 	public void setDiseaseQuestionTypes(String diseaseQuestionTypes) {
 		this.diseaseQuestionTypes = diseaseQuestionTypes;
 	}
+*/
+	public String getQuestionIds() {
+		return questionIds;
+	}
 
+	public void setQuestionIds(String questionIds) {
+		this.questionIds = questionIds;
+	}
+	
 	public String getConfirmedDisease() {
 		return confirmedDisease;
 	}
@@ -452,9 +456,9 @@ public class IDRSData {
 
 			List<Map<String, Object>> idrsDetails = new ArrayList<Map<String, Object>>();
 			String[] questionsId = ((String) obj1[12].toString()).split(Pattern.quote("||"));
-			String[] questions = ((String) obj1[13].toString()).split(Pattern.quote("||"));
-			String[] answars = ((String) obj1[14].toString()).split(Pattern.quote("||"));
-			String[] dqs = ((String) obj1[15].toString()).split(Pattern.quote("||"));
+			String[] questions = ((String) obj1[6].toString()).split(Pattern.quote("||"));
+			String[] answars = ((String) obj1[7].toString()).split(Pattern.quote("||"));
+			String[] dqs = ((String) obj1[10].toString()).split(Pattern.quote("||"));
 
 			//Long a = (long) 0;
 			for (int i = 0; i < questionsId.length; i++) {

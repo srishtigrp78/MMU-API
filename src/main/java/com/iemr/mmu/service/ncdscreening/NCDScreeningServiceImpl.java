@@ -560,14 +560,14 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 					}
 						
 				    idrsDetail.setQuestionIds(questionIds.toString());
-				    idrsDetail.setQuestions(questions.toString());
+				    
+				    /*idrsDetail.setQuestions(questions.toString());
 				    idrsDetail.setAnswers(answers.toString());
 				    idrsDetail.setDiseaseQuestionTypes(diseaseQuestionTypes.toString());
-				    
-						idrsDetail.setIdrsQuestionID(ar[0].getIdrsQuestionID());
-						idrsDetail.setAnswer(ar[0].getAnswer());
-						idrsDetail.setQuestion(ar[0].getQuestion());
-						idrsDetail.setDiseaseQuestionType(ar[0].getDiseaseQuestionType());
+				    idrsDetail.setIdrsQuestionID(ar[0].getIdrsQuestionID());*/
+						idrsDetail.setAnswer(answers.toString());
+						idrsDetail.setQuestion(questions.toString());
+						idrsDetail.setDiseaseQuestionType(diseaseQuestionTypes.toString());
 						idrsDetail.setBenVisitID(benVisitID);
 						idrsDetail.setVisitCode(benVisitCode);
 						if (idrsDetail.getSuspectArray() != null && idrsDetail.getSuspectArray().length > 0) {
@@ -1030,17 +1030,19 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 						  diseaseQuestionTypes.append(ar[i].getDiseaseQuestionType());
 						 						 
 					}	
-					 idrsDetail.setQuestionIds(questionIds.toString());
-					 idrsDetail.setQuestions(questions.toString());
+					 
+					/* idrsDetail.setQuestions(questions.toString());
 					 idrsDetail.setAnswers(answers.toString());
 					 idrsDetail.setDiseaseQuestionTypes(diseaseQuestionTypes.toString());
 					 
-						//idrsDetail.setIdrsQuestionID(ar[0].getIdrsQuestionID());
+						idrsDetail.setIdrsQuestionID(ar[0].getIdrsQuestionID());*/
 					 if(temp2!=null)
 						idrsDetail.setId(temp2);
-						//idrsDetail.setAnswer(ar[0].getAnswer());
-						//idrsDetail.setQuestion(ar[0].getQuestion());
-						//idrsDetail.setDiseaseQuestionType(ar[0].getDiseaseQuestionType());
+					 	idrsDetail.setQuestionIds(questionIds.toString());
+						idrsDetail.setAnswer(answers.toString());
+						idrsDetail.setQuestion(questions.toString());
+						idrsDetail.setDiseaseQuestionType(diseaseQuestionTypes.toString());
+						
 //						idrsDetail.setBenVisitID(idrsDetail1.getBenVisitID());
 //						idrsDetail.setVisitCode(idrsDetail1.getVisitCode());
 					

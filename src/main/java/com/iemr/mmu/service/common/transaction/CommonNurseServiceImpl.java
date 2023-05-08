@@ -3811,9 +3811,9 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		ArrayList<IDRSData> resultSet1=new ArrayList<>();
 		int j=0;
 			for(IDRSData obj:resultSet) {
-				String dq=obj.getDiseaseQuestionTypes().toString();
-				String an=obj.getAnswers();
-				String qu=obj.getQuestions();
+				String dq=obj.getDiseaseQuestionType();
+				String an=obj.getAnswer();
+				String qu=obj.getQuestion();
 				String quid=obj.getQuestionIds();
 				
 				if(dq.contains("Diabetes"))
@@ -3846,7 +3846,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 						  idrsdata.setAnswer(ans[i]);
 						  idrsdata.setQuestionIds(quids[i]);
 						  idrsdata.setQuestion(qus[i]);
-						  idrsdata.setDiseaseQuestionTypes(dqs[i]);
+						  idrsdata.setDiseaseQuestionType(dqs[i]);
 						 // resultSet1.set(j, idrsdata);
 						  resultSet1.add(idrsdata);
 						  j++;
