@@ -23,7 +23,7 @@ public interface IDRSDataRepo extends CrudRepository<IDRSData, Long> {
 			@Param("visitCode") Long visitCode);
 
 	@Query(" SELECT id,beneficiaryRegID, benVisitID, providerServiceMapID, idrsQuestionID, idrsScore, question, answer, "
-			+ "suspectedDisease, visitCode, diseaseQuestionType, confirmedDisease FROM IDRSData "
+			+ "suspectedDisease, visitCode, diseaseQuestionType, confirmedDisease,questionIds FROM IDRSData "
 			+ " WHERE beneficiaryRegID = :benRegID AND deleted = false AND visitCode = :visitCode")
 	public ArrayList<Object[]> getBenIdrsDetail(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 
@@ -43,7 +43,7 @@ public interface IDRSDataRepo extends CrudRepository<IDRSData, Long> {
 //			,nativeQuery=true)
 //	public Integer isHypertensionCheck(@Param("beneficiaryRegID") Long beneficiaryRegID);
 
-	@Query("select a from IDRSData a where a.beneficiaryRegID = :beneficiaryRegID AND a.diseaseQuestionType = 'Diabetes' "
+	@Query("select a from IDRSData a where a.beneficiaryRegID = :beneficiaryRegID AND a.diseaseQuestionType like '%Diabetes%' "
 			+ " ORDER BY Date(a.createdDate) DESC  ")
 	public ArrayList<IDRSData> getBenPreviousDiabetesDetails(@Param("beneficiaryRegID") Long beneficiaryRegID);
 

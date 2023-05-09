@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -3806,9 +3807,57 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		columns.add(column);
 
 		resultSet = iDRSDataRepo.getBenPreviousDiabetesDetails(benRegID);
-
+		
+		ArrayList<IDRSData> resultSet1=new ArrayList<>();
+		int j=0;
+			for(IDRSData obj:resultSet) {
+				String dq=obj.getDiseaseQuestionType();
+				String an=obj.getAnswer();
+				String qu=obj.getQuestion();
+				String quid=obj.getQuestionIds();
+				
+				if(dq.contains("Diabetes"))
+				{
+					String[]dqs =(String[]) dq.split(Pattern.quote("||"));
+					String[]ans =(String[]) an.split(Pattern.quote("||"));
+					String[]qus =(String[]) qu.split(Pattern.quote("||"));
+					String[]quids =(String[]) quid.split(Pattern.quote("||"));
+					
+			
+					  for(int i=0;i<dqs.length;i++) {
+						 
+					  if(dqs[i].equals("Diabetes")) {
+						  IDRSData idrsdata=new IDRSData();
+						  idrsdata.setId(obj.getId());
+						  idrsdata.setBeneficiaryRegID(obj.getBeneficiaryRegID());
+						  idrsdata.setBenVisitID(obj.getBenVisitID());
+						  idrsdata.setProviderServiceMapID(obj.getProviderServiceMapID());
+						  idrsdata.setIdrsScore(obj.getIdrsScore());
+						  idrsdata.setSuspectedDisease(obj.getSuspectedDisease());
+						  idrsdata.setConfirmedDisease(obj.getConfirmedDisease());
+						  idrsdata.setDeleted(obj.getDeleted());
+						  idrsdata.setProcessed(obj.getProcessed());
+						  idrsdata.setCreatedBy(obj.getCreatedBy());
+						  idrsdata.setCreatedDate(obj.getCreatedDate());
+						  idrsdata.setLastModDate(obj.getLastModDate());
+						  idrsdata.setVanID(obj.getVanID());
+						  idrsdata.setParkingPlaceID(obj.getParkingPlaceID());
+						  idrsdata.setIsDiabetic(obj.getIsDiabetic());
+						  idrsdata.setAnswer(ans[i]);
+						  idrsdata.setQuestionIds(quids[i]);
+						  idrsdata.setQuestion(qus[i]);
+						  idrsdata.setDiseaseQuestionType(dqs[i]);
+						 // resultSet1.set(j, idrsdata);
+						  resultSet1.add(idrsdata);
+						  j++;
+					  }
+					  }
+					 
+				}
+		}
+		
 		response.put("columns", columns);
-		response.put("data", resultSet);
+		response.put("data", resultSet1);
 		return new Gson().toJson(response);
 	}
 	
