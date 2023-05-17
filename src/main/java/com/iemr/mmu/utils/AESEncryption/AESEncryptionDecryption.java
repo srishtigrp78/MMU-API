@@ -40,7 +40,7 @@ public class AESEncryptionDecryption {
 			key = Arrays.copyOf(key, 16);
 			secretKey = new SecretKeySpec(key, "AES");
 		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-			LOGGER.log("context", e);
+			 LOGGER.log("context", e);
 		}
 	}
 
