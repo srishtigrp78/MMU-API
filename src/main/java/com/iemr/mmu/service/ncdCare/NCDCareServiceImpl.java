@@ -1,5 +1,6 @@
 package com.iemr.mmu.service.ncdCare;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.BenAdherence;
 import com.iemr.mmu.data.anc.BenAllergyHistory;
@@ -35,6 +37,7 @@ import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
+import com.iemr.mmu.data.snomedct.SCTDescription;
 import com.iemr.mmu.data.tele_consultation.TCRequestModel;
 import com.iemr.mmu.data.tele_consultation.TcSpecialistSlotBookingRequestOBJ;
 import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
@@ -733,6 +736,35 @@ public class NCDCareServiceImpl implements NCDCareService {
 				findingSuccessFlag = 1;
 			}
 
+			// creating prescription object
+			PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
+
+			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
+				JsonObject diagnosisObj = requestOBJ.getAsJsonObject("diagnosis");
+
+				prescriptionDetail = InputMapper.gson().fromJson(diagnosisObj, PrescriptionDetail.class);
+
+				if (diagnosisObj.has("provisionalDiagnosisList")
+						&& !diagnosisObj.get("provisionalDiagnosisList").isJsonNull()) {
+					JsonArray provisionalDiagnosisArray = diagnosisObj.getAsJsonArray("provisionalDiagnosisList");
+
+					ArrayList<SCTDescription> provisionalDiagnosisList = new ArrayList<>();
+
+					// Populate the provisionalDiagnosisList from the JSON array
+
+					for (JsonElement element : provisionalDiagnosisArray) {
+
+						SCTDescription sctDescription = InputMapper.gson().fromJson(element, SCTDescription.class);
+
+						provisionalDiagnosisList.add(sctDescription);
+
+					}
+					prescriptionDetail.setProvisionalDiagnosisList(provisionalDiagnosisList);
+				}
+
+			} else {
+			}
+
 			// generate prescription
 			WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
 					.fromJson(requestOBJ.get("investigation"), WrapperBenInvestigationANC.class);
@@ -740,7 +772,8 @@ public class NCDCareServiceImpl implements NCDCareService {
 					wrapperBenInvestigationANC.getBeneficiaryRegID(), wrapperBenInvestigationANC.getBenVisitID(),
 					wrapperBenInvestigationANC.getProviderServiceMapID(), wrapperBenInvestigationANC.getCreatedBy(),
 					wrapperBenInvestigationANC.getExternalInvestigations(), wrapperBenInvestigationANC.getVisitCode(),
-					wrapperBenInvestigationANC.getVanID(), wrapperBenInvestigationANC.getParkingPlaceID());
+					wrapperBenInvestigationANC.getVanID(), wrapperBenInvestigationANC.getParkingPlaceID(),
+					prescriptionDetail.getProvisionalDiagnosisList());
 
 			// save diagnosis
 			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {

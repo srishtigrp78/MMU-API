@@ -23,16 +23,18 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import com.iemr.mmu.utils.config.ConfigProperties;
 
 
+
+
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(entityManagerFactoryRef = "entityManagerFactory", 
-basePackages = { "com.iemr.mmu.repo","com.iemr.mmu.repo", "com.iemr.mmu.*", "com.iemr.mmu.*" })
+basePackages = { "com.iemr.mmu.*" })
 
 public class DBConfig {
 	
 	Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
-	@Primary
+	
 	@Bean(name = "dataSource")
 	@ConfigurationProperties(prefix = "spring.datasource")
 	public DataSource dataSource() {
@@ -53,28 +55,20 @@ public class DBConfig {
 
 		StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
 		encryptor.setAlgorithm("PBEWithMD5AndDES");
-
+//
 		encryptor.setPassword("dev-env-secret");
 
-//		logger.info(encryptor.decrypt(ConfigProperties.getPropertyByName("encDbUserName")));
-//		logger.info(encryptor.decrypt(ConfigProperties.getPropertyByName("encDbPass")));
 
 		datasource.setUsername(encryptor.decrypt(ConfigProperties.getPropertyByName("encDbUserName")));
 		datasource.setPassword(encryptor.decrypt(ConfigProperties.getPropertyByName("encDbPass")));
+
 
 		return datasource;
 	}
 
 
-	@Primary
-	@Bean(name = "entityManagerFactory")
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder,
-			@Qualifier("dataSource") DataSource dataSource) {
-		return builder.dataSource(dataSource).packages("com.iemr.mmu.data", "com.iemr.mmu.*",
-				"com.iemr.mmu.*", "com.iemr.mmu.*").persistenceUnit("db_iemr").build();
-	}
-
-	@Primary
+	
+	
 	@Bean(name = "transactionManager")
 	public PlatformTransactionManager transactionManager(
 			@Qualifier("entityManagerFactory") EntityManagerFactory entityManagerFactory) {
