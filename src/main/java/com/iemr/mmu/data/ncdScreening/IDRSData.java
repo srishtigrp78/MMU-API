@@ -133,44 +133,36 @@ public class IDRSData {
 	@Expose
 	@Column(name = "Questionids")
 	private String questionIds;
-	
-/*	
-	@Expose
-	@Column(name = "Questions", columnDefinition = "TEXT")
-	private String questions;
-	@Expose
-	@Column(name = "Answers")
-	private String answers;
-	@Expose
-	@Column(name = "DiseaseQuestionTypes")
-	private String diseaseQuestionTypes;
 
-	
-
-	public String getQuestions() {
-		return questions;
-	}
-
-	public void setQuestions(String questions) {
-		this.questions = questions;
-	}
-
-	public String getAnswers() {
-		return answers;
-	}
-
-	public void setAnswers(String answers) {
-		this.answers = answers;
-	}
-
-	public String getDiseaseQuestionTypes() {
-		return diseaseQuestionTypes;
-	}
-
-	public void setDiseaseQuestionTypes(String diseaseQuestionTypes) {
-		this.diseaseQuestionTypes = diseaseQuestionTypes;
-	}
-*/
+	/*
+	 * @Expose
+	 * 
+	 * @Column(name = "Questions", columnDefinition = "TEXT") private String
+	 * questions;
+	 * 
+	 * @Expose
+	 * 
+	 * @Column(name = "Answers") private String answers;
+	 * 
+	 * @Expose
+	 * 
+	 * @Column(name = "DiseaseQuestionTypes") private String diseaseQuestionTypes;
+	 * 
+	 * 
+	 * 
+	 * public String getQuestions() { return questions; }
+	 * 
+	 * public void setQuestions(String questions) { this.questions = questions; }
+	 * 
+	 * public String getAnswers() { return answers; }
+	 * 
+	 * public void setAnswers(String answers) { this.answers = answers; }
+	 * 
+	 * public String getDiseaseQuestionTypes() { return diseaseQuestionTypes; }
+	 * 
+	 * public void setDiseaseQuestionTypes(String diseaseQuestionTypes) {
+	 * this.diseaseQuestionTypes = diseaseQuestionTypes; }
+	 */
 	public String getQuestionIds() {
 		return questionIds;
 	}
@@ -178,7 +170,7 @@ public class IDRSData {
 	public void setQuestionIds(String questionIds) {
 		this.questionIds = questionIds;
 	}
-	
+
 	public String getConfirmedDisease() {
 		return confirmedDisease;
 	}
@@ -455,27 +447,36 @@ public class IDRSData {
 					(String) obj1[8], (String) obj1[11], (Long) obj1[9]);
 
 			List<Map<String, Object>> idrsDetails = new ArrayList<Map<String, Object>>();
-			String[] questionsId = ((String) obj1[12].toString()).split(Pattern.quote("||"));
-			String[] questions = ((String) obj1[6].toString()).split(Pattern.quote("||"));
-			String[] answars = ((String) obj1[7].toString()).split(Pattern.quote("||"));
-			String[] dqs = ((String) obj1[10].toString()).split(Pattern.quote("||"));
+			String[] questionsId = null;
+			String[] questions=null;
+			String[] answars=null;
+			String[] dqs=null;
+			if (obj1[12] != null && obj1[6] != null && obj1[7] != null && obj1[10] != null) {
+				questionsId = ((String) obj1[12].toString()).split(Pattern.quote("||"));
 
-			//Long a = (long) 0;
-			for (int i = 0; i < questionsId.length; i++) {
+				questions = ((String) obj1[6].toString()).split(Pattern.quote("||"));
+				answars = ((String) obj1[7].toString()).split(Pattern.quote("||"));
+				dqs = ((String) obj1[10].toString()).split(Pattern.quote("||"));
+			}
 
-				IDRSData idDetails = new IDRSData((Long) obj1[0], Integer.parseInt(questionsId[i]), questions[i], answars[i],
-						dqs[i]);
+			// Long a = (long) 0;
+			if (questionsId != null && answars != null && dqs != null && questions != null) {
+				for (int i = 0; i < questionsId.length; i++) {
 
-				Map<String, Object> idrsData = new HashMap<String, Object>();
-				idrsData.put("ID", idDetails.getId());
-				idrsData.put("idrsQuestionId", idDetails.getIdrsQuestionID());
+					IDRSData idDetails = new IDRSData((Long) obj1[0], Integer.parseInt(questionsId[i]), questions[i],
+							answars[i], dqs[i]);
 
-				idrsData.put("question", idDetails.getQuestion());
-				idrsData.put("answer", idDetails.getAnswer());
-				idrsData.put("suspectDisease", idDetails.getDiseaseQuestionType());
+					Map<String, Object> idrsData = new HashMap<String, Object>();
+					idrsData.put("ID", idDetails.getId());
+					idrsData.put("idrsQuestionId", idDetails.getIdrsQuestionID());
 
-				idrsDetails.add(idrsData);
-				//a++;
+					idrsData.put("question", idDetails.getQuestion());
+					idrsData.put("answer", idDetails.getAnswer());
+					idrsData.put("suspectDisease", idDetails.getDiseaseQuestionType());
+
+					idrsDetails.add(idrsData);
+					// a++;
+				}
 			}
 
 			/*
