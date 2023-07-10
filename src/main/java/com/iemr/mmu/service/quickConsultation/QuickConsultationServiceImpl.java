@@ -287,7 +287,10 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 				} else {
 
 				}
-			} }else {
+			} else{
+				//Error in beneficiary visit creation ...
+			}
+			}else {
 				return new Integer(3);
 			}
 		}
