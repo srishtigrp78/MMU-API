@@ -257,10 +257,10 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			String maxdateTrim=maxDate.substring(0, maxDate.indexOf("."));
 			java.util.Date  d = timeFormat.parse(maxdateTrim);
 			Calendar cal = Calendar.getInstance();
-			Calendar cal1 = Calendar.getInstance();
+			Calendar currdate = Calendar.getInstance();
 			cal.setTime(d);
 			cal.add(Calendar.MINUTE, 10);
-			 i= cal.compareTo(cal1);
+			 i= cal.compareTo(currdate);
 			 
 		} catch (ParseException e) {
 			throw new IEMRException("Error while parseing created date :" + e.getMessage());
