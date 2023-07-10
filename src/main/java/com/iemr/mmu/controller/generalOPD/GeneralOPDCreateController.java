@@ -59,7 +59,7 @@ public class GeneralOPDCreateController {
 			if (jsnOBJ != null) {
 				Long genOPDRes = generalOPDServiceImpl.saveNurseData(jsnOBJ);
 				if (null != genOPDRes && genOPDRes > 0) {
-					response.setResponse("Data saved successfully");
+					response.setResponse("Data saved successfully"); 
 				} else if(null != genOPDRes && genOPDRes == 0){
 					response.setResponse("Data already saved");   
 				}else {
