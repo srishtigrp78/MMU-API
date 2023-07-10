@@ -61,7 +61,7 @@ public class GeneralOPDCreateController {
 				if (null != genOPDRes && genOPDRes > 0) {
 					response.setResponse("Data saved successfully");
 				} else if(null != genOPDRes && genOPDRes == 0){
-					response.setResponse("Data already saved");
+					response.setResponse("Data already saved"); 
 				}else {
 					response.setResponse("Unable to save data");
 				}
