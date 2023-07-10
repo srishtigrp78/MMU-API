@@ -65,6 +65,8 @@ public class QuickConsultCreateController {
 				Integer r = quickConsultationServiceImpl.quickConsultNurseDataInsert(jsnOBJ);
 				if (r == 1) {
 					response.setResponse("Data saved successfully");
+				}else if (r == 3) {
+					response.setResponse("Data already saved");
 				} else {
 					// Handle error and required msg...
 					response.setError(500, "Unable to save data");

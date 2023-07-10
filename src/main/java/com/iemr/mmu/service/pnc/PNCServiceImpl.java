@@ -121,6 +121,8 @@ public class PNCServiceImpl implements PNCService {
 					&& visitIdAndCodeMap.containsKey("visitCode")) {
 				benVisitID = visitIdAndCodeMap.get("visitID");
 				benVisitCode = visitIdAndCodeMap.get("visitCode");
+			} else {
+				return new Long(0);
 			}
 
 			// check if visit details data saved successfully
@@ -382,6 +384,8 @@ public class PNCServiceImpl implements PNCService {
 
 			BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(visitDetailsOBJ.get("visitDetails"),
 					BeneficiaryVisitDetail.class);
+			int i=commonNurseServiceImpl.getMaxCurrentdate(benVisitDetailsOBJ.getBeneficiaryRegID(),benVisitDetailsOBJ.getVisitReason(),benVisitDetailsOBJ.getVisitCategory());
+			if(i<1) {
 			benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
 
 			// 11-06-2018 visit code
@@ -409,7 +413,7 @@ public class PNCServiceImpl implements PNCService {
 			visitIdAndCodeMap.put("visitID", benVisitID);
 			visitIdAndCodeMap.put("visitCode", benVisitCode);
 		}
-
+		}
 		return visitIdAndCodeMap;
 	}
 

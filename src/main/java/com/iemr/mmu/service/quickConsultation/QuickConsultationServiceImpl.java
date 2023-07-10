@@ -239,7 +239,10 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 
 			BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(jsnOBJ.get("visitDetails"),
 					BeneficiaryVisitDetail.class);
-			Long benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
+			int i = commonNurseServiceImpl.getMaxCurrentdate(benVisitDetailsOBJ.getBeneficiaryRegID(),
+					benVisitDetailsOBJ.getVisitReason(), benVisitDetailsOBJ.getVisitCategory());
+			if (i < 1) {
+				Long benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
 
 			// 11-06-2018 visit code
 			Long benVisitCode = commonNurseServiceImpl.generateVisitCode(benVisitID, nurseUtilityClass.getVanID(),
@@ -284,8 +287,8 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 				} else {
 
 				}
-			} else {
-				// Error in beneficiary visit creation...
+			} }else {
+				return new Integer(3);
 			}
 		}
 		return returnOBJ;

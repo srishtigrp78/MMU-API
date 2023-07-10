@@ -63,6 +63,8 @@ public class ANCCreateController {
 				Long ancRes = ancServiceImpl.saveANCNurseData(jsnOBJ);
 				if (null != ancRes && ancRes > 0) {
 					response.setResponse("Data saved successfully");
+				}else if (null != ancRes && ancRes == 0) {
+					response.setResponse("Data already saved");
 				} else {
 					response.setError(5000, "Unable to save data");
 				}

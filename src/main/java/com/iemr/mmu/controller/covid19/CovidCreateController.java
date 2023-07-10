@@ -55,6 +55,8 @@ public class CovidCreateController {
 				Long covid19Res =  covid19Service.saveCovid19NurseData(jsnOBJ, Authorization);
 				if (null != covid19Res && covid19Res > 0) {
 					outputResponse.setResponse("Data saved successfully");
+				} else if (null != covid19Res && covid19Res == 0) {
+					outputResponse.setResponse("Data already saved");
 				} else {
 					outputResponse.setResponse("Unable to save data");
 				}
