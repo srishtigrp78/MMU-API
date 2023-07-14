@@ -81,7 +81,9 @@ public class NCDCareCreateController {
 				Long ncdCareRes = ncdCareServiceImpl.saveNCDCareNurseData(jsnOBJ);
 				if (null != ncdCareRes && ncdCareRes > 0) {
 					response.setResponse("Data saved successfully");
-				} else {
+				} else if (null != ncdCareRes && ncdCareRes == 0) {
+					response.setResponse("Data already saved");
+				}else {
 					response.setResponse("Unable to save data");
 				}
 

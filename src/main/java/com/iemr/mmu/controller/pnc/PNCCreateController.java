@@ -80,6 +80,8 @@ public class PNCCreateController {
 				Long ancRes = pncServiceImpl.savePNCNurseData(jsnOBJ);
 				if (null != ancRes && ancRes > 0) {
 					response.setResponse("Data saved successfully");
+				}else if (null != ancRes && ancRes == 0) {
+					response.setResponse("Data already saved");
 				} else {
 					response.setResponse("Unable to save data");
 				}

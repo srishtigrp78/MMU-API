@@ -85,7 +85,9 @@ public class NCDCreateController {
 				Long r = ncdScreeningServiceImpl.saveNCDScreeningNurseData(jsonObject,Authorization);
 				if (r != null && r > 0) {
 					response.setResponse("Data saved successfully");
-				} else {
+				} else if(r != null && r == 0){
+					response.setResponse("Data already saved");
+				}else {
 					response.setError(5000, "Unable to save data");
 				}
 			} else {
