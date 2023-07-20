@@ -41,9 +41,9 @@ public class SwaggerConfig {
 	}
 
 	private ApiInfo metaData() {
-		ApiInfo apiInfo = new ApiInfo("Spring Boot REST API", "Spring Boot REST API for Piramal MMUs application",
-				"1.0", "Terms of service", new Contact("Wipro HCIT", "https://www.wipro.com", "mywipro@wipro.com"), "",
-				"");
+		ApiInfo apiInfo = new ApiInfo("MMU API", "The AMRIT Mobile Medical Unit (MMU) is a mobile healthcare service that offers medical assistance and tests, provides medicines, and can collect and transmit data to the AMRIT application, even without an internet connection.",
+				"1.0", "Terms of service", new Contact("AMRIT", "https://psmri.github.io/PSMRI/", "amrit@piramalswasthya.org"), "",
+                "");
 		return apiInfo;
 	}
 }
