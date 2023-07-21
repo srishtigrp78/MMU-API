@@ -21,15 +21,9 @@
 */
 package com.iemr.mmu.service.reports;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import org.apache.commons.collections.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +32,6 @@ import com.iemr.mmu.data.reports.Report_ANC;
 import com.iemr.mmu.data.reports.Report_ANCHighRisk;
 import com.iemr.mmu.data.reports.Report_ChildrenCases;
 import com.iemr.mmu.data.reports.Report_LabTestsResult;
-import com.iemr.mmu.data.reports.Report_ModifiedAnc;
 import com.iemr.mmu.data.reports.Report_PatientAttended;
 import com.iemr.mmu.data.reports.Report_PatientInfo;
 import com.iemr.mmu.data.reports.Report_TestConducted;
@@ -97,8 +90,6 @@ public class ReportCheckPostImpl implements ReportCheckPost {
 						request.getProviderServiceMapID());
 				break;
 
-			
-
 			default:// default statement
 			}
 		} else
@@ -109,8 +100,6 @@ public class ReportCheckPostImpl implements ReportCheckPost {
 	private String report_PatientAttended(Timestamp fromDate, Timestamp toDate, Integer vanID, Integer psmID)
 			throws Exception {
 		ArrayList<Report_PatientAttended> report_PA = new ArrayList<>();
-
-		// Gson gson = new GsonBuilder().serializeNulls().create();
 
 		if (fromDate == null || toDate == null || vanID == null || psmID == null)
 			throw new Exception("Some parameter/parameters is/are missing.");
@@ -127,8 +116,6 @@ public class ReportCheckPostImpl implements ReportCheckPost {
 	private String report_TestConducted(Timestamp fromDate, Timestamp toDate, Integer vanID, Integer psmID)
 			throws Exception {
 		ArrayList<Report_TestConducted> report_TC = new ArrayList<>();
-
-		// Gson gson = new GsonBuilder().serializeNulls().create();
 
 		if (fromDate == null || toDate == null || vanID == null || psmID == null)
 			throw new Exception("Some parameter/parameters is/are missing.");
@@ -164,8 +151,6 @@ public class ReportCheckPostImpl implements ReportCheckPost {
 			throws Exception {
 		ArrayList<Report_PatientInfo> report_PI = new ArrayList<>();
 
-		// Gson gson = new GsonBuilder().serializeNulls().create();
-
 		if (fromDate == null || toDate == null || vanID == null || psmID == null)
 			throw new Exception("Some parameter/parameters is/are missing.");
 		else {
@@ -182,8 +167,6 @@ public class ReportCheckPostImpl implements ReportCheckPost {
 			throws Exception {
 		ArrayList<Report_ChildrenCases> report_PI = new ArrayList<>();
 
-		// Gson gson = new GsonBuilder().serializeNulls().create();
-
 		if (fromDate == null || toDate == null || vanID == null || psmID == null)
 			throw new Exception("Some parameter/parameters is/are missing.");
 		else {
@@ -198,8 +181,6 @@ public class ReportCheckPostImpl implements ReportCheckPost {
 
 	private String report_ANC(Timestamp fromDate, Timestamp toDate, Integer vanID, Integer psmID) throws Exception {
 		ArrayList<Report_ANC> report_ANC = new ArrayList<>();
-
-		// Gson gson = new GsonBuilder().serializeNulls().create();
 
 		if (fromDate == null || toDate == null || vanID == null || psmID == null)
 			throw new Exception("Some parameter/parameters is/are missing.");
@@ -217,8 +198,6 @@ public class ReportCheckPostImpl implements ReportCheckPost {
 			throws Exception {
 		ArrayList<Report_ANCHighRisk> report_ANCHighRisk = new ArrayList<>();
 
-		// Gson gson = new GsonBuilder().serializeNulls().create();
-
 		if (fromDate == null || toDate == null || vanID == null || psmID == null)
 			throw new Exception("Some parameter/parameters is/are missing.");
 		else {
@@ -231,6 +210,4 @@ public class ReportCheckPostImpl implements ReportCheckPost {
 		return OutputMapper.gson().toJson(report_ANCHighRisk);
 	}
 
-	
-	
 }
