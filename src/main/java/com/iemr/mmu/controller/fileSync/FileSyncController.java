@@ -33,16 +33,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.iemr.mmu.service.fileSync.FileSyncService;
 import com.iemr.mmu.utils.response.OutputResponse;
 
+import io.swagger.annotations.ApiOperation;
+
 @RequestMapping("/fileSyncController")
 @RestController
 public class FileSyncController {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
-	
+
 	@Autowired
 	FileSyncService fileSyncService;
-	
+
 	@CrossOrigin()
+	@ApiOperation(value = "Get server credential", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/getServerCredential", headers = "Authorization", method = {
 			RequestMethod.GET }, produces = { "application/json" })
 	public String getServerCredential() {
@@ -50,40 +53,36 @@ public class FileSyncController {
 		OutputResponse response = new OutputResponse();
 		try {
 
-			 String data = fileSyncService.getServerCredential();
-			 response.setResponse(data);
-			 logger.info("getServerCredential response "+response.toString());
+			String data = fileSyncService.getServerCredential();
+			response.setResponse(data);
+			logger.info("getServerCredential response " + response.toString());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			response.setError(e);
 
 		}
-		/**
-		 * sending the response...
-		 */
+
 		return response.toString();
 	}
 
-	
 	@CrossOrigin()
-	@RequestMapping(value = "/syncFiles", headers = "Authorization", method = {
-			RequestMethod.GET }, produces = { "application/json" })
+	@ApiOperation(value = "Sync files", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/syncFiles", headers = "Authorization", method = { RequestMethod.GET }, produces = {
+			"application/json" })
 	public String syncFiles(@RequestHeader(value = "ServerAuthorization") String ServerAuthorization) {
 		logger.info("syncFiles request ");
 		OutputResponse response = new OutputResponse();
 		try {
 
-			 String data = fileSyncService.syncFiles(ServerAuthorization);
-			 response.setResponse(data);
-			 logger.info("syncFiles response "+response.toString());
+			String data = fileSyncService.syncFiles(ServerAuthorization);
+			response.setResponse(data);
+			logger.info("syncFiles response " + response.toString());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			response.setError(e);
 
 		}
-		/**
-		 * sending the response...
-		 */
+
 		return response.toString();
 	}
 }

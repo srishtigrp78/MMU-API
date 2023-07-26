@@ -39,4 +39,30 @@ public interface CSService {
 
 	int updateCancerDiagnosisDetailsByOncologist(CancerDiagnosis cancerDiagnosis);
 
+	public Long saveCancerScreeningNurseData(JsonObject jsnOBJ, String authorization)throws Exception;
+
+	public Long saveCancerScreeningDoctorData(JsonObject jsnOBJ, String authorization)throws Exception;
+
+	public String getBenDataFrmNurseToDocVisitDetailsScreen(Long benRegID, Long visitCode)throws Exception;
+
+	public String getBenDataFrmNurseToDocHistoryScreen(Long benRegID, Long visitCode);
+
+	public String getBenDataFrmNurseToDocVitalScreen(Long benRegID, Long visitCode);
+
+	public String getBenDataFrmNurseToDocExaminationScreen(Long benRegID, Long visitCode);
+
+	public String getBenFamilyHistoryData(Long benRegID);
+
+	public String getBenPersonalHistoryData(Long benRegID);
+
+	public String getBenPersonalDietHistoryData(Long benRegID);
+
+	public String getBenObstetricHistoryData(Long benRegID);
+
+	public String getBenCaseRecordFromDoctorCS(Long benRegID, Long visitCode);
+
+	public int updateBenExaminationDetail(JsonObject jsnOBJ)throws Exception;
+
+	public int updateCancerScreeningDoctorData(JsonObject jsnOBJ)throws Exception;
+
 }

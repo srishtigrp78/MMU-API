@@ -65,10 +65,10 @@ public class FetchCommonController {
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private CommonServiceImpl commonServiceImpl;
-
+	private InputMapper inputMapper = new InputMapper();
 	@Autowired
 	private ServletContext servletContext;
-	
+
 	@Autowired
 	private AESEncryptionDecryption aESEncryptionDecryption;
 
@@ -87,25 +87,8 @@ public class FetchCommonController {
 		this.commonNurseServiceImpl = commonNurseServiceImpl;
 	}
 
-	@Deprecated
 	@CrossOrigin()
-	@ApiOperation(value = "provides doctor worklist", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getDocWorklist" }, method = { RequestMethod.GET })
-	public String getDocWorkList() {
-		OutputResponse response = new OutputResponse();
-		try {
-			String s = commonDoctorServiceImpl.getDocWorkList();
-			response.setResponse(s);
-		} catch (Exception e) {
-			logger.error("Error in getDocWorkList:" + e);
-			response.setError(e);
-		}
-		return response.toString();
-	}
-
-	// doc worklist new
-	@CrossOrigin()
-	@ApiOperation(value = "provides doctor worklist", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Provides doctor worklist", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getDocWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" }, method = {
 			RequestMethod.GET })
 	public String getDocWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
@@ -129,9 +112,8 @@ public class FetchCommonController {
 		return response.toString();
 	}
 
-	// doc worklist new (TM future scheduled beneficiary)
 	@CrossOrigin()
-	@ApiOperation(value = "provides doctor worklist future scheduled for TM", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Provides doctor worklist future scheduled for TM", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getDocWorkListNewFutureScheduledForTM/{providerServiceMapID}/{serviceID}" }, method = {
 			RequestMethod.GET })
 	public String getDocWorkListNewFutureScheduledForTM(
@@ -157,26 +139,8 @@ public class FetchCommonController {
 		return response.toString();
 	}
 
-	@Deprecated
 	@CrossOrigin()
-	@ApiOperation(value = "Get Nurse worklist", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getNurseWorklist" }, method = { RequestMethod.GET })
-	public String getNurseWorkList(@PathVariable("visitCategoryID") Integer visitCategoryID) {
-		OutputResponse response = new OutputResponse();
-		try {
-			String s = commonNurseServiceImpl.getNurseWorkList();
-			response.setResponse(s);
-		} catch (Exception e) {
-			// e.printStackTrace();
-			logger.error("Error in getNurseWorklist:" + e);
-			response.setError(e);
-		}
-		return response.toString();
-	}
-
-	// nurse worklist new
-	@CrossOrigin()
-	@ApiOperation(value = "Get Nurse worklist new", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get nurse worklist new", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getNurseWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" }, method = {
 			RequestMethod.GET })
 	public String getNurseWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
@@ -197,13 +161,12 @@ public class FetchCommonController {
 	}
 
 	/**
-	 * @author SH20094090
 	 * @param providerServiceMapID
 	 * @param vanID
 	 * @return
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get Nurse worklist TM referred", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get nurse worklist TM referred", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getNurseWorklistTMreferred/{providerServiceMapID}/{serviceID}/{vanID}" }, method = {
 			RequestMethod.GET })
 	public String getNurseWorklistTMreferred(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
@@ -224,7 +187,7 @@ public class FetchCommonController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get Doctor Entered Previous significant Findings", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get doctor entered previous significant Ffindings", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getDoctorPreviousSignificantFindings" }, method = { RequestMethod.POST })
 	public String getDoctorPreviousSignificantFindings(
 			@ApiParam(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String comingRequest) {
@@ -242,16 +205,14 @@ public class FetchCommonController {
 				response.setError(5000, "Invalid data!");
 			}
 		} catch (Exception e) {
-			// e.printStackTrace();
 			logger.error("Error while fetching previous significant findings" + e);
 			response.setError(5000, "Error while getting previous significant findings");
 		}
 		return response.toString();
 	}
 
-	// Get Lab technician worklist new
 	@CrossOrigin()
-	@ApiOperation(value = "Get Lab technician worklist new", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get lab technician worklist new", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getLabWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" }, method = {
 			RequestMethod.GET })
 	public String getLabWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
@@ -264,14 +225,12 @@ public class FetchCommonController {
 			else
 				response.setError(5000, "Error while getting lab technician worklist");
 		} catch (Exception e) {
-			// e.printStackTrace();
 			logger.error("Error in getLabWorklist:" + e);
 			response.setError(5000, "Error while getting lab technician worklist");
 		}
 		return response.toString();
 	}
 
-	// Get radiologist worklist new
 	@CrossOrigin()
 	@ApiOperation(value = "Get radiologist worklist new", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getRadiologist-worklist-New/{providerServiceMapID}/{serviceID}/{vanID}" }, method = {
@@ -286,14 +245,12 @@ public class FetchCommonController {
 			else
 				response.setError(5000, "Error while getting radiologist worklist");
 		} catch (Exception e) {
-			// e.printStackTrace();
 			logger.error("Error in getLabWorklist:" + e);
 			response.setError(5000, "Error while getting radiologist worklist");
 		}
 		return response.toString();
 	}
 
-	// Get oncologist worklist new
 	@CrossOrigin()
 	@ApiOperation(value = "Get oncologist worklist new", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getOncologist-worklist-New/{providerServiceMapID}/{serviceID}/{vanID}" }, method = {
@@ -308,14 +265,12 @@ public class FetchCommonController {
 			else
 				response.setError(5000, "Error while getting oncologist worklist");
 		} catch (Exception e) {
-			// e.printStackTrace();
 			logger.error("Error in getLabWorklist:" + e);
 			response.setError(5000, "Error while getting oncologist worklist");
 		}
 		return response.toString();
 	}
 
-	// Get pharma worklist new
 	@CrossOrigin()
 	@ApiOperation(value = "Get pharma worklist new", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getPharma-worklist-New/{providerServiceMapID}/{serviceID}/{vanID}" }, method = {
@@ -330,7 +285,6 @@ public class FetchCommonController {
 			else
 				response.setError(5000, "Error while getting pharma worklist");
 		} catch (Exception e) {
-			// e.printStackTrace();
 			logger.error("Error in getLabWorklist:" + e);
 			response.setError(5000, "Error while getting pharma worklist");
 		}
@@ -338,7 +292,7 @@ public class FetchCommonController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "get case-sheet print data for beneficiary.", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get case-sheet print data for beneficiary.", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/get/Case-sheet/printData" }, method = { RequestMethod.POST })
 	public String getCasesheetPrintData(@RequestBody String comingReq,
 			@RequestHeader(value = "Authorization") String Authorization) {
@@ -357,9 +311,8 @@ public class FetchCommonController {
 		return response.toString();
 	}
 
-	// Start of Fetch Previous Medical History...
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary Past History", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary past history", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenPastHistory" }, method = { RequestMethod.POST })
 	public String getBenPastHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -385,7 +338,7 @@ public class FetchCommonController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary Tobacco History", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary tobacco history", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenTobaccoHistory" }, method = { RequestMethod.POST })
 	public String getBenTobaccoHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -411,7 +364,7 @@ public class FetchCommonController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary Alcohol History", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary alcohol history", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenAlcoholHistory" }, method = { RequestMethod.POST })
 	public String getBenAlcoholHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -437,7 +390,7 @@ public class FetchCommonController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary Allergy History", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary allergy history", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenAllergyHistory" }, method = { RequestMethod.POST })
 	public String getBenANCAllergyHistory(
 			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
@@ -464,7 +417,7 @@ public class FetchCommonController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary Medication History", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary medication history", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenMedicationHistory" }, method = { RequestMethod.POST })
 	public String getBenMedicationHistory(
 			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
@@ -491,7 +444,7 @@ public class FetchCommonController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary Family History", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary family history", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenFamilyHistory" }, method = { RequestMethod.POST })
 	public String getBenFamilyHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -517,7 +470,7 @@ public class FetchCommonController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary Menstrual History", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary menstrual history", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenMenstrualHistory" }, method = { RequestMethod.POST })
 	public String getBenMenstrualHistory(
 			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
@@ -544,7 +497,7 @@ public class FetchCommonController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary past Obstetric History", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary past obstetric history", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenPastObstetricHistory" }, method = { RequestMethod.POST })
 	public String getBenPastObstetricHistory(
 			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
@@ -571,7 +524,7 @@ public class FetchCommonController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary Comorbidity Condition Details", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary comorbidity condition details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenComorbidityConditionHistory" }, method = { RequestMethod.POST })
 	public String getBenANCComorbidityConditionHistory(
 			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
@@ -598,7 +551,7 @@ public class FetchCommonController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary Optional Vaccine Details", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary optional vaccine details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenOptionalVaccineHistory" }, method = { RequestMethod.POST })
 	public String getBenOptionalVaccineHistory(
 			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
@@ -625,7 +578,7 @@ public class FetchCommonController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary Child Vaccine(Immunization) Details", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary child vaccine(Immunization) details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenChildVaccineHistory" }, method = { RequestMethod.POST })
 	public String getBenImmunizationHistory(
 			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
@@ -652,7 +605,7 @@ public class FetchCommonController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary Perinatal History Details", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary perinatal history details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenPerinatalHistory" }, method = { RequestMethod.POST })
 	public String getBenPerinatalHistory(
 			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
@@ -679,7 +632,7 @@ public class FetchCommonController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary Child Feeding History Details", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary child feeding history details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenFeedingHistory" }, method = { RequestMethod.POST })
 	public String getBenFeedingHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -705,7 +658,7 @@ public class FetchCommonController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary Child Development History Details", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary child development history details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenDevelopmentHistory" }, method = { RequestMethod.POST })
 	public String getBenDevelopmentHistory(
 			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
@@ -731,14 +684,11 @@ public class FetchCommonController {
 		return response.toString();
 	}
 
-	// End of Fetch Previous History...
-
 	/***
 	 * fetch ben previous visit details for history case-record(Platform).
-	 * 08-08-2018
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get casesheet History of Beneficiary", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get casesheet history of beneficiary", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBeneficiaryCaseSheetHistory" }, method = { RequestMethod.POST })
 	public String getBeneficiaryCaseSheetHistory(
 			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
@@ -757,9 +707,8 @@ public class FetchCommonController {
 		return response.toString();
 	}
 
-	// TC specialist worklist new
 	@CrossOrigin()
-	@ApiOperation(value = "TCSpecialist", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "TC specialist", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getTCSpecialistWorklist/{providerServiceMapID}/{serviceID}/{userID}" }, method = {
 			RequestMethod.GET })
 	public String getTCSpecialistWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
@@ -784,9 +733,8 @@ public class FetchCommonController {
 		return response.toString();
 	}
 
-	// TC specialist worklist new future scheduled
 	@CrossOrigin()
-	@ApiOperation(value = "TCSpecialist future scheduled", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "TC specialist future scheduled", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = {
 			"/getTCSpecialistWorklistFutureScheduled/{providerServiceMapID}/{serviceID}/{userID}" }, method = {
 					RequestMethod.GET })
@@ -814,69 +762,27 @@ public class FetchCommonController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "download file from file system", consumes = "application/json", produces = "application/octet-stream")
+	@ApiOperation(value = "Download file from file system", consumes = "application/json", produces = "application/octet-stream")
 	@RequestMapping(value = { "/downloadFile" }, method = RequestMethod.POST)
 	public ResponseEntity<InputStreamResource> downloadFile(@RequestBody String requestOBJ, HttpServletRequest request)
 			throws Exception {
 		JSONObject obj = new JSONObject(requestOBJ);
 		try {
-//	/	String contentType = null;
-//		Resource resource = null;
-//		if (file != null) {
-//			JSONObject obj = new JSONObject(file);
-//			if (obj != null && obj.has("fileName") & obj.has("filePath"))
-//				;
-//			resource = commonServiceImpl.loadFileAsResource(obj.getString("fileName"), obj.getString("filePath"));
-//
-////			try {
-////				contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-////			} catch (Exception e) {
-////			}
-//			if (contentType == null)
-//				contentType = "applicaiton/octet-stream";
-//
-//			return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
-//					.contentLength(resource.getFile().getTotalSpace())
-//					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment: filename =" + resource.getFile().getName())
-//					.body(resource);
-//		} else
-//			throw new Exception("Invalid request...!");
-			
-/*
- *
- *
- KA40094929 - Internal path disclosure - Decryption
- *
- *
- */
-			if( obj.has("fileName") && obj.has("filePath") && obj.get("fileName") != null && obj.get("filePath") != null ){
+			if (obj.has("fileName") && obj.has("filePath") && obj.get("fileName") != null
+					&& obj.get("filePath") != null) {
 
-			MediaType mediaType = MediaTypeUtils.getMediaTypeForFileName(this.servletContext,
-					obj.getString("fileName"));
-//			System.out.println("fileName: " + obj.getString("fileName"));
-//			System.out.println("mediaType: " + mediaType);
-			
-			String decryptFilePath = aESEncryptionDecryption.decrypt(obj.getString("filePath"));
+				MediaType mediaType = MediaTypeUtils.getMediaTypeForFileName(this.servletContext,
+						obj.getString("fileName"));
 
-			File file = new File(decryptFilePath);
-			//File file = new File(obj.getString("filePath"));
-			InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+				String decryptFilePath = aESEncryptionDecryption.decrypt(obj.getString("filePath"));
 
-//			String filename = obj.getString("fileName");
-//			HttpHeaders headers = new HttpHeaders();
-//			headers.setAccessControlExposeHeaders(Collections.singletonList("Content-Disposition"));
-//			headers.set("Content-Disposition", "attachment; filename=" + filename);
-//			return new ResponseEntity<>(resource, headers, HttpStatus.OK);
-			
-			return ResponseEntity.ok()
-					// Content-Disposition
-					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + obj.getString("fileName"))
-					// Content-Type
-					.contentType(mediaType)
-					// Contet-Length
-					.contentLength(file.length()).body(resource);
-			}
-			else {
+				File file = new File(decryptFilePath);
+				InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+
+				return ResponseEntity.ok()
+						.header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + obj.getString("fileName"))
+						.contentType(mediaType).contentLength(file.length()).body(resource);
+			} else {
 				throw new Exception("Invalid file name or file path");
 			}
 		} catch (Exception e) {
@@ -887,7 +793,7 @@ public class FetchCommonController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary Physical History", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary physical history", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenPhysicalHistory" }, method = { RequestMethod.POST })
 	public String getBenPhysicalHistory(
 			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
@@ -914,7 +820,7 @@ public class FetchCommonController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary Symptomatic questionnaire answer details", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary symptomatic questionnaire answer details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenSymptomaticQuestionnaireDetails" }, method = { RequestMethod.POST })
 	public String getBenSymptomaticQuestionnaireDetails(
 			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
@@ -941,7 +847,7 @@ public class FetchCommonController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary previous Diabetes history", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary previous diabetes history", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenPreviousDiabetesHistoryDetails" }, method = { RequestMethod.POST })
 	public String getBenPreviousDiabetesHistoryDetails(
 			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
@@ -968,13 +874,12 @@ public class FetchCommonController {
 	}
 
 	/***
-	 * @author DU20091017
 	 * @param comingRequest
 	 * @param Authorization
 	 * @return
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary TM case sheet", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary TM case record", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/get/Case-sheet/TMReferredprintData" }, method = { RequestMethod.POST })
 	public String getTMReferredPrintData(
 			@ApiParam(value = "{\r\n" + "  \"VisitCategory\": \"String\",\r\n" + "  \"benFlowID\": \"Integer\",\r\n"
@@ -989,11 +894,9 @@ public class FetchCommonController {
 				BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingRequest, BeneficiaryFlowStatus.class);
 				String casesheetData = null;
 
-				// to check whether case sheet is already downloaded or not
 				int caseSheetStatus = commonServiceImpl.checkIsCaseSheetDownloaded(obj.getBenVisitCode());
 
-				if (caseSheetStatus == 1 ) {
-					// fetch case sheet from downloaded table
+				if (caseSheetStatus == 1) {
 					casesheetData = commonServiceImpl.getTmCaseSheetOffline(obj);
 				} else if (caseSheetStatus == 0) {
 					casesheetData = commonServiceImpl.getCaseSheetFromCentralServer(comingRequest, ServerAuthorization);
@@ -1004,21 +907,21 @@ public class FetchCommonController {
 					response.setError(5000, "Beneficiary pending for Tele-Consultation");
 			} else
 				response.setError(5000, "Invalid request");
-		}catch (IEMRException e) {
+		} catch (IEMRException e) {
 			logger.error("getTMReferredPrintData iemrexception : " + e);
-			if(e.getErrorCode() != null && e.getErrorCode() == 5002)
+			if (e.getErrorCode() != null && e.getErrorCode() == 5002)
 				response.setError(5003, e.getMessage());
 			else
 				response.setError(5000, e.getMessage());
 		} catch (Exception e) {
 			logger.error("Error on getTMReferredPrintData Exception : " + e);
-			response.setError(5000, "Error in getting case sheet - "+ e.getMessage());
+			response.setError(5000, "Error in getting case sheet - " + e.getMessage());
 		}
 		return response.toString();
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary previous Referral history", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary previous referral history", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenPreviousReferralHistoryDetails" }, method = { RequestMethod.POST })
 	public String getBenPreviousReferralHistoryDetails(
 
@@ -1046,7 +949,7 @@ public class FetchCommonController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary TM case sheet", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary TM case record", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/get/Case-sheet/centralServerTMCaseSheet" }, method = { RequestMethod.POST })
 	public String getTMCaseSheetFromCentralServer(
 			@ApiParam(value = "{\r\n" + "  \"VisitCategory\": \"String\",\r\n" + "  \"benFlowID\": \"Integer\",\r\n"
@@ -1068,43 +971,113 @@ public class FetchCommonController {
 
 			} else
 				response.setError(5000, "Invalid request");
-		} 
-		catch (IEMRException e) {
+		} catch (IEMRException e) {
 			logger.error("getTMCaseSheetFromCentralServer IEMR exception - " + e);
-			if(e.getErrorCode() != null && e.getErrorCode() == 5002)
+			if (e.getErrorCode() != null && e.getErrorCode() == 5002)
 				response.setError(5002, e.getMessage());
 			else
 				response.setError(5000, e.getMessage());
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			logger.error("getTMCaseSheetFromCentralServer Exception - " + e);
-			response.setError(5000,"Error in MMU central server case sheet" + e.getMessage());
+			response.setError(5000, "Error in MMU central server case sheet" + e.getMessage());
 		}
 
 		return response.toString();
 
 	}
+
 	/**
-	 * Author SH20094090
 	 * @param comingRequest
 	 * @return ProviderSpecificMasterData
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Calculate Beneficiary BMI Status", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Calculate beneficiary BMI status", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/calculateBMIStatus" }, method = { RequestMethod.POST })
-	public String calculateBMIStatus(@ApiParam(value = "{\"bmi\":\"double\",\"yearMonth\":\"String\",\"gender\":\"String\"}") @RequestBody String comingRequest) {
+	public String calculateBMIStatus(
+			@ApiParam(value = "{\"bmi\":\"double\",\"yearMonth\":\"String\",\"gender\":\"String\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("calculateBMIStatus request:" + comingRequest);
 		try {
-				String s = commonNurseServiceImpl.calculateBMIStatus(comingRequest);
-				response.setResponse(s);
+			String s = commonNurseServiceImpl.calculateBMIStatus(comingRequest);
+			response.setResponse(s);
 			logger.info("calculateBMIStatus response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, e.getMessage());
-			logger.error("Error in calculateBMIStatus:" +  e.getMessage());
+			logger.error("Error in calculateBMIStatus:" + e.getMessage());
 		}
 		return response.toString();
 	}
 
+	@CrossOrigin
+	@ApiOperation(value = "Update beneficiary status flag", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/benDetailsAndSubmitToNurse" }, method = { RequestMethod.POST })
+	public String saveBeneficiaryVisitDetail(
+			@ApiParam(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String comingRequest) {
+
+		OutputResponse response = new OutputResponse();
+		inputMapper = new InputMapper();
+		logger.info("benDetailsAndSubmitToNurse request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("beneficiaryRegID")) {
+				if (obj.getLong("beneficiaryRegID") > 0) {
+
+					Integer i = commonNurseServiceImpl.updateBeneficiaryStatus('R', obj.getLong("beneficiaryRegID"));
+					if (i != null && i > 0) {
+						response.setResponse("Beneficiary Successfully Submitted to Nurse Work-List.");
+					} else {
+						response.setError(500, "Something went Wrong please try after Some Time !!!");
+					}
+
+				} else {
+					response.setError(500, "Beneficiary Registration ID is Not valid !!!");
+				}
+			} else {
+				response.setError(500, "Beneficiary Registration ID is Not valid !!!");
+			}
+			logger.info("benDetailsAndSubmitToNurse response:" + response);
+		} catch (Exception e) {
+			response.setError(e);
+			logger.error("Error in benDetailsAndSubmitToNurse:" + e);
+		}
+
+		return response.toString();
+	}
+
+	@CrossOrigin
+	@ApiOperation(value = "Extend redis session for 30 minutes", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/extend/redisSession" }, method = { RequestMethod.POST })
+	public String extendRedisSession() {
+		OutputResponse response = new OutputResponse();
+		try {
+			response.setResponse("Session extended for 30 mins");
+		} catch (Exception e) {
+			logger.error("Error while extending running session");
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin
+	@ApiOperation(value = "Soft delete prescribed medicine", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/doctor/delete/prescribedMedicine" }, method = { RequestMethod.POST })
+	public String deletePrescribedMedicine(@RequestBody String requestOBJ) {
+		OutputResponse response = new OutputResponse();
+		try {
+			if (requestOBJ != null) {
+				JSONObject obj = new JSONObject(requestOBJ);
+				String s = commonDoctorServiceImpl.deletePrescribedMedicine(obj);
+				if (s != null)
+					response.setResponse(s);
+				else
+					response.setError(5000, "error while deleting record");
+			} else {
+
+			}
+		} catch (Exception e) {
+			logger.error("Error while deleting prescribed medicine");
+			response.setError(e);
+		}
+		return response.toString();
+	}
 }
