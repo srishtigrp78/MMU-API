@@ -41,4 +41,18 @@ public interface ANCService {
 
 	String getHRPStatus(Long benRegID, Long visitCode) throws Exception;
 
+	public Long saveANCDoctorData(JsonObject jsnOBJ, String authorization)throws Exception;
+
+	public String getBenCaseRecordFromDoctorANC(Long benRegID, Long visitCode)throws Exception;
+
+	public int updateBenANCDetails(JsonObject jsnOBJ)throws Exception;
+
+	public int updateBenANCHistoryDetails(JsonObject jsnOBJ)throws Exception;
+
+	public int updateBenANCVitalDetails(JsonObject jsnOBJ)throws Exception;
+
+	public int updateBenANCExaminationDetails(JsonObject jsnOBJ)throws Exception;
+
+	public Long updateANCDoctorData(JsonObject jsnOBJ, String authorization)throws Exception;
+
 }

@@ -21,9 +21,6 @@
 */
 package com.iemr.mmu.controller.dataSyncActivity;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,11 +41,7 @@ import com.iemr.mmu.utils.response.OutputResponse;
 import io.swagger.annotations.ApiOperation;
 
 /***
- * 
- * @author NE298657
- * @date 16-08-2018
  * @purpose Class used for data sync from van-to-server & server-to-van
- *
  */
 @CrossOrigin
 @RestController
@@ -64,7 +57,7 @@ public class StartSyncActivity {
 	private DownloadDataFromServerTransactionalImpl downloadDataFromServerTransactionalImpl;
 
 	@CrossOrigin()
-	@ApiOperation(value = "start data sync from Van to Server", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Start data sync from van to Server", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/van-to-server" }, method = { RequestMethod.POST })
 	public String dataSyncToServer(@RequestBody String requestOBJ,
 			@RequestHeader(value = "Authorization") String Authorization,
@@ -88,12 +81,11 @@ public class StartSyncActivity {
 			logger.error("Error in data sync : " + e);
 			response.setError(e);
 		}
-		// System.out.println(LocalDateTime.now());
 		return response.toStringWithSerialization();
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "get data sync group details", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get data sync group details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getSyncGroupDetails" }, method = { RequestMethod.GET })
 	public String getSyncGroupDetails() {
 		OutputResponse response = new OutputResponse();
@@ -111,7 +103,6 @@ public class StartSyncActivity {
 	}
 
 	/**
-	 * 
 	 * @return Masters download in van from central server
 	 */
 	@CrossOrigin()
@@ -153,12 +144,6 @@ public class StartSyncActivity {
 	public String checkMastersDownloadProgress() {
 		OutputResponse response = new OutputResponse();
 		try {
-//			Map<String, Object> resultMap = new HashMap<>();
-//			resultMap.put("percentage", Math.floor(
-//					((DownloadDataFromServerImpl.progressCounter * 100) / DownloadDataFromServerImpl.totalCounter)));
-//			resultMap.put("failedMasterCount", DownloadDataFromServerImpl.failedCounter);
-//			resultMap.put("failedMasters", DownloadDataFromServerImpl.failedMasters);
-//			response.setResponse(new Gson().toJson(resultMap));
 			response.setResponse(new Gson().toJson(downloadDataFromServerImpl.getDownloadStatus()));
 		} catch (Exception e) {
 			logger.error("Error in Master data Download progress check : " + e);
@@ -168,7 +153,7 @@ public class StartSyncActivity {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "getVanDetailsForMasterDownload", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get van details for master download", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getVanDetailsForMasterDownload" }, method = { RequestMethod.GET })
 	public String getVanDetailsForMasterDownload() {
 		OutputResponse response = new OutputResponse();
@@ -186,7 +171,7 @@ public class StartSyncActivity {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "call Central API To Generate BenID And import To Local", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Call central API to generate beneficiary id and import to local", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/callCentralAPIToGenerateBenIDAndimportToLocal" }, method = { RequestMethod.POST })
 	public String callCentralAPIToGenerateBenIDAndimportToLocal(@RequestBody String requestOBJ,
 			@RequestHeader(value = "Authorization") String Authorization,
@@ -211,7 +196,7 @@ public class StartSyncActivity {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "call Central API To download transaction data To Local", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Call central API to download transaction data to local", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/downloadTransactionToLocal" }, method = { RequestMethod.POST })
 	public String downloadTransactionToLocal(@RequestBody String requestOBJ,
 			@RequestHeader(value = "ServerAuthorization") String ServerAuthorization) {

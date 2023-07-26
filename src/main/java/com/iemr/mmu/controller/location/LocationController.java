@@ -65,7 +65,8 @@ public class LocationController {
 		logger.info("stateMaster" + response.toString());
 		return response.toString();
 	}
-	@ApiOperation(value = "country master for beneficiary", consumes = "application/json", produces = "application/json")
+
+	@ApiOperation(value = "Country master for beneficiary", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/get/countryMaster", method = RequestMethod.GET)
 	public String getCountryMaster() {
 		logger.info("get country master ...");
@@ -75,11 +76,10 @@ public class LocationController {
 			response.setResponse(s);
 		else
 			response.setError(5000, "Error while getting country");
-		// logger.info("country list" + response.toString());
 		return response.toString();
 	}
 
-	@ApiOperation(value = "country city master for beneficiary", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Country city master for beneficiary", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/get/countryCityMaster/{countryID}/", method = RequestMethod.GET)
 	public String getCountryCityMaster(@PathVariable("countryID") Integer countryID) {
 		logger.info("get country citymaster ...");
@@ -89,26 +89,10 @@ public class LocationController {
 			response.setResponse(s);
 		else
 			response.setError(5000, "Error while getting country city");
-		// logger.info("country list" + response.toString());
 		return response.toString();
 	}
 
-	@Deprecated
-	@ApiOperation(value = "Zone master for beneficiary", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = "/get/zoneMaster/{providerServiceMapID}/", method = RequestMethod.GET)
-	public String getZoneMaster(@PathVariable("providerServiceMapID") Integer providerServiceMapID) {
-		logger.info("get Zone master ...");
-		response = new OutputResponse();
-		String s = locationServiceImpl.getZoneList(providerServiceMapID);
-		if (s != null)
-			response.setResponse(s);
-		else
-			response.setError(5000, "Error while getting zones");
-		logger.info("zoneMaster" + response.toString());
-		return response.toString();
-	}
-
-	@ApiOperation(value = "District master from stateID", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "District master from state id", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/get/districtMaster/{stateID}", method = RequestMethod.GET)
 	public String getDistrictMaster(@PathVariable("stateID") Integer stateID) {
 		logger.info("get District master ...");
@@ -122,7 +106,7 @@ public class LocationController {
 		return response.toString();
 	}
 
-	@ApiOperation(value = "District Block mast", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "District block master", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/get/districtBlockMaster/{districtID}", method = RequestMethod.GET)
 	public String getDistrictBlockMaster(@PathVariable("districtID") Integer districtID) {
 		logger.info("get District Block master districtID ..." + districtID);
@@ -135,8 +119,6 @@ public class LocationController {
 		logger.info("districtBlockMaster" + response.toString());
 		return response.toString();
 	}
-	
-	
 
 	@ApiOperation(value = "Village master from block id", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/get/villageMasterFromBlockID/{blockID}", method = RequestMethod.GET)
@@ -152,74 +134,8 @@ public class LocationController {
 		return response.toString();
 	}
 
-	@Deprecated
-	@ApiOperation(value = "Parking Place master for beneficiary", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = "/get/parkingPlaceMaster/{providerServiceMapID}", method = RequestMethod.GET)
-	public String getParkingPlaceMaster(@PathVariable("providerServiceMapID") Integer providerServiceMapID) {
-		logger.info("get District Block master providerServiceMapID ..." + providerServiceMapID);
-		response = new OutputResponse();
-		String s = locationServiceImpl.getParkingPlaceList(providerServiceMapID);
-		if (s != null)
-			response.setResponse(s);
-		else
-			response.setError(5000, "No Parking Place Master Data Available !!!");
-		logger.info("parkingPlaceMaster" + response.toString());
-		return response.toString();
-	}
-
-	@Deprecated
-	@ApiOperation(value = "Service Point master for beneficiary", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = "/get/servicePointMaster/{parkingPlaceID}", method = RequestMethod.GET)
-	public String getServicePointMaster(@PathVariable("parkingPlaceID") Integer parkingPlaceID) {
-		logger.info("get Servicepoint master parkingPlaceID ..." + parkingPlaceID);
-		response = new OutputResponse();
-		String s = locationServiceImpl.getServicePointPlaceList(parkingPlaceID);
-		if (s != null)
-			response.setResponse(s);
-		else
-			response.setError(5000, "No servicePoint Master Data Available !!!");
-		logger.info("servicePointMaster" + response.toString());
-		return response.toString();
-	}
-
-	/***
-	 * old, 11-10-2018 based on servicepoint id and provider service map id get
-	 * other location details.
-	 * 
-	 * @param comingRequest
-	 * @return
-	 */
-	@Deprecated
 	@CrossOrigin()
-	@RequestMapping(value = "/getLocDetailsBasedOnSpIDAndPsmID_old", method = { RequestMethod.POST }, produces = {
-			"application/json" })
-	public String getLocDetailsBasedOnSpIDAndPsmID(@RequestBody String comingRequest) {
-		OutputResponse response = new OutputResponse();
-		try {
-			JSONObject obj = new JSONObject(comingRequest);
-			if (obj != null && obj.has("spID") && obj.has("spPSMID") && obj.get("spID") != null
-					&& obj.get("spPSMID") != null) {
-				String s = locationServiceImpl.getLocDetails(obj.getInt("spID"), obj.getInt("spPSMID"));
-
-				response.setResponse(s);
-			} else {
-				response.setError(5000, "Invalid request");
-			}
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			response.setError(5000, "Error while getting location data");
-		}
-		return response.toString();
-	}
-
-	/***
-	 * New, 11-10-2018 based on servicepoint id and provider service map id get
-	 * other location details.
-	 * 
-	 * @param comingRequest
-	 * @return
-	 */
-	@CrossOrigin()
+	@ApiOperation(value = "Get location details based on SP id and PSM id", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/getLocDetailsBasedOnSpIDAndPsmID", method = { RequestMethod.POST }, produces = {
 			"application/json" })
 	public String getLocDetailsBasedOnSpIDAndPsmIDNew(@RequestBody String comingRequest) {
@@ -240,34 +156,19 @@ public class LocationController {
 		}
 		return response.toString();
 	}
-	
-/*New code-fetch villages*/
-	
-	/*@RequestMapping(value = "/get/VillageStateMaster", method = RequestMethod.GET)
-	public String getVillageStateMaster(@PathVariable("stateID") Integer stateID) {
-		
-		response = new OutputResponse();
-		String s = locationServiceImpl.getVillageStateList(stateID);
-		if (s != null)
-			response.setResponse(s);
-		else
-			response.setError(5000, "Error while getting district blocks");
-		
-		return response.toString();
-	}*/
-	
-	/*New code-fetch districts and taluks */
+
 	@CrossOrigin()
+	@ApiOperation(value = "Get district taluk master", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/get/DistrictTalukMaster/{districtBranchID}", method = RequestMethod.GET)
 	public String getDistrictTalukMaster(@PathVariable("districtBranchID") Integer districtBranchID) {
-		
+
 		response = new OutputResponse();
 		String s = locationServiceImpl.getDistrictTalukList(districtBranchID);
 		if (s != null)
 			response.setResponse(s);
 		else
 			response.setError(5000, "Error while getting district blocks");
-		
+
 		return response.toString();
 	}
 }

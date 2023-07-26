@@ -41,16 +41,12 @@ import com.iemr.mmu.utils.response.OutputResponse;
 import io.swagger.annotations.ApiOperation;
 
 /***
- * 
- * @author NE298657
- * @date 16-08-2018
  * @operation Class used for data sync from van-to-server & server-to-van
- *
  */
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/dataSync", headers = "Authorization")
-public class MMU_DataSync_VanToServer {
+public class MMUDataSyncVanToServer {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
 	@Autowired
@@ -61,7 +57,7 @@ public class MMU_DataSync_VanToServer {
 	private FetchDownloadDataImpl fetchDownloadDataImpl;
 
 	@CrossOrigin()
-	@ApiOperation(value = "sync data from van-to-server", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Sync data from van-to-server", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/van-to-server" }, method = { RequestMethod.POST })
 	public String dataSyncToServer(@RequestBody String requestOBJ,
 			@RequestHeader(value = "Authorization") String Authorization) {
@@ -80,7 +76,7 @@ public class MMU_DataSync_VanToServer {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "download data from server-to-van", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Download data from server-to-van", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/server-to-van" }, method = { RequestMethod.POST })
 	public String dataDownloadFromServer(@RequestBody SyncDownloadMaster syncDownloadMaster,
 			@RequestHeader(value = "Authorization") String Authorization) {
@@ -103,7 +99,7 @@ public class MMU_DataSync_VanToServer {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "download data from server-to-van Transactional", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Download data from server-to-van transactional", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/server-to-van-transactional" }, method = { RequestMethod.POST })
 	public String dataDownloadFromServerTransactional(@RequestBody SyncUploadDataDigester syncUploadDataDigester,
 			@RequestHeader(value = "Authorization") String Authorization) {
@@ -120,10 +116,9 @@ public class MMU_DataSync_VanToServer {
 				response.setError(5000, "Invalid request");
 			}
 		} catch (Exception e) {
-			if(syncUploadDataDigester != null)
-			{
-			logger.error(e + " - Error in data download for table " + syncUploadDataDigester.getSchemaName() + "."
-					+ syncUploadDataDigester.getTableName());
+			if (syncUploadDataDigester != null) {
+				logger.error(e + " - Error in data download for table " + syncUploadDataDigester.getSchemaName() + "."
+						+ syncUploadDataDigester.getTableName());
 			}
 			response.setError(e);
 		}
@@ -131,7 +126,7 @@ public class MMU_DataSync_VanToServer {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "update processed flag at central post successfull download ", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Update processed flag at central post successfull download", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/updateProcessedFlagPostDownload" }, method = { RequestMethod.POST })
 	public String updateProcessedFlagPostDownload(@RequestBody SyncUploadDataDigester syncUploadDataDigester,
 			@RequestHeader(value = "Authorization") String Authorization) {
@@ -150,11 +145,10 @@ public class MMU_DataSync_VanToServer {
 				response.setError(5000, "Invalid request");
 			}
 		} catch (Exception e) {
-			if(syncUploadDataDigester != null)
-			{
-			logger.error(e + " - Error while updating flag. Please contact administrator "
-					+ syncUploadDataDigester.getSchemaName() + "." + syncUploadDataDigester.getTableName() + "."
-					+ syncUploadDataDigester.getIds());
+			if (syncUploadDataDigester != null) {
+				logger.error(e + " - Error while updating flag. Please contact administrator "
+						+ syncUploadDataDigester.getSchemaName() + "." + syncUploadDataDigester.getTableName() + "."
+						+ syncUploadDataDigester.getIds());
 			}
 			response.setError(e);
 		}
