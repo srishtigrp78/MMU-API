@@ -45,7 +45,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @CrossOrigin
 @RequestMapping(value = "/labTechnician", headers = "Authorization")
-public class LabTechnicianCreateController {
+public class LabTechnicianController {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
