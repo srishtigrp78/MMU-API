@@ -46,7 +46,7 @@ import io.swagger.annotations.ApiOperation;
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/dataSync", headers = "Authorization")
-public class MMU_DataSync_VanToServer {
+public class MMUDataSyncVanToServer {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
 	@Autowired

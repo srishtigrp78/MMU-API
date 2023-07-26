@@ -59,7 +59,7 @@ import io.swagger.annotations.ApiParam;
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/common", headers = "Authorization")
-public class FetchCommonController {
+public class CommonController {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;

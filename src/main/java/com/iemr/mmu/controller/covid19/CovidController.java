@@ -56,7 +56,7 @@ import io.swagger.annotations.ApiParam;
 @CrossOrigin
 @RestController
 @RequestMapping(value = "pandemic/covid", headers = "Authorization")
-public class CovidCreateController {
+public class CovidController {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 

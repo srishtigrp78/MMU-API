@@ -49,7 +49,7 @@ import io.swagger.annotations.ApiParam;
 @RestController
 @CrossOrigin
 @RequestMapping(value = "/generalOPD", headers = "Authorization")
-public class GeneralOPDCreateController {
+public class GeneralOPDController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
 	private GeneralOPDServiceImpl generalOPDServiceImpl;

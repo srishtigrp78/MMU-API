@@ -52,8 +52,8 @@ import io.swagger.annotations.ApiParam;
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/CS-cancerScreening", headers = "Authorization")
-public class CancerScreeningCreateController {
-	private Logger logger = LoggerFactory.getLogger(CancerScreeningCreateController.class);
+public class CancerScreeningController {
+	private Logger logger = LoggerFactory.getLogger(CancerScreeningController.class);
 	private OutputResponse response;
 	private InputMapper inputMapper = new InputMapper();
 	private CSService cSService;
