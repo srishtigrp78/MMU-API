@@ -37,8 +37,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.iemr.mmu.data.registrar.BeneficiaryData;
 import com.iemr.mmu.data.registrar.V_BenAdvanceSearch;
+import com.iemr.mmu.data.registrar.WrapperBeneficiaryRegistration;
 import com.iemr.mmu.service.common.master.RegistrarServiceMasterDataImpl;
+import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.service.registrar.RegistrarServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
@@ -54,12 +58,13 @@ import io.swagger.annotations.ApiParam;
  * Objective: Performs QuickSearch, AdvancedSearch and fetching Beneficiary
  * Details
  */
-public class FetchRegistrarController {
-	private Logger logger = LoggerFactory.getLogger(FetchRegistrarController.class);
+public class RegistrarController {
+	private Logger logger = LoggerFactory.getLogger(RegistrarController.class);
 	private InputMapper inputMapper = new InputMapper();
 	private RegistrarServiceImpl registrarServiceImpl;
 	private RegistrarServiceMasterDataImpl registrarServiceMasterDataImpl;
 	private NurseServiceImpl nurseServiceImpl;
+	private CommonNurseServiceImpl commonNurseServiceImpl;
 
 	@Autowired
 	public void setRegistrarServiceImpl(RegistrarServiceImpl registrarServiceImpl) {
@@ -76,9 +81,8 @@ public class FetchRegistrarController {
 		this.nurseServiceImpl = nurseServiceImpl;
 	}
 
-	// Registrar Work List API .....
 	@CrossOrigin()
-	@ApiOperation(value = "Get Registrar workList Data", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get registrar worklist data", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/registrarWorkListData" }, method = { RequestMethod.POST })
 	public String getRegistrarWorkList(@ApiParam(value = "{\"spID\": \"Integer\"}") @RequestBody String comingRequest)
 			throws JSONException {
@@ -88,8 +92,6 @@ public class FetchRegistrarController {
 
 			JSONObject obj = new JSONObject(comingRequest);
 
-			// wrapperRegWorklistArray =
-			// this.registrarServiceImpl.getRegWorkList(obj.getInt("spID"));
 			response.setResponse(this.registrarServiceImpl.getRegWorkList(obj.getInt("spID")));
 			logger.info("getRegistrarWorkList response:" + response);
 		} catch (Exception e) {
@@ -99,9 +101,8 @@ public class FetchRegistrarController {
 		return response.toString();
 	}
 
-	// Registrar Quick search .....
 	@CrossOrigin()
-	@ApiOperation(value = "Search for the Beneficiary by BeneficiaryID", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Search for the beneficiary by beneficiary id", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/quickSearch" }, method = { RequestMethod.POST })
 	public String quickSearchBeneficiary(
 			@ApiParam(value = "{\"benID\": \"String\"}") @RequestBody String comingRequest) {
@@ -122,9 +123,8 @@ public class FetchRegistrarController {
 		return response.toString();
 	}
 
-	// Registrar Advance search .....
 	@CrossOrigin()
-	@ApiOperation(value = "Search for the Beneficiary based on provided data", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Search for the beneficiary based on provided data", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/advanceSearch" }, method = { RequestMethod.POST })
 	public String advanceSearch(
 			@ApiParam(value = "{\"firstName\": \"String\", \"lastName\": \"String\", \"phoneNo\": \"String\","
@@ -133,7 +133,6 @@ public class FetchRegistrarController {
 		OutputResponse response = new OutputResponse();
 		logger.info("advanceSearch request :" + comingRequest);
 		try {
-			// JSONObject obj = new JSONObject(comingRequest);
 			V_BenAdvanceSearch v_BenAdvanceSearch = inputMapper.gson().fromJson(comingRequest,
 					V_BenAdvanceSearch.class);
 			response.setResponse(registrarServiceImpl.getAdvanceSearchBenData(v_BenAdvanceSearch));
@@ -146,9 +145,8 @@ public class FetchRegistrarController {
 		return response.toString();
 	}
 
-	// API for left side ben data
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary Details of given beneficiaryRegID", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary details of given beneficiary registration id", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/get/benDetailsByRegID" }, method = { RequestMethod.POST })
 	public String getBenDetailsByRegID(
 			@ApiParam(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String comingRequest) {
@@ -179,7 +177,7 @@ public class FetchRegistrarController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary Details", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/get/beneficiaryDetails" }, method = { RequestMethod.POST })
 	public String getBeneficiaryDetails(
 			@ApiParam(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String requestObj) {
@@ -215,7 +213,7 @@ public class FetchRegistrarController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary Image", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary image", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/get/beneficiaryImage" }, method = { RequestMethod.POST })
 	public String getBeneficiaryImage(
 			@ApiParam(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String requestObj) {
@@ -241,9 +239,8 @@ public class FetchRegistrarController {
 		return response.toString();
 	}
 
-	// beneficiary quick search new integrated with common and identity
 	@CrossOrigin()
-	@ApiOperation(value = "Search beneficiary for BeneficiaryID or beneficiary Phone No", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Search beneficiary for beneficiary id or beneficiary phone no", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/quickSearchNew" }, method = { RequestMethod.POST })
 	public String quickSearchNew(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
@@ -265,9 +262,8 @@ public class FetchRegistrarController {
 
 	}
 
-	// beneficiary Advance search new integrated with common and identity
 	@CrossOrigin()
-	@ApiOperation(value = "Search beneficiary advance Search New", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Search beneficiary advance search new", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/advanceSearchNew" }, method = { RequestMethod.POST })
 	public String advanceSearchNew(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
@@ -289,9 +285,8 @@ public class FetchRegistrarController {
 
 	}
 
-	// Get Beneficiary Details for left side panel of given beneficiaryRegID new
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary Details for left side panel of given beneficiaryRegID", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary details for left side panel of given beneficiary registration id", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/get/benDetailsByRegIDForLeftPanelNew" }, method = { RequestMethod.POST })
 	public String getBenDetailsForLeftSidePanelByRegID(
 			@ApiParam(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String comingRequest,
@@ -317,14 +312,13 @@ public class FetchRegistrarController {
 			logger.info("getBenDetailsByRegID response :" + response);
 		} catch (Exception e) {
 			logger.error("Error in getBenDetailsByRegID :" + e);
-			response.setError(5000, "Error while getting beneficiary details" );
+			response.setError(5000, "Error while getting beneficiary details");
 		}
 		return response.toString();
 	}
 
-	// new api for ben image
 	@CrossOrigin()
-	@ApiOperation(value = "get beneficiary image", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary image", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenImage" }, method = { RequestMethod.POST })
 	public String getBenImage(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
@@ -338,5 +332,189 @@ public class FetchRegistrarController {
 			return response.toString();
 		}
 
+	}
+
+	@CrossOrigin()
+	@ApiOperation(value = "Register a new beneficiary", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/registrarBeneficaryRegistration" }, method = { RequestMethod.POST })
+	public String createBeneficiary(
+			@ApiParam(value = "{\"benD\":{\"firstName\": \"String\", \"lastName\": \"String\", \"gender\": \"Short\","
+					+ "\"dob\": \"Timestamp\", \"maritalStatus\": \"Short\", \"fatherName\": \"String\", \"motherName\": \"String\","
+					+ "\"husbandName\": \"String\", \"image\": \"String\", \"aadharNo\": \"String\", \"income\": \"Short\", "
+					+ "\"literacyStatus\": \"String\", \"educationQualification\": \"Short\", \"occupation\": \"Short\", \"phoneNo\": \"String\","
+					+ "\"emailID\": \"Integer\", \"bankName\": \"String\", \"branchName\": \"String\", \"IFSCCode\": \"String\", \"accountNumber\": \"String\","
+					+ "\"community\": \"Short\", \"religion\": \"Short\", \"blockID\": \"Integer\", \"blockName\": \"String\","
+					+ "\"habitation\": \"String\", \"villageID\": \"Integer\", \"villageName\": \"String\", \"districtID\": \"Integer\","
+					+ "\"districtName\": \"String\", \"stateID\": \"Integer\", \"stateName\": \"String\", \"countryID\": \"Integer\","
+					+ "\"govID\": [{\"type\": \"String\",\"value\": \"String\"}], \"ageAtMarriage\": \"Integer\", \"createdBy\": \"String\", "
+					+ "\"servicePointID\": \"Integer\"}}") @RequestBody String comingRequest,
+			@RequestHeader(value = "Authorization") String Authorization) {
+
+		OutputResponse response = new OutputResponse();
+		try {
+
+			WrapperBeneficiaryRegistration wrapperBeneficiaryRegistrationOBJ = InputMapper.gson()
+					.fromJson(comingRequest, WrapperBeneficiaryRegistration.class);
+			logger.info("createBeneficiary request:" + comingRequest);
+			JsonObject benD = wrapperBeneficiaryRegistrationOBJ.getBenD();
+
+			if (benD == null || benD.isJsonNull()) {
+				response.setError(0, "Invalid input data");
+			} else {
+				BeneficiaryData benData = registrarServiceImpl.createBeneficiary(benD);
+
+				if (benData != null) {
+					Long benRegID = benData.getBeneficiaryRegID();
+					Long benDemoID = registrarServiceImpl.createBeneficiaryDemographic(benD, benRegID);
+					Long benPhonMapID = registrarServiceImpl.createBeneficiaryPhoneMapping(benD, benRegID);
+
+					int benGovIdMapID = registrarServiceImpl.createBenGovIdMapping(benD, benRegID);
+
+					Long benbenDemoOtherID = registrarServiceImpl.createBeneficiaryDemographicAdditional(benD,
+							benRegID);
+
+					Long benImageID = registrarServiceImpl.createBeneficiaryImage(benD, benRegID);
+
+					if (benRegID > 0 && benDemoID > 0 && benPhonMapID > 0 && benbenDemoOtherID > 0 && benImageID > 0) {
+						Integer i = commonNurseServiceImpl.updateBeneficiaryStatus('R', benRegID);
+						if (benData.getBeneficiaryID() != null) {
+							response.setResponse(benData.getBeneficiaryID());
+						} else {
+							response.setResponse("Registration Done. Beneficiary ID is : " + benRegID);
+						}
+					} else {
+						response.setError(500, "Something Went-Wrong");
+					}
+				} else {
+					response.setError(500, "Something Went-Wrong");
+				}
+			}
+			logger.info("createBeneficiary response:" + response);
+		} catch (Exception e) {
+			logger.error("Error in createBeneficiary :" + e);
+			response.setError(e);
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin()
+	@ApiOperation(value = "Register a new beneficiary API", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/registrarBeneficaryRegistrationNew" }, method = { RequestMethod.POST })
+	public String registrarBeneficaryRegistrationNew(@RequestBody String comingReq,
+			@RequestHeader(value = "Authorization") String Authorization) {
+		String s;
+		OutputResponse response = new OutputResponse();
+		try {
+			s = registrarServiceImpl.registerBeneficiary(comingReq, Authorization);
+			return s;
+		} catch (Exception e) {
+			logger.error("Error in registration" + e);
+			response.setError(5000, "Error in registration; please contact administrator");
+			return response.toString();
+		}
+
+	}
+
+	@CrossOrigin()
+	@ApiOperation(value = "Update registered beneficiary data", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/BeneficiaryDetails" }, method = { RequestMethod.POST })
+	public String updateBeneficiary(
+			@ApiParam(value = "{\"benD\": {\"beneficiaryRegID\": \"Long\", \"firstName\": \"String\", \"lastName\": \"String\", \"gender\": \"Short\","
+					+ "\"dob\": \"Timestamp\", \"maritalStatus\": \"Short\", \"fatherName\": \"String\", \"motherName\": \"String\","
+					+ "\"husbandName\": \"String\", \"image\": \"String\", \"aadharNo\": \"String\", \"income\": \"Short\", "
+					+ "\"literacyStatus\": \"String\", \"educationQualification\": \"Short\", \"occupation\": \"Short\", \"phoneNo\": \"String\","
+					+ "\"emailID\": \"Integer\", \"bankName\": \"String\", \"branchName\": \"String\", \"IFSCCode\": \"String\", \"accountNumber\": \"String\","
+					+ "\"community\": \"Short\", \"religion\": \"Short\", \"blockID\": \"Integer\", \"blockName\": \"String\", \"habitation\": \"String\", "
+					+ "\"villageID\": \"Integer\", \"villageName\": \"String\", \"districtID\": \"Integer\", \"districtName\": \"String\", \"stateID\": \"Integer\", "
+					+ "\"stateName\": \"String\", \"govID\": [{\"benGovMapID\": \"Long\", \"type\": \"String\",\"value\": \"String\"},"
+					+ "{\"type\": \"String\",\"value\": \"String\"}], \"ageAtMarriage\": \"Integer\", \"createdBy\": \"String\", "
+					+ "\"servicePointID\": \"Integer\", \"govtIdentityNo\": \"Integer\", \"govtIdentityTypeID\": \"Integer\", \"modifiedBy\": \"String\"}}") @RequestBody String comingRequest) {
+
+		OutputResponse response = new OutputResponse();
+		try {
+
+			WrapperBeneficiaryRegistration wrapperBeneficiaryRegistrationOBJ = InputMapper.gson()
+					.fromJson(comingRequest, WrapperBeneficiaryRegistration.class);
+			logger.info("updateBeneficiary request:" + comingRequest);
+			JsonObject benD = wrapperBeneficiaryRegistrationOBJ.getBenD();
+
+			if (benD == null || benD.isJsonNull() || !benD.has("beneficiaryRegID")) {
+				response.setError(0, "Data Not Sufficient...");
+			} else {
+				int benData = registrarServiceImpl.updateBeneficiary(benD);
+				if (benData != 0 && !benD.get("beneficiaryRegID").isJsonNull()) {
+					Long benRegID = benD.get("beneficiaryRegID").getAsLong();
+					int benDemoUpdateRes = registrarServiceImpl.updateBeneficiaryDemographic(benD, benRegID);
+					int benPhonMapUpdateRes = registrarServiceImpl.updateBeneficiaryPhoneMapping(benD, benRegID);
+
+					int benGovIdMapUpdateRes = registrarServiceImpl.updateBenGovIdMapping(benD, benRegID);
+
+					int benbenDemoOtherUpdateRes = registrarServiceImpl.updateBeneficiaryDemographicAdditional(benD,
+							benRegID);
+
+					int benImageUpdateRes = registrarServiceImpl.updateBeneficiaryImage(benD, benRegID);
+
+					if (benRegID >= 0 && benDemoUpdateRes >= 0 && benPhonMapUpdateRes >= 0
+							&& benbenDemoOtherUpdateRes >= 0 && benImageUpdateRes >= 0) {
+						Integer i = commonNurseServiceImpl.updateBeneficiaryStatus('R', benRegID);
+						response.setResponse("Beneficiary Details updated successfully!!!");
+
+					} else {
+						response.setError(500, "Something Went-Wrong");
+					}
+				} else {
+					response.setError(500, "Something Went-Wrong");
+				}
+			}
+			logger.info("updateBeneficiary response:" + response);
+		} catch (Exception e) {
+			logger.error("Error in updateBeneficiary :" + e);
+			response.setError(e);
+		}
+		return response.toString();
+	}
+
+	@ApiOperation(value = "Registrar will submit a beneficiary to nurse for revisit", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/create/BenReVisitToNurse" }, method = { RequestMethod.POST })
+	public String createReVisitForBenToNurse(@RequestBody String requestOBJ) {
+		OutputResponse response = new OutputResponse();
+		try {
+			int i = registrarServiceImpl.searchAndSubmitBeneficiaryToNurse(requestOBJ);
+			if (i > 0) {
+				if (i == 1)
+					response.setResponse("Beneficiary moved to nurse worklist");
+				else
+					response.setError(5000, "Beneficiary already present in nurse worklist");
+			} else {
+				response.setError(5000, "Error while moving beneficiary to nurse worklist");
+			}
+		} catch (Exception e) {
+			logger.error("Error while creating re-visit " + e);
+			response.setError(5000, "Error while moving beneficiary to nurse worklist");
+		}
+		return response.toString();
+	}
+
+	@ApiOperation(value = "Beneficiary edit, save or submit", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/BeneficiaryUpdate" }, method = { RequestMethod.POST })
+	public String beneficiaryUpdate(@RequestBody String requestOBJ,
+			@RequestHeader(value = "Authorization") String Authorization) {
+		OutputResponse response = new OutputResponse();
+		Integer s = null;
+		try {
+			s = registrarServiceImpl.updateBeneficiary(requestOBJ, Authorization);
+			if (s != null) {
+				if (s == 1)
+					response.setResponse("Beneficiary details updated successfully");
+				else
+					response.setResponse(
+							"Beneficiary details updated successfully but already present in nurse work list");
+			} else {
+				response.setError(5000, "Error while updating beneficiary details");
+			}
+		} catch (Exception e) {
+			response.setError(5000, "Error in beneficiary details update");
+		}
+		return response.toString();
 	}
 }

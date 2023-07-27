@@ -31,11 +31,11 @@ import org.junit.Test;
 import org.mockito.Matchers;
 
 import com.google.gson.JsonObject;
-import com.iemr.mmu.controller.ncdCare.NCDCareCreateController;
+import com.iemr.mmu.controller.ncdCare.NCDCareController;
 import com.iemr.mmu.service.ncdCare.NCDCareServiceImpl;
 
 public class TestNCDCareController {
-	private static NCDCareCreateController createController = spy(NCDCareCreateController.class);
+	private static NCDCareController createController = spy(NCDCareController.class);
 	private static NCDCareServiceImpl ncdCareServiceImplMock = mock(NCDCareServiceImpl.class);
 
 	private static String nurseObjPve;

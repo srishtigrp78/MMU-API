@@ -32,10 +32,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.iemr.mmu.controller.registrar.master.RegistrarController;
+import com.iemr.mmu.controller.registrar.main.RegistrarController;
 import com.iemr.mmu.service.login.IemrMmuLoginServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
+
+import io.swagger.annotations.ApiOperation;
 
 @RequestMapping(value = "/user", headers = "Authorization")
 @RestController
@@ -52,6 +54,7 @@ public class IemrMmuLoginController {
 	}
 
 	@CrossOrigin()
+	@ApiOperation(value = "Get user service point van details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/getUserServicePointVanDetails", method = { RequestMethod.POST }, produces = {
 			"application/json" })
 	public String getUserServicePointVanDetails(@RequestBody String comingRequest) {
@@ -63,7 +66,6 @@ public class IemrMmuLoginController {
 			String responseData = iemrMmuLoginServiceImpl.getUserServicePointVanDetails(obj.getInt("userID"));
 			response.setResponse(responseData);
 		} catch (Exception e) {
-			// e.printStackTrace();
 			response.setError(5000, "Error while getting service points and van data");
 			logger.error("get User SP and van details failed with " + e.getMessage(), e);
 
@@ -73,6 +75,7 @@ public class IemrMmuLoginController {
 	}
 
 	@CrossOrigin()
+	@ApiOperation(value = "Get service point villages", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/getServicepointVillages", method = { RequestMethod.POST }, produces = {
 			"application/json" })
 	public String getServicepointVillages(@RequestBody String comingRequest) {
@@ -84,7 +87,6 @@ public class IemrMmuLoginController {
 			String responseData = iemrMmuLoginServiceImpl.getServicepointVillages(obj.getInt("servicePointID"));
 			response.setResponse(responseData);
 		} catch (Exception e) {
-			// e.printStackTrace();
 			response.setError(5000, "Error while getting service points and villages");
 			logger.error("get villages with servicepoint failed with " + e.getMessage(), e);
 
@@ -94,6 +96,7 @@ public class IemrMmuLoginController {
 	}
 
 	@CrossOrigin()
+	@ApiOperation(value = "Get user van SP details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/getUserVanSpDetails", method = { RequestMethod.POST }, produces = { "application/json" })
 	public String getUserVanSpDetails(@RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -109,7 +112,6 @@ public class IemrMmuLoginController {
 				response.setError(5000, "Invalid request");
 			}
 		} catch (Exception e) {
-			// e.printStackTrace();
 			response.setError(5000, "Error while getting van and service points data");
 			logger.error("getUserVanSpDetails failed with " + e.getMessage(), e);
 
@@ -119,6 +121,7 @@ public class IemrMmuLoginController {
 	}
 
 	@CrossOrigin()
+	@ApiOperation(value = "Get van master", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/getVanMaster/{psmID}", method = { RequestMethod.GET }, produces = { "application/json" })
 	public String getVanMaster(@PathVariable("psmID") Integer psmID) {
 		OutputResponse response = new OutputResponse();
