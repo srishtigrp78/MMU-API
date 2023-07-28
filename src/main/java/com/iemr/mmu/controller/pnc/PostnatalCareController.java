@@ -48,7 +48,7 @@ import io.swagger.annotations.ApiParam;
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/PNC", headers = "Authorization")
-public class PNCController {
+public class PostnatalCareController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	private PNCServiceImpl pncServiceImpl;
 
@@ -169,7 +169,7 @@ public class PNCController {
 	 * @return PNC Care data in JSON format
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get PNC beneficiary  care details from nurse", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get PNC beneficiary care details from nurse", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenPNCDetailsFrmNursePNC" }, method = { RequestMethod.POST })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenPNCDetailsFrmNursePNC(
