@@ -96,7 +96,7 @@ public class IemrMmuLoginController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get user van SP details", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get user van details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/getUserVanSpDetails", method = { RequestMethod.POST }, produces = { "application/json" })
 	public String getUserVanSpDetails(@RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -121,7 +121,7 @@ public class IemrMmuLoginController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get van master", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get van master data", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/getVanMaster/{psmID}", method = { RequestMethod.GET }, produces = { "application/json" })
 	public String getVanMaster(@PathVariable("psmID") Integer psmID) {
 		OutputResponse response = new OutputResponse();

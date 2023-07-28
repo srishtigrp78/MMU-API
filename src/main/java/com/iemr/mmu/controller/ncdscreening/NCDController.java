@@ -73,7 +73,7 @@ public class NCDController {
 	 * @return success or failure response
 	 */
 	@CrossOrigin
-	@ApiOperation(value = "Save beneficiary NCD screening detail", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Save beneficiary NCD screening details", consumes = "application/json", produces = "application/json")
 
 	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
 	public String saveBeneficiaryNCDScreeningDetails(@RequestBody String requestObj,
@@ -344,7 +344,7 @@ public class NCDController {
 	}
 
 	@CrossOrigin
-	@ApiOperation(value = "Update beneficiary NCD screening detail", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Update beneficiary NCD screening details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/nurseData" }, method = { RequestMethod.POST })
 	public String updateBeneficiaryNCDScreeningDetails(@RequestBody String requestObj) {
 

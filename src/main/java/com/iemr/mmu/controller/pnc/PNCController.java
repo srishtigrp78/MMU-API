@@ -43,10 +43,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 /**
- * 
- * @author NA874500
  * @Objective Saving PNC nurse and doctor data
- *
  */
 @CrossOrigin
 @RestController
@@ -138,7 +135,7 @@ public class PNCController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary visit details from nurse PNC", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get PNC beneficiary visit details from nurse", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenVisitDetailsFrmNursePNC" }, method = { RequestMethod.POST })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenVisitDetailsFrmNursePNC(
@@ -172,7 +169,7 @@ public class PNCController {
 	 * @return PNC Care data in JSON format
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary PNC care details from nurse PNC", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get PNC beneficiary  care details from nurse", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenPNCDetailsFrmNursePNC" }, method = { RequestMethod.POST })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenPNCDetailsFrmNursePNC(
@@ -206,7 +203,7 @@ public class PNCController {
 	 * @return history data in JSON format
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary PNC history details from nurse to doctor ", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get PNC beneficiary  history details from nurse to doctor ", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenHistoryDetails" }, method = { RequestMethod.POST })
 
 	public String getBenHistoryDetails(
@@ -239,7 +236,7 @@ public class PNCController {
 	 * @return vital data in JSON format
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary vital details from nurse PNC", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get PNC beneficiary vital details from nurse", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenVitalDetailsFrmNurse" }, method = { RequestMethod.POST })
 	public String getBenVitalDetailsFrmNurse(
 			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
@@ -272,7 +269,7 @@ public class PNCController {
 	 * @return examination data in JSON format
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary PNC examination details from nurse to doctor ", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get PNC beneficiary examination details from nurse to doctor ", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenExaminationDetailsPNC" }, method = { RequestMethod.POST })
 
 	public String getBenExaminationDetailsPNC(
@@ -305,7 +302,7 @@ public class PNCController {
 	 * @return doctor data in JSON format
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary doctor entered details", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get PNC beneficiary case record", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenCaseRecordFromDoctorPNC" }, method = { RequestMethod.POST })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenCaseRecordFromDoctorPNC(
@@ -371,7 +368,7 @@ public class PNCController {
 	 */
 
 	@CrossOrigin
-	@ApiOperation(value = "Update history data in doctor screen", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Update PNC beneficiary history in doctor screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/historyScreen" }, method = { RequestMethod.POST })
 	public String updateHistoryNurse(@RequestBody String requestObj) {
 
@@ -408,7 +405,7 @@ public class PNCController {
 	 */
 
 	@CrossOrigin
-	@ApiOperation(value = "Update PNC vital data in doctor screen", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Update PNC beneficiary vitals in doctor screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/vitalScreen" }, method = { RequestMethod.POST })
 	public String updateVitalNurse(@RequestBody String requestObj) {
 
@@ -445,7 +442,7 @@ public class PNCController {
 	 */
 
 	@CrossOrigin
-	@ApiOperation(value = "Update PNC examination data in doctor screen", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Update PNC beneficiary examination data in doctor screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/examinationScreen" }, method = { RequestMethod.POST })
 	public String updateGeneralOPDExaminationNurse(@RequestBody String requestObj) {
 
