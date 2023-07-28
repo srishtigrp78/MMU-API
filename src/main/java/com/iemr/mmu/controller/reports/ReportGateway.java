@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.iemr.mmu.controller.registrar.master.RegistrarMasterController;
+import com.iemr.mmu.controller.registrar.main.RegistrarController;
 import com.iemr.mmu.service.reports.ReportCheckPostImpl;
 import com.iemr.mmu.service.reports.ReportCheckPostImplNew;
 import com.iemr.mmu.utils.response.OutputResponse;
@@ -42,7 +42,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping(value = "/report", headers = "Authorization")
 public class ReportGateway {
-	private Logger logger = LoggerFactory.getLogger(RegistrarMasterController.class);
+	private Logger logger = LoggerFactory.getLogger(RegistrarController.class);
 
 	@Autowired
 	private ReportCheckPostImpl reportCheckPostImpl;
