@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.iemr.mmu.controller.registrar.master.RegistrarMasterController;
+import com.iemr.mmu.controller.registrar.main.RegistrarController;
 import com.iemr.mmu.service.reports.ReportCheckPostImpl;
 import com.iemr.mmu.service.reports.ReportCheckPostImplNew;
 import com.iemr.mmu.utils.response.OutputResponse;
@@ -42,13 +42,13 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping(value = "/report", headers = "Authorization")
 public class ReportGateway {
-	private Logger logger = LoggerFactory.getLogger(RegistrarMasterController.class);
+	private Logger logger = LoggerFactory.getLogger(RegistrarController.class);
 
 	@Autowired
 	private ReportCheckPostImpl reportCheckPostImpl;
 
 	@CrossOrigin()
-	@ApiOperation(value = "", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get report", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getReport" }, method = { RequestMethod.POST })
 	public String getReportByReportID(@RequestBody String requestOBJ) {
 		OutputResponse response = new OutputResponse();
@@ -65,34 +65,31 @@ public class ReportGateway {
 		}
 		return response.toStringWithSerialization();
 	}
-	
-	
-		@Autowired
-		private ReportCheckPostImplNew reportCheckPostImplNew;
 
-		@CrossOrigin()
-		@ApiOperation(value = "", consumes = "application/json", produces = "application/json")
-		@RequestMapping(value = { "/getReportNew" }, method = { RequestMethod.POST })
-		public String getReportByReportID1(@RequestBody String requestOBJ) {
-			OutputResponse response = new OutputResponse();
-
-			try {
-				if (requestOBJ != null)
-					response.setResponse(reportCheckPostImplNew.reportHandler(requestOBJ));
-				else
-					response.setError(5000, "Invalid request");
-
-			} catch (Exception e) {
-				logger.error("Error occurred while fetching report : " + e);
-				response.setError(5000, "Error occurred while fetching report is : " + e);
-			}
-			return response.toStringWithSerialization();
-		}
-	
-	
+	@Autowired
+	private ReportCheckPostImplNew reportCheckPostImplNew;
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get Report Master", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get report by report id", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getReportNew" }, method = { RequestMethod.POST })
+	public String getReportByReportID1(@RequestBody String requestOBJ) {
+		OutputResponse response = new OutputResponse();
+
+		try {
+			if (requestOBJ != null)
+				response.setResponse(reportCheckPostImplNew.reportHandler(requestOBJ));
+			else
+				response.setError(5000, "Invalid request");
+
+		} catch (Exception e) {
+			logger.error("Error occurred while fetching report : " + e);
+			response.setError(5000, "Error occurred while fetching report is : " + e);
+		}
+		return response.toStringWithSerialization();
+	}
+
+	@CrossOrigin()
+	@ApiOperation(value = "Get report master", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getReportMaster/{serviceID}" }, method = { RequestMethod.GET })
 	public String getReportMaster(@PathVariable("serviceID") Integer serviceID) {
 		OutputResponse response = new OutputResponse();
@@ -112,6 +109,5 @@ public class ReportGateway {
 		}
 		return response.toString();
 	}
-	
-	
+
 }
