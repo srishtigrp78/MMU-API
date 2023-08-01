@@ -56,6 +56,7 @@ public class DataSyncRepositoryCentral {
 		jdbcTemplate = getJdbcTemplate();
 
 		String query;
+		List<Object> params = new ArrayList<>();
 
 		if ((tableName.equalsIgnoreCase("t_patientissue") || tableName.equalsIgnoreCase("t_physicalstockentry")
 				|| tableName.equalsIgnoreCase("t_stockadjustment") || tableName.equalsIgnoreCase("t_saitemmapping")
@@ -66,15 +67,21 @@ public class DataSyncRepositoryCentral {
 				&& syncFacilityID > 0) {
 
 			query = " SELECT " + vanAutoIncColumnName + " FROM " + schemaName + "." + tableName
-					+ " WHERE VanSerialNo = " + vanSerialNo + " AND SyncFacilityID = " + syncFacilityID;
+					+ " WHERE VanSerialNo = ? AND SyncFacilityID = ?";
+			params.add(vanSerialNo);
+			params.add(syncFacilityID);
+
 		}
 
 		else {
 			query = " SELECT " + vanAutoIncColumnName + " FROM " + schemaName + "." + tableName
-					+ " WHERE VanSerialNo = " + vanSerialNo + " AND VanID = " + vanID;
-		}
+					+ " WHERE VanSerialNo = ? AND VanID = ?";
+			params.add(vanSerialNo);
+			params.add(vanID);
 
-		List<Map<String, Object>> resultSet = jdbcTemplate.queryForList(query);
+		}
+		Object[] queryParams = params.toArray();
+		List<Map<String, Object>> resultSet = jdbcTemplate.queryForList(query, queryParams);
 		if (resultSet != null && resultSet.size() > 0)
 			return 1;
 		else
