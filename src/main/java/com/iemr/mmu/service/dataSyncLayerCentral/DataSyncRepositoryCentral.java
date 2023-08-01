@@ -55,8 +55,21 @@ public class DataSyncRepositoryCentral {
 			String vanAutoIncColumnName, int syncFacilityID) {
 		jdbcTemplate = getJdbcTemplate();
 
-		String query;
 		List<Object> params = new ArrayList<>();
+
+		StringBuilder queryBuilder = new StringBuilder("SELECT ");
+		queryBuilder.append("?");
+		queryBuilder.append(" FROM ");
+		queryBuilder.append("?.?");
+
+		params.add(vanAutoIncColumnName);
+		params.add(schemaName);
+		params.add(tableName);
+
+		StringBuilder whereClause = new StringBuilder();
+		whereClause.append(" WHERE ");
+		whereClause.append("VanSerialNo = ?");
+		params.add(vanSerialNo);
 
 		if ((tableName.equalsIgnoreCase("t_patientissue") || tableName.equalsIgnoreCase("t_physicalstockentry")
 				|| tableName.equalsIgnoreCase("t_stockadjustment") || tableName.equalsIgnoreCase("t_saitemmapping")
@@ -66,20 +79,22 @@ public class DataSyncRepositoryCentral {
 				|| tableName.equalsIgnoreCase("t_itemstockentry") || tableName.equalsIgnoreCase("t_itemstockexit"))
 				&& syncFacilityID > 0) {
 
-			query = " SELECT " + vanAutoIncColumnName + " FROM " + schemaName + "." + tableName
-					+ " WHERE VanSerialNo = ? AND SyncFacilityID = ?";
-			params.add(vanSerialNo);
+			whereClause.append(" AND ");
+			whereClause.append("SyncFacilityID = ?");
 			params.add(syncFacilityID);
 
 		}
 
 		else {
-			query = " SELECT " + vanAutoIncColumnName + " FROM " + schemaName + "." + tableName
-					+ " WHERE VanSerialNo = ? AND VanID = ?";
-			params.add(vanSerialNo);
+
+			whereClause.append(" AND ");
+			whereClause.append("VanID = ?");
 			params.add(vanID);
 
 		}
+
+		queryBuilder.append(whereClause);
+		String query = queryBuilder.toString();
 		Object[] queryParams = params.toArray();
 		List<Map<String, Object>> resultSet = jdbcTemplate.queryForList(query, queryParams);
 		if (resultSet != null && resultSet.size() > 0)
