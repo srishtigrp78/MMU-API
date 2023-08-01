@@ -277,9 +277,20 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 	}
 
 	private String getqueryFor_M_BeneficiaryRegIdMapping(String schemaName, String tableName) {
-		String query = " UPDATE  " + schemaName + "." + tableName
-				+ " SET Provisioned = true, SyncedDate = now(), syncedBy = ? "
-				+ " WHERE BenRegId = ? AND BeneficiaryID = ? AND VanID = ? ";
+
+		StringBuilder queryBuilder = new StringBuilder(" UPDATE  ");
+		queryBuilder.append(schemaName);
+		queryBuilder.append(".");
+		queryBuilder.append(tableName);
+		queryBuilder.append(" SET ");
+		queryBuilder.append("Provisioned = true, SyncedDate = now(), syncedBy = ?");
+		queryBuilder.append(" WHERE ");
+		queryBuilder.append(" BenRegId = ? ");
+		queryBuilder.append(" AND ");
+		queryBuilder.append(" BeneficiaryID = ? ");
+		queryBuilder.append(" AND ");
+		queryBuilder.append(" VanID = ? ");
+		String query = queryBuilder.toString();
 		return query;
 	}
 
@@ -306,6 +317,7 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 		}
 		StringBuilder queryBuilder = new StringBuilder("INSERT INTO ");
 		queryBuilder.append(schemaName);
+		queryBuilder.append(".");
 		queryBuilder.append(tableName);
 		queryBuilder.append("(");
 		queryBuilder.append(serverColumns);
@@ -327,9 +339,11 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 			int index = 0;
 			for (String column : columnsArr) {
 				if (index == columnsArr.length - 1) {
-					preparedStatementSetter.append(column + "= ?");
+					preparedStatementSetter.append(column);
+					preparedStatementSetter.append("= ?");
 				} else {
-					preparedStatementSetter.append(column + "= ?, ");
+					preparedStatementSetter.append(column);
+					preparedStatementSetter.append("= ?, ");
 				}
 				index++;
 			}
@@ -342,14 +356,33 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 				|| tableName.equalsIgnoreCase("t_indentorder") || tableName.equalsIgnoreCase("t_indentissue")
 				|| tableName.equalsIgnoreCase("t_itemstockentry") || tableName.equalsIgnoreCase("t_itemstockexit")) {
 
-			query = " UPDATE  " + schemaName + "." + tableName + " SET " + preparedStatementSetter
-					+ " WHERE VanSerialNo = ? AND SyncFacilityID = ? ";
+			StringBuilder queryBuilder = new StringBuilder(" UPDATE  ");
+			queryBuilder.append(schemaName);
+			queryBuilder.append(".");
+			queryBuilder.append(tableName);
+			queryBuilder.append(" SET ");
+			queryBuilder.append(preparedStatementSetter);
+			queryBuilder.append(" WHERE ");
+			queryBuilder.append(" VanSerialNo =? ");
+			queryBuilder.append(" AND ");
+			queryBuilder.append(" SyncFacilityID = ? ");
+			query = queryBuilder.toString();
+			return query;
 		} else {
-			query = " UPDATE  " + schemaName + "." + tableName + " SET " + preparedStatementSetter
-					+ " WHERE VanSerialNo = ? AND VanID = ? ";
+			StringBuilder queryBuilder = new StringBuilder(" UPDATE  ");
+			queryBuilder.append(schemaName);
+			queryBuilder.append(".");
+			queryBuilder.append(tableName);
+			queryBuilder.append(" SET ");
+			queryBuilder.append(preparedStatementSetter);
+			queryBuilder.append(" WHERE ");
+			queryBuilder.append(" VanSerialNo =? ");
+			queryBuilder.append(" AND ");
+			queryBuilder.append(" VanID = ? ");
+			query = queryBuilder.toString();
+
 		}
-
 		return query;
-	}
 
+	}
 }
