@@ -118,18 +118,51 @@ public class DataSyncRepositoryCentral {
 	public int[] syncDataToCentralDB(String schema, String tableName, String serverColumns, String query,
 			List<Object[]> syncDataList) {
 		jdbcTemplate = getJdbcTemplate();
-		for (int i = 0; i < syncDataList.size(); i++) {
-			Object[] array = syncDataList.get(i);
-			if (serverColumns != null) {
-				array = new Object[] { schema, tableName, serverColumns, array };
-			} else
-				array = new Object[] { schema, tableName, array };
-			syncDataList.set(i, array);
+		if (query.startsWith("INSERT")) {
+			for (int i = 0; i < syncDataList.size(); i++) {
+
+				Object[] array = syncDataList.get(i);// Arrey 1
+
+				if (query.startsWith("INSERT")) {
+					array = new Object[] { schema, tableName, serverColumns, array };
+					syncDataList.set(i, array);
+				}
+			}
+		} else {
+			for (int i = 0; i < syncDataList.size(); i++) {
+
+				Object[] array = syncDataList.get(i);// Arrey 1
+				String[] columnsArray = null;
+				columnsArray = serverColumns.split(","); // arrey 2
+
+				List<Object> Newarray = new ArrayList<>();
+
+				int arrayIndex = 0;
+				int columnsArrayIndex = 0;
+				Newarray.add(schema);
+				Newarray.add(tableName);
+				while (columnsArrayIndex < columnsArray.length || arrayIndex < array.length) {
+					if (columnsArrayIndex < columnsArray.length) {
+						Newarray.add(columnsArray[columnsArrayIndex]);
+						columnsArrayIndex++;
+					}
+
+					if (arrayIndex < array.length) {
+						Newarray.add(array[arrayIndex]);
+						arrayIndex++;
+					}
+				}
+
+				// Convert Newarray back to an array
+				Object[] resultArray = Newarray.toArray(new Object[0]);
+				syncDataList.set(i, resultArray);
+
+			}
 		}
 		// start batch insert/update
 		int[] i = jdbcTemplate.batchUpdate(query, syncDataList);
-
 		return i;
+
 	}
 
 	// End of Data Upload Repository

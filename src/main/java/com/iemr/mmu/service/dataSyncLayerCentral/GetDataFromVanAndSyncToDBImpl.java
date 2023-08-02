@@ -339,10 +339,10 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 			int index = 0;
 			for (String column : columnsArr) {
 				if (index == columnsArr.length - 1) {
-					preparedStatementSetter.append(column);
+					preparedStatementSetter.append("?");
 					preparedStatementSetter.append("= ?");
 				} else {
-					preparedStatementSetter.append(column);
+					preparedStatementSetter.append("?");
 					preparedStatementSetter.append("= ?, ");
 				}
 				index++;
