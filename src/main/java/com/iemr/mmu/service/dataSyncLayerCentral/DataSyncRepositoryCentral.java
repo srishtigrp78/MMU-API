@@ -21,8 +21,6 @@
 */
 package com.iemr.mmu.service.dataSyncLayerCentral;
 
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +30,6 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
 /***
@@ -52,10 +49,6 @@ public class DataSyncRepositoryCentral {
 		return new JdbcTemplate(dataSource);
 
 	}
-
-	public preparedSQL(DataSource dataSource) {
-        this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-    }
 
 	// Data Upload Repository
 	public int checkRecordIsAlreadyPresentOrNot(String schemaName, String tableName, String vanSerialNo, String vanID,
