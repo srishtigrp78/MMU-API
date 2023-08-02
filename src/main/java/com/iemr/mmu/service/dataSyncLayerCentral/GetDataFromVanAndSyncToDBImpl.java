@@ -44,6 +44,7 @@ import com.iemr.mmu.utils.mapper.InputMapper;
 @Service
 public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB {
 
+	private static final String ServerColumnsNotRequired = null;
 	@Autowired
 	private DataSyncRepositoryCentral dataSyncRepositoryCentral;
 
@@ -54,7 +55,6 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 				SyncUploadDataDigester.class);
 
 		String syncTableName = syncUploadDataDigester.getTableName();
-
 		if (syncUploadDataDigester != null && syncTableName != null
 				&& syncTableName.equalsIgnoreCase("m_beneficiaryregidmapping")) {
 			String s = update_M_BeneficiaryRegIdMapping_for_provisioned_benID(syncUploadDataDigester);
@@ -209,21 +209,25 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 			int[] i = null;
 			if (syncDataListInsert != null && syncDataListInsert.size() > 0) {
 				// schema name hard coded(Insert query builder)
-				String queryInsert = getQueryToInsertDataToServerDB(syncUploadDataDigester.getSchemaName(),
-						syncUploadDataDigester.getTableName(), syncUploadDataDigester.getServerColumns());
+				String queryInsert = getQueryToInsertDataToServerDB(syncUploadDataDigester.getServerColumns());
 
 				// call repository to execute the query with given data list(Insert)
-				i = dataSyncRepositoryCentral.syncDataToCentralDB(queryInsert, syncDataListInsert);
+				i = dataSyncRepositoryCentral.syncDataToCentralDB(
+						syncUploadDataDigester.getSchemaName(),
+						syncUploadDataDigester.getTableName(), syncUploadDataDigester.getServerColumns(), queryInsert,
+						syncDataListInsert);
 			}
 
 			int[] j = null;
 			if (syncDataListUpdate != null && syncDataListUpdate.size() > 0) {
 				// schema name hard coded(Update query builder)
-				String queryUpdate = getQueryToUpdateDataToServerDB(syncUploadDataDigester.getSchemaName(),
-						syncUploadDataDigester.getTableName(), syncUploadDataDigester.getServerColumns());
+				String queryUpdate = getQueryToUpdateDataToServerDB(syncUploadDataDigester.getServerColumns(),
+						syncUploadDataDigester.getTableName());
 
 				// call repository to execute the query with given data list(Update)
-				j = dataSyncRepositoryCentral.syncDataToCentralDB(queryUpdate, syncDataListUpdate);
+				j = dataSyncRepositoryCentral.syncDataToCentralDB(syncUploadDataDigester.getSchemaName(),
+						syncUploadDataDigester.getTableName(), ServerColumnsNotRequired, queryUpdate,
+						syncDataListUpdate);
 			}
 
 			// validating if data sync successfully
@@ -263,7 +267,8 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 		int[] i = null;
 
 		if (syncData != null && syncData.size() > 0) {
-			i = dataSyncRepositoryCentral.syncDataToCentralDB(query, syncData);
+			i = dataSyncRepositoryCentral.syncDataToCentralDB(syncUploadDataDigester.getSchemaName(),
+					syncUploadDataDigester.getTableName(), ServerColumnsNotRequired, query, syncData);
 
 			if (i.length == syncData.size()) {
 				returnOBJ = "data sync passed";
@@ -279,9 +284,7 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 	private String getqueryFor_M_BeneficiaryRegIdMapping(String schemaName, String tableName) {
 
 		StringBuilder queryBuilder = new StringBuilder(" UPDATE  ");
-		queryBuilder.append(schemaName);
-		queryBuilder.append(".");
-		queryBuilder.append(tableName);
+		queryBuilder.append("?.?");
 		queryBuilder.append(" SET ");
 		queryBuilder.append("Provisioned = true, SyncedDate = now(), syncedBy = ?");
 		queryBuilder.append(" WHERE ");
@@ -294,7 +297,7 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 		return query;
 	}
 
-	public String getQueryToInsertDataToServerDB(String schemaName, String tableName, String serverColumns) {
+	public String getQueryToInsertDataToServerDB(String serverColumns) {
 		String[] columnsArr = null;
 		if (serverColumns != null)
 			columnsArr = serverColumns.split(",");
@@ -316,19 +319,16 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 			}
 		}
 		StringBuilder queryBuilder = new StringBuilder("INSERT INTO ");
-		queryBuilder.append(schemaName);
-		queryBuilder.append(".");
-		queryBuilder.append(tableName);
+		queryBuilder.append("?.?");
 		queryBuilder.append("(");
-		queryBuilder.append(serverColumns);
+		queryBuilder.append("?");
 		queryBuilder.append(") VALUES (");
 		queryBuilder.append(preparedStatementSetter);
-		String query = queryBuilder.toString();
+		String query = queryBuilder.toString();// ?.?( ?)) VALUES ("
 		return query;
 	}
 
-	public String getQueryToUpdateDataToServerDB(String schemaName, String tableName, String serverColumns) {
-		String query;
+	public String getQueryToUpdateDataToServerDB(String serverColumns, String tableName) {
 		String[] columnsArr = null;
 		if (serverColumns != null)
 			columnsArr = serverColumns.split(",");
@@ -357,32 +357,27 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 				|| tableName.equalsIgnoreCase("t_itemstockentry") || tableName.equalsIgnoreCase("t_itemstockexit")) {
 
 			StringBuilder queryBuilder = new StringBuilder(" UPDATE  ");
-			queryBuilder.append(schemaName);
-			queryBuilder.append(".");
-			queryBuilder.append(tableName);
+			queryBuilder.append("?.?");
 			queryBuilder.append(" SET ");
 			queryBuilder.append(preparedStatementSetter);
 			queryBuilder.append(" WHERE ");
 			queryBuilder.append(" VanSerialNo =? ");
 			queryBuilder.append(" AND ");
 			queryBuilder.append(" SyncFacilityID = ? ");
-			query = queryBuilder.toString();
+			String query = queryBuilder.toString();
 			return query;
 		} else {
 			StringBuilder queryBuilder = new StringBuilder(" UPDATE  ");
-			queryBuilder.append(schemaName);
-			queryBuilder.append(".");
-			queryBuilder.append(tableName);
+			queryBuilder.append("?.?");
 			queryBuilder.append(" SET ");
 			queryBuilder.append(preparedStatementSetter);
 			queryBuilder.append(" WHERE ");
 			queryBuilder.append(" VanSerialNo =? ");
 			queryBuilder.append(" AND ");
 			queryBuilder.append(" VanID = ? ");
-			query = queryBuilder.toString();
-
+			String query = queryBuilder.toString();
+			return query;
 		}
-		return query;
 
 	}
 }

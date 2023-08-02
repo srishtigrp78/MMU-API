@@ -21,6 +21,8 @@
 */
 package com.iemr.mmu.service.dataSyncLayerCentral;
 
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,7 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
 /***
@@ -49,6 +52,10 @@ public class DataSyncRepositoryCentral {
 		return new JdbcTemplate(dataSource);
 
 	}
+
+	public preparedSQL(DataSource dataSource) {
+        this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+    }
 
 	// Data Upload Repository
 	public int checkRecordIsAlreadyPresentOrNot(String schemaName, String tableName, String vanSerialNo, String vanID,
@@ -103,9 +110,29 @@ public class DataSyncRepositoryCentral {
 			return 0;
 	}
 
-	public int[] syncDataToCentralDB(String query, List<Object[]> syncDataList) {
-		// get JDBC template
+	/*
+	 * public int[] syncDataToCentralDB(String query, List<Object[]> syncDataList) {
+	 * // get JDBC template
+	 * jdbcTemplate = getJdbcTemplate();
+	 * // start batch insert/update
+	 * BatchPreparedStatementSetter setter = new BatchPreparedStatementSetter()
+	 * int[] i = jdbcTemplate.batchUpdate();
+	 * 
+	 * return i;
+	 * }
+	 */
+	// New Optimised code
+	public int[] syncDataToCentralDB(String schema, String tableName, String serverColumns, String query,
+			List<Object[]> syncDataList) {
 		jdbcTemplate = getJdbcTemplate();
+		for (int i = 0; i < syncDataList.size(); i++) {
+			Object[] array = syncDataList.get(i);
+			if (serverColumns != null) {
+				array = new Object[] { schema, tableName, serverColumns, array };
+			} else
+				array = new Object[] { schema, tableName, array };
+			syncDataList.set(i, array);
+		}
 		// start batch insert/update
 		int[] i = jdbcTemplate.batchUpdate(query, syncDataList);
 
