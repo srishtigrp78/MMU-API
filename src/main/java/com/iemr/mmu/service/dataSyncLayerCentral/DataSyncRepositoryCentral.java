@@ -103,18 +103,7 @@ public class DataSyncRepositoryCentral {
 			return 0;
 	}
 
-	/*
-	 * public int[] syncDataToCentralDB(String query, List<Object[]> syncDataList) {
-	 * // get JDBC template
-	 * jdbcTemplate = getJdbcTemplate();
-	 * // start batch insert/update
-	 * BatchPreparedStatementSetter setter = new BatchPreparedStatementSetter()
-	 * int[] i = jdbcTemplate.batchUpdate();
-	 * 
-	 * return i;
-	 * }
-	 */
-	// New Optimised code
+	// Method for synchronization of data to central DB
 	public int[] syncDataToCentralDB(String schema, String tableName, String serverColumns, String query,
 			List<Object[]> syncDataList) {
 		jdbcTemplate = getJdbcTemplate();
@@ -166,50 +155,6 @@ public class DataSyncRepositoryCentral {
 	}
 
 	// End of Data Upload Repository
-
-	// Data Download Repository
-	/*
-	 * public List<Map<String, Object>> getMasterDataFromTable(String schema, String
-	 * table, String columnNames,
-	 * String masterType, Timestamp lastDownloadDate, Integer vanID, Integer psmID)
-	 * throws Exception {
-	 * 
-	 * jdbcTemplate = getJdbcTemplate();
-	 * List<Map<String, Object>> resultSetList = new ArrayList<>();
-	 * String baseQuery = "";
-	 * 
-	 * if (masterType != null) {
-	 * if (lastDownloadDate != null) {
-	 * if (masterType.equalsIgnoreCase("A"))
-	 * baseQuery += " SELECT " + columnNames + " FROM " + schema + "." + table
-	 * + " WHERE Date(LastModDate) >= '" + lastDownloadDate + "' ";
-	 * else if (masterType.equalsIgnoreCase("V"))
-	 * baseQuery += " SELECT " + columnNames + " FROM " + schema + "." + table
-	 * + " WHERE Date(LastModDate) >= '" + lastDownloadDate + "' AND VanID = " +
-	 * vanID;
-	 * else if (masterType.equalsIgnoreCase("P"))
-	 * baseQuery += " SELECT " + columnNames + " FROM " + schema + "." + table
-	 * + " WHERE Date(LastModDate) >= '" + lastDownloadDate +
-	 * "' AND ProviderServiceMapID = "
-	 * + psmID;
-	 * } else {
-	 * if (masterType.equalsIgnoreCase("A"))
-	 * baseQuery += " SELECT " + columnNames + " FROM " + schema + "." + table;
-	 * else if (masterType.equalsIgnoreCase("V"))
-	 * baseQuery += " SELECT " + columnNames + " FROM " + schema + "." + table +
-	 * " WHERE VanID = " + vanID;
-	 * else if (masterType.equalsIgnoreCase("P"))
-	 * baseQuery += " SELECT " + columnNames + " FROM " + schema + "." + table
-	 * + " WHERE ProviderServiceMapID = " + psmID;
-	 * 
-	 * }
-	 * }
-	 * 
-	 * resultSetList = jdbcTemplate.queryForList(baseQuery);
-	 * 
-	 * return resultSetList;
-	 * }
-	 */
 
 	public List<Map<String, Object>> getMasterDataFromTable(String schema, String table, String columnNames,
 			String masterType, Timestamp lastDownloadDate, Integer vanID, Integer psmID) throws Exception {

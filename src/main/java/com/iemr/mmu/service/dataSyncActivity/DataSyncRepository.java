@@ -84,7 +84,7 @@ public class DataSyncRepository {
 			}
 
 		}
-		// resultSetList = jdbcTemplate.queryForList(baseQuery, "P");
+
 		resultSetList = jdbcTemplate.queryForList(baseQuery);
 		return resultSetList;
 	}
@@ -94,25 +94,6 @@ public class DataSyncRepository {
 				.findBySyncTableGroupIDAndDeletedOrderBySyncTableDetailID(groupID, false);
 		return syncUtilityClassList;
 	}
-
-	/*
-	 * public int updateProcessedFlagInVan(String schemaName, String tableName,
-	 * StringBuilder vanSerialNos,
-	 * String autoIncreamentColumn, String user) throws Exception {
-	 * jdbcTemplate = getJdbcTemplate();
-	 * String query = " UPDATE " + schemaName + "." + tableName
-	 * + " SET processed = 'P' , SyncedDate = now(), Syncedby = '" + user +
-	 * "' WHERE " + autoIncreamentColumn
-	 * + " IN (" + vanSerialNos + ")";
-	 * // System.out.println("hello");
-	 * 
-	 * int i = jdbcTemplate.update(query);
-	 * 
-	 * return i;
-	 * 
-	 * }
-	 */
-	// Refactored code
 
 	public int updateProcessedFlagInVan(String schemaName, String tableName, StringBuilder vanSerialNos,
 			String autoIncreamentColumn, String user) throws Exception {
@@ -129,9 +110,6 @@ public class DataSyncRepository {
 	}
 
 	// ---------------------------------- End of Upload repository
-
-	//
-	//
 
 	// ---------------------------------- Download Repository
 	public int[] updateLatestMasterInLocal(String query, List<Object[]> syncDataList) {

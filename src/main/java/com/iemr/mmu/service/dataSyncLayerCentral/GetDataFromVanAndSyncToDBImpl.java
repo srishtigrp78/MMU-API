@@ -86,15 +86,8 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 
 				map.replace("SyncedBy", syncUploadDataDigester.getSyncedBy());
 
-				// Timestamp sqlTS = new Timestamp(System.currentTimeMillis());
-				// java.util.Date utilDate = new java.util.Date(sqlTS.getTime());
-				//
-				// DateFormat df = new SimpleDateFormat("YY-MM-dd hh:mm:ss");
-				// System.out.println("Date formatted : " + df.format(utilDate));
 				map.replace("date_format(SyncedDate,'%Y-%m-%d %H:%i:%s')", String.valueOf(LocalDateTime.now()));
-				// map.replace("SyncedDate", String.valueOf(LocalDateTime.now()));
-
-				// if same facilityID change processed flag to "P" else don't alter
+			
 				if (syncUploadDataDigester.getFacilityID() != null) {
 					Double changeDoubleToIntegerID = 0.0;
 					switch (syncTableName) {
@@ -175,11 +168,7 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 				if (recordCheck == 0) {
 					syncDataListInsert.add(objArr);
 				} else {
-					/** commented because already we have two variable with same value **/
-
-					// objArr[pointer] =
-					// String.valueOf(map.get(syncUploadDataDigester.getVanAutoIncColumnName()));
-					// objArr[pointer + 1] = String.valueOf(map.get("VanID"));
+				
 
 					objArr[pointer] = String.valueOf(vanSerialNo);
 
@@ -203,7 +192,7 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 
 					syncDataListUpdate.add(objArr);
 				}
-				// System.out.println("hello......");
+				
 			}
 
 			int[] i = null;
@@ -310,10 +299,10 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 			for (String column : columnsArr) {
 				if (index == columnsArr.length - 1) {
 					preparedStatementSetter.append(" ? ");
-					/// updateStatement.append(column + "=VALUES(" + column + ")");
+					
 				} else {
 					preparedStatementSetter.append(" ?, ");
-					/// updateStatement.append(column + "=VALUES(" + column + "),");
+					
 				}
 				index++;
 			}
@@ -324,7 +313,7 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 		queryBuilder.append("?");
 		queryBuilder.append(") VALUES (");
 		queryBuilder.append(preparedStatementSetter);
-		String query = queryBuilder.toString();// ?.?( ?)) VALUES ("
+		String query = queryBuilder.toString();
 		return query;
 	}
 
