@@ -24,6 +24,7 @@ package com.iemr.mmu.service.dataSyncActivity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.sql.Timestamp;
 
 import javax.sql.DataSource;
 
@@ -83,7 +84,7 @@ public class DataSyncRepository {
 			}
 
 		}
-		// resultSetList = jdbcTemplate.queryForList(baseQuery, "P");
+
 		resultSetList = jdbcTemplate.queryForList(baseQuery);
 		return resultSetList;
 	}
@@ -98,20 +99,17 @@ public class DataSyncRepository {
 			String autoIncreamentColumn, String user) throws Exception {
 		jdbcTemplate = getJdbcTemplate();
 		String query = " UPDATE " + schemaName + "." + tableName
-				+ " SET processed = 'P' , SyncedDate = now(), Syncedby = '" + user + "' WHERE " + autoIncreamentColumn
+				+ " SET processed = 'P' , SyncedDate = ?, Syncedby = ? WHERE " + autoIncreamentColumn
 				+ " IN (" + vanSerialNos + ")";
-		// System.out.println("hello");
 
-		int i = jdbcTemplate.update(query);
+		Timestamp syncedDate = new Timestamp(System.currentTimeMillis());
+		int updatedRows = jdbcTemplate.update(query, syncedDate, user);
 
-		return i;
+		return updatedRows;
 
 	}
 
 	// ---------------------------------- End of Upload repository
-
-	//
-	//
 
 	// ---------------------------------- Download Repository
 	public int[] updateLatestMasterInLocal(String query, List<Object[]> syncDataList) {
