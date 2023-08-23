@@ -47,6 +47,7 @@ import com.iemr.mmu.data.syncActivity_syncLayer.DataSyncGroups;
 import com.iemr.mmu.data.syncActivity_syncLayer.SyncUtilityClass;
 import com.iemr.mmu.repo.login.MasterVanRepo;
 import com.iemr.mmu.repo.syncActivity_syncLayer.DataSyncGroupsRepo;
+import com.iemr.mmu.repo.syncActivity_syncLayer.SyncUtilityClassRepo;
 
 /***
  * 
@@ -74,6 +75,9 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	private DataSyncGroupsRepo dataSyncGroupsRepo;
 	@Autowired
 	private MasterVanRepo masterVanRepo;
+	
+	@Autowired
+	private SyncUtilityClassRepo syncutilityClassRepo;
 
 	// batch size for data upload
 	// private static final int BATCH_SIZE = 30;
@@ -84,7 +88,7 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	 * @param Authorization
 	 * @return
 	 */
-	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = { Exception.class })
+	//@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = { Exception.class })
 	public String getDataToSyncToServer(int vanID, int groupID, String user, String Authorization) throws Exception {
 
 		String syncData = null;
@@ -164,7 +168,13 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	 */
 
 	private List<SyncUtilityClass> getVanAndServerColumns(Integer groupID) throws Exception {
-		List<SyncUtilityClass> syncUtilityClassList = dataSyncRepository.getVanAndServerColumnList(groupID);
+		List<SyncUtilityClass> syncUtilityClassList = getVanAndServerColumnList(groupID);
+		
+		return syncUtilityClassList;
+	}
+	public List<SyncUtilityClass> getVanAndServerColumnList(Integer groupID) throws Exception {
+		List<SyncUtilityClass> syncUtilityClassList = syncutilityClassRepo
+				.findBySyncTableGroupIDAndDeletedOrderBySyncTableDetailID(groupID, false);
 		return syncUtilityClassList;
 	}
 
