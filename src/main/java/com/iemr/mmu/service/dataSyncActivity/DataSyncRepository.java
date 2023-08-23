@@ -89,11 +89,7 @@ public class DataSyncRepository {
 		return resultSetList;
 	}
 
-	public List<SyncUtilityClass> getVanAndServerColumnList(Integer groupID) throws Exception {
-		List<SyncUtilityClass> syncUtilityClassList = syncutilityClassRepo
-				.findBySyncTableGroupIDAndDeletedOrderBySyncTableDetailID(groupID, false);
-		return syncUtilityClassList;
-	}
+	
 
 	public int updateProcessedFlagInVan(String schemaName, String tableName, StringBuilder vanSerialNos,
 			String autoIncreamentColumn, String user) throws Exception {
