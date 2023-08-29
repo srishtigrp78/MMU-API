@@ -198,7 +198,8 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 			int[] i = null;
 			if (syncDataListInsert != null && syncDataListInsert.size() > 0) {
 				// schema name hard coded(Insert query builder)
-				String queryInsert = getQueryToInsertDataToServerDB(syncUploadDataDigester.getServerColumns());
+				String queryInsert = getQueryToInsertDataToServerDB(syncUploadDataDigester.getSchemaName(),
+						syncUploadDataDigester.getTableName(),syncUploadDataDigester.getServerColumns());
 
 				// call repository to execute the query with given data list(Insert)
 				i = dataSyncRepositoryCentral.syncDataToCentralDB(
@@ -210,7 +211,7 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 			int[] j = null;
 			if (syncDataListUpdate != null && syncDataListUpdate.size() > 0) {
 				// schema name hard coded(Update query builder)
-				String queryUpdate = getQueryToUpdateDataToServerDB(syncUploadDataDigester.getServerColumns(),
+				String queryUpdate = getQueryToUpdateDataToServerDB(syncUploadDataDigester.getSchemaName(), syncUploadDataDigester.getServerColumns(),
 						syncUploadDataDigester.getTableName());
 
 				// call repository to execute the query with given data list(Update)
@@ -286,7 +287,7 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 		return query;
 	}
 
-	public String getQueryToInsertDataToServerDB(String serverColumns) {
+	public String getQueryToInsertDataToServerDB(String schemaName, String tableName, String serverColumns) {
 		String[] columnsArr = null;
 		if (serverColumns != null)
 			columnsArr = serverColumns.split(",");
@@ -307,17 +308,23 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 				index++;
 			}
 		}
+		/*
+		 * String query = "INSERT INTO " + schemaName + "." + tableName + "( " +
+		 * serverColumns + ") VALUES ( " + preparedStatementSetter + " ) ";
+		 */
+
 		StringBuilder queryBuilder = new StringBuilder("INSERT INTO ");
-		queryBuilder.append("?.?");
+		queryBuilder.append(schemaName + "." + tableName);
 		queryBuilder.append("(");
 		queryBuilder.append("?");
 		queryBuilder.append(") VALUES (");
 		queryBuilder.append(preparedStatementSetter);
 		String query = queryBuilder.toString();
+		 
 		return query;
 	}
 
-	public String getQueryToUpdateDataToServerDB(String serverColumns, String tableName) {
+	public String getQueryToUpdateDataToServerDB(String schemaName, String serverColumns, String tableName) {
 		String[] columnsArr = null;
 		if (serverColumns != null)
 			columnsArr = serverColumns.split(",");
@@ -328,10 +335,10 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 			int index = 0;
 			for (String column : columnsArr) {
 				if (index == columnsArr.length - 1) {
-					preparedStatementSetter.append("?");
+					preparedStatementSetter.append(column);
 					preparedStatementSetter.append("= ?");
 				} else {
-					preparedStatementSetter.append("?");
+					preparedStatementSetter.append(column);
 					preparedStatementSetter.append("= ?, ");
 				}
 				index++;
@@ -346,7 +353,7 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 				|| tableName.equalsIgnoreCase("t_itemstockentry") || tableName.equalsIgnoreCase("t_itemstockexit")) {
 
 			StringBuilder queryBuilder = new StringBuilder(" UPDATE  ");
-			queryBuilder.append("?.?");
+			queryBuilder.append(schemaName+"."+tableName);
 			queryBuilder.append(" SET ");
 			queryBuilder.append(preparedStatementSetter);
 			queryBuilder.append(" WHERE ");
@@ -357,7 +364,7 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 			return query;
 		} else {
 			StringBuilder queryBuilder = new StringBuilder(" UPDATE  ");
-			queryBuilder.append("?.?");
+			queryBuilder.append(schemaName+"."+tableName);
 			queryBuilder.append(" SET ");
 			queryBuilder.append(preparedStatementSetter);
 			queryBuilder.append(" WHERE ");

@@ -58,13 +58,13 @@ public class DataSyncRepositoryCentral {
 		List<Object> params = new ArrayList<>();
 
 		StringBuilder queryBuilder = new StringBuilder("SELECT ");
-		queryBuilder.append("?");
+		queryBuilder.append(vanAutoIncColumnName);
 		queryBuilder.append(" FROM ");
-		queryBuilder.append("?.?");
+		queryBuilder.append(schemaName+"."+tableName);
 
-		params.add(vanAutoIncColumnName);
-		params.add(schemaName);
-		params.add(tableName);
+		//params.add(vanAutoIncColumnName);
+		//params.add(schemaName);
+		//params.add(tableName);
 
 		StringBuilder whereClause = new StringBuilder();
 		whereClause.append(" WHERE ");
@@ -109,11 +109,10 @@ public class DataSyncRepositoryCentral {
 		jdbcTemplate = getJdbcTemplate();
 		if (query.startsWith("INSERT")) {
 			for (int i = 0; i < syncDataList.size(); i++) {
-
 				Object[] array = syncDataList.get(i);// Arrey 1
 
 				if (query.startsWith("INSERT")) {
-					array = new Object[] { schema, tableName, serverColumns, array };
+					array = new Object[] {serverColumns, array };
 					syncDataList.set(i, array);
 				}
 			}
@@ -122,29 +121,29 @@ public class DataSyncRepositoryCentral {
 
 				Object[] array = syncDataList.get(i);// Arrey 1
 				String[] columnsArray = null;
+				if(null != serverColumns)
 				columnsArray = serverColumns.split(","); // arrey 2
 
 				List<Object> Newarray = new ArrayList<>();
 
 				int arrayIndex = 0;
 				int columnsArrayIndex = 0;
-				Newarray.add(schema);
-				Newarray.add(tableName);
-				while (columnsArrayIndex < columnsArray.length || arrayIndex < array.length) {
-					if (columnsArrayIndex < columnsArray.length) {
+				//Newarray.add(schema);
+				//Newarray.add(tableName);
+				//while (columnsArrayIndex < columnsArray.length || arrayIndex < array.length) {
+					if (null != columnsArray && columnsArrayIndex < columnsArray.length) {
 						Newarray.add(columnsArray[columnsArrayIndex]);
 						columnsArrayIndex++;
 					}
 
-					if (arrayIndex < array.length) {
-						Newarray.add(array[arrayIndex]);
-						arrayIndex++;
-					}
-				}
+					/*
+					 * if (arrayIndex < array.length) { Newarray.add(array); arrayIndex++; }
+					 */
+				//}
 
 				// Convert Newarray back to an array
-				Object[] resultArray = Newarray.toArray(new Object[0]);
-				syncDataList.set(i, resultArray);
+				//Object[] resultArray = Newarray.toArray(new Object[0]);
+				syncDataList.set(i, array);
 
 			}
 		}
