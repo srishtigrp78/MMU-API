@@ -316,9 +316,11 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 		StringBuilder queryBuilder = new StringBuilder("INSERT INTO ");
 		queryBuilder.append(schemaName + "." + tableName);
 		queryBuilder.append("(");
-		queryBuilder.append("?");
+//		queryBuilder.append("?");
+		queryBuilder.append(serverColumns);
 		queryBuilder.append(") VALUES (");
 		queryBuilder.append(preparedStatementSetter);
+		queryBuilder.append(") ");
 		String query = queryBuilder.toString();
 		 
 		return query;
