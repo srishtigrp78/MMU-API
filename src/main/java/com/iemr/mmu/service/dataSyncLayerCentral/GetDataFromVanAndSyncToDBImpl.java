@@ -274,7 +274,7 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 	private String getqueryFor_M_BeneficiaryRegIdMapping(String schemaName, String tableName) {
 
 		StringBuilder queryBuilder = new StringBuilder(" UPDATE  ");
-		queryBuilder.append("?.?");
+		queryBuilder.append(schemaName+"."+tableName);
 		queryBuilder.append(" SET ");
 		queryBuilder.append("Provisioned = true, SyncedDate = now(), syncedBy = ?");
 		queryBuilder.append(" WHERE ");
@@ -316,9 +316,11 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 		StringBuilder queryBuilder = new StringBuilder("INSERT INTO ");
 		queryBuilder.append(schemaName + "." + tableName);
 		queryBuilder.append("(");
-		queryBuilder.append("?");
+//		queryBuilder.append("?");
+		queryBuilder.append(serverColumns);
 		queryBuilder.append(") VALUES (");
 		queryBuilder.append(preparedStatementSetter);
+		queryBuilder.append(") ");
 		String query = queryBuilder.toString();
 		 
 		return query;

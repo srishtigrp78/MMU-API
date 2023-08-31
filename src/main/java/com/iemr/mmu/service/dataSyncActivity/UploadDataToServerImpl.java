@@ -247,10 +247,11 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 		headers.add("Content-Type", "application/json");
 		headers.add("AUTHORIZATION", Authorization);
 		HttpEntity<Object> request = new HttpEntity<Object>(requestOBJ, headers);
-
+		logger.info("Before Data sync upload Url" + dataSyncUploadUrl);
 		ResponseEntity<String> response = restTemplate.exchange(dataSyncUploadUrl, HttpMethod.POST, request,
 				String.class);
 
+		logger.info("After Data sync upload Url" + dataSyncUploadUrl);
 		/**
 		 * if data successfully synced then getVanSerialNo of synced data to update
 		 * processed flag

@@ -112,7 +112,7 @@ public class DataSyncRepositoryCentral {
 				Object[] array = syncDataList.get(i);// Arrey 1
 
 				if (query.startsWith("INSERT")) {
-					array = new Object[] {serverColumns, array };
+//					array = new Object[] {serverColumns, array };
 					syncDataList.set(i, array);
 				}
 			}
