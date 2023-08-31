@@ -274,7 +274,7 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 	private String getqueryFor_M_BeneficiaryRegIdMapping(String schemaName, String tableName) {
 
 		StringBuilder queryBuilder = new StringBuilder(" UPDATE  ");
-		queryBuilder.append("?.?");
+		queryBuilder.append(schemaName+"."+tableName);
 		queryBuilder.append(" SET ");
 		queryBuilder.append("Provisioned = true, SyncedDate = now(), syncedBy = ?");
 		queryBuilder.append(" WHERE ");
