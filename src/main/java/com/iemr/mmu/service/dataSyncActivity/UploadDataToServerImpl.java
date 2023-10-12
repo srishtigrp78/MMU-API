@@ -1,3 +1,24 @@
+/*
+* AMRIT – Accessible Medical Records via Integrated Technology
+* Integrated EHR (Electronic Health Records) Solution
+*
+* Copyright (C) "Piramal Swasthya Management and Research Institute"
+*
+* This file is part of AMRIT.
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see https://www.gnu.org/licenses/.
+*/
 package com.iemr.mmu.service.dataSyncActivity;
 
 import java.util.HashMap;
@@ -26,6 +47,7 @@ import com.iemr.mmu.data.syncActivity_syncLayer.DataSyncGroups;
 import com.iemr.mmu.data.syncActivity_syncLayer.SyncUtilityClass;
 import com.iemr.mmu.repo.login.MasterVanRepo;
 import com.iemr.mmu.repo.syncActivity_syncLayer.DataSyncGroupsRepo;
+import com.iemr.mmu.repo.syncActivity_syncLayer.SyncUtilityClassRepo;
 
 /***
  * 
@@ -53,6 +75,9 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	private DataSyncGroupsRepo dataSyncGroupsRepo;
 	@Autowired
 	private MasterVanRepo masterVanRepo;
+	
+	@Autowired
+	private SyncUtilityClassRepo syncutilityClassRepo;
 
 	// batch size for data upload
 	// private static final int BATCH_SIZE = 30;
@@ -63,7 +88,7 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	 * @param Authorization
 	 * @return
 	 */
-	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = { Exception.class })
+	//@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = { Exception.class })
 	public String getDataToSyncToServer(int vanID, int groupID, String user, String Authorization) throws Exception {
 
 		String syncData = null;
@@ -143,7 +168,13 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	 */
 
 	private List<SyncUtilityClass> getVanAndServerColumns(Integer groupID) throws Exception {
-		List<SyncUtilityClass> syncUtilityClassList = dataSyncRepository.getVanAndServerColumnList(groupID);
+		List<SyncUtilityClass> syncUtilityClassList = getVanAndServerColumnList(groupID);
+		
+		return syncUtilityClassList;
+	}
+	public List<SyncUtilityClass> getVanAndServerColumnList(Integer groupID) throws Exception {
+		List<SyncUtilityClass> syncUtilityClassList = syncutilityClassRepo
+				.findBySyncTableGroupIDAndDeletedOrderBySyncTableDetailID(groupID, false);
 		return syncUtilityClassList;
 	}
 
@@ -216,10 +247,11 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 		headers.add("Content-Type", "application/json");
 		headers.add("AUTHORIZATION", Authorization);
 		HttpEntity<Object> request = new HttpEntity<Object>(requestOBJ, headers);
-
+		logger.info("Before Data sync upload Url" + dataSyncUploadUrl);
 		ResponseEntity<String> response = restTemplate.exchange(dataSyncUploadUrl, HttpMethod.POST, request,
 				String.class);
 
+		logger.info("After Data sync upload Url" + dataSyncUploadUrl);
 		/**
 		 * if data successfully synced then getVanSerialNo of synced data to update
 		 * processed flag

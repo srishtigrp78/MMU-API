@@ -1,3 +1,24 @@
+/*
+* AMRIT – Accessible Medical Records via Integrated Technology
+* Integrated EHR (Electronic Health Records) Solution
+*
+* Copyright (C) "Piramal Swasthya Management and Research Institute"
+*
+* This file is part of AMRIT.
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see https://www.gnu.org/licenses/.
+*/
 package com.iemr.mmu.controller.fileSync;
 
 import org.slf4j.Logger;
@@ -12,16 +33,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.iemr.mmu.service.fileSync.FileSyncService;
 import com.iemr.mmu.utils.response.OutputResponse;
 
+import io.swagger.annotations.ApiOperation;
+
 @RequestMapping("/fileSyncController")
 @RestController
 public class FileSyncController {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
-	
+
 	@Autowired
 	FileSyncService fileSyncService;
-	
+
 	@CrossOrigin()
+	@ApiOperation(value = "Get server credential", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/getServerCredential", headers = "Authorization", method = {
 			RequestMethod.GET }, produces = { "application/json" })
 	public String getServerCredential() {
@@ -29,40 +53,36 @@ public class FileSyncController {
 		OutputResponse response = new OutputResponse();
 		try {
 
-			 String data = fileSyncService.getServerCredential();
-			 response.setResponse(data);
-			 logger.info("getServerCredential response "+response.toString());
+			String data = fileSyncService.getServerCredential();
+			response.setResponse(data);
+			logger.info("getServerCredential response " + response.toString());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			response.setError(e);
 
 		}
-		/**
-		 * sending the response...
-		 */
+
 		return response.toString();
 	}
 
-	
 	@CrossOrigin()
-	@RequestMapping(value = "/syncFiles", headers = "Authorization", method = {
-			RequestMethod.GET }, produces = { "application/json" })
+	@ApiOperation(value = "Sync files", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/syncFiles", headers = "Authorization", method = { RequestMethod.GET }, produces = {
+			"application/json" })
 	public String syncFiles(@RequestHeader(value = "ServerAuthorization") String ServerAuthorization) {
 		logger.info("syncFiles request ");
 		OutputResponse response = new OutputResponse();
 		try {
 
-			 String data = fileSyncService.syncFiles(ServerAuthorization);
-			 response.setResponse(data);
-			 logger.info("syncFiles response "+response.toString());
+			String data = fileSyncService.syncFiles(ServerAuthorization);
+			response.setResponse(data);
+			logger.info("syncFiles response " + response.toString());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			response.setError(e);
 
 		}
-		/**
-		 * sending the response...
-		 */
+
 		return response.toString();
 	}
 }

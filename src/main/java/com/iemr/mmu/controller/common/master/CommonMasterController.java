@@ -1,3 +1,24 @@
+/*
+* AMRIT – Accessible Medical Records via Integrated Technology
+* Integrated EHR (Electronic Health Records) Solution
+*
+* Copyright (C) "Piramal Swasthya Management and Research Institute"
+*
+* This file is part of AMRIT.
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see https://www.gnu.org/licenses/.
+*/
 package com.iemr.mmu.controller.common.master;
 
 import javax.ws.rs.core.MediaType;
@@ -35,7 +56,7 @@ public class CommonMasterController {
 	 * @Objective provides list of visit reasons and visit categories
 	 * @return list of visit reasons and visit categories
 	 */
-	@ApiOperation(value = "Master Data for Visit Reasons & Categories", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Master data for visit reasons & categories", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/get/visitReasonAndCategories", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
 	public String getVisitReasonAndCategories() {
 		logger.info("getVisitReasonAndCategories ...");
@@ -50,7 +71,7 @@ public class CommonMasterController {
 	 * @param visitCategoryID
 	 * @return nurse master data for the provided visitCategoryID
 	 */
-	@ApiOperation(value = "Master Data API for Nurse", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Master data API for nurse", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/nurse/masterData/{visitCategoryID}/{providerServiceMapID}/{gender}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
 	public String NurseMasterData(@PathVariable("visitCategoryID") Integer visitCategoryID,
 			@PathVariable("providerServiceMapID") Integer providerServiceMapID, @PathVariable("gender") String gender) {
@@ -69,7 +90,7 @@ public class CommonMasterController {
 	 * @param visitCategoryID
 	 * @return doctor master data for the provided visitCategoryID
 	 */
-	@ApiOperation(value = "Master Data API for Doctor", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Master data API for doctor", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/doctor/masterData/{visitCategoryID}/{providerServiceMapID}/{gender}/{facilityID}/{vanID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
 	public String DoctorMasterData(@PathVariable("visitCategoryID") Integer visitCategoryID,
 			@PathVariable("providerServiceMapID") Integer providerServiceMapID, @PathVariable("gender") String gender,
@@ -83,7 +104,7 @@ public class CommonMasterController {
 		return response.toString();
 	}
 
-	@ApiOperation(value = "getECGAbnormalities", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get ECG abnormalities", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/ecgAbnormalities", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
 	public String getECGAbnormalities() {
 

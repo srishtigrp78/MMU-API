@@ -1,3 +1,24 @@
+/*
+* AMRIT – Accessible Medical Records via Integrated Technology
+* Integrated EHR (Electronic Health Records) Solution
+*
+* Copyright (C) "Piramal Swasthya Management and Research Institute"
+*
+* This file is part of AMRIT.
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see https://www.gnu.org/licenses/.
+*/
 package com.iemr.mmu.service.anc;
 
 import com.google.gson.JsonObject;
@@ -19,5 +40,19 @@ public interface ANCService {
 	String getBenANCDetailsFrmNurseANC(Long benRegID, Long visitCode);
 
 	String getHRPStatus(Long benRegID, Long visitCode) throws Exception;
+
+	public Long saveANCDoctorData(JsonObject jsnOBJ, String authorization)throws Exception;
+
+	public String getBenCaseRecordFromDoctorANC(Long benRegID, Long visitCode)throws Exception;
+
+	public int updateBenANCDetails(JsonObject jsnOBJ)throws Exception;
+
+	public int updateBenANCHistoryDetails(JsonObject jsnOBJ)throws Exception;
+
+	public int updateBenANCVitalDetails(JsonObject jsnOBJ)throws Exception;
+
+	public int updateBenANCExaminationDetails(JsonObject jsnOBJ)throws Exception;
+
+	public Long updateANCDoctorData(JsonObject jsnOBJ, String authorization)throws Exception;
 
 }
