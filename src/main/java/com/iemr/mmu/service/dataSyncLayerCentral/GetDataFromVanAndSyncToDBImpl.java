@@ -142,8 +142,8 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 				}
 
 				if (map.containsKey("SyncFacilityID")) {
-					double syncFaciltyID = (double) map.get("SyncFacilityID");
-					syncFacilityID = (int) syncFaciltyID;
+					//double syncFaciltyID = (double) map.get("SyncFacilityID");
+					syncFacilityID = (int) map.get("SyncFacilityID");
 				}
 
 				recordCheck = dataSyncRepositoryCentral.checkRecordIsAlreadyPresentOrNot(
