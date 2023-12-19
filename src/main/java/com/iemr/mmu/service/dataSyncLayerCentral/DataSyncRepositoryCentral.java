@@ -28,6 +28,8 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -49,6 +51,8 @@ public class DataSyncRepositoryCentral {
 		return new JdbcTemplate(dataSource);
 
 	}
+	
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
 	// Data Upload Repository
 	public int checkRecordIsAlreadyPresentOrNot(String schemaName, String tableName, String vanSerialNo, String vanID,
@@ -171,11 +175,12 @@ public class DataSyncRepositoryCentral {
 
 			if (masterType.equalsIgnoreCase("A")) {
 				queryBuilder.append("?");
-				queryBuilder.append(" FROM ");
-				queryBuilder.append("?.?");
 				params.add(columnNames);
-				params.add(schema);
-				params.add(table);
+				queryBuilder.append(" FROM ");
+				queryBuilder.append(schema + "." + table);
+//				queryBuilder.append("?.?");
+//				params.add(schema);
+//				params.add(table);
 				if (lastDownloadDate != null) {
 					whereClause.append(" WHERE ");
 					whereClause.append("Date(LastModDate) >= ?");
@@ -183,11 +188,12 @@ public class DataSyncRepositoryCentral {
 				}
 			} else if (masterType.equalsIgnoreCase("V")) {
 				queryBuilder.append("?");
-				queryBuilder.append(" FROM ");
-				queryBuilder.append("?.?");
 				params.add(columnNames);
-				params.add(schema);
-				params.add(table);
+				queryBuilder.append(" FROM ");
+				queryBuilder.append(schema + "." + table);
+//				queryBuilder.append("?.?");
+//				params.add(schema);
+//				params.add(table);
 				whereClause.append(" WHERE ");
 				if (lastDownloadDate != null) {
 					whereClause.append("Date(LastModDate) >= ?");
@@ -198,13 +204,16 @@ public class DataSyncRepositoryCentral {
 				params.add(vanID);
 			} else if (masterType.equalsIgnoreCase("P")) {
 				queryBuilder.append("?");
-				queryBuilder.append(" FROM ");
-				queryBuilder.append("?.?");
 				params.add(columnNames);
-				params.add(schema);
-				params.add(table);
+				queryBuilder.append(" FROM ");
+				queryBuilder.append(schema + "." + table);
+//				queryBuilder.append("?.?");
+//				params.add(schema);
+//				params.add(table);
 				whereClause.append(" WHERE ");
 				if (lastDownloadDate != null) {
+					whereClause.append("Date(LastModDate) >= ?");
+					params.add(lastDownloadDate);
 					whereClause.append(" AND ");
 				}
 				whereClause.append("ProviderServiceMapID = ?");
@@ -217,8 +226,10 @@ public class DataSyncRepositoryCentral {
 		String query = queryBuilder.toString();
 		Object[] queryParams = params.toArray();
 
+		   
 		// Use PreparedStatement for the entire query
 		resultSetList = jdbcTemplate.queryForList(query, queryParams);
+		logger.info("resultSetLists"+ resultSetList);
 		return resultSetList;
 	}
 

@@ -32,6 +32,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iemr.mmu.data.syncActivity_syncLayer.SyncUploadDataDigester;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
@@ -51,9 +52,12 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 	public String syncDataToServer(String requestOBJ, String Authorization) throws Exception {
 
 		// feed sync request
-		SyncUploadDataDigester syncUploadDataDigester = InputMapper.gson().fromJson(requestOBJ,
-				SyncUploadDataDigester.class);
-
+		ObjectMapper mapper = new ObjectMapper();
+		SyncUploadDataDigester syncUploadDataDigester = mapper.readValue(requestOBJ, SyncUploadDataDigester.class);
+		/*
+		 * SyncUploadDataDigester syncUploadDataDigester =
+		 * InputMapper.gson().fromJson(requestOBJ, SyncUploadDataDigester.class);
+		 */
 		String syncTableName = syncUploadDataDigester.getTableName();
 		if (syncUploadDataDigester != null && syncTableName != null
 				&& syncTableName.equalsIgnoreCase("m_beneficiaryregidmapping")) {
@@ -138,8 +142,8 @@ public class GetDataFromVanAndSyncToDBImpl implements GetDataFromVanAndSyncToDB 
 				}
 
 				if (map.containsKey("SyncFacilityID")) {
-					double syncFaciltyID = (double) map.get("SyncFacilityID");
-					syncFacilityID = (int) syncFaciltyID;
+					//double syncFaciltyID = (double) map.get("SyncFacilityID");
+					syncFacilityID = (int) map.get("SyncFacilityID");
 				}
 
 				recordCheck = dataSyncRepositoryCentral.checkRecordIsAlreadyPresentOrNot(

@@ -42,11 +42,12 @@ To install the MMU module, please follow these steps:
 
 1. Clone the repository to your local machine.
 2. Install the dependencies and build the module:
-   - Run the command `mvn clean install`.
-3. Run the development server:
+   - Run the command `mvn clean install`. 
+3. You can copy `common_example.properties` to `common_local.properties` and edit the file accordingly. The file is under `src/main/environment` folder.
+4. Run the development server:
    - Start the Redis server.
-   - Run the command `mvn spring-boot:run`.
-4. Open your browser and access `http://localhost:8080/swagger-ui.html#!/` to view the Swagger API documentation.
+   - Run the command `mvn spring-boot:run -DENV_VAR=local`.
+5. Open your browser and access `http://localhost:8080/swagger-ui.html#!/` to view the Swagger API documentation.
 
 ## Usage
 
