@@ -24,8 +24,8 @@ package com.iemr.mmu.controller.common.main;
 import java.io.File;
 import java.io.FileInputStream;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;

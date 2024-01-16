@@ -22,7 +22,7 @@
 package com.iemr.mmu.cancerScreening;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.isA;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -31,10 +31,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.aspectj.lang.annotation.Before;
+import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.mockito.Matchers;
+import org.junit.jupiter.api.Test;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -125,8 +125,8 @@ public class TestCSServices
 	
 	static Long beneficiaryRegID = 7506L;
 	static Long benVisitID = 131L;
-	@BeforeClass
-	public static void initializeParams(){
+	@Before(value = "")
+	public static void initializeParams() throws JSONException{
 		
 		cSServiceImpl.setCommonNurseServiceImpl(commonNurseServiceImpl);
 		cSServiceImpl.setcSNurseServiceImpl(cSNurseServiceImpl);
@@ -215,7 +215,7 @@ public class TestCSServices
 		List<BenFamilyCancerHistory> familyRes =  new ArrayList<BenFamilyCancerHistory>();
 		familyRes.add(benFamilyHistory);
 		familyRes.add(spy(BenFamilyCancerHistory.class));
-		when(benFamilyCancerHistoryRepoMock.save(Matchers.anyListOf(BenFamilyCancerHistory.class))).thenReturn(familyRes);
+		//when(benFamilyCancerHistoryRepoMock.save(Matchers.anyListOf(BenFamilyCancerHistory.class))).thenReturn(familyRes);
 		
 		BenPersonalCancerHistory personalHstry = spy(BenPersonalCancerHistory.class);
 		personalHstry.setID(1L);
@@ -238,7 +238,7 @@ public class TestCSServices
 		CancerLymphNodeDetails lymphNode = new CancerLymphNodeDetails();
 		lymphNode.setID(1L);
 		lymphNodes.add(lymphNode );
-		when(cancerLymphNodeExaminationRepoMock.save(Matchers.anyListOf(CancerLymphNodeDetails.class))).thenReturn(lymphNodes);
+		//when(cancerLymphNodeExaminationRepoMock.save(Matchers.anyListOf(CancerLymphNodeDetails.class))).thenReturn(lymphNodes);
 		
 		CancerOralExamination cancerOralExamination = spy(CancerOralExamination.class);
 		cancerOralExamination.setID(1L);
@@ -259,7 +259,7 @@ public class TestCSServices
 		List<CancerExaminationImageAnnotation> imgAntns = new ArrayList<CancerExaminationImageAnnotation>();
 		CancerExaminationImageAnnotation imgAntn = spy(CancerExaminationImageAnnotation.class);
 		imgAntns.add(imgAntn);
-		when(cancerExaminationImageAnnotationRepoMock.save(Matchers.anyListOf(CancerExaminationImageAnnotation.class))).thenReturn(imgAntns);
+		//when(cancerExaminationImageAnnotationRepoMock.save(Matchers.anyListOf(CancerExaminationImageAnnotation.class))).thenReturn(imgAntns);
 		
 		BenCancerVitalDetail benCancerVitalDetail= spy(BenCancerVitalDetail.class);
 		benCancerVitalDetail.setID(1L);
@@ -276,7 +276,7 @@ public class TestCSServices
 		//Mcoking update calls
 		when(benFamilyCancerHistoryRepoMock.deleteExistingFamilyRecord(1L, "N")).thenReturn(1);
 		
-		when(benObstetricCancerHistoryRepoMock.getObstetricCancerHistoryStatus(
+/*		when(benObstetricCancerHistoryRepoMock.getObstetricCancerHistoryStatus(
 				Matchers.anyLong(), Matchers.anyLong())).thenReturn("N");
 		
 		//Integer, String, Boolean, String, Integer, Boolean, Boolean, Boolean, Integer, Boolean, Integer, Integer, String, Boolean, Boolean, Integer, Boolean, Boolean, String, Long, Long, String
@@ -355,6 +355,7 @@ public class TestCSServices
 		when(cancerGynecologicalExaminationRepoMock.updateCancerGynecologicalExamination(Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), 
 				Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(),Matchers.any(), 
 				Matchers.any(), Matchers.any(), Matchers.any())).thenReturn(1);
+			
 		
 		ArrayList list = new ArrayList<Object[]>();
 		Object[] objs= {1, "N"};
@@ -366,7 +367,7 @@ public class TestCSServices
 		when(cancerExaminationImageAnnotationRepoMock.deleteExistingImageAnnotationDetails(Matchers.any(), Matchers.any())).thenReturn(1);
 		
 		when(cancerDiagnosisRepoMock.updateDetailsByOncologist(Matchers.any(), Matchers.any(),Matchers.any(), Matchers.any(), Matchers.any())).thenReturn(1);
-		
+*/			
 		when(benVisitDetailRepoMock.getVisitDetails(beneficiaryRegID, benVisitID)).thenReturn(spy(BeneficiaryVisitDetail.class));
 		
 		List<BenFamilyCancerHistory> bfc=new ArrayList<BenFamilyCancerHistory>();

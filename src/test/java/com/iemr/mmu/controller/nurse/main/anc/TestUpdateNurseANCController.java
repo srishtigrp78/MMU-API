@@ -26,11 +26,7 @@ import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
-import javax.transaction.Transactional;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -97,7 +93,7 @@ public class TestUpdateNurseANCController {
 		System.out.println(History);
 		assertThat(History).isEqualTo(medHistory);
 		
-		BenMedHistory result = benMedHistoryRepo.findOne(History.getBenMedHistoryID());
+		BenMedHistory result = benMedHistoryRepo.findById(History.getBenMedHistoryID()).get();
 		System.out.println(result.getIllnessType());
 		
 	}

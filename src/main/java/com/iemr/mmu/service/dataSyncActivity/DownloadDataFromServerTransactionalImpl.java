@@ -99,7 +99,7 @@ public class DownloadDataFromServerTransactionalImpl implements DownloadDataFrom
 						indent.setProcessed("P");
 
 					}
-					indentRepo.save(indentList);
+					indentRepo.saveAll(indentList);
 
 					int updateFlag = updateProcessedFlagToCentral("db_iemr", "t_indent", ids, ServerAuthorization);
 				}
@@ -127,7 +127,7 @@ public class DownloadDataFromServerTransactionalImpl implements DownloadDataFrom
 
 						indentOrder.setProcessed("P");
 					}
-					indentOrderRepo.save(indentOrderList);
+					indentOrderRepo.saveAll(indentOrderList);
 					int updateFlag = updateProcessedFlagToCentral("db_iemr", "t_indentorder", ids, ServerAuthorization);
 				}
 				break;
@@ -154,7 +154,7 @@ public class DownloadDataFromServerTransactionalImpl implements DownloadDataFrom
 						indentIssue.setProcessed("P");
 
 					}
-					indentIssueRepo.save(indentIssueList);
+					indentIssueRepo.saveAll(indentIssueList);
 
 					int updateFlag = updateProcessedFlagToCentral("db_iemr", "t_indentissue", ids, ServerAuthorization);
 				}
@@ -181,7 +181,7 @@ public class DownloadDataFromServerTransactionalImpl implements DownloadDataFrom
 
 						stockTransfer.setProcessed("P");
 					}
-					stockTransferRepo.save(stockTransferList);
+					stockTransferRepo.saveAll(stockTransferList);
 
 					int updateFlag = updateProcessedFlagToCentral("db_iemr", "t_stocktransfer", ids,
 							ServerAuthorization);
@@ -209,7 +209,7 @@ public class DownloadDataFromServerTransactionalImpl implements DownloadDataFrom
 
 						itemStockEntry.setProcessed("P");
 					}
-					itemStockEntryRepo.save(itemStockEntryList);
+					itemStockEntryRepo.saveAll(itemStockEntryList);
 
 					int updateFlag = updateProcessedFlagToCentral("db_iemr", "t_itemstockentry", ids,
 							ServerAuthorization);
