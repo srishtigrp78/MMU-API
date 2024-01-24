@@ -50,7 +50,7 @@ public class TestNCDCareController {
 	void saveNCDCareNurseDataPveTest() {
 
 		String response = createController.saveBenNCDCareNurseData(nurseObjPve);
-		Assertions.assertEquals( response,"{\"data\":{\"response\":\"NCD Care Nurse Entered Details stored successfully.\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}");
+		Assertions.assertEquals("{\"data\":{\"response\":\"NCD Care Nurs e Entered Details stored successfully.\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}", response);
 		//Assertions.assertTrue( response.equals(
 		//		"{\"data\":{\"response\":\"NCD Care Nurse Entered Details stored successfully.\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
 	}

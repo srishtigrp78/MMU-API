@@ -146,8 +146,7 @@ public class TestCSController {
 
 		String response = createController.getBenCancerFamilyHistory(fetchHstryObjPve);
 
-		Assertions.assertNotNull(response.equals(
-				"{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+		Assertions.assertNotNull(response);
 	}
 /*
 	@Test
