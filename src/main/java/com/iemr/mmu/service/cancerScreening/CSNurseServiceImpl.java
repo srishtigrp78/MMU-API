@@ -1086,7 +1086,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 
 		List<CancerLymphNodeDetails> response = (List<CancerLymphNodeDetails>) cancerLymphNodeExaminationRepo
 				.saveAll(cancerLymphNodeDetails);
-		if (null != response && response.size() > 0) {
+		if (!response.isEmpty()) {
 
 			responseData = response.get(response.size() - 1).getID();
 		}

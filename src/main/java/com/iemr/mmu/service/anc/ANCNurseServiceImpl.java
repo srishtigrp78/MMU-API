@@ -94,12 +94,12 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 
 	@Override
 	public Long saveANCWomenVaccineDetails(List<ANCWomenVaccineDetail> ancWomenVaccineDetails) {
-		List<ANCWomenVaccineDetail> ancWomenVaccineDetail = (List<ANCWomenVaccineDetail>) ancWomenVaccineRepo
+		Iterable<ANCWomenVaccineDetail> listOfANCWomenVaccineDetail = ancWomenVaccineRepo
 				.saveAll(ancWomenVaccineDetails);
 
 		Long ancWomenVaccineID = null;
-		if (null != ancWomenVaccineDetail && ancWomenVaccineDetail.size() > 0) {
-			for (ANCWomenVaccineDetail ancWomenVaccine : ancWomenVaccineDetail) {
+		if (null != listOfANCWomenVaccineDetail && ((List<ANCWomenVaccineDetail>) listOfANCWomenVaccineDetail).size() > 0) {
+			for (ANCWomenVaccineDetail ancWomenVaccine : listOfANCWomenVaccineDetail) {
 				ancWomenVaccineID = ancWomenVaccine.getID();
 			}
 		}

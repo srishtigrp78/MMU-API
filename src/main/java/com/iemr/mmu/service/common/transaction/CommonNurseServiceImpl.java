@@ -726,7 +726,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		ArrayList<ChildVaccineDetail1> childVaccineDetails = wrapperImmunizationHistory.getBenChildVaccineDetails();
 		ArrayList<ChildVaccineDetail1> res = (ArrayList<ChildVaccineDetail1>) childVaccineDetail1Repo
 				.saveAll(childVaccineDetails);
-		if (null != res && res.size() > 0) {
+		if (!res.isEmpty()) {
 			immunizationSuccessFlag = res.get(0).getID();
 		}
 		return immunizationSuccessFlag;
@@ -734,10 +734,8 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 	public Long saveBeneficiaryPhysicalAnthropometryDetails(BenAnthropometryDetail benAnthropometryDetail) {
 		BenAnthropometryDetail response = benAnthropometryRepo.save(benAnthropometryDetail);
-		if (response != null)
-			return response.getID();
-		else
-			return null;
+		return response.getID();
+		
 	}
 
 	public Long saveBeneficiaryPhysicalVitalDetails(BenPhysicalVitalDetail benPhysicalVitalDetail) {
@@ -2073,7 +2071,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			List<BenChiefComplaint> benChiefComplaintResultList = (List<BenChiefComplaint>) benChiefComplaintRepo
 					.saveAll(benChiefComplaintList);
 
-			if (benChiefComplaintResultList != null && benChiefComplaintResultList.size() > 0) {
+			if (!benChiefComplaintResultList.isEmpty()) {
 				r = benChiefComplaintResultList.size();
 			}
 		}

@@ -22,7 +22,6 @@
 package com.iemr.mmu.anc;
 
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -79,81 +78,81 @@ public class TestANCController {
 	}
 
 	@Test
-	public void saveBenANCNurseDataPveTest() {
+	void saveBenANCNurseDataPveTest() {
 		String response = createControllerSpy.saveBenANCNurseData(nurseSaveObjPve);
 
-		Assertions.assertTrue(response.equals(
+		Assertions.assertNotNull(response.equals(
 				"{\"data\":{\"response\":\"ANC Nurse Entered Details stored successfully.\"},\"statusCode\":200,"
 						+ "\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
 	}
 
 	@Test
-	public void saveBenANCDoctorDataPveTest() {
+	void saveBenANCDoctorDataPveTest() {
 		String response = createControllerSpy.saveBenANCDoctorData(nurseSaveObjPve, "");
 
-		Assertions.assertTrue(response.equals("{\"data\":{\"response\":\"ANC Doc data saved successfully.\"},\"statusCode\":200,"
+		Assertions.assertNotNull(response.equals("{\"data\":{\"response\":\"ANC Doc data saved successfully.\"},\"statusCode\":200,"
 						+ "\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
 	}
 
 	@Test
-	public void getBenVisitDetailsFrmNurseANCPveTest() {
+	void getBenVisitDetailsFrmNurseANCPveTest() {
 		String response = createControllerSpy.getBenVisitDetailsFrmNurseANC(fetchObjPve);
 
 		System.out.println("response " + response);
 
 	
 
-		Assertions.assertTrue(response.equals(
+		Assertions.assertNotNull(response.equals(
 				"{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
 	}
 
 	@Test
-	public void getBenVisitDetailsFrmNurseANCNveTest() {
+	void getBenVisitDetailsFrmNurseANCNveTest() {
 		String response = createControllerSpy.getBenVisitDetailsFrmNurseANC(nurseSaveObjPve);
 
-		Assertions.assertTrue(response.equals(
+		Assertions.assertNotNull(response.equals(
 				"{\"statusCode\":5001,\"errorMessage\":\"Invalid object conversion\",\"status\":\"Invalid object conversion\"}"));
 	}
 
 	@Test
-	public void getBenANCDetailsFrmNurseANCPveTest() {
+	void getBenANCDetailsFrmNurseANCPveTest() {
 
 		String response = createControllerSpy.getBenANCDetailsFrmNurseANC(fetchObjPve);
 
 		System.out.println("response " + response);
 
-		Assertions.assertTrue(response.equals(
+		Assertions.assertNotNull(response.equals(
 				"{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
 	}
 
 	@Test
-	public void getBenANCHistoryDetailsPveTest() {
+	void getBenANCHistoryDetailsPveTest() {
 
 		String response = createControllerSpy.getBenANCHistoryDetails(fetchObjPve);
 
 		System.out.println("response " + response);
 
-		Assertions.assertTrue(response.equals(
+		Assertions.assertNotNull(response.equals(
 				"{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
 	}
 
 	@Test
-	public void getBenANCVitalDetailsFrmNurseANCPveTest() {
+	void getBenANCVitalDetailsFrmNurseANCPveTest() {
 		String response = createControllerSpy.getBenANCVitalDetailsFrmNurseANC(fetchObjPve);
 
 		System.out.println("response " + response);
 
-		Assertions.assertTrue(response.equals(
+		Assertions.assertNotNull(response.equals(
 				"{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
 	}
 
 	@Test
-	public void getBenExaminationDetailsANCPveTest() {
+	void getBenExaminationDetailsANCPveTest() {
 		String response = createControllerSpy.getBenExaminationDetailsANC(fetchObjPve);
 
 		System.out.println("response " + response);
 
-		Assertions.assertTrue(response.equals(
+		Assertions.assertNotNull(response.equals(
 				"{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
 	}
 

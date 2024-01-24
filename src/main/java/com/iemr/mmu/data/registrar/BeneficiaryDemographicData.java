@@ -23,7 +23,9 @@ package com.iemr.mmu.data.registrar;
 
 import java.sql.Timestamp;
 
-import jakarta.persistence.CascadeType;
+import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.login.MasterServicePoint;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -33,11 +35,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.gson.annotations.Expose;
-import com.iemr.mmu.data.login.MasterServicePoint;
-import com.iemr.mmu.data.provider.ProviderServiceMapping;
 
 @Entity
 @Table(name = "I_bendemographics")

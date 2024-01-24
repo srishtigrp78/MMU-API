@@ -44,6 +44,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>com.jayway.jsonpath</groupId>
+					<artifactId>json-path</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -91,23 +97,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>21.0</version>
-		</dependency>
-
-		
-
-		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<!--<version>20160212</version> -->
-		</dependency>
-
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20160212</version>
+			<version>20231013</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
@@ -117,16 +109,7 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.quartz-scheduler</groupId>
-			<artifactId>quartz</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.quartz-scheduler</groupId>
-			<artifactId>quartz-jobs</artifactId>
+			<version>2.16.1</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 
 		<dependency>
@@ -184,23 +167,7 @@
 	<build>
 		<finalName>mmuapi-v1.0</finalName>
 		<plugins>
-			<plugin>
-				<groupId>org.owasp</groupId>
-				<artifactId>dependency-check-maven</artifactId>
-				<version>9.0.8</version>
-				<configuration>
-					<format>HTML</format>
-					<nvdApiServerId>nvd</nvdApiServerId>
-					<nvdApiKey>79597933-f3cc-4601-949b-12513434ade3</nvdApiKey>
-				</configuration>
-		<executions>
-			<execution>
-				<goals>
-					<goal>check</goal>
-				</goals>
-			</execution>
-		</executions>
-	</plugin>
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -284,13 +251,6 @@
 							<goal>run</goal>
 						</goals>
 						<id>clean-property-files</id>
-						<!--<configuration>
-							<tasks>
-								<delete>
-									<file file="${source-properties}"/>
-								</delete>
-							</tasks> 
-						</configuration> -->
 					</execution>
 				</executions>
 			</plugin>
@@ -303,19 +263,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>io.springfox</groupId>
-				<artifactId>springfox-swagger2</artifactId>
-				<version>2.6.1</version>
-			</dependency>
-			<dependency>
-				<groupId>io.springfox</groupId>
-				<artifactId>springfox-swagger-ui</artifactId>
-				<version>2.6.1</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
+	
 </project>

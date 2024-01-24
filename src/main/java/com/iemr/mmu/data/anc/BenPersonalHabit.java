@@ -28,16 +28,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.annotations.Expose;
+import com.iemr.mmu.service.anc.Utility;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
-
-import com.google.gson.annotations.Expose;
-import com.iemr.mmu.annotation.sqlinjection.SQLInjectionSafe;
-import com.iemr.mmu.service.anc.Utility;
 
 @Entity
 @Table(name = "t_BenPersonalHabit")

@@ -619,7 +619,7 @@ public class CommonDoctorServiceImpl {
 			List<BenChiefComplaint> benChiefComplaintResultList = (List<BenChiefComplaint>) benChiefComplaintRepo
 					.saveAll(benChiefComplaintList);
 
-			if (benChiefComplaintResultList != null && benChiefComplaintResultList.size() > 0) {
+			if (!benChiefComplaintResultList.isEmpty()) {
 				r = benChiefComplaintResultList.size();
 			}
 		} else {

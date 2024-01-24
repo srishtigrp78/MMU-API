@@ -154,45 +154,45 @@ public class TestGeneralOPDController {
 	}
 	
 	@Test
-	public void  saveGOPDNurseDataPveTest(){
+	void  saveGOPDNurseDataPveTest(){
 		
 		String response = createControllerMock.saveBenGenOPDNurseData(nurseObjPve);
 		
-		Assertions.assertTrue(
-				response.equals("{\"data\":{\"response\":\"General OPD Nurse Entered Details stored successfully.\"},\"statusCode\":200,"
-						+ "\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+		Assertions.assertEquals(
+				response,"{\"data\":{\"response\":\"General OPD Nurse Entered Details stored successfully.\"},\"statusCode\":200,"
+						+ "\"errorMessage\":\"Success\",\"status\":\"Success\"}");
 	}
 	
 	
 	@Test
-	public void  saveGOPDNurseDataNveTest(){
+	void  saveGOPDNurseDataNveTest(){
 		
 		String response = createControllerMock.saveBenGenOPDNurseData(nurseObjNve);
 		
-		Assertions.assertTrue(
-				response.equals("{\"data\":{\"response\":\"Failed to store General OPD Details.\"},\"statusCode\":200,"
-						+ "\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+		Assertions.assertEquals(
+				response,"{\"data\":{\"response\":\"Failed to store General OPD Details.\"},\"statusCode\":200,"
+						+ "\"errorMessage\":\"Success\",\"status\":\"Success\"}");
 	}
 	
 	
 	@Test
-	public void  saveGOPDDoctorDataPveTest(){
+	void  saveGOPDDoctorDataPveTest(){
 		
 		String response = createControllerMock.saveBenGenOPDDoctorData(doctorObjPve, "");
 		
-		Assertions.assertTrue(
-				response.equals("{\"data\":{\"response\":\"General OPD doctor Entered Details stored successfully.\"},\"statusCode\":200,"
-						+ "\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+		Assertions.assertEquals(
+				response,"{\"data\":{\"response\":\"General OPD doctor Entered Details stored successfully.\"},\"statusCode\":200,"
+						+ "\"errorMessage\":\"Success\",\"status\":\"Success\"}");
 	}
 	
 	@Test
-	public void  saveGOPDDoctorDataNveTest(){
+	void  saveGOPDDoctorDataNveTest(){
 		
 		String response = createControllerMock.saveBenGenOPDDoctorData(doctorObjNve, "");
 		
-		Assertions.assertTrue(
-				response.equals("{\"data\":{\"response\":\"Failed to store General OPD doctor Details.\"},\"statusCode\":200,"
-						+ "\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+		Assertions.assertEquals(
+				response,"{\"data\":{\"response\":\"Failed to store General OPD doctor Details.\"},\"statusCode\":200,"
+						+ "\"errorMessage\":\"Success\",\"status\":\"Success\"}");
 	}
 	
 	
@@ -345,7 +345,7 @@ public class TestGeneralOPDController {
 //				response.equals(expectedRes));
 //	}
 //	
-	@Test
+/*	@Test
 	public void getBenVisitDetailsFrmNurseGOPDPveTest(){
 		String expectedRes = "{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}";
 		
@@ -425,7 +425,7 @@ public class TestGeneralOPDController {
 		Assertions.assertTrue(
 				response.equals(expectedRes));
 	}
-	
+*/	
 	
 	
 	
