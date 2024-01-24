@@ -25,7 +25,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -45,7 +45,6 @@ import java.io.IOException;
 public class HttpUtils {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	public static final String AUTHORIZATION = "Authorization";
-	private String server;
 	// @Autowired
 	private RestTemplate rest;
 	// @Autowired
@@ -152,8 +151,7 @@ public class HttpUtils {
 				multiPart = new FormDataMultiPart();
 				is = new FileInputStream(data);
 
-				FormDataBodyPart filePart = new FormDataBodyPart("content", is,
-						MediaType.APPLICATION_OCTET_STREAM_TYPE);
+				FormDataBodyPart filePart = new FormDataBodyPart();
 				multiPart.bodyPart(filePart);
 				multiPart.field("docPath", data);
 				headers.add("Content-Type", MediaType.APPLICATION_JSON);

@@ -35,7 +35,7 @@ import com.iemr.mmu.data.location.DistrictBranchMapping;
 @RestResource(exported = false)
 public interface DistrictBranchMasterRepo extends CrudRepository<DistrictBranchMapping, Integer> {
 
-	@Query(" SELECT districtBranchID, villageName FROM DistrictBranchMapping WHERE blockID = :blockID  AND deleted != 1 ")
+	@Query(" SELECT districtBranchID, villageName FROM DistrictBranchMapping WHERE blockID = :blockID  AND deleted != true ")
 	public ArrayList<Object[]> findByBlockID(@Param("blockID") Integer blockID);
 
 	/*@Query("select  v.villageName, v.districtBranchID from DistrictBranchMapping v "
@@ -48,7 +48,7 @@ public interface DistrictBranchMasterRepo extends CrudRepository<DistrictBranchM
 	@Query(" SELECT  b.blockName,b.blockID,d.districtName,d.districtID FROM DistrictBranchMapping v "
 			+ " INNER JOIN v.districtBlock b"
 			+ " INNER JOIN b.districts d"
-			+ " WHERE v.districtBranchID = :districtBranchID AND v.deleted != 1 ")
+			+ " WHERE v.districtBranchID = :districtBranchID AND v.deleted != true ")
 	public ArrayList<Object[]> getDistrictTalukList(@Param("districtBranchID") Integer districtBranchID);
 	
 

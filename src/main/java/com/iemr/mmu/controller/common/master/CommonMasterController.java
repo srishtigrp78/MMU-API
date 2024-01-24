@@ -21,7 +21,7 @@
 */
 package com.iemr.mmu.controller.common.master;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

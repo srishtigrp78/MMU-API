@@ -41,6 +41,6 @@ public interface SyncDownloadMasterRepo extends CrudRepository<SyncDownloadMaste
 
 	@Transactional
 	@Modifying
-	@Query(" UPDATE SyncDownloadMaster u SET u.lastDownloadDate = Date(Now()) WHERE u.downloadMasterTableID =:ID ")
+	@Query(value =" UPDATE SyncDownloadMaster u SET u.lastDownloadDate = current_date() WHERE u.downloadMasterTableID =:ID ",nativeQuery = true)
 	int updateTableSyncDownloadMasterForLastDownloadDate(@Param("ID") Integer ID);
 }

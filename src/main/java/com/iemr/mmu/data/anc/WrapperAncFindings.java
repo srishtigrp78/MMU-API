@@ -23,7 +23,7 @@ package com.iemr.mmu.data.anc;
 
 import java.util.ArrayList;
 
-import javax.persistence.Column;
+import jakarta.persistence.Column;
 
 import com.google.gson.annotations.Expose;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;

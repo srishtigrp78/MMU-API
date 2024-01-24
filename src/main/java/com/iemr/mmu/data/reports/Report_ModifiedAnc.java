@@ -27,7 +27,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
-import javax.persistence.Column;
+import jakarta.persistence.Column;
 
 import org.hibernate.annotations.Columns;
 

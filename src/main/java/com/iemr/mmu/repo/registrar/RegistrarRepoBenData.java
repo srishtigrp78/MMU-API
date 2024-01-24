@@ -56,13 +56,13 @@ public interface RegistrarRepoBenData extends CrudRepository<BeneficiaryData, Lo
 			+ " WHERE bdd.servicePointID = :spID  ")
 	public List<Object[]> getRegistrarWorkList(@Param("spID") int spID);
 
-	@Query("  SELECT bd.beneficiaryRegID, bd.beneficiaryID, "
+/*	@Query("  SELECT bd.beneficiaryRegID, bd.beneficiaryID, "
 			+ " UPPER(concat(IFNULL(bd.firstName, ''), ' ', IFNULL(bd.middleName, ''), ' ',IFNULL(bd.lastName,''))) as benName, "
 			+ " bd.dob, bd.genderID,UPPER(bd.fatherName), bdd.servicePointID, bdd.districtBranchID, bpm.phoneNo "
 			+ " FROM BeneficiaryData bd INNER JOIN  bd.benDemoData bdd INNER JOIN bd.benPhoneMap bpm "
 			+ " WHERE bd.beneficiaryID = :benID ")
 	public List<Object[]> getQuickSearch(@Param("benID") String benID);
-
+*/
 	@Query("SELECT i.beneficiaryRegID, i.beneficiaryID,"
 			+ "concat(IFNULL(i.firstName, ''), ' ', IFNULL(i.middleName, ''), ' ',IFNULL(i.lastName,'')) as benName, "
 			+ "  Date(i.dob), i.genderID, i.createdDate"
@@ -71,7 +71,7 @@ public interface RegistrarRepoBenData extends CrudRepository<BeneficiaryData, Lo
 
 	@Transactional
 	@Modifying
-	@Query("UPDATE BeneficiaryData set flowStatusFlag = :flowStatusFlag, lastModDate = curdate() where beneficiaryRegID = :benRegID ")
+	@Query("UPDATE BeneficiaryData set flowStatusFlag = :flowStatusFlag where beneficiaryRegID = :benRegID ")
 	public Integer updateBenFlowStatus(@Param("flowStatusFlag") Character flowStatusFlag,
 			@Param("benRegID") Long benRegID);
 

@@ -34,6 +34,6 @@ import com.iemr.mmu.data.location.States;
 @Repository
 @RestResource(exported = false)
 public interface StateMasterRepo extends CrudRepository<States, Integer> {
-	@Query(" SELECT stateID, stateName FROM States WHERE deleted != 1 ")
+	@Query(" SELECT stateID, stateName FROM States WHERE deleted != true ")
 	public ArrayList<Object[]> getStateMaster();
 }
