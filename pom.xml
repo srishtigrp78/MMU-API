@@ -153,7 +153,6 @@
 		<dependency>
 			<groupId>org.glassfish.jersey.media</groupId>
 			<artifactId>jersey-media-multipart</artifactId>
-			<version>2.0-m11</version>
 		</dependency>
 <!--START NEW DEPENDENCIES ADDED-->
 		<dependency>
@@ -185,6 +184,23 @@
 	<build>
 		<finalName>mmuapi-v1.0</finalName>
 		<plugins>
+			<plugin>
+				<groupId>org.owasp</groupId>
+				<artifactId>dependency-check-maven</artifactId>
+				<version>9.0.8</version>
+				<configuration>
+					<format>HTML</format>
+					<nvdApiServerId>nvd</nvdApiServerId>
+					<nvdApiKey>79597933-f3cc-4601-949b-12513434ade3</nvdApiKey>
+				</configuration>
+		<executions>
+			<execution>
+				<goals>
+					<goal>check</goal>
+				</goals>
+			</execution>
+		</executions>
+	</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -268,13 +284,13 @@
 							<goal>run</goal>
 						</goals>
 						<id>clean-property-files</id>
-						<configuration>
+						<!--<configuration>
 							<tasks>
 								<delete>
 									<file file="${source-properties}"/>
 								</delete>
-							</tasks>
-						</configuration>
+							</tasks> 
+						</configuration> -->
 					</execution>
 				</executions>
 			</plugin>
@@ -285,23 +301,6 @@
 					<testFailureIgnore>true</testFailureIgnore>
 				</configuration>
 			</plugin>
-			<plugin>
-<groupId>org.owasp</groupId>
-<artifactId>dependency-check-maven</artifactId>
-<version>9.0.8</version>
-<configuration>
-<format>HTML</format>
-<nvdApiServerId>nvd</nvdApiServerId>
-<nvdApiKey>79597933-f3cc-4601-949b-12513434ade3</nvdApiKey>
-</configuration>
-<executions>
-<execution>
-<goals>
-<goal>check</goal>
-</goals>
-</execution>
-</executions>
-</plugin>
 		</plugins>
 	</build>
 	<dependencyManagement>
