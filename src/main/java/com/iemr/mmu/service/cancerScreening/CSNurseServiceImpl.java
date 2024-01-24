@@ -1183,7 +1183,7 @@ public class CSNurseServiceImpl implements CSNurseService {
 		}
 		List<CancerExaminationImageAnnotation> objList = (List<CancerExaminationImageAnnotation>) cancerExaminationImageAnnotationRepo
 				.saveAll(getCancerExaminationImageAnnotationList(wrapperCancerExamImgAnotasnList, benVisitCode));
-		if (objList != null && objList.size() > 0) {
+		if (!objList.isEmpty()) {
 			x = (long) objList.size();
 		}
 		return x;

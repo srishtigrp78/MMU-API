@@ -81,17 +81,14 @@ public class TestANCController {
 	void saveBenANCNurseDataPveTest() {
 		String response = createControllerSpy.saveBenANCNurseData(nurseSaveObjPve);
 
-		Assertions.assertNotNull(response.equals(
-				"{\"data\":{\"response\":\"ANC Nurse Entered Details stored successfully.\"},\"statusCode\":200,"
-						+ "\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+		Assertions.assertNotNull(response);
 	}
 
 	@Test
 	void saveBenANCDoctorDataPveTest() {
 		String response = createControllerSpy.saveBenANCDoctorData(nurseSaveObjPve, "");
 
-		Assertions.assertNotNull(response.equals("{\"data\":{\"response\":\"ANC Doc data saved successfully.\"},\"statusCode\":200,"
-						+ "\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+		Assertions.assertNotNull(response);
 	}
 
 	@Test
@@ -102,16 +99,14 @@ public class TestANCController {
 
 	
 
-		Assertions.assertNotNull(response.equals(
-				"{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+		Assertions.assertNotNull(response);
 	}
 
 	@Test
 	void getBenVisitDetailsFrmNurseANCNveTest() {
 		String response = createControllerSpy.getBenVisitDetailsFrmNurseANC(nurseSaveObjPve);
 
-		Assertions.assertNotNull(response.equals(
-				"{\"statusCode\":5001,\"errorMessage\":\"Invalid object conversion\",\"status\":\"Invalid object conversion\"}"));
+		Assertions.assertNotNull(response);
 	}
 
 	@Test
@@ -121,8 +116,7 @@ public class TestANCController {
 
 		System.out.println("response " + response);
 
-		Assertions.assertNotNull(response.equals(
-				"{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+		Assertions.assertNotNull(response);
 	}
 
 	@Test
@@ -132,8 +126,7 @@ public class TestANCController {
 
 		System.out.println("response " + response);
 
-		Assertions.assertNotNull(response.equals(
-				"{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+		Assertions.assertNotNull(response);
 	}
 
 	@Test
@@ -142,8 +135,7 @@ public class TestANCController {
 
 		System.out.println("response " + response);
 
-		Assertions.assertNotNull(response.equals(
-				"{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+		Assertions.assertNotNull(response);
 	}
 
 	@Test
@@ -152,8 +144,7 @@ public class TestANCController {
 
 		System.out.println("response " + response);
 
-		Assertions.assertNotNull(response.equals(
-				"{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
+		Assertions.assertNotNull(response);
 	}
 
 }
