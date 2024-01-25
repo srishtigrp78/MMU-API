@@ -49,7 +49,7 @@ import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @CrossOrigin
-@RequestMapping(value = "/generalOPD", headers = "Authorization")
+@RequestMapping(value = "/generalOPD", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class GeneralOPDController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
@@ -67,7 +67,7 @@ public class GeneralOPDController {
 	 */
 	@CrossOrigin
 	@Operation(summary = "Save general OPD nurse data")
-	@PostMapping(value = { "/save/nurseData" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/save/nurseData" })
 	public String saveBenGenOPDNurseData(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		try {
@@ -104,7 +104,7 @@ public class GeneralOPDController {
 	 */
 	@CrossOrigin
 	@Operation(summary = "Save general OPD doctor data")
-	@PostMapping(value = { "/save/doctorData" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/save/doctorData" })
 	public String saveBenGenOPDDoctorData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -135,7 +135,7 @@ public class GeneralOPDController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary visit details from nurse general OPD")
-	@PostMapping(value = { "/getBenVisitDetailsFrmNurseGOPD" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenVisitDetailsFrmNurseGOPD" })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenVisitDetailsFrmNurseGOPD(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
@@ -169,7 +169,7 @@ public class GeneralOPDController {
 	 */
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary general OPD history details from nurse to doctor ")
-	@PostMapping(value = { "/getBenHistoryDetails" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenHistoryDetails" })
 
 	public String getBenHistoryDetails(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
@@ -202,7 +202,7 @@ public class GeneralOPDController {
 	 */
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary vital details from nurse general OPD")
-	@PostMapping(value = { "/getBenVitalDetailsFrmNurse" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenVitalDetailsFrmNurse" })
 	public String getBenVitalDetailsFrmNurse(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -235,7 +235,7 @@ public class GeneralOPDController {
 	 */
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary general OPD examination details from nurse to doctor ")
-	@PostMapping(value = { "/getBenExaminationDetails" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenExaminationDetails" })
 
 	public String getBenExaminationDetails(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
@@ -268,7 +268,7 @@ public class GeneralOPDController {
 	 */
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary doctor entered details")
-	@PostMapping(value = { "/getBenCaseRecordFromDoctorGeneralOPD" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenCaseRecordFromDoctorGeneralOPD" })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenCaseRecordFromDoctorGeneralOPD(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
@@ -297,7 +297,7 @@ public class GeneralOPDController {
 
 	@CrossOrigin
 	@Operation(summary = "Update general OPD visit screen nurse data in doctor screen")
-	@PostMapping(value = { "/update/visitDetailsScreen" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/update/visitDetailsScreen" })
 	public String updateVisitNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -333,7 +333,7 @@ public class GeneralOPDController {
 
 	@CrossOrigin
 	@Operation(summary = "Update history data in doctor Screen")
-	@PostMapping(value = { "/update/historyScreen" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/update/historyScreen" })
 	public String updateHistoryNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -369,7 +369,7 @@ public class GeneralOPDController {
 
 	@CrossOrigin
 	@Operation(summary = "Update general OPD vital data in doctor screen")
-	@PostMapping(value = { "/update/vitalScreen" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/update/vitalScreen" })
 	public String updateVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -405,7 +405,7 @@ public class GeneralOPDController {
 
 	@CrossOrigin
 	@Operation(summary = "Update general OPD examination data in doctor screen")
-	@PostMapping(value = { "/update/examinationScreen" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/update/examinationScreen" })
 	public String updateGeneralOPDExaminationNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -439,7 +439,7 @@ public class GeneralOPDController {
 	 */
 	@CrossOrigin
 	@Operation(summary = "Update general OPD doctor data")
-	@PostMapping(value = { "/update/doctorData" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/update/doctorData" })
 	public String updateGeneralOPDDoctorData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 
