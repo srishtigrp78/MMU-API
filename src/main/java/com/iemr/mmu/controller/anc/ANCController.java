@@ -27,10 +27,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.JsonElement;
@@ -40,8 +40,9 @@ import com.iemr.mmu.service.anc.ANCService;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.lettuce.core.dynamic.annotation.Param;
+import io.swagger.v3.oas.annotations.Operation;
+
 
 /**
  * @Objective Saving ANC data for Nurse and Doctor.
@@ -66,16 +67,15 @@ public class ANCController {
 	 */
 
 	@CrossOrigin
-	@ApiOperation(value = "Save ANC nurse data", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
+	@Operation(summary = "Save ANC nurse data")
+	@PostMapping(value = { "/save/nurseData" }, consumes = "application/json", produces = "application/json")
 	public String saveBenANCNurseData(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		try {
 			logger.info("Request object for ANC nurse data saving :" + requestObj);
 
 			JsonObject jsnOBJ = new JsonObject();
-			JsonParser jsnParser = new JsonParser();
-			JsonElement jsnElmnt = jsnParser.parse(requestObj);
+			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
@@ -105,8 +105,8 @@ public class ANCController {
 	 * @return success or failure response
 	 */
 	@CrossOrigin
-	@ApiOperation(value = "Save ANC doctor data", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/save/doctorData" }, method = { RequestMethod.POST })
+	@Operation(summary = "Save ANC doctor data")
+	@PostMapping(value = { "/save/doctorData" }, consumes = "application/json", produces = "application/json")
 	public String saveBenANCDoctorData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -114,8 +114,7 @@ public class ANCController {
 			logger.info("Request object for ANC doctor data saving :" + requestObj);
 
 			JsonObject jsnOBJ = new JsonObject();
-			JsonParser jsnParser = new JsonParser();
-			JsonElement jsnElmnt = jsnParser.parse(requestObj);
+			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 			if (jsnOBJ != null) {
 				Long r = ancService.saveANCDoctorData(jsnOBJ, Authorization);
@@ -136,11 +135,11 @@ public class ANCController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary visit details from nurse ANC", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenVisitDetailsFrmNurseANC" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get beneficiary visit details from nurse ANC")
+	@PostMapping(value = { "/getBenVisitDetailsFrmNurseANC" }, consumes = "application/json", produces = "application/json")
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenVisitDetailsFrmNurseANC(
-			@ApiParam(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("Request object for ANC visit data fetching :" + comingRequest);
@@ -169,11 +168,11 @@ public class ANCController {
 	 * @return anc care details in JSON format
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary ANC care details from nurse ANC", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenANCDetailsFrmNurseANC" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get beneficiary ANC care details from nurse ANC")
+	@PostMapping(value = { "/getBenANCDetailsFrmNurseANC" }, consumes = "application/json", produces = "application/json")
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenANCDetailsFrmNurseANC(
-			@ApiParam(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("Request object for ANC Care data fetching :" + comingRequest);
@@ -203,11 +202,11 @@ public class ANCController {
 	 * @return history details in JSON format
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary ANC history details from nurse to doctor ", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenANCHistoryDetails" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get beneficiary ANC history details from nurse to doctor ")
+	@PostMapping(value = { "/getBenANCHistoryDetails" }, consumes = "application/json", produces = "application/json")
 
 	public String getBenANCHistoryDetails(
-			@ApiParam(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("Request object for ANC history data fetching :" + comingRequest);
@@ -236,10 +235,10 @@ public class ANCController {
 	 * @return vital details in JSON format
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary ANC vital details from nurse ANC", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenANCVitalDetailsFrmNurseANC" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get beneficiary ANC vital details from nurse ANC")
+	@PostMapping(value = { "/getBenANCVitalDetailsFrmNurseANC" }, consumes = "application/json", produces = "application/json")
 	public String getBenANCVitalDetailsFrmNurseANC(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("Request object for ANC vital data fetching :" + comingRequest);
@@ -269,11 +268,11 @@ public class ANCController {
 	 * @return examination details in JSON format
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary ANC examination details from nurse to doctor ", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenExaminationDetailsANC" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get beneficiary ANC examination details from nurse to doctor ")
+	@PostMapping(value = { "/getBenExaminationDetailsANC" }, consumes = "application/json", produces = "application/json")
 
 	public String getBenExaminationDetailsANC(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("Request object for ANC examination data fetching :" + comingRequest);
@@ -302,11 +301,11 @@ public class ANCController {
 	 * @return doctor entered details in JSON format
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary doctor entered details", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenCaseRecordFromDoctorANC" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get beneficiary doctor entered details")
+	@PostMapping(value = { "/getBenCaseRecordFromDoctorANC" }, consumes = "application/json", produces = "application/json")
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenCaseRecordFromDoctorANC(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("Request object for doctor data fetching :" + comingRequest);
@@ -331,11 +330,11 @@ public class ANCController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Check high risk pregnancy status for ANC beneficiary", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getHRPStatus" }, method = { RequestMethod.POST })
+	@Operation(summary = "Check high risk pregnancy status for ANC beneficiary")
+	@PostMapping(value = { "/getHRPStatus" }, consumes = "application/json", produces = "application/json")
 	@Transactional(rollbackFor = Exception.class)
 	public String getHRPStatus(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("Request object for doctor data fetching :" + comingRequest);
@@ -362,16 +361,15 @@ public class ANCController {
 	}
 
 	@CrossOrigin
-	@ApiOperation(value = "Update ANC care data in doctor screen", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/update/ANCScreen" }, method = { RequestMethod.POST })
+	@Operation(summary = "Update ANC care data in doctor screen")
+	@PostMapping(value = { "/update/ANCScreen" }, consumes = "application/json", produces = "application/json")
 	public String updateANCCareNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for ANC Care data updating :" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
-		JsonParser jsnParser = new JsonParser();
-		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
@@ -399,16 +397,15 @@ public class ANCController {
 	 */
 
 	@CrossOrigin
-	@ApiOperation(value = "Update ANC history data in doctor screen", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/update/historyScreen" }, method = { RequestMethod.POST })
+	@Operation(summary = "Update ANC history data in doctor screen")
+	@PostMapping(value = { "/update/historyScreen" }, consumes = "application/json", produces = "application/json")
 	public String updateANCHistoryNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for ANC history data updating :" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
-		JsonParser jsnParser = new JsonParser();
-		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
@@ -436,16 +433,15 @@ public class ANCController {
 	 */
 
 	@CrossOrigin
-	@ApiOperation(value = "Update ANC vital data in doctor screen", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/update/vitalScreen" }, method = { RequestMethod.POST })
+	@Operation(summary = "Update ANC vital data in doctor screen")
+	@PostMapping(value = { "/update/vitalScreen" }, consumes = "application/json", produces = "application/json")
 	public String updateANCVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for ANC Vital data updating :" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
-		JsonParser jsnParser = new JsonParser();
-		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
@@ -473,16 +469,15 @@ public class ANCController {
 	 */
 
 	@CrossOrigin
-	@ApiOperation(value = "Update ANC examination data in doctor screen", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/update/examinationScreen" }, method = { RequestMethod.POST })
+	@Operation(summary = "Update ANC examination data in doctor screen")
+	@PostMapping(value = { "/update/examinationScreen" }, consumes = "application/json", produces = "application/json")
 	public String updateANCExaminationNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for ANC examination data updating :" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
-		JsonParser jsnParser = new JsonParser();
-		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
@@ -509,8 +504,8 @@ public class ANCController {
 	 * 
 	 */
 	@CrossOrigin
-	@ApiOperation(value = "Update ANC doctor data", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/update/doctorData" }, method = { RequestMethod.POST })
+	@Operation(summary = "Update ANC doctor data")
+	@PostMapping(value = { "/update/doctorData" }, consumes = "application/json", produces = "application/json")
 	public String updateANCDoctorData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 
@@ -518,8 +513,8 @@ public class ANCController {
 		logger.info("Request object for ANC doctor data updating :" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
-		JsonParser jsnParser = new JsonParser();
-		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
+		
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {

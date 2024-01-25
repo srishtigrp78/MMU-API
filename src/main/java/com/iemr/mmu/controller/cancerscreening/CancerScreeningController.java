@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,8 +44,9 @@ import com.iemr.mmu.service.cancerScreening.CSServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.lettuce.core.dynamic.annotation.Param;
+import io.swagger.v3.oas.annotations.Operation;
+
 
 /**
  * @Objective Saving Cancer screening data for Nurse and Doctor both.
@@ -70,8 +72,8 @@ public class CancerScreeningController {
 	 */
 
 	@CrossOrigin
-	@ApiOperation(value = "Save cancer screening nurse data", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
+	@Operation(summary = "Save cancer screening nurse data")
+	@PostMapping(value = { "/save/nurseData" }, consumes = "application/json", produces = "application/json")
 	public String saveBenCancerScreeningNurseData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -79,8 +81,7 @@ public class CancerScreeningController {
 			logger.info("Request object for CS nurse data saving :" + requestObj);
 
 			JsonObject jsnOBJ = new JsonObject();
-			JsonParser jsnParser = new JsonParser();
-			JsonElement jsnElmnt = jsnParser.parse(requestObj);
+			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
@@ -116,8 +117,8 @@ public class CancerScreeningController {
 	 */
 
 	@CrossOrigin
-	@ApiOperation(value = "Save cancer screening doctor data", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/save/doctorData" }, method = { RequestMethod.POST })
+	@Operation(summary = "Save cancer screening doctor data")
+	@PostMapping(value = { "/save/doctorData" }, consumes = "application/json", produces = "application/json")
 	public String saveBenCancerScreeningDoctorData(@RequestBody String requestObj,
 			@RequestHeader String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -125,8 +126,7 @@ public class CancerScreeningController {
 			logger.info("Request object for CS doctor data saving :" + requestObj);
 
 			JsonObject jsnOBJ = new JsonObject();
-			JsonParser jsnParser = new JsonParser();
-			JsonElement jsnElmnt = jsnParser.parse(requestObj);
+			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
@@ -148,10 +148,10 @@ public class CancerScreeningController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary visit details from nurse screen", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenDataFrmNurseToDocVisitDetailsScreen" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get beneficiary visit details from nurse screen")
+	@PostMapping(value = { "/getBenDataFrmNurseToDocVisitDetailsScreen" }, consumes = "application/json", produces = "application/json")
 	public String getBenDataFrmNurseScrnToDocScrnVisitDetails(
-			@ApiParam(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("Request object for CS visit data fetching :" + comingRequest);
@@ -180,10 +180,10 @@ public class CancerScreeningController {
 	 */
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary cancer history details from nurse screen", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenDataFrmNurseToDocHistoryScreen" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get beneficiary cancer history details from nurse screen")
+	@PostMapping(value = { "/getBenDataFrmNurseToDocHistoryScreen" }, consumes = "application/json", produces = "application/json")
 	public String getBenDataFrmNurseScrnToDocScrnHistory(
-			@ApiParam(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for CS history data fetching :" + comingRequest);
 		try {
@@ -201,7 +201,6 @@ public class CancerScreeningController {
 			response.setError(5000, "Error while getting beneficiary history data");
 			logger.error("Error while getting beneficiary history data :" + e);
 		}
-		// System.out.println(response.toString());
 		return response.toString();
 	}
 
@@ -212,10 +211,10 @@ public class CancerScreeningController {
 	 */
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary vital details from nurse screen", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenDataFrmNurseToDocVitalScreen" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get beneficiary vital details from nurse screen")
+	@PostMapping(value = { "/getBenDataFrmNurseToDocVitalScreen" }, consumes = "application/json", produces = "application/json")
 	public String getBenDataFrmNurseScrnToDocScrnVital(
-			@ApiParam(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for CS vital data fetching :" + comingRequest);
 		try {
@@ -244,10 +243,10 @@ public class CancerScreeningController {
 	 */
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary examination details from nurse screen", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenDataFrmNurseToDocExaminationScreen" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get beneficiary examination details from nurse screen")
+	@PostMapping(value = { "/getBenDataFrmNurseToDocExaminationScreen" }, consumes = "application/json", produces = "application/json")
 	public String getBenDataFrmNurseScrnToDocScrnExamination(
-			@ApiParam(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for CS examination data fetching :" + comingRequest);
 		try {
@@ -276,10 +275,10 @@ public class CancerScreeningController {
 	 */
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary cancer family history", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenCancerFamilyHistory" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get beneficiary cancer family history")
+	@PostMapping(value = { "/getBenCancerFamilyHistory" }, consumes = "application/json", produces = "application/json")
 	public String getBenCancerFamilyHistory(
-			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("Request object for CS family history data fetching :" + comingRequest);
@@ -310,10 +309,10 @@ public class CancerScreeningController {
 	 */
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary cancer personal history", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenCancerPersonalHistory" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get beneficiary cancer personal history")
+	@PostMapping(value = { "/getBenCancerPersonalHistory" }, consumes = "application/json", produces = "application/json")
 	public String getBenCancerPersonalHistory(
-			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("Request object for CS personal history data fetching :" + comingRequest);
@@ -344,10 +343,10 @@ public class CancerScreeningController {
 	 */
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary cancer personal diet history", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenCancerPersonalDietHistory" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get beneficiary cancer personal diet history")
+	@PostMapping(value = { "/getBenCancerPersonalDietHistory" }, consumes = "application/json", produces = "application/json")
 	public String getBenCancerPersonalDietHistory(
-			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("Request object for CS personal diet history data fetching :" + comingRequest);
@@ -378,10 +377,10 @@ public class CancerScreeningController {
 	 */
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary cancer obstetric history", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenCancerObstetricHistory" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get beneficiary cancer obstetric history")
+	@PostMapping(value = { "/getBenCancerObstetricHistory" }, consumes = "application/json", produces = "application/json")
 	public String getBenCancerObstetricHistory(
-			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("Request object for CS obstetric history data fetching :" + comingRequest);
@@ -411,11 +410,11 @@ public class CancerScreeningController {
 	 */
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary doctor entered details", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenCaseRecordFromDoctorCS" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get beneficiary doctor entered details")
+	@PostMapping(value = { "/getBenCaseRecordFromDoctorCS" }, consumes = "application/json", produces = "application/json")
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenCaseRecordFromDoctorCS(
-			@ApiParam(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("Request object for CS doctor data fetching :" + comingRequest);
@@ -439,10 +438,10 @@ public class CancerScreeningController {
 	}
 
 	@CrossOrigin
-	@ApiOperation(value = "Update cancer screening history nurse data in doctor screen", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/update/historyScreen" }, method = { RequestMethod.POST })
+	@Operation(summary = "Update cancer screening history nurse data in doctor screen")
+	@PostMapping(value = { "/update/historyScreen" }, consumes = "application/json", produces = "application/json")
 	public String updateCSHistoryNurse(
-			@ApiParam(value = "{\"historyDetails\": {\"familyHistory\":{\"diseases\": [{\"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", "
+			@Param(value = "{\"historyDetails\": {\"familyHistory\":{\"diseases\": [{\"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", "
 					+ "\"providerServiceMapID\":\"Integer\", \"cancerDiseaseType\":\"String\", \"otherDiseaseType\":\"String\", \"familyMemberList\":\"List\", "
 					+ "\"createdBy\":\"String\"}]}, \"personalHistory\":{\"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\", \"providerServiceMapID\":\"Integer\", "
 					+ "\"tobaccoUse\":\"String\", \"startAge_year\":\"Integer\", \"endAge_year\":\"Integer\", \"typeOfTobaccoProductList\":\"List\", "
@@ -463,8 +462,7 @@ public class CancerScreeningController {
 		logger.info("Request object for CS history data updating :" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
-		JsonParser jsnParser = new JsonParser();
-		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
@@ -492,10 +490,10 @@ public class CancerScreeningController {
 	 */
 
 	@CrossOrigin
-	@ApiOperation(value = "Update beneficiary vital detail", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/update/vitalScreen" }, method = { RequestMethod.POST })
+	@Operation(summary = "Update beneficiary vital detail")
+	@PostMapping(value = { "/update/vitalScreen" }, consumes = "application/json", produces = "application/json")
 	public String upodateBenVitalDetail(
-			@ApiParam(value = "{\"ID\": \"Long\", \"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\","
+			@Param(value = "{\"ID\": \"Long\", \"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\","
 					+ "\"weight_Kg\":\"Double\", \"height_cm\":\"Double\", \"waistCircumference_cm\":\"Double\", \"bloodGlucose_Fasting\":\"Short\","
 					+ "\"bloodGlucose_Random\":\"Short\", \"bloodGlucose_2HrPostPrandial\":\"Short\", \"systolicBP_1stReading\":\"Short\", "
 					+ "\"diastolicBP_1stReading\":\"Short\", \"systolicBP_2ndReading\":\"Short\", \"diastolicBP_2ndReading\":\"Short\", "
@@ -532,16 +530,15 @@ public class CancerScreeningController {
 	 */
 
 	@CrossOrigin
-	@ApiOperation(value = "Update beneficiary examination detail", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/update/examinationScreen" }, method = { RequestMethod.POST })
+	@Operation(summary = "Update beneficiary examination detail")
+	@PostMapping(value = { "/update/examinationScreen" }, consumes = "application/json", produces = "application/json")
 	public String upodateBenExaminationDetail(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for CS examination data updating :" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
-		JsonParser jsnParser = new JsonParser();
-		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
@@ -569,10 +566,10 @@ public class CancerScreeningController {
 	 */
 
 	@CrossOrigin
-	@ApiOperation(value = "Update cancer diagnosis details by oncologist", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/update/examinationScreen/diagnosis" }, method = { RequestMethod.POST })
+	@Operation(summary = "Update cancer diagnosis details by oncologist")
+	@PostMapping(value = { "/update/examinationScreen/diagnosis" }, consumes = "application/json", produces = "application/json")
 	public String updateCancerDiagnosisDetailsByOncologist(
-			@ApiParam(value = "{\"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", \"visitCode\":\"Long\", "
+			@Param(value = "{\"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", \"visitCode\":\"Long\", "
 					+ "\"provisionalDiagnosisOncologist\":\"String\", \"modifiedBy\":\"string\"}") @RequestBody String requestObj) {
 
 		response = new OutputResponse();
@@ -605,17 +602,15 @@ public class CancerScreeningController {
 	 */
 
 	@CrossOrigin
-	@ApiOperation(value = "Update cancer screening doctor data", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/update/doctorData" }, method = { RequestMethod.POST })
+	@Operation(summary = "Update cancer screening doctor data")
+	@PostMapping(value = { "/update/doctorData" }, consumes = "application/json", produces = "application/json")
 	public String updateCancerScreeningDoctorData(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for CS doctor data updating :" + requestObj);
 
-		JsonObject jsnOBJ = new JsonObject();
-		JsonParser jsnParser = new JsonParser();
-		JsonElement jsnElmnt = jsnParser.parse(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
+		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
 			int result = cSService.updateCancerScreeningDoctorData(jsnOBJ);

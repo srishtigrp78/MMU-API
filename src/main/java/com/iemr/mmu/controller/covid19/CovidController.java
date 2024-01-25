@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,8 +44,9 @@ import com.iemr.mmu.service.covid19.Covid19Service;
 import com.iemr.mmu.service.covid19.Covid19ServiceImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.lettuce.core.dynamic.annotation.Param;
+import io.swagger.v3.oas.annotations.Operation;
+
 
 /**
  * 
@@ -65,7 +67,7 @@ public class CovidController {
 	@Autowired
 	private Covid19ServiceImpl covid19ServiceImpl;
 	@CrossOrigin
-	@ApiOperation(value = "Save covid nurse data", consumes = "application/json", produces = "application/json")
+	@Operation(summary = "Save covid nurse data")
 	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
 	public String saveBenCovid19NurseData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
@@ -75,8 +77,7 @@ public class CovidController {
 			logger.info("Request object for covid 19 nurse data saving :" + requestObj);
 
 			JsonObject jsnOBJ = new JsonObject();
-			JsonParser jsnParser = new JsonParser();
-			JsonElement jsnElmnt = jsnParser.parse(requestObj);
+			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
@@ -107,7 +108,7 @@ public class CovidController {
 	 * @return
 	 */
 	@CrossOrigin
-	@ApiOperation(value = "Save covid doctor data", consumes = "application/json", produces = "application/json")
+	@Operation(summary = "Save covid doctor data")
 	@RequestMapping(value = { "/save/doctorData" }, method = { RequestMethod.POST })
 	public String saveBenCovidDoctorData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
@@ -116,8 +117,7 @@ public class CovidController {
 			logger.info("Request object for Covid doctor data saving :" + requestObj);
 
 			JsonObject jsnOBJ = new JsonObject();
-			JsonParser jsnParser = new JsonParser();
-			JsonElement jsnElmnt = jsnParser.parse(requestObj);
+			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
@@ -138,11 +138,11 @@ public class CovidController {
 		return response.toString();
 	}
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary visit details from nurse covid 19", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenVisitDetailsFrmNurseCovid" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get beneficiary visit details from nurse covid 19")
+	@PostMapping(value = { "/getBenVisitDetailsFrmNurseCovid" }, consumes = "application/json", produces = "application/json")
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenVisitDetailsFrmNurseCovid19(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("Request object for Covid 19 visit data fetching :" + comingRequest);
@@ -172,11 +172,11 @@ public class CovidController {
 	 * @return visit details in JSON format
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary covid 19 history details from nurse to doctor ", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenCovid19HistoryDetails" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get beneficiary covid 19 history details from nurse to doctor ")
+	@PostMapping(value = { "/getBenCovid19HistoryDetails" }, consumes = "application/json", produces = "application/json")
 
 	public String getBenCovid19HistoryDetails(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("Request object for NCD Care history data fetching :" + comingRequest);
@@ -206,10 +206,10 @@ public class CovidController {
 	 */
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary covid 19 vital details from nurse NCD care", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenVitalDetailsFrmNurseCovid" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get beneficiary covid 19 vital details from nurse NCD care")
+	@PostMapping(value = { "/getBenVitalDetailsFrmNurseCovid" }, consumes = "application/json", produces = "application/json")
 	public String getBenVitalDetailsFrmNurseNCDCare(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("Request object for Covid 19 vital data fetching :" + comingRequest);
@@ -235,11 +235,11 @@ public class CovidController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary doctor entered details", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenCaseRecordFromDoctorCovid" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get beneficiary doctor entered details")
+	@PostMapping(value = { "/getBenCaseRecordFromDoctorCovid" }, consumes = "application/json", produces = "application/json")
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenCaseRecordFromDoctorCovid19(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("Request object for Covid 19 doctor data fetching :" + comingRequest);
@@ -263,16 +263,15 @@ public class CovidController {
 		return response.toString();
 	}
 	@CrossOrigin
-	@ApiOperation(value = "Update history data in doctor screen", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/update/historyScreen" }, method = { RequestMethod.POST })
+	@Operation(summary = "Update history data in doctor screen")
+	@PostMapping(value = { "/update/historyScreen" }, consumes = "application/json", produces = "application/json")
 	public String updateHistoryNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for history data updating :" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
-		JsonParser jsnParser = new JsonParser();
-		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
@@ -302,16 +301,15 @@ public class CovidController {
 	 */
 
 	@CrossOrigin
-	@ApiOperation(value = "Update covid vital data in doctor screen", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/update/vitalScreen" }, method = { RequestMethod.POST })
+	@Operation(summary = "Update covid vital data in doctor screen")
+	@PostMapping(value = { "/update/vitalScreen" }, consumes = "application/json", produces = "application/json")
 	public String updateVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for vital data updating :" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
-		JsonParser jsnParser = new JsonParser();
-		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
@@ -337,8 +335,8 @@ public class CovidController {
 	 * @objective Replace covid 19 doctor data for the doctor next visit
 	 */
 	@CrossOrigin
-	@ApiOperation(value = "Update covid 19 doctor data", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/update/doctorData" }, method = { RequestMethod.POST })
+	@Operation(summary = "Update covid 19 doctor data")
+	@PostMapping(value = { "/update/doctorData" }, consumes = "application/json", produces = "application/json")
 	public String updateCovid19DoctorData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 
@@ -346,8 +344,7 @@ public class CovidController {
 		logger.info("Request object for doctor data updating :" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
-		JsonParser jsnParser = new JsonParser();
-		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {

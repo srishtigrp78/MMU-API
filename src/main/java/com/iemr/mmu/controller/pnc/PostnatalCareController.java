@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,8 +40,9 @@ import com.google.gson.JsonParser;
 import com.iemr.mmu.service.pnc.PNCServiceImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.lettuce.core.dynamic.annotation.Param;
+import io.swagger.v3.oas.annotations.Operation;
+
 
 /**
  * @Objective Saving PNC nurse and doctor data
@@ -64,16 +66,15 @@ public class PostnatalCareController {
 	 */
 
 	@CrossOrigin
-	@ApiOperation(value = "Save PNC nurse data", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
+	@Operation(summary = "Save PNC nurse data")
+	@PostMapping(value = { "/save/nurseData" }, consumes = "application/json", produces = "application/json")
 	public String saveBenPNCNurseData(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		try {
 			logger.info("Request object for PNC nurse data saving :" + requestObj);
 
 			JsonObject jsnOBJ = new JsonObject();
-			JsonParser jsnParser = new JsonParser();
-			JsonElement jsnElmnt = jsnParser.parse(requestObj);
+			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
@@ -104,8 +105,8 @@ public class PostnatalCareController {
 	 */
 
 	@CrossOrigin
-	@ApiOperation(value = "Save PNC doctor data", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/save/doctorData" }, method = { RequestMethod.POST })
+	@Operation(summary = "Save PNC doctor data")
+	@PostMapping(value = { "/save/doctorData" }, consumes = "application/json", produces = "application/json")
 	public String saveBenPNCDoctorData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -113,8 +114,7 @@ public class PostnatalCareController {
 			logger.info("Request object for PNC doctor data saving :" + requestObj);
 
 			JsonObject jsnOBJ = new JsonObject();
-			JsonParser jsnParser = new JsonParser();
-			JsonElement jsnElmnt = jsnParser.parse(requestObj);
+			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 			if (jsnOBJ != null) {
 				Long r = pncServiceImpl.savePNCDoctorData(jsnOBJ, Authorization);
@@ -135,11 +135,11 @@ public class PostnatalCareController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get PNC beneficiary visit details from nurse", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenVisitDetailsFrmNursePNC" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get PNC beneficiary visit details from nurse")
+	@PostMapping(value = { "/getBenVisitDetailsFrmNursePNC" }, consumes = "application/json", produces = "application/json")
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenVisitDetailsFrmNursePNC(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("PNC visit data fetch request:" + comingRequest);
@@ -169,11 +169,11 @@ public class PostnatalCareController {
 	 * @return PNC Care data in JSON format
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get PNC beneficiary care details from nurse", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenPNCDetailsFrmNursePNC" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get PNC beneficiary care details from nurse")
+	@PostMapping(value = { "/getBenPNCDetailsFrmNursePNC" }, consumes = "application/json", produces = "application/json")
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenPNCDetailsFrmNursePNC(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("PNC Care data fetch request:" + comingRequest);
@@ -203,11 +203,11 @@ public class PostnatalCareController {
 	 * @return history data in JSON format
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get PNC beneficiary  history details from nurse to doctor ", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenHistoryDetails" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get PNC beneficiary  history details from nurse to doctor ")
+	@PostMapping(value = { "/getBenHistoryDetails" }, consumes = "application/json", produces = "application/json")
 
 	public String getBenHistoryDetails(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("History data fetch request:" + comingRequest);
@@ -236,10 +236,10 @@ public class PostnatalCareController {
 	 * @return vital data in JSON format
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get PNC beneficiary vital details from nurse", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenVitalDetailsFrmNurse" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get PNC beneficiary vital details from nurse")
+	@PostMapping(value = { "/getBenVitalDetailsFrmNurse" }, consumes = "application/json", produces = "application/json")
 	public String getBenVitalDetailsFrmNurse(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("vital data fetch request:" + comingRequest);
@@ -269,11 +269,11 @@ public class PostnatalCareController {
 	 * @return examination data in JSON format
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get PNC beneficiary examination details from nurse to doctor ", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenExaminationDetailsPNC" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get PNC beneficiary examination details from nurse to doctor ")
+	@PostMapping(value = { "/getBenExaminationDetailsPNC" }, consumes = "application/json", produces = "application/json")
 
 	public String getBenExaminationDetailsPNC(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("PNC examination data fetch request:" + comingRequest);
@@ -302,11 +302,11 @@ public class PostnatalCareController {
 	 * @return doctor data in JSON format
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get PNC beneficiary case record", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenCaseRecordFromDoctorPNC" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get PNC beneficiary case record")
+	@PostMapping(value = { "/getBenCaseRecordFromDoctorPNC" }, consumes = "application/json", produces = "application/json")
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenCaseRecordFromDoctorPNC(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("PNC doctor data fetch request:" + comingRequest);
@@ -331,16 +331,15 @@ public class PostnatalCareController {
 	}
 
 	@CrossOrigin
-	@ApiOperation(value = "Update PNC care data in doctor screen", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/update/PNCScreen" }, method = { RequestMethod.POST })
+	@Operation(summary = "Update PNC care data in doctor screen")
+	@PostMapping(value = { "/update/PNCScreen" }, consumes = "application/json", produces = "application/json")
 	public String updatePNCCareNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("PNC Care data update request:" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
-		JsonParser jsnParser = new JsonParser();
-		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
@@ -368,16 +367,15 @@ public class PostnatalCareController {
 	 */
 
 	@CrossOrigin
-	@ApiOperation(value = "Update PNC beneficiary history in doctor screen", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/update/historyScreen" }, method = { RequestMethod.POST })
+	@Operation(summary = "Update PNC beneficiary history in doctor screen")
+	@PostMapping(value = { "/update/historyScreen" }, consumes = "application/json", produces = "application/json")
 	public String updateHistoryNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("History data update request:" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
-		JsonParser jsnParser = new JsonParser();
-		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
@@ -405,16 +403,15 @@ public class PostnatalCareController {
 	 */
 
 	@CrossOrigin
-	@ApiOperation(value = "Update PNC beneficiary vitals in doctor screen", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/update/vitalScreen" }, method = { RequestMethod.POST })
+	@Operation(summary = "Update PNC beneficiary vitals in doctor screen")
+	@PostMapping(value = { "/update/vitalScreen" }, consumes = "application/json", produces = "application/json")
 	public String updateVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("Vital data update request:" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
-		JsonParser jsnParser = new JsonParser();
-		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
@@ -442,16 +439,15 @@ public class PostnatalCareController {
 	 */
 
 	@CrossOrigin
-	@ApiOperation(value = "Update PNC beneficiary examination data in doctor screen", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/update/examinationScreen" }, method = { RequestMethod.POST })
+	@Operation(summary = "Update PNC beneficiary examination data in doctor screen")
+	@PostMapping(value = { "/update/examinationScreen" }, consumes = "application/json", produces = "application/json")
 	public String updateGeneralOPDExaminationNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("Examination data update request:" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
-		JsonParser jsnParser = new JsonParser();
-		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
@@ -471,8 +467,8 @@ public class PostnatalCareController {
 	}
 
 	@CrossOrigin
-	@ApiOperation(value = "Update PNC doctor data", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/update/doctorData" }, method = { RequestMethod.POST })
+	@Operation(summary = "Update PNC doctor data")
+	@PostMapping(value = { "/update/doctorData" }, consumes = "application/json", produces = "application/json")
 	public String updatePNCDoctorData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 
@@ -480,8 +476,7 @@ public class PostnatalCareController {
 		logger.info("Doctor data update request:" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
-		JsonParser jsnParser = new JsonParser();
-		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {

@@ -25,10 +25,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.JsonElement;
@@ -37,7 +37,7 @@ import com.google.gson.JsonParser;
 import com.iemr.mmu.service.tele_consultation.TeleConsultationServiceImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
 
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping(value = "/tc", headers = "Authorization")
@@ -48,8 +48,8 @@ public class TeleConsultationController {
 	private TeleConsultationServiceImpl teleConsultationServiceImpl;
 
 	@CrossOrigin
-	@ApiOperation(value = "Update beneficiary arrival status based on request", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/update/benArrivalStatus" }, method = { RequestMethod.POST })
+	@Operation(summary = "Update beneficiary arrival status based on request")
+	@PostMapping(value = { "/update/benArrivalStatus" }, consumes = "application/json", produces = "application/json")
 	public String benArrivalStatusUpdater(@RequestBody String requestOBJ) {
 		OutputResponse response = new OutputResponse();
 		try {
@@ -69,8 +69,8 @@ public class TeleConsultationController {
 	}
 
 	@CrossOrigin
-	@ApiOperation(value = "Update beneficiary status based on request", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/cancel/benTCRequest" }, method = { RequestMethod.POST })
+	@Operation(summary = "Update beneficiary status based on request")
+	@PostMapping(value = { "/cancel/benTCRequest" }, consumes = "application/json", produces = "application/json")
 	public String updateBeneficiaryStatusToCancelTCRequest(@RequestBody String requestOBJ,
 			@RequestHeader String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -92,8 +92,8 @@ public class TeleConsultationController {
 	}
 
 	@CrossOrigin
-	@ApiOperation(value = "Check if specialist can proceed with beneficiary", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/check/benTCRequestStatus" }, method = { RequestMethod.POST })
+	@Operation(summary = "Check if specialist can proceed with beneficiary")
+	@PostMapping(value = { "/check/benTCRequestStatus" }, consumes = "application/json", produces = "application/json")
 	public String checkBeneficiaryStatusToProceedWithSpecialist(@RequestBody String requestOBJ) {
 		OutputResponse response = new OutputResponse();
 		try {
@@ -113,15 +113,14 @@ public class TeleConsultationController {
 	}
 
 	@CrossOrigin
-	@ApiOperation(value = "Create TC request for beneficiary whose visit is created", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/create/benTCRequestWithVisitCode" }, method = { RequestMethod.POST })
+	@Operation(summary = "Create TC request for beneficiary whose visit is created")
+	@PostMapping(value = { "/create/benTCRequestWithVisitCode" }, consumes = "application/json", produces = "application/json")
 	public String createTCRequestForBeneficiary(@RequestBody String requestOBJ, @RequestHeader String Authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
 			if (requestOBJ != null) {
 				JsonObject jsnOBJ = new JsonObject();
-				JsonParser jsnParser = new JsonParser();
-				JsonElement jsnElmnt = jsnParser.parse(requestOBJ);
+				JsonElement jsnElmnt = JsonParser.parseString(requestOBJ);
 				jsnOBJ = jsnElmnt.getAsJsonObject();
 
 				int i = teleConsultationServiceImpl.createTCRequestFromWorkList(jsnOBJ, Authorization);
@@ -139,15 +138,14 @@ public class TeleConsultationController {
 	}
 
 	@CrossOrigin
-	@ApiOperation(value = "Get TC request list for a specialist", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getTCRequestList" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get TC request list for a specialist")
+	@PostMapping(value = { "/getTCRequestList" }, consumes = "application/json", produces = "application/json")
 	public String getTCSpecialistWorkListNew(@RequestBody String requestOBJ) {
 		OutputResponse response = new OutputResponse();
 		try {
 			if (requestOBJ != null) {
 				JsonObject jsnOBJ = new JsonObject();
-				JsonParser jsnParser = new JsonParser();
-				JsonElement jsnElmnt = jsnParser.parse(requestOBJ);
+				JsonElement jsnElmnt = JsonParser.parseString(requestOBJ);
 				jsnOBJ = jsnElmnt.getAsJsonObject();
 
 				String s = teleConsultationServiceImpl.getTCRequestListBySpecialistIdAndDate(

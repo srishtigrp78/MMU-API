@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,7 +37,8 @@ import com.google.gson.JsonParser;
 import com.iemr.mmu.service.labtechnician.LabTechnicianServiceImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
 
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+
 
 /***
  * @Objective Saving lab test results given by LabTechnician
@@ -62,16 +64,15 @@ public class LabTechnicianController {
 	 * @return success or failure response
 	 */
 	@CrossOrigin
-	@ApiOperation(value = "Save lab test result entered by lab technician", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/save/LabTestResult" }, method = { RequestMethod.POST })
+	@Operation(summary = "Save lab test result entered by lab technician")
+	@PostMapping(value = { "/save/LabTestResult" }, consumes = "application/json", produces = "application/json")
 	public String saveLabTestResult(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		try {
 			logger.info("Request object for Lab Test Result saving :" + requestObj);
 
 			JsonObject jsnOBJ = new JsonObject();
-			JsonParser jsnParser = new JsonParser();
-			JsonElement jsnElmnt = jsnParser.parse(requestObj);
+			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
@@ -93,15 +94,14 @@ public class LabTechnicianController {
 	}
 
 	@CrossOrigin
-	@ApiOperation(value = "Get beneficiary prescribed procedure", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/get/prescribedProceduresList" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get beneficiary prescribed procedure")
+	@PostMapping(value = { "/get/prescribedProceduresList" }, consumes = "application/json", produces = "application/json")
 	public String getBeneficiaryPrescribedProcedure(@RequestBody String requestOBJ) {
 		OutputResponse response = new OutputResponse();
 		try {
 			logger.info("Request obj to fetch lab tests :" + requestOBJ);
 			JsonObject jsnOBJ = new JsonObject();
-			JsonParser jsnParser = new JsonParser();
-			JsonElement jsnElmnt = jsnParser.parse(requestOBJ);
+			JsonElement jsnElmnt = JsonParser.parseString(requestOBJ);
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null && !jsnOBJ.isJsonNull() && jsnOBJ.has("beneficiaryRegID") && jsnOBJ.has("visitCode")) {
@@ -123,14 +123,13 @@ public class LabTechnicianController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get lab test result for a visitcode.", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/get/labResultForVisitcode" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get lab test result for a visitcode.")
+	@PostMapping(value = { "/get/labResultForVisitcode" }, consumes = "application/json", produces = "application/json")
 	public String getLabResultForVisitCode(@RequestBody String requestOBJ) {
 		OutputResponse response = new OutputResponse();
 		try {
 			JsonObject jsnOBJ = new JsonObject();
-			JsonParser jsnParser = new JsonParser();
-			JsonElement jsnElmnt = jsnParser.parse(requestOBJ);
+			JsonElement jsnElmnt = JsonParser.parseString(requestOBJ);
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null && !jsnOBJ.isJsonNull() && jsnOBJ.has("beneficiaryRegID") && jsnOBJ.has("visitCode")) {
