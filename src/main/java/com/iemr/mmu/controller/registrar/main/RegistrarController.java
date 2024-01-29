@@ -226,7 +226,7 @@ public class RegistrarController {
 			}
 			logger.info("getBeneficiaryDetails response :" + response);
 		} catch (Exception e) {
-			logger.error("Error caused by "+e.getMessage());
+			logger.error("Error caused by {} ",e.getMessage());
 		}
 		return response.toString();
 	}

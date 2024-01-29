@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.JsonElement;
@@ -66,13 +65,12 @@ public class LabTechnicianController {
 	@CrossOrigin
 	@Operation(summary = "Save lab test result entered by lab technician")
 	@PostMapping(value = { "/save/LabTestResult" }, consumes = "application/json", produces = "application/json")
-	public String saveLabTestResult(@RequestBody String requestObj) {
+	public String saveLabTestResult(@RequestBody String saveLabTestResult) {
 		OutputResponse response = new OutputResponse();
 		try {
-			logger.info("Request object for Lab Test Result saving :" + requestObj);
 
 			JsonObject jsnOBJ = new JsonObject();
-			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
+			JsonElement jsnElmnt = JsonParser.parseString(saveLabTestResult);
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
@@ -125,11 +123,11 @@ public class LabTechnicianController {
 	@CrossOrigin()
 	@Operation(summary = "Get lab test result for a visitcode.")
 	@PostMapping(value = { "/get/labResultForVisitcode" }, consumes = "application/json", produces = "application/json")
-	public String getLabResultForVisitCode(@RequestBody String requestOBJ) {
+	public String getLabResultForVisitCode(@RequestBody String req) {
 		OutputResponse response = new OutputResponse();
 		try {
 			JsonObject jsnOBJ = new JsonObject();
-			JsonElement jsnElmnt = JsonParser.parseString(requestOBJ);
+			JsonElement jsnElmnt = JsonParser.parseString(req);
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null && !jsnOBJ.isJsonNull() && jsnOBJ.has("beneficiaryRegID") && jsnOBJ.has("visitCode")) {
@@ -143,7 +141,7 @@ public class LabTechnicianController {
 			} else
 				response.setError(5000, "Invalid request");
 		} catch (Exception e) {
-			logger.error("Error while getting lab result for requested data:" + requestOBJ);
+			logger.error("Error while getting lab result for requested data:" + req);
 			response.setError(5000, "Error while getting lab report");
 		}
 		return response.toString();
