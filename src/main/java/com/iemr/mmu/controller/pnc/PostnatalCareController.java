@@ -70,11 +70,8 @@ public class PostnatalCareController {
 	public String saveBenPNCNurseData(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		try {
-			logger.info("Request object for PNC nurse data saving :" + requestObj);
-
-			JsonObject jsnOBJ = new JsonObject();
 			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-			jsnOBJ = jsnElmnt.getAsJsonObject();
+			JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
 				Long ancRes = pncServiceImpl.savePNCNurseData(jsnOBJ);
@@ -107,16 +104,13 @@ public class PostnatalCareController {
 	@Operation(summary = "Save PNC doctor data")
 	@PostMapping(value = { "/save/doctorData" })
 	public String saveBenPNCDoctorData(@RequestBody String requestObj,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
-			logger.info("Request object for PNC doctor data saving :" + requestObj);
-
-			JsonObject jsnOBJ = new JsonObject();
 			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-			jsnOBJ = jsnElmnt.getAsJsonObject();
+			JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 			if (jsnOBJ != null) {
-				Long r = pncServiceImpl.savePNCDoctorData(jsnOBJ, Authorization);
+				Long r = pncServiceImpl.savePNCDoctorData(jsnOBJ, authorization);
 				if (r != null && r > 0) {
 					response.setResponse("Data saved successfully");
 				} else {
@@ -141,7 +135,6 @@ public class PostnatalCareController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("PNC visit data fetch request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
@@ -175,7 +168,6 @@ public class PostnatalCareController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("PNC Care data fetch request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID") && obj.has("visitCode")) {
@@ -209,7 +201,6 @@ public class PostnatalCareController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("History data fetch request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID") && obj.has("visitCode")) {
@@ -241,7 +232,6 @@ public class PostnatalCareController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("vital data fetch request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID") && obj.has("visitCode")) {
@@ -275,7 +265,6 @@ public class PostnatalCareController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("PNC examination data fetch request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID") && obj.has("visitCode")) {
@@ -308,10 +297,9 @@ public class PostnatalCareController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("PNC doctor data fetch request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
-			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
+			if (obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
 				Long benRegID = obj.getLong("benRegID");
 				Long visitCode = obj.getLong("visitCode");
 
@@ -335,11 +323,8 @@ public class PostnatalCareController {
 	public String updatePNCCareNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("PNC Care data update request:" + requestObj);
-
-		JsonObject jsnOBJ = new JsonObject();
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
 			int result = pncServiceImpl.updateBenPNCDetails(jsnOBJ);
@@ -371,11 +356,8 @@ public class PostnatalCareController {
 	public String updateHistoryNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("History data update request:" + requestObj);
-
-		JsonObject jsnOBJ = new JsonObject();
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
 			int result = pncServiceImpl.updateBenHistoryDetails(jsnOBJ);
@@ -407,11 +389,8 @@ public class PostnatalCareController {
 	public String updateVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Vital data update request:" + requestObj);
-
-		JsonObject jsnOBJ = new JsonObject();
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
 			int result = pncServiceImpl.updateBenVitalDetails(jsnOBJ);
@@ -443,11 +422,8 @@ public class PostnatalCareController {
 	public String updateGeneralOPDExaminationNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Examination data update request:" + requestObj);
-
-		JsonObject jsnOBJ = new JsonObject();
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
 			int result = pncServiceImpl.updateBenExaminationDetails(jsnOBJ);
@@ -469,17 +445,14 @@ public class PostnatalCareController {
 	@Operation(summary = "Update PNC doctor data")
 	@PostMapping(value = { "/update/doctorData" })
 	public String updatePNCDoctorData(@RequestBody String requestObj,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String authorization) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Doctor data update request:" + requestObj);
-
-		JsonObject jsnOBJ = new JsonObject();
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
-			Long result = pncServiceImpl.updatePNCDoctorData(jsnOBJ, Authorization);
+			Long result = pncServiceImpl.updatePNCDoctorData(jsnOBJ, authorization);
 			if (null != result && result > 0) {
 				response.setResponse("Data updated successfully");
 			} else {

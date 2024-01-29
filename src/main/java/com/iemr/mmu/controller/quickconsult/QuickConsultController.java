@@ -74,11 +74,9 @@ public class QuickConsultController {
 	@PostMapping(value = { "/save/nurseData" })
 	public String saveBenQuickConsultDataNurse(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
-		logger.info("Quick consult nurse data save request : " + requestObj);
 		try {
-			JsonObject jsnOBJ = new JsonObject();
 			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-			jsnOBJ = jsnElmnt.getAsJsonObject();
+			JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
 				Integer r = quickConsultationServiceImpl.quickConsultNurseDataInsert(jsnOBJ);
@@ -119,17 +117,16 @@ public class QuickConsultController {
 					+ " \"isRadiologyImaging\":\"String\", \"createdBy\":\"String\"}, {\"testID\":\"Integer\", \"testName\":\"String\", "
 					+ "\"testingRequirements\":\"String\", \"isRadiologyImaging\":\"Boolean\"}],"
 					+ "\"createdBy\":\"String\"}}") @RequestBody String requestObj,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String authorization) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Quick consult doctor data save request:" + requestObj);
 
 		try {
 			WrapperQuickConsultation wrapperQuickConsultation = InputMapper.gson().fromJson(requestObj,
 					WrapperQuickConsultation.class);
 
 			JsonObject quickConsultDoctorOBJ = wrapperQuickConsultation.getQuickConsultation();
-			Integer i = quickConsultationServiceImpl.quickConsultDoctorDataInsert(quickConsultDoctorOBJ, Authorization);
+			Integer i = quickConsultationServiceImpl.quickConsultDoctorDataInsert(quickConsultDoctorOBJ, authorization);
 
 			if (i != null && i > 0) {
 				response.setResponse("Data saved successfully");
@@ -151,7 +148,6 @@ public class QuickConsultController {
 	public String getBenDataFrmNurseScrnToDocScrnVisitDetails(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
-		logger.info("Quick consult visit data fetch request :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
@@ -185,7 +181,6 @@ public class QuickConsultController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Quick consult vital data fetch request :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID") && obj.has("visitCode")) {
@@ -219,10 +214,9 @@ public class QuickConsultController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Quick consult doctor data fetch request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
-			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
+			if (obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
 				Long benRegID = obj.getLong("benRegID");
 				Long visitCode = obj.getLong("visitCode");
 
@@ -244,15 +238,10 @@ public class QuickConsultController {
 	@Operation(summary = "Update quick consult doctor data")
 	@PostMapping(value = { "/update/doctorData" })
 	public String updateGeneralOPDQCDoctorData(@RequestBody String requestObj,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String authorization) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Quick consult doctor data update request:" + requestObj);
-
-		JsonObject jsnOBJ = new JsonObject();
-		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
-
+		
 		try {
 			WrapperQuickConsultation wrapperQuickConsultation = InputMapper.gson().fromJson(requestObj,
 					WrapperQuickConsultation.class);
@@ -260,7 +249,7 @@ public class QuickConsultController {
 			JsonObject quickConsultDoctorOBJ = wrapperQuickConsultation.getQuickConsultation();
 
 			Long result = quickConsultationServiceImpl.updateGeneralOPDQCDoctorData(quickConsultDoctorOBJ,
-					Authorization);
+					authorization);
 			if (null != result && result > 0) {
 				response.setResponse("Data updated successfully");
 			} else {

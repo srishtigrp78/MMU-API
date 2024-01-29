@@ -79,9 +79,8 @@ public class NCDController {
 
 	@PostMapping(value = { "/save/nurseData" })
 	public String saveBeneficiaryNCDScreeningDetails(@RequestBody String requestObj,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String authorization) {
 
-		logger.info("Request object for NCD Screening nurse data saving :" + requestObj);
 		OutputResponse response = new OutputResponse();
 
 		JsonObject jsonObject = new JsonObject();
@@ -90,7 +89,7 @@ public class NCDController {
 			jsonObject = jsonElement.getAsJsonObject();
 
 			if (jsonObject != null) {
-				Long r = ncdScreeningServiceImpl.saveNCDScreeningNurseData(jsonObject, Authorization);
+				Long r = ncdScreeningServiceImpl.saveNCDScreeningNurseData(jsonObject, authorization);
 				if (r != null && r > 0) {
 					response.setResponse("Data saved successfully");
 				} else if (r != null && r == 0) {
@@ -117,17 +116,17 @@ public class NCDController {
 	@Operation(summary = "Save NCD screening doctor data")
 	@PostMapping(value = { "/save/doctorData" })
 	public String saveBenNCDScreeningDoctorData(@RequestBody String requestObj,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String authorization) {
 		OutputResponse response = new OutputResponse();
+		JsonObject jsnOBJ = new JsonObject();
 		try {
 			logger.info("Request object for NCD Screening doctor data saving :" + requestObj);
 
-			JsonObject jsnOBJ = new JsonObject();
 			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
-				Long ncdCareRes = ncdScreeningServiceImpl.saveDoctorData(jsnOBJ, Authorization);
+				Long ncdCareRes = ncdScreeningServiceImpl.saveDoctorData(jsnOBJ, authorization);
 				if (null != ncdCareRes && ncdCareRes > 0) {
 					response.setResponse("Data saved successfully");
 				} else {
@@ -152,7 +151,6 @@ public class NCDController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Request obj to fetch nurse data :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
@@ -203,7 +201,6 @@ public class NCDController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Request obj to fetch NCD screening visit details :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
@@ -232,7 +229,6 @@ public class NCDController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenHistoryDetails request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID") && obj.has("visitCode")) {
@@ -259,7 +255,6 @@ public class NCDController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenVitalDetailsFrmNurse request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID") && obj.has("visitCode")) {
@@ -287,7 +282,6 @@ public class NCDController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenIdrsDetailsFrmNurse request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID") && obj.has("visitCode")) {
@@ -321,10 +315,9 @@ public class NCDController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Request object for NCD Screening doctor data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
-			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
+			if (obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
 				Long benRegID = obj.getLong("benRegID");
 				Long visitCode = obj.getLong("visitCode");
 
@@ -347,7 +340,6 @@ public class NCDController {
 	@PostMapping(value = { "/update/nurseData" })
 	public String updateBeneficiaryNCDScreeningDetails(@RequestBody String requestObj) {
 
-		logger.info("Update NCDScreening Details request:" + requestObj);
 		OutputResponse response = new OutputResponse();
 		JsonObject jsonObject = new JsonObject();
 
@@ -381,9 +373,8 @@ public class NCDController {
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for history data updating :" + requestObj);
 
-		JsonObject jsnOBJ = new JsonObject();
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
 			int result = ncdScreeningService.UpdateNCDScreeningHistory(jsnOBJ);
@@ -407,11 +398,8 @@ public class NCDController {
 	public String updateVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for vital data updating :" + requestObj);
-
-		JsonObject jsnOBJ = new JsonObject();
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
 			int result = ncdScreeningServiceImpl.updateBenVitalDetails(jsnOBJ);
@@ -435,11 +423,8 @@ public class NCDController {
 	public String updateIDRSScreen(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for history data updating :" + requestObj);
-
-		JsonObject jsnOBJ = new JsonObject();
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
 			Long result = ncdScreeningService.UpdateIDRSScreen(jsnOBJ);
@@ -466,9 +451,8 @@ public class NCDController {
 		logger.info("Request object for doctor data update :" + requestObj);
 
 		try {
-			JsonObject jsnOBJ = new JsonObject();
 			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-			jsnOBJ = jsnElmnt.getAsJsonObject();
+			JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			int i = ncdSCreeningDoctorService.updateDoctorData(jsnOBJ);
 			if (i > 0)

@@ -68,17 +68,14 @@ public class CovidController {
 	private Covid19ServiceImpl covid19ServiceImpl;
 	@CrossOrigin
 	@Operation(summary = "Save covid nurse data")
-	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
+	@PostMapping(value = { "/save/nurseData" })
 	public String saveBenCovid19NurseData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse outputResponse = new OutputResponse();
 
 		try {
-			logger.info("Request object for covid 19 nurse data saving :" + requestObj);
-
-			JsonObject jsnOBJ = new JsonObject();
 			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-			jsnOBJ = jsnElmnt.getAsJsonObject();
+			JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
 
@@ -109,16 +106,14 @@ public class CovidController {
 	 */
 	@CrossOrigin
 	@Operation(summary = "Save covid doctor data")
-	@RequestMapping(value = { "/save/doctorData" }, method = { RequestMethod.POST })
+	@PostMapping(value = { "/save/doctorData" })
 	public String saveBenCovidDoctorData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
-			logger.info("Request object for Covid doctor data saving :" + requestObj);
 
-			JsonObject jsnOBJ = new JsonObject();
 			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-			jsnOBJ = jsnElmnt.getAsJsonObject();
+			JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
 				Long ncdCareRes = covid19Service.saveDoctorData(jsnOBJ, Authorization);
@@ -145,7 +140,6 @@ public class CovidController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Request object for Covid 19 visit data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
@@ -179,7 +173,6 @@ public class CovidController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Request object for NCD Care history data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID") && obj.has("visitCode")) {
@@ -212,7 +205,6 @@ public class CovidController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Request object for Covid 19 vital data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID") && obj.has("visitCode")) {
@@ -242,10 +234,9 @@ public class CovidController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Request object for Covid 19 doctor data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
-			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
+			if (obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
 				Long benRegID = obj.getLong("benRegID");
 				Long visitCode = obj.getLong("visitCode");
 
@@ -268,16 +259,13 @@ public class CovidController {
 	public String updateHistoryNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for history data updating :" + requestObj);
-
-		JsonObject jsnOBJ = new JsonObject();
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
 			int result = covid19ServiceImpl.updateBenHistoryDetails(jsnOBJ);
 			if (result > 0) {
-				Map<String, Integer> resMap = new HashMap<String, Integer>();
+				Map<String, Integer> resMap = new HashMap<>();
 				resMap.put("result", result);
 				response.setResponse("Data updated successfully");
 			} else {
@@ -306,11 +294,9 @@ public class CovidController {
 	public String updateVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for vital data updating :" + requestObj);
 
-		JsonObject jsnOBJ = new JsonObject();
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
 			int result = covid19ServiceImpl.updateBenVitalDetails(jsnOBJ);
@@ -341,11 +327,9 @@ public class CovidController {
 			@RequestHeader(value = "Authorization") String Authorization) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for doctor data updating :" + requestObj);
 
-		JsonObject jsnOBJ = new JsonObject();
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
 			Long result = covid19ServiceImpl.updateCovid19DoctorData(jsnOBJ, Authorization);

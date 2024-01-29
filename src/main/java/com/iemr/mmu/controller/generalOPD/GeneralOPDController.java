@@ -73,9 +73,8 @@ public class GeneralOPDController {
 		try {
 			logger.info("Request object for GeneralOPD nurse data saving :" + requestObj);
 
-			JsonObject jsnOBJ = new JsonObject();
 			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-			jsnOBJ = jsnElmnt.getAsJsonObject();
+			JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
 				Long genOPDRes = generalOPDServiceImpl.saveNurseData(jsnOBJ);
@@ -109,11 +108,9 @@ public class GeneralOPDController {
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
-			logger.info("Request object for GeneralOPD doctor data saving :" + requestObj);
 
-			JsonObject jsnOBJ = new JsonObject();
 			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-			jsnOBJ = jsnElmnt.getAsJsonObject();
+			JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
 				Long genOPDRes = generalOPDServiceImpl.saveDoctorData(jsnOBJ, Authorization);
@@ -141,7 +138,6 @@ public class GeneralOPDController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Request obj to fetch General OPD visit details :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
@@ -175,7 +171,6 @@ public class GeneralOPDController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenHistoryDetails request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID") && obj.has("visitCode")) {
@@ -207,7 +202,6 @@ public class GeneralOPDController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenVitalDetailsFrmNurse request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID") && obj.has("visitCode")) {
@@ -241,7 +235,6 @@ public class GeneralOPDController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenExaminationDetails request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID") && obj.has("visitCode")) {
@@ -274,10 +267,9 @@ public class GeneralOPDController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenCaseRecordFromDoctorGeneralOPD request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
-			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
+			if (obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
 				Long benRegID = obj.getLong("benRegID");
 				Long visitCode = obj.getLong("visitCode");
 
@@ -301,11 +293,8 @@ public class GeneralOPDController {
 	public String updateVisitNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for visit data updating :" + requestObj);
-
-		JsonObject jsnOBJ = new JsonObject();
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
 			int result = generalOPDServiceImpl.UpdateVisitDetails(jsnOBJ);
@@ -337,11 +326,9 @@ public class GeneralOPDController {
 	public String updateHistoryNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for history data updating :" + requestObj);
 
-		JsonObject jsnOBJ = new JsonObject();
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
 			int result = generalOPDServiceImpl.updateBenHistoryDetails(jsnOBJ);
@@ -373,11 +360,8 @@ public class GeneralOPDController {
 	public String updateVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for vital data updating :" + requestObj);
-
-		JsonObject jsnOBJ = new JsonObject();
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
 			int result = generalOPDServiceImpl.updateBenVitalDetails(jsnOBJ);
@@ -409,11 +393,8 @@ public class GeneralOPDController {
 	public String updateGeneralOPDExaminationNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for examination data updating :" + requestObj);
-
-		JsonObject jsnOBJ = new JsonObject();
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
 			int result = generalOPDServiceImpl.updateBenExaminationDetails(jsnOBJ);
@@ -444,11 +425,8 @@ public class GeneralOPDController {
 			@RequestHeader(value = "Authorization") String Authorization) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for doctor data updating :" + requestObj);
-
-		JsonObject jsnOBJ = new JsonObject();
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
 			Long result = generalOPDServiceImpl.updateGeneralOPDDoctorData(jsnOBJ, Authorization);

@@ -75,8 +75,6 @@ public class CancerScreeningController {
 			@RequestHeader(value = "Authorization") String authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
-			logger.info("Request object for CS nurse data saving {} " , requestObj);
-
 			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 			JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
@@ -119,7 +117,6 @@ public class CancerScreeningController {
 			@RequestHeader String authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
-			logger.info("Request object for CS doctor data saving {} " , requestObj);
 			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 			JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
@@ -148,7 +145,6 @@ public class CancerScreeningController {
 			@Param(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Request object for CS visit data fetching {} " + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
@@ -179,7 +175,6 @@ public class CancerScreeningController {
 	public String getBenDataFrmNurseScrnToDocScrnHistory(
 			@Param(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for CS history data fetching {} " , comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
@@ -210,7 +205,6 @@ public class CancerScreeningController {
 	public String getBenDataFrmNurseScrnToDocScrnVital(
 			@Param(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for CS vital data fetching {} " , comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
@@ -242,7 +236,6 @@ public class CancerScreeningController {
 	public String getBenDataFrmNurseScrnToDocScrnExamination(
 			@Param(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for CS examination data fetching {} " , comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
@@ -275,7 +268,6 @@ public class CancerScreeningController {
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Request object for CS family history data fetching {} " , comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -309,7 +301,6 @@ public class CancerScreeningController {
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Request object for CS personal history data fetching {} " , comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -343,7 +334,6 @@ public class CancerScreeningController {
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Request object for CS personal diet history data fetching {} " , comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -377,7 +367,6 @@ public class CancerScreeningController {
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Request object for CS obstetric history data fetching {} " , comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -411,7 +400,6 @@ public class CancerScreeningController {
 			@Param(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Request object for CS doctor data fetching :" , comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
@@ -452,7 +440,6 @@ public class CancerScreeningController {
 					+ "\"menopauseAge\":\"Integer\", \"isPostMenopauseBleeding\":\"Boolean\", \"createdBy\":\"String\"}}}") @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for CS history data updating :" , requestObj);
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
@@ -492,8 +479,6 @@ public class CancerScreeningController {
 					+ " \"hbA1C\":\"Short\",\"hemoglobin\":\"Short\",\"modifiedBy\":\"String\"}") @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for CS vital data updating :" , requestObj);
-
 		try {
 			BenCancerVitalDetail benCancerVitalDetail = InputMapper.gson().fromJson(requestObj,
 					BenCancerVitalDetail.class);
@@ -526,7 +511,6 @@ public class CancerScreeningController {
 	public String upodateBenExaminationDetail(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for CS examination data updating :" , requestObj);
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
@@ -562,8 +546,6 @@ public class CancerScreeningController {
 					+ "\"provisionalDiagnosisOncologist\":\"String\", \"modifiedBy\":\"string\"}") @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for CS diagnosis data updating :" , requestObj);
-
 		try {
 			CancerDiagnosis cancerDiagnosis = InputMapper.gson().fromJson(requestObj, CancerDiagnosis.class);
 			int result = cSService.updateCancerDiagnosisDetailsByOncologist(cancerDiagnosis);
@@ -595,8 +577,6 @@ public class CancerScreeningController {
 	public String updateCancerScreeningDoctorData(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for CS doctor data updating :" , requestObj);
-
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 

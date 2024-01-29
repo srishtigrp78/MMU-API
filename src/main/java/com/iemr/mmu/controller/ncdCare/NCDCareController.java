@@ -73,11 +73,8 @@ public class NCDCareController {
 	public String saveBenNCDCareNurseData(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		try {
-			logger.info("Request object for NCD Care nurse data saving :" + requestObj);
-
-			JsonObject jsnOBJ = new JsonObject();
 			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-			jsnOBJ = jsnElmnt.getAsJsonObject();
+			JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
 				Long ncdCareRes = ncdCareServiceImpl.saveNCDCareNurseData(jsnOBJ);
@@ -112,11 +109,8 @@ public class NCDCareController {
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
-			logger.info("Request object for NCD Care doctor data saving :" + requestObj);
-
-			JsonObject jsnOBJ = new JsonObject();
 			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-			jsnOBJ = jsnElmnt.getAsJsonObject();
+			JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
 				Long ncdCareRes = ncdCareServiceImpl.saveDoctorData(jsnOBJ, Authorization);
@@ -144,7 +138,6 @@ public class NCDCareController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Request object for NCD Care visit data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
@@ -178,7 +171,6 @@ public class NCDCareController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Request object for NCD Care history data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID") && obj.has("visitCode")) {
@@ -211,7 +203,6 @@ public class NCDCareController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Request object for NCD Care vital data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID") && obj.has("visitCode")) {
@@ -245,7 +236,6 @@ public class NCDCareController {
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Request object for NCD Care doctor data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
@@ -272,11 +262,8 @@ public class NCDCareController {
 	public String updateHistoryNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for history data updating :" + requestObj);
-
-		JsonObject jsnOBJ = new JsonObject();
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
 			int result = ncdCareServiceImpl.updateBenHistoryDetails(jsnOBJ);
@@ -310,11 +297,8 @@ public class NCDCareController {
 	public String updateVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for vital data updating :" + requestObj);
-
-		JsonObject jsnOBJ = new JsonObject();
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
 			int result = ncdCareServiceImpl.updateBenVitalDetails(jsnOBJ);
@@ -345,12 +329,9 @@ public class NCDCareController {
 			@RequestHeader(value = "Authorization") String Authorization) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for doctor data updating :" + requestObj);
-
-		JsonObject jsnOBJ = new JsonObject();
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
 		
-		jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
 			Long result = ncdCareServiceImpl.updateNCDCareDoctorData(jsnOBJ, Authorization);
