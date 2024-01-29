@@ -54,7 +54,7 @@ import io.swagger.v3.oas.annotations.Operation;
 public class ANCController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	private ANCService ancService;
-	
+
 	@Autowired
 	public void setAncServiceImpl(ANCServiceImpl ancServiceImpl) {
 		this.ancService = ancServiceImpl;
@@ -72,11 +72,9 @@ public class ANCController {
 	public String saveBenANCNurseData(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		try {
-			logger.info("Request object for ANC nurse data saving :" + requestObj);
 
-			JsonObject jsnOBJ = new JsonObject();
 			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-			jsnOBJ = jsnElmnt.getAsJsonObject();
+			JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
 				Long ancRes = ancService.saveANCNurseData(jsnOBJ);
@@ -108,16 +106,14 @@ public class ANCController {
 	@Operation(summary = "Save ANC doctor data")
 	@PostMapping(value = { "/save/doctorData" })
 	public String saveBenANCDoctorData(@RequestBody String requestObj,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
-			logger.info("Request object for ANC doctor data saving :" + requestObj);
 
-			JsonObject jsnOBJ = new JsonObject();
 			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-			jsnOBJ = jsnElmnt.getAsJsonObject();
+			JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 			if (jsnOBJ != null) {
-				Long r = ancService.saveANCDoctorData(jsnOBJ, Authorization);
+				Long r = ancService.saveANCDoctorData(jsnOBJ, authorization);
 				if (r != null && r > 0) {
 					response.setResponse("Data saved successfully");
 				} else {
@@ -303,7 +299,7 @@ public class ANCController {
 		OutputResponse response = new OutputResponse();
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
-			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
+			if (obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
 				Long benRegID = obj.getLong("benRegID");
 				Long visitCode = obj.getLong("visitCode");
 
@@ -331,7 +327,7 @@ public class ANCController {
 
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
-			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
+			if (obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
 				Long benRegID = obj.getLong("benRegID");
 				Long visitCode = obj.getLong("visitCode");
 
@@ -358,9 +354,9 @@ public class ANCController {
 
 		OutputResponse response = new OutputResponse();
 
-		JsonObject jsnOBJ = new JsonObject();
+		
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
 			int result = ancService.updateBenANCDetails(jsnOBJ);
@@ -393,10 +389,8 @@ public class ANCController {
 
 		OutputResponse response = new OutputResponse();
 
-		JsonObject jsnOBJ = new JsonObject();
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
-
+		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 		try {
 			int result = ancService.updateBenANCHistoryDetails(jsnOBJ);
 			if (result > 0) {
@@ -428,9 +422,8 @@ public class ANCController {
 
 		OutputResponse response = new OutputResponse();
 
-		JsonObject jsnOBJ = new JsonObject();
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
 			int result = ancService.updateBenANCVitalDetails(jsnOBJ);
@@ -462,10 +455,8 @@ public class ANCController {
 	public String updateANCExaminationNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-
-		JsonObject jsnOBJ = new JsonObject();
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
 			int result = ancService.updateBenANCExaminationDetails(jsnOBJ);
@@ -494,17 +485,14 @@ public class ANCController {
 	@Operation(summary = "Update ANC doctor data")
 	@PostMapping(value = { "/update/doctorData" })
 	public String updateANCDoctorData(@RequestBody String requestObj,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String authorization) {
 
 		OutputResponse response = new OutputResponse();
-
-		JsonObject jsnOBJ = new JsonObject();
 		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		
-		jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
-			Long result = ancService.updateANCDoctorData(jsnOBJ, Authorization);
+			Long result = ancService.updateANCDoctorData(jsnOBJ, authorization);
 			if (null != result && result > 0) {
 				response.setResponse("Data updated successfully");
 			} else {
