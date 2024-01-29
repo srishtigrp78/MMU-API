@@ -87,7 +87,6 @@ public class RegistrarController {
 	public String getRegistrarWorkList(@Param(value = "{\"spID\": \"Integer\"}") @RequestBody String comingRequest)
 			throws JSONException {
 		OutputResponse response = new OutputResponse();
-		logger.info("getRegistrarWorkList request:" + comingRequest);
 		try {
 
 			JSONObject obj = new JSONObject(comingRequest);
@@ -107,7 +106,6 @@ public class RegistrarController {
 	public String quickSearchBeneficiary(
 			@Param(value = "{\"benID\": \"String\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
-		logger.info("quickSearchBeneficiary request:" + comingRequest);
 		try {
 
 			JSONObject obj = new JSONObject(comingRequest);
@@ -129,7 +127,6 @@ public class RegistrarController {
 					+ "\"beneficiaryID\": \"String\", \"stateID\": \"Integer\", \"districtID\": \"Integer\", \"aadharNo\": \"String\"},"
 					+ " \"govtIdentityNo\": \"String\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
-		logger.info("advanceSearch request :" + comingRequest);
 		try {
 			V_BenAdvanceSearch v_BenAdvanceSearch = inputMapper.gson().fromJson(comingRequest,
 					V_BenAdvanceSearch.class);
@@ -149,7 +146,6 @@ public class RegistrarController {
 	public String getBenDetailsByRegID(
 			@Param(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
-		logger.info("getBenDetailsByRegID request :" + comingRequest);
 		try {
 
 			JSONObject obj = new JSONObject(comingRequest);
@@ -180,7 +176,6 @@ public class RegistrarController {
 	public String getBeneficiaryDetails(
 			@Param(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
-		logger.info("getBeneficiaryDetails request :" + requestObj);
 		try {
 
 			JSONObject obj = new JSONObject(requestObj);
@@ -216,7 +211,6 @@ public class RegistrarController {
 	public String getBeneficiaryImage(
 			@Param(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
-		logger.info("getBeneficiaryImage request :" + requestObj);
 		try {
 			JSONObject obj = new JSONObject(requestObj);
 			if (obj.has("beneficiaryRegID")) {
@@ -232,7 +226,7 @@ public class RegistrarController {
 			}
 			logger.info("getBeneficiaryDetails response :" + response);
 		} catch (Exception e) {
-
+			logger.error("Error caused by "+e.getMessage());
 		}
 		return response.toString();
 	}
@@ -241,11 +235,11 @@ public class RegistrarController {
 	@Operation(summary = "Search beneficiary for beneficiary id or beneficiary phone no")
 	@PostMapping(value = { "/quickSearchNew" })
 	public String quickSearchNew(@RequestBody String requestObj,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String authorization) {
 		String searchList = null;
 		OutputResponse response = new OutputResponse();
 		try {
-			searchList = registrarServiceImpl.beneficiaryQuickSearch(requestObj, Authorization);
+			searchList = registrarServiceImpl.beneficiaryQuickSearch(requestObj, authorization);
 			if (searchList == null) {
 				response.setError(5000, "Invalid request");
 				return response.toString();
@@ -264,11 +258,11 @@ public class RegistrarController {
 	@Operation(summary = "Search beneficiary advance search new")
 	@PostMapping(value = { "/advanceSearchNew" })
 	public String advanceSearchNew(@RequestBody String requestObj,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String authorization) {
 		String searchList = null;
 		OutputResponse response = new OutputResponse();
 		try {
-			searchList = registrarServiceImpl.beneficiaryAdvanceSearch(requestObj, Authorization);
+			searchList = registrarServiceImpl.beneficiaryAdvanceSearch(requestObj, authorization);
 			if (searchList == null) {
 				response.setError(5000, "Invalid request");
 				return response.toString();
@@ -288,9 +282,8 @@ public class RegistrarController {
 	@PostMapping(value = { "/get/benDetailsByRegIDForLeftPanelNew" })
 	public String getBenDetailsForLeftSidePanelByRegID(
 			@Param(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String comingRequest,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String authorization) {
 		OutputResponse response = new OutputResponse();
-		logger.info("getBenDetailsByRegID request :" + comingRequest);
 		try {
 
 			JSONObject obj = new JSONObject(comingRequest);
@@ -298,7 +291,7 @@ public class RegistrarController {
 				if (obj.getLong("beneficiaryRegID") > 0 && obj.getLong("benFlowID") > 0) {
 
 					String beneficiaryData = registrarServiceMasterDataImpl.getBenDetailsForLeftSideByRegIDNew(
-							obj.getLong("beneficiaryRegID"), obj.getLong("benFlowID"), Authorization, comingRequest);
+							obj.getLong("beneficiaryRegID"), obj.getLong("benFlowID"), authorization, comingRequest);
 
 					response.setResponse(beneficiaryData);
 				} else {
@@ -319,11 +312,10 @@ public class RegistrarController {
 	@Operation(summary = "Get beneficiary image")
 	@PostMapping(value = { "/getBenImage" })
 	public String getBenImage(@RequestBody String requestObj,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
-			String returnOBJ = registrarServiceMasterDataImpl.getBenImageFromIdentityAPI(Authorization, requestObj);
-			return returnOBJ;
+			return registrarServiceMasterDataImpl.getBenImageFromIdentityAPI(authorization, requestObj);
 		} catch (Exception e) {
 			logger.error("Error ben image fetch" + e);
 			response.setError(5000, "Error while getting beneficiary image");
@@ -346,7 +338,7 @@ public class RegistrarController {
 					+ "\"districtName\": \"String\", \"stateID\": \"Integer\", \"stateName\": \"String\", \"countryID\": \"Integer\","
 					+ "\"govID\": [{\"type\": \"String\",\"value\": \"String\"}], \"ageAtMarriage\": \"Integer\", \"createdBy\": \"String\", "
 					+ "\"servicePointID\": \"Integer\"}}") @RequestBody String comingRequest,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String authorization) {
 
 		OutputResponse response = new OutputResponse();
 		try {
@@ -366,7 +358,7 @@ public class RegistrarController {
 					Long benDemoID = registrarServiceImpl.createBeneficiaryDemographic(benD, benRegID);
 					Long benPhonMapID = registrarServiceImpl.createBeneficiaryPhoneMapping(benD, benRegID);
 
-					int benGovIdMapID = registrarServiceImpl.createBenGovIdMapping(benD, benRegID);
+					registrarServiceImpl.createBenGovIdMapping(benD, benRegID);
 
 					Long benbenDemoOtherID = registrarServiceImpl.createBeneficiaryDemographicAdditional(benD,
 							benRegID);
@@ -374,7 +366,7 @@ public class RegistrarController {
 					Long benImageID = registrarServiceImpl.createBeneficiaryImage(benD, benRegID);
 
 					if (benRegID > 0 && benDemoID > 0 && benPhonMapID > 0 && benbenDemoOtherID > 0 && benImageID > 0) {
-						Integer i = commonNurseServiceImpl.updateBeneficiaryStatus('R', benRegID);
+						commonNurseServiceImpl.updateBeneficiaryStatus('R', benRegID);
 						if (benData.getBeneficiaryID() != null) {
 							response.setResponse(benData.getBeneficiaryID());
 						} else {
@@ -399,11 +391,11 @@ public class RegistrarController {
 	@Operation(summary = "Register a new beneficiary API")
 	@PostMapping(value = { "/registrarBeneficaryRegistrationNew" })
 	public String registrarBeneficaryRegistrationNew(@RequestBody String comingReq,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String authorization) {
 		String s;
 		OutputResponse response = new OutputResponse();
 		try {
-			s = registrarServiceImpl.registerBeneficiary(comingReq, Authorization);
+			s = registrarServiceImpl.registerBeneficiary(comingReq, authorization);
 			return s;
 		} catch (Exception e) {
 			logger.error("Error in registration" + e);
@@ -445,7 +437,7 @@ public class RegistrarController {
 					int benDemoUpdateRes = registrarServiceImpl.updateBeneficiaryDemographic(benD, benRegID);
 					int benPhonMapUpdateRes = registrarServiceImpl.updateBeneficiaryPhoneMapping(benD, benRegID);
 
-					int benGovIdMapUpdateRes = registrarServiceImpl.updateBenGovIdMapping(benD, benRegID);
+					registrarServiceImpl.updateBenGovIdMapping(benD, benRegID);
 
 					int benbenDemoOtherUpdateRes = registrarServiceImpl.updateBeneficiaryDemographicAdditional(benD,
 							benRegID);
@@ -454,7 +446,7 @@ public class RegistrarController {
 
 					if (benRegID >= 0 && benDemoUpdateRes >= 0 && benPhonMapUpdateRes >= 0
 							&& benbenDemoOtherUpdateRes >= 0 && benImageUpdateRes >= 0) {
-						Integer i = commonNurseServiceImpl.updateBeneficiaryStatus('R', benRegID);
+						commonNurseServiceImpl.updateBeneficiaryStatus('R', benRegID);
 						response.setResponse("Beneficiary Details updated successfully!!!");
 
 					} else {
@@ -496,11 +488,11 @@ public class RegistrarController {
 	@Operation(summary = "Beneficiary edit, save or submit")
 	@PostMapping(value = { "/update/BeneficiaryUpdate" })
 	public String beneficiaryUpdate(@RequestBody String requestOBJ,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String authorization) {
 		OutputResponse response = new OutputResponse();
 		Integer s = null;
 		try {
-			s = registrarServiceImpl.updateBeneficiary(requestOBJ, Authorization);
+			s = registrarServiceImpl.updateBeneficiary(requestOBJ, authorization);
 			if (s != null) {
 				if (s == 1)
 					response.setResponse("Beneficiary details updated successfully");
@@ -522,7 +514,6 @@ public class RegistrarController {
 	public String masterDataForRegistration(
 			@Param(value = "{\"spID\": \"Integer\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
-		logger.info("masterDataForRegistration request :" + comingRequest);
 		try {
 
 			JSONObject obj = new JSONObject(comingRequest);

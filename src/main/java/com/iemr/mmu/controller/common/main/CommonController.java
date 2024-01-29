@@ -151,7 +151,6 @@ public class CommonController {
 			else
 				response.setError(5000, "Error while getting nurse worklist");
 		} catch (Exception e) {
-			// e.printStackTrace();
 			logger.error("Error in getNurseWorklist:" + e);
 			response.setError(5000, "Error while getting nurse worklist");
 		}
@@ -176,7 +175,6 @@ public class CommonController {
 			else
 				response.setError(5000, "Error while getting nurse worklist");
 		} catch (Exception e) {
-			// e.printStackTrace();
 			logger.error("Error in getNurseWorklist:" + e);
 			response.setError(5000, "Error while getting nurse worklist");
 		}
@@ -191,7 +189,7 @@ public class CommonController {
 		OutputResponse response = new OutputResponse();
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
-			if (obj != null && obj.has("beneficiaryRegID") && obj.get("beneficiaryRegID") != null) {
+			if (obj.has("beneficiaryRegID") && obj.get("beneficiaryRegID") != null) {
 				Long beneficiaryRegID = obj.getLong("beneficiaryRegID");
 				String s = commonDoctorServiceImpl.fetchBenPreviousSignificantFindings(beneficiaryRegID);
 				if (s != null)
@@ -288,12 +286,12 @@ public class CommonController {
 	@Operation(summary = "Get case-sheet print data for beneficiary.")
 	@PostMapping(value = { "/get/Case-sheet/printData" })
 	public String getCasesheetPrintData(@RequestBody String comingReq,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
 			if (comingReq != null) {
 				BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingReq, BeneficiaryFlowStatus.class);
-				String casesheetData = commonServiceImpl.getCaseSheetPrintDataForBeneficiary(obj, Authorization);
+				String casesheetData = commonServiceImpl.getCaseSheetPrintDataForBeneficiary(obj, authorization);
 				response.setResponse(casesheetData);
 			} else
 				response.setError(5000, "Invalid request");
@@ -310,7 +308,6 @@ public class CommonController {
 	public String getBenPastHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenPastHistory request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -336,7 +333,6 @@ public class CommonController {
 	public String getBenTobaccoHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenTobaccoHistory request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -362,7 +358,6 @@ public class CommonController {
 	public String getBenAlcoholHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenAlcoholHistory request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -389,7 +384,6 @@ public class CommonController {
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenAllergyHistory request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -416,7 +410,6 @@ public class CommonController {
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenMedicationHistory request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -442,7 +435,6 @@ public class CommonController {
 	public String getBenFamilyHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenFamilyHistory request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -469,7 +461,6 @@ public class CommonController {
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenMenstrualHistory request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -496,7 +487,6 @@ public class CommonController {
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenPastObstetricHistory request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -523,7 +513,6 @@ public class CommonController {
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenComorbidityConditionHistory request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -550,7 +539,6 @@ public class CommonController {
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenOptionalVaccineHistory request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -577,7 +565,6 @@ public class CommonController {
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenImmunizationHistory request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -604,7 +591,6 @@ public class CommonController {
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenPerinatalHistory request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -630,7 +616,6 @@ public class CommonController {
 	public String getBenFeedingHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenFeedingHistory request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -657,7 +642,6 @@ public class CommonController {
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenDevelopmentHistory request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -686,7 +670,6 @@ public class CommonController {
 	public String getBeneficiaryCaseSheetHistory(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for fetching beneficiary previous visit history :" + comingRequest);
 		try {
 			String responseData = commonServiceImpl.getBenPreviousVisitDataForCaseRecord(comingRequest);
 			if (responseData != null)
@@ -790,7 +773,6 @@ public class CommonController {
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenPhysicalHistory request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -817,7 +799,6 @@ public class CommonController {
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Get Beneficiary Symptomatic questionnaire answer details request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -844,7 +825,6 @@ public class CommonController {
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Get Beneficiary previous Diabetes history request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -872,14 +852,10 @@ public class CommonController {
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary TM case record")
 	@PostMapping(value = { "/get/Case-sheet/TMReferredprintData" })
-	public String getTMReferredPrintData(
-			@Param(value = "{\r\n" + "  \"VisitCategory\": \"String\",\r\n" + "  \"benFlowID\": \"Integer\",\r\n"
-					+ "  \"benVisitID\": \"Integer\",\r\n" + "  \"beneficiaryRegID\": \"Long\",\r\n"
-					+ "  \"visitCode\": \"Long\"\r\n" + "}") @RequestBody String comingRequest,
-			@RequestHeader(value = "Authorization") String Authorization,
-			@RequestHeader(value = "ServerAuthorization") String ServerAuthorization) {
+	public String getTMReferredPrintData(@RequestBody String comingRequest,
+			@RequestHeader(value = "Authorization") String authorization,
+			@RequestHeader(value = "ServerAuthorization") String serverAuthorization) {
 		OutputResponse response = new OutputResponse();
-		logger.info("getTMReferredPrintData request - " + comingRequest);
 		try {
 			if (comingRequest != null) {
 				BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingRequest, BeneficiaryFlowStatus.class);
@@ -890,7 +866,7 @@ public class CommonController {
 				if (caseSheetStatus == 1) {
 					casesheetData = commonServiceImpl.getTmCaseSheetOffline(obj);
 				} else if (caseSheetStatus == 0) {
-					casesheetData = commonServiceImpl.getCaseSheetFromCentralServer(comingRequest, ServerAuthorization);
+					casesheetData = commonServiceImpl.getCaseSheetFromCentralServer(comingRequest, serverAuthorization);
 				}
 				if (casesheetData != null)
 					response.setResponse(casesheetData);
@@ -919,7 +895,6 @@ public class CommonController {
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Get Beneficiary previous Referral history request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID")) {
@@ -946,14 +921,13 @@ public class CommonController {
 			@Param(value = "{\r\n" + "  \"VisitCategory\": \"String\",\r\n" + "  \"benFlowID\": \"Integer\",\r\n"
 					+ "  \"benVisitID\": \"Integer\",\r\n" + "  \"beneficiaryRegID\": \"Long\",\r\n"
 					+ "  \"visitCode\": \"Long\"\r\n" + "}") @RequestBody String comingRequest,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String authorization) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getTMCaseSheetFromCentralServer request - " + comingRequest);
 		try {
 			if (comingRequest != null) {
 
-				String caseSheetFromCentralServer = commonServiceImpl.getCaseSheetOfTm(comingRequest, Authorization);
+				String caseSheetFromCentralServer = commonServiceImpl.getCaseSheetOfTm(comingRequest, authorization);
 
 				if (caseSheetFromCentralServer != null)
 					response.setResponse(caseSheetFromCentralServer);
@@ -988,7 +962,6 @@ public class CommonController {
 			@Param(value = "{\"bmi\":\"double\",\"yearMonth\":\"String\",\"gender\":\"String\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("calculateBMIStatus request:" + comingRequest);
 		try {
 			String s = commonNurseServiceImpl.calculateBMIStatus(comingRequest);
 			response.setResponse(s);
@@ -1008,7 +981,6 @@ public class CommonController {
 
 		OutputResponse response = new OutputResponse();
 		inputMapper = new InputMapper();
-		logger.info("benDetailsAndSubmitToNurse request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("beneficiaryRegID")) {
