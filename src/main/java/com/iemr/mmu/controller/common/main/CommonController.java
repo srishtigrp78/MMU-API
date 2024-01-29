@@ -45,7 +45,6 @@ import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonServiceImpl;
-import com.iemr.mmu.utils.Constants;
 import com.iemr.mmu.utils.MediaTypeUtils;
 import com.iemr.mmu.utils.AESEncryption.AESEncryptionDecryption;
 import com.iemr.mmu.utils.exception.IEMRException;
@@ -88,7 +87,8 @@ public class CommonController {
 	public void setCommonNurseServiceImpl(CommonNurseServiceImpl commonNurseServiceImpl) {
 		this.commonNurseServiceImpl = commonNurseServiceImpl;
 	}
-
+	private static final String BENEFICIARY_REG_ID = "beneficiaryRegID";
+	
 	@CrossOrigin()
 	@Operation(summary = "Provides doctor worklist")
 	@GetMapping(value = { "/getDocWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" })
@@ -190,8 +190,8 @@ public class CommonController {
 		OutputResponse response = new OutputResponse();
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
-			if (obj.has(Constants.BENEFICIARY_REG_ID) && obj.get(Constants.BENEFICIARY_REG_ID) != null) {
-				Long beneficiaryRegID = obj.getLong(Constants.BENEFICIARY_REG_ID);
+			if (obj.has(BENEFICIARY_REG_ID) && obj.get(BENEFICIARY_REG_ID) != null) {
+				Long beneficiaryRegID = obj.getLong(BENEFICIARY_REG_ID);
 				String s = commonDoctorServiceImpl.fetchBenPreviousSignificantFindings(beneficiaryRegID);
 				if (s != null)
 					response.setResponse(s);
@@ -981,10 +981,10 @@ public class CommonController {
 		inputMapper = new InputMapper();
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
-			if (obj.has(Constants.BENEFICIARY_REG_ID)) {
-				if (obj.getLong(Constants.BENEFICIARY_REG_ID) > 0) {
+			if (obj.has(BENEFICIARY_REG_ID)) {
+				if (obj.getLong(BENEFICIARY_REG_ID) > 0) {
 
-					Integer i = commonNurseServiceImpl.updateBeneficiaryStatus('R', obj.getLong(Constants.BENEFICIARY_REG_ID));
+					Integer i = commonNurseServiceImpl.updateBeneficiaryStatus('R', obj.getLong(BENEFICIARY_REG_ID));
 					if (i != null && i > 0) {
 						response.setResponse("Beneficiary Successfully Submitted to Nurse Work-List.");
 					} else {
