@@ -40,7 +40,7 @@ import com.iemr.mmu.utils.response.OutputResponse;
 import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
-@RequestMapping(value = "/tc", headers = "Authorization")
+@RequestMapping(value = "/tc", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class TeleConsultationController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
@@ -49,7 +49,7 @@ public class TeleConsultationController {
 
 	@CrossOrigin
 	@Operation(summary = "Update beneficiary arrival status based on request")
-	@PostMapping(value = { "/update/benArrivalStatus" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/update/benArrivalStatus" })
 	public String benArrivalStatusUpdater(@RequestBody String requestOBJ) {
 		OutputResponse response = new OutputResponse();
 		try {
@@ -70,7 +70,7 @@ public class TeleConsultationController {
 
 	@CrossOrigin
 	@Operation(summary = "Update beneficiary status based on request")
-	@PostMapping(value = { "/cancel/benTCRequest" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/cancel/benTCRequest" })
 	public String updateBeneficiaryStatusToCancelTCRequest(@RequestBody String requestOBJ,
 			@RequestHeader String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -93,7 +93,7 @@ public class TeleConsultationController {
 
 	@CrossOrigin
 	@Operation(summary = "Check if specialist can proceed with beneficiary")
-	@PostMapping(value = { "/check/benTCRequestStatus" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/check/benTCRequestStatus" })
 	public String checkBeneficiaryStatusToProceedWithSpecialist(@RequestBody String requestOBJ) {
 		OutputResponse response = new OutputResponse();
 		try {
@@ -114,7 +114,7 @@ public class TeleConsultationController {
 
 	@CrossOrigin
 	@Operation(summary = "Create TC request for beneficiary whose visit is created")
-	@PostMapping(value = { "/create/benTCRequestWithVisitCode" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/create/benTCRequestWithVisitCode" })
 	public String createTCRequestForBeneficiary(@RequestBody String requestOBJ, @RequestHeader String Authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
@@ -139,7 +139,7 @@ public class TeleConsultationController {
 
 	@CrossOrigin
 	@Operation(summary = "Get TC request list for a specialist")
-	@PostMapping(value = { "/getTCRequestList" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getTCRequestList" })
 	public String getTCSpecialistWorkListNew(@RequestBody String requestOBJ) {
 		OutputResponse response = new OutputResponse();
 		try {

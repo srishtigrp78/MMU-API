@@ -50,7 +50,7 @@ import io.swagger.v3.oas.annotations.Operation;
  */
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/genOPD-QC-quickConsult", headers = "Authorization")
+@RequestMapping(value = "/genOPD-QC-quickConsult", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class QuickConsultController {
 	private Logger logger = LoggerFactory.getLogger(QuickConsultController.class);
 	private QuickConsultationServiceImpl quickConsultationServiceImpl;
@@ -71,7 +71,7 @@ public class QuickConsultController {
 	 */
 	@CrossOrigin
 	@Operation(summary = "Save quick consult nurse data")
-	@PostMapping(value = { "/save/nurseData" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/save/nurseData" })
 	public String saveBenQuickConsultDataNurse(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		logger.info("Quick consult nurse data save request : " + requestObj);
@@ -108,7 +108,7 @@ public class QuickConsultController {
 
 	@CrossOrigin
 	@Operation(summary = "Save quick consultation detail for doctor")
-	@PostMapping(value = { "/save/doctorData" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/save/doctorData" })
 	public String saveQuickConsultationDetail(
 			@Param(value = "{\"quickConsultation\":{\"beneficiaryRegID\":\"Long\",\"providerServiceMapID\": \"Integer\", \"benVisitID\":\"Long\", \"benChiefComplaint\":[{\"chiefComplaintID\":\"Integer\", "
 					+ "\"chiefComplaint\":\"String\", \"duration\":\"Integer\", \"unitOfDuration\":\"String\"}], \"description\":\"String\""
@@ -147,7 +147,7 @@ public class QuickConsultController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get quick consult beneficiary visit details")
-	@PostMapping(value = { "/getBenDataFrmNurseToDocVisitDetailsScreen" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenDataFrmNurseToDocVisitDetailsScreen" })
 	public String getBenDataFrmNurseScrnToDocScrnVisitDetails(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -180,7 +180,7 @@ public class QuickConsultController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get quick consult beneficiary vital details")
-	@PostMapping(value = { "/getBenVitalDetailsFrmNurse" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenVitalDetailsFrmNurse" })
 	public String getBenVitalDetailsFrmNurse(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -242,7 +242,7 @@ public class QuickConsultController {
 
 	@CrossOrigin
 	@Operation(summary = "Update quick consult doctor data")
-	@PostMapping(value = { "/update/doctorData" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/update/doctorData" })
 	public String updateGeneralOPDQCDoctorData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 

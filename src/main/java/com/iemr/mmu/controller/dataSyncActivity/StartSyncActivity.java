@@ -47,7 +47,7 @@ import io.swagger.v3.oas.annotations.Operation;
  */
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/dataSyncActivity", headers = "Authorization")
+@RequestMapping(value = "/dataSyncActivity", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class StartSyncActivity {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
@@ -60,7 +60,7 @@ public class StartSyncActivity {
 
 	@CrossOrigin()
 	@Operation(summary = "Start data sync from van to Server")
-	@PostMapping(value = { "/van-to-server" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/van-to-server" })
 	public String dataSyncToServer(@RequestBody String requestOBJ,
 			@RequestHeader(value = "Authorization") String Authorization,
 			@RequestHeader(value = "ServerAuthorization") String ServerAuthorization) {
@@ -87,7 +87,7 @@ public class StartSyncActivity {
 
 	@CrossOrigin()
 	@Operation(summary = "Get data sync group details")
-	@GetMapping(value = { "/getSyncGroupDetails" }, consumes = "application/json", produces = "application/json")
+	@GetMapping(value = { "/getSyncGroupDetails" })
 	public String getSyncGroupDetails() {
 		OutputResponse response = new OutputResponse();
 		try {
@@ -108,7 +108,7 @@ public class StartSyncActivity {
 	 */
 	@CrossOrigin()
 	@Operation(summary = "Data sync master download")
-	@PostMapping(value = { "/startMasterDownload" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/startMasterDownload" })
 	public String startMasterDownload(@RequestBody String requestOBJ,
 			@RequestHeader(value = "Authorization") String Authorization,
 			@RequestHeader(value = "ServerAuthorization") String ServerAuthorization) {
@@ -141,7 +141,7 @@ public class StartSyncActivity {
 
 	@CrossOrigin()
 	@Operation(summary = "Data sync master download progress check")
-	@GetMapping(value = { "/checkMastersDownloadProgress" }, consumes = "application/json", produces = "application/json")
+	@GetMapping(value = { "/checkMastersDownloadProgress" })
 	public String checkMastersDownloadProgress() {
 		OutputResponse response = new OutputResponse();
 		try {
@@ -155,7 +155,7 @@ public class StartSyncActivity {
 
 	@CrossOrigin()
 	@Operation(summary = "Get van details for master download")
-	@GetMapping(value = { "/getVanDetailsForMasterDownload" }, consumes = "application/json", produces = "application/json")
+	@GetMapping(value = { "/getVanDetailsForMasterDownload" })
 	public String getVanDetailsForMasterDownload() {
 		OutputResponse response = new OutputResponse();
 		try {
@@ -173,7 +173,7 @@ public class StartSyncActivity {
 
 	@CrossOrigin()
 	@Operation(summary = "Call central API to generate beneficiary id and import to local")
-	@PostMapping(value = { "/callCentralAPIToGenerateBenIDAndimportToLocal" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/callCentralAPIToGenerateBenIDAndimportToLocal" })
 	public String callCentralAPIToGenerateBenIDAndimportToLocal(@RequestBody String requestOBJ,
 			@RequestHeader(value = "Authorization") String Authorization,
 			@RequestHeader(value = "ServerAuthorization") String ServerAuthorization) {
@@ -198,7 +198,7 @@ public class StartSyncActivity {
 
 	@CrossOrigin()
 	@Operation(summary = "Call central API to download transaction data to local")
-	@PostMapping(value = { "/downloadTransactionToLocal" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/downloadTransactionToLocal" })
 	public String downloadTransactionToLocal(@RequestBody String requestOBJ,
 			@RequestHeader(value = "ServerAuthorization") String ServerAuthorization) {
 		OutputResponse response = new OutputResponse();

@@ -59,7 +59,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/common", headers = "Authorization")
+@RequestMapping(value = "/common", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class CommonController {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
@@ -90,7 +90,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Provides doctor worklist")
-	@GetMapping(value = { "/getDocWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" }, consumes = "application/json", produces = "application/json")
+	@GetMapping(value = { "/getDocWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getDocWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
 			@PathVariable("serviceID") Integer serviceID, @PathVariable("vanID") Integer vanID) {
 		OutputResponse response = new OutputResponse();
@@ -140,7 +140,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get nurse worklist new")
-	@GetMapping(value = { "/getNurseWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" }, consumes = "application/json", produces = "application/json")
+	@GetMapping(value = { "/getNurseWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getNurseWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
 			@PathVariable("vanID") Integer vanID) {
 		OutputResponse response = new OutputResponse();
@@ -185,7 +185,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get doctor entered previous significant Ffindings")
-	@PostMapping(value = { "/getDoctorPreviousSignificantFindings" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getDoctorPreviousSignificantFindings" })
 	public String getDoctorPreviousSignificantFindings(
 			@Param(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -210,7 +210,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get lab technician worklist new")
-	@GetMapping(value = { "/getLabWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" }, consumes = "application/json", produces = "application/json")
+	@GetMapping(value = { "/getLabWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getLabWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
 			@PathVariable("vanID") Integer vanID) {
 		OutputResponse response = new OutputResponse();
@@ -229,7 +229,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get radiologist worklist new")
-	@GetMapping(value = { "/getRadiologist-worklist-New/{providerServiceMapID}/{serviceID}/{vanID}" }, consumes = "application/json", produces = "application/json")
+	@GetMapping(value = { "/getRadiologist-worklist-New/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getRadiologistWorklistNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
 			@PathVariable("vanID") Integer vanID) {
 		OutputResponse response = new OutputResponse();
@@ -248,7 +248,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get oncologist worklist new")
-	@GetMapping(value = { "/getOncologist-worklist-New/{providerServiceMapID}/{serviceID}/{vanID}" }, consumes = "application/json", produces = "application/json")
+	@GetMapping(value = { "/getOncologist-worklist-New/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getOncologistWorklistNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
 			@PathVariable("vanID") Integer vanID) {
 		OutputResponse response = new OutputResponse();
@@ -267,7 +267,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get pharma worklist new")
-	@GetMapping(value = { "/getPharma-worklist-New/{providerServiceMapID}/{serviceID}/{vanID}" }, consumes = "application/json", produces = "application/json")
+	@GetMapping(value = { "/getPharma-worklist-New/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getPharmaWorklistNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
 			@PathVariable("vanID") Integer vanID) {
 		OutputResponse response = new OutputResponse();
@@ -286,7 +286,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get case-sheet print data for beneficiary.")
-	@PostMapping(value = { "/get/Case-sheet/printData" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/get/Case-sheet/printData" })
 	public String getCasesheetPrintData(@RequestBody String comingReq,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -306,7 +306,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary past history")
-	@PostMapping(value = { "/getBenPastHistory" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenPastHistory" })
 	public String getBenPastHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
@@ -332,7 +332,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary tobacco history")
-	@PostMapping(value = { "/getBenTobaccoHistory" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenTobaccoHistory" })
 	public String getBenTobaccoHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
@@ -358,7 +358,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary alcohol history")
-	@PostMapping(value = { "/getBenAlcoholHistory" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenAlcoholHistory" })
 	public String getBenAlcoholHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
@@ -384,7 +384,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary allergy history")
-	@PostMapping(value = { "/getBenAllergyHistory" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenAllergyHistory" })
 	public String getBenANCAllergyHistory(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -411,7 +411,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary medication history")
-	@PostMapping(value = { "/getBenMedicationHistory" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenMedicationHistory" })
 	public String getBenMedicationHistory(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -438,7 +438,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary family history")
-	@PostMapping(value = { "/getBenFamilyHistory" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenFamilyHistory" })
 	public String getBenFamilyHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
@@ -464,7 +464,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary menstrual history")
-	@PostMapping(value = { "/getBenMenstrualHistory" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenMenstrualHistory" })
 	public String getBenMenstrualHistory(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -491,7 +491,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary past obstetric history")
-	@PostMapping(value = { "/getBenPastObstetricHistory" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenPastObstetricHistory" })
 	public String getBenPastObstetricHistory(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -518,7 +518,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary comorbidity condition details")
-	@PostMapping(value = { "/getBenComorbidityConditionHistory" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenComorbidityConditionHistory" })
 	public String getBenANCComorbidityConditionHistory(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -545,7 +545,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary optional vaccine details")
-	@PostMapping(value = { "/getBenOptionalVaccineHistory" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenOptionalVaccineHistory" })
 	public String getBenOptionalVaccineHistory(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -572,7 +572,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary child vaccine(Immunization) details")
-	@PostMapping(value = { "/getBenChildVaccineHistory" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenChildVaccineHistory" })
 	public String getBenImmunizationHistory(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -599,7 +599,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary perinatal history details")
-	@PostMapping(value = { "/getBenPerinatalHistory" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenPerinatalHistory" })
 	public String getBenPerinatalHistory(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -626,7 +626,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary child feeding history details")
-	@PostMapping(value = { "/getBenFeedingHistory" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenFeedingHistory" })
 	public String getBenFeedingHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
@@ -652,7 +652,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary child development history details")
-	@PostMapping(value = { "/getBenDevelopmentHistory" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenDevelopmentHistory" })
 	public String getBenDevelopmentHistory(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -682,7 +682,7 @@ public class CommonController {
 	 */
 	@CrossOrigin()
 	@Operation(summary = "Get casesheet history of beneficiary")
-	@PostMapping(value = { "/getBeneficiaryCaseSheetHistory" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBeneficiaryCaseSheetHistory" })
 	public String getBeneficiaryCaseSheetHistory(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -702,7 +702,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "TC specialist")
-	@GetMapping(value = { "/getTCSpecialistWorklist/{providerServiceMapID}/{serviceID}/{userID}" }, consumes = "application/json", produces = "application/json")
+	@GetMapping(value = { "/getTCSpecialistWorklist/{providerServiceMapID}/{serviceID}/{userID}" })
 	public String getTCSpecialistWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
 			@PathVariable("userID") Integer userID, @PathVariable("serviceID") Integer serviceID) {
 		OutputResponse response = new OutputResponse();
@@ -728,7 +728,7 @@ public class CommonController {
 	@CrossOrigin()
 	@Operation(summary = "TC specialist future scheduled")
 	@GetMapping(value = {
-			"/getTCSpecialistWorklistFutureScheduled/{providerServiceMapID}/{serviceID}/{userID}" }, consumes = "application/json", produces = "application/json")
+			"/getTCSpecialistWorklistFutureScheduled/{providerServiceMapID}/{serviceID}/{userID}" })
 	public String getTCSpecialistWorklistFutureScheduled(
 			@PathVariable("providerServiceMapID") Integer providerServiceMapID, @PathVariable("userID") Integer userID,
 			@PathVariable("serviceID") Integer serviceID) {
@@ -754,7 +754,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Download file from file system")
-	@PostMapping(value = { "/downloadFile" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/downloadFile" })
 	public ResponseEntity<InputStreamResource> downloadFile(@RequestBody String requestOBJ, HttpServletRequest request)
 			throws Exception {
 		JSONObject obj = new JSONObject(requestOBJ);
@@ -785,7 +785,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary physical history")
-	@PostMapping(value = { "/getBenPhysicalHistory" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenPhysicalHistory" })
 	public String getBenPhysicalHistory(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -812,7 +812,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary symptomatic questionnaire answer details")
-	@PostMapping(value = { "/getBenSymptomaticQuestionnaireDetails" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenSymptomaticQuestionnaireDetails" })
 	public String getBenSymptomaticQuestionnaireDetails(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -839,7 +839,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary previous diabetes history")
-	@PostMapping(value = { "/getBenPreviousDiabetesHistoryDetails" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenPreviousDiabetesHistoryDetails" })
 	public String getBenPreviousDiabetesHistoryDetails(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -871,7 +871,7 @@ public class CommonController {
 	 */
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary TM case record")
-	@PostMapping(value = { "/get/Case-sheet/TMReferredprintData" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/get/Case-sheet/TMReferredprintData" })
 	public String getTMReferredPrintData(
 			@Param(value = "{\r\n" + "  \"VisitCategory\": \"String\",\r\n" + "  \"benFlowID\": \"Integer\",\r\n"
 					+ "  \"benVisitID\": \"Integer\",\r\n" + "  \"beneficiaryRegID\": \"Long\",\r\n"
@@ -913,7 +913,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary previous referral history")
-	@PostMapping(value = { "/getBenPreviousReferralHistoryDetails" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenPreviousReferralHistoryDetails" })
 	public String getBenPreviousReferralHistoryDetails(
 
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
@@ -941,7 +941,7 @@ public class CommonController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary TM case record")
-	@PostMapping(value = { "/get/Case-sheet/centralServerTMCaseSheet" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/get/Case-sheet/centralServerTMCaseSheet" })
 	public String getTMCaseSheetFromCentralServer(
 			@Param(value = "{\r\n" + "  \"VisitCategory\": \"String\",\r\n" + "  \"benFlowID\": \"Integer\",\r\n"
 					+ "  \"benVisitID\": \"Integer\",\r\n" + "  \"beneficiaryRegID\": \"Long\",\r\n"
@@ -983,7 +983,7 @@ public class CommonController {
 	 */
 	@CrossOrigin()
 	@Operation(summary = "Calculate beneficiary BMI status")
-	@PostMapping(value = { "/calculateBMIStatus" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/calculateBMIStatus" })
 	public String calculateBMIStatus(
 			@Param(value = "{\"bmi\":\"double\",\"yearMonth\":\"String\",\"gender\":\"String\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -1002,7 +1002,7 @@ public class CommonController {
 
 	@CrossOrigin
 	@Operation(summary = "Update beneficiary status flag")
-	@PostMapping(value = { "/update/benDetailsAndSubmitToNurse" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/update/benDetailsAndSubmitToNurse" })
 	public String saveBeneficiaryVisitDetail(
 			@Param(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String comingRequest) {
 
@@ -1038,7 +1038,7 @@ public class CommonController {
 
 	@CrossOrigin
 	@Operation(summary = "Extend redis session for 30 minutes")
-	@PostMapping(value = { "/extend/redisSession" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/extend/redisSession" })
 	public String extendRedisSession() {
 		OutputResponse response = new OutputResponse();
 		try {
@@ -1051,7 +1051,7 @@ public class CommonController {
 
 	@CrossOrigin
 	@Operation(summary = "Soft delete prescribed medicine")
-	@PostMapping(value = { "/doctor/delete/prescribedMedicine" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/doctor/delete/prescribedMedicine" })
 	public String deletePrescribedMedicine(@RequestBody String requestOBJ) {
 		OutputResponse response = new OutputResponse();
 		try {

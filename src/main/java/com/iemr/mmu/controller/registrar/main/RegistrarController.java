@@ -53,7 +53,7 @@ import io.swagger.v3.oas.annotations.Operation;
 
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/registrar", headers = "Authorization")
+@RequestMapping(value = "/registrar", headers = "Authorization", consumes = "application/json", produces = "application/json")
 /**
  * Objective: Performs QuickSearch, AdvancedSearch and fetching Beneficiary
  * Details
@@ -83,7 +83,7 @@ public class RegistrarController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get registrar worklist data")
-	@PostMapping(value = { "/registrarWorkListData" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/registrarWorkListData" })
 	public String getRegistrarWorkList(@Param(value = "{\"spID\": \"Integer\"}") @RequestBody String comingRequest)
 			throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -103,7 +103,7 @@ public class RegistrarController {
 
 	@CrossOrigin()
 	@Operation(summary = "Search for the beneficiary by beneficiary id")
-	@PostMapping(value = { "/quickSearch" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/quickSearch" })
 	public String quickSearchBeneficiary(
 			@Param(value = "{\"benID\": \"String\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -123,7 +123,7 @@ public class RegistrarController {
 
 	@CrossOrigin()
 	@Operation(summary = "Search for the beneficiary based on provided data")
-	@PostMapping(value = { "/advanceSearch" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/advanceSearch" })
 	public String advanceSearch(
 			@Param(value = "{\"firstName\": \"String\", \"lastName\": \"String\", \"phoneNo\": \"String\","
 					+ "\"beneficiaryID\": \"String\", \"stateID\": \"Integer\", \"districtID\": \"Integer\", \"aadharNo\": \"String\"},"
@@ -145,7 +145,7 @@ public class RegistrarController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary details of given beneficiary registration id")
-	@PostMapping(value = { "/get/benDetailsByRegID" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/get/benDetailsByRegID" })
 	public String getBenDetailsByRegID(
 			@Param(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -176,7 +176,7 @@ public class RegistrarController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary details")
-	@PostMapping(value = { "/get/beneficiaryDetails" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/get/beneficiaryDetails" })
 	public String getBeneficiaryDetails(
 			@Param(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
@@ -212,7 +212,7 @@ public class RegistrarController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary image")
-	@PostMapping(value = { "/get/beneficiaryImage" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/get/beneficiaryImage" })
 	public String getBeneficiaryImage(
 			@Param(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
@@ -239,7 +239,7 @@ public class RegistrarController {
 
 	@CrossOrigin()
 	@Operation(summary = "Search beneficiary for beneficiary id or beneficiary phone no")
-	@PostMapping(value = { "/quickSearchNew" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/quickSearchNew" })
 	public String quickSearchNew(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		String searchList = null;
@@ -262,7 +262,7 @@ public class RegistrarController {
 
 	@CrossOrigin()
 	@Operation(summary = "Search beneficiary advance search new")
-	@PostMapping(value = { "/advanceSearchNew" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/advanceSearchNew" })
 	public String advanceSearchNew(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		String searchList = null;
@@ -285,7 +285,7 @@ public class RegistrarController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary details for left side panel of given beneficiary registration id")
-	@PostMapping(value = { "/get/benDetailsByRegIDForLeftPanelNew" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/get/benDetailsByRegIDForLeftPanelNew" })
 	public String getBenDetailsForLeftSidePanelByRegID(
 			@Param(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String comingRequest,
 			@RequestHeader(value = "Authorization") String Authorization) {
@@ -317,7 +317,7 @@ public class RegistrarController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary image")
-	@PostMapping(value = { "/getBenImage" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenImage" })
 	public String getBenImage(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -334,7 +334,7 @@ public class RegistrarController {
 
 	@CrossOrigin()
 	@Operation(summary = "Register a new beneficiary")
-	@PostMapping(value = { "/registrarBeneficaryRegistration" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/registrarBeneficaryRegistration" })
 	public String createBeneficiary(
 			@Param(value = "{\"benD\":{\"firstName\": \"String\", \"lastName\": \"String\", \"gender\": \"Short\","
 					+ "\"dob\": \"Timestamp\", \"maritalStatus\": \"Short\", \"fatherName\": \"String\", \"motherName\": \"String\","
@@ -397,7 +397,7 @@ public class RegistrarController {
 
 	@CrossOrigin()
 	@Operation(summary = "Register a new beneficiary API")
-	@PostMapping(value = { "/registrarBeneficaryRegistrationNew" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/registrarBeneficaryRegistrationNew" })
 	public String registrarBeneficaryRegistrationNew(@RequestBody String comingReq,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		String s;
@@ -415,7 +415,7 @@ public class RegistrarController {
 
 	@CrossOrigin()
 	@Operation(summary = "Update registered beneficiary data")
-	@PostMapping(value = { "/update/BeneficiaryDetails" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/update/BeneficiaryDetails" })
 	public String updateBeneficiary(
 			@Param(value = "{\"benD\": {\"beneficiaryRegID\": \"Long\", \"firstName\": \"String\", \"lastName\": \"String\", \"gender\": \"Short\","
 					+ "\"dob\": \"Timestamp\", \"maritalStatus\": \"Short\", \"fatherName\": \"String\", \"motherName\": \"String\","
@@ -473,7 +473,7 @@ public class RegistrarController {
 	}
 
 	@Operation(summary = "Registrar will submit a beneficiary to nurse for revisit")
-	@PostMapping(value = { "/create/BenReVisitToNurse" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/create/BenReVisitToNurse" })
 	public String createReVisitForBenToNurse(@RequestBody String requestOBJ) {
 		OutputResponse response = new OutputResponse();
 		try {
@@ -494,7 +494,7 @@ public class RegistrarController {
 	}
 
 	@Operation(summary = "Beneficiary edit, save or submit")
-	@PostMapping(value = { "/update/BeneficiaryUpdate" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/update/BeneficiaryUpdate" })
 	public String beneficiaryUpdate(@RequestBody String requestOBJ,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -518,7 +518,7 @@ public class RegistrarController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get master data for registrar")
-	@PostMapping(value = { "/registrarMasterData" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/registrarMasterData" })
 	public String masterDataForRegistration(
 			@Param(value = "{\"spID\": \"Integer\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();

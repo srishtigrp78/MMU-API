@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.JsonElement;
@@ -49,7 +48,7 @@ import io.swagger.v3.oas.annotations.Operation;
  */
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/PNC", headers = "Authorization")
+@RequestMapping(value = "/PNC", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class PostnatalCareController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	private PNCServiceImpl pncServiceImpl;
@@ -67,7 +66,7 @@ public class PostnatalCareController {
 
 	@CrossOrigin
 	@Operation(summary = "Save PNC nurse data")
-	@PostMapping(value = { "/save/nurseData" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/save/nurseData" })
 	public String saveBenPNCNurseData(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		try {
@@ -106,7 +105,7 @@ public class PostnatalCareController {
 
 	@CrossOrigin
 	@Operation(summary = "Save PNC doctor data")
-	@PostMapping(value = { "/save/doctorData" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/save/doctorData" })
 	public String saveBenPNCDoctorData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -136,7 +135,7 @@ public class PostnatalCareController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get PNC beneficiary visit details from nurse")
-	@PostMapping(value = { "/getBenVisitDetailsFrmNursePNC" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenVisitDetailsFrmNursePNC" })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenVisitDetailsFrmNursePNC(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
@@ -170,7 +169,7 @@ public class PostnatalCareController {
 	 */
 	@CrossOrigin()
 	@Operation(summary = "Get PNC beneficiary care details from nurse")
-	@PostMapping(value = { "/getBenPNCDetailsFrmNursePNC" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenPNCDetailsFrmNursePNC" })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenPNCDetailsFrmNursePNC(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
@@ -204,7 +203,7 @@ public class PostnatalCareController {
 	 */
 	@CrossOrigin()
 	@Operation(summary = "Get PNC beneficiary  history details from nurse to doctor ")
-	@PostMapping(value = { "/getBenHistoryDetails" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenHistoryDetails" })
 
 	public String getBenHistoryDetails(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
@@ -237,7 +236,7 @@ public class PostnatalCareController {
 	 */
 	@CrossOrigin()
 	@Operation(summary = "Get PNC beneficiary vital details from nurse")
-	@PostMapping(value = { "/getBenVitalDetailsFrmNurse" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenVitalDetailsFrmNurse" })
 	public String getBenVitalDetailsFrmNurse(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -270,7 +269,7 @@ public class PostnatalCareController {
 	 */
 	@CrossOrigin()
 	@Operation(summary = "Get PNC beneficiary examination details from nurse to doctor ")
-	@PostMapping(value = { "/getBenExaminationDetailsPNC" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenExaminationDetailsPNC" })
 
 	public String getBenExaminationDetailsPNC(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
@@ -303,7 +302,7 @@ public class PostnatalCareController {
 	 */
 	@CrossOrigin()
 	@Operation(summary = "Get PNC beneficiary case record")
-	@PostMapping(value = { "/getBenCaseRecordFromDoctorPNC" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenCaseRecordFromDoctorPNC" })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenCaseRecordFromDoctorPNC(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
@@ -332,7 +331,7 @@ public class PostnatalCareController {
 
 	@CrossOrigin
 	@Operation(summary = "Update PNC care data in doctor screen")
-	@PostMapping(value = { "/update/PNCScreen" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/update/PNCScreen" })
 	public String updatePNCCareNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -368,7 +367,7 @@ public class PostnatalCareController {
 
 	@CrossOrigin
 	@Operation(summary = "Update PNC beneficiary history in doctor screen")
-	@PostMapping(value = { "/update/historyScreen" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/update/historyScreen" })
 	public String updateHistoryNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -404,7 +403,7 @@ public class PostnatalCareController {
 
 	@CrossOrigin
 	@Operation(summary = "Update PNC beneficiary vitals in doctor screen")
-	@PostMapping(value = { "/update/vitalScreen" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/update/vitalScreen" })
 	public String updateVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -440,7 +439,7 @@ public class PostnatalCareController {
 
 	@CrossOrigin
 	@Operation(summary = "Update PNC beneficiary examination data in doctor screen")
-	@PostMapping(value = { "/update/examinationScreen" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/update/examinationScreen" })
 	public String updateGeneralOPDExaminationNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -468,7 +467,7 @@ public class PostnatalCareController {
 
 	@CrossOrigin
 	@Operation(summary = "Update PNC doctor data")
-	@PostMapping(value = { "/update/doctorData" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/update/doctorData" })
 	public String updatePNCDoctorData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 

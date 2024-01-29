@@ -57,7 +57,7 @@ import io.swagger.v3.oas.annotations.Operation;
  */
 @CrossOrigin
 @RestController
-@RequestMapping(value = "pandemic/covid", headers = "Authorization")
+@RequestMapping(value = "pandemic/covid", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class CovidController {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
@@ -139,7 +139,7 @@ public class CovidController {
 	}
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary visit details from nurse covid 19")
-	@PostMapping(value = { "/getBenVisitDetailsFrmNurseCovid" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenVisitDetailsFrmNurseCovid" })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenVisitDetailsFrmNurseCovid19(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
@@ -173,7 +173,7 @@ public class CovidController {
 	 */
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary covid 19 history details from nurse to doctor ")
-	@PostMapping(value = { "/getBenCovid19HistoryDetails" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenCovid19HistoryDetails" })
 
 	public String getBenCovid19HistoryDetails(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
@@ -207,7 +207,7 @@ public class CovidController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary covid 19 vital details from nurse NCD care")
-	@PostMapping(value = { "/getBenVitalDetailsFrmNurseCovid" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenVitalDetailsFrmNurseCovid" })
 	public String getBenVitalDetailsFrmNurseNCDCare(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -236,7 +236,7 @@ public class CovidController {
 
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary doctor entered details")
-	@PostMapping(value = { "/getBenCaseRecordFromDoctorCovid" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/getBenCaseRecordFromDoctorCovid" })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenCaseRecordFromDoctorCovid19(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
@@ -264,7 +264,7 @@ public class CovidController {
 	}
 	@CrossOrigin
 	@Operation(summary = "Update history data in doctor screen")
-	@PostMapping(value = { "/update/historyScreen" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/update/historyScreen" })
 	public String updateHistoryNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -302,7 +302,7 @@ public class CovidController {
 
 	@CrossOrigin
 	@Operation(summary = "Update covid vital data in doctor screen")
-	@PostMapping(value = { "/update/vitalScreen" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/update/vitalScreen" })
 	public String updateVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -336,7 +336,7 @@ public class CovidController {
 	 */
 	@CrossOrigin
 	@Operation(summary = "Update covid 19 doctor data")
-	@PostMapping(value = { "/update/doctorData" }, consumes = "application/json", produces = "application/json")
+	@PostMapping(value = { "/update/doctorData" })
 	public String updateCovid19DoctorData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 
