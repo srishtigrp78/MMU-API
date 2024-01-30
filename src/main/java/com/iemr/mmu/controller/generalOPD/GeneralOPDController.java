@@ -52,8 +52,6 @@ import io.swagger.v3.oas.annotations.Operation;
 @RequestMapping(value = "/generalOPD", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class GeneralOPDController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-	JsonElement jsnElmnt;
-	JsonObject jsnOBJ;
 	private GeneralOPDServiceImpl generalOPDServiceImpl;
 
 	@Autowired
@@ -73,9 +71,9 @@ public class GeneralOPDController {
 		OutputResponse response = new OutputResponse();
 		try {
 			logger.info("Request object for GeneralOPD nurse data saving :" + requestObj);
-			jsnOBJ = getJsonOBJ(requestObj);
-			if (jsnOBJ != null) {
-				Long genOPDRes = generalOPDServiceImpl.saveNurseData(jsnOBJ);
+			JsonObject jsonRequest = parseJsonRequest(requestObj);
+			if (jsonRequest != null) {
+				Long genOPDRes = generalOPDServiceImpl.saveNurseData(jsonRequest);
 				if (null != genOPDRes && genOPDRes > 0) {
 					response.setResponse("Data saved successfully");
 				} else if (null != genOPDRes && genOPDRes == 0) {
@@ -106,9 +104,9 @@ public class GeneralOPDController {
 			@RequestHeader(value = "Authorization") String authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
-			jsnOBJ = getJsonOBJ(requestObj);
-			if (jsnOBJ != null) {
-				Long genOPDRes = generalOPDServiceImpl.saveDoctorData(jsnOBJ, authorization);
+			JsonObject jsonRequest = parseJsonRequest(requestObj);
+			if (jsonRequest != null) {
+				Long genOPDRes = generalOPDServiceImpl.saveDoctorData(jsonRequest, authorization);
 				if (null != genOPDRes && genOPDRes > 0) {
 					response.setResponse("Data saved successfully");
 				} else {
@@ -288,10 +286,10 @@ public class GeneralOPDController {
 	public String updateVisitNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		jsnOBJ = getJsonOBJ(requestObj);
+		JsonObject jsonRequest = parseJsonRequest(requestObj);
 
 		try {
-			int result = generalOPDServiceImpl.UpdateVisitDetails(jsnOBJ);
+			int result = generalOPDServiceImpl.UpdateVisitDetails(jsonRequest);
 			if (result > 0) {
 				response.setResponse("Data updated successfully");
 			} else {
@@ -321,9 +319,9 @@ public class GeneralOPDController {
 
 		OutputResponse response = new OutputResponse();
 
-		jsnOBJ = getJsonOBJ(requestObj);
+		JsonObject jsonRequest = parseJsonRequest(requestObj);
 		try {
-			int result = generalOPDServiceImpl.updateBenHistoryDetails(jsnOBJ);
+			int result = generalOPDServiceImpl.updateBenHistoryDetails(jsonRequest);
 			if (result > 0) {
 				response.setResponse("Data updated successfully");
 			} else {
@@ -352,10 +350,10 @@ public class GeneralOPDController {
 	public String updateVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		jsnOBJ = getJsonOBJ(requestObj);
+		JsonObject jsonRequest = parseJsonRequest(requestObj);
 
 		try {
-			int result = generalOPDServiceImpl.updateBenVitalDetails(jsnOBJ);
+			int result = generalOPDServiceImpl.updateBenVitalDetails(jsonRequest);
 			if (result > 0) {
 				response.setResponse("Data updated successfully");
 			} else {
@@ -384,10 +382,10 @@ public class GeneralOPDController {
 	public String updateGeneralOPDExaminationNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		jsnOBJ = getJsonOBJ(requestObj);
+		JsonObject jsonRequest = parseJsonRequest(requestObj);
 
 		try {
-			int result = generalOPDServiceImpl.updateBenExaminationDetails(jsnOBJ);
+			int result = generalOPDServiceImpl.updateBenExaminationDetails(jsonRequest);
 			if (result > 0) {
 				response.setResponse("Data updated successfully");
 			} else {
@@ -415,10 +413,10 @@ public class GeneralOPDController {
 			@RequestHeader(value = "Authorization") String authorization) {
 
 		OutputResponse response = new OutputResponse();
-		jsnOBJ = getJsonOBJ(requestObj);
+		JsonObject jsonRequest = parseJsonRequest(requestObj);
 
 		try {
-			Long result = generalOPDServiceImpl.updateGeneralOPDDoctorData(jsnOBJ, authorization);
+			Long result = generalOPDServiceImpl.updateGeneralOPDDoctorData(jsonRequest, authorization);
 			if (null != result && result > 0) {
 				response.setResponse("Data updated successfully");
 			} else {
@@ -432,9 +430,8 @@ public class GeneralOPDController {
 
 		return response.toString();
 	}
-	private JsonObject getJsonOBJ(String requestObj){
-		jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
-		return jsnOBJ;
-	}
+	private JsonObject parseJsonRequest(String requestObj) {
+        JsonElement jsonElement = JsonParser.parseString(requestObj);
+        return jsonElement.getAsJsonObject();
+    }
 }
