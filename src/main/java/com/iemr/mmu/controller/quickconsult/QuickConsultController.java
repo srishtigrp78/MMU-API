@@ -53,6 +53,9 @@ import io.swagger.v3.oas.annotations.Operation;
 @RequestMapping(value = "/genOPD-QC-quickConsult", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class QuickConsultController {
 	private Logger logger = LoggerFactory.getLogger(QuickConsultController.class);
+	
+	JsonElement jsnElmnt;
+	JsonObject jsnOBJ;
 	private QuickConsultationServiceImpl quickConsultationServiceImpl;
 
 	@Autowired
@@ -75,8 +78,7 @@ public class QuickConsultController {
 	public String saveBenQuickConsultDataNurse(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		try {
-			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-			JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
+			jsnOBJ = getJsonOBJ(requestObj);
 
 			if (jsnOBJ != null) {
 				Integer r = quickConsultationServiceImpl.quickConsultNurseDataInsert(jsnOBJ);
@@ -262,5 +264,10 @@ public class QuickConsultController {
 		}
 
 		return response.toString();
+	}
+	private JsonObject getJsonOBJ(String requestObj){
+		jsnElmnt = JsonParser.parseString(requestObj);
+		jsnOBJ = jsnElmnt.getAsJsonObject();
+		return jsnOBJ;
 	}
 }

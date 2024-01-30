@@ -62,15 +62,15 @@ public class StartSyncActivity {
 	@Operation(summary = "Start data sync from van to Server")
 	@PostMapping(value = { "/van-to-server" })
 	public String dataSyncToServer(@RequestBody String requestOBJ,
-			@RequestHeader(value = "Authorization") String Authorization,
-			@RequestHeader(value = "ServerAuthorization") String ServerAuthorization) {
+			@RequestHeader(value = "Authorization") String authorization,
+			@RequestHeader(value = "ServerAuthorization") String serverAuthorization) {
 		OutputResponse response = new OutputResponse();
 		try {
 			JSONObject obj = new JSONObject(requestOBJ);
-			if (obj != null && obj.has("groupID") && obj.get("groupID") != null && obj.has("user")
+			if (obj.has("groupID") && obj.get("groupID") != null && obj.has("user")
 					&& obj.get("user") != null && obj.has("vanID") && obj.get("vanID") != null) {
 				String s = uploadDataToServerImpl.getDataToSyncToServer(obj.getInt("vanID"), obj.getInt("groupID"),
-						obj.getString("user"), ServerAuthorization);
+						obj.getString("user"), serverAuthorization);
 				if (s != null)
 					response.setResponse(s);
 				else
@@ -110,14 +110,14 @@ public class StartSyncActivity {
 	@Operation(summary = "Data sync master download")
 	@PostMapping(value = { "/startMasterDownload" })
 	public String startMasterDownload(@RequestBody String requestOBJ,
-			@RequestHeader(value = "Authorization") String Authorization,
-			@RequestHeader(value = "ServerAuthorization") String ServerAuthorization) {
+			@RequestHeader(value = "Authorization") String authorization,
+			@RequestHeader(value = "ServerAuthorization") String serverAuthorization) {
 		OutputResponse response = new OutputResponse();
 		try {
 			JSONObject obj = new JSONObject(requestOBJ);
-			if (obj != null && obj.has("vanID") && obj.get("vanID") != null && obj.has("providerServiceMapID")
+			if (obj.has("vanID") && obj.get("vanID") != null && obj.has("providerServiceMapID")
 					&& obj.get("providerServiceMapID") != null) {
-				String s = downloadDataFromServerImpl.downloadMasterDataFromServer(ServerAuthorization,
+				String s = downloadDataFromServerImpl.downloadMasterDataFromServer(serverAuthorization,
 						obj.getInt("vanID"), obj.getInt("providerServiceMapID"));
 				if (s != null) {
 					if (s.equalsIgnoreCase("inProgress"))
@@ -175,12 +175,12 @@ public class StartSyncActivity {
 	@Operation(summary = "Call central API to generate beneficiary id and import to local")
 	@PostMapping(value = { "/callCentralAPIToGenerateBenIDAndimportToLocal" })
 	public String callCentralAPIToGenerateBenIDAndimportToLocal(@RequestBody String requestOBJ,
-			@RequestHeader(value = "Authorization") String Authorization,
-			@RequestHeader(value = "ServerAuthorization") String ServerAuthorization) {
+			@RequestHeader(value = "Authorization") String authorization,
+			@RequestHeader(value = "ServerAuthorization") String serverAuthorization) {
 		OutputResponse response = new OutputResponse();
 		try {
-			int i = downloadDataFromServerImpl.callCentralAPIToGenerateBenIDAndimportToLocal(requestOBJ, Authorization,
-					ServerAuthorization);
+			int i = downloadDataFromServerImpl.callCentralAPIToGenerateBenIDAndimportToLocal(requestOBJ, authorization,
+					serverAuthorization);
 			if (i == 0) {
 				response.setError(5000, "Error while generating UNIQUE_ID at central server");
 			} else {
@@ -200,13 +200,13 @@ public class StartSyncActivity {
 	@Operation(summary = "Call central API to download transaction data to local")
 	@PostMapping(value = { "/downloadTransactionToLocal" })
 	public String downloadTransactionToLocal(@RequestBody String requestOBJ,
-			@RequestHeader(value = "ServerAuthorization") String ServerAuthorization) {
+			@RequestHeader(value = "ServerAuthorization") String serverAuthorization) {
 		OutputResponse response = new OutputResponse();
 		try {
 			JSONObject obj = new JSONObject(requestOBJ);
-			if (obj != null && obj.has("vanID") && obj.get("vanID") != null) {
+			if (obj.has("vanID") && obj.get("vanID") != null) {
 				int i = downloadDataFromServerTransactionalImpl.downloadTransactionalData(obj.getInt("vanID"),
-						ServerAuthorization);
+						serverAuthorization);
 
 				if (i > 0)
 					response.setResponse("Success");

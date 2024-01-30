@@ -43,7 +43,8 @@ import io.swagger.v3.oas.annotations.Operation;
 @RequestMapping(value = "/tc", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class TeleConsultationController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-
+	JsonElement jsnElmnt;
+	JsonObject jsnOBJ;
 	@Autowired
 	private TeleConsultationServiceImpl teleConsultationServiceImpl;
 
@@ -119,9 +120,7 @@ public class TeleConsultationController {
 		OutputResponse response = new OutputResponse();
 		try {
 			if (requestOBJ != null) {
-				JsonObject jsnOBJ = new JsonObject();
-				JsonElement jsnElmnt = JsonParser.parseString(requestOBJ);
-				jsnOBJ = jsnElmnt.getAsJsonObject();
+				jsnOBJ = getJsonOBJ(requestOBJ);
 
 				int i = teleConsultationServiceImpl.createTCRequestFromWorkList(jsnOBJ, Authorization);
 				if (i > 0)
@@ -144,9 +143,7 @@ public class TeleConsultationController {
 		OutputResponse response = new OutputResponse();
 		try {
 			if (requestOBJ != null) {
-				JsonObject jsnOBJ = new JsonObject();
-				JsonElement jsnElmnt = JsonParser.parseString(requestOBJ);
-				jsnOBJ = jsnElmnt.getAsJsonObject();
+				jsnOBJ = getJsonOBJ(requestOBJ);
 
 				String s = teleConsultationServiceImpl.getTCRequestListBySpecialistIdAndDate(
 						jsnOBJ.get("psmID").getAsInt(), jsnOBJ.get("userID").getAsInt(),
@@ -164,5 +161,10 @@ public class TeleConsultationController {
 			response.setError(5000, "Error while getting TC requestList");
 		}
 		return response.toString();
+	}
+	private JsonObject getJsonOBJ(String requestObj){
+		jsnElmnt = JsonParser.parseString(requestObj);
+		jsnOBJ = jsnElmnt.getAsJsonObject();
+		return jsnOBJ;
 	}
 }

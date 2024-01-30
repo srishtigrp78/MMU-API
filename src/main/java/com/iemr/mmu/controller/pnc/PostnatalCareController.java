@@ -51,6 +51,8 @@ import io.swagger.v3.oas.annotations.Operation;
 @RequestMapping(value = "/PNC", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class PostnatalCareController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+	JsonElement jsnElmnt;
+	JsonObject jsnOBJ;
 	private PNCServiceImpl pncServiceImpl;
 
 	@Autowired
@@ -70,8 +72,7 @@ public class PostnatalCareController {
 	public String saveBenPNCNurseData(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		try {
-			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-			JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
+			jsnOBJ = getJsonOBJ(requestObj);
 
 			if (jsnOBJ != null) {
 				Long ancRes = pncServiceImpl.savePNCNurseData(jsnOBJ);
@@ -107,8 +108,7 @@ public class PostnatalCareController {
 			@RequestHeader(value = "Authorization") String authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
-			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-			JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
+			jsnOBJ = getJsonOBJ(requestObj);
 			if (jsnOBJ != null) {
 				Long r = pncServiceImpl.savePNCDoctorData(jsnOBJ, authorization);
 				if (r != null && r > 0) {
@@ -323,8 +323,7 @@ public class PostnatalCareController {
 	public String updatePNCCareNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
+		jsnOBJ = getJsonOBJ(requestObj);
 
 		try {
 			int result = pncServiceImpl.updateBenPNCDetails(jsnOBJ);
@@ -356,8 +355,7 @@ public class PostnatalCareController {
 	public String updateHistoryNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
+		jsnOBJ = getJsonOBJ(requestObj);
 
 		try {
 			int result = pncServiceImpl.updateBenHistoryDetails(jsnOBJ);
@@ -389,8 +387,7 @@ public class PostnatalCareController {
 	public String updateVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
+		jsnOBJ = getJsonOBJ(requestObj);
 
 		try {
 			int result = pncServiceImpl.updateBenVitalDetails(jsnOBJ);
@@ -422,8 +419,7 @@ public class PostnatalCareController {
 	public String updateGeneralOPDExaminationNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
+		jsnOBJ = getJsonOBJ(requestObj);
 
 		try {
 			int result = pncServiceImpl.updateBenExaminationDetails(jsnOBJ);
@@ -448,8 +444,7 @@ public class PostnatalCareController {
 			@RequestHeader(value = "Authorization") String authorization) {
 
 		OutputResponse response = new OutputResponse();
-		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
+		jsnOBJ = getJsonOBJ(requestObj);
 
 		try {
 			Long result = pncServiceImpl.updatePNCDoctorData(jsnOBJ, authorization);
@@ -465,5 +460,10 @@ public class PostnatalCareController {
 		}
 
 		return response.toString();
+	}
+	private JsonObject getJsonOBJ(String requestObj){
+		jsnElmnt = JsonParser.parseString(requestObj);
+		jsnOBJ = jsnElmnt.getAsJsonObject();
+		return jsnOBJ;
 	}
 }

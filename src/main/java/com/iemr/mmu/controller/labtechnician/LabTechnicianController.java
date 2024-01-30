@@ -49,7 +49,8 @@ import io.swagger.v3.oas.annotations.Operation;
 public class LabTechnicianController {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-
+	JsonElement jsnElmnt;
+	JsonObject jsnOBJ;
 	private LabTechnicianServiceImpl labTechnicianServiceImpl;
 
 	@Autowired
@@ -66,15 +67,13 @@ public class LabTechnicianController {
 	@CrossOrigin
 	@Operation(summary = "Save lab test result entered by lab technician")
 	@PostMapping(value = { "/save/LabTestResult" })
-	public String saveLabTestResult(@RequestBody String saveLabTestResult) {
+	public String saveLabTestResult(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		try {
 
-			JsonElement jsnElmnt = JsonParser.parseString(saveLabTestResult);
-			JsonObject saveLabTestResultJson = jsnElmnt.getAsJsonObject();
-
-			if (saveLabTestResultJson != null) {
-				Integer labResultSaveRes = labTechnicianServiceImpl.saveLabTestResult(saveLabTestResultJson);
+			jsnOBJ = getJsonOBJ(requestObj);
+			if (jsnOBJ != null) {
+				Integer labResultSaveRes = labTechnicianServiceImpl.saveLabTestResult(jsnOBJ);
 				if (null != labResultSaveRes && labResultSaveRes > 0) {
 					response.setResponse("Data saved successfully");
 				} else {
@@ -98,13 +97,12 @@ public class LabTechnicianController {
 		OutputResponse response = new OutputResponse();
 		try {
 			logger.info("Request obj to fetch lab tests :" + requestOBJ);
-			JsonElement jsnElmnt = JsonParser.parseString(requestOBJ);
-			JsonObject prescribedProceduresListJson = jsnElmnt.getAsJsonObject();
+			jsnOBJ = getJsonOBJ(requestOBJ);
 
-			if (prescribedProceduresListJson != null && !prescribedProceduresListJson.isJsonNull() && prescribedProceduresListJson.has(BENEFICIARY_REG_ID) && prescribedProceduresListJson.has(VISIT_CODE)) {
+			if (jsnOBJ != null && !jsnOBJ.isJsonNull() && jsnOBJ.has(BENEFICIARY_REG_ID) && jsnOBJ.has(VISIT_CODE)) {
 
 				String s = labTechnicianServiceImpl.getBenePrescribedProcedureDetails(
-						prescribedProceduresListJson.get(BENEFICIARY_REG_ID).getAsLong(), prescribedProceduresListJson.get(VISIT_CODE).getAsLong());
+						jsnOBJ.get(BENEFICIARY_REG_ID).getAsLong(), jsnOBJ.get(VISIT_CODE).getAsLong());
 				if (s != null)
 					response.setResponse(s);
 				else
@@ -122,12 +120,10 @@ public class LabTechnicianController {
 	@CrossOrigin()
 	@Operation(summary = "Get lab test result for a visitcode.")
 	@PostMapping(value = { "/get/labResultForVisitcode" })
-	public String getLabResultForVisitCode(@RequestBody String req) {
+	public String getLabResultForVisitCode(@RequestBody String requestOBJ) {
 		OutputResponse response = new OutputResponse();
 		try {
-			JsonElement jsnElmnt = JsonParser.parseString(req);
-			JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
-
+			jsnOBJ = getJsonOBJ(requestOBJ);
 			if (jsnOBJ != null && !jsnOBJ.isJsonNull() && jsnOBJ.has(BENEFICIARY_REG_ID) && jsnOBJ.has(VISIT_CODE)) {
 				String s = labTechnicianServiceImpl.getLabResultForVisitcode(jsnOBJ.get(BENEFICIARY_REG_ID).getAsLong(),
 						jsnOBJ.get(VISIT_CODE).getAsLong());
@@ -139,10 +135,14 @@ public class LabTechnicianController {
 			} else
 				response.setError(5000, "Invalid request");
 		} catch (Exception e) {
-			logger.error("Error while getting lab result for requested data {} " , req);
+			logger.error("Error while getting lab result for requested data {} " , requestOBJ);
 			response.setError(5000, "Error while getting lab report");
 		}
 		return response.toString();
 	}
-
+	private JsonObject getJsonOBJ(String requestObj){
+		jsnElmnt = JsonParser.parseString(requestObj);
+		jsnOBJ = jsnElmnt.getAsJsonObject();
+		return jsnOBJ;
+	}
 }

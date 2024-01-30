@@ -54,7 +54,8 @@ import io.swagger.v3.oas.annotations.Operation;
 @RequestMapping(value = "/NCDCare", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class NCDCareController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-
+	JsonElement jsnElmnt;
+	JsonObject jsnOBJ;
 	private NCDCareServiceImpl ncdCareServiceImpl;
 
 	@Autowired
@@ -73,8 +74,7 @@ public class NCDCareController {
 	public String saveBenNCDCareNurseData(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		try {
-			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-			JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
+			jsnOBJ = getJsonOBJ(requestObj);
 
 			if (jsnOBJ != null) {
 				Long ncdCareRes = ncdCareServiceImpl.saveNCDCareNurseData(jsnOBJ);
@@ -106,14 +106,13 @@ public class NCDCareController {
 	@Operation(summary = "Save NCD care beneficiary case record and referral")
 	@PostMapping(value = { "/save/doctorData" })
 	public String saveBenNCDCareDoctorData(@RequestBody String requestObj,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
-			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-			JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
+			jsnOBJ = getJsonOBJ(requestObj);
 
 			if (jsnOBJ != null) {
-				Long ncdCareRes = ncdCareServiceImpl.saveDoctorData(jsnOBJ, Authorization);
+				Long ncdCareRes = ncdCareServiceImpl.saveDoctorData(jsnOBJ, authorization);
 				if (null != ncdCareRes && ncdCareRes > 0) {
 					response.setResponse("Data saved successfully");
 				} else {
@@ -238,7 +237,7 @@ public class NCDCareController {
 
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
-			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
+			if (obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
 				Long benRegID = obj.getLong("benRegID");
 				Long visitCode = obj.getLong("visitCode");
 
@@ -262,13 +261,12 @@ public class NCDCareController {
 	public String updateHistoryNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
+		jsnOBJ = getJsonOBJ(requestObj);
 
 		try {
 			int result = ncdCareServiceImpl.updateBenHistoryDetails(jsnOBJ);
 			if (result > 0) {
-				Map<String, Integer> resMap = new HashMap<String, Integer>();
+				Map<String, Integer> resMap = new HashMap<>();
 				resMap.put("result", result);
 				response.setResponse("Data updated successfully");
 			} else {
@@ -297,8 +295,7 @@ public class NCDCareController {
 	public String updateVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
+		jsnOBJ = getJsonOBJ(requestObj);
 
 		try {
 			int result = ncdCareServiceImpl.updateBenVitalDetails(jsnOBJ);
@@ -326,15 +323,13 @@ public class NCDCareController {
 	@Operation(summary = "Update NCD care beneficiary case record and referral")
 	@PostMapping(value = { "/update/doctorData" })
 	public String updateNCDCareDoctorData(@RequestBody String requestObj,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String authorization) {
 
 		OutputResponse response = new OutputResponse();
-		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		
-		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
+		jsnOBJ = getJsonOBJ(requestObj);
 
 		try {
-			Long result = ncdCareServiceImpl.updateNCDCareDoctorData(jsnOBJ, Authorization);
+			Long result = ncdCareServiceImpl.updateNCDCareDoctorData(jsnOBJ, authorization);
 			if (null != result && result > 0) {
 				response.setResponse("Data updated successfully");
 			} else {
@@ -347,5 +342,10 @@ public class NCDCareController {
 		}
 
 		return response.toString();
+	}
+	private JsonObject getJsonOBJ(String requestObj){
+		jsnElmnt = JsonParser.parseString(requestObj);
+		jsnOBJ = jsnElmnt.getAsJsonObject();
+		return jsnOBJ;
 	}
 }

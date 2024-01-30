@@ -55,7 +55,8 @@ import io.swagger.v3.oas.annotations.Operation;
 @RequestMapping(value = "/NCD", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class NCDController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-
+	JsonElement jsnElmnt;
+	JsonObject jsnOBJ;
 	private NCDScreeningServiceImpl ncdScreeningServiceImpl;
 
 	@Autowired
@@ -83,13 +84,11 @@ public class NCDController {
 
 		OutputResponse response = new OutputResponse();
 
-		JsonObject jsonObject = new JsonObject();
 		try {
-			JsonElement jsonElement = JsonParser.parseString(requestObj);
-			jsonObject = jsonElement.getAsJsonObject();
+			jsnOBJ = getJsonOBJ(requestObj);
 
-			if (jsonObject != null) {
-				Long r = ncdScreeningServiceImpl.saveNCDScreeningNurseData(jsonObject, authorization);
+			if (jsnOBJ != null) {
+				Long r = ncdScreeningServiceImpl.saveNCDScreeningNurseData(jsnOBJ, authorization);
 				if (r != null && r > 0) {
 					response.setResponse("Data saved successfully");
 				} else if (r != null && r == 0) {
@@ -118,13 +117,10 @@ public class NCDController {
 	public String saveBenNCDScreeningDoctorData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String authorization) {
 		OutputResponse response = new OutputResponse();
-		JsonObject jsnOBJ = new JsonObject();
 		try {
 			logger.info("Request object for NCD Screening doctor data saving :" + requestObj);
 
-			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-			jsnOBJ = jsnElmnt.getAsJsonObject();
-
+			jsnOBJ = getJsonOBJ(requestObj);
 			if (jsnOBJ != null) {
 				Long ncdCareRes = ncdScreeningServiceImpl.saveDoctorData(jsnOBJ, authorization);
 				if (null != ncdCareRes && ncdCareRes > 0) {
@@ -341,14 +337,12 @@ public class NCDController {
 	public String updateBeneficiaryNCDScreeningDetails(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		JsonObject jsonObject = new JsonObject();
-
+		
 		try {
-			JsonElement jsonElement = JsonParser.parseString(requestObj);
-			jsonObject = jsonElement.getAsJsonObject();
+			jsnOBJ = getJsonOBJ(requestObj);
 
-			if (jsonObject != null) {
-				Integer r = ncdScreeningServiceImpl.updateNurseNCDScreeningDetails(jsonObject);
+			if (jsnOBJ != null) {
+				Integer r = ncdScreeningServiceImpl.updateNurseNCDScreeningDetails(jsnOBJ);
 				if (r != null && r == 1) {
 					response.setResponse("Data updated successfully");
 				} else {
@@ -372,9 +366,7 @@ public class NCDController {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for history data updating :" + requestObj);
-
-		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
+		jsnOBJ = getJsonOBJ(requestObj);
 
 		try {
 			int result = ncdScreeningService.UpdateNCDScreeningHistory(jsnOBJ);
@@ -398,8 +390,7 @@ public class NCDController {
 	public String updateVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
+		jsnOBJ = getJsonOBJ(requestObj);
 
 		try {
 			int result = ncdScreeningServiceImpl.updateBenVitalDetails(jsnOBJ);
@@ -423,8 +414,7 @@ public class NCDController {
 	public String updateIDRSScreen(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
+		jsnOBJ = getJsonOBJ(requestObj);
 
 		try {
 			Long result = ncdScreeningService.UpdateIDRSScreen(jsnOBJ);
@@ -451,9 +441,7 @@ public class NCDController {
 		logger.info("Request object for doctor data update :" + requestObj);
 
 		try {
-			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-			JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
-
+			jsnOBJ = getJsonOBJ(requestObj);
 			int i = ncdSCreeningDoctorService.updateDoctorData(jsnOBJ);
 			if (i > 0)
 				response.setResponse("Data updated successfully");
@@ -465,5 +453,10 @@ public class NCDController {
 		}
 
 		return response.toString();
+	}
+	private JsonObject getJsonOBJ(String requestObj){
+		jsnElmnt = JsonParser.parseString(requestObj);
+		jsnOBJ = jsnElmnt.getAsJsonObject();
+		return jsnOBJ;
 	}
 }

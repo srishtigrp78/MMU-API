@@ -34,7 +34,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.JsonElement;
@@ -61,7 +60,8 @@ import io.swagger.v3.oas.annotations.Operation;
 public class CovidController {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-
+	JsonElement jsnElmnt;
+	JsonObject jsnOBJ;
 	@Autowired
 	private Covid19Service covid19Service;
 	@Autowired
@@ -74,9 +74,7 @@ public class CovidController {
 		OutputResponse outputResponse = new OutputResponse();
 
 		try {
-			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-			JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
-
+			jsnOBJ = getJsonOBJ(requestObj);
 			if (jsnOBJ != null) {
 
 				Long covid19Res = covid19Service.saveCovid19NurseData(jsnOBJ, Authorization);
@@ -111,9 +109,7 @@ public class CovidController {
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
-
-			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-			JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
+			jsnOBJ = getJsonOBJ(requestObj);
 
 			if (jsnOBJ != null) {
 				Long ncdCareRes = covid19Service.saveDoctorData(jsnOBJ, Authorization);
@@ -259,8 +255,7 @@ public class CovidController {
 	public String updateHistoryNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
+		jsnOBJ = getJsonOBJ(requestObj);
 
 		try {
 			int result = covid19ServiceImpl.updateBenHistoryDetails(jsnOBJ);
@@ -294,9 +289,7 @@ public class CovidController {
 	public String updateVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-
-		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
+		jsnOBJ = getJsonOBJ(requestObj);
 
 		try {
 			int result = covid19ServiceImpl.updateBenVitalDetails(jsnOBJ);
@@ -327,9 +320,7 @@ public class CovidController {
 			@RequestHeader(value = "Authorization") String Authorization) {
 
 		OutputResponse response = new OutputResponse();
-
-		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
+		jsnOBJ = getJsonOBJ(requestObj);
 
 		try {
 			Long result = covid19ServiceImpl.updateCovid19DoctorData(jsnOBJ, Authorization);
@@ -345,5 +336,10 @@ public class CovidController {
 		}
 
 		return response.toString();
+	}
+	private JsonObject getJsonOBJ(String requestObj){
+		jsnElmnt = JsonParser.parseString(requestObj);
+		jsnOBJ = jsnElmnt.getAsJsonObject();
+		return jsnOBJ;
 	}
 }
