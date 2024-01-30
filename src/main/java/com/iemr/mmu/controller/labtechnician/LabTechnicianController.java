@@ -139,7 +139,7 @@ public class LabTechnicianController {
 			} else
 				response.setError(5000, "Invalid request");
 		} catch (Exception e) {
-			logger.error("Error while getting lab result for requested data:" , req);
+			logger.error("Error while getting lab result for requested data {} " , req);
 			response.setError(5000, "Error while getting lab report");
 		}
 		return response.toString();
