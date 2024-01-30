@@ -49,8 +49,6 @@ import io.swagger.v3.oas.annotations.Operation;
 public class LabTechnicianController {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-	JsonElement jsnElmnt;
-	JsonObject jsnOBJ;
 	private LabTechnicianServiceImpl labTechnicianServiceImpl;
 
 	@Autowired
@@ -70,8 +68,7 @@ public class LabTechnicianController {
 	public String saveLabTestResult(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		try {
-
-			jsnOBJ = getJsonOBJ(requestObj);
+			JsonObject jsnOBJ = parseJsonRequest(requestObj);
 			if (jsnOBJ != null) {
 				Integer labResultSaveRes = labTechnicianServiceImpl.saveLabTestResult(jsnOBJ);
 				if (null != labResultSaveRes && labResultSaveRes > 0) {
@@ -97,7 +94,7 @@ public class LabTechnicianController {
 		OutputResponse response = new OutputResponse();
 		try {
 			logger.info("Request obj to fetch lab tests :" + requestOBJ);
-			jsnOBJ = getJsonOBJ(requestOBJ);
+			JsonObject jsnOBJ = parseJsonRequest(requestOBJ);
 
 			if (jsnOBJ != null && !jsnOBJ.isJsonNull() && jsnOBJ.has(BENEFICIARY_REG_ID) && jsnOBJ.has(VISIT_CODE)) {
 
@@ -123,7 +120,7 @@ public class LabTechnicianController {
 	public String getLabResultForVisitCode(@RequestBody String requestOBJ) {
 		OutputResponse response = new OutputResponse();
 		try {
-			jsnOBJ = getJsonOBJ(requestOBJ);
+			JsonObject jsnOBJ = parseJsonRequest(requestOBJ);
 			if (jsnOBJ != null && !jsnOBJ.isJsonNull() && jsnOBJ.has(BENEFICIARY_REG_ID) && jsnOBJ.has(VISIT_CODE)) {
 				String s = labTechnicianServiceImpl.getLabResultForVisitcode(jsnOBJ.get(BENEFICIARY_REG_ID).getAsLong(),
 						jsnOBJ.get(VISIT_CODE).getAsLong());
@@ -140,9 +137,8 @@ public class LabTechnicianController {
 		}
 		return response.toString();
 	}
-	private JsonObject getJsonOBJ(String requestObj){
-		jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
-		return jsnOBJ;
-	}
+	private JsonObject parseJsonRequest(String requestObj) {
+        JsonElement jsonElement = JsonParser.parseString(requestObj);
+        return jsonElement.getAsJsonObject();
+    }
 }

@@ -72,9 +72,7 @@ public class ANCController {
 	public String saveBenANCNurseData(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		try {
-
-			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-			JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
+			JsonObject jsnOBJ = parseJsonRequest(requestObj);
 
 			if (jsnOBJ != null) {
 				Long ancRes = ancService.saveANCNurseData(jsnOBJ);
@@ -109,9 +107,7 @@ public class ANCController {
 			@RequestHeader(value = "Authorization") String authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
-
-			JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-			JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
+			JsonObject jsnOBJ = parseJsonRequest(requestObj);
 			if (jsnOBJ != null) {
 				Long r = ancService.saveANCDoctorData(jsnOBJ, authorization);
 				if (r != null && r > 0) {
@@ -354,10 +350,7 @@ public class ANCController {
 
 		OutputResponse response = new OutputResponse();
 
-		
-		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
-
+		JsonObject jsnOBJ = parseJsonRequest(requestObj);
 		try {
 			int result = ancService.updateBenANCDetails(jsnOBJ);
 			if (result > 0) {
@@ -388,9 +381,7 @@ public class ANCController {
 	public String updateANCHistoryNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-
-		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = parseJsonRequest(requestObj);
 		try {
 			int result = ancService.updateBenANCHistoryDetails(jsnOBJ);
 			if (result > 0) {
@@ -422,9 +413,7 @@ public class ANCController {
 
 		OutputResponse response = new OutputResponse();
 
-		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
-
+		JsonObject jsnOBJ = parseJsonRequest(requestObj);
 		try {
 			int result = ancService.updateBenANCVitalDetails(jsnOBJ);
 			if (result > 0) {
@@ -455,8 +444,7 @@ public class ANCController {
 	public String updateANCExaminationNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = parseJsonRequest(requestObj);
 
 		try {
 			int result = ancService.updateBenANCExaminationDetails(jsnOBJ);
@@ -488,8 +476,7 @@ public class ANCController {
 			@RequestHeader(value = "Authorization") String authorization) {
 
 		OutputResponse response = new OutputResponse();
-		JsonElement jsnElmnt = JsonParser.parseString(requestObj);
-		JsonObject jsnOBJ = jsnElmnt.getAsJsonObject();
+		JsonObject jsnOBJ = parseJsonRequest(requestObj);
 
 		try {
 			Long result = ancService.updateANCDoctorData(jsnOBJ, authorization);
@@ -506,4 +493,8 @@ public class ANCController {
 
 		return response.toString();
 	}
+	private JsonObject parseJsonRequest(String requestObj) {
+        JsonElement jsonElement = JsonParser.parseString(requestObj);
+        return jsonElement.getAsJsonObject();
+    }
 }

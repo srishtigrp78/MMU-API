@@ -60,8 +60,6 @@ import io.swagger.v3.oas.annotations.Operation;
 public class CovidController {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-	JsonElement jsnElmnt;
-	JsonObject jsnOBJ;
 	@Autowired
 	private Covid19Service covid19Service;
 	@Autowired
@@ -70,14 +68,14 @@ public class CovidController {
 	@Operation(summary = "Save covid nurse data")
 	@PostMapping(value = { "/save/nurseData" })
 	public String saveBenCovid19NurseData(@RequestBody String requestObj,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String authorization) {
 		OutputResponse outputResponse = new OutputResponse();
 
 		try {
-			jsnOBJ = getJsonOBJ(requestObj);
+			JsonObject jsnOBJ = parseJsonRequest(requestObj);
 			if (jsnOBJ != null) {
 
-				Long covid19Res = covid19Service.saveCovid19NurseData(jsnOBJ, Authorization);
+				Long covid19Res = covid19Service.saveCovid19NurseData(jsnOBJ, authorization);
 				if (null != covid19Res && covid19Res > 0) {
 					outputResponse.setResponse("Data saved successfully");
 				} else if (null != covid19Res && covid19Res == 0) {
@@ -106,13 +104,13 @@ public class CovidController {
 	@Operation(summary = "Save covid doctor data")
 	@PostMapping(value = { "/save/doctorData" })
 	public String saveBenCovidDoctorData(@RequestBody String requestObj,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
-			jsnOBJ = getJsonOBJ(requestObj);
+			JsonObject jsnOBJ = parseJsonRequest(requestObj);
 
 			if (jsnOBJ != null) {
-				Long ncdCareRes = covid19Service.saveDoctorData(jsnOBJ, Authorization);
+				Long ncdCareRes = covid19Service.saveDoctorData(jsnOBJ, authorization);
 				if (null != ncdCareRes && ncdCareRes > 0) {
 					response.setResponse("Data saved successfully");
 				} else {
@@ -255,7 +253,7 @@ public class CovidController {
 	public String updateHistoryNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		jsnOBJ = getJsonOBJ(requestObj);
+		JsonObject jsnOBJ = parseJsonRequest(requestObj);
 
 		try {
 			int result = covid19ServiceImpl.updateBenHistoryDetails(jsnOBJ);
@@ -289,7 +287,7 @@ public class CovidController {
 	public String updateVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		jsnOBJ = getJsonOBJ(requestObj);
+		JsonObject jsnOBJ = parseJsonRequest(requestObj);
 
 		try {
 			int result = covid19ServiceImpl.updateBenVitalDetails(jsnOBJ);
@@ -317,13 +315,13 @@ public class CovidController {
 	@Operation(summary = "Update covid 19 doctor data")
 	@PostMapping(value = { "/update/doctorData" })
 	public String updateCovid19DoctorData(@RequestBody String requestObj,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String authorization) {
 
 		OutputResponse response = new OutputResponse();
-		jsnOBJ = getJsonOBJ(requestObj);
+		JsonObject jsnOBJ = parseJsonRequest(requestObj);
 
 		try {
-			Long result = covid19ServiceImpl.updateCovid19DoctorData(jsnOBJ, Authorization);
+			Long result = covid19ServiceImpl.updateCovid19DoctorData(jsnOBJ, authorization);
 			if (null != result && result > 0) {
 				response.setResponse("Data updated successfully");
 			} else {
@@ -337,9 +335,8 @@ public class CovidController {
 
 		return response.toString();
 	}
-	private JsonObject getJsonOBJ(String requestObj){
-		jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
-		return jsnOBJ;
-	}
+	private JsonObject parseJsonRequest(String requestObj) {
+        JsonElement jsonElement = JsonParser.parseString(requestObj);
+        return jsonElement.getAsJsonObject();
+    }
 }
