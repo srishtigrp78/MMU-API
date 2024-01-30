@@ -54,8 +54,6 @@ import io.swagger.v3.oas.annotations.Operation;
 public class QuickConsultController {
 	private Logger logger = LoggerFactory.getLogger(QuickConsultController.class);
 	
-	JsonElement jsnElmnt;
-	JsonObject jsnOBJ;
 	private QuickConsultationServiceImpl quickConsultationServiceImpl;
 
 	@Autowired
@@ -78,7 +76,7 @@ public class QuickConsultController {
 	public String saveBenQuickConsultDataNurse(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		try {
-			jsnOBJ = getJsonOBJ(requestObj);
+			JsonObject jsnOBJ = parseJsonRequest(requestObj);
 
 			if (jsnOBJ != null) {
 				Integer r = quickConsultationServiceImpl.quickConsultNurseDataInsert(jsnOBJ);
@@ -265,9 +263,8 @@ public class QuickConsultController {
 
 		return response.toString();
 	}
-	private JsonObject getJsonOBJ(String requestObj){
-		jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
-		return jsnOBJ;
-	}
+	private JsonObject parseJsonRequest(String requestObj) {
+        JsonElement jsonElement = JsonParser.parseString(requestObj);
+        return jsonElement.getAsJsonObject();
+    }
 }

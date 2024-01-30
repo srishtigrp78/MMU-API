@@ -55,8 +55,7 @@ import io.swagger.v3.oas.annotations.Operation;
 @RequestMapping(value = "/NCD", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class NCDController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-	JsonElement jsnElmnt;
-	JsonObject jsnOBJ;
+	
 	private NCDScreeningServiceImpl ncdScreeningServiceImpl;
 
 	@Autowired
@@ -85,7 +84,7 @@ public class NCDController {
 		OutputResponse response = new OutputResponse();
 
 		try {
-			jsnOBJ = getJsonOBJ(requestObj);
+			JsonObject jsnOBJ = parseJsonRequest(requestObj);
 
 			if (jsnOBJ != null) {
 				Long r = ncdScreeningServiceImpl.saveNCDScreeningNurseData(jsnOBJ, authorization);
@@ -120,7 +119,7 @@ public class NCDController {
 		try {
 			logger.info("Request object for NCD Screening doctor data saving :" + requestObj);
 
-			jsnOBJ = getJsonOBJ(requestObj);
+			JsonObject jsnOBJ = parseJsonRequest(requestObj);
 			if (jsnOBJ != null) {
 				Long ncdCareRes = ncdScreeningServiceImpl.saveDoctorData(jsnOBJ, authorization);
 				if (null != ncdCareRes && ncdCareRes > 0) {
@@ -339,7 +338,7 @@ public class NCDController {
 		OutputResponse response = new OutputResponse();
 		
 		try {
-			jsnOBJ = getJsonOBJ(requestObj);
+			JsonObject jsnOBJ = parseJsonRequest(requestObj);
 
 			if (jsnOBJ != null) {
 				Integer r = ncdScreeningServiceImpl.updateNurseNCDScreeningDetails(jsnOBJ);
@@ -366,7 +365,7 @@ public class NCDController {
 
 		OutputResponse response = new OutputResponse();
 		logger.info("Request object for history data updating :" + requestObj);
-		jsnOBJ = getJsonOBJ(requestObj);
+		JsonObject jsnOBJ = parseJsonRequest(requestObj);
 
 		try {
 			int result = ncdScreeningService.UpdateNCDScreeningHistory(jsnOBJ);
@@ -390,7 +389,7 @@ public class NCDController {
 	public String updateVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		jsnOBJ = getJsonOBJ(requestObj);
+		JsonObject jsnOBJ = parseJsonRequest(requestObj);
 
 		try {
 			int result = ncdScreeningServiceImpl.updateBenVitalDetails(jsnOBJ);
@@ -414,7 +413,7 @@ public class NCDController {
 	public String updateIDRSScreen(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		jsnOBJ = getJsonOBJ(requestObj);
+		JsonObject jsnOBJ = parseJsonRequest(requestObj);
 
 		try {
 			Long result = ncdScreeningService.UpdateIDRSScreen(jsnOBJ);
@@ -441,7 +440,7 @@ public class NCDController {
 		logger.info("Request object for doctor data update :" + requestObj);
 
 		try {
-			jsnOBJ = getJsonOBJ(requestObj);
+			JsonObject jsnOBJ = parseJsonRequest(requestObj);
 			int i = ncdSCreeningDoctorService.updateDoctorData(jsnOBJ);
 			if (i > 0)
 				response.setResponse("Data updated successfully");
@@ -454,9 +453,8 @@ public class NCDController {
 
 		return response.toString();
 	}
-	private JsonObject getJsonOBJ(String requestObj){
-		jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
-		return jsnOBJ;
-	}
+	private JsonObject parseJsonRequest(String requestObj) {
+        JsonElement jsonElement = JsonParser.parseString(requestObj);
+        return jsonElement.getAsJsonObject();
+    }
 }

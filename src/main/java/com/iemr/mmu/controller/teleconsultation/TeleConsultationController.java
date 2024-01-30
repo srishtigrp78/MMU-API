@@ -43,8 +43,7 @@ import io.swagger.v3.oas.annotations.Operation;
 @RequestMapping(value = "/tc", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class TeleConsultationController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-	JsonElement jsnElmnt;
-	JsonObject jsnOBJ;
+	
 	@Autowired
 	private TeleConsultationServiceImpl teleConsultationServiceImpl;
 
@@ -120,7 +119,7 @@ public class TeleConsultationController {
 		OutputResponse response = new OutputResponse();
 		try {
 			if (requestOBJ != null) {
-				jsnOBJ = getJsonOBJ(requestOBJ);
+				JsonObject jsnOBJ = parseJsonRequest(requestOBJ);
 
 				int i = teleConsultationServiceImpl.createTCRequestFromWorkList(jsnOBJ, Authorization);
 				if (i > 0)
@@ -143,7 +142,7 @@ public class TeleConsultationController {
 		OutputResponse response = new OutputResponse();
 		try {
 			if (requestOBJ != null) {
-				jsnOBJ = getJsonOBJ(requestOBJ);
+				JsonObject jsnOBJ = parseJsonRequest(requestOBJ);
 
 				String s = teleConsultationServiceImpl.getTCRequestListBySpecialistIdAndDate(
 						jsnOBJ.get("psmID").getAsInt(), jsnOBJ.get("userID").getAsInt(),
@@ -162,9 +161,8 @@ public class TeleConsultationController {
 		}
 		return response.toString();
 	}
-	private JsonObject getJsonOBJ(String requestObj){
-		jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
-		return jsnOBJ;
-	}
+	private JsonObject parseJsonRequest(String requestObj) {
+        JsonElement jsonElement = JsonParser.parseString(requestObj);
+        return jsonElement.getAsJsonObject();
+    }
 }

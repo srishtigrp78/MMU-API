@@ -55,8 +55,6 @@ import io.swagger.v3.oas.annotations.Operation;
 @RequestMapping(value = "/CS-cancerScreening", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class CancerScreeningController {
 	private Logger logger = LoggerFactory.getLogger(CancerScreeningController.class);
-	JsonElement jsnElmnt;
-	JsonObject jsnOBJ;
 	private CSService cSService;
 
 	@Autowired
@@ -77,7 +75,7 @@ public class CancerScreeningController {
 			@RequestHeader(value = "Authorization") String authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
-			jsnOBJ = getJsonOBJ(requestObj);
+			JsonObject jsnOBJ = parseJsonRequest(requestObj);
 
 			if (jsnOBJ != null) {
 				Long nurseDataSaveSuccessFlag = cSService.saveCancerScreeningNurseData(jsnOBJ, authorization);
@@ -118,7 +116,7 @@ public class CancerScreeningController {
 			@RequestHeader String authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
-			jsnOBJ = getJsonOBJ(requestObj);
+			JsonObject jsnOBJ = parseJsonRequest(requestObj);
 
 			if (jsnOBJ != null) {
 				Long csDocDataSaveSuccessFlag = cSService.saveCancerScreeningDoctorData(jsnOBJ, authorization);
@@ -440,7 +438,7 @@ public class CancerScreeningController {
 					+ "\"menopauseAge\":\"Integer\", \"isPostMenopauseBleeding\":\"Boolean\", \"createdBy\":\"String\"}}}") @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		jsnOBJ = getJsonOBJ(requestObj);
+		JsonObject jsnOBJ = parseJsonRequest(requestObj);
 		try {
 			int result = cSService.UpdateCSHistoryNurseData(jsnOBJ);
 			if (result > 0) {
@@ -509,7 +507,7 @@ public class CancerScreeningController {
 	public String upodateBenExaminationDetail(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		jsnOBJ = getJsonOBJ(requestObj);
+		JsonObject jsnOBJ = parseJsonRequest(requestObj);
 		try {
 			int responseObj = cSService.updateBenExaminationDetail(jsnOBJ);
 			if (responseObj > 0) {
@@ -573,7 +571,7 @@ public class CancerScreeningController {
 	public String updateCancerScreeningDoctorData(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		jsnOBJ = getJsonOBJ(requestObj);
+		JsonObject jsnOBJ = parseJsonRequest(requestObj);
 		try {
 			int result = cSService.updateCancerScreeningDoctorData(jsnOBJ);
 			if (result > 0) {
@@ -589,9 +587,8 @@ public class CancerScreeningController {
 
 		return response.toString();
 	}
-	private JsonObject getJsonOBJ(String requestObj){
-		jsnElmnt = JsonParser.parseString(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
-		return jsnOBJ;
-	}
+	private JsonObject parseJsonRequest(String requestObj) {
+        JsonElement jsonElement = JsonParser.parseString(requestObj);
+        return jsonElement.getAsJsonObject();
+    }
 }

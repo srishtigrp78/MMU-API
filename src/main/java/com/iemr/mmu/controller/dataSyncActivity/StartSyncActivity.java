@@ -57,7 +57,8 @@ public class StartSyncActivity {
 	private DownloadDataFromServerImpl downloadDataFromServerImpl;
 	@Autowired
 	private DownloadDataFromServerTransactionalImpl downloadDataFromServerTransactionalImpl;
-
+	private static final String GROUP_ID = "groupID";
+	private static final String PROVIDER_SERVICE_MAP_ID = "providerServiceMapID";
 	@CrossOrigin()
 	@Operation(summary = "Start data sync from van to Server")
 	@PostMapping(value = { "/van-to-server" })
@@ -67,9 +68,9 @@ public class StartSyncActivity {
 		OutputResponse response = new OutputResponse();
 		try {
 			JSONObject obj = new JSONObject(requestOBJ);
-			if (obj.has("groupID") && obj.get("groupID") != null && obj.has("user")
+			if (obj.has(GROUP_ID) && obj.get(GROUP_ID) != null && obj.has("user")
 					&& obj.get("user") != null && obj.has("vanID") && obj.get("vanID") != null) {
-				String s = uploadDataToServerImpl.getDataToSyncToServer(obj.getInt("vanID"), obj.getInt("groupID"),
+				String s = uploadDataToServerImpl.getDataToSyncToServer(obj.getInt("vanID"), obj.getInt(GROUP_ID),
 						obj.getString("user"), serverAuthorization);
 				if (s != null)
 					response.setResponse(s);
@@ -115,10 +116,10 @@ public class StartSyncActivity {
 		OutputResponse response = new OutputResponse();
 		try {
 			JSONObject obj = new JSONObject(requestOBJ);
-			if (obj.has("vanID") && obj.get("vanID") != null && obj.has("providerServiceMapID")
-					&& obj.get("providerServiceMapID") != null) {
+			if (obj.has("vanID") && obj.get("vanID") != null && obj.has(PROVIDER_SERVICE_MAP_ID)
+					&& obj.get(PROVIDER_SERVICE_MAP_ID) != null) {
 				String s = downloadDataFromServerImpl.downloadMasterDataFromServer(serverAuthorization,
-						obj.getInt("vanID"), obj.getInt("providerServiceMapID"));
+						obj.getInt("vanID"), obj.getInt(PROVIDER_SERVICE_MAP_ID));
 				if (s != null) {
 					if (s.equalsIgnoreCase("inProgress"))
 						response.setError(5000,
