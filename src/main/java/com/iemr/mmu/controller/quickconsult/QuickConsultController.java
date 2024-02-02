@@ -27,10 +27,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.JsonElement;
@@ -41,17 +41,19 @@ import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.lettuce.core.dynamic.annotation.Param;
+import io.swagger.v3.oas.annotations.Operation;
+
 
 /**
  * @Objective Saving general OPD quick consult data for Nurse and Doctor both.
  */
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/genOPD-QC-quickConsult", headers = "Authorization")
+@RequestMapping(value = "/genOPD-QC-quickConsult", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class QuickConsultController {
 	private Logger logger = LoggerFactory.getLogger(QuickConsultController.class);
+	
 	private QuickConsultationServiceImpl quickConsultationServiceImpl;
 
 	@Autowired
@@ -69,16 +71,12 @@ public class QuickConsultController {
 	 *            Database table
 	 */
 	@CrossOrigin
-	@ApiOperation(value = "Save quick consult nurse data", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
+	@Operation(summary = "Save quick consult nurse data")
+	@PostMapping(value = { "/save/nurseData" })
 	public String saveBenQuickConsultDataNurse(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
-		logger.info("Quick consult nurse data save request : " + requestObj);
 		try {
-			JsonObject jsnOBJ = new JsonObject();
-			JsonParser jsnParser = new JsonParser();
-			JsonElement jsnElmnt = jsnParser.parse(requestObj);
-			jsnOBJ = jsnElmnt.getAsJsonObject();
+			JsonObject jsnOBJ = parseJsonRequest(requestObj);
 
 			if (jsnOBJ != null) {
 				Integer r = quickConsultationServiceImpl.quickConsultNurseDataInsert(jsnOBJ);
@@ -107,10 +105,10 @@ public class QuickConsultController {
 	 */
 
 	@CrossOrigin
-	@ApiOperation(value = "Save quick consultation detail for doctor", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/save/doctorData" }, method = { RequestMethod.POST })
+	@Operation(summary = "Save quick consultation detail for doctor")
+	@PostMapping(value = { "/save/doctorData" })
 	public String saveQuickConsultationDetail(
-			@ApiParam(value = "{\"quickConsultation\":{\"beneficiaryRegID\":\"Long\",\"providerServiceMapID\": \"Integer\", \"benVisitID\":\"Long\", \"benChiefComplaint\":[{\"chiefComplaintID\":\"Integer\", "
+			@Param(value = "{\"quickConsultation\":{\"beneficiaryRegID\":\"Long\",\"providerServiceMapID\": \"Integer\", \"benVisitID\":\"Long\", \"benChiefComplaint\":[{\"chiefComplaintID\":\"Integer\", "
 					+ "\"chiefComplaint\":\"String\", \"duration\":\"Integer\", \"unitOfDuration\":\"String\"}], \"description\":\"String\""
 					+ "\"clinicalObservation\":\"String\", \"externalInvestigation\":\"String\", \"diagnosisProvided\":\"String\", \"instruction\":\"String\", \"remarks\":\"String\","
 					+ "\"prescribedDrugs\":[{\"drugForm\":\"String\", \"drugTradeOrBrandName\":\"String\", \"genericDrugName\":\"String\", \"drugStrength\":\"String\", "
@@ -119,17 +117,16 @@ public class QuickConsultController {
 					+ " \"isRadiologyImaging\":\"String\", \"createdBy\":\"String\"}, {\"testID\":\"Integer\", \"testName\":\"String\", "
 					+ "\"testingRequirements\":\"String\", \"isRadiologyImaging\":\"Boolean\"}],"
 					+ "\"createdBy\":\"String\"}}") @RequestBody String requestObj,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String authorization) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Quick consult doctor data save request:" + requestObj);
 
 		try {
 			WrapperQuickConsultation wrapperQuickConsultation = InputMapper.gson().fromJson(requestObj,
 					WrapperQuickConsultation.class);
 
 			JsonObject quickConsultDoctorOBJ = wrapperQuickConsultation.getQuickConsultation();
-			Integer i = quickConsultationServiceImpl.quickConsultDoctorDataInsert(quickConsultDoctorOBJ, Authorization);
+			Integer i = quickConsultationServiceImpl.quickConsultDoctorDataInsert(quickConsultDoctorOBJ, authorization);
 
 			if (i != null && i > 0) {
 				response.setResponse("Data saved successfully");
@@ -146,12 +143,11 @@ public class QuickConsultController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get quick consult beneficiary visit details", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenDataFrmNurseToDocVisitDetailsScreen" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get quick consult beneficiary visit details")
+	@PostMapping(value = { "/getBenDataFrmNurseToDocVisitDetailsScreen" })
 	public String getBenDataFrmNurseScrnToDocScrnVisitDetails(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
-		logger.info("Quick consult visit data fetch request :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
@@ -179,13 +175,12 @@ public class QuickConsultController {
 	 */
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get quick consult beneficiary vital details", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenVitalDetailsFrmNurse" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get quick consult beneficiary vital details")
+	@PostMapping(value = { "/getBenVitalDetailsFrmNurse" })
 	public String getBenVitalDetailsFrmNurse(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Quick consult vital data fetch request :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID") && obj.has("visitCode")) {
@@ -212,17 +207,16 @@ public class QuickConsultController {
 	 * @return visit details in JSON format
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get quick consult beneficiary case record", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenCaseRecordFromDoctorQuickConsult" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get quick consult beneficiary case record")
+	@PostMapping(value = { "/getBenCaseRecordFromDoctorQuickConsult" })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenCaseRecordFromDoctorQuickConsult(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Quick consult doctor data fetch request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
-			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
+			if (obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
 				Long benRegID = obj.getLong("benRegID");
 				Long visitCode = obj.getLong("visitCode");
 
@@ -241,19 +235,13 @@ public class QuickConsultController {
 	}
 
 	@CrossOrigin
-	@ApiOperation(value = "Update quick consult doctor data", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/update/doctorData" }, method = { RequestMethod.POST })
+	@Operation(summary = "Update quick consult doctor data")
+	@PostMapping(value = { "/update/doctorData" })
 	public String updateGeneralOPDQCDoctorData(@RequestBody String requestObj,
-			@RequestHeader(value = "Authorization") String Authorization) {
+			@RequestHeader(value = "Authorization") String authorization) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Quick consult doctor data update request:" + requestObj);
-
-		JsonObject jsnOBJ = new JsonObject();
-		JsonParser jsnParser = new JsonParser();
-		JsonElement jsnElmnt = jsnParser.parse(requestObj);
-		jsnOBJ = jsnElmnt.getAsJsonObject();
-
+		
 		try {
 			WrapperQuickConsultation wrapperQuickConsultation = InputMapper.gson().fromJson(requestObj,
 					WrapperQuickConsultation.class);
@@ -261,7 +249,7 @@ public class QuickConsultController {
 			JsonObject quickConsultDoctorOBJ = wrapperQuickConsultation.getQuickConsultation();
 
 			Long result = quickConsultationServiceImpl.updateGeneralOPDQCDoctorData(quickConsultDoctorOBJ,
-					Authorization);
+					authorization);
 			if (null != result && result > 0) {
 				response.setResponse("Data updated successfully");
 			} else {
@@ -275,4 +263,8 @@ public class QuickConsultController {
 
 		return response.toString();
 	}
+	private JsonObject parseJsonRequest(String requestObj) {
+        JsonElement jsonElement = JsonParser.parseString(requestObj);
+        return jsonElement.getAsJsonObject();
+    }
 }

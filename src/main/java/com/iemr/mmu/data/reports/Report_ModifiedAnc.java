@@ -21,15 +21,11 @@
 */
 package com.iemr.mmu.data.reports;
 
-import java.math.BigInteger;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-
-import javax.persistence.Column;
-
-import org.hibernate.annotations.Columns;
 
 import com.google.gson.annotations.Expose;
 

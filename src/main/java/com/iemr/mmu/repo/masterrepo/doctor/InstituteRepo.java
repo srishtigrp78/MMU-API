@@ -34,7 +34,7 @@ import com.iemr.mmu.data.institution.Institute;
 @Repository
 @RestResource(exported = false)
 public interface InstituteRepo extends CrudRepository<Institute, Long> {
-	@Query("SELECT institutionID, institutionName FROM Institute WHERE providerServiceMapID = :psmID AND deleted != 1 order by institutionName")
+	@Query("SELECT institutionID, institutionName FROM Institute WHERE providerServiceMapID = :psmID AND deleted != true order by institutionName")
 	public ArrayList<Object[]> getInstituteDetails(@Param("psmID") Integer psmID);
 
 }

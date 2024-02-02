@@ -21,10 +21,10 @@
 */
 package com.iemr.mmu.service.dataSyncActivity;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.sql.Timestamp;
 
 import javax.sql.DataSource;
 
@@ -32,7 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import com.iemr.mmu.data.syncActivity_syncLayer.SyncUtilityClass;
 import com.iemr.mmu.repo.syncActivity_syncLayer.SyncUtilityClassRepo;
 
 /***

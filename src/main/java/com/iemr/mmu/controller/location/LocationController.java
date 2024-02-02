@@ -26,7 +26,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,7 +38,7 @@ import com.iemr.mmu.controller.common.master.CommonMasterController;
 import com.iemr.mmu.service.location.LocationServiceImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
 
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 
 @CrossOrigin
 @RestController
@@ -52,8 +54,8 @@ public class LocationController {
 		this.locationServiceImpl = locationServiceImpl;
 	}
 
-	@ApiOperation(value = "State master for beneficiary", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = "/get/stateMaster", method = RequestMethod.GET)
+	@Operation(summary = "State master for beneficiary")
+	@GetMapping(value = "/get/stateMaster", consumes = "application/json", produces = "application/json")
 	public String getStateMaster() {
 		logger.info("get state master ...");
 		response = new OutputResponse();
@@ -66,8 +68,8 @@ public class LocationController {
 		return response.toString();
 	}
 
-	@ApiOperation(value = "Country master for beneficiary", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = "/get/countryMaster", method = RequestMethod.GET)
+	@Operation(summary = "Country master for beneficiary")
+	@GetMapping(value = "/get/countryMaster", consumes = "application/json", produces = "application/json")
 	public String getCountryMaster() {
 		logger.info("get country master ...");
 		response = new OutputResponse();
@@ -79,8 +81,8 @@ public class LocationController {
 		return response.toString();
 	}
 
-	@ApiOperation(value = "Country city master for beneficiary", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = "/get/countryCityMaster/{countryID}/", method = RequestMethod.GET)
+	@Operation(summary = "Country city master for beneficiary")
+	@GetMapping(value = "/get/countryCityMaster/{countryID}/", consumes = "application/json", produces = "application/json")
 	public String getCountryCityMaster(@PathVariable("countryID") Integer countryID) {
 		logger.info("get country citymaster ...");
 		response = new OutputResponse();
@@ -92,8 +94,8 @@ public class LocationController {
 		return response.toString();
 	}
 
-	@ApiOperation(value = "District master from state id", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = "/get/districtMaster/{stateID}", method = RequestMethod.GET)
+	@Operation(summary = "District master from state id")
+	@GetMapping(value = "/get/districtMaster/{stateID}", consumes = "application/json", produces = "application/json")
 	public String getDistrictMaster(@PathVariable("stateID") Integer stateID) {
 		logger.info("get District master ...");
 		response = new OutputResponse();
@@ -106,8 +108,8 @@ public class LocationController {
 		return response.toString();
 	}
 
-	@ApiOperation(value = "District block master", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = "/get/districtBlockMaster/{districtID}", method = RequestMethod.GET)
+	@Operation(summary = "District block master")
+	@GetMapping(value = "/get/districtBlockMaster/{districtID}", consumes = "application/json", produces = "application/json")
 	public String getDistrictBlockMaster(@PathVariable("districtID") Integer districtID) {
 		logger.info("get District Block master districtID ..." + districtID);
 		response = new OutputResponse();
@@ -120,8 +122,8 @@ public class LocationController {
 		return response.toString();
 	}
 
-	@ApiOperation(value = "Village master from block id", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = "/get/villageMasterFromBlockID/{blockID}", method = RequestMethod.GET)
+	@Operation(summary = "Village master from block id")
+	@GetMapping(value = "/get/villageMasterFromBlockID/{blockID}", consumes = "application/json", produces = "application/json")
 	public String getVillageMaster(@PathVariable("blockID") Integer blockID) {
 		logger.info("get District Block master districtID ..." + blockID);
 		response = new OutputResponse();
@@ -135,9 +137,8 @@ public class LocationController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get location details based on SP id and PSM id", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = "/getLocDetailsBasedOnSpIDAndPsmID", method = { RequestMethod.POST }, produces = {
-			"application/json" })
+	@Operation(summary = "Get location details based on SP id and PSM id")
+	@PostMapping(value = "/getLocDetailsBasedOnSpIDAndPsmID", consumes = "application/json", produces = "application/json")
 	public String getLocDetailsBasedOnSpIDAndPsmIDNew(@RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		try {
@@ -158,8 +159,8 @@ public class LocationController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get district taluk master", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = "/get/DistrictTalukMaster/{districtBranchID}", method = RequestMethod.GET)
+	@Operation(summary = "Get district taluk master")
+	@GetMapping(value = "/get/DistrictTalukMaster/{districtBranchID}", consumes = "application/json", produces = "application/json")
 	public String getDistrictTalukMaster(@PathVariable("districtBranchID") Integer districtBranchID) {
 
 		response = new OutputResponse();

@@ -21,12 +21,7 @@
 */
 package com.iemr.mmu.repo.nurse.anc;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -35,8 +30,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
 
-import com.google.gson.annotations.Expose;
 import com.iemr.mmu.data.anc.BenPersonalHabit;
+
+import jakarta.transaction.Transactional;
 
 @Repository
 @RestResource(exported = false)

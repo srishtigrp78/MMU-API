@@ -25,7 +25,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -45,7 +45,6 @@ import java.io.IOException;
 public class HttpUtils {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	public static final String AUTHORIZATION = "Authorization";
-	private String server;
 	// @Autowired
 	private RestTemplate rest;
 	// @Autowired
@@ -79,7 +78,7 @@ public class HttpUtils {
 		String body;
 		HttpEntity<String> requestEntity = new HttpEntity<String>("", headers);
 		ResponseEntity<String> responseEntity = rest.exchange(uri, HttpMethod.GET, requestEntity, String.class);
-		setStatus(responseEntity.getStatusCode());
+		setStatus((HttpStatus) responseEntity.getStatusCode());
 		// if (status == HttpStatus.OK){
 		body = responseEntity.getBody();
 		// }else{
@@ -101,7 +100,7 @@ public class HttpUtils {
 		}
 		HttpEntity<String> requestEntity = new HttpEntity<String>("", headers);
 		ResponseEntity<String> responseEntity = rest.exchange(uri, HttpMethod.GET, requestEntity, String.class);
-		setStatus(responseEntity.getStatusCode());
+		setStatus((HttpStatus) responseEntity.getStatusCode());
 		body = responseEntity.getBody();
 		return body;
 	}
@@ -110,7 +109,7 @@ public class HttpUtils {
 		String body;
 		HttpEntity<String> requestEntity = new HttpEntity<String>(json, headers);
 		ResponseEntity<String> responseEntity = rest.exchange(uri, HttpMethod.POST, requestEntity, String.class);
-		setStatus(responseEntity.getStatusCode());
+		setStatus((HttpStatus) responseEntity.getStatusCode());
 		body = responseEntity.getBody();
 		return body;
 	}
@@ -126,7 +125,7 @@ public class HttpUtils {
 		HttpEntity<String> requestEntity;
 		requestEntity = new HttpEntity<String>(data, headers);
 		responseEntity = rest.exchange(uri, HttpMethod.POST, requestEntity, String.class);
-		setStatus(responseEntity.getStatusCode());
+		setStatus((HttpStatus) responseEntity.getStatusCode());
 		body = responseEntity.getBody();
 		return body;
 	}
@@ -152,8 +151,7 @@ public class HttpUtils {
 				multiPart = new FormDataMultiPart();
 				is = new FileInputStream(data);
 
-				FormDataBodyPart filePart = new FormDataBodyPart("content", is,
-						MediaType.APPLICATION_OCTET_STREAM_TYPE);
+				FormDataBodyPart filePart = new FormDataBodyPart();
 				multiPart.bodyPart(filePart);
 				multiPart.field("docPath", data);
 				headers.add("Content-Type", MediaType.APPLICATION_JSON);
@@ -175,7 +173,7 @@ public class HttpUtils {
 			requestEntity = new HttpEntity<String>(data, headers);
 			responseEntity = rest.exchange(uri, HttpMethod.POST, requestEntity, String.class);
 		}
-		setStatus(responseEntity.getStatusCode());
+		setStatus((HttpStatus) responseEntity.getStatusCode());
 		body = responseEntity.getBody();
 		return body;
 	}

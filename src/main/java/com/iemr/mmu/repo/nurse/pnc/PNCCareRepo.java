@@ -22,10 +22,7 @@
 package com.iemr.mmu.repo.nurse.pnc;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-
-import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -35,6 +32,8 @@ import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
 
 import com.iemr.mmu.data.pnc.PNCCare;
+
+import jakarta.transaction.Transactional;
 
 @Repository
 @RestResource(exported = false)

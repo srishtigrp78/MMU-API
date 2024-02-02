@@ -26,10 +26,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
@@ -38,14 +39,15 @@ import com.iemr.mmu.service.dataSyncActivity.DownloadDataFromServerTransactional
 import com.iemr.mmu.service.dataSyncActivity.UploadDataToServerImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
 
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+
 
 /***
  * @purpose Class used for data sync from van-to-server & server-to-van
  */
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/dataSyncActivity", headers = "Authorization")
+@RequestMapping(value = "/dataSyncActivity", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class StartSyncActivity {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
@@ -55,21 +57,21 @@ public class StartSyncActivity {
 	private DownloadDataFromServerImpl downloadDataFromServerImpl;
 	@Autowired
 	private DownloadDataFromServerTransactionalImpl downloadDataFromServerTransactionalImpl;
-
+	private static final String GROUP_ID = "groupID";
+	private static final String PROVIDER_SERVICE_MAP_ID = "providerServiceMapID";
 	@CrossOrigin()
-	@ApiOperation(value = "Start data sync from van to Server", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/van-to-server" }, method = { RequestMethod.POST })
+	@Operation(summary = "Start data sync from van to Server")
+	@PostMapping(value = { "/van-to-server" })
 	public String dataSyncToServer(@RequestBody String requestOBJ,
-			@RequestHeader(value = "Authorization") String Authorization,
-			@RequestHeader(value = "ServerAuthorization") String ServerAuthorization) {
+			@RequestHeader(value = "Authorization") String authorization,
+			@RequestHeader(value = "ServerAuthorization") String serverAuthorization) {
 		OutputResponse response = new OutputResponse();
 		try {
-			// System.out.println(LocalDateTime.now());
 			JSONObject obj = new JSONObject(requestOBJ);
-			if (obj != null && obj.has("groupID") && obj.get("groupID") != null && obj.has("user")
+			if (obj.has(GROUP_ID) && obj.get(GROUP_ID) != null && obj.has("user")
 					&& obj.get("user") != null && obj.has("vanID") && obj.get("vanID") != null) {
-				String s = uploadDataToServerImpl.getDataToSyncToServer(obj.getInt("vanID"), obj.getInt("groupID"),
-						obj.getString("user"), ServerAuthorization);
+				String s = uploadDataToServerImpl.getDataToSyncToServer(obj.getInt("vanID"), obj.getInt(GROUP_ID),
+						obj.getString("user"), serverAuthorization);
 				if (s != null)
 					response.setResponse(s);
 				else
@@ -85,8 +87,8 @@ public class StartSyncActivity {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get data sync group details", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getSyncGroupDetails" }, method = { RequestMethod.GET })
+	@Operation(summary = "Get data sync group details")
+	@GetMapping(value = { "/getSyncGroupDetails" })
 	public String getSyncGroupDetails() {
 		OutputResponse response = new OutputResponse();
 		try {
@@ -106,18 +108,18 @@ public class StartSyncActivity {
 	 * @return Masters download in van from central server
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Data sync master download", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/startMasterDownload" }, method = { RequestMethod.POST })
+	@Operation(summary = "Data sync master download")
+	@PostMapping(value = { "/startMasterDownload" })
 	public String startMasterDownload(@RequestBody String requestOBJ,
-			@RequestHeader(value = "Authorization") String Authorization,
-			@RequestHeader(value = "ServerAuthorization") String ServerAuthorization) {
+			@RequestHeader(value = "Authorization") String authorization,
+			@RequestHeader(value = "ServerAuthorization") String serverAuthorization) {
 		OutputResponse response = new OutputResponse();
 		try {
 			JSONObject obj = new JSONObject(requestOBJ);
-			if (obj != null && obj.has("vanID") && obj.get("vanID") != null && obj.has("providerServiceMapID")
-					&& obj.get("providerServiceMapID") != null) {
-				String s = downloadDataFromServerImpl.downloadMasterDataFromServer(ServerAuthorization,
-						obj.getInt("vanID"), obj.getInt("providerServiceMapID"));
+			if (obj.has("vanID") && obj.get("vanID") != null && obj.has(PROVIDER_SERVICE_MAP_ID)
+					&& obj.get(PROVIDER_SERVICE_MAP_ID) != null) {
+				String s = downloadDataFromServerImpl.downloadMasterDataFromServer(serverAuthorization,
+						obj.getInt("vanID"), obj.getInt(PROVIDER_SERVICE_MAP_ID));
 				if (s != null) {
 					if (s.equalsIgnoreCase("inProgress"))
 						response.setError(5000,
@@ -139,8 +141,8 @@ public class StartSyncActivity {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Data sync master download progress check", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/checkMastersDownloadProgress" }, method = { RequestMethod.GET })
+	@Operation(summary = "Data sync master download progress check")
+	@GetMapping(value = { "/checkMastersDownloadProgress" })
 	public String checkMastersDownloadProgress() {
 		OutputResponse response = new OutputResponse();
 		try {
@@ -153,8 +155,8 @@ public class StartSyncActivity {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get van details for master download", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getVanDetailsForMasterDownload" }, method = { RequestMethod.GET })
+	@Operation(summary = "Get van details for master download")
+	@GetMapping(value = { "/getVanDetailsForMasterDownload" })
 	public String getVanDetailsForMasterDownload() {
 		OutputResponse response = new OutputResponse();
 		try {
@@ -171,15 +173,15 @@ public class StartSyncActivity {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Call central API to generate beneficiary id and import to local", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/callCentralAPIToGenerateBenIDAndimportToLocal" }, method = { RequestMethod.POST })
+	@Operation(summary = "Call central API to generate beneficiary id and import to local")
+	@PostMapping(value = { "/callCentralAPIToGenerateBenIDAndimportToLocal" })
 	public String callCentralAPIToGenerateBenIDAndimportToLocal(@RequestBody String requestOBJ,
-			@RequestHeader(value = "Authorization") String Authorization,
-			@RequestHeader(value = "ServerAuthorization") String ServerAuthorization) {
+			@RequestHeader(value = "Authorization") String authorization,
+			@RequestHeader(value = "ServerAuthorization") String serverAuthorization) {
 		OutputResponse response = new OutputResponse();
 		try {
-			int i = downloadDataFromServerImpl.callCentralAPIToGenerateBenIDAndimportToLocal(requestOBJ, Authorization,
-					ServerAuthorization);
+			int i = downloadDataFromServerImpl.callCentralAPIToGenerateBenIDAndimportToLocal(requestOBJ, authorization,
+					serverAuthorization);
 			if (i == 0) {
 				response.setError(5000, "Error while generating UNIQUE_ID at central server");
 			} else {
@@ -196,16 +198,16 @@ public class StartSyncActivity {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Call central API to download transaction data to local", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/downloadTransactionToLocal" }, method = { RequestMethod.POST })
+	@Operation(summary = "Call central API to download transaction data to local")
+	@PostMapping(value = { "/downloadTransactionToLocal" })
 	public String downloadTransactionToLocal(@RequestBody String requestOBJ,
-			@RequestHeader(value = "ServerAuthorization") String ServerAuthorization) {
+			@RequestHeader(value = "ServerAuthorization") String serverAuthorization) {
 		OutputResponse response = new OutputResponse();
 		try {
 			JSONObject obj = new JSONObject(requestOBJ);
-			if (obj != null && obj.has("vanID") && obj.get("vanID") != null) {
+			if (obj.has("vanID") && obj.get("vanID") != null) {
 				int i = downloadDataFromServerTransactionalImpl.downloadTransactionalData(obj.getInt("vanID"),
-						ServerAuthorization);
+						serverAuthorization);
 
 				if (i > 0)
 					response.setResponse("Success");

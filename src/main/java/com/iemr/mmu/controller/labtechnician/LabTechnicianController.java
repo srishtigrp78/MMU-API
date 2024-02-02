@@ -25,9 +25,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.JsonElement;
@@ -36,7 +36,8 @@ import com.google.gson.JsonParser;
 import com.iemr.mmu.service.labtechnician.LabTechnicianServiceImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
 
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+
 
 /***
  * @Objective Saving lab test results given by LabTechnician
@@ -44,36 +45,30 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @CrossOrigin
-@RequestMapping(value = "/labTechnician", headers = "Authorization")
+@RequestMapping(value = "/labTechnician", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class LabTechnicianController {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-
 	private LabTechnicianServiceImpl labTechnicianServiceImpl;
 
 	@Autowired
 	public void setLabTechnicianServiceImpl(LabTechnicianServiceImpl labTechnicianServiceImpl) {
 		this.labTechnicianServiceImpl = labTechnicianServiceImpl;
 	}
-
+	private static final String BENEFICIARY_REG_ID = "beneficiaryRegID";
+	private static final String VISIT_CODE = "visitCode";
 	/**
 	 * @Objective Save lab test results given by LabTechnician
 	 * @param JSON requestObj
 	 * @return success or failure response
 	 */
 	@CrossOrigin
-	@ApiOperation(value = "Save lab test result entered by lab technician", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/save/LabTestResult" }, method = { RequestMethod.POST })
+	@Operation(summary = "Save lab test result entered by lab technician")
+	@PostMapping(value = { "/save/LabTestResult" })
 	public String saveLabTestResult(@RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		try {
-			logger.info("Request object for Lab Test Result saving :" + requestObj);
-
-			JsonObject jsnOBJ = new JsonObject();
-			JsonParser jsnParser = new JsonParser();
-			JsonElement jsnElmnt = jsnParser.parse(requestObj);
-			jsnOBJ = jsnElmnt.getAsJsonObject();
-
+			JsonObject jsnOBJ = parseJsonRequest(requestObj);
 			if (jsnOBJ != null) {
 				Integer labResultSaveRes = labTechnicianServiceImpl.saveLabTestResult(jsnOBJ);
 				if (null != labResultSaveRes && labResultSaveRes > 0) {
@@ -93,21 +88,18 @@ public class LabTechnicianController {
 	}
 
 	@CrossOrigin
-	@ApiOperation(value = "Get beneficiary prescribed procedure", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/get/prescribedProceduresList" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get beneficiary prescribed procedure")
+	@PostMapping(value = { "/get/prescribedProceduresList" })
 	public String getBeneficiaryPrescribedProcedure(@RequestBody String requestOBJ) {
 		OutputResponse response = new OutputResponse();
 		try {
 			logger.info("Request obj to fetch lab tests :" + requestOBJ);
-			JsonObject jsnOBJ = new JsonObject();
-			JsonParser jsnParser = new JsonParser();
-			JsonElement jsnElmnt = jsnParser.parse(requestOBJ);
-			jsnOBJ = jsnElmnt.getAsJsonObject();
+			JsonObject jsnOBJ = parseJsonRequest(requestOBJ);
 
-			if (jsnOBJ != null && !jsnOBJ.isJsonNull() && jsnOBJ.has("beneficiaryRegID") && jsnOBJ.has("visitCode")) {
+			if (jsnOBJ != null && !jsnOBJ.isJsonNull() && jsnOBJ.has(BENEFICIARY_REG_ID) && jsnOBJ.has(VISIT_CODE)) {
 
 				String s = labTechnicianServiceImpl.getBenePrescribedProcedureDetails(
-						jsnOBJ.get("beneficiaryRegID").getAsLong(), jsnOBJ.get("visitCode").getAsLong());
+						jsnOBJ.get(BENEFICIARY_REG_ID).getAsLong(), jsnOBJ.get(VISIT_CODE).getAsLong());
 				if (s != null)
 					response.setResponse(s);
 				else
@@ -123,19 +115,15 @@ public class LabTechnicianController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get lab test result for a visitcode.", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/get/labResultForVisitcode" }, method = { RequestMethod.POST })
+	@Operation(summary = "Get lab test result for a visitcode.")
+	@PostMapping(value = { "/get/labResultForVisitcode" })
 	public String getLabResultForVisitCode(@RequestBody String requestOBJ) {
 		OutputResponse response = new OutputResponse();
 		try {
-			JsonObject jsnOBJ = new JsonObject();
-			JsonParser jsnParser = new JsonParser();
-			JsonElement jsnElmnt = jsnParser.parse(requestOBJ);
-			jsnOBJ = jsnElmnt.getAsJsonObject();
-
-			if (jsnOBJ != null && !jsnOBJ.isJsonNull() && jsnOBJ.has("beneficiaryRegID") && jsnOBJ.has("visitCode")) {
-				String s = labTechnicianServiceImpl.getLabResultForVisitcode(jsnOBJ.get("beneficiaryRegID").getAsLong(),
-						jsnOBJ.get("visitCode").getAsLong());
+			JsonObject jsnOBJ = parseJsonRequest(requestOBJ);
+			if (jsnOBJ != null && !jsnOBJ.isJsonNull() && jsnOBJ.has(BENEFICIARY_REG_ID) && jsnOBJ.has(VISIT_CODE)) {
+				String s = labTechnicianServiceImpl.getLabResultForVisitcode(jsnOBJ.get(BENEFICIARY_REG_ID).getAsLong(),
+						jsnOBJ.get(VISIT_CODE).getAsLong());
 
 				if (s != null)
 					response.setResponse(s);
@@ -144,10 +132,13 @@ public class LabTechnicianController {
 			} else
 				response.setError(5000, "Invalid request");
 		} catch (Exception e) {
-			logger.error("Error while getting lab result for requested data:" + requestOBJ);
+			logger.error("Error while getting lab result for requested data {} " , requestOBJ);
 			response.setError(5000, "Error while getting lab report");
 		}
 		return response.toString();
 	}
-
+	private JsonObject parseJsonRequest(String requestObj) {
+        JsonElement jsonElement = JsonParser.parseString(requestObj);
+        return jsonElement.getAsJsonObject();
+    }
 }

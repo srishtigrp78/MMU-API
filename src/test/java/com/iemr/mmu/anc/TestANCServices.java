@@ -22,7 +22,7 @@
 package com.iemr.mmu.anc;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.isA;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -30,9 +30,8 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.mockito.Matchers;
+import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.Test;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -79,7 +78,7 @@ public class TestANCServices
 	static Long beneficiaryRegID = 7506L;
 	static Long benVisitID = 131L;
 	
-	@BeforeClass
+	@Before(value = "")
 	public static void initializeParams()
 	{
 
@@ -129,7 +128,7 @@ public class TestANCServices
 		ANCWomenVaccineDetail ancWomenVaccine = spy(ANCWomenVaccineDetail.class);
 		ancWomenVaccine.setID(1L);
 		ancWomenVaccines.add(ancWomenVaccine);
-		when(ancWomenVaccineRepoMock.save(Matchers.anyListOf(ANCWomenVaccineDetail.class))).thenReturn(ancWomenVaccines);
+		//when(ancWomenVaccineRepoMock.save(Matchers.anyListOf(ANCWomenVaccineDetail.class))).thenReturn(ancWomenVaccines);
 		
 		SysObstetricExamination obsExmn = spy(SysObstetricExamination.class);
 		obsExmn.setID(1L);

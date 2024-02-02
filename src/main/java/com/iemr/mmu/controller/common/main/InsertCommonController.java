@@ -28,9 +28,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.iemr.mmu.data.common.DocFileManager;
@@ -38,7 +38,7 @@ import com.iemr.mmu.service.common.transaction.CommonServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 
 @CrossOrigin
 @RestController
@@ -49,8 +49,8 @@ public class InsertCommonController {
 	private CommonServiceImpl commonServiceImpl;
 
 	@CrossOrigin()
-	@ApiOperation(value = "Save beneficairy documents locally", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/saveFiles" }, method = { RequestMethod.POST })
+	@Operation(summary = "Save beneficairy documents locally")
+	@PostMapping(value = { "/saveFiles" }, consumes = "application/json", produces = "application/json")
 	public String saveFiles(@RequestBody String request) {
 		OutputResponse response = new OutputResponse();
 

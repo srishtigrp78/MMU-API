@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.iemr.mmu.service.fileSync.FileSyncService;
 import com.iemr.mmu.utils.response.OutputResponse;
 
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RequestMapping("/fileSyncController")
 @RestController
@@ -45,9 +46,8 @@ public class FileSyncController {
 	FileSyncService fileSyncService;
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get server credential", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = "/getServerCredential", headers = "Authorization", method = {
-			RequestMethod.GET }, produces = { "application/json" })
+	@Operation(summary = "Get server credential")
+	@GetMapping(value = "/getServerCredential", headers = "Authorization", consumes = "application/json", produces = "application/json")
 	public String getServerCredential() {
 		logger.info("getServerCredential request ");
 		OutputResponse response = new OutputResponse();
@@ -66,9 +66,8 @@ public class FileSyncController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Sync files", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = "/syncFiles", headers = "Authorization", method = { RequestMethod.GET }, produces = {
-			"application/json" })
+	@Operation(summary = "Sync files")
+	@GetMapping(value = "/syncFiles", headers = "Authorization", consumes = "application/json", produces = "application/json")
 	public String syncFiles(@RequestHeader(value = "ServerAuthorization") String ServerAuthorization) {
 		logger.info("syncFiles request ");
 		OutputResponse response = new OutputResponse();

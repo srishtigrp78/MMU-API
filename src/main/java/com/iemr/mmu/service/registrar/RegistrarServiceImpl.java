@@ -280,7 +280,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 		// Persistence Class = BenGovIdMapping
 		// System.out.println("hello");
 		ArrayList<BenGovIdMapping> benGovIDMap = (ArrayList<BenGovIdMapping>) registrarRepoBenGovIdMapping
-				.save(BenGovIdMapping.getBenGovIdMappingOBJList(benD, benRegID));
+				.saveAll(BenGovIdMapping.getBenGovIdMappingOBJList(benD, benRegID));
 		// System.out.println("hello");
 		return benGovIDMap.size();
 	}
@@ -600,15 +600,14 @@ public class RegistrarServiceImpl implements RegistrarService {
 
 		int x = registrarRepoBenGovIdMapping.deletePreviousGovMapID(benRegID);
 		ArrayList<BenGovIdMapping> benGovIDMaps = (ArrayList<BenGovIdMapping>) registrarRepoBenGovIdMapping
-				.save(benGovIDMap);
+				.saveAll(benGovIDMap);
 
 		return benGovIDMaps.size();
 	}
 
 	@Override
 	public int updateBeneficiaryDemographicAdditional(JsonObject benD, Long benRegID) {
-		Long tmpBenDemoAddID = null;
-
+		
 		BeneficiaryDemographicAdditional beneficiaryDemographicAdditional = getBeneficiaryDemographicAdditional(benD,
 				benRegID);
 		int res = 0;
@@ -635,7 +634,6 @@ public class RegistrarServiceImpl implements RegistrarService {
 
 	@Override
 	public int updateBeneficiaryImage(JsonObject benD, Long benRegID) {
-		Long tmpBenImageID = null;
 		BeneficiaryImage beneficiaryImage = new BeneficiaryImage();
 		beneficiaryImage.setBeneficiaryRegID(benRegID);
 		Integer response = 0;

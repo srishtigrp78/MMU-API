@@ -204,7 +204,7 @@ public class CommonDoctorServiceImpl {
 		// if valid chief complaints is present than save to DB
 		if (tmpBenCHiefComplaintsTMP.size() > 0) {
 			ArrayList<BenChiefComplaint> benChiefComplaintListRS = (ArrayList<BenChiefComplaint>) benChiefComplaintRepo
-					.save(tmpBenCHiefComplaintsTMP);
+					.saveAll(tmpBenCHiefComplaintsTMP);
 			if (tmpBenCHiefComplaintsTMP.size() == benChiefComplaintListRS.size()) {
 				chiefComFlag = 1;
 			}
@@ -453,7 +453,7 @@ public class CommonDoctorServiceImpl {
 			TMReferred = 0;
 		}
 
-		ArrayList<BenReferDetails> res = (ArrayList<BenReferDetails>) benReferDetailsRepo.save(referDetailsList);
+		ArrayList<BenReferDetails> res = (ArrayList<BenReferDetails>) benReferDetailsRepo.saveAll(referDetailsList);
 		if (referDetailsList.size() == res.size()) {
 			ID = new Long(1);
 		}
@@ -519,7 +519,7 @@ public class CommonDoctorServiceImpl {
         	ID=Long.valueOf(u);
         else
         {
-		ArrayList<BenReferDetails> res = (ArrayList<BenReferDetails>) benReferDetailsRepo.save(referDetailsList);
+		ArrayList<BenReferDetails> res = (ArrayList<BenReferDetails>) benReferDetailsRepo.saveAll(referDetailsList);
 		if (referDetailsList.size() == res.size()) {
 			ID = new Long(1);
 		}
@@ -617,9 +617,9 @@ public class CommonDoctorServiceImpl {
 		if (null != benChiefComplaintList && benChiefComplaintList.size() > 0) {
 
 			List<BenChiefComplaint> benChiefComplaintResultList = (List<BenChiefComplaint>) benChiefComplaintRepo
-					.save(benChiefComplaintList);
+					.saveAll(benChiefComplaintList);
 
-			if (benChiefComplaintResultList != null && benChiefComplaintResultList.size() > 0) {
+			if (!benChiefComplaintResultList.isEmpty()) {
 				r = benChiefComplaintResultList.size();
 			}
 		} else {
@@ -732,7 +732,7 @@ public class CommonDoctorServiceImpl {
 			    TMReferred = 0;
 		}
 
-		ArrayList<BenReferDetails> res = (ArrayList<BenReferDetails>) benReferDetailsRepo.save(referDetailsList);
+		ArrayList<BenReferDetails> res = (ArrayList<BenReferDetails>) benReferDetailsRepo.saveAll(referDetailsList);
 		if (referDetailsList.size() == res.size()) {
 			ID = new Long(1);
 		}
