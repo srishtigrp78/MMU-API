@@ -39,7 +39,7 @@ import com.google.gson.JsonParser;
 import com.iemr.mmu.service.generalOPD.GeneralOPDServiceImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
 
-import io.lettuce.core.dynamic.annotation.Param;
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 
 
@@ -61,7 +61,7 @@ public class GeneralOPDController {
 
 	/**
 	 * @Objective Save General OPD data for nurse.
-	 * @param requestObj
+	 * @ApiParam requestObj
 	 * @return success or failure response
 	 */
 	@CrossOrigin
@@ -94,7 +94,7 @@ public class GeneralOPDController {
 
 	/**
 	 * @Objective Save General OPD data for doctor.
-	 * @param requestObj
+	 * @ApiParam requestObj
 	 * @return success or failure response
 	 */
 	@CrossOrigin
@@ -128,7 +128,7 @@ public class GeneralOPDController {
 	@PostMapping(value = { "/getBenVisitDetailsFrmNurseGOPD" })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenVisitDetailsFrmNurseGOPD(
-			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -153,7 +153,7 @@ public class GeneralOPDController {
 
 	/**
 	 * @Objective Fetching beneficiary history details enterted by nurse.
-	 * @param comingRequest
+	 * @ApiParam comingRequest
 	 * @return history details in JSON format
 	 */
 	@CrossOrigin()
@@ -161,7 +161,7 @@ public class GeneralOPDController {
 	@PostMapping(value = { "/getBenHistoryDetails" })
 
 	public String getBenHistoryDetails(
-			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -185,14 +185,14 @@ public class GeneralOPDController {
 
 	/**
 	 * @Objective Fetching beneficiary vital details enterted by nurse.
-	 * @param comingRequest
+	 * @ApiParam comingRequest
 	 * @return vital details in JSON format
 	 */
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary vital details from nurse general OPD")
 	@PostMapping(value = { "/getBenVitalDetailsFrmNurse" })
 	public String getBenVitalDetailsFrmNurse(
-			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -217,7 +217,7 @@ public class GeneralOPDController {
 
 	/**
 	 * @Objective Fetching beneficiary examination details enterted by nurse.
-	 * @param comingRequest
+	 * @ApiParam comingRequest
 	 * @return examination details in JSON format
 	 */
 	@CrossOrigin()
@@ -225,7 +225,7 @@ public class GeneralOPDController {
 	@PostMapping(value = { "/getBenExaminationDetails" })
 
 	public String getBenExaminationDetails(
-			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -249,7 +249,7 @@ public class GeneralOPDController {
 
 	/**
 	 * @Objective Fetching beneficiary doctor details.
-	 * @param comingRequest
+	 * @ApiParam comingRequest
 	 * @return doctor details in JSON format
 	 */
 	@CrossOrigin()
@@ -257,7 +257,7 @@ public class GeneralOPDController {
 	@PostMapping(value = { "/getBenCaseRecordFromDoctorGeneralOPD" })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenCaseRecordFromDoctorGeneralOPD(
-			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -306,7 +306,7 @@ public class GeneralOPDController {
 
 	/**
 	 * 
-	 * @param requestObj
+	 * @ApiParam requestObj
 	 * @return success or failure response
 	 * @objective Replace General OPD History Data entered by Nurse with the details
 	 *            entered by Doctor
@@ -338,7 +338,7 @@ public class GeneralOPDController {
 
 	/**
 	 * 
-	 * @param requestObj
+	 * @ApiParam requestObj
 	 * @return success or failure response
 	 * @objective Replace General OPD Vital Data entered by Nurse with the details
 	 *            entered by Doctor
@@ -370,7 +370,7 @@ public class GeneralOPDController {
 
 	/**
 	 * 
-	 * @param requestObj
+	 * @ApiParam requestObj
 	 * @return success or failure response
 	 * @objective Replace General OPD Examination Data entered by Nurse with the
 	 *            details entered by Doctor
@@ -402,7 +402,7 @@ public class GeneralOPDController {
 
 	/**
 	 * 
-	 * @param requestObj
+	 * @ApiParam requestObj
 	 * @return success or failure response
 	 * @objective Replace General OPD doctor data for the doctor next visit
 	 */

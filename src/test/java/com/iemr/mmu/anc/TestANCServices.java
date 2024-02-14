@@ -83,9 +83,9 @@ public class TestANCServices
 	{
 
 		TestCommonServices.initializeParams();
-		ancServiceImpl.setCommonNurseServiceImpl(TestCommonServices.commonNurseServiceImpl);
+		//ancServiceImpl.setCommonNurseServiceImpl(TestCommonServices.commonNurseServiceImpl);
 		ancServiceImpl.setAncNurseServiceImpl(ancNurseServiceImpl);
-		ancServiceImpl.setCommonDoctorServiceImpl(TestCommonServices.commonDoctorServiceImpl);
+		//ancServiceImpl.setCommonDoctorServiceImpl(TestCommonServices.commonDoctorServiceImpl);
 		//ancServiceImpl.setANCDoctorServiceImpl(ancDoctorServiceImpl);
 		
 		ancNurseServiceImpl.setBenAdherenceRepo(benAdherenceRepoMock);

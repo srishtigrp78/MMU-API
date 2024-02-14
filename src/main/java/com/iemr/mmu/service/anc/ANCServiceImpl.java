@@ -90,13 +90,18 @@ import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
 public class ANCServiceImpl implements ANCService {
-
+	@Autowired
 	private ANCNurseServiceImpl ancNurseServiceImpl;
 	// private NurseServiceImpl nurseServiceImpl;
+	@Autowired
 	private ANCDoctorServiceImpl ancDoctorServiceImpl;
+	@Autowired
 	private CommonNurseServiceImpl commonNurseServiceImpl;
+	@Autowired
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
+	@Autowired
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
+	@Autowired
 	private LabTechnicianServiceImpl labTechnicianServiceImpl;
 	@Autowired
 	private TeleConsultationServiceImpl teleConsultationServiceImpl;
@@ -108,7 +113,7 @@ public class ANCServiceImpl implements ANCService {
 	@Autowired
 	private ANCDiagnosisRepo aNCDiagnosisRepo;
 
-	@Autowired
+/*	@Autowired
 	public void setLabTechnicianServiceImpl(LabTechnicianServiceImpl labTechnicianServiceImpl) {
 		this.labTechnicianServiceImpl = labTechnicianServiceImpl;
 	}
@@ -132,7 +137,7 @@ public class ANCServiceImpl implements ANCService {
 	public void setANCDoctorServiceImpl(ANCDoctorServiceImpl ancDoctorServiceImpl) {
 		this.ancDoctorServiceImpl = ancDoctorServiceImpl;
 	}
-
+*/
 	@Autowired
 	public void setAncNurseServiceImpl(ANCNurseServiceImpl ancNurseServiceImpl) {
 		this.ancNurseServiceImpl = ancNurseServiceImpl;

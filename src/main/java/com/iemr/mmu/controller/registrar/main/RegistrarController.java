@@ -48,7 +48,7 @@ import com.iemr.mmu.service.registrar.RegistrarServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
-import io.lettuce.core.dynamic.annotation.Param;
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 
 @CrossOrigin
@@ -84,7 +84,7 @@ public class RegistrarController {
 	@CrossOrigin()
 	@Operation(summary = "Get registrar worklist data")
 	@PostMapping(value = { "/registrarWorkListData" })
-	public String getRegistrarWorkList(@Param(value = "{\"spID\": \"Integer\"}") @RequestBody String comingRequest)
+	public String getRegistrarWorkList(@ApiParam(value = "{\"spID\": \"Integer\"}") @RequestBody String comingRequest)
 			throws JSONException {
 		OutputResponse response = new OutputResponse();
 		try {
@@ -104,7 +104,7 @@ public class RegistrarController {
 	@Operation(summary = "Search for the beneficiary by beneficiary id")
 	@PostMapping(value = { "/quickSearch" })
 	public String quickSearchBeneficiary(
-			@Param(value = "{\"benID\": \"String\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benID\": \"String\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		try {
 
@@ -123,7 +123,7 @@ public class RegistrarController {
 	@Operation(summary = "Search for the beneficiary based on provided data")
 	@PostMapping(value = { "/advanceSearch" })
 	public String advanceSearch(
-			@Param(value = "{\"firstName\": \"String\", \"lastName\": \"String\", \"phoneNo\": \"String\","
+			@ApiParam(value = "{\"firstName\": \"String\", \"lastName\": \"String\", \"phoneNo\": \"String\","
 					+ "\"beneficiaryID\": \"String\", \"stateID\": \"Integer\", \"districtID\": \"Integer\", \"aadharNo\": \"String\"},"
 					+ " \"govtIdentityNo\": \"String\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -144,7 +144,7 @@ public class RegistrarController {
 	@Operation(summary = "Get beneficiary details of given beneficiary registration id")
 	@PostMapping(value = { "/get/benDetailsByRegID" })
 	public String getBenDetailsByRegID(
-			@Param(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		try {
 
@@ -174,7 +174,7 @@ public class RegistrarController {
 	@Operation(summary = "Get beneficiary details")
 	@PostMapping(value = { "/get/beneficiaryDetails" })
 	public String getBeneficiaryDetails(
-			@Param(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String requestObj) {
+			@ApiParam(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		try {
 
@@ -209,7 +209,7 @@ public class RegistrarController {
 	@Operation(summary = "Get beneficiary image")
 	@PostMapping(value = { "/get/beneficiaryImage" })
 	public String getBeneficiaryImage(
-			@Param(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String requestObj) {
+			@ApiParam(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
 		try {
 			JSONObject obj = new JSONObject(requestObj);
@@ -281,7 +281,7 @@ public class RegistrarController {
 	@Operation(summary = "Get beneficiary details for left side panel of given beneficiary registration id")
 	@PostMapping(value = { "/get/benDetailsByRegIDForLeftPanelNew" })
 	public String getBenDetailsForLeftSidePanelByRegID(
-			@Param(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String comingRequest,
+			@ApiParam(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String comingRequest,
 			@RequestHeader(value = "Authorization") String authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
@@ -328,7 +328,7 @@ public class RegistrarController {
 	@Operation(summary = "Register a new beneficiary")
 	@PostMapping(value = { "/registrarBeneficaryRegistration" })
 	public String createBeneficiary(
-			@Param(value = "{\"benD\":{\"firstName\": \"String\", \"lastName\": \"String\", \"gender\": \"Short\","
+			@ApiParam(value = "{\"benD\":{\"firstName\": \"String\", \"lastName\": \"String\", \"gender\": \"Short\","
 					+ "\"dob\": \"Timestamp\", \"maritalStatus\": \"Short\", \"fatherName\": \"String\", \"motherName\": \"String\","
 					+ "\"husbandName\": \"String\", \"image\": \"String\", \"aadharNo\": \"String\", \"income\": \"Short\", "
 					+ "\"literacyStatus\": \"String\", \"educationQualification\": \"Short\", \"occupation\": \"Short\", \"phoneNo\": \"String\","
@@ -409,7 +409,7 @@ public class RegistrarController {
 	@Operation(summary = "Update registered beneficiary data")
 	@PostMapping(value = { "/update/BeneficiaryDetails" })
 	public String updateBeneficiary(
-			@Param(value = "{\"benD\": {\"beneficiaryRegID\": \"Long\", \"firstName\": \"String\", \"lastName\": \"String\", \"gender\": \"Short\","
+			@ApiParam(value = "{\"benD\": {\"beneficiaryRegID\": \"Long\", \"firstName\": \"String\", \"lastName\": \"String\", \"gender\": \"Short\","
 					+ "\"dob\": \"Timestamp\", \"maritalStatus\": \"Short\", \"fatherName\": \"String\", \"motherName\": \"String\","
 					+ "\"husbandName\": \"String\", \"image\": \"String\", \"aadharNo\": \"String\", \"income\": \"Short\", "
 					+ "\"literacyStatus\": \"String\", \"educationQualification\": \"Short\", \"occupation\": \"Short\", \"phoneNo\": \"String\","
@@ -512,7 +512,7 @@ public class RegistrarController {
 	@Operation(summary = "Get master data for registrar")
 	@PostMapping(value = { "/registrarMasterData" })
 	public String masterDataForRegistration(
-			@Param(value = "{\"spID\": \"Integer\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"spID\": \"Integer\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		try {
 

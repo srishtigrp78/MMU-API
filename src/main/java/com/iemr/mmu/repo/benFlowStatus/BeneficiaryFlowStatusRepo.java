@@ -29,7 +29,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,14 +40,8 @@ import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
  *
  */
 @Repository
-@RestResource(exported = false)
 public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlowStatus, Long> {
-//	@Query("SELECT  t from BeneficiaryFlowStatus t WHERE (t.nurseFlag = 1 OR t.nurseFlag = 100) AND t.deleted = false "
-//			+ " AND Date(t.visitDate)  = curdate() AND t.providerServiceMapId = :providerServiceMapId "
-//			+ " AND t.vanID = :vanID ORDER BY t.visitDate DESC ")
-//	public ArrayList<BeneficiaryFlowStatus> getNurseWorklistNew(
-//			@Param("providerServiceMapId") Integer providerServiceMapId, @Param("vanID") Integer vanID);
-	
+
 	@Query("SELECT  t from BeneficiaryFlowStatus t WHERE (t.nurseFlag = 1 OR t.nurseFlag = 100) AND t.deleted = false "
 			+ " AND Date(t.visitDate)  >= Date(:fromDate) AND t.providerServiceMapId = :providerServiceMapId "
 			+ " AND t.vanID = :vanID ORDER BY t.visitDate DESC ")

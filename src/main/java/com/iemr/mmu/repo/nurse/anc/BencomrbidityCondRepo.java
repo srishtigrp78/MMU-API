@@ -23,19 +23,17 @@ package com.iemr.mmu.repo.nurse.anc;
 
 import java.util.ArrayList;
 
-import jakarta.transaction.Transactional;
-
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
 
 import com.iemr.mmu.data.anc.BencomrbidityCondDetails;
 
+import jakarta.transaction.Transactional;
+
 @Repository
-@RestResource(exported = false)
 public interface BencomrbidityCondRepo extends CrudRepository<BencomrbidityCondDetails, Long> {
 
 	@Query("select Date(createdDate), comorbidCondition , otherComorbidCondition, Date(year) "

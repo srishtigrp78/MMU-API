@@ -27,7 +27,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
 
 import com.iemr.mmu.data.anc.BenPersonalHabit;
@@ -35,7 +34,6 @@ import com.iemr.mmu.data.anc.BenPersonalHabit;
 import jakarta.transaction.Transactional;
 
 @Repository
-@RestResource(exported = false)
 public interface BenPersonalHabitRepo extends CrudRepository<BenPersonalHabit, Integer> {
 
 	@Query("select benVisitID from BenPersonalHabit a where a.beneficiaryRegID = :beneficiaryRegID order by benVisitID desc")

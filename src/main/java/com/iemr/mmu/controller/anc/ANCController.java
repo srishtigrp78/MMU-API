@@ -25,6 +25,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,10 +38,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.iemr.mmu.service.anc.ANCService;
-import com.iemr.mmu.service.anc.ANCServiceImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
 
-import io.lettuce.core.dynamic.annotation.Param;
 import io.swagger.v3.oas.annotations.Operation;
 
 
@@ -53,12 +52,10 @@ import io.swagger.v3.oas.annotations.Operation;
 @RequestMapping(value = "/ANC", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class ANCController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+	@Autowired
 	private ANCService ancService;
 
-	@Autowired
-	public void setAncServiceImpl(ANCServiceImpl ancServiceImpl) {
-		this.ancService = ancServiceImpl;
-	}
+	
 
 	/**
 	 * @Objective Save ANC data for nurse.

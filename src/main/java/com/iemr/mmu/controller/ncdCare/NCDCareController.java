@@ -42,7 +42,7 @@ import com.google.gson.JsonParser;
 import com.iemr.mmu.service.ncdCare.NCDCareServiceImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
 
-import io.lettuce.core.dynamic.annotation.Param;
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 
 
@@ -63,7 +63,7 @@ public class NCDCareController {
 
 	/**
 	 * @Objective Save NCD Care data for nurse.
-	 * @param JSON requestObj
+	 * @ApiParam JSON requestObj
 	 * @return success or failure response
 	 */
 	@CrossOrigin
@@ -97,7 +97,7 @@ public class NCDCareController {
 
 	/**
 	 * @Objective Save NCD Care data for doctor.
-	 * @param JSON requestObj
+	 * @ApiParam JSON requestObj
 	 * @return success or failure response
 	 */
 	@CrossOrigin
@@ -132,7 +132,7 @@ public class NCDCareController {
 	@PostMapping(value = { "/getBenVisitDetailsFrmNurseNCDCare" })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenVisitDetailsFrmNurseNCDCare(
-			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -157,7 +157,7 @@ public class NCDCareController {
 
 	/**
 	 * @Objective Fetching beneficiary history details enterted by nurse.
-	 * @param comingRequest
+	 * @ApiParam comingRequest
 	 * @return visit details in JSON format
 	 */
 	@CrossOrigin()
@@ -165,7 +165,7 @@ public class NCDCareController {
 	@PostMapping(value = { "/getBenNCDCareHistoryDetails" })
 
 	public String getBenNCDCareHistoryDetails(
-			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -189,7 +189,7 @@ public class NCDCareController {
 
 	/**
 	 * @Objective Fetching beneficiary vital details enterted by nurse.
-	 * @param comingRequest
+	 * @ApiParam comingRequest
 	 * @return visit details in JSON format
 	 */
 
@@ -197,7 +197,7 @@ public class NCDCareController {
 	@Operation(summary = "Get NCD care beneficiary vitals")
 	@PostMapping(value = { "/getBenVitalDetailsFrmNurseNCDCare" })
 	public String getBenVitalDetailsFrmNurseNCDCare(
-			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -222,7 +222,7 @@ public class NCDCareController {
 
 	/**
 	 * @Objective Fetching beneficiary doctor details.
-	 * @param comingRequest
+	 * @ApiParam comingRequest
 	 * @return visit details in JSON format
 	 */
 	@CrossOrigin()
@@ -230,7 +230,7 @@ public class NCDCareController {
 	@PostMapping(value = { "/getBenCaseRecordFromDoctorNCDCare" })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenCaseRecordFromDoctorNCDCare(
-			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -281,7 +281,7 @@ public class NCDCareController {
 
 	/**
 	 * 
-	 * @param requestObj
+	 * @ApiParam requestObj
 	 * @return success or failure response
 	 * @objective Replace NCD Care Vital Data entered by Nurse with the details
 	 *            entered by Doctor
@@ -313,7 +313,7 @@ public class NCDCareController {
 
 	/**
 	 * 
-	 * @param requestObj
+	 * @ApiParam requestObj
 	 * @return success or failure response
 	 * @objective Replace NCD Care doctor data for the doctor next visit
 	 */

@@ -43,20 +43,17 @@ public class IEMRApplBeans {
 
 	@Bean
 	public Validator getVaidator() {
-		Validator validator = new Validator();
-		return validator;
+		return new Validator();
 	}
 
 	@Bean
 	public EmailService getEmailService() {
-		EmailService emailService = new GenericEmailServiceImpl();
-		return emailService;
+		return new GenericEmailServiceImpl();
 	}
 
 	@Bean
 	public JavaMailSender getJavaMailSender() {
-		JavaMailSender mailSender = new JavaMailSenderImpl();
-		return mailSender;
+		return new JavaMailSenderImpl();
 	}
 
 	@Bean

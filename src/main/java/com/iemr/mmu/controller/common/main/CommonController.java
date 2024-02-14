@@ -51,7 +51,7 @@ import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
-import io.lettuce.core.dynamic.annotation.Param;
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
@@ -159,8 +159,8 @@ public class CommonController {
 	}
 
 	/**
-	 * @param providerServiceMapID
-	 * @param vanID
+	 * @ApiParam providerServiceMapID
+	 * @ApiParam vanID
 	 * @return
 	 */
 	@CrossOrigin()
@@ -186,7 +186,7 @@ public class CommonController {
 	@Operation(summary = "Get doctor entered previous significant Ffindings")
 	@PostMapping(value = { "/getDoctorPreviousSignificantFindings" })
 	public String getDoctorPreviousSignificantFindings(
-			@Param(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
@@ -306,7 +306,7 @@ public class CommonController {
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary past history")
 	@PostMapping(value = { "/getBenPastHistory" })
-	public String getBenPastHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenPastHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -331,7 +331,7 @@ public class CommonController {
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary tobacco history")
 	@PostMapping(value = { "/getBenTobaccoHistory" })
-	public String getBenTobaccoHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenTobaccoHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -356,7 +356,7 @@ public class CommonController {
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary alcohol history")
 	@PostMapping(value = { "/getBenAlcoholHistory" })
-	public String getBenAlcoholHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenAlcoholHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -382,7 +382,7 @@ public class CommonController {
 	@Operation(summary = "Get beneficiary allergy history")
 	@PostMapping(value = { "/getBenAllergyHistory" })
 	public String getBenANCAllergyHistory(
-			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -408,7 +408,7 @@ public class CommonController {
 	@Operation(summary = "Get beneficiary medication history")
 	@PostMapping(value = { "/getBenMedicationHistory" })
 	public String getBenMedicationHistory(
-			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -433,7 +433,7 @@ public class CommonController {
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary family history")
 	@PostMapping(value = { "/getBenFamilyHistory" })
-	public String getBenFamilyHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenFamilyHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -459,7 +459,7 @@ public class CommonController {
 	@Operation(summary = "Get beneficiary menstrual history")
 	@PostMapping(value = { "/getBenMenstrualHistory" })
 	public String getBenMenstrualHistory(
-			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -485,7 +485,7 @@ public class CommonController {
 	@Operation(summary = "Get beneficiary past obstetric history")
 	@PostMapping(value = { "/getBenPastObstetricHistory" })
 	public String getBenPastObstetricHistory(
-			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -511,7 +511,7 @@ public class CommonController {
 	@Operation(summary = "Get beneficiary comorbidity condition details")
 	@PostMapping(value = { "/getBenComorbidityConditionHistory" })
 	public String getBenANCComorbidityConditionHistory(
-			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -537,7 +537,7 @@ public class CommonController {
 	@Operation(summary = "Get beneficiary optional vaccine details")
 	@PostMapping(value = { "/getBenOptionalVaccineHistory" })
 	public String getBenOptionalVaccineHistory(
-			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -563,7 +563,7 @@ public class CommonController {
 	@Operation(summary = "Get beneficiary child vaccine(Immunization) details")
 	@PostMapping(value = { "/getBenChildVaccineHistory" })
 	public String getBenImmunizationHistory(
-			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -589,7 +589,7 @@ public class CommonController {
 	@Operation(summary = "Get beneficiary perinatal history details")
 	@PostMapping(value = { "/getBenPerinatalHistory" })
 	public String getBenPerinatalHistory(
-			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -614,7 +614,7 @@ public class CommonController {
 	@CrossOrigin()
 	@Operation(summary = "Get beneficiary child feeding history details")
 	@PostMapping(value = { "/getBenFeedingHistory" })
-	public String getBenFeedingHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenFeedingHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -640,7 +640,7 @@ public class CommonController {
 	@Operation(summary = "Get beneficiary child development history details")
 	@PostMapping(value = { "/getBenDevelopmentHistory" })
 	public String getBenDevelopmentHistory(
-			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -669,7 +669,7 @@ public class CommonController {
 	@Operation(summary = "Get casesheet history of beneficiary")
 	@PostMapping(value = { "/getBeneficiaryCaseSheetHistory" })
 	public String getBeneficiaryCaseSheetHistory(
-			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		try {
 			String responseData = commonServiceImpl.getBenPreviousVisitDataForCaseRecord(comingRequest);
@@ -771,7 +771,7 @@ public class CommonController {
 	@Operation(summary = "Get beneficiary physical history")
 	@PostMapping(value = { "/getBenPhysicalHistory" })
 	public String getBenPhysicalHistory(
-			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -797,7 +797,7 @@ public class CommonController {
 	@Operation(summary = "Get beneficiary symptomatic questionnaire answer details")
 	@PostMapping(value = { "/getBenSymptomaticQuestionnaireDetails" })
 	public String getBenSymptomaticQuestionnaireDetails(
-			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -823,7 +823,7 @@ public class CommonController {
 	@Operation(summary = "Get beneficiary previous diabetes history")
 	@PostMapping(value = { "/getBenPreviousDiabetesHistoryDetails" })
 	public String getBenPreviousDiabetesHistoryDetails(
-			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -846,8 +846,8 @@ public class CommonController {
 	}
 
 	/***
-	 * @param comingRequest
-	 * @param Authorization
+	 * @ApiParam comingRequest
+	 * @ApiParam Authorization
 	 * @return
 	 */
 	@CrossOrigin()
@@ -893,7 +893,7 @@ public class CommonController {
 	@PostMapping(value = { "/getBenPreviousReferralHistoryDetails" })
 	public String getBenPreviousReferralHistoryDetails(
 
-			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -950,14 +950,14 @@ public class CommonController {
 	}
 
 	/**
-	 * @param comingRequest
+	 * @ApiParam comingRequest
 	 * @return ProviderSpecificMasterData
 	 */
 	@CrossOrigin()
 	@Operation(summary = "Calculate beneficiary BMI status")
 	@PostMapping(value = { "/calculateBMIStatus" })
 	public String calculateBMIStatus(
-			@Param(value = "{\"bmi\":\"double\",\"yearMonth\":\"String\",\"gender\":\"String\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"bmi\":\"double\",\"yearMonth\":\"String\",\"gender\":\"String\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -975,7 +975,7 @@ public class CommonController {
 	@Operation(summary = "Update beneficiary status flag")
 	@PostMapping(value = { "/update/benDetailsAndSubmitToNurse" })
 	public String saveBeneficiaryVisitDetail(
-			@Param(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String comingRequest) {
 
 		OutputResponse response = new OutputResponse();
 		inputMapper = new InputMapper();
