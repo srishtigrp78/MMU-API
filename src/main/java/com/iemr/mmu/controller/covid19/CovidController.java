@@ -43,7 +43,7 @@ import com.iemr.mmu.service.covid19.Covid19Service;
 import com.iemr.mmu.service.covid19.Covid19ServiceImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
 
-import io.lettuce.core.dynamic.annotation.Param;
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 
 
@@ -96,8 +96,8 @@ public class CovidController {
 
 	/**
 	 * 
-	 * @param requestObj
-	 * @param Authorization
+	 * @ApiParam requestObj
+	 * @ApiParam Authorization
 	 * @return
 	 */
 	@CrossOrigin
@@ -131,7 +131,7 @@ public class CovidController {
 	@PostMapping(value = { "/getBenVisitDetailsFrmNurseCovid" })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenVisitDetailsFrmNurseCovid19(
-			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -156,7 +156,7 @@ public class CovidController {
 
 	/**
 	 * @Objective Fetching beneficiary history details enterted by nurse.
-	 * @param comingRequest
+	 * @ApiParam comingRequest
 	 * @return visit details in JSON format
 	 */
 	@CrossOrigin()
@@ -164,7 +164,7 @@ public class CovidController {
 	@PostMapping(value = { "/getBenCovid19HistoryDetails" })
 
 	public String getBenCovid19HistoryDetails(
-			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -188,7 +188,7 @@ public class CovidController {
 
 	/**
 	 * @Objective Fetching beneficiary vital details enterted by nurse.
-	 * @param comingRequest
+	 * @ApiParam comingRequest
 	 * @return visit details in JSON format
 	 */
 
@@ -196,7 +196,7 @@ public class CovidController {
 	@Operation(summary = "Get beneficiary covid 19 vital details from nurse NCD care")
 	@PostMapping(value = { "/getBenVitalDetailsFrmNurseCovid" })
 	public String getBenVitalDetailsFrmNurseNCDCare(
-			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -225,7 +225,7 @@ public class CovidController {
 	@PostMapping(value = { "/getBenCaseRecordFromDoctorCovid" })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenCaseRecordFromDoctorCovid19(
-			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -275,7 +275,7 @@ public class CovidController {
 
 	/**
 	 * 
-	 * @param requestObj
+	 * @ApiParam requestObj
 	 * @return success or failure response
 	 * @objective Replace NCD Care Vital Data entered by Nurse with the details
 	 *            entered by Doctor
@@ -307,7 +307,7 @@ public class CovidController {
 
 	/**
 	 * 
-	 * @param requestObj
+	 * @ApiParam requestObj
 	 * @return success or failure response
 	 * @objective Replace covid 19 doctor data for the doctor next visit
 	 */

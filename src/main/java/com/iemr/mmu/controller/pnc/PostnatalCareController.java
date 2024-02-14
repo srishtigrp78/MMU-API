@@ -39,7 +39,7 @@ import com.google.gson.JsonParser;
 import com.iemr.mmu.service.pnc.PNCServiceImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
 
-import io.lettuce.core.dynamic.annotation.Param;
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 
 
@@ -60,7 +60,7 @@ public class PostnatalCareController {
 
 	/**
 	 * @Objective Saving PNC nurse data
-	 * @param requestObj
+	 * @ApiParam requestObj
 	 * @return success or failure response
 	 */
 
@@ -95,7 +95,7 @@ public class PostnatalCareController {
 
 	/**
 	 * @Objective Saving PNC doctor data
-	 * @param requestObj
+	 * @ApiParam requestObj
 	 * @return success or failure response
 	 */
 
@@ -130,7 +130,7 @@ public class PostnatalCareController {
 	@PostMapping(value = { "/getBenVisitDetailsFrmNursePNC" })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenVisitDetailsFrmNursePNC(
-			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -155,7 +155,7 @@ public class PostnatalCareController {
 
 	/**
 	 * @Objective Fetching Beneficiary PNC Care data entered by nurse
-	 * @param comingRequest
+	 * @ApiParam comingRequest
 	 * @return PNC Care data in JSON format
 	 */
 	@CrossOrigin()
@@ -163,7 +163,7 @@ public class PostnatalCareController {
 	@PostMapping(value = { "/getBenPNCDetailsFrmNursePNC" })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenPNCDetailsFrmNursePNC(
-			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -188,7 +188,7 @@ public class PostnatalCareController {
 
 	/**
 	 * @Objective Fetching Beneficiary history data entered by nurse
-	 * @param comingRequest
+	 * @ApiParam comingRequest
 	 * @return history data in JSON format
 	 */
 	@CrossOrigin()
@@ -196,7 +196,7 @@ public class PostnatalCareController {
 	@PostMapping(value = { "/getBenHistoryDetails" })
 
 	public String getBenHistoryDetails(
-			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -220,14 +220,14 @@ public class PostnatalCareController {
 
 	/**
 	 * @Objective Fetching Beneficiary vital data entered by nurse
-	 * @param comingRequest
+	 * @ApiParam comingRequest
 	 * @return vital data in JSON format
 	 */
 	@CrossOrigin()
 	@Operation(summary = "Get PNC beneficiary vital details from nurse")
 	@PostMapping(value = { "/getBenVitalDetailsFrmNurse" })
 	public String getBenVitalDetailsFrmNurse(
-			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -252,7 +252,7 @@ public class PostnatalCareController {
 
 	/**
 	 * @Objective Fetching Beneficiary examination data entered by nurse
-	 * @param comingRequest
+	 * @ApiParam comingRequest
 	 * @return examination data in JSON format
 	 */
 	@CrossOrigin()
@@ -260,7 +260,7 @@ public class PostnatalCareController {
 	@PostMapping(value = { "/getBenExaminationDetailsPNC" })
 
 	public String getBenExaminationDetailsPNC(
-			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -284,7 +284,7 @@ public class PostnatalCareController {
 
 	/**
 	 * @Objective Fetching Beneficiary doctor data
-	 * @param comingRequest
+	 * @ApiParam comingRequest
 	 * @return doctor data in JSON format
 	 */
 	@CrossOrigin()
@@ -292,7 +292,7 @@ public class PostnatalCareController {
 	@PostMapping(value = { "/getBenCaseRecordFromDoctorPNC" })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenCaseRecordFromDoctorPNC(
-			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -341,7 +341,7 @@ public class PostnatalCareController {
 
 	/**
 	 * 
-	 * @param requestObj
+	 * @ApiParam requestObj
 	 * @return success or failure response
 	 * @objective Replace PNC History Data entered by Nurse with the details entered
 	 *            by Doctor
@@ -373,7 +373,7 @@ public class PostnatalCareController {
 
 	/**
 	 * 
-	 * @param requestObj
+	 * @ApiParam requestObj
 	 * @return success or failure response
 	 * @objective Replace PNC Vital Data entered by Nurse with the details entered
 	 *            by Doctor
@@ -405,7 +405,7 @@ public class PostnatalCareController {
 
 	/**
 	 * 
-	 * @param requestObj
+	 * @ApiParam requestObj
 	 * @return success or failure response
 	 * @objective Replace PNC Examination Data entered by Nurse with the details
 	 *            entered by Doctor

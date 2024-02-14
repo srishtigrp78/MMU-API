@@ -43,7 +43,7 @@ import com.iemr.mmu.service.cancerScreening.CSServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
-import io.lettuce.core.dynamic.annotation.Param;
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 
 
@@ -64,7 +64,7 @@ public class CancerScreeningController {
 
 	/**
 	 * @Objective Save Cancer Screening data for nurse.
-	 * @param JSON requestObj
+	 * @ApiParam JSON requestObj
 	 * @return success or failure response
 	 */
 
@@ -105,7 +105,7 @@ public class CancerScreeningController {
 
 	/**
 	 * @Objective Save Cancer Screening data for doctor.
-	 * @param JSON requestObj
+	 * @ApiParam JSON requestObj
 	 * @return success or failure response
 	 */
 
@@ -140,7 +140,7 @@ public class CancerScreeningController {
 	@Operation(summary = "Get beneficiary visit details from nurse screen")
 	@PostMapping(value = { "/getBenDataFrmNurseToDocVisitDetailsScreen" })
 	public String getBenDataFrmNurseScrnToDocScrnVisitDetails(
-			@Param(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -163,7 +163,7 @@ public class CancerScreeningController {
 
 	/**
 	 * @Objective Fetching beneficiary history details enterted by nurse.
-	 * @param benRegID and benVisitID
+	 * @ApiParam benRegID and benVisitID
 	 * @return history details in JSON format
 	 */
 
@@ -171,7 +171,7 @@ public class CancerScreeningController {
 	@Operation(summary = "Get beneficiary cancer history details from nurse screen")
 	@PostMapping(value = { "/getBenDataFrmNurseToDocHistoryScreen" })
 	public String getBenDataFrmNurseScrnToDocScrnHistory(
-			@Param(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
@@ -193,7 +193,7 @@ public class CancerScreeningController {
 
 	/**
 	 * @Objective Fetching beneficiary vital details entered by nurse.
-	 * @param benRegID and benVisitID
+	 * @ApiParam benRegID and benVisitID
 	 * @return vital details in JSON format
 	 */
 
@@ -201,7 +201,7 @@ public class CancerScreeningController {
 	@Operation(summary = "Get beneficiary vital details from nurse screen")
 	@PostMapping(value = { "/getBenDataFrmNurseToDocVitalScreen" })
 	public String getBenDataFrmNurseScrnToDocScrnVital(
-			@Param(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
@@ -224,7 +224,7 @@ public class CancerScreeningController {
 
 	/**
 	 * @Objective Fetching beneficiary examination details entered by nurse.
-	 * @param benRegID and benVisitID
+	 * @ApiParam benRegID and benVisitID
 	 * @return examination details in JSON format
 	 */
 
@@ -232,7 +232,7 @@ public class CancerScreeningController {
 	@Operation(summary = "Get beneficiary examination details from nurse screen")
 	@PostMapping(value = { "/getBenDataFrmNurseToDocExaminationScreen" })
 	public String getBenDataFrmNurseScrnToDocScrnExamination(
-			@Param(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
@@ -255,7 +255,7 @@ public class CancerScreeningController {
 	/**
 	 * @Objective Fetch beneficiary previous family history details enterted by
 	 *            nurse.
-	 * @param benRegID
+	 * @ApiParam benRegID
 	 * @return previous family history details in JSON format
 	 */
 
@@ -263,7 +263,7 @@ public class CancerScreeningController {
 	@Operation(summary = "Get beneficiary cancer family history")
 	@PostMapping(value = { "/getBenCancerFamilyHistory" })
 	public String getBenCancerFamilyHistory(
-			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -288,7 +288,7 @@ public class CancerScreeningController {
 	/**
 	 * @Objective Fetch beneficiary previous personal history details enterted by
 	 *            nurse.
-	 * @param benRegID
+	 * @ApiParam benRegID
 	 * @return previous personal history details in JSON format
 	 */
 
@@ -296,7 +296,7 @@ public class CancerScreeningController {
 	@Operation(summary = "Get beneficiary cancer personal history")
 	@PostMapping(value = { "/getBenCancerPersonalHistory" })
 	public String getBenCancerPersonalHistory(
-			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -321,7 +321,7 @@ public class CancerScreeningController {
 	/**
 	 * @Objective Fetch beneficiary previous personal diet history details enterted
 	 *            by nurse.
-	 * @param benRegID
+	 * @ApiParam benRegID
 	 * @return previous personal history details in JSON format
 	 */
 
@@ -329,7 +329,7 @@ public class CancerScreeningController {
 	@Operation(summary = "Get beneficiary cancer personal diet history")
 	@PostMapping(value = { "/getBenCancerPersonalDietHistory" })
 	public String getBenCancerPersonalDietHistory(
-			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -354,7 +354,7 @@ public class CancerScreeningController {
 	/**
 	 * @Objective Fetch beneficiary previous obstetric history details enterted by
 	 *            nurse.
-	 * @param benRegID
+	 * @ApiParam benRegID
 	 * @return previous obstetric history details in JSON format
 	 */
 
@@ -362,7 +362,7 @@ public class CancerScreeningController {
 	@Operation(summary = "Get beneficiary cancer obstetric history")
 	@PostMapping(value = { "/getBenCancerObstetricHistory" })
 	public String getBenCancerObstetricHistory(
-			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -386,7 +386,7 @@ public class CancerScreeningController {
 
 	/**
 	 * @Objective Fetch beneficiary diagnosis details enterted by doctor.
-	 * @param benRegID
+	 * @ApiParam benRegID
 	 * @return doctor details in JSON format
 	 */
 
@@ -395,7 +395,7 @@ public class CancerScreeningController {
 	@PostMapping(value = { "/getBenCaseRecordFromDoctorCS" })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenCaseRecordFromDoctorCS(
-			@Param(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -421,7 +421,7 @@ public class CancerScreeningController {
 	@Operation(summary = "Update cancer screening history nurse data in doctor screen")
 	@PostMapping(value = { "/update/historyScreen" })
 	public String updateCSHistoryNurse(
-			@Param(value = "{\"historyDetails\": {\"familyHistory\":{\"diseases\": [{\"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", "
+			@ApiParam(value = "{\"historyDetails\": {\"familyHistory\":{\"diseases\": [{\"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", "
 					+ "\"providerServiceMapID\":\"Integer\", \"cancerDiseaseType\":\"String\", \"otherDiseaseType\":\"String\", \"familyMemberList\":\"List\", "
 					+ "\"createdBy\":\"String\"}]}, \"personalHistory\":{\"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\", \"providerServiceMapID\":\"Integer\", "
 					+ "\"tobaccoUse\":\"String\", \"startAge_year\":\"Integer\", \"endAge_year\":\"Integer\", \"typeOfTobaccoProductList\":\"List\", "
@@ -457,7 +457,7 @@ public class CancerScreeningController {
 
 	/**
 	 * 
-	 * @param requestObj
+	 * @ApiParam requestObj
 	 * @return success or failure response
 	 * @objective Replace Cancer Screening Vital Details entered by Nurse with the
 	 *            details entered by Doctor
@@ -467,7 +467,7 @@ public class CancerScreeningController {
 	@Operation(summary = "Update beneficiary vital detail")
 	@PostMapping(value = { "/update/vitalScreen" })
 	public String upodateBenVitalDetail(
-			@Param(value = "{\"ID\": \"Long\", \"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\","
+			@ApiParam(value = "{\"ID\": \"Long\", \"beneficiaryRegID\":\"Long\",\"benVisitID\":\"Long\","
 					+ "\"weight_Kg\":\"Double\", \"height_cm\":\"Double\", \"waistCircumference_cm\":\"Double\", \"bloodGlucose_Fasting\":\"Short\","
 					+ "\"bloodGlucose_Random\":\"Short\", \"bloodGlucose_2HrPostPrandial\":\"Short\", \"systolicBP_1stReading\":\"Short\", "
 					+ "\"diastolicBP_1stReading\":\"Short\", \"systolicBP_2ndReading\":\"Short\", \"diastolicBP_2ndReading\":\"Short\", "
@@ -495,7 +495,7 @@ public class CancerScreeningController {
 
 	/**
 	 * 
-	 * @param requestObj
+	 * @ApiParam requestObj
 	 * @return success or failure response
 	 * @objective Replace Cancer Screening examination Details entered by Nurse with
 	 *            the details entered by Doctor
@@ -526,7 +526,7 @@ public class CancerScreeningController {
 
 	/**
 	 * 
-	 * @param requestObj
+	 * @ApiParam requestObj
 	 * @return success or failure response
 	 * @objective update Cancer Diagnosis Details By Oncologist
 	 * 
@@ -536,7 +536,7 @@ public class CancerScreeningController {
 	@Operation(summary = "Update cancer diagnosis details by oncologist")
 	@PostMapping(value = { "/update/examinationScreen/diagnosis" })
 	public String updateCancerDiagnosisDetailsByOncologist(
-			@Param(value = "{\"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", \"visitCode\":\"Long\", "
+			@ApiParam(value = "{\"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", \"visitCode\":\"Long\", "
 					+ "\"provisionalDiagnosisOncologist\":\"String\", \"modifiedBy\":\"string\"}") @RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -559,7 +559,7 @@ public class CancerScreeningController {
 
 	/**
 	 * 
-	 * @param requestObj
+	 * @ApiParam requestObj
 	 * @return success or failure response
 	 * @objective Replace doctor data for the doctor next visit
 	 * 

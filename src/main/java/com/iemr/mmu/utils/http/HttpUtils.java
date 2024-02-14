@@ -25,7 +25,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 
-import jakarta.ws.rs.core.MediaType;
+import javax.ws.rs.core.MediaType;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

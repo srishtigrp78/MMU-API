@@ -21,21 +21,15 @@
 */
 package com.iemr.mmu.repo.doctor;
 
-import java.sql.Date;
-import java.util.List;
-
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.iemr.mmu.data.doctor.CancerLymphNodeDetails;
 import com.iemr.mmu.data.doctor.CancerOralExamination;
 @Repository
-@RestResource(exported = false)
 public interface CancerOralExaminationRepo extends CrudRepository<CancerOralExamination, Long> {
 	
 	@Query(" SELECT c from CancerOralExamination c WHERE c.beneficiaryRegID = :benRegID "

@@ -24,19 +24,17 @@ package com.iemr.mmu.repo.nurse.pnc;
 import java.sql.Date;
 import java.util.ArrayList;
 
-import jakarta.transaction.Transactional;
-
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
 
 import com.iemr.mmu.data.pnc.PNCDiagnosis;
 
+import jakarta.transaction.Transactional;
+
 @Repository
-@RestResource(exported = false)
 public interface PNCDiagnosisRepo extends CrudRepository<PNCDiagnosis, Long> {
 
 	@Query(" SELECT beneficiaryRegID, benVisitID, providerServiceMapID, prescriptionID, provisionalDiagnosis, "

@@ -36,7 +36,7 @@ import com.iemr.mmu.service.snomedct.SnomedService;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
-import io.lettuce.core.dynamic.annotation.Param;
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 
 
@@ -55,7 +55,7 @@ public class SnomedController {
 	@CrossOrigin
 	@Operation(summary = "Retrives Snomed CT record")
 	@PostMapping(value = "/getSnomedCTRecord", consumes = "application/json", produces = "application/json", headers = "Authorization")
-	public String getSnomedCTRecord(@Param(value = "{\"term\":\"String\"}") @RequestBody String request) {
+	public String getSnomedCTRecord(@ApiParam(value = "{\"term\":\"String\"}") @RequestBody String request) {
 		OutputResponse output = new OutputResponse();
 		try {
 
@@ -81,7 +81,7 @@ public class SnomedController {
 	@CrossOrigin
 	@Operation(summary = "Retrives Snomed CT record list")
 	@PostMapping(value = "/getSnomedCTRecordList", consumes = "application/json", produces = "application/json", headers = "Authorization")
-	public String getSnomedCTRecordList(@Param(value = "{\"term\":\"String\"}") @RequestBody String request) {
+	public String getSnomedCTRecordList(@ApiParam(value = "{\"term\":\"String\"}") @RequestBody String request) {
 		OutputResponse output = new OutputResponse();
 		try {
 

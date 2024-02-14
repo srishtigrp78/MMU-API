@@ -41,7 +41,7 @@ import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
-import io.lettuce.core.dynamic.annotation.Param;
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 
 
@@ -63,7 +63,7 @@ public class QuickConsultController {
 
 	/**
 	 * 
-	 * @param requestObj
+	 * @ApiParam requestObj
 	 * @return success or failure response
 	 * @objective first data will be pushed to BenVisitDetails Table and benVisitID
 	 *            will be generated and then this benVisitID will be patched with
@@ -99,7 +99,7 @@ public class QuickConsultController {
 
 	/**
 	 * 
-	 * @param requestObj
+	 * @ApiParam requestObj
 	 * @return success or failure response
 	 * @objective Save beneficiary data for doctor quick consult - QC.
 	 */
@@ -108,7 +108,7 @@ public class QuickConsultController {
 	@Operation(summary = "Save quick consultation detail for doctor")
 	@PostMapping(value = { "/save/doctorData" })
 	public String saveQuickConsultationDetail(
-			@Param(value = "{\"quickConsultation\":{\"beneficiaryRegID\":\"Long\",\"providerServiceMapID\": \"Integer\", \"benVisitID\":\"Long\", \"benChiefComplaint\":[{\"chiefComplaintID\":\"Integer\", "
+			@ApiParam(value = "{\"quickConsultation\":{\"beneficiaryRegID\":\"Long\",\"providerServiceMapID\": \"Integer\", \"benVisitID\":\"Long\", \"benChiefComplaint\":[{\"chiefComplaintID\":\"Integer\", "
 					+ "\"chiefComplaint\":\"String\", \"duration\":\"Integer\", \"unitOfDuration\":\"String\"}], \"description\":\"String\""
 					+ "\"clinicalObservation\":\"String\", \"externalInvestigation\":\"String\", \"diagnosisProvided\":\"String\", \"instruction\":\"String\", \"remarks\":\"String\","
 					+ "\"prescribedDrugs\":[{\"drugForm\":\"String\", \"drugTradeOrBrandName\":\"String\", \"genericDrugName\":\"String\", \"drugStrength\":\"String\", "
@@ -146,7 +146,7 @@ public class QuickConsultController {
 	@Operation(summary = "Get quick consult beneficiary visit details")
 	@PostMapping(value = { "/getBenDataFrmNurseToDocVisitDetailsScreen" })
 	public String getBenDataFrmNurseScrnToDocScrnVisitDetails(
-			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
@@ -170,7 +170,7 @@ public class QuickConsultController {
 	/**
 	 * @Objective Fetching beneficiary vital data filled by Nurse for Doctor
 	 *            screen...
-	 * @param benRegID and benVisitID
+	 * @ApiParam benRegID and benVisitID
 	 * @return visit details in JSON format
 	 */
 
@@ -178,7 +178,7 @@ public class QuickConsultController {
 	@Operation(summary = "Get quick consult beneficiary vital details")
 	@PostMapping(value = { "/getBenVitalDetailsFrmNurse" })
 	public String getBenVitalDetailsFrmNurse(
-			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -203,7 +203,7 @@ public class QuickConsultController {
 
 	/**
 	 * @Objective Fetching beneficiary doctor data
-	 * @param benRegID and benVisitID
+	 * @ApiParam benRegID and benVisitID
 	 * @return visit details in JSON format
 	 */
 	@CrossOrigin()
@@ -211,7 +211,7 @@ public class QuickConsultController {
 	@PostMapping(value = { "/getBenCaseRecordFromDoctorQuickConsult" })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenCaseRecordFromDoctorQuickConsult(
-			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
