@@ -19,11 +19,24 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see https://www.gnu.org/licenses/.
 */
-/**
- * 
- */
-/**
- * @author NE298657
- *
- */
 package com.iemr.mmu.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import com.iemr.mmu.utils.http.HttpInterceptor;
+
+
+@Configuration
+public class HttpInterceptorConfig implements WebMvcConfigurer {
+
+	@Autowired
+	private HttpInterceptor httpInterceptor;
+
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(httpInterceptor);
+	}
+}

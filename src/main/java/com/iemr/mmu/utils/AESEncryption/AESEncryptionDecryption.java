@@ -34,7 +34,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.iemr.mmu.utils.config.ConfigProperties;
 
 /*
 *
@@ -47,7 +46,7 @@ DE40034072 - Internal path disclosure - AES Encryption and Decryption
 public class AESEncryptionDecryption {
 	
 
-	private  Logger logger = LoggerFactory.getLogger(ConfigProperties.class);
+	private  Logger logger = LoggerFactory.getLogger(AESEncryptionDecryption.class);
 	private static SecretKeySpec secretKey;
 	private  byte[] key;
 	final String secret = "amrith$%2022@&*piramal@@swasthya!#";

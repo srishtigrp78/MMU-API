@@ -21,22 +21,20 @@
 */
 package com.iemr.mmu.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import com.iemr.mmu.utils.http.HTTPRequestInterceptor;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 
 @Configuration
-public class InterceptorConfig implements WebMvcConfigurer {
+public class RedisConfig {
 
-	@Autowired
-	HTTPRequestInterceptor requestInterceptor;
+	private @Value("${spring.redis.host}") String redisHost;
+	private @Value("${spring.redis.port}") int redisPort;
 
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		 registry.addInterceptor(new BlockingHttpMethodInterceptor())
-         .addPathPatterns("/**"); 
+	@Bean
+	LettuceConnectionFactory lettuceConnectionFactory() {
+		return new LettuceConnectionFactory(redisHost, redisPort);
 	}
+
 }
