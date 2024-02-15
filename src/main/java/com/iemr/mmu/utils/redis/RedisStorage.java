@@ -37,6 +37,7 @@ import com.google.gson.JsonParser;
 
 @Component
 public class RedisStorage {
+
 	@Autowired
 	private LettuceConnectionFactory connection;
 
@@ -93,5 +94,4 @@ public class RedisStorage {
 
 		}
 	}
-
 }

@@ -21,8 +21,6 @@
 */
 package com.iemr.mmu.utils.http;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.MediaType;
 
 import org.slf4j.Logger;
@@ -32,13 +30,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.iemr.mmu.utils.exception.CustomExceptionResponse;
 import com.iemr.mmu.utils.redis.RedisStorage;
-import com.iemr.mmu.utils.response.OutputResponse;
-import com.iemr.mmu.utils.sessionobject.SessionObject;
-import com.iemr.mmu.utils.validator.Validator;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Component
-public class HTTPRequestInterceptor implements HandlerInterceptor {
+public class HttpInterceptor implements HandlerInterceptor {
 	Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 	@Autowired
 	private RedisStorage redisStorage;
@@ -88,11 +87,10 @@ public class HTTPRequestInterceptor implements HandlerInterceptor {
 			} catch (Exception e) {
 				logger.error(e.getLocalizedMessage());
 
-				/*
-				 * CustomExceptionResponse output = new CustomExceptionResponse();
-				 * output.setError(5002, e.getLocalizedMessage());
-				 * response.getOutputStream().print(output.toString());
-				 */
+				CustomExceptionResponse output = new CustomExceptionResponse();
+				output.setError(5002, e.getLocalizedMessage());
+				response.getOutputStream().print(output.toString());
+
 				response.setContentType(MediaType.APPLICATION_JSON);
 
 				// response.setContentLength(e.getLocalizedMessage().length());
@@ -128,4 +126,5 @@ public class HTTPRequestInterceptor implements HandlerInterceptor {
 		logger.info("http interceptor - after completion");
 
 	}
+
 }

@@ -21,16 +21,31 @@
 */
 package com.iemr.mmu.utils;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration;
+
+import com.iemr.mmu.utils.redis.RedisStorage;
 
 @EnableAutoConfiguration
 public class CommonMain {
-	/*
-	 * @Bean public ConfigProperties configProperties() { return new
-	 * ConfigProperties(); }
-	 * 
-	 * @Bean public RedisHttpSessionConfiguration redisSession() { return new
-	 * RedisHttpSessionConfiguration(); }
-	 * 
-	 * @Bean public RedisStorage redisStorage() { return new RedisStorage(); }
-	 */}
+	
+	private @Value("${spring.redis.host}") String redisHost;
+	private @Value("${spring.redis.port}") int redisPort;
+
+	
+	@Bean
+	public RedisHttpSessionConfiguration redisSession() {
+		return new RedisHttpSessionConfiguration();
+	}
+	
+	  @Bean public LettuceConnectionFactory connectionFactory() { return new
+	  LettuceConnectionFactory(redisHost, redisPort); }
+	 
+	@Bean
+	public RedisStorage redisStorage() {
+		return new RedisStorage();
+	}
+	}
