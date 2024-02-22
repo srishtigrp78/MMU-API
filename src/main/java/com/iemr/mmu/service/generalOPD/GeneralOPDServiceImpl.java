@@ -32,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.BenAllergyHistory;
 import com.iemr.mmu.data.anc.BenChildDevelopmentHistory;
@@ -134,8 +135,9 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		Long examtnSaveSuccessFlag = null;
 		Long saveSuccessFlag = null;
 		Map<String, Long> visitIdAndCodeMap = null;
-		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
-
+		
+		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull() && !requestOBJ.getAsJsonObject("visitDetails").isEmpty()) {
+			 
 			CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
 			
 			Short nurseFlag = 9;
