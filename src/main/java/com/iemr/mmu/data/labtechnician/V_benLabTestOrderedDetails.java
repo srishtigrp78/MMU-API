@@ -23,6 +23,8 @@ package com.iemr.mmu.data.labtechnician;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -32,6 +34,7 @@ import com.iemr.mmu.annotation.sqlinjection.SQLInjectionSafe;
 @Entity
 @Table(name = "v_benprocedurecomponentdetails")
 public class V_benLabTestOrderedDetails {
+	@GeneratedValue(strategy = GenerationType.IDENTITY )
 	@Id
 	private String id;
 	

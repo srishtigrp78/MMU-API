@@ -23,6 +23,8 @@ package com.iemr.mmu.data.masterdata.doctor;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -32,6 +34,7 @@ import com.google.gson.annotations.Expose;
 @Table(name = "v_drugforprescription")
 public class V_DrugPrescription {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY )
 	@Expose
 	@Column(name = "id")
 	private Integer id;

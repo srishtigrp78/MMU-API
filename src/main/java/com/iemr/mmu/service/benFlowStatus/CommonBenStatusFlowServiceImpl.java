@@ -188,11 +188,11 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 		if (obj.getBenPhoneMaps() != null && obj.getBenPhoneMaps().size() > 0
 				&& obj.getBenPhoneMaps().get(0).getPhoneNo() != null)
 			obj.setPreferredPhoneNum(obj.getBenPhoneMaps().get(0).getPhoneNo());
-
-		if (obj.getGenderID() == null)
+		
+		if (obj.getGenderID() == null && null != obj.getM_gender())
 			obj.setGenderID(obj.getM_gender().getGenderID());
-
-		if (obj.getGenderName() == null)
+ 
+		if (obj.getGenderName() == null && obj.getM_gender() != null)
 			obj.setGenderName(obj.getM_gender().getGenderName());
 
 		String ageDetails = "";

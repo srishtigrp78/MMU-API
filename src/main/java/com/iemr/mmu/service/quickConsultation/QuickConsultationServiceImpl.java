@@ -35,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
@@ -47,6 +48,7 @@ import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.data.tele_consultation.TCRequestModel;
 import com.iemr.mmu.data.tele_consultation.TcSpecialistSlotBookingRequestOBJ;
 import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
+import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.nurse.BenPhysicalVitalRepo;
 import com.iemr.mmu.repo.quickConsultation.BenChiefComplaintRepo;
 import com.iemr.mmu.repo.quickConsultation.BenClinicalObservationsRepo;
@@ -112,7 +114,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	public void setCommonNurseServiceImpl(CommonNurseServiceImpl commonNurseServiceImpl) {
 		this.commonNurseServiceImpl = commonNurseServiceImpl;
 	}
-	
+
 	@Autowired
 	private BenPhysicalVitalRepo benPhysicalVitalRepo;
 
@@ -158,6 +160,8 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	public void setExternalTestOrderRepo(ExternalTestOrderRepo externalTestOrderRepo) {
 		this.externalTestOrderRepo = externalTestOrderRepo;
 	}
+	@Autowired
+	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
 
 	@Override
 	public Long saveBeneficiaryChiefComplaint(JsonObject caseSheet) {
@@ -260,59 +264,64 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 
 			BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(jsnOBJ.get("visitDetails"),
 					BeneficiaryVisitDetail.class);
-			int i = commonNurseServiceImpl.getMaxCurrentdate(benVisitDetailsOBJ.getBeneficiaryRegID(),
-					benVisitDetailsOBJ.getVisitReason(), benVisitDetailsOBJ.getVisitCategory());
-			if (i < 1) {
-				Long benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
+			Short nurseFlag = 9;
+			BeneficiaryFlowStatus data = beneficiaryFlowStatusRepo.checkExistData(nurseUtilityClass.getBenFlowID(),
+					nurseFlag);
+			if (data == null) {
+				int i = commonNurseServiceImpl.getMaxCurrentdate(benVisitDetailsOBJ.getBeneficiaryRegID(),
+						benVisitDetailsOBJ.getVisitReason(), benVisitDetailsOBJ.getVisitCategory());
+				if (i < 1) {
+					Long benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
 
-			// 11-06-2018 visit code
-			Long benVisitCode = commonNurseServiceImpl.generateVisitCode(benVisitID, nurseUtilityClass.getVanID(),
-					nurseUtilityClass.getSessionID());
+					// 11-06-2018 visit code
+					Long benVisitCode = commonNurseServiceImpl.generateVisitCode(benVisitID,
+							nurseUtilityClass.getVanID(), nurseUtilityClass.getSessionID());
 
-			// Getting benflowID for ben status update
-			Long benFlowID = null;
-			// if (jsnOBJ.has("benFlowID")) {
-			// benFlowID = jsnOBJ.get("benFlowID").getAsLong();
-			// }
+					// Getting benflowID for ben status update
+					Long benFlowID = null;
+					// if (jsnOBJ.has("benFlowID")) {
+					// benFlowID = jsnOBJ.get("benFlowID").getAsLong();
+					// }
 
-			// Above if block code replaced by below line
-			benFlowID = nurseUtilityClass.getBenFlowID();
+					// Above if block code replaced by below line
+					benFlowID = nurseUtilityClass.getBenFlowID();
 
-			if (benVisitID != null && benVisitID > 0) {
-				BenAnthropometryDetail benAnthropometryDetail = InputMapper.gson().fromJson(jsnOBJ.get("vitalsDetails"),
-						BenAnthropometryDetail.class);
-				benAnthropometryDetail.setBenVisitID(benVisitID);
-				benAnthropometryDetail.setVisitCode(benVisitCode);
-				Long benAnthropometryID = commonNurseServiceImpl
-						.saveBeneficiaryPhysicalAnthropometryDetails(benAnthropometryDetail);
-				BenPhysicalVitalDetail benPhysicalVitalDetail = InputMapper.gson().fromJson(jsnOBJ.get("vitalsDetails"),
-						BenPhysicalVitalDetail.class);
-				benPhysicalVitalDetail.setBenVisitID(benVisitID);
-				benPhysicalVitalDetail.setVisitCode(benVisitCode);
-				Long benPhysicalVitalID = commonNurseServiceImpl
-						.saveBeneficiaryPhysicalVitalDetails(benPhysicalVitalDetail);
-				if (benAnthropometryID != null && benAnthropometryID > 0 && benPhysicalVitalID != null
-						&& benPhysicalVitalID > 0) {
-					// Integer i = commonNurseServiceImpl.updateBeneficiaryStatus('N',
-					// benVisitDetailsOBJ.getBeneficiaryRegID());
+					if (benVisitID != null && benVisitID > 0) {
+						BenAnthropometryDetail benAnthropometryDetail = InputMapper.gson()
+								.fromJson(jsnOBJ.get("vitalsDetails"), BenAnthropometryDetail.class);
+						benAnthropometryDetail.setBenVisitID(benVisitID);
+						benAnthropometryDetail.setVisitCode(benVisitCode);
+						Long benAnthropometryID = commonNurseServiceImpl
+								.saveBeneficiaryPhysicalAnthropometryDetails(benAnthropometryDetail);
+						BenPhysicalVitalDetail benPhysicalVitalDetail = InputMapper.gson()
+								.fromJson(jsnOBJ.get("vitalsDetails"), BenPhysicalVitalDetail.class);
+						benPhysicalVitalDetail.setBenVisitID(benVisitID);
+						benPhysicalVitalDetail.setVisitCode(benVisitCode);
+						Long benPhysicalVitalID = commonNurseServiceImpl
+								.saveBeneficiaryPhysicalVitalDetails(benPhysicalVitalDetail);
+						if (benAnthropometryID != null && benAnthropometryID > 0 && benPhysicalVitalID != null
+								&& benPhysicalVitalID > 0) {
+							// Integer i = commonNurseServiceImpl.updateBeneficiaryStatus('N',
+							// benVisitDetailsOBJ.getBeneficiaryRegID());
 
-					returnOBJ = 1;
+							returnOBJ = 1;
 
-					/**
-					 * We have to write new code to update ben status flow new logic
-					 */
+							/**
+							 * We have to write new code to update ben status flow new logic
+							 */
 
-					int j = updateBenStatusFlagAfterNurseSaveSuccess(benVisitDetailsOBJ, benVisitID, benFlowID,
-							benVisitCode, nurseUtilityClass.getVanID());
+							int j = updateBenStatusFlagAfterNurseSaveSuccess(benVisitDetailsOBJ, benVisitID, benFlowID,
+									benVisitCode, nurseUtilityClass.getVanID());
 
+						} else {
+
+						}
+					} else {
+						// Error in beneficiary visit creation ...
+					}
 				} else {
-
+					return new Integer(3);
 				}
-			} else{
-				//Error in beneficiary visit creation ...
-			}
-			}else {
-				return new Integer(3);
 			}
 		}
 		return returnOBJ;
@@ -434,26 +443,22 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 			investigationSuccessFlag = 1;
 		}
 
-		
-		//Updating Vitals RBS Test Result
+		// Updating Vitals RBS Test Result
 		BenPhysicalVitalDetail physicalVitalDet = InputMapper.gson().fromJson(quickConsultDoctorOBJ,
 				BenPhysicalVitalDetail.class);
 		int r = 0;
-		if(quickConsultDoctorOBJ.has("rbsTestResult") || quickConsultDoctorOBJ.has("rbsTestRemarks"))
-		{
-			
-			r = benPhysicalVitalRepo.updatePhysicalVitalDetailsQCDoctor(physicalVitalDet.getRbsTestResult(), physicalVitalDet.getRbsTestRemarks(),
-					                         physicalVitalDet.getBeneficiaryRegID(),physicalVitalDet.getVisitCode());
-			if(r>0)
-			{
-				vitalsRBSTestFlag=1;
+		if (quickConsultDoctorOBJ.has("rbsTestResult") || quickConsultDoctorOBJ.has("rbsTestRemarks")) {
+
+			r = benPhysicalVitalRepo.updatePhysicalVitalDetailsQCDoctor(physicalVitalDet.getRbsTestResult(),
+					physicalVitalDet.getRbsTestRemarks(), physicalVitalDet.getBeneficiaryRegID(),
+					physicalVitalDet.getVisitCode());
+			if (r > 0) {
+				vitalsRBSTestFlag = 1;
 			}
+		} else {
+			vitalsRBSTestFlag = 1;
 		}
-		else
-		{
-			vitalsRBSTestFlag=1;
-		}
-		
+
 		// check if all data updated successfully
 		if ((null != benChiefComplaintID && benChiefComplaintID > 0)
 				&& (null != clinicalObservationID && clinicalObservationID > 0)
@@ -538,7 +543,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		Long prescriptionID = null;
 		Long prescribedDrugSuccessFlag = null;
 		Long labTestOrderSuccessFlag = null;
-		Long vitalsRBSTestFlag=null;
+		Long vitalsRBSTestFlag = null;
 
 		Integer tcRequestStatusFlag = null;
 
@@ -648,25 +653,22 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		} else {
 			labTestOrderSuccessFlag = new Long(1);
 		}
-		
-		//Updating Vitals RBS Test Result
-				BenPhysicalVitalDetail physicalVitalDet = InputMapper.gson().fromJson(quickConsultDoctorOBJ,
-						BenPhysicalVitalDetail.class);
-				int r = 0;
-				if(quickConsultDoctorOBJ.has("rbsTestResult") || quickConsultDoctorOBJ.has("rbsTestRemarks"))
-				{
-					
-					r = benPhysicalVitalRepo.updatePhysicalVitalDetailsQCDoctor(physicalVitalDet.getRbsTestResult(), physicalVitalDet.getRbsTestRemarks(),
-							                         physicalVitalDet.getBeneficiaryRegID(),physicalVitalDet.getVisitCode());
-					if(r>0)
-					{
-						vitalsRBSTestFlag=new Long(1);
-					}
-				}
-				else
-				{
-					vitalsRBSTestFlag=new Long(1);
-				}
+
+		// Updating Vitals RBS Test Result
+		BenPhysicalVitalDetail physicalVitalDet = InputMapper.gson().fromJson(quickConsultDoctorOBJ,
+				BenPhysicalVitalDetail.class);
+		int r = 0;
+		if (quickConsultDoctorOBJ.has("rbsTestResult") || quickConsultDoctorOBJ.has("rbsTestRemarks")) {
+
+			r = benPhysicalVitalRepo.updatePhysicalVitalDetailsQCDoctor(physicalVitalDet.getRbsTestResult(),
+					physicalVitalDet.getRbsTestRemarks(), physicalVitalDet.getBeneficiaryRegID(),
+					physicalVitalDet.getVisitCode());
+			if (r > 0) {
+				vitalsRBSTestFlag = new Long(1);
+			}
+		} else {
+			vitalsRBSTestFlag = new Long(1);
+		}
 
 		if ((null != benChiefComplaintID && benChiefComplaintID > 0)
 				&& (null != clinicalObservationID && clinicalObservationID > 0)
