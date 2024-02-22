@@ -56,6 +56,7 @@ import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
 import com.iemr.mmu.data.anc.WrapperFemaleObstetricHistory;
 import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
+import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
@@ -66,6 +67,7 @@ import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.data.tele_consultation.TCRequestModel;
 import com.iemr.mmu.data.tele_consultation.TcSpecialistSlotBookingRequestOBJ;
 import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
+import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.service.anc.Utility;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
@@ -120,6 +122,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	public void setCommonNurseServiceImpl(CommonNurseServiceImpl commonNurseServiceImpl) {
 		this.commonNurseServiceImpl = commonNurseServiceImpl;
 	}
+	@Autowired
+	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
 
 	/// --------------- start of saving nurse data ------------------------
 	@Override
@@ -129,12 +133,18 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		Long vitalSaveSuccessFlag = null;
 		Long examtnSaveSuccessFlag = null;
 		Long saveSuccessFlag = null;
+		Map<String, Long> visitIdAndCodeMap = null;
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
 
 			CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
+			
+			Short nurseFlag = 9;
+			BeneficiaryFlowStatus data = beneficiaryFlowStatusRepo.checkExistData(nurseUtilityClass.getBenFlowID(), nurseFlag);
+			if(data == null) {
 			// Call method to save visit details data
-			Map<String, Long> visitIdAndCodeMap = saveBenVisitDetails(requestOBJ.getAsJsonObject("visitDetails"),
+			visitIdAndCodeMap = saveBenVisitDetails(requestOBJ.getAsJsonObject("visitDetails"),
 					nurseUtilityClass);
+			}
 
 			Long benVisitID = null;
 			Long benVisitCode = null;

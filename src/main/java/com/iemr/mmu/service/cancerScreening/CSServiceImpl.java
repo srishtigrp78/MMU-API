@@ -142,6 +142,7 @@ public class CSServiceImpl implements CSService {
 	@Transactional(rollbackFor = Exception.class)
 	public Long saveCancerScreeningNurseData(JsonObject requestOBJ, String Authorization) throws Exception {
 		Long nurseDataSuccessFlag = null;
+		Map<String, Long> visitIdAndCodeMap = null;
 		// check if visit details data is not null
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
 			// Call method to save visit details data
@@ -149,8 +150,12 @@ public class CSServiceImpl implements CSService {
 			CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
 			BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(requestOBJ.get("visitDetails"),
 					BeneficiaryVisitDetail.class);
+			Short nurseFlag = 9;
+			BeneficiaryFlowStatus data = beneficiaryFlowStatusRepo.checkExistData(nurseUtilityClass.getBenFlowID(), nurseFlag);
+			if(data == null) {
 
-			Map<String, Long> visitIdAndCodeMap = saveBenVisitDetails(benVisitDetailsOBJ, nurseUtilityClass);
+			visitIdAndCodeMap = saveBenVisitDetails(benVisitDetailsOBJ, nurseUtilityClass);
+			}
 
 			Long benVisitID = null;
 			Long benVisitCode = null;

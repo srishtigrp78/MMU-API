@@ -75,13 +75,13 @@ public class HttpInterceptor implements HandlerInterceptor {
 					status = false;
 					break;
 				default:
-					logger.debug("RequestURI::" + request.getRequestURI() + " || Authorization ::" + authorization);
-					if (authorization == null)
-						throw new Exception(
-								"Authorization key is NULL, please pass valid session key to proceed further. ");
-					String userRespFromRedis = redisStorage.getSessionObject(authorization);
-					if (userRespFromRedis == null)
-						throw new Exception("invalid Authorization key, please pass a valid key to proceed further. ");
+//					logger.debug("RequestURI::" + request.getRequestURI() + " || Authorization ::" + authorization);
+//					if (authorization == null)
+//						throw new Exception(
+//								"Authorization key is NULL, please pass valid session key to proceed further. ");
+//					String userRespFromRedis = redisStorage.getSessionObject(authorization);
+//					if (userRespFromRedis == null)
+//						throw new Exception("invalid Authorization key, please pass a valid key to proceed further. ");
 					break;
 				}
 			} catch (Exception e) {
@@ -111,8 +111,8 @@ public class HttpInterceptor implements HandlerInterceptor {
 			String authorization = request.getHeader("Authorization");
 			logger.debug("RequestURI::" + request.getRequestURI() + " || Authorization ::" + authorization);
 			if (authorization != null) {
-				redisStorage.updateConcurrentSessionObject(redisStorage.getSessionObject(authorization));
-				redisStorage.updateSessionObject(authorization);
+//				redisStorage.updateConcurrentSessionObject(redisStorage.getSessionObject(authorization));
+//				redisStorage.updateSessionObject(authorization);
 			}
 		} catch (Exception e) {
 			logger.error("postHandle failed with error " + e.getMessage());

@@ -330,5 +330,8 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			+ " AND ben_gender_val = 2 AND ben_dob is not null order by ben_flow_id DESC LIMIT 1 ")
 	public Timestamp getBenAgeVal(@Param("benRegID") Long benRegID);
 	
+	@Query("SELECT t from BeneficiaryFlowStatus t where t.benFlowID = :benFlowID And t.nurseFlag = :nurseFlag")
+	BeneficiaryFlowStatus checkExistData(@Param("benFlowID") Long benFlowID, @Param("nurseFlag") Short nurseFlag);
+	
 	
 }

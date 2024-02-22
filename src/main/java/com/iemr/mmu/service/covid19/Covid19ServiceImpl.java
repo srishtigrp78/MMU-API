@@ -49,6 +49,7 @@ import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
 import com.iemr.mmu.data.anc.WrapperFemaleObstetricHistory;
 import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
+import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.covid19.Covid19BenFeedback;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
@@ -57,6 +58,7 @@ import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
+import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.nurse.covid19.Covid19BenFeedbackRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
@@ -86,15 +88,23 @@ public class Covid19ServiceImpl implements Covid19Service {
 	private Covid19BenFeedbackRepo covid19BenFeedbackRepo;
 	@Autowired
 	private PrescriptionDetailRepo prescriptionDetailRepo;
+	@Autowired
+	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public Long saveCovid19NurseData(JsonObject requestOBJ, String Authorization) throws Exception {
 		Long saveSuccessFlag = null;
+		Map<String, Long> visitIdAndCodeMap = null;
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
 			CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
-			Map<String, Long> visitIdAndCodeMap = saveBenVisitDetails(requestOBJ.getAsJsonObject("visitDetails"),
+
+			Short nurseFlag = 9;
+			BeneficiaryFlowStatus data = beneficiaryFlowStatusRepo.checkExistData(nurseUtilityClass.getBenFlowID(), nurseFlag);
+			if(data == null) {
+			visitIdAndCodeMap = saveBenVisitDetails(requestOBJ.getAsJsonObject("visitDetails"),
 					nurseUtilityClass);
+			}
 
 			// 25-06-2020 visit code
 			Long benVisitID = null;
