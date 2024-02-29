@@ -37,6 +37,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.ANCCareDetails;
@@ -157,7 +158,7 @@ public class ANCServiceImpl implements ANCService {
 		Long saveSuccessFlag = null;
 		Map<String, Long> visitIdAndCodeMap = null;
 		// check if visit details data is not null
-		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
+		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull() && !requestOBJ.getAsJsonObject("visitDetails").isEmpty()) {
 			CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
 			Short nurseFlag = 9;
 			BeneficiaryFlowStatus data = beneficiaryFlowStatusRepo.checkExistData(nurseUtilityClass.getBenFlowID(), nurseFlag);
@@ -1457,11 +1458,15 @@ public class ANCServiceImpl implements ANCService {
 		resMap.put("prescription", commonDoctorServiceImpl.getPrescribedDrugs(benRegID, visitCode));
 
 		resMap.put("Refer", commonDoctorServiceImpl.getReferralDetails(benRegID, visitCode));
-
+		Gson gson = new GsonBuilder()
+		        .excludeFieldsWithoutExposeAnnotation()
+		        .create();
 		resMap.put("LabReport",
-				new Gson().toJson(labTechnicianServiceImpl.getLabResultDataForBen(benRegID, visitCode)));
-
-		resMap.put("GraphData", new Gson().toJson(commonNurseServiceImpl.getGraphicalTrendData(benRegID, "anc")));
+				gson.toJson(labTechnicianServiceImpl.getLabResultDataForBen(benRegID, visitCode)));
+		Gson gson2 = new GsonBuilder()
+		        .excludeFieldsWithoutExposeAnnotation()
+		        .create();
+		resMap.put("GraphData", gson2.toJson(commonNurseServiceImpl.getGraphicalTrendData(benRegID, "anc")));
 
 		resMap.put("ArchivedVisitcodeForLabResult",
 				labTechnicianServiceImpl.getLast_3_ArchivedTestVisitList(benRegID, visitCode));
