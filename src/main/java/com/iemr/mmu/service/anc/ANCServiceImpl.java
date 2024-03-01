@@ -149,7 +149,7 @@ public class ANCServiceImpl implements ANCService {
 	// public void setNurseServiceImpl(NurseServiceImpl nurseServiceImpl) {
 	// this.nurseServiceImpl = nurseServiceImpl;
 	// }
-
+	static final String VISITDETAILS="visitDetails";  
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public Long saveANCNurseData(JsonObject requestOBJ) throws Exception {
@@ -158,13 +158,13 @@ public class ANCServiceImpl implements ANCService {
 		Long saveSuccessFlag = null;
 		Map<String, Long> visitIdAndCodeMap = null;
 		// check if visit details data is not null
-		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull() && !requestOBJ.getAsJsonObject("visitDetails").isEmpty()) {
+		if (requestOBJ != null && requestOBJ.has(VISITDETAILS) && !requestOBJ.get(VISITDETAILS).isJsonNull() && !requestOBJ.getAsJsonObject(VISITDETAILS).isEmpty()) {
 			CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
 			Short nurseFlag = 9;
 			BeneficiaryFlowStatus data = beneficiaryFlowStatusRepo.checkExistData(nurseUtilityClass.getBenFlowID(), nurseFlag);
 			if(data == null) {
 			// Call method to save visit details data
-			visitIdAndCodeMap = saveBenVisitDetails(requestOBJ.getAsJsonObject("visitDetails"),
+			visitIdAndCodeMap = saveBenVisitDetails(requestOBJ.getAsJsonObject(VISITDETAILS),
 					nurseUtilityClass);
 			}
 
@@ -186,15 +186,11 @@ public class ANCServiceImpl implements ANCService {
 			Integer i = null;
 
 			// code moved from inner code
-			JsonObject tmpOBJ = requestOBJ.getAsJsonObject("visitDetails").getAsJsonObject("visitDetails");
+			JsonObject tmpOBJ = requestOBJ.getAsJsonObject(VISITDETAILS).getAsJsonObject(VISITDETAILS);
 
 			// Getting benflowID for ben status update
 			Long benFlowID = null;
-			// if (requestOBJ.has("benFlowID")) {
-			// benFlowID = requestOBJ.get("benFlowID").getAsLong();
-			// }
-
-			// Above if block code replaced by below line
+			
 			benFlowID = nurseUtilityClass.getBenFlowID();
 
 			if (benVisitID != null && benVisitID > 0) {
@@ -212,14 +208,6 @@ public class ANCServiceImpl implements ANCService {
 				examtnSaveSuccessFlag = saveBenANCExaminationDetails(requestOBJ.getAsJsonObject("examinationDetails"),
 						benVisitID, benVisitCode);
 
-				// Code moved above if statement
-				// JsonObject tmpOBJ =
-				// requestOBJ.getAsJsonObject("visitDetails").getAsJsonObject("visitDetails");
-				// JsonObject tmpOBJ1 =
-				// tmpOBJ.get("visitDetails").getAsJsonObject();
-
-				// i = commonNurseServiceImpl.updateBeneficiaryStatus('N',
-				// tmpOBJ.get("beneficiaryRegID").getAsLong());
 			} else {
 				// Error in visit details saving or it is null
 			}
@@ -237,7 +225,7 @@ public class ANCServiceImpl implements ANCService {
 				 */
 
 				int J = updateBenFlowNurseAfterNurseActivityANC(
-						requestOBJ.getAsJsonObject("visitDetails").getAsJsonObject("investigation"), tmpOBJ, benVisitID,
+						requestOBJ.getAsJsonObject(VISITDETAILS).getAsJsonObject("investigation"), tmpOBJ, benVisitID,
 						benFlowID, benVisitCode, nurseUtilityClass.getVanID());
 
 				// End of update ben status flow new logic
@@ -459,13 +447,13 @@ public class ANCServiceImpl implements ANCService {
 		int investigationSuccessFlag = 0;
 		int adherenceSuccessFlag = 0;
 		int chiefComplaintsSuccessFlag = 0;
-		if (visitDetailsOBJ != null && visitDetailsOBJ.has("visitDetails")
-				&& !visitDetailsOBJ.get("visitDetails").isJsonNull()) {
+		if (visitDetailsOBJ != null && visitDetailsOBJ.has(VISITDETAILS)
+				&& !visitDetailsOBJ.get(VISITDETAILS).isJsonNull()) {
 
 			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(visitDetailsOBJ,
 					CommonUtilityClass.class);
 
-			BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(visitDetailsOBJ.get("visitDetails"),
+			BeneficiaryVisitDetail benVisitDetailsOBJ = InputMapper.gson().fromJson(visitDetailsOBJ.get(VISITDETAILS),
 					BeneficiaryVisitDetail.class);
 
 			// benVisitDetailsOBJ.setVanID(commonUtilityClass.getVanID());
