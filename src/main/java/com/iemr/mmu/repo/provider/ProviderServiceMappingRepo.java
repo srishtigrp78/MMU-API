@@ -33,6 +33,6 @@ import com.iemr.mmu.data.provider.ProviderServiceMapping;
 @Repository
 public interface ProviderServiceMappingRepo extends CrudRepository<ProviderServiceMapping, Integer> {
 	@Query(" SELECT t.providerServiceMapID FROM ProviderServiceMapping t "
-			+ " WHERE t.serviceID = :serviceID AND deleted is false ")
+			+ " WHERE t.serviceID = :serviceID AND deleted = false ")
 	List<Integer> getProviderServiceMapIdForServiceID(@Param("serviceID") Short serviceID);
 }

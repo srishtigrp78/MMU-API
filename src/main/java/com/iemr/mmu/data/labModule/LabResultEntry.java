@@ -47,10 +47,10 @@ import com.iemr.mmu.utils.AESEncryption.AESEncryptionDecryption;
 public class LabResultEntry {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
 	@Expose
-	private Long ID;
+	private BigInteger ID;
 
 	@Column(name = "BeneficiaryRegID")
 	@Expose
@@ -438,11 +438,11 @@ public class LabResultEntry {
 		this.labCompleted = labCompleted;
 	}
 
-	public Long getID() {
+	public BigInteger getID() {
 		return ID;
 	}
 
-	public void setID(Long iD) {
+	public void setID(BigInteger iD) {
 		ID = iD;
 	}
 
