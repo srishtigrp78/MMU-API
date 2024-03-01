@@ -21,6 +21,7 @@
 */
 package com.iemr.mmu.repo.labModule;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 import org.springframework.data.jpa.repository.Query;
@@ -31,7 +32,7 @@ import org.springframework.stereotype.Repository;
 import com.iemr.mmu.data.labModule.LabResultEntry;
 
 @Repository
-public interface LabResultEntryRepo extends CrudRepository<LabResultEntry, Long> {
+public interface LabResultEntryRepo extends CrudRepository<LabResultEntry, BigInteger> {
 	@Query("SELECT procedureID FROM LabResultEntry WHERE beneficiaryRegID = :benRegID AND "
 			+ " benVisitID = :benVisitID ")
 	ArrayList<Integer> findProcedureListByBeneficiaryRegIDAndBenVisitID(@Param("benRegID") Long benRegID,
