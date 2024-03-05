@@ -21,6 +21,7 @@
 */
 package com.iemr.mmu.service.covid19;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -292,7 +293,7 @@ public class Covid19ServiceImpl implements Covid19Service {
 			covid19BenFeedbackOBJ.setSuspectedStatus(false);
 
 		Covid19BenFeedback resultSetObj = covid19BenFeedbackRepo.save(covid19BenFeedbackOBJ);
-		if (resultSetObj != null && resultSetObj.getcOVID19ID() > 0)
+		if (resultSetObj != null && Long.valueOf(resultSetObj.getcOVID19ID().toString()) > 0)
 			return 1;
 		else
 			return null;
