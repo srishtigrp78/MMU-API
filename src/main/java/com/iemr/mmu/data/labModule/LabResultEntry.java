@@ -239,8 +239,8 @@ public class LabResultEntry {
 		ArrayList<LabResultEntry> returnArr = new ArrayList<>();
 		if (resultSetArr.size() > 0) {
 			for (Object[] arr : resultSetArr) {
-				BigInteger vCode = (BigInteger) arr[0];
-				obj = new LabResultEntry(vCode.longValue(), (Date) arr[1]);
+				String vCode = String.valueOf(arr[0]);
+				obj = new LabResultEntry(Long.valueOf(vCode), (Date) arr[1]);
 				returnArr.add(obj);
 			}
 		}
