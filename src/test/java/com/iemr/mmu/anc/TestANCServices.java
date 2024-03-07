@@ -36,7 +36,6 @@ import org.junit.jupiter.api.Test;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.iemr.mmu.common.TestCommonServices;
 import com.iemr.mmu.data.anc.ANCCareDetails;
 import com.iemr.mmu.data.anc.ANCDiagnosis;
 import com.iemr.mmu.data.anc.ANCWomenVaccineDetail;
@@ -82,7 +81,6 @@ public class TestANCServices
 	public static void initializeParams()
 	{
 
-		TestCommonServices.initializeParams();
 		//ancServiceImpl.setCommonNurseServiceImpl(TestCommonServices.commonNurseServiceImpl);
 		ancServiceImpl.setAncNurseServiceImpl(ancNurseServiceImpl);
 		//ancServiceImpl.setCommonDoctorServiceImpl(TestCommonServices.commonDoctorServiceImpl);
@@ -92,7 +90,6 @@ public class TestANCServices
 		ancNurseServiceImpl.setAncCareRepo(ancCareRepoMock);
 		ancNurseServiceImpl.setAncWomenVaccineRepo(ancWomenVaccineRepoMock);
 		ancNurseServiceImpl.setSysObstetricExaminationRepo(sysObstetricExaminationRepoMock);
-		ancNurseServiceImpl.setLabTestOrderDetailRepo(TestCommonServices.labTestOrderDetailRepoMock);
 		
 		//ancDoctorServiceImpl.setAncDiagnosisRepo(ancDiagnosisRepoMock);
 		
@@ -141,7 +138,6 @@ public class TestANCServices
 		ArrayList<Object[]> resList = new ArrayList<Object[]>();
 		when(benAdherenceRepoMock.getBenAdherence(beneficiaryRegID, benVisitID)).thenReturn(resList);
 
-		when(TestCommonServices.labTestOrderDetailRepoMock.getLabTestOrderDetails(beneficiaryRegID, benVisitID)).thenReturn(resList);
 		
 	}
 	

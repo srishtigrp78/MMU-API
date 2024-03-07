@@ -21,6 +21,7 @@
 */
 package com.iemr.mmu.data.covid19;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -40,10 +41,10 @@ import com.iemr.mmu.annotation.sqlinjection.SQLInjectionSafe;
 public class Covid19BenFeedback {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Expose
 	@Column(name = "COVID19ID", insertable = false, updatable = false)
-	private Long cOVID19ID;
+	private BigInteger cOVID19ID;
 	@Expose
 	@Column(name = "BenCallID")
 	private Long benCallID = 0L;
@@ -163,11 +164,11 @@ public class Covid19BenFeedback {
 	@Transient
 	private ArrayList<String[]> recommendation;
 
-	public Long getcOVID19ID() {
+	public BigInteger getcOVID19ID() {
 		return cOVID19ID;
 	}
 
-	public void setcOVID19ID(Long cOVID19ID) {
+	public void setcOVID19ID(BigInteger cOVID19ID) {
 		this.cOVID19ID = cOVID19ID;
 	}
 

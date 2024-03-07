@@ -3574,12 +3574,15 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		if (benLastSixVisitDetails != null && benLastSixVisitDetails.size() > 0) {
 			for (Object[] objArr : benLastSixVisitDetails) {
 				vc = (String) objArr[1];
-				if (vc != null && vc.equalsIgnoreCase("Cancer Screening")) {
+				if (vc != null && vc.equalsIgnoreCase("Cancer Screening") && null!=objArr[2]) {
+					
 					a = (Long) objArr[2];
 					benVisitCodeListCancer.add(a.longValue());
 				} else {
-					a = (Long) objArr[2];
-					benVisitCodeListOther.add(a.longValue());
+					if(null!=objArr[2]) {
+						a = (Long) objArr[2];
+						benVisitCodeListOther.add(a.longValue());
+					}
 				}
 			}
 		}

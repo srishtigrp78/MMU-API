@@ -33,7 +33,8 @@ import com.iemr.mmu.data.reports.ReportMaster;
 
 @Repository
 public interface ReportMasterRepo extends CrudRepository<ReportMaster, Integer> {
-	ArrayList<ReportMaster> findByServiceIDAndDeletedOrderByReportNameAsc(Integer serviceID, Boolean deleted);
+	@Query(value = "select * from db_reporting.m_report mr where mr.ServiceID = :serviceID AND mr.Deleted = :deleted order by ReportName ASC",nativeQuery = true)
+	ArrayList<ReportMaster> findByServiceIDAndDeletedOrderByReportNameAsc(@Param("serviceID") Integer serviceID,@Param("deleted") Boolean deleted);
 
 	@Query(value = " CALL db_reporting.SP_PatientAttended(:fromDate, :toDate, :psmID, :vanID) ", nativeQuery = true)
 	ArrayList<Object[]> get_report_PatientAttended(@Param("fromDate") Timestamp fromDate,
