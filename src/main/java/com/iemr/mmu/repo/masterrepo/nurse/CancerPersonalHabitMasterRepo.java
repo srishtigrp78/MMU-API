@@ -30,7 +30,7 @@ import org.springframework.stereotype.Repository;
 
 import com.iemr.mmu.data.masterdata.nurse.CancerPersonalHabitType;
 @Repository
-public interface CancerPersonalHabitMasterRepo extends CrudRepository<CancerPersonalHabitType, Long>{
+public interface CancerPersonalHabitMasterRepo extends CrudRepository<CancerPersonalHabitType, Short>{
 
 	@Query("select cancerPersonalHabitID, habitType, habitValue from CancerPersonalHabitType where deleted = false and habitType=:habitType "
 			+ "order by habitValue ")

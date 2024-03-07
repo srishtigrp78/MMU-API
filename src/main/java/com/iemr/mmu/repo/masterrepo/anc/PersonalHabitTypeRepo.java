@@ -31,7 +31,7 @@ import org.springframework.stereotype.Repository;
 import com.iemr.mmu.data.masterdata.anc.PersonalHabitType;
 
 @Repository
-public interface PersonalHabitTypeRepo extends CrudRepository<PersonalHabitType, Long>{
+public interface PersonalHabitTypeRepo extends CrudRepository<PersonalHabitType, Short>{
 	
 	@Query("select personalHabitTypeID, habitType, habitValue from PersonalHabitType where deleted = false and habitType=:habitType "
 			+ "order by habitValue ")

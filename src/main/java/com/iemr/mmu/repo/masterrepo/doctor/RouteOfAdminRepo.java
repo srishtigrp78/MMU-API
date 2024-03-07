@@ -30,7 +30,7 @@ import org.springframework.stereotype.Repository;
 import com.iemr.mmu.data.masterdata.doctor.RouteOfAdmin;
 
 @Repository
-public interface RouteOfAdminRepo extends CrudRepository<RouteOfAdmin, Long> {
+public interface RouteOfAdminRepo extends CrudRepository<RouteOfAdmin, Integer> {
 	@Query("SELECT routeID, routeName FROM RouteOfAdmin WHERE deleted is false ORDER BY routeName ")
 	public ArrayList<Object[]> getRouteOfAdminList();
 
