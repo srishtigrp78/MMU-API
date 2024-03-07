@@ -30,7 +30,7 @@ import org.springframework.stereotype.Repository;
 import com.iemr.mmu.data.masterdata.ncdscreening.NCDScreeningCondition;
 
 @Repository
-public interface NCDScreeningConditionRepo extends CrudRepository<NCDScreeningCondition, Long>{
+public interface NCDScreeningConditionRepo extends CrudRepository<NCDScreeningCondition, Integer>{
 
 	@Query("select ncdScreeningConditionID, screeningCondition from NCDScreeningCondition where deleted = false order by screeningCondition")
 	public ArrayList<Object[]> getNCDScreeningConditions();

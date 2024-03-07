@@ -29,7 +29,7 @@ import org.springframework.stereotype.Repository;
 import com.iemr.mmu.data.doctor.TempMasterDrug;
 
 @Repository
-public interface TempMasterDrugRepo extends CrudRepository<TempMasterDrug, Long> {
+public interface TempMasterDrugRepo extends CrudRepository<TempMasterDrug, Integer> {
 	ArrayList<TempMasterDrug> findByDeletedFalseOrderByDrugDisplayNameAsc();
 
 }
