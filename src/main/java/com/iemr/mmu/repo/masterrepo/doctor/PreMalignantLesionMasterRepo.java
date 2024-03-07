@@ -29,7 +29,7 @@ import org.springframework.stereotype.Repository;
 
 import com.iemr.mmu.data.masterdata.doctor.PreMalignantLesion;
 @Repository
-public interface PreMalignantLesionMasterRepo extends CrudRepository<PreMalignantLesion, Integer>{
+public interface PreMalignantLesionMasterRepo extends CrudRepository<PreMalignantLesion, Long>{
 
 	@Query("select preMalignantLesionID, preMalignantLesionType from PreMalignantLesion where deleted = false "
 			+ "order by preMalignantLesionType")
