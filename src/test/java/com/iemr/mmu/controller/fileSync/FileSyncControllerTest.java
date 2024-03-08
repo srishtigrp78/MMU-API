@@ -1,9 +1,8 @@
 package com.iemr.mmu.controller.fileSync;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import java.io.IOException;
 
@@ -14,15 +13,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.MockMvc;
 
-import com.google.common.net.MediaType;
 import com.iemr.mmu.service.fileSync.FileSyncService;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.response.OutputResponse;
-
-import javassist.NotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 class FileSyncControllerTest {
@@ -34,9 +28,6 @@ class FileSyncControllerTest {
 
 	@InjectMocks
 	FileSyncController fileSyncController;
-
-	@Autowired
-	private MockMvc mockMvc;
 
 	@Test
 	void testGetServerCredential() {

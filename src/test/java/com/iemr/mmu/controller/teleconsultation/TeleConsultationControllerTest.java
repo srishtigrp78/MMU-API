@@ -102,10 +102,6 @@ class TeleConsultationControllerTest {
 		TeleConsultationServiceImpl serviceMock = mock(TeleConsultationServiceImpl.class);
 		String requestOBJ = "{\"request\":\"Test\"}";
 
-		// Simulate an exception when the service method is called
-		// when(serviceMock.updateBeneficiaryArrivalStatus(requestOBJ)).thenThrow(new
-		// RuntimeException("Error while updating beneficiary arrival status."));
-
 		// Create the controller with the mocked service
 		TeleConsultationController controller = new TeleConsultationController(); // Assuming constructor injection
 
@@ -330,18 +326,19 @@ class TeleConsultationControllerTest {
 		assertTrue(response.toString().contains("Invalid request"));
 	}
 
-	 @Test
-	    public void testCreateTCRequestForBeneficiary_Exception() throws Exception {
-	        String requestOBJ = "{\"key\":\"value\"}"; // Mock request body
-	        String authorizationHeader = "Bearer token"; // Mock authorization header
-	        doThrow(new RuntimeException("Test exception")).when(teleConsultationServiceImpl).createTCRequestFromWorkList(any(), eq(authorizationHeader));
+	@Test
+	public void testCreateTCRequestForBeneficiary_Exception() throws Exception {
+		String requestOBJ = "{\"key\":\"value\"}"; // Mock request body
+		String authorizationHeader = "Bearer token"; // Mock authorization header
+		doThrow(new RuntimeException("Test exception")).when(teleConsultationServiceImpl)
+				.createTCRequestFromWorkList(any(), eq(authorizationHeader));
 
-	        String response = teleConsultationController.createTCRequestForBeneficiary(requestOBJ, authorizationHeader);
+		String response = teleConsultationController.createTCRequestForBeneficiary(requestOBJ, authorizationHeader);
 
-	        assertNotNull(response);
-	        assertTrue(response.contains("Issue while creating Teleconsultation request"));
-	        verify(teleConsultationServiceImpl).createTCRequestFromWorkList(any(), eq(authorizationHeader));
-	    }
+		assertNotNull(response);
+		assertTrue(response.contains("Issue while creating Teleconsultation request"));
+		verify(teleConsultationServiceImpl).createTCRequestFromWorkList(any(), eq(authorizationHeader));
+	}
 
 	@Test
 	void testGetTCSpecialistWorkListNew_Success() throws Exception {
@@ -366,20 +363,21 @@ class TeleConsultationControllerTest {
 	}
 
 	@Test
-    void testGetTCSpecialistWorkListNew_InvalidRequest() {
-        String result = teleConsultationController.getTCSpecialistWorkListNew(null);
-        assertTrue(result.contains("Invalid request"));
-    }
+	void testGetTCSpecialistWorkListNew_InvalidRequest() {
+		String result = teleConsultationController.getTCSpecialistWorkListNew(null);
+		assertTrue(result.contains("Invalid request"));
+	}
 
 	@Test
-    void testGetTCSpecialistWorkListNew_Exception() throws Exception {
-        doThrow(new RuntimeException("Test exception")).when(teleConsultationServiceImpl).getTCRequestListBySpecialistIdAndDate(anyInt(), anyInt(), anyString());
+	void testGetTCSpecialistWorkListNew_Exception() throws Exception {
+		doThrow(new RuntimeException("Test exception")).when(teleConsultationServiceImpl)
+				.getTCRequestListBySpecialistIdAndDate(anyInt(), anyInt(), anyString());
 
-        String requestOBJ = "{\"psmID\":1, \"userID\":1, \"date\":\"2024-03-02\"}";
+		String requestOBJ = "{\"psmID\":1, \"userID\":1, \"date\":\"2024-03-02\"}";
 
-        String result = teleConsultationController.getTCSpecialistWorkListNew(requestOBJ);
+		String result = teleConsultationController.getTCSpecialistWorkListNew(requestOBJ);
 
-        assertTrue(result.contains("Error while getting TC requestList"));
-    }
+		assertTrue(result.contains("Error while getting TC requestList"));
+	}
 
 }

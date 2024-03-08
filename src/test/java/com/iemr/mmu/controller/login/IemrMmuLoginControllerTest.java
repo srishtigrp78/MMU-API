@@ -1,10 +1,8 @@
 package com.iemr.mmu.controller.login;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.json.JSONException;
@@ -85,7 +83,7 @@ class IemrMmuLoginControllerTest {
 	}
 
 	@Test
-	public void getServicepointVillages_Exception() {
+	 void getServicepointVillages_Exception() {
 		String requestJson = "{\"servicePointID\": 1}";
 		when(iemrMmuLoginServiceImpl.getServicepointVillages(anyInt()))
 				.thenThrow(new RuntimeException("Test Exception"));
@@ -120,7 +118,7 @@ class IemrMmuLoginControllerTest {
 	}
 
 	@Test
-    public void getUserVanSpDetails_InvalidRequest() {
+     void getUserVanSpDetails_InvalidRequest() {
         String invalidRequestJson = "{\"someOtherField\": 123}";
 
         String response = iemrMmuLoginController.getUserVanSpDetails(invalidRequestJson);
@@ -129,7 +127,7 @@ class IemrMmuLoginControllerTest {
     }
 
 	@Test
-	public void getUserVanSpDetails_ThrowsException() {
+	 void getUserVanSpDetails_ThrowsException() {
 		String requestJson = "{\"userID\": 1, \"providerServiceMapID\": 2}";
 
 		when(iemrMmuLoginServiceImpl.getUserVanSpDetails(anyInt(), anyInt()))
@@ -142,7 +140,7 @@ class IemrMmuLoginControllerTest {
 
 
 	@Test
-	public void getVanMaster_ValidPsmID() throws Exception {
+	 void getVanMaster_ValidPsmID() throws Exception {
 	    Integer validPsmID = 1;
 	    String expectedResponse = "van details";
 	    
@@ -154,14 +152,14 @@ class IemrMmuLoginControllerTest {
 	}
 
 	@Test
-	public void getVanMaster_NullPsmID() {
+	 void getVanMaster_NullPsmID() {
 	    String response = iemrMmuLoginController.getVanMaster(null);
 	    
 	    assertTrue(response.toString().contains("Invalid request"));
 	}
 	
 	@Test
-	public void getVanMaster_Exception() throws Exception {
+	 void getVanMaster_Exception() throws Exception {
 	    Integer invalidPsmID = 2;
 	    
 	    when(iemrMmuLoginServiceImpl.getVanMaster(invalidPsmID)).thenThrow(new RuntimeException("Test exception"));

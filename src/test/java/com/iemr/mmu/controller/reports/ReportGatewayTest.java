@@ -1,12 +1,9 @@
 package com.iemr.mmu.controller.reports;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,14 +12,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.google.common.net.MediaType;
 import com.iemr.mmu.controller.registrar.main.RegistrarController;
 import com.iemr.mmu.service.reports.ReportCheckPostImpl;
 import com.iemr.mmu.service.reports.ReportCheckPostImplNew;
-import com.iemr.mmu.utils.response.OutputResponse;
 
 @ExtendWith(MockitoExtension.class)
 class ReportGatewayTest {
@@ -103,9 +96,8 @@ class ReportGatewayTest {
 		assertTrue(actualResponse.contains("Error occurred while fetching report"));
 	}
 
-
 	@Test
-	public void testGetReportMaster_Success() throws Exception {
+	void testGetReportMaster_Success() throws Exception {
 		Integer serviceID = 1;
 		String expectedReport = "Some report data";
 		when(reportCheckPostImpl.getReportMaster(serviceID)).thenReturn(expectedReport);
@@ -116,7 +108,7 @@ class ReportGatewayTest {
 	}
 
 	@Test
-	public void testGetReportMaster_NoReportFound() throws Exception {
+	void testGetReportMaster_NoReportFound() throws Exception {
 		Integer serviceID = 1;
 		when(reportCheckPostImpl.getReportMaster(serviceID)).thenReturn(null);
 
@@ -126,14 +118,14 @@ class ReportGatewayTest {
 	}
 
 	@Test
-	public void testGetReportMaster_InvalidRequest() {
+	void testGetReportMaster_InvalidRequest() {
 		String result = reportGateway.getReportMaster(null);
 
 		assertTrue(result.contains("invalid request"));
 	}
 
 	@Test
-	public void testGetReportMaster_ExceptionThrown() throws Exception {
+	void testGetReportMaster_ExceptionThrown() throws Exception {
 		Integer serviceID = 1;
 		when(reportCheckPostImpl.getReportMaster(serviceID))
 				.thenThrow(new RuntimeException("Error while fetching report master data is :"));

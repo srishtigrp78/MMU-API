@@ -1,8 +1,10 @@
 package com.iemr.mmu.controller.dataSyncLayerCentral;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -13,9 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iemr.mmu.data.syncActivity_syncLayer.SyncDownloadMaster;
 import com.iemr.mmu.data.syncActivity_syncLayer.SyncUploadDataDigester;
 import com.iemr.mmu.service.dataSyncLayerCentral.FetchDownloadDataImpl;
@@ -90,7 +90,6 @@ class MMUDataSyncVanToServerTest {
 		assertTrue(actualResponse.contains("Upload SYNC Exception"));
 	}
 
-//*******
 	@Test
 	void testDataDownloadFromServer_Success() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -147,30 +146,29 @@ class MMUDataSyncVanToServerTest {
 		assertEquals(expResponse, mmuDataSyncVanToServer.dataDownloadFromServer(syncDownloadMaster, Authorization));
 		assertTrue(response.toString().contains("Invalid request"));
 	}
-	
-	 @Test
-	    public void test_dataDownloadFromServer_catchBlock() throws Exception {
-	        // Given
-	        SyncDownloadMaster syncDownloadMaster = new SyncDownloadMaster();
-	        syncDownloadMaster.setSchemaName("testSchema");
-	        syncDownloadMaster.setTableName("testTable");
 
-	        when(getMasterDataFromCentralForVanImpl.getMasterDataForVan(any(SyncDownloadMaster.class)))
-	                .thenThrow(new RuntimeException("Test Exception"));
+	@Test
+	void test_dataDownloadFromServer_catchBlock() throws Exception {
+		// Given
+		SyncDownloadMaster syncDownloadMaster = new SyncDownloadMaster();
+		syncDownloadMaster.setSchemaName("testSchema");
+		syncDownloadMaster.setTableName("testTable");
 
-	        // When
-	        String result = mmuDataSyncVanToServer.dataDownloadFromServer(syncDownloadMaster, "fakeAuth");
+		when(getMasterDataFromCentralForVanImpl.getMasterDataForVan(any(SyncDownloadMaster.class)))
+				.thenThrow(new RuntimeException("Test Exception"));
 
-	        // Then
-	        OutputResponse expectedResponse = new OutputResponse();
-	        expectedResponse.setError(new RuntimeException("Test Exception"));
-	        assertEquals(expectedResponse.toStringWithSerialization(), result);
+		// When
+		String result = mmuDataSyncVanToServer.dataDownloadFromServer(syncDownloadMaster, "fakeAuth");
 
-	        // Verify that getMasterDataForVan was called
-	        verify(getMasterDataFromCentralForVanImpl).getMasterDataForVan(any(SyncDownloadMaster.class));
-	    }
+		// Then
+		OutputResponse expectedResponse = new OutputResponse();
+		expectedResponse.setError(new RuntimeException("Test Exception"));
+		assertEquals(expectedResponse.toStringWithSerialization(), result);
 
-//******
+		// Verify that getMasterDataForVan was called
+		verify(getMasterDataFromCentralForVanImpl).getMasterDataForVan(any(SyncDownloadMaster.class));
+	}
+
 	@Test
 	void testDataDownloadFromServerTransactional() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -218,33 +216,33 @@ class MMUDataSyncVanToServerTest {
 
 	@Test
 	void testDataDownloadFromServerTransactional_InvalidRequest() throws Exception {
-	    String Authorization = "Authorization";
-	    SyncUploadDataDigester syncUploadDataDigester = null; 
+		String Authorization = "Authorization";
+		SyncUploadDataDigester syncUploadDataDigester = null;
 
-	    String response = mmuDataSyncVanToServer.dataDownloadFromServerTransactional(syncUploadDataDigester, Authorization);
+		String response = mmuDataSyncVanToServer.dataDownloadFromServerTransactional(syncUploadDataDigester,
+				Authorization);
 
-	    OutputResponse expectedResponse = new OutputResponse();
-	    expectedResponse.setError(5000, "Invalid request");
-	    
-	    assertNotNull(response);
-	    assertEquals(expectedResponse.toStringWithSerialization(), response);
+		OutputResponse expectedResponse = new OutputResponse();
+		expectedResponse.setError(5000, "Invalid request");
+
+		assertNotNull(response);
+		assertEquals(expectedResponse.toStringWithSerialization(), response);
 	}
 
-	
-	 @Test
-	    void testDataDownloadFromServerTransactionalException() throws Exception {
-	        SyncUploadDataDigester syncUploadDataDigester = new SyncUploadDataDigester();
-	        String authorization = "AuthorizationHeaderContent";
+	@Test
+	void testDataDownloadFromServerTransactionalException() throws Exception {
+		SyncUploadDataDigester syncUploadDataDigester = new SyncUploadDataDigester();
+		String authorization = "AuthorizationHeaderContent";
 
-	        when(fetchDownloadDataImpl.getDownloadData(syncUploadDataDigester))
-	                .thenThrow(new RuntimeException( " - Error in data download for table "));
+		when(fetchDownloadDataImpl.getDownloadData(syncUploadDataDigester))
+				.thenThrow(new RuntimeException(" - Error in data download for table "));
 
-	        String response = mmuDataSyncVanToServer.dataDownloadFromServerTransactional(syncUploadDataDigester, authorization);
+		String response = mmuDataSyncVanToServer.dataDownloadFromServerTransactional(syncUploadDataDigester,
+				authorization);
 
-	        assertTrue(response.contains( " - Error in data download for table "));
-	    }
-	
-//***********
+		assertTrue(response.contains(" - Error in data download for table "));
+	}
+
 	@Test
 	void testUpdateProcessedFlagPostDownload() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -289,20 +287,20 @@ class MMUDataSyncVanToServerTest {
 		assertTrue(response.toString().contains("Error while updating flag. Please contact administrator"));
 	}
 
-	
 	@Test
 	void testUpdateProcessedFlagPostDownload_InvalidRequest() throws Exception {
-	    SyncUploadDataDigester syncUploadDataDigester = null; 
-	    String Authorization = "Authorization";
-	    
-	    String expResponse = mmuDataSyncVanToServer.updateProcessedFlagPostDownload(syncUploadDataDigester, Authorization);
-	    
-	    OutputResponse expectedErrorResponse = new OutputResponse();
-	    expectedErrorResponse.setError(5000, "Invalid request");
-	    
-	    assertNotNull(expResponse);
-	    assertTrue(expResponse.contains("Invalid request"));
-	    assertEquals(expectedErrorResponse.toStringWithSerialization(), expResponse);
+		SyncUploadDataDigester syncUploadDataDigester = null;
+		String Authorization = "Authorization";
+
+		String expResponse = mmuDataSyncVanToServer.updateProcessedFlagPostDownload(syncUploadDataDigester,
+				Authorization);
+
+		OutputResponse expectedErrorResponse = new OutputResponse();
+		expectedErrorResponse.setError(5000, "Invalid request");
+
+		assertNotNull(expResponse);
+		assertTrue(expResponse.contains("Invalid request"));
+		assertEquals(expectedErrorResponse.toStringWithSerialization(), expResponse);
 	}
 
 	@Test

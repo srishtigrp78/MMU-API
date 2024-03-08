@@ -66,7 +66,6 @@ class LocationControllerTest {
 
 	}
 
-//*********
 	@Test
 	void testGetCountryMasterSuccess() {
 		response = new OutputResponse();
@@ -101,7 +100,6 @@ class LocationControllerTest {
 		assertTrue(response.toString().contains("Error while getting states"));
 	}
 
-//**************
 	@Test
 	void testGetCountryCityMasterSuccess() {
 		response = new OutputResponse();
@@ -177,7 +175,6 @@ class LocationControllerTest {
 		assertTrue(response.toString().contains("Error while getting districts"));
 	}
 
-//***************
 	@Test
 	void testGetDistrictBlockMasterSuccess() {
 		response = new OutputResponse();
@@ -214,7 +211,6 @@ class LocationControllerTest {
 		assertTrue(response.toString().contains("Error while getting district blocks"));
 	}
 
-//*********************
 	@Test
 	void testGetVillageMasterSuccess() {
 		response = new OutputResponse();
@@ -251,7 +247,6 @@ class LocationControllerTest {
 		assertTrue(response.toString().contains("Error while getting villages"));
 	}
 
-//******************
 	@Test
 	void testGetLocDetailsBasedOnSpIDAndPsmIDNew_Success() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -277,37 +272,34 @@ class LocationControllerTest {
 	@Test
 	void testGetLocDetailsBasedOnSpIDAndPsmIDNew_Invalid() throws JSONException {
 		String comingRequest = "{}";
-		
+
 		OutputResponse response = new OutputResponse();
 
 		String expResponse = locationController.getLocDetailsBasedOnSpIDAndPsmIDNew(comingRequest);
 
-	    // Assert that the response indicates an invalid request
-	    assertTrue(expResponse.contains("Invalid request"));
-	    
+		// Assert that the response indicates an invalid request
+		assertTrue(expResponse.contains("Invalid request"));
+
 	}
-	
+
 	@Test
 	void testGetLocDetailsBasedOnSpIDAndPsmIDNew_CatchBlock() throws JSONException {
-	    String comingRequest = "{\"spID\":1,\"spPSMID\":100}";
-	    OutputResponse response = new OutputResponse();
-	    response.setError(5000, "Error while getting location data");
+		String comingRequest = "{\"spID\":1,\"spPSMID\":100}";
+		OutputResponse response = new OutputResponse();
+		response.setError(5000, "Error while getting location data");
 
-	    // Setup mock to throw an exception
-	    JSONObject obj = new JSONObject(comingRequest);
-	    when(locationServiceImpl.getLocDetailsNew(obj.getInt("spID"), obj.getInt("spPSMID")))
-	            .thenThrow(new RuntimeException("Test exception"));
+		// Setup mock to throw an exception
+		JSONObject obj = new JSONObject(comingRequest);
+		when(locationServiceImpl.getLocDetailsNew(obj.getInt("spID"), obj.getInt("spPSMID")))
+				.thenThrow(new RuntimeException("Test exception"));
 
-	    String expResponse = locationController.getLocDetailsBasedOnSpIDAndPsmIDNew(comingRequest);
+		String expResponse = locationController.getLocDetailsBasedOnSpIDAndPsmIDNew(comingRequest);
 
-	    // Assert that the response indicates an error occurred
-	    assertTrue(expResponse.contains("Error while getting location data"));
-	    assertTrue(expResponse.contains("5000"));
+		// Assert that the response indicates an error occurred
+		assertTrue(expResponse.contains("Error while getting location data"));
+		assertTrue(expResponse.contains("5000"));
 	}
 
-	
-
-//***************
 	@Test
 	void testGetDistrictTalukMasterSuccess() {
 		response = new OutputResponse();
@@ -346,13 +338,3 @@ class LocationControllerTest {
 	}
 
 }
-//**********
-//void testSetLocationServiceImpl()
-//void testGetStateMaster() - done
-//void testGetCountryMaster() -done
-//void testGetCountryCityMaster() -done
-//void testGetDistrictMaster() -done
-//void testGetDistrictBlockMaster()-done
-//void testGetVillageMaster() -done
-//void testGetLocDetailsBasedOnSpIDAndPsmIDNew()-done
-//void testGetDistrictTalukMaster() -done

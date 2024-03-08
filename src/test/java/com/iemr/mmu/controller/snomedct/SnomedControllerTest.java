@@ -72,113 +72,83 @@ class SnomedControllerTest {
 
 		output.setResponse(new Gson().toJson(sctdescriptions));
 
-		//assertTrue(sctdescriptions != null || sctdescriptions.getConceptID() != null);
-
 		assertEquals(expResponse, snomedController.getSnomedCTRecord(request));
 	}
-	
+
 	@Test
 	void testGetSnomedCTRecord_RecordFound() throws IEMRException {
-	    // Prepare the input and mock the expected behavior
-	    String request = "{\"term\":\"Some Term\"}";
-	    SCTDescription mockSCTDescription = new SCTDescription();
-	    mockSCTDescription.setConceptID("12345");
-	    mockSCTDescription.setTerm("Some Term");
-	    String expectedResponse = new Gson().toJson(mockSCTDescription);
+		// Prepare the input and mock the expected behavior
+		String request = "{\"term\":\"Some Term\"}";
+		SCTDescription mockSCTDescription = new SCTDescription();
+		mockSCTDescription.setConceptID("12345");
+		mockSCTDescription.setTerm("Some Term");
+		String expectedResponse = new Gson().toJson(mockSCTDescription);
 
-	    when(snomedService.findSnomedCTRecordFromTerm("Some Term")).thenReturn(mockSCTDescription);
+		when(snomedService.findSnomedCTRecordFromTerm("Some Term")).thenReturn(mockSCTDescription);
 
-	    // Execute the method
-	    String actualResponse = snomedController.getSnomedCTRecord(request);
+		// Execute the method
+		String actualResponse = snomedController.getSnomedCTRecord(request);
 
-	    // Assert the response contains the expected data
-	    assertNotNull(actualResponse);
-	    assertTrue(actualResponse.contains("12345"));
-	    assertTrue(actualResponse.contains("Some Term"));
+		// Assert the response contains the expected data
+		assertNotNull(actualResponse);
+		assertTrue(actualResponse.contains("12345"));
+		assertTrue(actualResponse.contains("Some Term"));
 
-	    // Verify the interaction with the mock
-	    verify(snomedService).findSnomedCTRecordFromTerm("Some Term");
+		// Verify the interaction with the mock
+		verify(snomedService).findSnomedCTRecordFromTerm("Some Term");
 	}
-	
+
 	@Test
 	void testGetSnomedCTRecord_ExceptionThrown() {
-	    // Prepare the input and mock the behavior to throw an exception
-	    String request = "{\"term\":\"Invalid Term\"}";
-	    when(snomedService.findSnomedCTRecordFromTerm("Invalid Term")).thenThrow(new RuntimeException("ggetSnomedCTRecord failed with error "));
+		// Prepare the input and mock the behavior to throw an exception
+		String request = "{\"term\":\"Invalid Term\"}";
+		when(snomedService.findSnomedCTRecordFromTerm("Invalid Term"))
+				.thenThrow(new RuntimeException("ggetSnomedCTRecord failed with error "));
 
-	    // Execute the method and assert the output
-	    String actualResponse = snomedController.getSnomedCTRecord(request);
+		// Execute the method and assert the output
+		String actualResponse = snomedController.getSnomedCTRecord(request);
 
-	    // Assert the response indicates an error
-	    assertNotNull(actualResponse);
-	    assertTrue(actualResponse.contains("ggetSnomedCTRecord failed with error "));
-
+		// Assert the response indicates an error
+		assertNotNull(actualResponse);
+		assertTrue(actualResponse.contains("ggetSnomedCTRecord failed with error "));
 	}
 
-
-
-//***********
-//	@Test
-//	void testGetSnomedCTRecordList() throws Exception {
-//		OutputResponse output = new OutputResponse();
-//
-//		String request = "{\"request\":\"Get Snomed CT Record List\"}";
-//		String sctList = "test";
-//
-//		SCTDescription sctdescription = InputMapper.gson().fromJson(request, SCTDescription.class);
-//
-//		logger.info("getSnomedCTRecord request " + sctdescription.toString());
-//
-//		when(snomedService.findSnomedCTRecordList(sctdescription)).thenReturn(sctList);
-//		
-//		String expResponse = snomedController.getSnomedCTRecordList(request);
-//
-//		output.setResponse(sctList);
-//
-//		assertTrue(sctList != null);
-//		
-//		assertEquals(expResponse, snomedController.getSnomedCTRecordList(request));
-//		assertTrue(output.toString().contains(sctList));
-//	}
-	
 	@Test
 	void testGetSnomedCTRecordList_Success() throws Exception {
-	    String request = "{\"term\":\"exampleTerm\"}";
-	    String expectedResponse = "[{\"conceptId\":\"123\",\"term\":\"Example Term\"}]";
+		String request = "{\"term\":\"exampleTerm\"}";
+		String expectedResponse = "[{\"conceptId\":\"123\",\"term\":\"Example Term\"}]";
 
-	    when(snomedService.findSnomedCTRecordList(any(SCTDescription.class))).thenReturn(expectedResponse);
+		when(snomedService.findSnomedCTRecordList(any(SCTDescription.class))).thenReturn(expectedResponse);
 
-	    String actualResponse = snomedController.getSnomedCTRecordList(request);
+		String actualResponse = snomedController.getSnomedCTRecordList(request);
 
-	    assertNotNull(actualResponse);
-	    assertTrue(actualResponse.contains("Example Term"));
+		assertNotNull(actualResponse);
+		assertTrue(actualResponse.contains("Example Term"));
 	}
-	
+
 	@Test
 	void testGetSnomedCTRecordList_NoRecords() throws Exception {
-	    String request = "{\"term\":\"nonExistingTerm\"}";
-	    String expectedResponse = "No Records Found";
+		String request = "{\"term\":\"nonExistingTerm\"}";
+		String expectedResponse = "No Records Found";
 
-	    when(snomedService.findSnomedCTRecordList(any(SCTDescription.class))).thenReturn(null);
+		when(snomedService.findSnomedCTRecordList(any(SCTDescription.class))).thenReturn(null);
 
-	    String actualResponse = snomedController.getSnomedCTRecordList(request);
+		String actualResponse = snomedController.getSnomedCTRecordList(request);
 
-	    assertNotNull(actualResponse);
-	    //assertEquals(expectedResponse, actualResponse);
+		assertNotNull(actualResponse);
 	}
 
 	@Test
 	void testGetSnomedCTRecordList_Exception() throws Exception {
-	    String request = "{\"term\":\"throwsException\"}";
+		String request = "{\"term\":\"throwsException\"}";
 
-	    when(snomedService.findSnomedCTRecordList(any(SCTDescription.class))).thenThrow(new RuntimeException("Service exception"));
+		when(snomedService.findSnomedCTRecordList(any(SCTDescription.class)))
+				.thenThrow(new RuntimeException("Service exception"));
 
-	    String actualResponse = snomedController.getSnomedCTRecordList(request);
+		String actualResponse = snomedController.getSnomedCTRecordList(request);
 
-	    assertNotNull(actualResponse);
-	    assertTrue(actualResponse.contains("error"));
+		assertNotNull(actualResponse);
+		assertTrue(actualResponse.contains("error"));
 	}
 
-
-	
 }
