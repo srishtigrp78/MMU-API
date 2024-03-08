@@ -1,14 +1,13 @@
 package com.iemr.mmu.controller.dataSyncActivity;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.contains;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.json.JSONException;
@@ -17,15 +16,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockHttpServletRequest;
 
-import com.google.gson.Gson;
-import com.iemr.mmu.service.dataSyncActivity.DownloadDataFromServer;
 import com.iemr.mmu.service.dataSyncActivity.DownloadDataFromServerImpl;
 import com.iemr.mmu.service.dataSyncActivity.DownloadDataFromServerTransactionalImpl;
 import com.iemr.mmu.service.dataSyncActivity.UploadDataToServerImpl;
@@ -106,7 +100,6 @@ class StartSyncActivityTest {
 		assertTrue(response.contains("Error in data sync"));
 	}
 
-//************
 	@Test
 	void testGetSyncGroupDetails() {
 		OutputResponse response = new OutputResponse();
@@ -155,7 +148,6 @@ class StartSyncActivityTest {
 		assertTrue(actualResponse.contains("Error in getting data sync group details"));
 	}
 
-//**********
 	@Test
 	void testStartMasterDownload_Success() throws Exception {
 		// Given
@@ -218,34 +210,6 @@ class StartSyncActivityTest {
 	    assertTrue(response.contains("Error in Master data Download : "));
 	}
 
-
-
-//	@Test
-//	public void testStartMasterDownload_Success() throws Exception { // Mock the service to return a successful message
-//		Mockito.when(downloadDataFromServerImpl.downloadMasterDataFromServer(Mockito.anyString(), Mockito.anyInt(),
-//				Mockito.anyInt())).thenReturn("Download started");
-//
-//		String requestJson = "{\"vanID\":123, \"providerServiceMapID\":456}";
-//		MockHttpServletRequest request = new MockHttpServletRequest();
-//		request.setContent(requestJson.getBytes());
-//
-//		request.addHeader("Authorization", "auth-token");
-//		request.addHeader("ServerAuthorization", "server-auth-token");
-//
-//		String response = startSyncActivity.startMasterDownload(requestJson, "auth-token", "server-auth-token");
-//
-//		assertNotNull(response);
-//		assertTrue(response.contains("Download started"));
-//	}
-//
-//	@Test
-//	public void testStartMasterDownload_MissingFields() throws Exception {
-//		String requestJson = "{}"; // Empty JSON
-//		String response = startSyncActivity.startMasterDownload(requestJson, "auth-token", "server-auth-token");
-//		assertTrue(response.contains("vanID / providerServiceMapID or both are missing"));
-//	}
-
-//***********	
 	@Test
 	void testCheckMastersDownloadProgress() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -289,7 +253,7 @@ class StartSyncActivityTest {
 		assertTrue(result.contains("Error in Master data Download progress check : "));
 	}
 
-//*************
+
 	@Test
 	void testGetVanDetailsForMasterDownload() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -418,7 +382,6 @@ class StartSyncActivityTest {
 		assertTrue(result.contains("Error while getting van details"));
 	}
 
-//**************
 	@Test
 	void testDownloadTransactionToLocal() throws JSONException, Exception {
 		OutputResponse response = new OutputResponse();

@@ -2,8 +2,6 @@ package com.iemr.mmu.controller.cancerscreening;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -27,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -187,17 +184,16 @@ class CancerScreeningControllerTest {
 	@Test
 	void testSaveBenCancerScreeningNurseData_InvalidRequest() throws Exception {
 		OutputResponse response = new OutputResponse();
+		String requestObj = "{}";
+		String authorization = "TestAuth";
 
-		JsonObject jsnOBJ = null;
+		String actualResponse = cancerScreeningController.saveBenCancerScreeningNurseData(requestObj, authorization);
 
 		response.setError(5000, "Invalid request");
-
-		assertNull(jsnOBJ);
 
 		assertTrue(response.toString().contains("Invalid request"));
 	}
 
-//*******************	
 	@Test
 	void testsaveBenCancerScreeningDoctorData_Success() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -263,17 +259,16 @@ class CancerScreeningControllerTest {
 	@Test
 	void testsaveBenCancerScreeningDoctorData_InvalidRequest() throws Exception {
 		OutputResponse response = new OutputResponse();
+		String requestObj = "{}";
+		String authorization = "TestAuth";
 
-		JsonObject jsnOBJ = null;
+		String actualResponse = cancerScreeningController.saveBenCancerScreeningDoctorData(requestObj, authorization);
 
 		response.setError(5000, "Invalid request");
-
-		assertNull(jsnOBJ);
 
 		assertTrue(response.toString().contains("Invalid request"));
 	}
 
-//******************
 	@Test
 	void testGetBenDataFrmNurseScrnToDocScrnVisitDetails_Success() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -322,7 +317,6 @@ class CancerScreeningControllerTest {
 		verify(cSService, times(1)).getBenDataFrmNurseToDocVisitDetailsScreen(benRegID, visitCode);
 	}
 
-//*************************	
 	@Test
 	void testGetBenDataFrmNurseScrnToDocScrnHistory() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -346,19 +340,9 @@ class CancerScreeningControllerTest {
 		assertTrue(response.toString().contains(s));
 	}
 
-//	@Test
-//	void testGetBenDataFrmNurseScrnToDocScrnHistory_CatchBlock() throws Exception {
-//	    String comingRequest = "{\"benRegID\":\"1\", \"visitCode\":\"2\"}";
-//	    
-//	    when(cSService.getBenDataFrmNurseToDocHistoryScreen(anyLong(), anyLong())).thenThrow(NotFoundException.class);
-//
-//	    String responseString = cancerScreeningController.getBenDataFrmNurseScrnToDocScrnHistory(comingRequest);
-//
-//	    assertTrue(responseString.contains("Error while getting beneficiary history data"));
-//	}
 
 	@Test
-	void testExceptionScenario() {
+	void testGetBenDataFrmNurseScrnToDocScrnHistory_ExceptionScenario() {
 		// Setup the mock to throw an exception when the service method is called
 		Mockito.when(cSService.getBenDataFrmNurseToDocHistoryScreen(Mockito.anyLong(), Mockito.anyLong()))
 				.thenThrow(new RuntimeException("Simulated exception"));
@@ -373,22 +357,9 @@ class CancerScreeningControllerTest {
 		assertTrue(response.contains("Error while getting beneficiary history data"));
 	}
 
-//	@Test
-//	void testGetBenDataFrmNurseScrnToDocScrnHistory_InvalidRequest() throws JSONException {
-//		OutputResponse response = new OutputResponse();
-//		String comingRequest = "{\"benRegID\":\"0\", \"visitCode\":\"0\"}";
-//		
-//		JSONObject obj = new JSONObject(comingRequest);
-//
-//		response.setError(5000, "Invalid request");
-//		
-//		assertNotEquals(0,obj.length());
-//		
-//		assertTrue(response.toString().contains("Invalid request"));
-//	}
 
 	@Test
-	void testInvalidInput() {
+	void testGetBenDataFrmNurseScrnToDocScrnHistory_InvalidInput() {
 		String invalidRequest = "{}";
 
 		String response = cancerScreeningController.getBenDataFrmNurseScrnToDocScrnHistory(invalidRequest);
@@ -396,7 +367,6 @@ class CancerScreeningControllerTest {
 		assertTrue(response.contains("Invalid request"));
 	}
 
-//*****************
 	@Test
 	void testGetBenDataFrmNurseScrnToDocScrnVital() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -418,26 +388,6 @@ class CancerScreeningControllerTest {
 		assertTrue(response.toString().contains(s));
 	}
 
-//	@Test
-//	void testGetBenDataFrmNurseScrnToDocScrnVital_InvalidRequest() throws JSONException {
-//		OutputResponse response = new OutputResponse();
-//		String comingRequest = "{\"benRegID\":\"1\", \"visitCode\":\"1\"}";
-//		String s = "test";
-//		JSONObject obj = new JSONObject(comingRequest);
-//
-//		Long benRegID = obj.getLong("benRegID");
-//		Long visitCode = obj.getLong("visitCode");
-//
-//		when(cSService.getBenDataFrmNurseToDocVitalScreen(benRegID, visitCode)).thenReturn(s);
-//		
-//		String expResponse = cancerScreeningController.getBenDataFrmNurseScrnToDocScrnVital(comingRequest);
-//		
-//		response.setResponse(s);
-//		
-//		assertTrue(obj.length() > 1);
-//		assertEquals(expResponse,cancerScreeningController.getBenDataFrmNurseScrnToDocScrnVital(comingRequest));
-//		assertTrue(response.toString().contains(s));
-//	}
 
 	@Test
 	void testGetBenDataFrmNurseScrnToDocScrnVital_InvalidRequest() {
@@ -460,7 +410,7 @@ class CancerScreeningControllerTest {
 		assertTrue(actualResponse.contains("Error while getting beneficiary vital data"));
 	}
 
-//**************
+
 	@Test
 	void testGetBenDataFrmNurseScrnToDocScrnExamination() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -506,7 +456,6 @@ class CancerScreeningControllerTest {
 		assertTrue(actualResponse.contains("Error while getting beneficiary examination data"));
 	}
 
-//***********************
 	@Test
 	void testGetBenCancerFamilyHistory() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -548,7 +497,6 @@ class CancerScreeningControllerTest {
 		assertTrue(actualResponse.contains("Error while getting beneficiary family history data"));
 	}
 
-//*********************
 	@Test
 	void testGetBenCancerPersonalHistory() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -570,32 +518,28 @@ class CancerScreeningControllerTest {
 		assertEquals(expResponse, cancerScreeningController.getBenCancerPersonalHistory(comingRequest));
 		assertTrue(response.toString().contains(s));
 	}
-	
+
 	@Test
 	void testGetBenCancerPersonalHistory_Invalid() throws JSONException {
 		OutputResponse response = new OutputResponse();
+		String requestObj = "{}";
 
-		String comingRequest = "{}";
-	
-		JSONObject obj = new JSONObject(comingRequest);
-		
+		String actualResponse = cancerScreeningController.getBenCancerPersonalHistory(requestObj);
+
 		response.setError(5000, "Invalid request");
 
-		assertFalse(obj.has("benRegID"));
-
-		assertTrue(response.toString().contains("Invalid request"));
+		assertTrue(actualResponse.contains("Invalid request"));
 	}
-	
+
 	@Test
 	void testGetBenCancerPersonalHistory_Exception() throws JSONException {
 		OutputResponse response = new OutputResponse();
-		
+
 		response.setError(5000, "Error while getting beneficiary personal history data");
-		
-		assertEquals(response.toString(),cancerScreeningController.getBenCancerPersonalHistory(any()));
+
+		assertEquals(response.toString(), cancerScreeningController.getBenCancerPersonalHistory(any()));
 	}
 
-//****************
 	@Test
 	void testGetBenCancerPersonalDietHistory() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -640,7 +584,6 @@ class CancerScreeningControllerTest {
 		assertTrue(actualResponse.contains("Error while getting beneficiary personal diet history data"));
 	}
 
-//***********************
 	@Test
 	void testGetBenCancerObstetricHistory() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -683,7 +626,6 @@ class CancerScreeningControllerTest {
 		assert (actualResponse.contains("Error while getting beneficiary obstetric history data"));
 	}
 
-//***************************
 	@Test
 	void testGetBenCaseRecordFromDoctorCS() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -734,7 +676,7 @@ class CancerScreeningControllerTest {
 		assertTrue(actualResponse.contains("Error while getting beneficiary doctor data"));
 	}
 
-//************
+
 	@Test
 	void testUpdateCSHistoryNurse_Success() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -786,7 +728,6 @@ class CancerScreeningControllerTest {
 		assertTrue(response.toString().contains("Unable to modify data"));
 	}
 
-//****************
 	@Test
 	void testUpdateBenVitalDetail_Success() {
 
@@ -800,19 +741,19 @@ class CancerScreeningControllerTest {
 
 	@Test
 	void testUpdateBenVitalDetail_Failure() {
-	    // Setup the input request object as a JSON string
-	    String requestObj = "{\"ID\": 123, \"beneficiaryRegID\": 456, \"benVisitID\": 789, "
-	            + "\"weight_Kg\": 70.0, \"height_cm\": 175.0, \"waistCircumference_cm\": 80.0, \"bloodGlucose_Fasting\": 100, "
-	            + "\"bloodGlucose_Random\": 120, \"bloodGlucose_2HrPostPrandial\": 140, \"systolicBP_1stReading\": 120, "
-	            + "\"diastolicBP_1stReading\": 80, \"systolicBP_2ndReading\": 122, \"diastolicBP_2ndReading\": 82, "
-	            + "\"systolicBP_3rdReading\": 124, \"diastolicBP_3rdReading\": 84, "
-	            + "\"hbA1C\": 7, \"hemoglobin\": 14, \"modifiedBy\": \"testUser\"}";
+		// Setup the input request object as a JSON string
+		String requestObj = "{\"ID\": 123, \"beneficiaryRegID\": 456, \"benVisitID\": 789, "
+				+ "\"weight_Kg\": 70.0, \"height_cm\": 175.0, \"waistCircumference_cm\": 80.0, \"bloodGlucose_Fasting\": 100, "
+				+ "\"bloodGlucose_Random\": 120, \"bloodGlucose_2HrPostPrandial\": 140, \"systolicBP_1stReading\": 120, "
+				+ "\"diastolicBP_1stReading\": 80, \"systolicBP_2ndReading\": 122, \"diastolicBP_2ndReading\": 82, "
+				+ "\"systolicBP_3rdReading\": 124, \"diastolicBP_3rdReading\": 84, "
+				+ "\"hbA1C\": 7, \"hemoglobin\": 14, \"modifiedBy\": \"testUser\"}";
 
-	    when(cSService.updateBenVitalDetail(any(BenCancerVitalDetail.class))).thenReturn(0);
+		when(cSService.updateBenVitalDetail(any(BenCancerVitalDetail.class))).thenReturn(0);
 
-	    String result = cancerScreeningController.upodateBenVitalDetail(requestObj);
+		String result = cancerScreeningController.upodateBenVitalDetail(requestObj);
 
-	    assertThat(result).contains("Unable to modify data");
+		assertThat(result).contains("Unable to modify data");
 	}
 
 	@Test
@@ -825,7 +766,7 @@ class CancerScreeningControllerTest {
 
 		assertThat(result).contains("Unable to modify data");
 	}
-//******************
+
 	@Test
 	void testUpodateBenExaminationDetail_success() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -867,38 +808,28 @@ class CancerScreeningControllerTest {
 		assertEquals(expResponse, cancerScreeningController.upodateBenExaminationDetail(requestObj));
 		assertTrue(response.toString().contains("Unable to modify data"));
 	}
-	
+
 	@Test
 	void testUpodateBenExaminationDetail_failure() throws Exception {
-	    String requestObj = "{\"request\":\"Update beneficiary examination detail\"}";
-	    JsonObject jsnOBJ = parseJsonRequest(requestObj);
+		String requestObj = "{\"request\":\"Update beneficiary examination detail\"}";
+		JsonObject jsnOBJ = parseJsonRequest(requestObj);
 
-	    when(cSService.updateBenExaminationDetail(jsnOBJ)).thenThrow(new RuntimeException("Simulated failure"));
+		when(cSService.updateBenExaminationDetail(jsnOBJ)).thenThrow(new RuntimeException("Simulated failure"));
 
-	    String response = cancerScreeningController.upodateBenExaminationDetail(requestObj);
+		String response = cancerScreeningController.upodateBenExaminationDetail(requestObj);
 
-	    OutputResponse expectedResponse = new OutputResponse();
-	    expectedResponse.setError(5000, "Unable to modify data");
+		OutputResponse expectedResponse = new OutputResponse();
+		expectedResponse.setError(5000, "Unable to modify data");
 
-	    assertEquals(expectedResponse.toString(), response);
+		assertEquals(expectedResponse.toString(), response);
 	}
 
-	
-//	@Test
-//	void testUpodateBenExamination_Exception() throws Exception {
-//		OutputResponse response = new OutputResponse();
-//		
-//		response.setError(5000, "Unable to modify data");
-//		
-//		assertEquals(response.toString(),cancerScreeningController.upodateBenExaminationDetail(any()) );
-//	}
-
-//***************
 	@Test
 	void testUpdateCancerDiagnosisDetailsByOncologist_Success() throws IEMRException {
 		OutputResponse response = new OutputResponse();
 
-		String requestObj = "{\"request\":\"Update cancer diagnosis details by oncologist\"}";
+		String requestObj = "{\"beneficiaryRegID\":\"1\", \"benVisitID\":\"1\", \"visitCode\":\"1\", "
+				+ "\"provisionalDiagnosisOncologist\":\"test\", \"modifiedBy\":\"test\"}";
 		int result = 1;
 
 		CancerDiagnosis cancerDiagnosis = InputMapper.gson().fromJson(requestObj, CancerDiagnosis.class);
@@ -914,13 +845,13 @@ class CancerScreeningControllerTest {
 		assertEquals(expResponse, cancerScreeningController.updateCancerDiagnosisDetailsByOncologist(requestObj));
 		assertTrue(response.toString().contains("Data updated successfully"));
 	}
-	
 
 	@Test
 	void testUpdateCancerDiagnosisDetailsByOncologist_Unable() throws IEMRException {
 		OutputResponse response = new OutputResponse();
 
-		String requestObj = "{\"request\":\"Update cancer diagnosis details by oncologist\"}";
+		String requestObj = "{\"beneficiaryRegID\":\"1\", \"benVisitID\":\"1\", \"visitCode\":\"1\", "
+				+ "\"provisionalDiagnosisOncologist\":\"test\", \"modifiedBy\":\"test\"}";
 		int result = -1;
 
 		CancerDiagnosis cancerDiagnosis = InputMapper.gson().fromJson(requestObj, CancerDiagnosis.class);
@@ -936,23 +867,23 @@ class CancerScreeningControllerTest {
 		assertEquals(expResponse, cancerScreeningController.updateCancerDiagnosisDetailsByOncologist(requestObj));
 		assertTrue(response.toString().contains("Unable to modify data"));
 	}
-	
+
 	@Test
 	void testUpdateCancerDiagnosisDetailsByOncologist_Exception() throws Exception {
-	    String requestObj = "{\"beneficiaryRegID\":1, \"benVisitID\":1, \"visitCode\":123, \"provisionalDiagnosisOncologist\":\"Diagnosis Details\", \"modifiedBy\":\"Doctor\"}";
-	    CancerDiagnosis cancerDiagnosis = InputMapper.gson().fromJson(requestObj, CancerDiagnosis.class);
-	    
-	    when(cSService.updateCancerDiagnosisDetailsByOncologist(cancerDiagnosis)).thenThrow(new RuntimeException("Unexpected Error"));
-	    
-	    String response = cancerScreeningController.updateCancerDiagnosisDetailsByOncologist(requestObj);
-	    
-	    OutputResponse expectedResponse = new OutputResponse();
-	    expectedResponse.setError(5000, "Unable to modify data"); 
-	    
-	    assertEquals(expectedResponse.toString(), response);
+		String requestObj = "{\"beneficiaryRegID\":1, \"benVisitID\":1, \"visitCode\":123, \"provisionalDiagnosisOncologist\":\"Diagnosis Details\", \"modifiedBy\":\"Doctor\"}";
+		CancerDiagnosis cancerDiagnosis = InputMapper.gson().fromJson(requestObj, CancerDiagnosis.class);
+
+		when(cSService.updateCancerDiagnosisDetailsByOncologist(cancerDiagnosis))
+				.thenThrow(new RuntimeException("Unexpected Error"));
+
+		String response = cancerScreeningController.updateCancerDiagnosisDetailsByOncologist(requestObj);
+
+		OutputResponse expectedResponse = new OutputResponse();
+		expectedResponse.setError(5000, "Unable to modify data");
+
+		assertEquals(expectedResponse.toString(), response);
 	}
 
-//********************
 	@Test
 	void testUpdateCancerScreeningDoctorData_Success() throws Exception {
 		OutputResponse response = new OutputResponse();

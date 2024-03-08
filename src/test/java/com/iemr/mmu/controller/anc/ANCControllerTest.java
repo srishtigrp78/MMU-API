@@ -22,7 +22,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -50,7 +49,7 @@ class ANCControllerTest {
 	}
 
 	@Test
-	public void testSaveBenANCNurseData_Success() throws Exception {
+	void testSaveBenANCNurseData_Success() throws Exception {
 		OutputResponse response = new OutputResponse();
 
 		String requestObj = "{\"request\":\"Save ANC nurse data\"}";
@@ -71,7 +70,7 @@ class ANCControllerTest {
 	}
 
 	@Test
-	public void testSaveBenANCNurseData_AlreadySaved() throws Exception {
+	void testSaveBenANCNurseData_AlreadySaved() throws Exception {
 		String requestObj = "{\"request\":\"Check already saved data\"}";
 		Long ancRes = 0L; // Indicating already saved
 
@@ -88,7 +87,7 @@ class ANCControllerTest {
 	}
 
 	@Test
-	public void testSaveBenANCNurseData_UnableToSaveData() throws Exception {
+	void testSaveBenANCNurseData_UnableToSaveData() throws Exception {
 		OutputResponse response = new OutputResponse();
 
 		String requestObj = "{\"request\":\"Some data that causes failure\"}";
@@ -109,10 +108,12 @@ class ANCControllerTest {
 	}
 
 	@Test
-	public void testSaveBenANCNurseData_Invalid() throws Exception {
+	void testSaveBenANCNurseData_Invalid() throws Exception {
 		OutputResponse response = new OutputResponse();
+		String requestObj = "{}";
+		String authorization = "TestAuth";
 
-		JsonObject jsnOBJ = null;
+		String actualResponse = ancController.saveBenANCNurseData(requestObj);
 
 		response.setError(5000, "Invalid request");
 
