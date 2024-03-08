@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import org.json.JSONException;
@@ -24,6 +25,8 @@ import com.iemr.mmu.data.quickConsultation.WrapperQuickConsultation;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
+
+import javassist.NotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 class QuickConsultControllerTest {
@@ -123,7 +126,6 @@ class QuickConsultControllerTest {
 		assertTrue(response.toString().contains("Invalid request"));
 	}
 
-	// ***********
 	@Test
 	void testSaveQuickConsultationDetail_Success() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -178,7 +180,21 @@ class QuickConsultControllerTest {
 		assertTrue(response.toString().contains("Unable to save data"));
 	}
 
-//****************
+	@Test
+	void testSaveQuickConsultationDetail_Exception() throws Exception {
+
+		String requestObj = "{\"request\":\"Save quick consultation detail for doctor\"}";
+		String authorization = "Bearer token";
+
+		when(quickConsultationServiceImpl.quickConsultDoctorDataInsert(any(), any()))
+				.thenThrow(NotFoundException.class);
+
+		String SaveQuickConsultationDetail = quickConsultController.saveQuickConsultationDetail(requestObj,
+				authorization);
+
+		assertTrue(SaveQuickConsultationDetail.contains("Unable to save data. "));
+	}
+
 	@Test
 	void testGetBenDataFrmNurseScrnToDocScrnVisitDetails() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -187,7 +203,7 @@ class QuickConsultControllerTest {
 		String s = "Test";
 
 		JSONObject obj = new JSONObject(comingRequest);
-		
+
 		Long benRegID = obj.getLong("benRegID");
 		Long visitCode = obj.getLong("visitCode");
 
@@ -202,7 +218,7 @@ class QuickConsultControllerTest {
 		assertEquals(expResponse, quickConsultController.getBenDataFrmNurseScrnToDocScrnVisitDetails(comingRequest));
 		assertTrue(response.toString().contains(s));
 	}
-	
+
 	@Test
 	void testGetBenDataFrmNurseScrnToDocScrnVisitDetails_Invalid() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -210,14 +226,23 @@ class QuickConsultControllerTest {
 		String comingRequest = "{}";
 
 		JSONObject obj = new JSONObject(comingRequest);
-		
+
 		response.setError(5000, "Invalid request");
 
 		assertTrue(obj.length() < 1);
 
 		assertTrue(response.toString().contains("Invalid request"));
 	}
-//*************
+
+	@Test
+	void testGetBenDataFrmNurseScrnToDocScrnVisitDetails_Exception() throws Exception {
+
+		OutputResponse response = new OutputResponse();
+		response.setError(5000, "Error while getting visit data");
+		assertEquals(response.toString(), quickConsultController.getBenDataFrmNurseScrnToDocScrnVisitDetails(any()));
+
+	}
+
 	@Test
 	void testGetBenVitalDetailsFrmNurse() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -226,7 +251,7 @@ class QuickConsultControllerTest {
 		String res = "Test";
 
 		JSONObject obj = new JSONObject(comingRequest);
-		
+
 		Long benRegID = obj.getLong("benRegID");
 		Long visitCode = obj.getLong("visitCode");
 
@@ -241,7 +266,7 @@ class QuickConsultControllerTest {
 		assertEquals(expResponse, quickConsultController.getBenVitalDetailsFrmNurse(comingRequest));
 		assertTrue(response.toString().contains(res));
 	}
-	
+
 	@Test
 	void testGetBenVitalDetailsFrmNurse_Invalid() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -249,15 +274,23 @@ class QuickConsultControllerTest {
 		String comingRequest = "{}";
 
 		JSONObject obj = new JSONObject(comingRequest);
-		
+
 		response.setError(5000, "Invalid request");
 
 		assertTrue(!obj.has("benRegID") || !obj.has("visitCode"));
 
 		assertTrue(response.toString().contains("Invalid request"));
 	}
-	
-//********************
+
+	@Test
+	void testGetBenVitalDetailsFrmNurse_Exception() throws Exception {
+
+		OutputResponse response = new OutputResponse();
+		response.setError(5000, "Error while getting vital data");
+		assertEquals(response.toString(), quickConsultController.getBenVitalDetailsFrmNurse(any()));
+
+	}
+
 	@Test
 	void testGetBenCaseRecordFromDoctorQuickConsult() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -266,7 +299,7 @@ class QuickConsultControllerTest {
 		String res = "Test";
 
 		JSONObject obj = new JSONObject(comingRequest);
-		
+
 		Long benRegID = obj.getLong("benRegID");
 		Long visitCode = obj.getLong("visitCode");
 
@@ -281,7 +314,7 @@ class QuickConsultControllerTest {
 		assertEquals(expResponse, quickConsultController.getBenCaseRecordFromDoctorQuickConsult(comingRequest));
 		assertTrue(response.toString().contains(res));
 	}
-	
+
 	@Test
 	void testGetBenCaseRecordFromDoctorQuickConsult_Invalid() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -296,67 +329,83 @@ class QuickConsultControllerTest {
 
 		assertTrue(response.toString().contains("Invalid request"));
 	}
-	
-//********************
+
+	@Test
+	void testGetBenCaseRecordFromDoctorQuickConsult_Exception() throws Exception {
+
+		OutputResponse response = new OutputResponse();
+		response.setError(5000, "Error while getting doctor data");
+		assertEquals(response.toString(), quickConsultController.getBenCaseRecordFromDoctorQuickConsult(any()));
+
+	}
+
 	@Test
 	void testUpdateGeneralOPDQCDoctorData_Success() throws Exception {
 		OutputResponse response = new OutputResponse();
 
 		String requestObj = "{\"request\":\"UpdateGeneralOPDQCDoctorData\"}";
 		String authorization = "Test";
-		Long result =123L;
+		Long result = 123L;
 
 		WrapperQuickConsultation wrapperQuickConsultation = InputMapper.gson().fromJson(requestObj,
 				WrapperQuickConsultation.class);
 
 		JsonObject quickConsultDoctorOBJ = wrapperQuickConsultation.getQuickConsultation();
-		
-		when(quickConsultationServiceImpl.updateGeneralOPDQCDoctorData(quickConsultDoctorOBJ,
-					authorization)).thenReturn(result);
-		
+
+		when(quickConsultationServiceImpl.updateGeneralOPDQCDoctorData(quickConsultDoctorOBJ, authorization))
+				.thenReturn(result);
+
 		String expResponse = quickConsultController.updateGeneralOPDQCDoctorData(requestObj, authorization);
-		
+
 		response.setResponse("Data updated successfully");
 
-		assertNotNull(result);	
+		assertNotNull(result);
 		assertTrue(result > 0);
-		
-		assertEquals(expResponse,quickConsultController.updateGeneralOPDQCDoctorData(requestObj, authorization));
+
+		assertEquals(expResponse, quickConsultController.updateGeneralOPDQCDoctorData(requestObj, authorization));
 		assertTrue(response.toString().contains("Data updated successfully"));
 	}
-	
+
 	@Test
 	void testUpdateGeneralOPDQCDoctorData_Unable() throws Exception {
 		OutputResponse response = new OutputResponse();
 
 		String requestObj = "{\"request\":\"UpdateGeneralOPDQCDoctorData\"}";
 		String authorization = "Test";
-		Long result =null;
+		Long result = null;
 
 		WrapperQuickConsultation wrapperQuickConsultation = InputMapper.gson().fromJson(requestObj,
 				WrapperQuickConsultation.class);
 
 		JsonObject quickConsultDoctorOBJ = wrapperQuickConsultation.getQuickConsultation();
-		
-		when(quickConsultationServiceImpl.updateGeneralOPDQCDoctorData(quickConsultDoctorOBJ,
-					authorization)).thenReturn(result);
-		
+
+		when(quickConsultationServiceImpl.updateGeneralOPDQCDoctorData(quickConsultDoctorOBJ, authorization))
+				.thenReturn(result);
+
 		String expResponse = quickConsultController.updateGeneralOPDQCDoctorData(requestObj, authorization);
-		
+
 		response.setResponse("Unable to modify data");
 
-		assertNull(result);	
-		//assertTrue(result < 0);
-		
-		assertEquals(expResponse,quickConsultController.updateGeneralOPDQCDoctorData(requestObj, authorization));
+		assertNull(result);
+		// assertTrue(result < 0);
+
+		assertEquals(expResponse, quickConsultController.updateGeneralOPDQCDoctorData(requestObj, authorization));
 		assertTrue(response.toString().contains("Unable to modify data"));
 	}
 
+	@Test
+	void testUpdateGeneralOPDQCDoctorData_Exception() throws Exception {
+		
+		String requestObj = "{\"request\":\"Save cancer screening nurse data\"}";
+		String authorization = "Bearer token";
+ 
+		when(quickConsultationServiceImpl.updateGeneralOPDQCDoctorData(any(), any())).thenThrow(NotFoundException.class);
+ 
+		String saveBenCancerScreeningNurseData = quickConsultController.updateGeneralOPDQCDoctorData(requestObj,
+				authorization);
+ 
+		assertTrue(saveBenCancerScreeningNurseData.contains("Unable to modify data"));
+
+	}
+
 }
-//******
-//SaveBenQuickConsultDataNurse() -done
-//SaveQuickConsultationDetail() -done
-//GetBenDataFrmNurseScrnToDocScrnVisitDetails() -done
-//GetBenVitalDetailsFrmNurse() -done
-//testGetBenCaseRecordFromDoctorQuickConsult() -done
-//UpdateGeneralOPDQCDoctorData() -done  

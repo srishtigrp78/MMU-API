@@ -3,15 +3,11 @@ package com.iemr.mmu.controller.registrar.main;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyChar;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
@@ -24,15 +20,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.OngoingStubbing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.iemr.mmu.data.registrar.BeneficiaryData;
 import com.iemr.mmu.data.registrar.V_BenAdvanceSearch;
-import com.iemr.mmu.data.registrar.WrapperBeneficiaryRegistration;
 import com.iemr.mmu.service.common.master.RegistrarServiceMasterDataImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
@@ -97,7 +90,7 @@ class RegistrarControllerTest {
 //		assertEquals(response, registrarController.getRegistrarWorkList(comingReq));
 //	}
 
-// ************************
+
 	@Test
 	void testQuickSearchBeneficiary() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -126,7 +119,6 @@ class RegistrarControllerTest {
 		assertTrue(response.contains("Error in quickSearchBeneficiary :"));
 	}
 
-//************************
 	@Test
 	void testAdvanceSearch() throws IEMRException {
 		OutputResponse response = new OutputResponse();
@@ -146,7 +138,6 @@ class RegistrarControllerTest {
 		assertEquals(expResponse, registrarController.advanceSearch(comingRequest));
 	}
 
-// ************************
 	@Test
 	void testGetBenDetailsByRegID() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -203,7 +194,7 @@ class RegistrarControllerTest {
 		assertTrue(actualResponse.contains(expectedError));
 	}
 
-// ************************
+
 	@Test
 	void testGetBeneficiaryDetails() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -286,7 +277,7 @@ class RegistrarControllerTest {
 		assertTrue(actualResponse.contains("Error in getBeneficiaryDetails :"));
 	}
 
-// ************************
+
 	@Test
 	void testGetBeneficiaryImage() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -329,8 +320,6 @@ class RegistrarControllerTest {
 		assertTrue(actualResponse.contains(expectedError));
 	}
 
-// ************************
-
 	@Test
 	void testQuickSearchNew_Success() throws Exception {
 		String requestObj = "{\"searchKey\": \"1234567890\"}";
@@ -371,7 +360,7 @@ class RegistrarControllerTest {
 		assertTrue(actualResponse.contains(expectedError));
 	}
 
-// ************************
+
 
 	@Test
 	void testAdvanceSearchNew_Success() {
@@ -416,7 +405,7 @@ class RegistrarControllerTest {
 		assertTrue(actualResponse.contains(expectedError));
 	}
 
-// ************************
+
 
 	@Test
 	void testGetBenDetailsForLeftSidePanelByRegID_Success() throws JSONException {
@@ -530,7 +519,7 @@ class RegistrarControllerTest {
 //		assertTrue(response.toString().contains("Invalid request"));
 //	}
 
-// ************************
+
 	@Test
 	void testGetBenImage() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -546,7 +535,19 @@ class RegistrarControllerTest {
 		assertEquals(expResponse, registrarController.getBenImage(requestObj, authorization));
 	}
 
-// ************************
+	@Test
+	void testGetBenImage_Exception() throws Exception {
+		String requestObj = "{}";
+		String authorization = "Authorization";
+
+		when(registrarServiceMasterDataImpl.getBenImageFromIdentityAPI(any(), any()))
+				.thenThrow(NotFoundException.class);
+
+		String getBenImage = registrarController.getBenImage(requestObj, authorization);
+
+		assertTrue(getBenImage.contains("Error while getting beneficiary image"));
+
+	}
 
 	@Test
 	void testCreateBeneficiary_Success() {
@@ -630,7 +631,7 @@ class RegistrarControllerTest {
 //		assertTrue(response.toString().contains("Invalid input data"));
 //	}
 
-// ************************
+
 	@Test
 	void testRegistrarBeneficaryRegistrationNew() throws Exception {
 
@@ -648,7 +649,19 @@ class RegistrarControllerTest {
 		assertEquals(expResponse, registrarController.registrarBeneficaryRegistrationNew(comingReq, authorization));
 	}
 
-	// ************************
+	@Test
+	void testRegistrarBeneficaryRegistrationNew_Exception() throws Exception {
+		String requestObj = "{\"request\":\"Save cancer screening nurse data\"}";
+		String authorization = "Bearer token";
+
+		when(registrarServiceImpl.registerBeneficiary(any(), any())).thenThrow(NotFoundException.class);
+
+		String RegistrarBeneficaryRegistrationNew = registrarController.registrarBeneficaryRegistrationNew(requestObj,
+				authorization);
+
+		assertTrue(RegistrarBeneficaryRegistrationNew.contains("Error in registration; please contact administrator"));
+	}
+
 	@Test
 	void updateBeneficiary_WithNullBenD() {
 		String comingRequest = "{\"benD\": null}";
@@ -666,62 +679,32 @@ class RegistrarControllerTest {
 
 		assertTrue(result.contains("Data Not Sufficient"));
 	}
-	
+
 	@Test
-    void updateBeneficiary_FailsToUpdate() {
-        String comingRequest = "{\"benD\": {" +
-                "\"beneficiaryRegID\": 12345," +
-                "\"firstName\": \"John\"," +
-                "\"lastName\": \"Doe\"," +
-                "\"gender\": 1," +
-                "\"dob\": \"1990-01-01T00:00:00\"," +
-                "\"maritalStatus\": 1," +
-                "\"fatherName\": \"John Sr.\"," +
-                "\"motherName\": \"Jane\"," +
-                "\"husbandName\": \"\"," +
-                "\"image\": \"image_url\"," +
-                "\"aadharNo\": \"123456789012\"," +
-                "\"income\": 2," +
-                "\"literacyStatus\": \"Graduate\"," +
-                "\"educationQualification\": 4," +
-                "\"occupation\": 3," +
-                "\"phoneNo\": \"1234567890\"," +
-                "\"emailID\": 0," + // Assuming this incorrect format triggers the failure
-                "\"bankName\": \"XYZ Bank\"," +
-                "\"branchName\": \"XYZ Branch\"," +
-                "\"IFSCCode\": \"XYZ0001234\"," +
-                "\"accountNumber\": \"12345678901\"," +
-                "\"community\": 2," +
-                "\"religion\": 1," +
-                "\"blockID\": 123," +
-                "\"blockName\": \"Block A\"," +
-                "\"habitation\": \"Habitation X\"," +
-                "\"villageID\": 1234," +
-                "\"villageName\": \"Village Y\"," +
-                "\"districtID\": 12," +
-                "\"districtName\": \"District Z\"," +
-                "\"stateID\": 1," +
-                "\"stateName\": \"State A\"," +
-                "\"govID\": [{" +
-                "\"benGovMapID\": 123456," +
-                "\"type\": \"PAN\"," +
-                "\"value\": \"ABCDE1234F\"" +
-                "}]," +
-                "\"ageAtMarriage\": 25," +
-                "\"createdBy\": \"Admin\"," +
-                "\"servicePointID\": 1234567," +
-                "\"govtIdentityNo\": 123456789," +
-                "\"govtIdentityTypeID\": 1," +
-                "\"modifiedBy\": \"Admin2\"" +
-                "}}";
+	void updateBeneficiary_FailsToUpdate() {
+		String comingRequest = "{\"benD\": {" + "\"beneficiaryRegID\": 12345," + "\"firstName\": \"John\","
+				+ "\"lastName\": \"Doe\"," + "\"gender\": 1," + "\"dob\": \"1990-01-01T00:00:00\","
+				+ "\"maritalStatus\": 1," + "\"fatherName\": \"John Sr.\"," + "\"motherName\": \"Jane\","
+				+ "\"husbandName\": \"\"," + "\"image\": \"image_url\"," + "\"aadharNo\": \"123456789012\","
+				+ "\"income\": 2," + "\"literacyStatus\": \"Graduate\"," + "\"educationQualification\": 4,"
+				+ "\"occupation\": 3," + "\"phoneNo\": \"1234567890\"," + "\"emailID\": 0," + // Assuming this incorrect
+																								// format triggers the
+																								// failure
+				"\"bankName\": \"XYZ Bank\"," + "\"branchName\": \"XYZ Branch\"," + "\"IFSCCode\": \"XYZ0001234\","
+				+ "\"accountNumber\": \"12345678901\"," + "\"community\": 2," + "\"religion\": 1," + "\"blockID\": 123,"
+				+ "\"blockName\": \"Block A\"," + "\"habitation\": \"Habitation X\"," + "\"villageID\": 1234,"
+				+ "\"villageName\": \"Village Y\"," + "\"districtID\": 12," + "\"districtName\": \"District Z\","
+				+ "\"stateID\": 1," + "\"stateName\": \"State A\"," + "\"govID\": [{" + "\"benGovMapID\": 123456,"
+				+ "\"type\": \"PAN\"," + "\"value\": \"ABCDE1234F\"" + "}]," + "\"ageAtMarriage\": 25,"
+				+ "\"createdBy\": \"Admin\"," + "\"servicePointID\": 1234567," + "\"govtIdentityNo\": 123456789,"
+				+ "\"govtIdentityTypeID\": 1," + "\"modifiedBy\": \"Admin2\"" + "}}";
 
-        when(registrarServiceImpl.updateBeneficiary(any())).thenReturn(0);
+		when(registrarServiceImpl.updateBeneficiary(any())).thenReturn(0);
 
-        String result = registrarController.updateBeneficiary(comingRequest);
+		String result = registrarController.updateBeneficiary(comingRequest);
 
-        assertTrue(result.contains("Something Went-Wrong"));
-    }
-	
+		assertTrue(result.contains("Something Went-Wrong"));
+	}
 
 	@Test
 	void updateBeneficiary_SuccessScenario() {
@@ -737,9 +720,8 @@ class RegistrarControllerTest {
 
 		assertTrue(result.contains("Beneficiary Details updated successfully"));
 	}
-	
 
-// ************************
+
 	@Test
 	void testCreateReVisitForBenToNurse() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -797,7 +779,17 @@ class RegistrarControllerTest {
 		assertTrue(response.toString().contains("Beneficiary already present in nurse worklist"));
 	}
 
-	// ************************
+	@Test
+	void testCreateReVisitForBenToNurse_Exception() throws Exception {
+		String requestObj = "{\"request\":\"Save cancer screening nurse data\"}";
+
+		when(registrarServiceImpl.searchAndSubmitBeneficiaryToNurse(any())).thenThrow(NotFoundException.class);
+
+		String CreateReVisitForBenToNurse = registrarController.createReVisitForBenToNurse(requestObj);
+
+		assertTrue(CreateReVisitForBenToNurse.contains("Error while moving beneficiary to nurse worklist"));
+	}
+
 	@Test
 	void testBeneficiaryUpdate() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -857,7 +849,18 @@ class RegistrarControllerTest {
 		assertTrue(response.toString().contains("Error while updating beneficiary details"));
 	}
 
-	// ************************
+	@Test
+	void testBeneficiaryUpdate_Exception() throws Exception {
+		String requestObj = "{\"request\":\"Save cancer screening nurse data\"}";
+		String authorization = "Bearer token";
+
+		when(registrarServiceImpl.updateBeneficiary(any(),any())).thenThrow(NotFoundException.class);
+
+		String testBeneficiaryUpdate = registrarController.beneficiaryUpdate(requestObj, authorization);
+
+		assertTrue(testBeneficiaryUpdate.contains("Error in beneficiary details update"));
+	}
+
 	@Test
 	void testMasterDataForRegistration() throws JSONException {
 		OutputResponse response = new OutputResponse();

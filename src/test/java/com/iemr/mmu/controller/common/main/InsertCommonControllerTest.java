@@ -1,15 +1,11 @@
 package com.iemr.mmu.controller.common.main;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,10 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.iemr.mmu.data.common.DocFileManager;
 import com.iemr.mmu.service.common.transaction.CommonServiceImpl;
-import com.iemr.mmu.utils.mapper.InputMapper;
-import com.iemr.mmu.utils.response.OutputResponse;
 
 @ExtendWith(MockitoExtension.class)
 class InsertCommonControllerTest {

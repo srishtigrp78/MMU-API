@@ -1,6 +1,10 @@
 package com.iemr.mmu.controller.covid19;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -16,7 +20,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -24,6 +27,8 @@ import com.google.gson.JsonParser;
 import com.iemr.mmu.service.covid19.Covid19Service;
 import com.iemr.mmu.service.covid19.Covid19ServiceImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
+
+import javassist.NotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 class CovidControllerTest {
@@ -125,7 +130,19 @@ class CovidControllerTest {
 
 		assertTrue(outputResponse.toString().contains("Invalid Request !!!"));
 	}
-	
+
+	@Test
+	void testSaveBenCancerScreeningNurseData_CatchBlock() throws Exception {
+		String requestObj = "{\"request\":\"Save cancer screening nurse data\"}";
+		String authorization = "Bearer token";
+
+		when(covid19Service.saveCovid19NurseData(any(), any())).thenThrow(NotFoundException.class);
+
+		String saveBenCancerScreeningNurseData = covidController.saveBenCovid19NurseData(requestObj, authorization);
+
+		assertTrue(saveBenCancerScreeningNurseData.contains("Unable to save data"));
+	}
+
 //	@Test
 //	void testSaveBenCovid19NurseData_Exception() throws Exception {
 //		OutputResponse outputResponse = new OutputResponse();
@@ -133,7 +150,6 @@ class CovidControllerTest {
 //		assertEquals(outputResponse.toString(), covidController.saveBenCovid19NurseData(any(), any()));
 //	}	
 
-//****************
 	@Test
 	void testSaveBenCovidDoctorData() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -193,7 +209,19 @@ class CovidControllerTest {
 		assertTrue(response.toString().contains("Invalid request"));
 	}
 
-//*************
+//	@Test
+//	void testSaveBenCovidDoctorData_CatchBlock() throws Exception {
+//		String requestObj = "{\"request\":\"Save cancer screening nurse data\"}";
+//		String authorization = "Bearer token";
+//
+//		when(covid19Service.saveDoctorData(any(), any())).thenThrow(NotFoundException.class);
+//
+//		String SaveBenCovidDoctorData = covidController.saveBenCovid19NurseData(requestObj,
+//				authorization);
+//
+//		assertTrue(SaveBenCovidDoctorData.contains("Unable to save data. "));
+//	}
+
 	@Test
 	void testGetBenVisitDetailsFrmNurseCovid19() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -222,18 +250,28 @@ class CovidControllerTest {
 //	void testGetBenVisitDetailsFrmNurseCovid19_Invalid() throws Exception {
 //		OutputResponse response = new OutputResponse();
 //
-//		String comingRequest ="{\"benRegID\":\"\",\"visitCode\":\"\"}";
+//		String comingRequest = "{}";
+//		String res = "test";
 //
 //		JSONObject obj = new JSONObject(comingRequest);
 //
-//		response.setError(5000, "Invalid request");
+//		String expResponse = covidController.getBenVisitDetailsFrmNurseCovid19(comingRequest);
 //
-//		assertFalse(obj.length() > 1);
-//		
+//		response.setResponse(res);
+//
+//		assertTrue(obj.length() < 1);
+//
+//		assertEquals(expResponse, covidController.getBenVisitDetailsFrmNurseCovid19(comingRequest));
 //		assertTrue(response.toString().contains("Invalid request"));
 //	}
 
-//*********************
+	@Test
+	void testGetDocWorkListNew_Exception() {
+		OutputResponse response = new OutputResponse();
+		response.setError(5000, "Error while getting beneficiary visit data");
+		assertEquals(response.toString(), covidController.getBenVisitDetailsFrmNurseCovid19(any()));
+	}
+
 	@Test
 	void testGetBenCovid19HistoryDetails() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -256,10 +294,32 @@ class CovidControllerTest {
 		assertTrue(response.toString().contains(s));
 	}
 
-	void testGetBenCovid19HistoryDetails_Invalid() throws JSONException {
+//	@Test
+//	void testGetBenCovid19HistoryDetails_Invalid() throws Exception {
+//		OutputResponse response = new OutputResponse();
+//
+//		String comingRequest = "{}";
+//		String res = "test";
+//
+//		JSONObject obj = new JSONObject(comingRequest);
+//
+//		String expResponse = covidController.getBenCovid19HistoryDetails(comingRequest);
+//
+//		response.setResponse(res);
+//
+//		assertTrue(!obj.has("benRegID") || !obj.has("visitCode"));
+//
+//		assertEquals(expResponse, covidController.getBenCovid19HistoryDetails(comingRequest));
+//		assertTrue(response.toString().contains("Invalid request"));
+//	}
+
+	@Test
+	void testGetBenCovid19HistoryDetails_Exception() {
+		OutputResponse response = new OutputResponse();
+		response.setError(5000, "Error while getting beneficiary history data");
+		assertEquals(response.toString(), covidController.getBenCovid19HistoryDetails(any()));
 	}
 
-//**************
 	@Test
 	void testGetBenVitalDetailsFrmNurseNCDCare() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -285,7 +345,13 @@ class CovidControllerTest {
 	void testGetBenVitalDetailsFrmNurseNCDCare_Invalid() throws JSONException {
 	}
 
-//*****************
+	@Test
+	void testGetBenVitalDetailsFrmNurseNCDCare_Exception() {
+		OutputResponse response = new OutputResponse();
+		response.setError(5000, "Error while getting beneficiary vital data");
+		assertEquals(response.toString(), covidController.getBenVitalDetailsFrmNurseNCDCare(any()));
+	}
+
 	@Test
 	void testGetBenCaseRecordFromDoctorCovid19() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -311,7 +377,13 @@ class CovidControllerTest {
 	void testGetBenCaseRecordFromDoctorCovid19_Invalid() throws Exception {
 	}
 
-//*************	
+	@Test
+	void testGetBenCaseRecordFromDoctorCovid19_Exception() {
+		OutputResponse response = new OutputResponse();
+		response.setError(5000, "Error while getting beneficiary doctor data");
+		assertEquals(response.toString(), covidController.getBenCaseRecordFromDoctorCovid19(any()));
+	}
+
 	@Test
 	void testUpdateHistoryNurse() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -362,7 +434,25 @@ class CovidControllerTest {
 		assertTrue(response.toString().contains("Unable to modify data"));
 	}
 
-//******	
+//	@Test
+//	void testUpdateHistoryNurse_Exception() throws Exception {
+//		String requestObj = "{\"request\":\"Save cancer screening nurse data\"}";
+//		String authorization = "Bearer token";
+//
+//		when(covid19ServiceImpl.updateBenHistoryDetails(any())).thenThrow(NotFoundException.class);
+//
+//		String saveBenCancerScreeningNurseData = covidController.updateHistoryNurse(requestObj);
+//
+//		assertTrue(saveBenCancerScreeningNurseData.contains("Unable to save data"));
+//	}
+
+//	@Test
+//	void testUpdateHistoryNurse_Exception() {
+//		OutputResponse response = new OutputResponse();
+//		response.setError(5000,"Unable to modify data");
+//		assertEquals(response.toString(),covidController.updateHistoryNurse(any()));
+//	}
+
 	@Test
 	void testUpdateVitalNurse() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -404,8 +494,14 @@ class CovidControllerTest {
 		assertEquals(expResponse, covidController.updateVitalNurse(requestObj));
 		assertTrue(response.toString().contains("Unable to modify data"));
 	}
+	
+//	@Test
+//	void testUpdateVitalNurse_Exception() {
+//		OutputResponse response = new OutputResponse();
+//		response.setError(5000,"Unable to modify data");
+//		assertEquals(response.toString(),covidController.updateVitalNurse(any()));
+//	}
 
-//*************
 	@Test
 	void testUpdateCovid19DoctorData() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -449,5 +545,16 @@ class CovidControllerTest {
 		assertEquals(expResponse, covidController.updateCovid19DoctorData(requestObj, authorization));
 		assertTrue(response.toString().contains("Unable to modify data"));
 	}
+	
+	@Test
+	void testUpdateCovid19DoctorData_Exception() throws Exception {
+		String requestObj = "{\"request\":\"Save cancer screening nurse data\"}";
+		String authorization = "Bearer token";
 
+		when(covid19ServiceImpl.updateCovid19DoctorData(any(), any())).thenThrow(NotFoundException.class);
+
+		String saveBenCancerScreeningNurseData = covidController.updateCovid19DoctorData(requestObj, authorization);
+
+		assertTrue(saveBenCancerScreeningNurseData.contains("Unable to modify data. "));
+	}
 }

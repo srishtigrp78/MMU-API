@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import org.json.JSONException;
@@ -21,6 +22,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.iemr.mmu.service.pnc.PNCServiceImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
+
+import javassist.NotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 class PostnatalCareControllerTest {
@@ -104,28 +107,16 @@ class PostnatalCareControllerTest {
 		assertTrue(response.toString().contains("Unable to save data"));
 	}
 
-//	@Test
-//	void testSaveBenPNCNurseData_InvalidRequest() throws Exception {
-//		OutputResponse response = new OutputResponse();
-//
-//		JsonObject jsnOBJ = null;
-//
-//		response.setResponse("Invalid request");
-//
-//		assertNull(jsnOBJ);
-//
-//		assertTrue(response.toString().contains("Invalid request"));
-//	}
-
 	@Test
-    void testSaveBenPNCNurseData_InvalidRequest() {
-        String invalidRequest = "This is not a valid JSON";;
+	void testSaveBenPNCNurseData_InvalidRequest() {
+		String invalidRequest = "This is not a valid JSON";
+		;
 
-        String response = postnatalCareController.saveBenPNCNurseData(invalidRequest);
+		String response = postnatalCareController.saveBenPNCNurseData(invalidRequest);
 
-        assertTrue(response.toString().contains("Invalid request"));
-    }
-//*********
+		assertTrue(response.toString().contains("Invalid request"));
+	}
+
 	@Test
 	void testSaveBenPNCDoctorData_Success() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -188,246 +179,295 @@ class PostnatalCareControllerTest {
 
 		assertEquals(expResponse, postnatalCareController.saveBenPNCNurseData(requestObj));
 		assertTrue(response.toString().contains("Invalid request"));
+
 	}
-//*****************	
+
+	@Test
+	void testSaveBenPNCDoctorData_Exception() throws Exception {
+		String requestObj = "{\"request\":\"Save cancer screening nurse data\"}";
+		String authorization = "Bearer token";
+
+		when(pncServiceImpl.savePNCDoctorData(any(), any())).thenThrow(NotFoundException.class);
+
+		String SaveBenPNCDoctorData = postnatalCareController.saveBenPNCDoctorData(requestObj, authorization);
+
+		assertTrue(SaveBenPNCDoctorData.contains("Unable to save data"));
+	}
+
 	@Test
 	void testGetBenVisitDetailsFrmNursePNC() throws Exception {
 		OutputResponse response = new OutputResponse();
 
 		String comingRequest = "{\"benRegID\":\"1\",\"visitCode\":\"1\"}";
 		String res = "test";
-		
+
 		JSONObject obj = new JSONObject(comingRequest);
-		
+
 		Long benRegID = obj.getLong("benRegID");
 		Long visitCode = obj.getLong("visitCode");
 
 		when(pncServiceImpl.getBenVisitDetailsFrmNursePNC(benRegID, visitCode)).thenReturn(res);
-		
+
 		String expResponse = postnatalCareController.getBenVisitDetailsFrmNursePNC(comingRequest);
-		
+
 		response.setResponse(res);
 
 		assertTrue(obj.length() > 1);
-		
-		assertEquals(expResponse,postnatalCareController.getBenVisitDetailsFrmNursePNC(comingRequest));
+
+		assertEquals(expResponse, postnatalCareController.getBenVisitDetailsFrmNursePNC(comingRequest));
 		assertTrue(response.toString().contains(res));
 	}
-	
+
 	@Test
 	void testGetBenVisitDetailsFrmNursePNC_Invalid() throws Exception {
 		OutputResponse response = new OutputResponse();
 
 		String comingRequest = "{\"benRegID\":\"1\",\"visitCode\":\"1\"}";
-		
+
 		JSONObject obj = new JSONObject(comingRequest);
 
 		response.setError(5000, "Invalid request");
 
 		assertTrue(obj.length() > 1);
-		
+
 		assertTrue(response.toString().contains("Invalid request"));
 	}
 
-//*******************
+	@Test
+	void testGetBenVisitDetailsFrmNursePNC_Exception() throws Exception {
+		OutputResponse response = new OutputResponse();
+		response.setError(5000, "Error while getting beneficiary visit data");
+		assertEquals(response.toString(), postnatalCareController.getBenVisitDetailsFrmNursePNC(any()));
+	}
+
 	@Test
 	void testGetBenPNCDetailsFrmNursePNC() throws JSONException {
 		OutputResponse response = new OutputResponse();
 
 		String comingRequest = "{\"benRegID\":\"1\",\"visitCode\":\"1\"}";
 		String res = "test";
-		
+
 		JSONObject obj = new JSONObject(comingRequest);
-		
+
 		Long benRegID = obj.getLong("benRegID");
 		Long visitCode = obj.getLong("visitCode");
 
 		when(pncServiceImpl.getBenPNCDetailsFrmNursePNC(benRegID, visitCode)).thenReturn(res);
-		
+
 		String expResponse = postnatalCareController.getBenPNCDetailsFrmNursePNC(comingRequest);
-		
+
 		response.setResponse(res);
 
 		assertTrue(obj.has("benRegID") && obj.has("visitCode"));
-		
-		assertEquals(expResponse,postnatalCareController.getBenPNCDetailsFrmNursePNC(comingRequest));
+
+		assertEquals(expResponse, postnatalCareController.getBenPNCDetailsFrmNursePNC(comingRequest));
 		assertTrue(response.toString().contains(res));
 	}
-	
+
 	@Test
 	void testGetBenPNCDetailsFrmNursePNC_Invalid() throws JSONException {
 		OutputResponse response = new OutputResponse();
 
 		String comingRequest = "{}";
-		
+
 		JSONObject obj = new JSONObject(comingRequest);
-		
+
 		response.setError(5000, "Invalid request");
 
 		assertTrue(!obj.has("benRegID") || !obj.has("visitCode"));
-		
+
 		assertTrue(response.toString().contains("Invalid request"));
 	}
-	
-//***********************
+
+	@Test
+	void testGetBenPNCDetailsFrmNursePNC_Exception() throws Exception {
+		OutputResponse response = new OutputResponse();
+		response.setError(5000, "Error while getting beneficiary PNC Care data");
+		assertEquals(response.toString(), postnatalCareController.getBenPNCDetailsFrmNursePNC(any()));
+	}
+
 	@Test
 	void testGetBenHistoryDetails() throws JSONException {
 		OutputResponse response = new OutputResponse();
 
 		String comingRequest = "{\"benRegID\":\"1\",\"visitCode\":\"1\"}";
 		String s = "test";
-		
+
 		JSONObject obj = new JSONObject(comingRequest);
-		
+
 		Long benRegID = obj.getLong("benRegID");
 		Long visitCode = obj.getLong("visitCode");
 
 		when(pncServiceImpl.getBenHistoryDetails(benRegID, visitCode)).thenReturn(s);
-		
+
 		String expResponse = postnatalCareController.getBenHistoryDetails(comingRequest);
 		response.setResponse(s);
 
 		assertTrue(obj.has("benRegID") && obj.has("visitCode"));
-		
-		assertEquals(expResponse,postnatalCareController.getBenHistoryDetails(comingRequest));
+
+		assertEquals(expResponse, postnatalCareController.getBenHistoryDetails(comingRequest));
 		assertTrue(response.toString().contains(s));
 	}
-	
+
 	@Test
 	void testGetBenHistoryDetails_Invalid() throws JSONException {
 		OutputResponse response = new OutputResponse();
 
 		String comingRequest = "{}";
-		
+
 		JSONObject obj = new JSONObject(comingRequest);
-		
+
 		response.setError(5000, "Invalid request");
 
 		assertTrue(!obj.has("benRegID") || !obj.has("visitCode"));
-		
+
 		assertTrue(response.toString().contains("Invalid request"));
 	}
-	
-//**********************
+
+	@Test
+	void testGetBenHistoryDetails_Exception() throws Exception {
+		OutputResponse response = new OutputResponse();
+		response.setError(5000, "Error while getting beneficiary history data");
+		assertEquals(response.toString(), postnatalCareController.getBenHistoryDetails(any()));
+	}
+
 	@Test
 	void testGetBenVitalDetailsFrmNurse() throws JSONException {
 		OutputResponse response = new OutputResponse();
 
 		String comingRequest = "{\"benRegID\":\"1\",\"visitCode\":\"1\"}";
 		String res = "test";
-		
+
 		JSONObject obj = new JSONObject(comingRequest);
-		
+
 		Long benRegID = obj.getLong("benRegID");
 		Long visitCode = obj.getLong("visitCode");
 
 		when(pncServiceImpl.getBeneficiaryVitalDetails(benRegID, visitCode)).thenReturn(res);
-		
+
 		String expResponse = postnatalCareController.getBenVitalDetailsFrmNurse(comingRequest);
 		response.setResponse(res);
 
 		assertTrue(obj.has("benRegID") && obj.has("visitCode"));
-		
-		assertEquals(expResponse,postnatalCareController.getBenVitalDetailsFrmNurse(comingRequest));
+
+		assertEquals(expResponse, postnatalCareController.getBenVitalDetailsFrmNurse(comingRequest));
 		assertTrue(response.toString().contains(res));
 	}
-	
+
 	@Test
 	void testGetBenVitalDetailsFrmNurse_Invalid() throws JSONException {
 		OutputResponse response = new OutputResponse();
 
 		String comingRequest = "{}";
-				
+
 		JSONObject obj = new JSONObject(comingRequest);
-		
+
 		response.setError(5000, "Invalid request");
-		
+
 		assertTrue(!obj.has("benRegID") || !obj.has("visitCode"));
-		
+
 		assertTrue(response.toString().contains("Invalid request"));
 	}
-	
-//***************
+
+	@Test
+	void testGetBenVitalDetailsFrmNurse_Exception() throws Exception {
+		OutputResponse response = new OutputResponse();
+		response.setError(5000, "Error while getting beneficiary vital data");
+		assertEquals(response.toString(), postnatalCareController.getBenVitalDetailsFrmNurse(any()));
+	}
+
 	@Test
 	void testGetBenExaminationDetailsPNC() throws JSONException {
 		OutputResponse response = new OutputResponse();
 
 		String comingRequest = "{\"benRegID\":\"1\",\"visitCode\":\"1\"}";
 		String s = "test";
-		
+
 		JSONObject obj = new JSONObject(comingRequest);
-		
+
 		Long benRegID = obj.getLong("benRegID");
 		Long visitCode = obj.getLong("visitCode");
 
 		when(pncServiceImpl.getPNCExaminationDetailsData(benRegID, visitCode)).thenReturn(s);
-		
+
 		String expResponse = postnatalCareController.getBenExaminationDetailsPNC(comingRequest);
-		
+
 		response.setResponse(s);
 
 		assertTrue(obj.has("benRegID") && obj.has("visitCode"));
-		
-		assertEquals(expResponse,postnatalCareController.getBenExaminationDetailsPNC(comingRequest));
+
+		assertEquals(expResponse, postnatalCareController.getBenExaminationDetailsPNC(comingRequest));
 		assertTrue(response.toString().contains(s));
 	}
-	
+
 	@Test
 	void testGetBenExaminationDetailsPNC_Invalid() throws JSONException {
 		OutputResponse response = new OutputResponse();
 
 		String comingRequest = "{}";
-		
+
 		JSONObject obj = new JSONObject(comingRequest);
-		
+
 		response.setError(5000, "Invalid request");
 
 		assertTrue(!obj.has("benRegID") || !obj.has("visitCode"));
-		
+
 		assertTrue(response.toString().contains("Invalid request"));
 	}
-	
-//********************
+
+	@Test
+	void testGetBenExaminationDetailsPNC_Exception() throws Exception {
+		OutputResponse response = new OutputResponse();
+		response.setError(5000, "Error while getting beneficiary examination data");
+		assertEquals(response.toString(), postnatalCareController.getBenExaminationDetailsPNC(any()));
+	}
+
 	@Test
 	void testGetBenCaseRecordFromDoctorPNC() throws Exception {
 		OutputResponse response = new OutputResponse();
 
 		String comingRequest = "{\"benRegID\":\"1\",\"visitCode\":\"1\"}";
 		String res = "test";
-		
+
 		JSONObject obj = new JSONObject(comingRequest);
-		
+
 		Long benRegID = obj.getLong("benRegID");
 		Long visitCode = obj.getLong("visitCode");
 
 		when(pncServiceImpl.getBenCaseRecordFromDoctorPNC(benRegID, visitCode)).thenReturn(res);
-		
+
 		String expResponse = postnatalCareController.getBenCaseRecordFromDoctorPNC(comingRequest);
-		
+
 		response.setResponse(res);
 
 		assertTrue(obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode"));
-		
-		assertEquals(expResponse,postnatalCareController.getBenCaseRecordFromDoctorPNC(comingRequest));
+
+		assertEquals(expResponse, postnatalCareController.getBenCaseRecordFromDoctorPNC(comingRequest));
 		assertTrue(response.toString().contains(res));
 	}
-	
+
 	@Test
 	void testGetBenCaseRecordFromDoctorPNC_Invalid() throws Exception {
 		OutputResponse response = new OutputResponse();
 
 		String comingRequest = "{}";
-		
+
 		JSONObject obj = new JSONObject(comingRequest);
-		
+
 		response.setError(5000, "Invalid request");
 
 		assertTrue(obj.length() < 1 || !obj.has("benRegID") && !obj.has("visitCode"));
-		
+
 		assertTrue(response.toString().contains("Invalid request"));
 	}
-	
-//****************
+
+	@Test
+	void testGetBenCaseRecordFromDoctorPNC_Exception() throws Exception {
+		OutputResponse response = new OutputResponse();
+		response.setError(5000, "Error while getting beneficiary doctor data");
+		assertEquals(response.toString(), postnatalCareController.getBenCaseRecordFromDoctorPNC(any()));
+	}
+
 	@Test
 	void testUpdatePNCCareNurse() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -468,7 +508,18 @@ class PostnatalCareControllerTest {
 		assertTrue(response.toString().contains("Unable to modify data"));
 	}
 
-//***********
+	@Test
+	void testupdatePNCCareNurse_Exception() throws Exception {
+		String requestObj = "{\"request\":\"Save cancer screening nurse data\"}";
+		String authorization = "Bearer token";
+
+		when(pncServiceImpl.updateBenPNCDetails(any())).thenThrow(NotFoundException.class);
+		String updatePNCCareNurse = postnatalCareController.updatePNCCareNurse(requestObj);
+
+		assertTrue(updatePNCCareNurse.contains("Unable to modify data"));
+
+	}
+
 	@Test
 	void testUpdateHistoryNurse_Success() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -511,7 +562,17 @@ class PostnatalCareControllerTest {
 		assertTrue(response.toString().contains("Unable to modify data"));
 	}
 
-//**************
+	@Test
+	void testUpdateHistoryNurse_Exception() throws Exception {
+		String requestObj = "{\"request\":\"Save cancer screening nurse data\"}";
+		String authorization = "Bearer token";
+
+		when(pncServiceImpl.updateBenHistoryDetails(any())).thenThrow(NotFoundException.class);
+		String updatePNCCareNurse = postnatalCareController.updateHistoryNurse(requestObj);
+
+		assertTrue(updatePNCCareNurse.contains("Unable to modify data"));
+	}
+
 	@Test
 	void testUpdateVitalNurse_Success() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -554,7 +615,17 @@ class PostnatalCareControllerTest {
 		assertTrue(response.toString().contains("Unable to modify data"));
 	}
 
-//**************
+	@Test
+	void testUpdateVitalNurse_Exception() throws Exception {
+		String requestObj = "{\"request\":\"Save cancer screening nurse data\"}";
+		String authorization = "Bearer token";
+
+		when(pncServiceImpl.updateBenVitalDetails(any())).thenThrow(NotFoundException.class);
+		String updatePNCCareNurse = postnatalCareController.updateVitalNurse(requestObj);
+
+		assertTrue(updatePNCCareNurse.contains("Unable to modify data"));
+	}
+
 	@Test
 	void testUpdateGeneralOPDExaminationNurse_Success() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -596,8 +667,18 @@ class PostnatalCareControllerTest {
 		assertEquals(expResponse, postnatalCareController.updateVitalNurse(requestObj));
 		assertTrue(response.toString().contains("Unable to modify data"));
 	}
+	
+	@Test
+	void testUpdateGeneralOPDExaminationNurse_Exception() throws Exception {
+		String requestObj = "{\"request\":\"Save cancer screening nurse data\"}";
+		String authorization = "Bearer token";
 
-//***************
+		when(pncServiceImpl.updateBenExaminationDetails(any())).thenThrow(NotFoundException.class);
+		String UpdateGeneralOPDExaminationNurse = postnatalCareController.updateGeneralOPDExaminationNurse(requestObj);
+
+		assertTrue(UpdateGeneralOPDExaminationNurse.contains("Unable to modify data"));
+	}
+
 	@Test
 	void testUpdatePNCDoctorData_Success() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -643,18 +724,15 @@ class PostnatalCareControllerTest {
 		assertEquals(expResponse, postnatalCareController.updatePNCDoctorData(requestObj, authorization));
 		assertTrue(response.toString().contains("Unable to modify data"));
 	}
+	
+	@Test
+	void testUpdatePNCDoctorData_Exception() throws Exception {
+		String requestObj = "{\"request\":\"Save cancer screening nurse data\"}";
+		String authorization = "Bearer token";
+
+		when(pncServiceImpl.updatePNCDoctorData(any(), any())).thenThrow(NotFoundException.class);
+		String UpdatePNCDoctorData = postnatalCareController.updatePNCDoctorData(requestObj, authorization);
+
+		assertTrue(UpdatePNCDoctorData.contains("Unable to modify data. "));
+	}
 }
-//*****
-//void testSaveBenPNCNurseData() -done 
-//void testSaveBenPNCDoctorData() -done 
-//void testGetBenVisitDetailsFrmNursePNC() -done 
-//void testGetBenPNCDetailsFrmNursePNC() -done 
-//void testGetBenHistoryDetails() -done 
-//void testGetBenVitalDetailsFrmNurse() -done 
-//void testGetBenExaminationDetailsPNC() -done 
-//void testGetBenCaseRecordFromDoctorPNC()-done 
-//void testUpdatePNCCareNurse() -done
-//void testUpdateHistoryNurse() -done
-//void testUpdateVitalNurse() -done
-//void testUpdateGeneralOPDExaminationNurse()-done
-//void testUpdatePNCDoctorData() -done

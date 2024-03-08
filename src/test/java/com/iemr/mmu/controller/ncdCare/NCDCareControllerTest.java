@@ -1,6 +1,7 @@
 package com.iemr.mmu.controller.ncdCare;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
@@ -21,6 +22,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.iemr.mmu.service.ncdCare.NCDCareServiceImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
+
+import javassist.NotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 class NCDCareControllerTest {
@@ -113,7 +116,6 @@ class NCDCareControllerTest {
 		assertTrue(response.toString().contains("Invalid Request !!!"));
 	}
 
-//*****************
 
 	@Test
 	void testSaveBenNCDCareDoctorData_Success() throws Exception {
@@ -185,7 +187,6 @@ class NCDCareControllerTest {
 		assertTrue(response.toString().contains("Invalid request"));
 	}
 
-//***************
 	@Test
 	void testGetBenVisitDetailsFrmNurseNCDCare() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -199,17 +200,17 @@ class NCDCareControllerTest {
 		Long visitCode = obj.getLong("visitCode");
 
 		when(ncdCareServiceImpl.getBenVisitDetailsFrmNurseNCDCare(benRegID, visitCode)).thenReturn(res);
-		
+
 		String expResponse = ncdCareController.getBenVisitDetailsFrmNurseNCDCare(comingRequest);
-		
+
 		response.setResponse(res);
 
 		assertTrue(obj.length() > 1);
-		
-		assertEquals(expResponse,ncdCareController.getBenVisitDetailsFrmNurseNCDCare(comingRequest));
+
+		assertEquals(expResponse, ncdCareController.getBenVisitDetailsFrmNurseNCDCare(comingRequest));
 		assertTrue(response.toString().contains(res));
 	}
-	
+
 	@Test
 	void testGetBenVisitDetailsFrmNurseNCDCare_Invalid() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -221,11 +222,17 @@ class NCDCareControllerTest {
 		response.setError(5000, "Invalid request");
 
 		assertTrue(obj.length() < 1);
-		
+
 		assertTrue(response.toString().contains("Invalid request"));
 	}
 
-//****************
+	@Test
+	void testGetBenVisitDetailsFrmNurseNCDCare_Exception() throws Exception {
+		OutputResponse response = new OutputResponse();
+		response.setError(5000, "Error while getting beneficiary visit data");
+		assertEquals(response.toString(),ncdCareController.getBenVisitDetailsFrmNurseNCDCare(any()));
+	}
+
 	@Test
 	void testGetBenNCDCareHistoryDetails() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -239,17 +246,17 @@ class NCDCareControllerTest {
 		Long visitCode = obj.getLong("visitCode");
 
 		when(ncdCareServiceImpl.getBenNCDCareHistoryDetails(benRegID, visitCode)).thenReturn(s);
-		
+
 		String expResponse = ncdCareController.getBenNCDCareHistoryDetails(comingRequest);
-		
+
 		response.setResponse(s);
 
-		assertTrue (obj.has("benRegID") && obj.has("visitCode"));
-		
-		assertEquals(expResponse,ncdCareController.getBenNCDCareHistoryDetails(comingRequest));
+		assertTrue(obj.has("benRegID") && obj.has("visitCode"));
+
+		assertEquals(expResponse, ncdCareController.getBenNCDCareHistoryDetails(comingRequest));
 		assertTrue(response.toString().contains(s));
 	}
-	
+
 	@Test
 	void testGetBenNCDCareHistoryDetails_Invalid() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -262,10 +269,17 @@ class NCDCareControllerTest {
 		response.setError(5000, "Invalid request");
 
 		assertTrue(!obj.has("benRegID") || !obj.has("visitCode"));
-		
+
 		assertTrue(response.toString().contains("Invalid request"));
 	}
-//******************
+	
+	@Test
+	void testGetBenNCDCareHistoryDetails_Exception() throws Exception {
+		OutputResponse response = new OutputResponse();
+		response.setError(5000, "Error while getting beneficiary history data");
+		assertEquals(response.toString(),ncdCareController.getBenNCDCareHistoryDetails(any()));
+	}
+
 	@Test
 	void testGetBenVitalDetailsFrmNurseNCDCare() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -279,33 +293,40 @@ class NCDCareControllerTest {
 		Long visitCode = obj.getLong("visitCode");
 
 		when(ncdCareServiceImpl.getBeneficiaryVitalDetails(benRegID, visitCode)).thenReturn(res);
-		
+
 		String expResponse = ncdCareController.getBenVitalDetailsFrmNurseNCDCare(comingRequest);
-		
+
 		response.setResponse(res);
 
-		assertTrue (obj.has("benRegID") && obj.has("visitCode"));
-		
-		assertEquals(expResponse,ncdCareController.getBenVitalDetailsFrmNurseNCDCare(comingRequest));
+		assertTrue(obj.has("benRegID") && obj.has("visitCode"));
+
+		assertEquals(expResponse, ncdCareController.getBenVitalDetailsFrmNurseNCDCare(comingRequest));
 		assertTrue(response.toString().contains(res));
 	}
-	
+
 	@Test
 	void testGetBenVitalDetailsFrmNurseNCDCare_Invalid() throws JSONException {
 		OutputResponse response = new OutputResponse();
-		
+
 		String comingRequest = "{}";
 
 		JSONObject obj = new JSONObject(comingRequest);
 
 		response.setError(5000, "Invalid request");
 
-		assertTrue (!obj.has("benRegID") || !obj.has("visitCode"));
-		
+		assertTrue(!obj.has("benRegID") || !obj.has("visitCode"));
+
 		assertTrue(response.toString().contains("Invalid request"));
 	}
 	
-//*********************
+	
+	@Test
+	void testGetBenVitalDetailsFrmNurseNCDCare_Exception() throws Exception {
+		OutputResponse response = new OutputResponse();
+		response.setError(5000, "Error while getting beneficiary vital data");
+		assertEquals(response.toString(),ncdCareController.getBenVitalDetailsFrmNurseNCDCare(any()));
+	}
+
 	@Test
 	void testGetBenCaseRecordFromDoctorNCDCare() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -319,17 +340,17 @@ class NCDCareControllerTest {
 		Long visitCode = obj.getLong("visitCode");
 
 		when(ncdCareServiceImpl.getBenCaseRecordFromDoctorNCDCare(benRegID, visitCode)).thenReturn(res);
-		
+
 		String expResponse = ncdCareController.getBenCaseRecordFromDoctorNCDCare(comingRequest);
-		
+
 		response.setResponse(res);
 
-		assertTrue(obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")); 
-		
-		assertEquals(expResponse,ncdCareController.getBenCaseRecordFromDoctorNCDCare(comingRequest));
+		assertTrue(obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode"));
+
+		assertEquals(expResponse, ncdCareController.getBenCaseRecordFromDoctorNCDCare(comingRequest));
 		assertTrue(response.toString().contains(res));
 	}
-	
+
 	@Test
 	void testGetBenCaseRecordFromDoctorNCDCare_Invalid() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -337,15 +358,21 @@ class NCDCareControllerTest {
 		String comingRequest = "{}";
 
 		JSONObject obj = new JSONObject(comingRequest);
-		
+
 		response.setError(5000, "Invalid request");
 
-		assertTrue(obj.length() < 1 || !obj.has("benRegID") || !obj.has("visitCode")); 
-		
+		assertTrue(obj.length() < 1 || !obj.has("benRegID") || !obj.has("visitCode"));
+
 		assertTrue(response.toString().contains("Invalid request"));
 	}
+
+	@Test
+	void testGetBenCaseRecordFromDoctorNCDCare_Exception() throws Exception {
+		OutputResponse response = new OutputResponse();
+		response.setError(5000, "Error while getting beneficiary doctor data");
+		assertEquals(response.toString(),ncdCareController.getBenCaseRecordFromDoctorNCDCare(any()));
+	}
 	
-//***************
 	@Test
 	void testUpdateHistoryNurse_Success() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -354,10 +381,10 @@ class NCDCareControllerTest {
 		int result = 1;
 
 		JsonObject jsnOBJ = parseJsonRequest(requestObj);
-		
+
 		when(ncdCareServiceImpl.updateBenHistoryDetails(jsnOBJ)).thenReturn(result);
-		
-		String expResponse =  ncdCareController.updateHistoryNurse(requestObj);
+
+		String expResponse = ncdCareController.updateHistoryNurse(requestObj);
 
 		Map<String, Integer> resMap = new HashMap<>();
 		resMap.put("result", result);
@@ -365,8 +392,8 @@ class NCDCareControllerTest {
 		response.setResponse("Data updated successfully");
 
 		assertTrue(result > 0);
-		
-		assertEquals(expResponse,ncdCareController.updateHistoryNurse(requestObj));
+
+		assertEquals(expResponse, ncdCareController.updateHistoryNurse(requestObj));
 		assertTrue(response.toString().contains("Data updated successfully"));
 	}
 
@@ -388,8 +415,19 @@ class NCDCareControllerTest {
 
 		assertTrue(response.toString().contains("Unable to modify data"));
 	}
+	
+	@Test
+	void testUpdateHistoryNurse_CatchBlock() throws Exception {
+		String requestObj = "{\"request\":\"Save cancer screening nurse data\"}";
+		String authorization = "Bearer token";
+ 
+		when(ncdCareServiceImpl.updateBenHistoryDetails(any())).thenThrow(NotFoundException.class);
+ 
+		String saveBenCancerScreeningNurseData = ncdCareController.updateHistoryNurse(requestObj);
+ 
+		assertTrue(saveBenCancerScreeningNurseData.contains("Unable to modify data"));
+	}
 
-//************
 	@Test
 	void testUpdateVitalNurse_Success() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -431,8 +469,19 @@ class NCDCareControllerTest {
 		assertEquals(expResponse, ncdCareController.updateVitalNurse(requestObj));
 		assertTrue(response.toString().contains("Unable to modify data"));
 	}
+	
+	@Test
+	void testUpdateVitalNurse_CatchBlock() throws Exception {
+		String requestObj = "{\"request\":\"Save cancer screening nurse data\"}";
+		String authorization = "Bearer token";
+ 
+		when(ncdCareServiceImpl.updateBenVitalDetails(any())).thenThrow(NotFoundException.class);
+ 
+		String saveBenCancerScreeningNurseData = ncdCareController.updateVitalNurse(requestObj);
+ 
+		assertTrue(saveBenCancerScreeningNurseData.contains("Unable to modify data"));
+	}
 
-//***********
 	@Test
 	void testUpdateNCDCareDoctorData_Success() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -476,15 +525,17 @@ class NCDCareControllerTest {
 		assertEquals(expResponse, ncdCareController.updateNCDCareDoctorData(requestObj, authorization));
 		assertTrue(response.toString().contains("Unable to modify data"));
 	}
+	
+	@Test
+	void testUpdateNCDCareDoctorData_CatchBlock() throws Exception {
+		String requestObj = "{\"request\":\"Save cancer screening nurse data\"}";
+		String authorization = "Bearer token";
+ 
+		when(ncdCareServiceImpl.updateNCDCareDoctorData(any(), any())).thenThrow(NotFoundException.class);
+ 
+		String saveBenCancerScreeningNurseData = ncdCareController.updateNCDCareDoctorData(requestObj, authorization);
+ 
+		assertTrue(saveBenCancerScreeningNurseData.contains("Unable to modify data. " ));
+	}
 
 }
-//**************
-//void testSaveBenNCDCareNurseData() -done
-//void testSaveBenNCDCareDoctorData() -done
-//void testGetBenVisitDetailsFrmNurseNCDCare() -done
-//void testGetBenNCDCareHistoryDetails() -done
-//void testGetBenVitalDetailsFrmNurseNCDCare() -done 
-//void testGetBenCaseRecordFromDoctorNCDCare() -done
-//void testUpdateHistoryNurse()  -done
-//void testUpdateVitalNurse() -done
-//void testUpdateNCDCareDoctorData()  -done
