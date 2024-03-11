@@ -6,7 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import javax.ws.rs.NotFoundException;
@@ -22,9 +23,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.mock.web.MockHttpServletRequest;
 
+import com.google.common.net.MediaType;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
@@ -36,7 +37,6 @@ import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
 import jakarta.servlet.ServletContext;
-import jakarta.servlet.http.HttpServletRequest;
 
 @ExtendWith(MockitoExtension.class)
 class CommonControllerTest {
@@ -57,44 +57,62 @@ class CommonControllerTest {
 	private AESEncryptionDecryption aESEncryptionDecryption;
 
 	private static final String BENEFICIARY_REG_ID = "beneficiaryRegID";
+	private MockHttpServletRequest request;
 
 	@InjectMocks
 	CommonController commonController;
 
+//	@Test
+//	void testGetDocWorkListNew() {
+//		OutputResponse response = new OutputResponse();
+//
+//		Integer providerServiceMapID = 1;
+//		Integer serviceID = 1;
+//		Integer vanID = 1;
+//		String s = "test";
+//
+//		when(commonDoctorServiceImpl.getDocWorkListNew(providerServiceMapID, serviceID, vanID)).thenReturn(s);
+//
+//		String expResponse = commonController.getDocWorkListNew(providerServiceMapID, serviceID, vanID);
+//
+//		response.setResponse(s);
+//
+//		assertTrue(providerServiceMapID != null && serviceID != null);
+//		assertNotNull(s);
+//
+//		assertEquals(expResponse, commonController.getDocWorkListNew(providerServiceMapID, serviceID, vanID));
+//		assertTrue(response.toString().contains(s));
+//	}
+
 	@Test
-	void testGetDocWorkListNew() {
-		OutputResponse response = new OutputResponse();
+	void testGetDocWorkListNew_ValidResponse() {
+		// Arrange
+		Integer providerServiceMapID = 1, serviceID = 1, vanID = 1;
+		String expectedResponse = "Expected Response";
+		when(commonDoctorServiceImpl.getDocWorkListNew(providerServiceMapID, serviceID, vanID))
+				.thenReturn(expectedResponse);
 
-		Integer providerServiceMapID = 1;
-		Integer serviceID = 1;
-		Integer vanID = 1;
-		String s = "test";
+		// Act
+		String actualResponse = commonController.getDocWorkListNew(providerServiceMapID, serviceID, vanID);
 
-		when(commonDoctorServiceImpl.getDocWorkListNew(providerServiceMapID, serviceID, vanID)).thenReturn(s);
-
-		String expResponse = commonController.getDocWorkListNew(providerServiceMapID, serviceID, vanID);
-
-		response.setResponse(s);
-
-		assertTrue(providerServiceMapID != null && serviceID != null);
-		assertNotNull(s);
-
-		assertEquals(expResponse, commonController.getDocWorkListNew(providerServiceMapID, serviceID, vanID));
-		assertTrue(response.toString().contains(s));
+		// Assert
+		assertNotNull(actualResponse);
+		assertTrue(actualResponse.contains(expectedResponse));
 	}
 
 	@Test
 	void testGetDocWorkListNew_InvalidRequest() {
-		OutputResponse response = new OutputResponse();
-		Integer providerServiceMapID = null;
-		Integer serviceID = 1;
+		// Arrange
+		Integer providerServiceMapID = null; // or set to null to simulate invalid request
+		Integer serviceID = 1; // or set this to null instead
+		Integer vanID = 1; // Arbitrary, since the error doesn't depend on this
 
-		response.setError(5000, "Invalid request, either ProviderServiceMapID or ServiceID is invalid");
+		// Act
+		String response = commonController.getDocWorkListNew(providerServiceMapID, serviceID, vanID);
 
-		assertNull(providerServiceMapID);
-
-		assertTrue(
-				response.toString().contains("Invalid request, either ProviderServiceMapID or ServiceID is invalid"));
+		// Assert
+		assertTrue(response.contains("Invalid request, either ProviderServiceMapID or ServiceID is invalid"),
+				"Expected error message not found in the response.");
 	}
 
 	@Test
@@ -107,7 +125,6 @@ class CommonControllerTest {
 
 	}
 
-//*******************
 	@Test
 	void testGetDocWorkListNewFutureScheduledForTM() {
 		OutputResponse response = new OutputResponse();
@@ -224,7 +241,6 @@ class CommonControllerTest {
 
 	}
 
-//************************
 	@Test
 	void testGetNurseWorklistTMreferred() {
 		OutputResponse response = new OutputResponse();
@@ -277,7 +293,6 @@ class CommonControllerTest {
 
 	}
 
-//*******
 	@Test
 	void testGetDoctorPreviousSignificantFindings() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -303,27 +318,30 @@ class CommonControllerTest {
 	}
 
 	@Test
-	void testGetDoctorPreviousSignificantFindings_error() throws JSONException {
+	void testGetDoctorPreviousSignificantFindingsWithError() throws JSONException {
+		String comingRequest = "{\"beneficiaryRegID\": \"1\"}";
+		OutputResponse expectedResponse = new OutputResponse();
+		expectedResponse.setError(5000, "Error while getting previous significant findings");
 
-		OutputResponse response = new OutputResponse();
+		// Mocking the service to return null, simulating an error in fetching data
+		when(commonDoctorServiceImpl.fetchBenPreviousSignificantFindings(anyLong())).thenReturn(null);
 
-		String comingRequest = null;
+		// Execute
+		String actualResponse = commonController.getDoctorPreviousSignificantFindings(comingRequest);
 
-		response.setError(5000, "Error while getting previous significant findings");
-
-		assertTrue(response.toString().contains("Error while getting previous significant findings"));
+		assertTrue(actualResponse.contains("Error while getting previous significant findings"));
 	}
 
 	@Test
-	void testGetDoctorPreviousSignificantFindings_Invaliddata() throws JSONException {
+	void testGetDoctorPreviousSignificantFindingsWithInvalidData() {
+		String comingRequest = "{}"; // Missing beneficiaryRegID
+		OutputResponse expectedResponse = new OutputResponse();
+		expectedResponse.setError(5000, "Invalid data!");
 
-		OutputResponse response = new OutputResponse();
+		// Execute
+		String actualResponse = commonController.getDoctorPreviousSignificantFindings(comingRequest);
 
-		String comingRequest = "{\"beneficiaryID\": null}";
-
-		response.setError(5000, "Invalid data!");
-
-		assertTrue(response.toString().contains("Invalid data!"));
+		assertTrue(actualResponse.contains("Invalid data!"));
 	}
 
 	@Test
@@ -335,41 +353,56 @@ class CommonControllerTest {
 		assertEquals(response.toString(), commonController.getDoctorPreviousSignificantFindings(any()));
 	}
 
-//****************************
+//	@Test
+//	void testGetLabWorkListNew() {
+//		OutputResponse response = new OutputResponse();
+//
+//		Integer providerServiceMapID = 1;
+//		Integer vanID = 1;
+//		String s = "test";
+//
+//		when(commonNurseServiceImpl.getLabWorkListNew(providerServiceMapID, vanID));
+//
+//		String expResponse = commonController.getLabWorkListNew(providerServiceMapID, vanID);
+//
+//		response.setResponse(s);
+//
+//		assertNotNull(s);
+//
+//		assertEquals(expResponse, commonController.getLabWorkListNew(providerServiceMapID, vanID));
+//		assertTrue(response.toString().contains(s));
+//	}
+
 	@Test
 	void testGetLabWorkListNew() {
-		OutputResponse response = new OutputResponse();
+		Integer providerServiceMapID = 1;
+		Integer vanID = 1;
+		String expectedResponse = "Success";
+
+		// Stubbing the mock to return a specific value when the method is called
+		when(commonNurseServiceImpl.getLabWorkListNew(providerServiceMapID, vanID)).thenReturn(expectedResponse);
+
+		// Directly call the controller's method
+		String actualResponse = commonController.getLabWorkListNew(providerServiceMapID, vanID);
+
+		// Validate the response
+		assertEquals(expectedResponse, actualResponse, "The response should match the expected mocked value.");
+
+	}
+
+	@Test
+	void testGetLabWorkListNew_ThrowsException() {
 
 		Integer providerServiceMapID = 1;
 		Integer vanID = 1;
-		String s = "test";
 
-		when(commonNurseServiceImpl.getLabWorkListNew(providerServiceMapID, vanID));
+		when(commonNurseServiceImpl.getLabWorkListNew(any(), any())).thenThrow(NotFoundException.class);
 
-		String expResponse = commonController.getLabWorkListNew(providerServiceMapID, vanID);
+		String getLabWorkListNew = commonController.getLabWorkListNew(providerServiceMapID, vanID);
 
-		response.setResponse(s);
-
-		assertNotNull(s);
-
-		assertEquals(expResponse, commonController.getLabWorkListNew(providerServiceMapID, vanID));
-		assertTrue(response.toString().contains(s));
+		assertTrue(getLabWorkListNew.contains("Error while getting lab technician worklist"));
 	}
 
-	@Test
-	void testGetLabWorkListNew_error() {
-		OutputResponse response = new OutputResponse();
-
-		String s = null;
-
-		response.setError(5000, "Error while getting lab technician worklist");
-
-		assertNull(s);
-
-		assertTrue(response.toString().contains("Error while getting lab technician worklist"));
-	}
-
-	// ****************************
 	@Test
 	void testGetRadiologistWorklistNew() {
 		OutputResponse response = new OutputResponse();
@@ -391,17 +424,33 @@ class CommonControllerTest {
 	}
 
 	@Test
-	void testGetRadiologistWorklist_Error() {
-		OutputResponse response = new OutputResponse();
+	void testGetRadiologistWorklistNew_WithError() throws JSONException {
+		Integer providerServiceMapID = 1;
+		Integer vanID = 1;
+		String s = "test";
+		OutputResponse expectedResponse = new OutputResponse();
+		expectedResponse.setError(5000, "Error while getting radiologist worklist");
 
-		String s = null;
+		when(commonNurseServiceImpl.getRadiologistWorkListNew(providerServiceMapID, vanID)).thenReturn(null);
 
-		response.setError(5000, "Error while getting radiologist worklist");
+		// Execute
+		String actualResponse = commonController.getRadiologistWorklistNew(providerServiceMapID, vanID);
 
-		assertNull(s);
-
-		assertTrue(response.toString().contains("Error while getting radiologist worklist"));
+		assertTrue(actualResponse.contains("Error while getting radiologist worklist"));
 	}
+
+//	@Test
+//	void testGetRadiologistWorklist_Error() {
+//		OutputResponse response = new OutputResponse();
+//
+//		String s = null;
+//
+//		response.setError(5000, "Error while getting radiologist worklist");
+//
+//		assertNull(s);
+//
+//		assertTrue(response.toString().contains("Error while getting radiologist worklist"));
+//	}
 
 	@Test
 	void testGetRadiologistWorklistNew_Exception() {
@@ -412,7 +461,6 @@ class CommonControllerTest {
 
 	}
 
-	// ****************************
 	@Test
 	void testGetOncologistWorklistNew() {
 		OutputResponse response = new OutputResponse();
@@ -460,7 +508,6 @@ class CommonControllerTest {
 		assertEquals(response, commonController.getOncologistWorklistNew(any(), any()));
 	}
 
-	// ****************************
 	@Test
 	void testGetPharmaWorklistNew() {
 		OutputResponse response = new OutputResponse();
@@ -507,44 +554,37 @@ class CommonControllerTest {
 		assertEquals(response, commonController.getPharmaWorklistNew(any(), any()));
 	}
 
-	// ****************************
 	@Test
-	void testGetCasesheetPrintData() throws Exception {
-		OutputResponse response = new OutputResponse();
+	void testGetCasesheetPrintData_Success() throws Exception {
+		// Arrange
+		String comingReqJson = "{\"beneficiaryId\":\"123\"}";
+		String authorization = "Bearer someToken";
+		BeneficiaryFlowStatus obj = new BeneficiaryFlowStatus(); // Assuming you have a constructor or a method to parse
+																	// JSON
+		String expectedResponseData = "CaseSheet Data";
 
-		String comingReq = "{\"comingReq\":\"Get case-sheet print data for beneficiary.\"}";
-		String authorization = "test";
-		String casesheetData = "test";
+		when(commonServiceImpl.getCaseSheetPrintDataForBeneficiary(any(BeneficiaryFlowStatus.class), eq(authorization)))
+				.thenReturn(expectedResponseData);
 
-		BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingReq, BeneficiaryFlowStatus.class);
+		// Act
+		String response = commonController.getCasesheetPrintData(comingReqJson, authorization);
 
-		when(commonServiceImpl.getCaseSheetPrintDataForBeneficiary(obj, authorization)).thenReturn(casesheetData);
-
-		String expResponse = commonController.getCasesheetPrintData(comingReq, authorization);
-
-		response.setResponse(casesheetData);
-
-		assertNotNull(comingReq);
-
-		assertEquals(expResponse, commonController.getCasesheetPrintData(comingReq, authorization));
-		assertTrue(response.toString().contains(casesheetData));
+		// Assert
+		assertNotNull(response);
+		assertTrue(response.contains(expectedResponseData));
 	}
 
 	@Test
-	void testGetCasesheetPrintData_Error() throws Exception {
-		OutputResponse response = new OutputResponse();
+	void testGetCasesheetPrintData_Failure_InvalidRequest() {
+		// Arrange
+		String authorization = "Bearer someToken";
 
-		String comingReq = null;
-		String authorization = "test";
-		String casesheetData = "test";
+		// Act
+		String response = commonController.getCasesheetPrintData(null, authorization);
 
-		BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingReq, BeneficiaryFlowStatus.class);
-
-		response.setError(5000, "Invalid request");
-
-		assertNull(comingReq);
-
-		assertTrue(response.toString().contains("Invalid request"));
+		// Assert
+		assertNotNull(response);
+		assertTrue(response.contains("Invalid request")); // Adjust based on how you format error messages
 	}
 
 	@Test
@@ -558,7 +598,6 @@ class CommonControllerTest {
 		assertEquals(response, commonController.getCasesheetPrintData(comingReq, authorization));
 	}
 
-	// ****************************
 	@Test
 	void testGetBenPastHistory() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -606,7 +645,6 @@ class CommonControllerTest {
 		assertEquals(response.toString(), commonController.getBenPastHistory(any()));
 	}
 
-	// ****************************
 	@Test
 	void testGetBenTobaccoHistory() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -652,7 +690,6 @@ class CommonControllerTest {
 		assertEquals(response.toString(), commonController.getBenTobaccoHistory(any()));
 	}
 
-	// ****************************
 	@Test
 	void testGetBenAlcoholHistory() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -698,7 +735,6 @@ class CommonControllerTest {
 		assertEquals(response.toString(), commonController.getBenAlcoholHistory(any()));
 	}
 
-	// ****************************
 	@Test
 	void testGetBenANCAllergyHistory() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -740,12 +776,22 @@ class CommonControllerTest {
 
 	@Test
 	void testGetBenANCAllergyHistory_Exeption() throws Exception {
-		OutputResponse response = new OutputResponse();
-		response.setError(5000, "Error while getting allergy history");
-		assertEquals(response.toString(), commonController.getBenANCAllergyHistory(any()));
+		String comingRequest = "{\"benRegID\":\"1\"}";
+
+		when(commonServiceImpl.getPersonalAllergyHistoryData(any())).thenThrow(NotFoundException.class);
+
+		String GetBenANCAllergyHistory = commonController.getBenANCAllergyHistory(comingRequest);
+
+		assertTrue(GetBenANCAllergyHistory.contains("Error while getting allergy history"));
 	}
 
-	// ****************************
+//	@Test
+//	void testGetBenANCAllergyHistory_Exeption1() throws Exception {
+//		OutputResponse response = new OutputResponse();
+//		response.setError(5000, "Error while getting allergy history");
+//		assertEquals(response.toString(), commonController.getBenANCAllergyHistory(any()));
+//	}
+
 	@Test
 	void testGetBenMedicationHistory() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -791,7 +837,6 @@ class CommonControllerTest {
 		assertEquals(response.toString(), commonController.getBenMedicationHistory(any()));
 	}
 
-	// ****************************
 	@Test
 	void testGetBenFamilyHistory() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -837,7 +882,6 @@ class CommonControllerTest {
 		assertEquals(response.toString(), commonController.getBenFamilyHistory(any()));
 	}
 
-	// ****************************
 	@Test
 	void testGetBenMenstrualHistory() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -883,7 +927,6 @@ class CommonControllerTest {
 		assertEquals(response.toString(), commonController.getBenMenstrualHistory(any()));
 	}
 
-	// ****************************
 	@Test
 	void testGetBenPastObstetricHistory() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -929,7 +972,6 @@ class CommonControllerTest {
 		assertEquals(response.toString(), commonController.getBenPastObstetricHistory(any()));
 	}
 
-	// ****************************
 	@Test
 	void testGetBenANCComorbidityConditionHistory() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -975,7 +1017,6 @@ class CommonControllerTest {
 		assertEquals(response.toString(), commonController.getBenANCComorbidityConditionHistory(any()));
 	}
 
-	// ****************************
 	@Test
 	void testGetBenOptionalVaccineHistory() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -1006,7 +1047,6 @@ class CommonControllerTest {
 		assertEquals(response.toString(), commonController.getBenOptionalVaccineHistory(any()));
 	}
 
-	// ****************************
 	@Test
 	void testGetBenImmunizationHistory() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -1040,7 +1080,6 @@ class CommonControllerTest {
 		assertEquals(response.toString(), commonController.getBenImmunizationHistory(any()));
 	}
 
-	// ****************************
 	@Test
 	void testGetBenPerinatalHistory() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -1074,7 +1113,6 @@ class CommonControllerTest {
 		assertEquals(response.toString(), commonController.getBenPerinatalHistory(any()));
 	}
 
-	// ****************************
 	@Test
 	void testGetBenFeedingHistory() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -1108,7 +1146,6 @@ class CommonControllerTest {
 		assertEquals(response.toString(), commonController.getBenFeedingHistory(any()));
 	}
 
-	// ****************************
 	@Test
 	void testGetBenDevelopmentHistory() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -1142,7 +1179,6 @@ class CommonControllerTest {
 		assertEquals(response.toString(), commonController.getBenDevelopmentHistory(any()));
 	}
 
-	// ****************************
 	@Test
 	void testGetBeneficiaryCaseSheetHistory() throws IEMRException {
 		OutputResponse response = new OutputResponse();
@@ -1180,7 +1216,6 @@ class CommonControllerTest {
 		assertEquals(response.toString(), commonController.getBeneficiaryCaseSheetHistory(any()));
 	}
 
-	// ****************************
 	@Test
 	void testGetTCSpecialistWorkListNew() {
 		OutputResponse response = new OutputResponse();
@@ -1222,7 +1257,6 @@ class CommonControllerTest {
 		assertEquals(response.toString(), commonController.getTCSpecialistWorkListNew(any(), any(), any()));
 	}
 
-	// ****************************
 	@Test
 	void testGetTCSpecialistWorklistFutureScheduled() {
 		OutputResponse response = new OutputResponse();
@@ -1269,23 +1303,13 @@ class CommonControllerTest {
 		assertEquals(response.toString(), commonController.getTCSpecialistWorklistFutureScheduled(any(), any(), any()));
 	}
 
-	// ****************************
-	@Test
-	public void downloadFile_Success() throws Exception {
+//	@Test
+//	void testDownloadFileSuccess() throws Exception {
+//
+//	}
 
-		String requestOBJ = "{\"fileName\": \"exampleDocument.txt\", \"filePath\": \"/documents/2023/reports/\"}";
-	}
+	
 
-	@Test
-	public void downloadFile_Exception() throws Exception {
-
-		when(MediaTypeUtils.getMediaTypeForFileName(any(), any())).thenThrow(NotFoundException.class);
-
-		ResponseEntity<InputStreamResource> response = commonController.downloadFile(any(), any());
-		assertEquals(response, commonController.downloadFile(any(), any()));
-	}
-
-	// ****************************
 	@Test
 	void testGetBenPhysicalHistory() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -1310,13 +1334,12 @@ class CommonControllerTest {
 	}
 
 	@Test
-	void testGetBenPhysicalHistory_Exception() throws JSONException {
+	void testGetBenPhysicalHistory_Exception1() throws JSONException {
 		OutputResponse response = new OutputResponse();
 		response.setError(5000, "Error while getting Physical history");
 		assertEquals(response.toString(), commonController.getBenPhysicalHistory(any()));
 	}
 
-	// ****************************
 	@Test
 	void testGetBenSymptomaticQuestionnaireDetails() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -1351,7 +1374,6 @@ class CommonControllerTest {
 		assertEquals(response.toString(), commonController.getBenSymptomaticQuestionnaireDetails(any()));
 	}
 
-	// ****************************
 	@Test
 	void testGetBenPreviousDiabetesHistoryDetails() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -1385,20 +1407,139 @@ class CommonControllerTest {
 		assertEquals(response.toString(), commonController.getBenPreviousDiabetesHistoryDetails(any()));
 	}
 
-//***********************	
+	@Test
+	void testGetTMReferredPrintData_1() throws IEMRException {
+		OutputResponse response = new OutputResponse();
+		String comingRequest = "{\"benId\": \"1\", \"benVisitCode\": \"1\"}";
+		String authorization = "Authorization";
+		String serverAuthorization = "ServerAuthorization";
+
+		BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingRequest, BeneficiaryFlowStatus.class);
+		String casesheetData = null;
+
+		int caseSheetStatus = 1;
+
+		when(commonServiceImpl.checkIsCaseSheetDownloaded(obj.getBenVisitCode())).thenReturn(caseSheetStatus);
+
+		casesheetData = commonServiceImpl.getTmCaseSheetOffline(obj);
+
+		String expResponse = commonController.getTMReferredPrintData(comingRequest, authorization, serverAuthorization);
+
+		assertTrue(comingRequest != null);
+		assertTrue(caseSheetStatus == 1);
+		assertEquals(expResponse,
+				commonController.getTMReferredPrintData(comingRequest, authorization, serverAuthorization));
+	}
+
+	@Test
+	void testGetTMReferredPrintData_2() throws IEMRException {
+		OutputResponse response = new OutputResponse();
+		String comingRequest = "{\"benId\": \"1\", \"benVisitCode\": \"1\"}";
+		String authorization = "Authorization";
+		String serverAuthorization = "ServerAuthorization";
+
+		BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingRequest, BeneficiaryFlowStatus.class);
+		String casesheetData = null;
+
+		int caseSheetStatus = 0;
+
+		when(commonServiceImpl.checkIsCaseSheetDownloaded(obj.getBenVisitCode())).thenReturn(caseSheetStatus);
+
+		casesheetData = commonServiceImpl.getCaseSheetFromCentralServer(comingRequest, serverAuthorization);
+
+		String expResponse = commonController.getTMReferredPrintData(comingRequest, authorization, serverAuthorization);
+
+		assertTrue(comingRequest != null);
+		assertTrue(caseSheetStatus == 0);
+		assertEquals(expResponse,
+				commonController.getTMReferredPrintData(comingRequest, authorization, serverAuthorization));
+	}
+
+	@Test
+	void testGetTMReferredPrintData_3() throws IEMRException {
+		OutputResponse response = new OutputResponse();
+		String comingRequest = "{\"benId\": \"1\", \"benVisitCode\": \"1\"}";
+		String authorization = "Authorization";
+		String serverAuthorization = "ServerAuthorization";
+
+		BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingRequest, BeneficiaryFlowStatus.class);
+		String casesheetData = "test";
+
+		int caseSheetStatus = 0;
+
+		response.setResponse(casesheetData);
+
+		assertTrue(comingRequest != null);
+		assertTrue(casesheetData != null);
+		assertTrue(response.toString().contains(casesheetData));
+	}
+
+	@Test
+	void testGetTMReferredPrintData_4() throws IEMRException {
+		OutputResponse response = new OutputResponse();
+		String comingRequest = "{\"benId\": \"1\", \"benVisitCode\": \"1\"}";
+		String authorization = "Authorization";
+		String serverAuthorization = "ServerAuthorization";
+
+		BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingRequest, BeneficiaryFlowStatus.class);
+		String casesheetData = null;
+
+		int caseSheetStatus = 0;
+
+		response.setError(5000, "Beneficiary pending for Tele-Consultation");
+
+		assertTrue(comingRequest != null);
+		assertNull(casesheetData);
+		assertTrue(response.toString().contains("Beneficiary pending for Tele-Consultation"));
+	}
+
+	@Test
+	void testGetTMReferredPrintData_5() throws IEMRException {
+		OutputResponse response = new OutputResponse();
+		String comingRequest = null;
+		String authorization = "Authorization";
+		String serverAuthorization = "ServerAuthorization";
+
+		response.setError(5000, "Invalid request");
+
+		assertNull(comingRequest);
+		assertTrue(response.toString().contains("Invalid request"));
+	}
+
 //	@Test
-//	void testGetTMReferredPrintData() throws IEMRException {
-//		String comingRequest;
-//		String authorization = "Authorization";
-//		String serverAuthorization = "ServerAuthorization";
-//		
-//		BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingRequest, BeneficiaryFlowStatus.class);
-//		String casesheetData = null;
-//		
-//		assertTrue(comingRequest != null);
+//	void testGetTMReferredPrintData_IEMRException() throws IEMRException {
+//		String incomingRequest = "{\"benVisitCode\":\"someCode\"}";
+//		String authorizationHeader = "Bearer someToken";
+//		String serverAuthorizationHeader = "ServerToken";
+//
+//		when(commonServiceImpl.getCaseSheetFromCentralServer(anyString(), anyString()))
+//				.thenThrow(IEMRException.class);
+//
+//		// Call the method under test
+//		String response = commonController.getTMReferredPrintData(incomingRequest, authorizationHeader,
+//				serverAuthorizationHeader);
+//
+//		// Verify the output
+//		assertNotNull(response);
+//		assertTrue(response.contains("5003")); // Assuming the response is a JSON string containing the error code
+//		assertTrue(response.contains("Test Exception"));
+//
 //	}
 
-//****************
+	@Test
+	void testGetTMReferredPrintData_Exception() throws IEMRException {
+		String requestObj = "{\"request\":\"Save cancer screening nurse data\"}";
+		String authorization = "Bearer token";
+		String ServerAuthorization = "serverAuthorization";
+
+		when(commonServiceImpl.checkIsCaseSheetDownloaded(any())).thenThrow(NotFoundException.class);
+
+		String saveBenCancerScreeningNurseData = commonController.getTMReferredPrintData(requestObj, authorization,
+				ServerAuthorization);
+
+		assertTrue(saveBenCancerScreeningNurseData.contains("Error in getting case sheet - "));
+	}
+
 	@Test
 	void testGetBenPreviousReferralHistoryDetails() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -1444,7 +1585,6 @@ class CommonControllerTest {
 		assertEquals(response.toString(), commonController.getBenPreviousReferralHistoryDetails(any()));
 	}
 
-//*************
 	@Test
 	void testGetTMCaseSheetFromCentralServer() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -1499,7 +1639,6 @@ class CommonControllerTest {
 		assertEquals(response, commonController.getTMCaseSheetFromCentralServer(any(), any()));
 	}
 
-//*********
 	@Test
 	void testCalculateBMIStatus() throws IEMRException {
 		OutputResponse response = new OutputResponse();
@@ -1518,14 +1657,13 @@ class CommonControllerTest {
 	}
 
 	@Test
-	void testCalculateBMIStatus_Exception() throws IEMRException  {
+	void testCalculateBMIStatus_Exception() throws IEMRException {
 		when(commonNurseServiceImpl.calculateBMIStatus(any())).thenThrow(RuntimeException.class);
-		
+
 		String response = commonController.calculateBMIStatus(any());
 		assertEquals(response, commonController.calculateBMIStatus(any()));
 	}
 
-//*************
 	@Test
 	void testSaveBeneficiaryVisitDetail() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -1606,16 +1744,16 @@ class CommonControllerTest {
 
 		assertTrue(response.toString().contains("Beneficiary Registration ID is Not valid !!!"));
 	}
-	
+
 	@Test
 	void testSaveBeneficiaryVisitDetail_Exception() throws JSONException {
-	
-	when(commonNurseServiceImpl.updateBeneficiaryStatus(any(), any())).thenThrow(RuntimeException.class);
-	
-	String response = commonController.saveBeneficiaryVisitDetail(any());
-	assertEquals(response, commonController.saveBeneficiaryVisitDetail(any()));
+
+		when(commonNurseServiceImpl.updateBeneficiaryStatus(any(), any())).thenThrow(RuntimeException.class);
+
+		String response = commonController.saveBeneficiaryVisitDetail(any());
+		assertEquals(response, commonController.saveBeneficiaryVisitDetail(any()));
 	}
-//*******
+
 	@Test
 	void testExtendRedisSession() {
 		OutputResponse response = new OutputResponse();
@@ -1625,7 +1763,6 @@ class CommonControllerTest {
 		assertTrue(response.toString().contains("Session extended for 30 mins"));
 	}
 
-//***************
 	@Test
 	void testDeletePrescribedMedicine() throws JSONException {
 		OutputResponse response = new OutputResponse();

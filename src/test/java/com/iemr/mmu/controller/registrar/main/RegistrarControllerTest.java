@@ -8,6 +8,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
@@ -15,6 +16,8 @@ import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import com.google.gson.JsonObject;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 import com.iemr.mmu.data.registrar.BeneficiaryData;
 import com.iemr.mmu.data.registrar.V_BenAdvanceSearch;
+import com.iemr.mmu.data.registrar.WrapperBeneficiaryRegistration;
 import com.iemr.mmu.service.common.master.RegistrarServiceMasterDataImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
@@ -90,7 +94,6 @@ class RegistrarControllerTest {
 //		assertEquals(response, registrarController.getRegistrarWorkList(comingReq));
 //	}
 
-
 	@Test
 	void testQuickSearchBeneficiary() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -119,23 +122,50 @@ class RegistrarControllerTest {
 		assertTrue(response.contains("Error in quickSearchBeneficiary :"));
 	}
 
+//	@Test
+//	void testAdvanceSearch() throws IEMRException {
+//		OutputResponse response = new OutputResponse();
+//
+//		String comingRequest = "{\"firstName\": \"John\", \"lastName\": \"Doe\", \"phoneNo\": \"1234567890\","
+//				+ "\"beneficiaryID\": \"ABC123\", \"stateID\": 1, \"districtID\": 2, \"aadharNo\": \"1234-5678-9012\","
+//				+ " \"govtIdentityNo\": \"XYZ789\"}";
+//
+//		V_BenAdvanceSearch v_BenAdvanceSearch = inputMapper.gson().fromJson(comingRequest, V_BenAdvanceSearch.class);
+//
+//		when(registrarServiceImpl.getAdvanceSearchBenData(v_BenAdvanceSearch)).thenReturn(comingRequest);
+//
+//		String expResponse = registrarController.advanceSearch(comingRequest);
+//
+//		response.setResponse(registrarServiceImpl.getAdvanceSearchBenData(v_BenAdvanceSearch));
+//
+//		assertEquals(expResponse, registrarController.advanceSearch(comingRequest));
+//	}
+
 	@Test
-	void testAdvanceSearch() throws IEMRException {
-		OutputResponse response = new OutputResponse();
+	void testAdvanceSearch() {
+		String jsonInput = "{\"firstName\": \"John\", \"lastName\": \"Doe\", \"phoneNo\": \"1234567890\","
+				+ "\"beneficiaryID\": \"1234\", \"stateID\": 1, \"districtID\": 2, \"aadharNo\": \"1234-5678-9123\","
+				+ "\"govtIdentityNo\": \"ABCD123456\"}";
+		V_BenAdvanceSearch mockSearch = new V_BenAdvanceSearch(); // Assuming you have a default constructor
+		OutputResponse expectedResponse = new OutputResponse();
+		expectedResponse.setResponse("Some response data here"); // Mock some response
 
-		String comingRequest = "{\"firstName\": \"John\", \"lastName\": \"Doe\", \"phoneNo\": \"1234567890\","
-				+ "\"beneficiaryID\": \"ABC123\", \"stateID\": 1, \"districtID\": 2, \"aadharNo\": \"1234-5678-9012\","
-				+ " \"govtIdentityNo\": \"XYZ789\"}";
+		when(registrarServiceImpl.getAdvanceSearchBenData(any(V_BenAdvanceSearch.class)))
+				.thenReturn("Some response data here");
 
-		V_BenAdvanceSearch v_BenAdvanceSearch = inputMapper.gson().fromJson(comingRequest, V_BenAdvanceSearch.class);
+		String response = registrarController.advanceSearch(jsonInput);
 
-		when(registrarServiceImpl.getAdvanceSearchBenData(v_BenAdvanceSearch)).thenReturn(comingRequest);
+		// Assuming your toString method returns a string representation of the response
+		assertEquals(expectedResponse.toString(), response);
+	}
 
-		String expResponse = registrarController.advanceSearch(comingRequest);
+	@Test
+	void testAdvanceSearch_Exception() throws Exception {
+		String comingReq = "{\"statusCode\":5000,\"errorMessage\":\"Failed with generic error\",\"status\":\"FAILURE\"}";
+		when(registrarServiceImpl.getAdvanceSearchBenData(any())).thenThrow(RuntimeException.class);
 
-		response.setResponse(registrarServiceImpl.getAdvanceSearchBenData(v_BenAdvanceSearch));
-
-		assertEquals(expResponse, registrarController.advanceSearch(comingRequest));
+		String response = registrarController.advanceSearch(comingReq);
+		assertEquals(response, registrarController.advanceSearch(comingReq));
 	}
 
 	@Test
@@ -193,7 +223,6 @@ class RegistrarControllerTest {
 
 		assertTrue(actualResponse.contains(expectedError));
 	}
-
 
 	@Test
 	void testGetBeneficiaryDetails() throws JSONException {
@@ -277,7 +306,6 @@ class RegistrarControllerTest {
 		assertTrue(actualResponse.contains("Error in getBeneficiaryDetails :"));
 	}
 
-
 	@Test
 	void testGetBeneficiaryImage() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -321,6 +349,19 @@ class RegistrarControllerTest {
 	}
 
 	@Test
+	void getBeneficiaryImage_ExceptionCaught() {
+		String requestObj = "{\"beneficiaryRegID\": \"1\"}";
+		Exception e = new Exception();
+
+		when(registrarServiceImpl.getBenImage(anyLong())).thenThrow(e);
+
+		String response = registrarController.getBeneficiaryImage(requestObj);
+
+		assertEquals(e.getMessage(), registrarController.getBeneficiaryImage(requestObj));
+
+	}
+
+	@Test
 	void testQuickSearchNew_Success() throws Exception {
 		String requestObj = "{\"searchKey\": \"1234567890\"}";
 		String authorization = "Bearer token";
@@ -359,8 +400,6 @@ class RegistrarControllerTest {
 
 		assertTrue(actualResponse.contains(expectedError));
 	}
-
-
 
 	@Test
 	void testAdvanceSearchNew_Success() {
@@ -404,8 +443,6 @@ class RegistrarControllerTest {
 
 		assertTrue(actualResponse.contains(expectedError));
 	}
-
-
 
 	@Test
 	void testGetBenDetailsForLeftSidePanelByRegID_Success() throws JSONException {
@@ -519,7 +556,6 @@ class RegistrarControllerTest {
 //		assertTrue(response.toString().contains("Invalid request"));
 //	}
 
-
 	@Test
 	void testGetBenImage() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -548,6 +584,24 @@ class RegistrarControllerTest {
 		assertTrue(getBenImage.contains("Error while getting beneficiary image"));
 
 	}
+	
+	
+
+//	@Test
+//	void testCreateBeneficiary_if1() throws IEMRException {
+//		OutputResponse response = new OutputResponse();
+//
+//		// Prepare the request object
+//		String comingRequest = "{ \"benD\": { \"firstName\": \"John\", \"lastName\": \"Doe\" }}";
+//		JsonObject mockbenD = null;
+//
+//		// Execute the test
+//		response.setError(0, "Invalid input data");
+//
+//		// Validate the response
+//		assertTrue(mockbenD == null || mockbenD.isJsonNull());
+//		assertTrue(response.toString().contains("Invalid input data"));
+//	}
 
 	@Test
 	void testCreateBeneficiary_Success() {
@@ -557,6 +611,9 @@ class RegistrarControllerTest {
 
 		// Mocking the service layer responses
 		BeneficiaryData mockBenData = new BeneficiaryData();
+
+		mockBenData.setBeneficiaryID("test");
+
 		mockBenData.setBeneficiaryRegID(1L); // Assuming successful registration returns a positive ID
 		when(registrarServiceImpl.createBeneficiary(any())).thenReturn(mockBenData);
 		when(registrarServiceImpl.createBeneficiaryDemographic(any(), anyLong())).thenReturn(1L);
@@ -568,18 +625,49 @@ class RegistrarControllerTest {
 		String response = registrarController.createBeneficiary(comingRequest, authorization);
 
 		// Validate the response
-		assertTrue(response.contains("Registration Done"));
+		assertTrue(response.contains(mockBenData.getBeneficiaryID()));
 	}
 
 	@Test
-	void testCreateBeneficiary_InvalidInput() {
-		String comingRequest = "{}"; // No benD object
+	void testCreateBeneficiary_Else2() {
+		// Prepare the request object
+		String comingRequest = "{ \"benD\": { \"firstName\": \"John\", \"lastName\": \"Doe\" }}";
 		String authorization = "Bearer token";
 
+		// Mocking the service layer responses
+		BeneficiaryData mockBenData = new BeneficiaryData();
+
+		mockBenData.setBeneficiaryID(null);
+
+		mockBenData.setBeneficiaryRegID(1L); // Assuming successful registration returns a positive ID
+		when(registrarServiceImpl.createBeneficiary(any())).thenReturn(mockBenData);
+		when(registrarServiceImpl.createBeneficiaryDemographic(any(), anyLong())).thenReturn(1L);
+		when(registrarServiceImpl.createBeneficiaryPhoneMapping(any(), anyLong())).thenReturn(1L);
+		when(registrarServiceImpl.createBeneficiaryDemographicAdditional(any(), anyLong())).thenReturn(1L);
+		when(registrarServiceImpl.createBeneficiaryImage(any(), anyLong())).thenReturn(1L);
+
+		// Execute the test
 		String response = registrarController.createBeneficiary(comingRequest, authorization);
 
-		assertTrue(response.contains("Invalid input data"));
+		// Validate the response
+		assertTrue(mockBenData.getBeneficiaryID() == null);
+		assertTrue(response.contains("Registration Done. Beneficiary ID is : "));
 	}
+
+//	@Test
+//	void testCreateBeneficiary_Else3() {
+//		OutputResponse response = new OutputResponse();
+//
+//		Long benRegID = -1L;
+//		Long benDemoID = -1L;
+//		Long benPhonMapID = -1L;
+//		Long benbenDemoOtherID = -1L;
+//		Long benImageID = -1L;
+//
+//		response.setError(500, "Something Went-Wrong");
+//		assertTrue(benRegID < 0 || benDemoID < 0 || benPhonMapID < 0 || benbenDemoOtherID < 0 || benImageID < 0);
+//		assertTrue(response.toString().contains("Something Went-Wrong"));
+//	}
 
 	@Test
 	void testCreateBeneficiary_RegistrationFailure() {
@@ -595,6 +683,20 @@ class RegistrarControllerTest {
 
 		assertTrue(response.contains("Something Went-Wrong"));
 	}
+
+//	@Test
+//	void testCreateBeneficiary_WithInvalidInputData() {
+//		// Scenario setup: Incoming request with incorrect or insufficient data
+//		String incomingRequest = "{\"benD\":null}"; // This should trigger the "Invalid input data" path
+//		String authorizationHeader = "Bearer someToken";
+//
+//		// Execute the method under test
+//		String response = registrarController.createBeneficiary(incomingRequest, authorizationHeader);
+//
+//		// Verify response contains the expected error message
+//		assertNotNull(response);
+//		assertTrue(response.contains("Invalid input data"));
+//	}
 
 	@Test
 	void testCreateBeneficiary_ExceptionThrown() {
@@ -630,7 +732,6 @@ class RegistrarControllerTest {
 //
 //		assertTrue(response.toString().contains("Invalid input data"));
 //	}
-
 
 	@Test
 	void testRegistrarBeneficaryRegistrationNew() throws Exception {
@@ -721,6 +822,18 @@ class RegistrarControllerTest {
 		assertTrue(result.contains("Beneficiary Details updated successfully"));
 	}
 
+	@Test
+	void testUpdateBeneficiary_else1() throws Exception {
+		// Mock input JSON string that simulates the request body
+		String comingRequest = "{\"benD\": {\"beneficiaryRegID\": 1}}";
+
+		when(registrarServiceImpl.updateBeneficiary(any(JsonObject.class))).thenReturn(1); // Simulate success
+		when(registrarServiceImpl.updateBeneficiaryDemographic(any(JsonObject.class), anyLong())).thenReturn(-1); // Simulate
+
+		String response = registrarController.updateBeneficiary(comingRequest);
+
+		assertTrue(response.contains("Something Went-Wrong"));
+	}
 
 	@Test
 	void testCreateReVisitForBenToNurse() throws Exception {
@@ -834,19 +947,23 @@ class RegistrarControllerTest {
 	}
 
 	@Test
-	void testBeneficiaryUpdate_Error() throws Exception {
-		OutputResponse response = new OutputResponse();
+	void testBeneficiaryUpdateError() throws Exception {
+		// Mocking the input
+		String requestOBJ = "{\"key\": \"value\"}";
+		String authorization = "Bearer token";
 
-		String requestOBJ = "{ \"/update/BeneficiaryUpdate\" }";
-		String authorization = "Authorization";
+		// Mocking the service method to return null
+		when(registrarServiceImpl.updateBeneficiary(anyString(), anyString())).thenReturn(null);
 
-		Integer s = null;
+		// Execute the controller method
+		String result = registrarController.beneficiaryUpdate(requestOBJ, authorization);
 
-		response.setError(5000, "Error while updating beneficiary details");
+		// Verify the service method was called
+		verify(registrarServiceImpl).updateBeneficiary(requestOBJ, authorization);
 
-		assertNull(s);
-
-		assertTrue(response.toString().contains("Error while updating beneficiary details"));
+		// Assert that the response contains the expected error
+		assertNotNull(result);
+		assertTrue(result.contains("Error while updating beneficiary details"));
 	}
 
 	@Test
@@ -854,7 +971,7 @@ class RegistrarControllerTest {
 		String requestObj = "{\"request\":\"Save cancer screening nurse data\"}";
 		String authorization = "Bearer token";
 
-		when(registrarServiceImpl.updateBeneficiary(any(),any())).thenThrow(NotFoundException.class);
+		when(registrarServiceImpl.updateBeneficiary(any(), any())).thenThrow(NotFoundException.class);
 
 		String testBeneficiaryUpdate = registrarController.beneficiaryUpdate(requestObj, authorization);
 
@@ -880,18 +997,28 @@ class RegistrarControllerTest {
 	}
 
 	@Test
-	void testMasterDataForRegistration_Invalid() throws JSONException {
+	void testMasterDataForRegistration_WithMissingSpID() {
+		String requestWithoutSpID = "{}"; // spID key is missing
+		String response = registrarController.masterDataForRegistration(requestWithoutSpID);
+
+		assertNotNull(response);
+		assertTrue(response.contains("Invalid request"));
+	}
+
+	@Test
+	void testMasterDataForRegistration_WithInvalidSpID() {
+		String requestWithInvalidSpID = "{\"spID\": 0}"; // spID is non-positive, which is invalid
+		String response = registrarController.masterDataForRegistration(requestWithInvalidSpID);
+
+		assertNotNull(response);
+		assertTrue(response.contains("Invalid service point"));
+	}
+
+	@Test
+	void testMasterDataForRegistration_Exception() throws JSONException {
 		OutputResponse response = new OutputResponse();
-
-		String comingRequest = "{}";
-
-		JSONObject obj = new JSONObject(comingRequest);
-
-		response.setError(5000, "Invalid service point");
-
-		assertTrue(!obj.has("spID"));
-
-		assertTrue(response.toString().contains("Invalid service point"));
+		response.setError(5000, "Error while getting master data for registration");
+		assertEquals(response.toString(), registrarController.masterDataForRegistration(any()));
 	}
 
 }

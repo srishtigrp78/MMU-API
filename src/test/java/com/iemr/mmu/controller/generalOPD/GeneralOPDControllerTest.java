@@ -1,6 +1,7 @@
 package com.iemr.mmu.controller.generalOPD;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import org.json.JSONException;
@@ -18,6 +19,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.iemr.mmu.service.generalOPD.GeneralOPDServiceImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
+
+import javassist.NotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 class GeneralOPDControllerTest {
@@ -121,7 +124,6 @@ class GeneralOPDControllerTest {
 		assertTrue(response.toString().contains("Unable to save data"));
 	}
 
-//********
 	@Test
 	void testSaveBenGenOPDDoctorDataSuccess() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -181,7 +183,19 @@ class GeneralOPDControllerTest {
 		assertTrue(response.toString().contains("Invalid request"));
 	}
 
-//****************
+	@Test
+	void testSaveBenGenOPDDoctorData_Exception() throws Exception {
+		String requestObj = "{\"request\":\"Save general OPD doctor data\"}";
+		String authorization = "Test";
+		Long genOPDRes = -1L;
+
+		when(generalOPDServiceImpl.saveDoctorData(any(), any())).thenThrow(NotFoundException.class);
+
+		String saveBenCancerScreeningNurseData = generalOPDController.saveBenGenOPDDoctorData(requestObj,
+				authorization);
+		assertTrue(saveBenCancerScreeningNurseData.contains("Unable to save data. "));
+	}
+
 	@Test
 	void testGetBenVisitDetailsFrmNurseGOPD() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -198,12 +212,8 @@ class GeneralOPDControllerTest {
 
 		String expResponse = generalOPDController.getBenVisitDetailsFrmNurseGOPD(comingRequest);
 
-		try {
-			response.setResponse(res);
-		} catch (Exception e) {
-			response.setError(5000, "Error while getting beneficiary visit data");
-			logger.error("Error in getBenDataFrmNurseScrnToDocScrnVisitDetails:" + e);
-		}
+		response.setResponse(res);
+
 		assertTrue(obj.length() > 1);
 
 		assertEquals(expResponse, generalOPDController.getBenVisitDetailsFrmNurseGOPD(comingRequest));
@@ -217,7 +227,7 @@ class GeneralOPDControllerTest {
 //		String comingRequest ="{\"benRegID\":null}";
 //
 //		JSONObject obj = new JSONObject(comingRequest);
-//		try {
+//	
 //		response.setError(5000, "Invalid request");
 //		}catch (Exception e) {
 //			response.setError(5000, "Error while getting beneficiary visit data");
@@ -229,7 +239,13 @@ class GeneralOPDControllerTest {
 //		assertTrue(response.toString().contains("Invalid request"));
 //	}
 
-//*******************
+	@Test
+	void testGetBenVisitDetailsFrmNurseGOPD_Exception() throws Exception {
+		OutputResponse response = new OutputResponse();
+		response.setError(5000, "Error while getting beneficiary visit data");
+		assertEquals(response.toString(), generalOPDController.getBenVisitDetailsFrmNurseGOPD(any()));
+	}
+
 	@Test
 	void testGetBenHistoryDetails() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -246,12 +262,8 @@ class GeneralOPDControllerTest {
 
 		String expResponse = generalOPDController.getBenHistoryDetails(comingRequest);
 
-		try {
-			response.setResponse(s);
-		} catch (Exception e) {
-			response.setError(5000, "Error while getting beneficiary history data");
-			logger.error("Error in getBenHistoryDetails:" + e);
-		}
+		response.setResponse(s);
+
 		assertTrue(obj.has("benRegID") && obj.has("visitCode"));
 
 		assertEquals(expResponse, generalOPDController.getBenHistoryDetails(comingRequest));
@@ -266,18 +278,20 @@ class GeneralOPDControllerTest {
 
 		JSONObject obj = new JSONObject(comingRequest);
 
-		try {
-			response.setError(5000, "Invalid request");
-		} catch (Exception e) {
-			response.setError(5000, "Error while getting beneficiary history data");
-			logger.error("Error in getBenHistoryDetails:" + e);
-		}
+		response.setError(5000, "Invalid request");
+
 		assertFalse(obj.has("benRegID") && obj.has("visitCode"));
 
 		assertTrue(response.toString().contains("Invalid request"));
 	}
 
-//**********
+	@Test
+	void testGetBenHistoryDetail_Exception() throws Exception {
+		OutputResponse response = new OutputResponse();
+		response.setError(5000, "Error while getting beneficiary history data");
+		assertEquals(response.toString(), generalOPDController.getBenHistoryDetails(any()));
+	}
+
 	@Test
 	void testGetBenVitalDetailsFrmNurse() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -294,12 +308,8 @@ class GeneralOPDControllerTest {
 
 		String expResponse = generalOPDController.getBenVitalDetailsFrmNurse(comingRequest);
 
-		try {
-			response.setResponse(res);
-		} catch (Exception e) {
-			response.setError(5000, "Error while getting beneficiary vital data");
-			logger.error("Error in getBenVitalDetailsFrmNurse:" + e);
-		}
+		response.setResponse(res);
+
 		assertTrue(obj.has("benRegID") && obj.has("visitCode"));
 
 		assertEquals(expResponse, generalOPDController.getBenVitalDetailsFrmNurse(comingRequest));
@@ -314,18 +324,20 @@ class GeneralOPDControllerTest {
 
 		JSONObject obj = new JSONObject(comingRequest);
 
-		try {
-			response.setError(5000, "Invalid request");
-		} catch (Exception e) {
-			response.setError(5000, "Error while getting beneficiary vital data");
-			logger.error("Error in getBenVitalDetailsFrmNurse:" + e);
-		}
+		response.setError(5000, "Invalid request");
+
 		assertFalse(obj.has("benRegID") && obj.has("visitCode"));
 
 		assertTrue(response.toString().contains("Invalid request"));
 	}
 
-//**************
+	@Test
+	void testGetBenVitalDetailsFrmNurse_Exception() throws Exception {
+		OutputResponse response = new OutputResponse();
+		response.setError(5000, "Error while getting beneficiary vital data");
+		assertEquals(response.toString(), generalOPDController.getBenVitalDetailsFrmNurse(any()));
+	}
+
 	@Test
 	void testGetBenExaminationDetails() throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -342,15 +354,8 @@ class GeneralOPDControllerTest {
 
 		String expResponse = generalOPDController.getBenExaminationDetails(comingRequest);
 
-		try {
-			response.setResponse(s);
-		} catch (
+		response.setResponse(s);
 
-		Exception e) {
-			response.setError(5000, "Error while getting beneficiary examination data");
-			logger.error("Error in getBenExaminationDetails:" + e);
-		}
-		
 		assertTrue(obj.has("benRegID") && obj.has("visitCode"));
 
 		assertEquals(expResponse, generalOPDController.getBenExaminationDetails(comingRequest));
@@ -365,19 +370,20 @@ class GeneralOPDControllerTest {
 
 		JSONObject obj = new JSONObject(comingRequest);
 
-		try {
-			response.setError(5000, "Invalid request");
-		} catch (Exception e) {
-			response.setError(5000, "Error while getting beneficiary examination data");
-			logger.error("Error in getBenExaminationDetails:" + e);
-		}
+		response.setError(5000, "Invalid request");
 
 		assertTrue(obj.has("benRegID") && obj.has("visitCode"));
 
 		assertTrue(response.toString().contains("Invalid request"));
 	}
 
-//************************
+	@Test
+	void testGetBenExaminationDetails_Exception() throws Exception {
+		OutputResponse response = new OutputResponse();
+		response.setError(5000, "Error while getting beneficiary examination data");
+		assertEquals(response.toString(), generalOPDController.getBenExaminationDetails(any()));
+	}
+
 	@Test
 	void testGetBenCaseRecordFromDoctorGeneralOPD() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -391,38 +397,40 @@ class GeneralOPDControllerTest {
 		Long visitCode = obj.getLong("visitCode");
 
 		when(generalOPDServiceImpl.getBenCaseRecordFromDoctorGeneralOPD(benRegID, visitCode)).thenReturn(res);
-		
+
 		String expResponse = generalOPDController.getBenCaseRecordFromDoctorGeneralOPD(comingRequest);
-		
-		try {
+
 		response.setResponse(res);
-		} catch (Exception e) {
-			response.setError(5000, "Error while getting beneficiary doctor data");
-			logger.error("Error in getBenCaseRecordFromDoctorGeneralOPD:" + e);
-		}
+
 		assertTrue(obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode"));
 
-		assertEquals(expResponse,generalOPDController.getBenCaseRecordFromDoctorGeneralOPD(comingRequest));
+		assertEquals(expResponse, generalOPDController.getBenCaseRecordFromDoctorGeneralOPD(comingRequest));
 		assertTrue(response.toString().contains(res));
 	}
-	
+
 	@Test
 	void testGetBenCaseRecordFromDoctorGeneralOPD_Invalid() throws Exception {
 		OutputResponse response = new OutputResponse();
 
-		String comingRequest ="{}"; 
+		String comingRequest = "{}";
 		String res = "test";
 
 		JSONObject obj = new JSONObject(comingRequest);
 
 		response.setError(5000, "Invalid request");
-		
+
 		assertTrue(obj.length() < 1 && !obj.has("benRegID") && !obj.has("visitCode"));
 
 		assertTrue(response.toString().contains("Invalid request"));
 	}
 
-//*************
+	@Test
+	void testGetBenCaseRecordFromDoctorGeneralOPD_Exception() throws Exception {
+		OutputResponse response = new OutputResponse();
+		response.setError(5000, "Error while getting beneficiary doctor data");
+		assertEquals(response.toString(), generalOPDController.getBenCaseRecordFromDoctorGeneralOPD(any()));
+	}
+
 	@Test
 	void testUpdateVisitNurseSuccess() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -465,7 +473,19 @@ class GeneralOPDControllerTest {
 		assertTrue(response.toString().contains("Unable to modify data"));
 	}
 
-//*****************
+	@Test
+	void testUpdateVisitNurse_Exception() throws Exception {
+
+		String requestObj = "{\"request\":\"Update Visit Nurse\"}";
+		int result = 1;
+
+		when(generalOPDServiceImpl.UpdateVisitDetails(any())).thenThrow(NotFoundException.class);
+
+		String saveBenCancerScreeningNurseData = generalOPDController.updateVisitNurse(requestObj);
+
+		assertTrue(saveBenCancerScreeningNurseData.contains("Unable to modify data"));
+	}
+
 	@Test
 	void testUpdateHistoryNurseSuccess() throws Exception {
 
@@ -511,7 +531,19 @@ class GeneralOPDControllerTest {
 		assertTrue(response.toString().contains("Unable to modify data"));
 	}
 
-//************
+	@Test
+	void testUpdateHistoryNurse_Exception() throws Exception {
+
+		String requestObj = "{\"request\":\"Update Visit Nurse\"}";
+		int result = 1;
+
+		when(generalOPDServiceImpl.updateBenHistoryDetails(any())).thenThrow(NotFoundException.class);
+
+		String UpdateHistoryNurse = generalOPDController.updateHistoryNurse(requestObj);
+
+		assertTrue(UpdateHistoryNurse.contains("Unable to modify data"));
+	}
+
 	@Test
 	void testUpdateVitalNurseSuccess() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -552,7 +584,19 @@ class GeneralOPDControllerTest {
 		assertTrue(response.toString().contains("Unable to modify data"));
 	}
 
-//*************
+	@Test
+	void testupdateVitalNurse_Exception() throws Exception {
+
+		String requestObj = "{\"request\":\"Update Visit Nurse\"}";
+		int result = 1;
+
+		when(generalOPDServiceImpl.updateBenVitalDetails(any())).thenThrow(NotFoundException.class);
+
+		String UpdateHistoryNurse = generalOPDController.updateVitalNurse(requestObj);
+
+		assertTrue(UpdateHistoryNurse.contains("Unable to modify data"));
+	}
+
 	@Test
 	void testUpdateGeneralOPDExaminationNurseSuccess() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -593,7 +637,19 @@ class GeneralOPDControllerTest {
 		assertTrue(response.toString().contains("Unable to modify data"));
 	}
 
-//*******************
+	@Test
+	void testUpdateGeneralOPDExaminationNurse_Exception() throws Exception {
+
+		String requestObj = "{\"request\":\"Update Visit Nurse\"}";
+		int result = 1;
+
+		when(generalOPDServiceImpl.updateBenExaminationDetails(any())).thenThrow(NotFoundException.class);
+
+		String UpdateHistoryNurse = generalOPDController.updateGeneralOPDExaminationNurse(requestObj);
+
+		assertTrue(UpdateHistoryNurse.contains("Unable to modify data"));
+	}
+
 	@Test
 	void testUpdateGeneralOPDDoctorDataSuccess() throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -637,17 +693,17 @@ class GeneralOPDControllerTest {
 		assertTrue(response.toString().contains("Unable to modify data"));
 	}
 
+	@Test
+	void testUpdateGeneralOPDDoctorData_Exception() throws Exception {
+
+		String requestObj = "{\"request\":\"Update Visit Nurse\"}";
+		String authorization = "Test";
+
+		when(generalOPDServiceImpl.updateGeneralOPDDoctorData(any(), any())).thenThrow(NotFoundException.class);
+
+		String UpdateHistoryNurse = generalOPDController.updateGeneralOPDDoctorData(requestObj, authorization);
+
+		assertTrue(UpdateHistoryNurse.contains("Unable to modify data. "));
+	}
+
 }
-//********
-//void testSaveBenGenOPDNurseData() -done
-//void testSaveBenGenOPDDoctorData() -done
-//void testGetBenVisitDetailsFrmNurseGOPD() -done
-//void testGetBenHistoryDetails() -done
-//void testGetBenVitalDetailsFrmNurse() -done
-//void testGetBenExaminationDetails() -done
-//void testGetBenCaseRecordFromDoctorGeneralOPD() -done
-//void testUpdateVisitNurse() -done
-//void testUpdateHistoryNurse()-done
-//void testUpdateVitalNurse() -done
-//void testUpdateGeneralOPDExaminationNurse() -done
-//void testUpdateGeneralOPDDoctorData() -done

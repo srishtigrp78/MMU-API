@@ -2,6 +2,8 @@ package com.iemr.mmu.controller.labtechnician;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
@@ -18,6 +20,8 @@ import com.google.gson.JsonParser;
 import com.iemr.mmu.service.labtechnician.LabTechnicianServiceImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
 
+import javassist.NotFoundException;
+
 @ExtendWith(MockitoExtension.class)
 class LabTechnicianControllerTest {
 
@@ -28,7 +32,7 @@ class LabTechnicianControllerTest {
 
 	@InjectMocks
 	LabTechnicianController labTechnicianController;
-	
+
 	private static final String BENEFICIARY_REG_ID = "beneficiaryRegID";
 	private static final String VISIT_CODE = "visitCode";
 
@@ -81,131 +85,156 @@ class LabTechnicianControllerTest {
 		assertTrue(response.toString().contains("Unable to save data"));
 	}
 
-//	@Test
-//	void testSaveLabTestResultUnable_InvalidRequest() throws Exception {
-//		OutputResponse response = new OutputResponse();
-//
-//		String requestObj = "{\"request\":\"123\"}";
-//
-//		JsonObject jsnOBJ = null;
-//
-//		String expResponse = labTechnicianController.saveLabTestResult(requestObj);
-//
-//		response.setResponse("Invalid request");
-//		assertNull(jsnOBJ);
-//
-//		assertEquals(expResponse, labTechnicianController.saveLabTestResult(requestObj));
-//		assertTrue(response.toString().contains("Invalid request"));
-//	}
-//	
-	
 	@Test
-	void testSaveLabTestResultExceptionThrown() throws Exception {
-	    String requestObj = "{\"request\":\"Save Lab Test Result with Exception\"}";
-	    String expectedResponse = "Unable to save data"; // Part of the response when an exception occurs
+	void testSaveLabTestResult_InvalidJson() {
+		// Given an invalid JSON string
+		String invalidRequestObj = "{\"invalidKey1\":\"value1\",\"invalidKey2\":\"value2\"}";
 
-	    // Setup the behavior to throw an exception when saveLabTestResult is called
-	    JsonObject jsnOBJ = parseJsonRequest(requestObj);
-	    when(labTechnicianServiceImpl.saveLabTestResult(jsnOBJ)).thenThrow(new RuntimeException("Test Exception"));
+		// When saveLabTestResult is called
+		String response = labTechnicianController.saveLabTestResult(invalidRequestObj);
 
-	    // Execute the method under test
-	    String actualResponse = labTechnicianController.saveLabTestResult(requestObj);
-
-	    // Verify the response contains the expected error message
-	    assertNotNull(actualResponse);
-	    assertTrue(actualResponse.contains(expectedResponse));
+		// Then verify the response indicates an invalid request
+		assertTrue(response.contains("Invalid request"));
 	}
 
+	@Test
+	void testSaveLabTestResult_Exception() throws Exception {
 
-//*************	
+		OutputResponse response = new OutputResponse();
+		response.setError(5000, "Unable to save data");
+		assertEquals(response.toString(), labTechnicianController.saveLabTestResult(any()));
+
+	}
+
 	@Test
 	void testGetBeneficiaryPrescribedProcedure() throws Exception {
 		OutputResponse response = new OutputResponse();
-		
-		String requestOBJ ="{\"benRegID\":\"1L\",\"visitCode\":\"1L\"}";
+
+		String requestOBJ = "{\"beneficiaryRegID\":\"1\",\"visitCode\":\"1\"}";
+
 		String s = "Test";
-		
+
 		JsonObject jsnOBJ = parseJsonRequest(requestOBJ);
-		
-		//when(labTechnicianServiceImpl.getBenePrescribedProcedureDetails(1L, 1L)).thenReturn(s);
-		
+
+		when(labTechnicianServiceImpl.getBenePrescribedProcedureDetails(jsnOBJ.get(BENEFICIARY_REG_ID).getAsLong(),
+				jsnOBJ.get(VISIT_CODE).getAsLong())).thenReturn(s);
+
 		String expResponse = labTechnicianController.getBeneficiaryPrescribedProcedure(requestOBJ);
-		
+
 		response.setResponse(s);
-		
-		assertNotNull(jsnOBJ);
+
+		assertTrue(jsnOBJ != null && !jsnOBJ.isJsonNull() && jsnOBJ.has(BENEFICIARY_REG_ID) && jsnOBJ.has(VISIT_CODE));
 		assertNotNull(s);
-		assertEquals(expResponse,labTechnicianController.getBeneficiaryPrescribedProcedure(requestOBJ));
+		assertEquals(expResponse, labTechnicianController.getBeneficiaryPrescribedProcedure(requestOBJ));
 		assertTrue(response.toString().contains(s));
 	}
-	
+
 	@Test
 	void testGetBeneficiaryPrescribedProcedure_Error() throws Exception {
 		OutputResponse response = new OutputResponse();
-		
-		String requestOBJ ="{\"benRegID\":\"1L\",\"visitCode\":\"1L\"}";
+
+		String requestOBJ = "{\"beneficiaryRegID\":\"1\",\"visitCode\":\"1\"}";
+
 		String s = null;
-		
+
 		JsonObject jsnOBJ = parseJsonRequest(requestOBJ);
-		
-		//when(labTechnicianServiceImpl.getBenePrescribedProcedureDetails(1L, 1L)).thenReturn(s);
-		
+
+		when(labTechnicianServiceImpl.getBenePrescribedProcedureDetails(jsnOBJ.get(BENEFICIARY_REG_ID).getAsLong(),
+				jsnOBJ.get(VISIT_CODE).getAsLong())).thenReturn(s);
+
 		String expResponse = labTechnicianController.getBeneficiaryPrescribedProcedure(requestOBJ);
-		
+
 		response.setError(5000, "Error in prescribed procedure details");
-		
-		assertNotNull(jsnOBJ);
+
+		assertTrue(
+				jsnOBJ != null || !jsnOBJ.isJsonNull() || !jsnOBJ.has(BENEFICIARY_REG_ID) || !jsnOBJ.has(VISIT_CODE));
 		assertNull(s);
-		assertEquals(expResponse,labTechnicianController.getBeneficiaryPrescribedProcedure(requestOBJ));
+		assertEquals(expResponse, labTechnicianController.getBeneficiaryPrescribedProcedure(requestOBJ));
 		assertTrue(response.toString().contains("Error in prescribed procedure details"));
 	}
-	
+
 	@Test
 	void testGetBeneficiaryPrescribedProcedure_Invalid() throws Exception {
-		OutputResponse response = new OutputResponse();
-		
-		String requestOBJ = null;
-		String s = null;
-		
-		JsonObject jsnOBJ = null;
-		
-		//when(labTechnicianServiceImpl.getBenePrescribedProcedureDetails(1L, 1L)).thenReturn(s);
-		
+		String requestOBJ = "{\"invalidKey1\":\"value1\",\"invalidKey2\":\"value2\"}"; // Missing required keys
+
 		String expResponse = labTechnicianController.getBeneficiaryPrescribedProcedure(requestOBJ);
-		
-		response.setError(5000, "Invalid request");
-		
-		assertNull(jsnOBJ);
-		assertNull(s);
-		assertEquals(expResponse,labTechnicianController.getBeneficiaryPrescribedProcedure(requestOBJ));
-		assertTrue(response.toString().contains("Invalid request"));
+
+		assertTrue(expResponse.contains("Invalid request"));
 	}
-	
-	
-//***********
+
+	@Test
+	void testGetBeneficiaryPrescribedProcedure_Exception() throws Exception {
+
+		OutputResponse response = new OutputResponse();
+		response.setError(5000, "Error while getting prescribed procedure data");
+		assertEquals(response.toString(), labTechnicianController.getBeneficiaryPrescribedProcedure(any()));
+
+	}
+
 	@Test
 	void testGetLabResultForVisitCode_Success() throws Exception {
 		OutputResponse response = new OutputResponse();
-		
-		String requestOBJ = "{\"BENEFICIARY_REG_ID\":1L,\"VISIT_CODE\":1L}";
+
+		String requestOBJ = "{\"beneficiaryRegID\":\"1\",\"visitCode\":\"1\"}";
 		String s = "test";
 		JsonObject jsnOBJ = parseJsonRequest(requestOBJ);
-	   
-	    when(labTechnicianServiceImpl.getLabResultForVisitcode(jsnOBJ.get(BENEFICIARY_REG_ID).getAsLong(),
+
+		when(labTechnicianServiceImpl.getLabResultForVisitcode(jsnOBJ.get(BENEFICIARY_REG_ID).getAsLong(),
 				jsnOBJ.get(VISIT_CODE).getAsLong())).thenReturn(s);
-	    
-	    String expResponse = labTechnicianController.getLabResultForVisitCode(requestOBJ);
-	    
-	    response.setResponse(s);
-	    
-	    assertTrue(jsnOBJ != null && !jsnOBJ.isJsonNull() && jsnOBJ.has(BENEFICIARY_REG_ID) && jsnOBJ.has(VISIT_CODE));
-	    assertNotNull(s);
-	   // assertEquals(expResponse, labTechnicianController.getLabResultForVisitCode(requestOBJ));
-	    assertTrue(response.toString().contains(s));
+
+		String expResponse = labTechnicianController.getLabResultForVisitCode(requestOBJ);
+
+		response.setResponse(s);
+
+		assertTrue(jsnOBJ != null && !jsnOBJ.isJsonNull() && jsnOBJ.has(BENEFICIARY_REG_ID) && jsnOBJ.has(VISIT_CODE));
+		assertNotNull(s);
+		assertEquals(expResponse, labTechnicianController.getLabResultForVisitCode(requestOBJ));
+		assertTrue(response.toString().contains(s));
 	}
 
-	
-	
+	@Test
+	void testGetLabResultForVisitCode_Error() throws Exception {
+		OutputResponse response = new OutputResponse();
+
+		String requestOBJ = "{\"beneficiaryRegID\":\"1\",\"visitCode\":\"1\"}";
+		String s = null;
+		JsonObject jsnOBJ = parseJsonRequest(requestOBJ);
+
+		when(labTechnicianServiceImpl.getLabResultForVisitcode(jsnOBJ.get(BENEFICIARY_REG_ID).getAsLong(),
+				jsnOBJ.get(VISIT_CODE).getAsLong())).thenReturn(s);
+
+		String expResponse = labTechnicianController.getLabResultForVisitCode(requestOBJ);
+
+		response.setError(5000, "Error while getting lab report");
+		assertTrue(jsnOBJ != null && !jsnOBJ.isJsonNull() && jsnOBJ.has(BENEFICIARY_REG_ID) && jsnOBJ.has(VISIT_CODE));
+		assertNull(s);
+		assertEquals(expResponse, labTechnicianController.getLabResultForVisitCode(requestOBJ));
+		assertTrue(response.toString().contains("Error while getting lab report"));
+	}
+
+	@Test
+	void testGetLabResultForVisitCode_Invalid() {
+		// Given an invalid JSON string
+		String invalidRequestObj = "{\"invalidKey1\":\"value1\",\"invalidKey2\":\"value2\"}";
+
+		// When saveLabTestResult is called
+		String response = labTechnicianController.getLabResultForVisitCode(invalidRequestObj);
+
+		// Then verify the response indicates an invalid request
+		assertTrue(response.contains("Invalid request"));
+	}
+
+	@Test
+	void testGetLabResultForVisitCode_Exception() throws Exception {
+
+		String requestOBJ = "{\"beneficiaryRegID\":\"1\",\"visitCode\":\"1\"}";
+
+		when(labTechnicianServiceImpl.getLabResultForVisitcode(any(), any())).thenThrow((NotFoundException.class));
+
+		String saveBenCancerScreeningNurseData = labTechnicianController.getLabResultForVisitCode(requestOBJ);
+
+		assertTrue(saveBenCancerScreeningNurseData.contains("Error while getting lab report"));
+
+	}
 
 }
-//**********
