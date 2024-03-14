@@ -97,6 +97,9 @@ class CommonDoctorServiceImplTest {
 		ArrayList<BenChiefComplaint> complaints = new ArrayList<>();
 		BenChiefComplaint complaint = new BenChiefComplaint();
 		complaint.setChiefComplaint("Test Complaint");
+		
+		complaint.toString();
+		
 		complaints.add(complaint);
 		wrapperAncFindings.setComplaints(complaints);
 

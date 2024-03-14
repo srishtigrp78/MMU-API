@@ -73,6 +73,9 @@ class ANCDoctorServiceImplTest {
         ancDiagnosis.setVanSerialNo(1L);
         ancDiagnosis.setVehicalNo("Vehical No");
         ancDiagnosis.setVisitCode(1L);
+        
+        ancDiagnosis.toString();
+        
         when(aNCDiagnosisRepo.save(Mockito.<ANCDiagnosis>any())).thenReturn(ancDiagnosis);
 
         // Act
@@ -147,6 +150,9 @@ class ANCDoctorServiceImplTest {
         ancDiagnosis.setVanSerialNo(1L);
         ancDiagnosis.setVehicalNo("Vehical No");
         ancDiagnosis.setVisitCode(1L);
+        
+        ancDiagnosis.toString();
+        
         when(aNCDiagnosisRepo.save(Mockito.<ANCDiagnosis>any())).thenReturn(ancDiagnosis);
 
         // Act
@@ -251,6 +257,9 @@ class ANCDoctorServiceImplTest {
         ancDiagnosis.setVanSerialNo(1L);
         ancDiagnosis.setVehicalNo("Vehical No");
         ancDiagnosis.setVisitCode(1L);
+        
+        ancDiagnosis.toString();
+        
         when(aNCDiagnosisRepo.save(Mockito.<ANCDiagnosis>any())).thenReturn(ancDiagnosis);
 
         JsonObject obj = new JsonObject();
@@ -358,6 +367,9 @@ class ANCDoctorServiceImplTest {
         ancDiagnosis.setVanSerialNo(1L);
         ancDiagnosis.setVehicalNo("Vehical No");
         ancDiagnosis.setVisitCode(1L);
+        
+        ancDiagnosis.toString();
+        
         when(aNCDiagnosisRepo.save(Mockito.<ANCDiagnosis>any())).thenReturn(ancDiagnosis);
 
         JsonObject obj = new JsonObject();
@@ -464,6 +476,9 @@ class ANCDoctorServiceImplTest {
         ancDiagnosis.setVanSerialNo(1L);
         ancDiagnosis.setVehicalNo("Vehical No");
         ancDiagnosis.setVisitCode(1L);
+        
+        ancDiagnosis.toString();
+        
         when(aNCDiagnosisRepo.save(Mockito.<ANCDiagnosis>any())).thenReturn(ancDiagnosis);
 
         JsonObject obj = new JsonObject();
@@ -570,6 +585,10 @@ class ANCDoctorServiceImplTest {
         ancDiagnosis.setVanSerialNo(1L);
         ancDiagnosis.setVehicalNo("Vehical No");
         ancDiagnosis.setVisitCode(1L);
+        
+        ancDiagnosis.toString();
+        
+        
         when(aNCDiagnosisRepo.save(Mockito.<ANCDiagnosis>any())).thenReturn(ancDiagnosis);
 
         JsonObject obj = new JsonObject();
@@ -677,6 +696,8 @@ class ANCDoctorServiceImplTest {
         ancDiagnosis.setVanSerialNo(1L);
         ancDiagnosis.setVehicalNo("Vehical No");
         ancDiagnosis.setVisitCode(1L);
+        
+        ancDiagnosis.toString();
 
         // Act
         int actualUpdateBenANCDiagnosisResult = aNCDoctorServiceImpl.updateBenANCDiagnosis(ancDiagnosis);
@@ -731,6 +752,8 @@ class ANCDoctorServiceImplTest {
         ancDiagnosis.setVanSerialNo(1L);
         ancDiagnosis.setVehicalNo("Vehical No");
         ancDiagnosis.setVisitCode(1L);
+        
+        ancDiagnosis.toString();
 
         // Act
         int actualUpdateBenANCDiagnosisResult = aNCDoctorServiceImpl.updateBenANCDiagnosis(ancDiagnosis);

@@ -74,7 +74,7 @@ class RegistrarServiceMasterDataImplTest {
 	@Mock
 	private ANCCareRepo aNCCareRepo;
 	@InjectMocks
-	RegistrarServiceMasterDataImpl registrarServiceMasterData;
+	private RegistrarServiceMasterDataImpl registrarServiceMasterData;
 
 	@Test
 	void testGetRegMasterDataSuccess() throws JSONException {

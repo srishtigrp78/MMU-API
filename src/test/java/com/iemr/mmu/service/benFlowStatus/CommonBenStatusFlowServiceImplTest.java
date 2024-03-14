@@ -576,8 +576,6 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testCreateBenFlowRecord() {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
 
 		// Arrange, Act and Assert
 		assertEquals(0, (new CommonBenStatusFlowServiceImpl()).createBenFlowRecord("Request OBJ", 1L, 1L));
@@ -588,8 +586,6 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testCreateBenFlowRecord2() {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
 
 		// Arrange
 		CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl = new CommonBenStatusFlowServiceImpl();
@@ -601,8 +597,6 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateBenFlowNurseAfterNurseActivity() {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
 
 		// Arrange, Act and Assert
 		assertEquals(0, (new CommonBenStatusFlowServiceImpl()).updateBenFlowNurseAfterNurseActivity(1L, 1L, 1L,
@@ -611,8 +605,6 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateBenFlowNurseAfterNurseActivity2() {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
 
 		// Arrange
 		CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl = new CommonBenStatusFlowServiceImpl();
@@ -625,8 +617,6 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateBenFlowNurseAfterNurseActivity3() {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
 
 		// Arrange
 		BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo = mock(BeneficiaryFlowStatusRepo.class);
@@ -653,8 +643,6 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateBenFlowtableAfterNurseSaveForTMReferred() {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
 
 		// Arrange
 		CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl = new CommonBenStatusFlowServiceImpl();
@@ -673,6 +661,8 @@ class CommonBenStatusFlowServiceImplTest {
 		commonUtilityClass.setSessionID(1);
 		commonUtilityClass.setVanID(1);
 		commonUtilityClass.setVisitCode(1L);
+		
+		commonUtilityClass.toString();
 
 		// Act and Assert
 		assertEquals(0, commonBenStatusFlowServiceImpl.updateBenFlowtableAfterNurseSaveForTMReferred(commonUtilityClass,
@@ -681,8 +671,8 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateBenFlowtableAfterNurseSaveForTMReferred2() {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
+		
+		
 
 		// Arrange
 		CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl = new CommonBenStatusFlowServiceImpl();
@@ -718,6 +708,8 @@ class CommonBenStatusFlowServiceImplTest {
 		commonUtilityClass.setVanID(1);
 		commonUtilityClass.setVisitCode(1L);
 
+		commonUtilityClass.toString();
+		
 		// Act
 		int actualUpdateBenFlowtableAfterNurseSaveForTMReferredResult = commonBenStatusFlowServiceImpl
 				.updateBenFlowtableAfterNurseSaveForTMReferred(commonUtilityClass, true, true);
@@ -745,8 +737,8 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateBenFlowtableAfterNurseSaveForTMReferred3() {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
+		
+		
 
 		// Arrange
 		BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo = mock(BeneficiaryFlowStatusRepo.class);
@@ -786,6 +778,8 @@ class CommonBenStatusFlowServiceImplTest {
 		commonUtilityClass.setSessionID(1);
 		commonUtilityClass.setVanID(1);
 		commonUtilityClass.setVisitCode(1L);
+		
+		commonUtilityClass.toString();
 
 		// Act
 		int actualUpdateBenFlowtableAfterNurseSaveForTMReferredResult = commonBenStatusFlowServiceImpl
@@ -816,8 +810,8 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateBenFlowtableAfterNurseSaveForTMReferred4() {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
+		
+		
 
 		// Arrange
 		BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo = mock(BeneficiaryFlowStatusRepo.class);
@@ -857,6 +851,8 @@ class CommonBenStatusFlowServiceImplTest {
 		commonUtilityClass.setSessionID(1);
 		commonUtilityClass.setVanID(1);
 		commonUtilityClass.setVisitCode(1L);
+		
+		commonUtilityClass.toString();
 
 		// Act
 		int actualUpdateBenFlowtableAfterNurseSaveForTMReferredResult = commonBenStatusFlowServiceImpl
@@ -887,8 +883,8 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateBenFlowtableAfterNurseSaveForTMReferred5() {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
+		
+		
 
 		// Arrange
 		BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo = mock(BeneficiaryFlowStatusRepo.class);
@@ -958,8 +954,8 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateBenFlowNurseAfterNurseUpdateNCD_Screening() {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
+		
+		
 
 		// Arrange, Act and Assert
 		assertEquals(0, (new CommonBenStatusFlowServiceImpl()).updateBenFlowNurseAfterNurseUpdateNCD_Screening(1L, 1L,
@@ -970,8 +966,8 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateBenFlowNurseAfterNurseUpdateNCD_Screening2() {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
+		
+		
 
 		// Arrange
 		CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl = new CommonBenStatusFlowServiceImpl();
@@ -984,8 +980,8 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateBenFlowNurseAfterNurseUpdateNCD_Screening3() {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
+		
+		
 
 		// Arrange
 		BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo = mock(BeneficiaryFlowStatusRepo.class);
@@ -1007,8 +1003,8 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateBenFlowNurseAfterNurseUpdateNCD_Screening4() {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
+		
+		
 
 		// Arrange
 		BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo = mock(BeneficiaryFlowStatusRepo.class);
@@ -1030,8 +1026,8 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateBenFlowNurseAfterNurseUpdateNCD_Screening5() {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
+		
+		
 
 		// Arrange
 		BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo = mock(BeneficiaryFlowStatusRepo.class);
@@ -1053,8 +1049,8 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateBenFlowAfterDocData() {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
+		
+		
 
 		// Arrange, Act and Assert
 		assertEquals(0, (new CommonBenStatusFlowServiceImpl()).updateBenFlowAfterDocData(1L, 1L, 1L, 1L, (short) 1,
@@ -1063,8 +1059,8 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateBenFlowAfterDocData2() {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
+		
+		
 
 		// Arrange
 		BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo = mock(BeneficiaryFlowStatusRepo.class);
@@ -1088,8 +1084,8 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateBenFlowAfterDocDataUpdate() throws Exception {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
+		
+		
 
 		// Arrange
 		BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo = mock(BeneficiaryFlowStatusRepo.class);
@@ -1116,8 +1112,8 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateBenFlowAfterDocDataUpdate2() throws Exception {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
+		
+		
 
 		// Arrange
 		BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo = mock(BeneficiaryFlowStatusRepo.class);
@@ -1144,8 +1140,8 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateBenFlowAfterDocDataUpdate3() throws Exception {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
+		
+		
 
 		// Arrange
 		BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo = mock(BeneficiaryFlowStatusRepo.class);
@@ -1172,8 +1168,8 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateBenFlowAfterDocDataUpdateWDF() throws Exception {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
+		
+		
 
 		// Arrange
 		BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo = mock(BeneficiaryFlowStatusRepo.class);
@@ -1200,8 +1196,8 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateBenFlowAfterDocDataUpdateWDF2() throws Exception {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
+		
+		
 
 		// Arrange
 		BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo = mock(BeneficiaryFlowStatusRepo.class);
@@ -1228,8 +1224,8 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateBenFlowAfterDocDataUpdateWDF3() throws Exception {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
+		
+		
 
 		// Arrange
 		BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo = mock(BeneficiaryFlowStatusRepo.class);
@@ -1256,8 +1252,8 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateBenFlowAfterDocDataUpdateTCSpecialist() throws Exception {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
+		
+		
 
 		// Arrange
 		BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo = mock(BeneficiaryFlowStatusRepo.class);
@@ -1284,8 +1280,8 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateBenFlowAfterDocDataUpdateTCSpecialist2() throws Exception {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
+		
+		
 
 		// Arrange
 		BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo = mock(BeneficiaryFlowStatusRepo.class);
@@ -1312,8 +1308,8 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateBenFlowAfterDocDataUpdateTCSpecialist3() throws Exception {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
+		
+		
 
 		// Arrange
 		BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo = mock(BeneficiaryFlowStatusRepo.class);
@@ -1340,8 +1336,8 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateFlowAfterLabResultEntry() {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
+		
+		
 
 		// Arrange
 		BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo = mock(BeneficiaryFlowStatusRepo.class);
@@ -1363,8 +1359,8 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateFlowAfterLabResultEntry2() {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
+		
+		
 
 		// Arrange
 		BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo = mock(BeneficiaryFlowStatusRepo.class);
@@ -1386,8 +1382,8 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateFlowAfterLabResultEntry3() {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
+		
+		
 
 		// Arrange
 		BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo = mock(BeneficiaryFlowStatusRepo.class);
@@ -1409,8 +1405,8 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateFlowAfterLabResultEntryForTCSpecialist() {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
+		
+		
 
 		// Arrange
 		BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo = mock(BeneficiaryFlowStatusRepo.class);
@@ -1432,8 +1428,8 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateFlowAfterLabResultEntryForTCSpecialist2() {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
+		
+		
 
 		// Arrange
 		BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo = mock(BeneficiaryFlowStatusRepo.class);
@@ -1455,9 +1451,7 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testUpdateFlowAfterLabResultEntryForTCSpecialist3() {
-		// Diffblue Cover was unable to create a Spring-specific test for this Spring
-		// method.
-
+		
 		// Arrange
 		BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo = mock(BeneficiaryFlowStatusRepo.class);
 		when(beneficiaryFlowStatusRepo.updateBenFlowStatusAfterLabResultEntryForSpecialist(Mockito.<Long>any(),
@@ -1478,14 +1472,6 @@ class CommonBenStatusFlowServiceImplTest {
 
 	@Test
 	void testGettersAndSetters() {
-		// TODO: Diffblue Cover was only able to create a partial test for this method:
-		// Reason: Missing observers.
-		// Diffblue Cover was unable to create an assertion.
-		// Add getters for the following fields or make them package-private:
-		// CommonBenStatusFlowServiceImpl.benVisitDetailRepo
-		// CommonBenStatusFlowServiceImpl.beneficiaryFlowStatusRepo
-		// CommonBenStatusFlowServiceImpl.logger
-		// CommonBenStatusFlowServiceImpl.nurseWL
 
 		// Arrange
 		CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl = new CommonBenStatusFlowServiceImpl();

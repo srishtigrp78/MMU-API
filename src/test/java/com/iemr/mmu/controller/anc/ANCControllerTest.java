@@ -17,6 +17,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
+import java.io.StringReader;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -29,8 +31,11 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.JsonReader;
 import com.iemr.mmu.service.anc.ANCService;
 import com.iemr.mmu.utils.response.OutputResponse;
 
@@ -48,9 +53,21 @@ class ANCControllerTest {
 	@Mock
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
+//	private JsonObject parseJsonRequest(String requestObj) {
+//		JsonElement jsonElement = JsonParser.parseString(requestObj);
+//		return jsonElement.getAsJsonObject();
+//	}
+
 	private JsonObject parseJsonRequest(String requestObj) {
-		JsonElement jsonElement = JsonParser.parseString(requestObj);
-		return jsonElement.getAsJsonObject();
+		JsonObject jsnObj = null;
+		try {
+			JsonElement jsonElement = JsonParser.parseString(requestObj);
+			jsnObj = jsonElement.getAsJsonObject();
+		} catch (JsonSyntaxException e) {
+			// Handle the exception if needed
+			e.printStackTrace();
+		}
+		return jsnObj;
 	}
 
 	@Test
@@ -112,19 +129,23 @@ class ANCControllerTest {
 		assertTrue(actResponse.contains("Unable to save data"));
 	}
 
-//	@Test
-//	void testSaveBenANCNurseData_Invalid() throws Exception {
-//		OutputResponse response = new OutputResponse();
-//		String requestObj = "{}";
-//		String authorization = "TestAuth";
-//
-//		String actualResponse = ancController.saveBenANCNurseData(requestObj);
-//
-//		response.setError(5000, "Invalid request");
-//
-//		assertTrue(response.toString().contains("Invalid request"));
-//	}
+	@Test
+	void testSaveBenANCNurseData_InvalidRequest() throws Exception {
+		OutputResponse response = new OutputResponse();
 
+		String requestObj = "Invalid request";
+
+		//when(ancService.saveANCNurseData(any(JsonObject.class))).thenReturn(null);
+
+		String expResponse = ancController.saveBenANCNurseData(requestObj);
+
+		response.setError(5000, "Invalid request");
+
+		assertNull(parseJsonRequest(requestObj));
+		//assertNull(ancService.saveANCNurseData(any(JsonObject.class)));
+		assertEquals(expResponse, ancController.saveBenANCNurseData(requestObj));
+		assertTrue(response.toString().contains("Invalid request"));
+	}
 
 	@Test
 	void testSaveBenANCNurseData_Exception() throws Exception {

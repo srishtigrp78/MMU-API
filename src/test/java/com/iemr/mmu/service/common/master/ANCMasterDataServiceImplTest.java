@@ -282,6 +282,8 @@ class ANCMasterDataServiceImplTest {
 		uom.setuOMDesc("counsellingTypes");
 		uom.setuOMID(1);
 		uom.setuOMName("counsellingTypes");
+		
+		uom.toString();
 
 		ItemMaster itemMaster = new ItemMaster();
 		itemMaster.setComposition("counsellingTypes");
@@ -311,6 +313,8 @@ class ANCMasterDataServiceImplTest {
 		itemMaster.setUnitOfMeasurement("counsellingTypes");
 		itemMaster.setUom(uom);
 		itemMaster.setUomID(1);
+		
+		itemMaster.toString();
 
 		ArrayList<ItemMaster> itemMasterList = new ArrayList<>();
 		itemMasterList.add(itemMaster);
@@ -491,55 +495,6 @@ class ANCMasterDataServiceImplTest {
 
 	@Test
 	void testGettersAndSetters() {
-		// TODO: Diffblue Cover was only able to create a partial test for this method:
-		// Reason: Missing observers.
-		// Diffblue Cover was unable to create an assertion.
-		// Add getters for the following fields or make them package-private:
-		// ANCMasterDataServiceImpl.allergicReactionTypesRepo
-		// ANCMasterDataServiceImpl.bloodGroupsRepo
-		// ANCMasterDataServiceImpl.chiefComplaintMasterRepo
-		// ANCMasterDataServiceImpl.childVaccinationsRepo
-		// ANCMasterDataServiceImpl.comorbidConditionRepo
-		// ANCMasterDataServiceImpl.compFeedsRepo
-		// ANCMasterDataServiceImpl.complicationTypesRepo
-		// ANCMasterDataServiceImpl.counsellingTypeRepo
-		// ANCMasterDataServiceImpl.covidContactHistoryMasterRepo
-		// ANCMasterDataServiceImpl.covidRecommnedationMasterRepo
-		// ANCMasterDataServiceImpl.covidSymptomsMasterRepo
-		// ANCMasterDataServiceImpl.deliveryPlaceRepo
-		// ANCMasterDataServiceImpl.deliveryTypeRepo
-		// ANCMasterDataServiceImpl.developmentProblemsRepo
-		// ANCMasterDataServiceImpl.diseaseTypeRepo
-		// ANCMasterDataServiceImpl.drugDoseMasterRepo
-		// ANCMasterDataServiceImpl.drugDurationUnitMasterRepo
-		// ANCMasterDataServiceImpl.drugFrequencyMasterRepo
-		// ANCMasterDataServiceImpl.familyMemberMasterRepo
-		// ANCMasterDataServiceImpl.fundalHeightRepo
-		// ANCMasterDataServiceImpl.gestationRepo
-		// ANCMasterDataServiceImpl.grossMotorMilestoneRepo
-		// ANCMasterDataServiceImpl.illnessTypesRepo
-		// ANCMasterDataServiceImpl.instituteRepo
-		// ANCMasterDataServiceImpl.itemFormMasterRepo
-		// ANCMasterDataServiceImpl.itemMasterRepo
-		// ANCMasterDataServiceImpl.jointTypesRepo
-		// ANCMasterDataServiceImpl.masterVanRepo
-		// ANCMasterDataServiceImpl.menstrualCycleRangeRepo
-		// ANCMasterDataServiceImpl.menstrualCycleStatusRepo
-		// ANCMasterDataServiceImpl.menstrualProblemRepo
-		// ANCMasterDataServiceImpl.musculoskeletalRepo
-		// ANCMasterDataServiceImpl.ncdCareTypeRepo
-		// ANCMasterDataServiceImpl.ncdScreeningMasterServiceImpl
-		// ANCMasterDataServiceImpl.newbornHealthStatusRepo
-		// ANCMasterDataServiceImpl.optionalVaccinationsRepo
-		// ANCMasterDataServiceImpl.personalHabitTypeRepo
-		// ANCMasterDataServiceImpl.pregDurationRepo
-		// ANCMasterDataServiceImpl.pregOutcomeRepo
-		// ANCMasterDataServiceImpl.procedureRepo
-		// ANCMasterDataServiceImpl.routeOfAdminRepo
-		// ANCMasterDataServiceImpl.serviceFacilityMasterRepo
-		// ANCMasterDataServiceImpl.serviceMasterRepo
-		// ANCMasterDataServiceImpl.surgeryTypesRepo
-		// ANCMasterDataServiceImpl.v_DrugPrescriptionRepo
 
 		// Arrange
 		ANCMasterDataServiceImpl ancMasterDataServiceImpl = new ANCMasterDataServiceImpl();

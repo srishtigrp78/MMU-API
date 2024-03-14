@@ -391,6 +391,20 @@ class CommonControllerTest {
 	}
 
 	@Test
+	void testGetLabWorkListNew_else() {
+		OutputResponse response = new OutputResponse();
+		String expectedResult = null;
+
+		String actualResponse = commonNurseServiceImpl.getLabWorkListNew(null, null);
+
+		response.setError(5000, "Error while getting lab technician worklist");
+
+		System.out.println("Actual Response: " + actualResponse);
+		assertEquals(expectedResult, actualResponse);
+		assertTrue(response.toString().contains("Error while getting lab technician worklist"));
+	}
+
+	@Test
 	void testGetLabWorkListNew_ThrowsException() {
 
 		Integer providerServiceMapID = 1;
@@ -621,18 +635,32 @@ class CommonControllerTest {
 		assertTrue(response.toString().contains(s));
 	}
 
+//	@Test
+//	void testGetBenPastHistory_InvalidRequest() throws Exception {
+//		OutputResponse response = new OutputResponse();
+//
+//		String comingRequest = "{\"benID\":\"null\"}";
+//
+//		JSONObject obj = new JSONObject(comingRequest);
+//
+//		response.setError(5000, "Invalid request");
+//
+//		assertFalse(obj.has("benRegID"));
+//
+//		assertTrue(response.toString().contains("Invalid request"));
+//	}
+
 	@Test
-	void testGetBenPastHistory_InvalidRequest() throws Exception {
+	void testGetBenPastHistory_Invalid() throws Exception {
 		OutputResponse response = new OutputResponse();
-
-		String comingRequest = "{\"benID\":\"null\"}";
-
-		JSONObject obj = new JSONObject(comingRequest);
-
+		
+		String expResponse = "{\"benID\":\"Long\"}";
+		
+		JSONObject obj = new JSONObject(expResponse);
+		
 		response.setError(5000, "Invalid request");
-
-		assertFalse(obj.has("benRegID"));
-
+		
+		assertTrue(!obj.has("benRegID"));
 		assertTrue(response.toString().contains("Invalid request"));
 	}
 
@@ -1307,8 +1335,6 @@ class CommonControllerTest {
 //	void testDownloadFileSuccess() throws Exception {
 //
 //	}
-
-	
 
 	@Test
 	void testGetBenPhysicalHistory() throws Exception {

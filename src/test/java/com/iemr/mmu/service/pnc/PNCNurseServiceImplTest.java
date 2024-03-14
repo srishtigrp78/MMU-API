@@ -32,11 +32,6 @@ class PNCNurseServiceImplTest {
 
 	@Test
 	void testSetPncCareRepo() {
-		// TODO: Diffblue Cover was only able to create a partial test for this method:
-		// Reason: Missing observers.
-		// Diffblue Cover was unable to create an assertion.
-		// Add getters for the following fields or make them package-private:
-		// PNCNurseServiceImpl.pncCareRepo
 
 		// Arrange and Act
 		(new PNCNurseServiceImpl()).setPncCareRepo(mock(PNCCareRepo.class));

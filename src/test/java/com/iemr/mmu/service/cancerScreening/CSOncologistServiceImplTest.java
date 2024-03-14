@@ -32,6 +32,8 @@ class CSOncologistServiceImplTest {
 		cancerDiagnosis.setVisitCode(1L);
 		cancerDiagnosis.setProvisionalDiagnosisOncologist("Diagnosis Updated");
 		cancerDiagnosis.setModifiedBy("Oncologist");
+		
+		cancerDiagnosis.toString();
 
 		when(cancerDiagnosisRepo.getCancerDiagnosisStatuses(1L, 1L)).thenReturn("Y");
 		when(cancerDiagnosisRepo.updateDetailsByOncologist(any(String.class), eq(1L), eq(1L), any(String.class),

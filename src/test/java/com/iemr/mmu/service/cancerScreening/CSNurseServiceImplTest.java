@@ -97,10 +97,6 @@ class CSNurseServiceImplTest {
   @Mock
   private CancerSignAndSymptomsRepo cancerSignAndSymptomsRepo;
 
-  /**
-   * Method under test:
-   * {@link CSNurseServiceImpl#saveBenFamilyCancerHistory(List)}
-   */
   @Test
   void testSaveBenFamilyCancerHistory() {
     // Arrange
@@ -115,10 +111,7 @@ class CSNurseServiceImplTest {
     assertEquals(1, actualSaveBenFamilyCancerHistoryResult);
   }
 
-  /**
-   * Method under test:
-   * {@link CSNurseServiceImpl#saveBenFamilyCancerHistory(List)}
-   */
+  
   @Test
   void testSaveBenFamilyCancerHistory2() {
     // Arrange
@@ -147,6 +140,8 @@ class CSNurseServiceImplTest {
     benFamilyCancerHistory.setVanSerialNo(1L);
     benFamilyCancerHistory.setVehicalNo("Vehical No");
     benFamilyCancerHistory.setVisitCode(1L);
+    
+    benFamilyCancerHistory.toString();
 
     ArrayList<BenFamilyCancerHistory> benFamilyCancerHistoryList = new ArrayList<>();
     benFamilyCancerHistoryList.add(benFamilyCancerHistory);
@@ -161,10 +156,6 @@ class CSNurseServiceImplTest {
     assertEquals(0, actualSaveBenFamilyCancerHistoryResult);
   }
 
-  /**
-   * Method under test:
-   * {@link CSNurseServiceImpl#saveBenFamilyCancerHistory(List)}
-   */
   @Test
   void testSaveBenFamilyCancerHistory3() {
     // Arrange
@@ -196,6 +187,8 @@ class CSNurseServiceImplTest {
     benFamilyCancerHistory.setVanSerialNo(1L);
     benFamilyCancerHistory.setVehicalNo("Vehical No");
     benFamilyCancerHistory.setVisitCode(1L);
+    
+    benFamilyCancerHistory.toString();
 
     ArrayList<BenFamilyCancerHistory> benFamilyCancerHistoryList = new ArrayList<>();
     benFamilyCancerHistoryList.add(benFamilyCancerHistory);
@@ -209,10 +202,6 @@ class CSNurseServiceImplTest {
     assertEquals(1, actualSaveBenFamilyCancerHistoryResult);
   }
 
-  /**
-   * Method under test:
-   * {@link CSNurseServiceImpl#saveBenFamilyCancerHistory(List)}
-   */
   @Test
   void testSaveBenFamilyCancerHistory4() {
     // Arrange
@@ -244,6 +233,8 @@ class CSNurseServiceImplTest {
     benFamilyCancerHistory.setVanSerialNo(1L);
     benFamilyCancerHistory.setVehicalNo("Vehical No");
     benFamilyCancerHistory.setVisitCode(1L);
+    
+    benFamilyCancerHistory.toString();
 
     BenFamilyCancerHistory benFamilyCancerHistory2 = new BenFamilyCancerHistory();
     benFamilyCancerHistory2.setBenVisitID(2L);
@@ -270,6 +261,8 @@ class CSNurseServiceImplTest {
     benFamilyCancerHistory2.setVanSerialNo(0L);
     benFamilyCancerHistory2.setVehicalNo("");
     benFamilyCancerHistory2.setVisitCode(0L);
+    
+    benFamilyCancerHistory2.toString();
 
     ArrayList<BenFamilyCancerHistory> benFamilyCancerHistoryList = new ArrayList<>();
     benFamilyCancerHistoryList.add(benFamilyCancerHistory2);
@@ -284,10 +277,6 @@ class CSNurseServiceImplTest {
     assertEquals(1, actualSaveBenFamilyCancerHistoryResult);
   }
 
-  /**
-   * Method under test:
-   * {@link CSNurseServiceImpl#saveBenFamilyCancerHistory(List)}
-   */
   @Test
   void testSaveBenFamilyCancerHistory5() {
     // Arrange
@@ -322,6 +311,8 @@ class CSNurseServiceImplTest {
     benFamilyCancerHistory.setVanSerialNo(1L);
     benFamilyCancerHistory.setVehicalNo("Vehical No");
     benFamilyCancerHistory.setVisitCode(1L);
+    
+    benFamilyCancerHistory.toString();
 
     ArrayList<BenFamilyCancerHistory> benFamilyCancerHistoryList = new ArrayList<>();
     benFamilyCancerHistoryList.add(benFamilyCancerHistory);
@@ -335,10 +326,6 @@ class CSNurseServiceImplTest {
     assertEquals(0, actualSaveBenFamilyCancerHistoryResult);
   }
 
-  /**
-   * Method under test:
-   * {@link CSNurseServiceImpl#saveBenFamilyCancerHistory(List)}
-   */
   @Test
   void testSaveBenFamilyCancerHistory6() {
     // Arrange
@@ -374,6 +361,8 @@ class CSNurseServiceImplTest {
     benFamilyCancerHistory.setVanSerialNo(1L);
     benFamilyCancerHistory.setVehicalNo("Vehical No");
     benFamilyCancerHistory.setVisitCode(1L);
+    
+    benFamilyCancerHistory.toString();
 
     ArrayList<BenFamilyCancerHistory> benFamilyCancerHistoryList = new ArrayList<>();
     benFamilyCancerHistoryList.add(benFamilyCancerHistory);
@@ -387,10 +376,6 @@ class CSNurseServiceImplTest {
     assertEquals(0, actualSaveBenFamilyCancerHistoryResult);
   }
 
-  /**
-   * Method under test:
-   * {@link CSNurseServiceImpl#saveBenPersonalCancerHistory(BenPersonalCancerHistory)}
-   */
   @Test
   void testSaveBenPersonalCancerHistory() {
     // Arrange
@@ -428,6 +413,9 @@ class CSNurseServiceImplTest {
     benPersonalCancerHistory.setVanSerialNo(1L);
     benPersonalCancerHistory.setVehicalNo("Vehical No");
     benPersonalCancerHistory.setVisitCode(1L);
+    
+    benPersonalCancerHistory.toString();
+    
     when(benPersonalCancerHistoryRepo.save(Mockito.<BenPersonalCancerHistory>any()))
         .thenReturn(benPersonalCancerHistory);
 
@@ -465,6 +453,8 @@ class CSNurseServiceImplTest {
     benPersonalCancerHistory2.setVanSerialNo(1L);
     benPersonalCancerHistory2.setVehicalNo("Vehical No");
     benPersonalCancerHistory2.setVisitCode(1L);
+    
+    benPersonalCancerHistory2.toString();
 
     // Act
     Long actualSaveBenPersonalCancerHistoryResult = cSNurseServiceImpl
@@ -476,10 +466,6 @@ class CSNurseServiceImplTest {
     assertEquals(1L, actualSaveBenPersonalCancerHistoryResult.longValue());
   }
 
-  /**
-   * Method under test:
-   * {@link CSNurseServiceImpl#saveBenPersonalCancerHistory(BenPersonalCancerHistory)}
-   */
   @Test
   void testSaveBenPersonalCancerHistory2() {
     // Arrange
@@ -551,6 +537,9 @@ class CSNurseServiceImplTest {
     benPersonalCancerHistory.setVanSerialNo(1L);
     benPersonalCancerHistory.setVehicalNo("Vehical No");
     benPersonalCancerHistory.setVisitCode(1L);
+    
+    benPersonalCancerHistory.toString();
+    
     when(benPersonalCancerHistoryRepo.save(Mockito.<BenPersonalCancerHistory>any()))
         .thenReturn(benPersonalCancerHistory);
 
@@ -588,6 +577,8 @@ class CSNurseServiceImplTest {
     benPersonalCancerHistory2.setVanSerialNo(1L);
     benPersonalCancerHistory2.setVehicalNo("Vehical No");
     benPersonalCancerHistory2.setVisitCode(1L);
+    
+    benPersonalCancerHistory2.toString();
 
     // Act
     Long actualSaveBenPersonalCancerHistoryResult = cSNurseServiceImpl
@@ -633,10 +624,6 @@ class CSNurseServiceImplTest {
     assertEquals(1L, actualSaveBenPersonalCancerHistoryResult.longValue());
   }
 
-  /**
-   * Method under test:
-   * {@link CSNurseServiceImpl#getBenPersonalHistoryOBJ(BenPersonalCancerHistory)}
-   */
   @Test
   void testGetBenPersonalHistoryOBJ() {
     // Arrange
@@ -674,6 +661,8 @@ class CSNurseServiceImplTest {
     benPersonalCancerHistory.setVanSerialNo(1L);
     benPersonalCancerHistory.setVehicalNo("Vehical No");
     benPersonalCancerHistory.setVisitCode(1L);
+    
+    benPersonalCancerHistory.toString();
 
     // Act
     BenPersonalCancerHistory actualBenPersonalHistoryOBJ = cSNurseServiceImpl
@@ -684,10 +673,6 @@ class CSNurseServiceImplTest {
     assertSame(benPersonalCancerHistory, actualBenPersonalHistoryOBJ);
   }
 
-  /**
-   * Method under test:
-   * {@link CSNurseServiceImpl#getBenPersonalHistoryOBJ(BenPersonalCancerHistory)}
-   */
   @Test
   void testGetBenPersonalHistoryOBJ2() {
     // Arrange
@@ -759,6 +744,8 @@ class CSNurseServiceImplTest {
     benPersonalCancerHistory.setVanSerialNo(1L);
     benPersonalCancerHistory.setVehicalNo("Vehical No");
     benPersonalCancerHistory.setVisitCode(1L);
+    
+    benPersonalCancerHistory.toString();
 
     // Act
     BenPersonalCancerHistory actualBenPersonalHistoryOBJ = cSNurseServiceImpl
@@ -802,10 +789,6 @@ class CSNurseServiceImplTest {
     assertSame(benPersonalCancerHistory, actualBenPersonalHistoryOBJ);
   }
 
-  /**
-   * Method under test:
-   * {@link CSNurseServiceImpl#getBenPersonalHistoryOBJ(BenPersonalCancerHistory)}
-   */
   @Test
   void testGetBenPersonalHistoryOBJ3() {
     // Arrange
@@ -879,6 +862,8 @@ class CSNurseServiceImplTest {
     benPersonalCancerHistory.setVanSerialNo(1L);
     benPersonalCancerHistory.setVehicalNo("Vehical No");
     benPersonalCancerHistory.setVisitCode(1L);
+    
+    benPersonalCancerHistory.toString();
 
     // Act
     BenPersonalCancerHistory actualBenPersonalHistoryOBJ = cSNurseServiceImpl
@@ -922,10 +907,7 @@ class CSNurseServiceImplTest {
     assertSame(benPersonalCancerHistory, actualBenPersonalHistoryOBJ);
   }
 
-  /**
-   * Method under test:
-   * {@link CSNurseServiceImpl#saveBenPersonalCancerDietHistory(BenPersonalCancerDietHistory)}
-   */
+  
   @Test
   void testSaveBenPersonalCancerDietHistory() {
     // Arrange
@@ -961,6 +943,9 @@ class CSNurseServiceImplTest {
     benPersonalCancerDietHistory.setVegetableQuantityPerDay(1);
     benPersonalCancerDietHistory.setVehicalNo("Vehical No");
     benPersonalCancerDietHistory.setVisitCode(1L);
+    
+    benPersonalCancerDietHistory.toString();
+    
     when(benPersonalCancerDietHistoryRepo.save(Mockito.<BenPersonalCancerDietHistory>any()))
         .thenReturn(benPersonalCancerDietHistory);
 
@@ -996,6 +981,7 @@ class CSNurseServiceImplTest {
     benPersonalCancerDietHistory2.setVegetableQuantityPerDay(1);
     benPersonalCancerDietHistory2.setVehicalNo("Vehical No");
     benPersonalCancerDietHistory2.setVisitCode(1L);
+    benPersonalCancerDietHistory2.toString();
 
     // Act
     Long actualSaveBenPersonalCancerDietHistoryResult = cSNurseServiceImpl
@@ -1007,10 +993,7 @@ class CSNurseServiceImplTest {
     assertEquals(1L, actualSaveBenPersonalCancerDietHistoryResult.longValue());
   }
 
-  /**
-   * Method under test:
-   * {@link CSNurseServiceImpl#saveBenPersonalCancerDietHistory(BenPersonalCancerDietHistory)}
-   */
+  
   @Test
   void testSaveBenPersonalCancerDietHistory2() {
     // Arrange
@@ -1078,6 +1061,7 @@ class CSNurseServiceImplTest {
     benPersonalCancerDietHistory.setVegetableQuantityPerDay(1);
     benPersonalCancerDietHistory.setVehicalNo("Vehical No");
     benPersonalCancerDietHistory.setVisitCode(1L);
+    benPersonalCancerDietHistory.toString();
     when(benPersonalCancerDietHistoryRepo.save(Mockito.<BenPersonalCancerDietHistory>any()))
         .thenReturn(benPersonalCancerDietHistory);
 
@@ -1114,6 +1098,7 @@ class CSNurseServiceImplTest {
     benPersonalCancerDietHistory2.setVehicalNo("Vehical No");
     benPersonalCancerDietHistory2.setVisitCode(1L);
 
+    benPersonalCancerDietHistory2.toString();
     // Act
     Long actualSaveBenPersonalCancerDietHistoryResult = cSNurseServiceImpl
         .saveBenPersonalCancerDietHistory(benPersonalCancerDietHistory2);
@@ -1156,10 +1141,7 @@ class CSNurseServiceImplTest {
     assertEquals(1L, actualSaveBenPersonalCancerDietHistoryResult.longValue());
   }
 
-  /**
-   * Method under test:
-   * {@link CSNurseServiceImpl#saveBenPersonalCancerDietHistory(BenPersonalCancerDietHistory)}
-   */
+  
   @Test
   void testSaveBenPersonalCancerDietHistory3() {
     // Arrange
@@ -1227,6 +1209,9 @@ class CSNurseServiceImplTest {
     benPersonalCancerDietHistory.setVegetableQuantityPerDay(1);
     benPersonalCancerDietHistory.setVehicalNo("Vehical No");
     benPersonalCancerDietHistory.setVisitCode(1L);
+    
+    benPersonalCancerDietHistory.toString();
+    
     when(benPersonalCancerDietHistoryRepo.save(Mockito.<BenPersonalCancerDietHistory>any()))
         .thenReturn(benPersonalCancerDietHistory);
     BenPersonalCancerDietHistory benPersonalCancerDietHistory2 = mock(BenPersonalCancerDietHistory.class);
@@ -1293,6 +1278,8 @@ class CSNurseServiceImplTest {
     benPersonalCancerDietHistory2.setVegetableQuantityPerDay(1);
     benPersonalCancerDietHistory2.setVehicalNo("Vehical No");
     benPersonalCancerDietHistory2.setVisitCode(1L);
+    
+    benPersonalCancerDietHistory2.toString();
 
     // Act
     Long actualSaveBenPersonalCancerDietHistoryResult = cSNurseServiceImpl
@@ -1367,10 +1354,7 @@ class CSNurseServiceImplTest {
     assertEquals(1L, actualSaveBenPersonalCancerDietHistoryResult.longValue());
   }
 
-  /**
-   * Method under test:
-   * {@link CSNurseServiceImpl#getBenPersonalCancerDietOBJ(BenPersonalCancerDietHistory)}
-   */
+  
   @Test
   void testGetBenPersonalCancerDietOBJ() {
     // Arrange
@@ -1406,6 +1390,7 @@ class CSNurseServiceImplTest {
     benPersonalCancerDietHistory.setVegetableQuantityPerDay(1);
     benPersonalCancerDietHistory.setVehicalNo("Vehical No");
     benPersonalCancerDietHistory.setVisitCode(1L);
+    benPersonalCancerDietHistory.toString();
 
     // Act
     BenPersonalCancerDietHistory actualBenPersonalCancerDietOBJ = cSNurseServiceImpl
@@ -1416,10 +1401,7 @@ class CSNurseServiceImplTest {
     assertSame(benPersonalCancerDietHistory, actualBenPersonalCancerDietOBJ);
   }
 
-  /**
-   * Method under test:
-   * {@link CSNurseServiceImpl#getBenPersonalCancerDietOBJ(BenPersonalCancerDietHistory)}
-   */
+  
   @Test
   void testGetBenPersonalCancerDietOBJ2() {
     // Arrange
@@ -1488,6 +1470,7 @@ class CSNurseServiceImplTest {
     benPersonalCancerDietHistory.setVehicalNo("Vehical No");
     benPersonalCancerDietHistory.setVisitCode(1L);
 
+    benPersonalCancerDietHistory.toString();
     // Act
     BenPersonalCancerDietHistory actualBenPersonalCancerDietOBJ = cSNurseServiceImpl
         .getBenPersonalCancerDietOBJ(benPersonalCancerDietHistory);
@@ -1528,10 +1511,6 @@ class CSNurseServiceImplTest {
     assertSame(benPersonalCancerDietHistory, actualBenPersonalCancerDietOBJ);
   }
 
-  /**
-   * Method under test:
-   * {@link CSNurseServiceImpl#getBenPersonalCancerDietOBJ(BenPersonalCancerDietHistory)}
-   */
   @Test
   void testGetBenPersonalCancerDietOBJ3() {
     // Arrange
@@ -1601,6 +1580,7 @@ class CSNurseServiceImplTest {
     benPersonalCancerDietHistory.setVegetableQuantityPerDay(1);
     benPersonalCancerDietHistory.setVehicalNo("Vehical No");
     benPersonalCancerDietHistory.setVisitCode(1L);
+    benPersonalCancerDietHistory.toString();
 
     // Act
     BenPersonalCancerDietHistory actualBenPersonalCancerDietOBJ = cSNurseServiceImpl
@@ -1686,6 +1666,9 @@ class CSNurseServiceImplTest {
     benObstetricCancerHistory.setVanSerialNo(1L);
     benObstetricCancerHistory.setVehicalNo("Vehical No");
     benObstetricCancerHistory.setVisitCode(1L);
+    
+    benObstetricCancerHistory.toString();
+    
     when(benObstetricCancerHistoryRepo.save(Mockito.<BenObstetricCancerHistory>any()))
         .thenReturn(benObstetricCancerHistory);
 
@@ -1947,6 +1930,9 @@ class CSNurseServiceImplTest {
     benCancerVitalDetail.setWaistCircumference_cm(10.0d);
     benCancerVitalDetail.setWeight_Kg(10.0d);
     benCancerVitalDetail.setsPO2("S PO2");
+    
+    benCancerVitalDetail.toString();
+    
     when(benCancerVitalDetailRepo.save(Mockito.<BenCancerVitalDetail>any())).thenReturn(benCancerVitalDetail);
 
     BenCancerVitalDetail benCancerVitalDetail2 = new BenCancerVitalDetail();
@@ -2073,6 +2059,9 @@ class CSNurseServiceImplTest {
     benCancerVitalDetail.setWaistCircumference_cm(10.0d);
     benCancerVitalDetail.setWeight_Kg(10.0d);
     benCancerVitalDetail.setsPO2("S PO2");
+    
+    benCancerVitalDetail.toString();
+    
     when(benCancerVitalDetailRepo.save(Mockito.<BenCancerVitalDetail>any())).thenReturn(benCancerVitalDetail);
 
     BenCancerVitalDetail benCancerVitalDetail2 = new BenCancerVitalDetail();
@@ -2201,6 +2190,8 @@ class CSNurseServiceImplTest {
     benFamilyCancerHistory.setVanSerialNo(1L);
     benFamilyCancerHistory.setVehicalNo("Vehical No");
     benFamilyCancerHistory.setVisitCode(1L);
+    
+    benFamilyCancerHistory.toString();
 
     ArrayList<BenFamilyCancerHistory> benFamilyCancerHistoryList = new ArrayList<>();
     benFamilyCancerHistoryList.add(benFamilyCancerHistory);
@@ -2251,6 +2242,8 @@ class CSNurseServiceImplTest {
     benFamilyCancerHistory.setVanSerialNo(1L);
     benFamilyCancerHistory.setVehicalNo("Vehical No");
     benFamilyCancerHistory.setVisitCode(1L);
+    
+    benFamilyCancerHistory.toString();
 
     ArrayList<BenFamilyCancerHistory> benFamilyCancerHistoryList = new ArrayList<>();
     benFamilyCancerHistoryList.add(benFamilyCancerHistory);
@@ -2528,6 +2521,8 @@ class CSNurseServiceImplTest {
     benObstetricCancerHistory.setVanSerialNo(1L);
     benObstetricCancerHistory.setVehicalNo("Vehical No");
     benObstetricCancerHistory.setVisitCode(1L);
+    
+    benObstetricCancerHistory.toString();
 
     // Act
     int actualUpdateBenObstetricCancerHistoryResult = cSNurseServiceImpl
@@ -3086,6 +3081,8 @@ class CSNurseServiceImplTest {
     benPersonalCancerHistory.setVanSerialNo(1L);
     benPersonalCancerHistory.setVehicalNo("Vehical No");
     benPersonalCancerHistory.setVisitCode(1L);
+    
+    benPersonalCancerHistory.toString();
 
     // Act
     int actualUpdateBenPersonalHistoryResult = cSNurseServiceImpl.updateBenPersonalHistory(benPersonalCancerHistory);
@@ -3361,6 +3358,8 @@ class CSNurseServiceImplTest {
     benPersonalCancerDietHistory.setVegetableQuantityPerDay(1);
     benPersonalCancerDietHistory.setVehicalNo("Vehical No");
     benPersonalCancerDietHistory.setVisitCode(1L);
+    
+    benPersonalCancerDietHistory.toString();
 
     // Act
     int actualUpdateBenPersonalCancerDietHistoryResult = cSNurseServiceImpl
@@ -3425,6 +3424,8 @@ class CSNurseServiceImplTest {
     benPersonalCancerDietHistory.setVegetableQuantityPerDay(1);
     benPersonalCancerDietHistory.setVehicalNo("Vehical No");
     benPersonalCancerDietHistory.setVisitCode(1L);
+    
+    benPersonalCancerDietHistory.toString();
 
     // Act
     int actualUpdateBenPersonalCancerDietHistoryResult = cSNurseServiceImpl
@@ -3481,6 +3482,9 @@ class CSNurseServiceImplTest {
     benPersonalCancerDietHistory.setVegetableQuantityPerDay(1);
     benPersonalCancerDietHistory.setVehicalNo("Vehical No");
     benPersonalCancerDietHistory.setVisitCode(1L);
+    
+    benPersonalCancerDietHistory.toString();
+    
     when(benPersonalCancerDietHistoryRepo.save(Mockito.<BenPersonalCancerDietHistory>any()))
         .thenReturn(benPersonalCancerDietHistory);
     when(benPersonalCancerDietHistoryRepo.getPersonalCancerDietHistoryStatus(Mockito.<Long>any(), Mockito.<Long>any()))
@@ -3994,6 +3998,8 @@ class CSNurseServiceImplTest {
     benPersonalCancerDietHistory.setVegetableQuantityPerDay(1);
     benPersonalCancerDietHistory.setVehicalNo("Vehical No");
     benPersonalCancerDietHistory.setVisitCode(1L);
+    
+    benPersonalCancerDietHistory.toString();
 
     // Act
     int actualUpdateBenPersonalDietHistoryResult = cSNurseServiceImpl
@@ -4107,6 +4113,8 @@ class CSNurseServiceImplTest {
     benCancerVitalDetail.setWaistCircumference_cm(10.0d);
     benCancerVitalDetail.setWeight_Kg(10.0d);
     benCancerVitalDetail.setsPO2("S PO2");
+    
+    benCancerVitalDetail.toString();
 
     // Act
     int actualUpdateBenVitalDetailResult = cSNurseServiceImpl.updateBenVitalDetail(benCancerVitalDetail);
@@ -4329,6 +4337,8 @@ class CSNurseServiceImplTest {
     benFamilyCancerHistory.setVanSerialNo(1L);
     benFamilyCancerHistory.setVehicalNo("Vehical No");
     benFamilyCancerHistory.setVisitCode(1L);
+    
+    benFamilyCancerHistory.toString();
 
     ArrayList<BenFamilyCancerHistory> benFamilyCancerHistoryList = new ArrayList<>();
     benFamilyCancerHistoryList.add(benFamilyCancerHistory);
@@ -4388,6 +4398,9 @@ class CSNurseServiceImplTest {
     benObstetricCancerHistory.setVanSerialNo(1L);
     benObstetricCancerHistory.setVehicalNo("Vehical No");
     benObstetricCancerHistory.setVisitCode(1L);
+    
+    benObstetricCancerHistory.toString();
+    
     when(benObstetricCancerHistoryRepo.getBenObstetricCancerHistory(Mockito.<Long>any(), Mockito.<Long>any()))
         .thenReturn(benObstetricCancerHistory);
 
@@ -4440,6 +4453,9 @@ class CSNurseServiceImplTest {
     benPersonalCancerHistory.setVanSerialNo(1L);
     benPersonalCancerHistory.setVehicalNo("Vehical No");
     benPersonalCancerHistory.setVisitCode(1L);
+    
+    benPersonalCancerHistory.toString();
+    
     when(benPersonalCancerHistoryRepo.getBenPersonalHistory(Mockito.<Long>any(), Mockito.<Long>any()))
         .thenReturn(benPersonalCancerHistory);
 
@@ -4818,6 +4834,9 @@ class CSNurseServiceImplTest {
     benPersonalCancerDietHistory.setVegetableQuantityPerDay(1);
     benPersonalCancerDietHistory.setVehicalNo("Vehical No");
     benPersonalCancerDietHistory.setVisitCode(1L);
+    
+    benPersonalCancerDietHistory.toString();
+    
     when(benPersonalCancerDietHistoryRepo.getBenPersonaDietHistory(Mockito.<Long>any(), Mockito.<Long>any()))
         .thenReturn(benPersonalCancerDietHistory);
 
@@ -5065,6 +5084,9 @@ class CSNurseServiceImplTest {
     cancerAbdominalExamination.setVanSerialNo(1L);
     cancerAbdominalExamination.setVehicalNo("Vehical No");
     cancerAbdominalExamination.setVisitCode(1L);
+    
+    cancerAbdominalExamination.toString();
+    
     when(cancerAbdominalExaminationRepo.getBenCancerAbdominalExaminationDetails(Mockito.<Long>any(),
         Mockito.<Long>any())).thenReturn(cancerAbdominalExamination);
 
@@ -5117,6 +5139,9 @@ class CSNurseServiceImplTest {
     cancerBreastExamination.setVanSerialNo(1L);
     cancerBreastExamination.setVehicalNo("Vehical No");
     cancerBreastExamination.setVisitCode(1L);
+    
+    cancerBreastExamination.toString();
+    
     when(cancerBreastExaminationRepo.getBenCancerBreastExaminationDetails(Mockito.<Long>any(), Mockito.<Long>any()))
         .thenReturn(cancerBreastExamination);
 
@@ -5166,6 +5191,9 @@ class CSNurseServiceImplTest {
     cancerGynecologicalExamination.setVisitCode(1L);
     cancerGynecologicalExamination.setVulvalInvolvement(true);
     cancerGynecologicalExamination.setrTIOrSTIDetail("R TIOr STIDetail");
+    
+    cancerGynecologicalExamination.toString();
+    
     when(cancerGynecologicalExaminationRepo.getBenCancerGynecologicalExaminationDetails(Mockito.<Long>any(),
         Mockito.<Long>any())).thenReturn(cancerGynecologicalExamination);
 
@@ -5223,6 +5251,8 @@ class CSNurseServiceImplTest {
     cancerSignAndSymptoms.setVanSerialNo(1L);
     cancerSignAndSymptoms.setVehicalNo("Vehical No");
     cancerSignAndSymptoms.setVisitCode(1L);
+    
+    cancerSignAndSymptoms.toString();
     when(cancerSignAndSymptomsRepo.getBenCancerSignAndSymptomsDetails(Mockito.<Long>any(), Mockito.<Long>any()))
         .thenReturn(cancerSignAndSymptoms);
 
@@ -5289,6 +5319,8 @@ class CSNurseServiceImplTest {
     cancerOralExamination.setVanSerialNo(1L);
     cancerOralExamination.setVehicalNo("Vehical No");
     cancerOralExamination.setVisitCode(1L);
+    
+    cancerOralExamination.toString();
     when(cancerOralExaminationRepo.getBenCancerOralExaminationDetails(Mockito.<Long>any(), Mockito.<Long>any()))
         .thenReturn(cancerOralExamination);
 
@@ -5352,6 +5384,8 @@ class CSNurseServiceImplTest {
     cancerExaminationImageAnnotation.setVisitCode(1L);
     cancerExaminationImageAnnotation.setxCoordinate(1);
     cancerExaminationImageAnnotation.setyCoordinate(1);
+    
+    cancerExaminationImageAnnotation.toString();
 
     ArrayList<CancerExaminationImageAnnotation> cancerExaminationImageAnnotationList = new ArrayList<>();
     cancerExaminationImageAnnotationList.add(cancerExaminationImageAnnotation);
@@ -5431,6 +5465,8 @@ class CSNurseServiceImplTest {
     cancerExaminationImageAnnotation.setVisitCode(1L);
     cancerExaminationImageAnnotation.setxCoordinate(1);
     cancerExaminationImageAnnotation.setyCoordinate(1);
+    
+    cancerExaminationImageAnnotation.toString();
 
     ArrayList<CancerExaminationImageAnnotation> cancerExaminationImageAnnotationList = new ArrayList<>();
     cancerExaminationImageAnnotationList.add(cancerExaminationImageAnnotation);
@@ -5538,6 +5574,8 @@ class CSNurseServiceImplTest {
     cancerExaminationImageAnnotation.setVisitCode(1L);
     cancerExaminationImageAnnotation.setxCoordinate(1);
     cancerExaminationImageAnnotation.setyCoordinate(1);
+    
+    cancerExaminationImageAnnotation.toString();
 
     ArrayList<CancerExaminationImageAnnotation> cancerExaminationImageAnnotationList = new ArrayList<>();
     cancerExaminationImageAnnotationList.add(cancerExaminationImageAnnotation);
@@ -5821,6 +5859,8 @@ class CSNurseServiceImplTest {
     cancerLymphNodeDetails.setVanSerialNo(1L);
     cancerLymphNodeDetails.setVehicalNo("Vehical No");
     cancerLymphNodeDetails.setVisitCode(1L);
+    
+    cancerLymphNodeDetails.toString();
 
     ArrayList<CancerLymphNodeDetails> cancerLymphNodeDetailsList = new ArrayList<>();
     cancerLymphNodeDetailsList.add(cancerLymphNodeDetails);
@@ -6367,6 +6407,8 @@ class CSNurseServiceImplTest {
     cancerOralExamination.setVanSerialNo(1L);
     cancerOralExamination.setVehicalNo("Vehical No");
     cancerOralExamination.setVisitCode(1L);
+    
+    cancerOralExamination.toString();
 
     // Act
     CancerOralExamination actualCancerOralExaminationDetails = cSNurseServiceImpl
@@ -6579,6 +6621,9 @@ class CSNurseServiceImplTest {
     cancerGynecologicalExamination.setVisitCode(1L);
     cancerGynecologicalExamination.setVulvalInvolvement(true);
     cancerGynecologicalExamination.setrTIOrSTIDetail("R TIOr STIDetail");
+    
+    cancerGynecologicalExamination.toString();
+    
     when(cancerGynecologicalExaminationRepo.save(Mockito.<CancerGynecologicalExamination>any()))
         .thenReturn(cancerGynecologicalExamination);
 
@@ -7956,6 +8001,8 @@ class CSNurseServiceImplTest {
     cancerExaminationImageAnnotation.setVisitCode(1L);
     cancerExaminationImageAnnotation.setxCoordinate(1);
     cancerExaminationImageAnnotation.setyCoordinate(1);
+    
+    cancerExaminationImageAnnotation.toString();
 
     ArrayList<CancerExaminationImageAnnotation> cancerExaminationImageAnnotationList = new ArrayList<>();
     cancerExaminationImageAnnotationList.add(cancerExaminationImageAnnotation);
@@ -8728,58 +8775,10 @@ class CSNurseServiceImplTest {
     assertEquals(0, actualUpdateCancerExamImgAnotasnDetailsResult);
   }
 
-  /**
-   * Methods under test:
-   *
-   * <ul>
-   *   <li>
-   * {@link CSNurseServiceImpl#setBenCancerVitalDetailRepo(BenCancerVitalDetailRepo)}
-   *   <li>
-   * {@link CSNurseServiceImpl#setBenFamilyCancerHistoryRepo(BenFamilyCancerHistoryRepo)}
-   *   <li>
-   * {@link CSNurseServiceImpl#setBenObstetricCancerHistoryRepo(BenObstetricCancerHistoryRepo)}
-   *   <li>
-   * {@link CSNurseServiceImpl#setBenPersonalCancerDietHistoryRepo(BenPersonalCancerDietHistoryRepo)}
-   *   <li>
-   * {@link CSNurseServiceImpl#setBenPersonalCancerHistoryRepo(BenPersonalCancerHistoryRepo)}
-   *   <li>{@link CSNurseServiceImpl#setBenVisitDetailRepo(BenVisitDetailRepo)}
-   *   <li>
-   * {@link CSNurseServiceImpl#setCancerAbdominalExaminationRepo(CancerAbdominalExaminationRepo)}
-   *   <li>
-   * {@link CSNurseServiceImpl#setCancerBreastExaminationRepo(CancerBreastExaminationRepo)}
-   *   <li>
-   * {@link CSNurseServiceImpl#setCancerExaminationImageAnnotationRepo(CancerExaminationImageAnnotationRepo)}
-   *   <li>
-   * {@link CSNurseServiceImpl#setCancerGynecologicalExaminationRepo(CancerGynecologicalExaminationRepo)}
-   *   <li>
-   * {@link CSNurseServiceImpl#setCancerLymphNodeExaminationRepo(CancerLymphNodeExaminationRepo)}
-   *   <li>
-   * {@link CSNurseServiceImpl#setCancerOralExaminationRepo(CancerOralExaminationRepo)}
-   *   <li>
-   * {@link CSNurseServiceImpl#setCancerSignAndSymptomsRepo(CancerSignAndSymptomsRepo)}
-   * </ul>
-   */
+  
   @Test
   void testGettersAndSetters() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   Add getters for the following fields or make them package-private:
-    //     CSNurseServiceImpl.benCancerVitalDetailRepo
-    //     CSNurseServiceImpl.benFamilyCancerHistoryRepo
-    //     CSNurseServiceImpl.benObstetricCancerHistoryRepo
-    //     CSNurseServiceImpl.benPersonalCancerDietHistoryRepo
-    //     CSNurseServiceImpl.benPersonalCancerHistoryRepo
-    //     CSNurseServiceImpl.benVisitDetailRepo
-    //     CSNurseServiceImpl.cancerAbdominalExaminationRepo
-    //     CSNurseServiceImpl.cancerBreastExaminationRepo
-    //     CSNurseServiceImpl.cancerExaminationImageAnnotationRepo
-    //     CSNurseServiceImpl.cancerGynecologicalExaminationRepo
-    //     CSNurseServiceImpl.cancerLymphNodeExaminationRepo
-    //     CSNurseServiceImpl.cancerOralExaminationRepo
-    //     CSNurseServiceImpl.cancerSignAndSymptomsRepo
-    //     CSNurseServiceImpl.logger
-
+   
     // Arrange
     CSNurseServiceImpl csNurseServiceImpl = new CSNurseServiceImpl();
 

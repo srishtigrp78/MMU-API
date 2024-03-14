@@ -340,11 +340,15 @@ class ANCServiceImplTest {
 		i_bendemographics.setDistrictName("District Name");
 		i_bendemographics.setServicePointID(1);
 		i_bendemographics.setServicePointName("Service Point Name");
+		
+		i_bendemographics.toString();
 
 		GenderMaster m_gender = new GenderMaster();
 		m_gender.setDeleted(true);
 		m_gender.setGenderID((short) 1);
 		m_gender.setGenderName("Gender Name");
+		
+		m_gender.toString();
 
 		BeneficiaryFlowStatus beneficiaryFlowStatus = new BeneficiaryFlowStatus();
 		beneficiaryFlowStatus.setAge("Age");
@@ -422,6 +426,9 @@ class ANCServiceImplTest {
 		beneficiaryFlowStatus.settCRequestDate(mock(Timestamp.class));
 		beneficiaryFlowStatus.settCSpecialistUserID(1);
 		beneficiaryFlowStatus.settC_SpecialistLabFlag((short) 1);
+		
+		beneficiaryFlowStatus.toString();
+		
 		when(beneficiaryFlowStatusRepo.checkExistData(Mockito.<Long>any(), Mockito.<Short>any()))
 				.thenReturn(beneficiaryFlowStatus);
 
@@ -461,6 +468,8 @@ class ANCServiceImplTest {
 		nurseUtilityClass.setSessionID(1);
 		nurseUtilityClass.setVanID(1);
 		nurseUtilityClass.setVisitCode(1L);
+		
+		nurseUtilityClass.toString();
 
 		// Act and Assert
 		assertTrue(aNCServiceImpl.saveBenVisitDetails(visitDetailsOBJ, nurseUtilityClass).isEmpty());
@@ -483,6 +492,8 @@ class ANCServiceImplTest {
 		nurseUtilityClass.setSessionID(1);
 		nurseUtilityClass.setVanID(1);
 		nurseUtilityClass.setVisitCode(1L);
+		
+		nurseUtilityClass.toString();
 
 		// Act and Assert
 		assertTrue(aNCServiceImpl.saveBenVisitDetails(null, nurseUtilityClass).isEmpty());
@@ -508,6 +519,8 @@ class ANCServiceImplTest {
 		nurseUtilityClass.setSessionID(1);
 		nurseUtilityClass.setVanID(1);
 		nurseUtilityClass.setVisitCode(1L);
+		
+		nurseUtilityClass.toString();
 
 		// Act and Assert
 		assertTrue(aNCServiceImpl.saveBenVisitDetails(visitDetailsOBJ, nurseUtilityClass).isEmpty());
@@ -533,6 +546,8 @@ class ANCServiceImplTest {
 		nurseUtilityClass.setSessionID(1);
 		nurseUtilityClass.setVanID(1);
 		nurseUtilityClass.setVisitCode(1L);
+		
+		nurseUtilityClass.toString();
 
 		// Act and Assert
 		assertTrue(aNCServiceImpl.saveBenVisitDetails(visitDetailsOBJ, nurseUtilityClass).isEmpty());
@@ -545,10 +560,6 @@ class ANCServiceImplTest {
 		assertNull(aNCServiceImpl.saveBenANCDetails(null, 1L, 1L));
 	}
 
-	/**
-	 * Method under test:
-	 * {@link ANCServiceImpl#saveBenANCDetails(JsonObject, Long, Long)}
-	 */
 	@Test
 	void testSaveBenANCDetails2() throws Exception {
 		// Arrange
@@ -818,79 +829,6 @@ class ANCServiceImplTest {
 	@Test
 	@Disabled("TODO: Complete this test")
 	void testGetBenVisitDetailsFrmNurseANC() throws Exception {
-		// TODO: Diffblue Cover was only able to create a partial test for this method:
-		// Reason: No inputs found that don't throw a trivial exception.
-		// Diffblue Cover tried to run the arrange/act section, but the method under
-		// test threw
-		// com.google.gson.JsonIOException: Failed making field
-		// 'java.sql.Timestamp#nanos' accessible; either increase its visibility or
-		// write a custom TypeAdapter for its declaring type.
-		// at
-		// com.google.gson.internal.reflect.ReflectionHelper.makeAccessible(ReflectionHelper.java:38)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.getBoundFields(ReflectiveTypeAdapterFactory.java:286)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.create(ReflectiveTypeAdapterFactory.java:130)
-		// at com.google.gson.Gson.getAdapter(Gson.java:556)
-		// at
-		// com.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper.write(TypeAdapterRuntimeTypeWrapper.java:55)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$1.write(ReflectiveTypeAdapterFactory.java:196)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.write(ReflectiveTypeAdapterFactory.java:368)
-		// at
-		// com.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper.write(TypeAdapterRuntimeTypeWrapper.java:70)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$1.write(ReflectiveTypeAdapterFactory.java:196)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.write(ReflectiveTypeAdapterFactory.java:368)
-		// at
-		// com.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper.write(TypeAdapterRuntimeTypeWrapper.java:70)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$1.write(ReflectiveTypeAdapterFactory.java:196)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.write(ReflectiveTypeAdapterFactory.java:368)
-		// at com.google.gson.Gson.toJson(Gson.java:842)
-		// at com.google.gson.Gson.toJson(Gson.java:812)
-		// at com.google.gson.Gson.toJson(Gson.java:759)
-		// at com.google.gson.Gson.toJson(Gson.java:736)
-		// at
-		// com.iemr.mmu.service.anc.ANCServiceImpl.getBenVisitDetailsFrmNurseANC(ANCServiceImpl.java:981)
-		// java.lang.reflect.InaccessibleObjectException: Unable to make field private
-		// int java.sql.Timestamp.nanos accessible: module java.sql does not "opens
-		// java.sql" to unnamed module @f87c6b6
-		// at
-		// com.google.gson.internal.reflect.ReflectionHelper.makeAccessible(ReflectionHelper.java:35)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.getBoundFields(ReflectiveTypeAdapterFactory.java:286)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.create(ReflectiveTypeAdapterFactory.java:130)
-		// at com.google.gson.Gson.getAdapter(Gson.java:556)
-		// at
-		// com.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper.write(TypeAdapterRuntimeTypeWrapper.java:55)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$1.write(ReflectiveTypeAdapterFactory.java:196)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.write(ReflectiveTypeAdapterFactory.java:368)
-		// at
-		// com.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper.write(TypeAdapterRuntimeTypeWrapper.java:70)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$1.write(ReflectiveTypeAdapterFactory.java:196)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.write(ReflectiveTypeAdapterFactory.java:368)
-		// at
-		// com.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper.write(TypeAdapterRuntimeTypeWrapper.java:70)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$1.write(ReflectiveTypeAdapterFactory.java:196)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.write(ReflectiveTypeAdapterFactory.java:368)
-		// at com.google.gson.Gson.toJson(Gson.java:842)
-		// at com.google.gson.Gson.toJson(Gson.java:812)
-		// at com.google.gson.Gson.toJson(Gson.java:759)
-		// at com.google.gson.Gson.toJson(Gson.java:736)
-		// at
-		// com.iemr.mmu.service.anc.ANCServiceImpl.getBenVisitDetailsFrmNurseANC(ANCServiceImpl.java:981)
-		// See https://diff.blue/R013 to resolve this issue.
 
 		// Arrange
 		States states = new States();
@@ -960,6 +898,8 @@ class ANCServiceImplTest {
 		providerServiceMapping.setState(state);
 		providerServiceMapping.setStateID(1);
 		providerServiceMapping.setStatusID(1);
+		
+		providerServiceMapping.toString();
 
 		BeneficiaryVisitDetail beneficiaryVisitDetail = new BeneficiaryVisitDetail();
 		beneficiaryVisitDetail.setBenVisitID(1L);
@@ -995,6 +935,9 @@ class ANCServiceImplTest {
 		beneficiaryVisitDetail.setVisitReason("Just cause");
 		beneficiaryVisitDetail.setVisitReasonID((short) 1);
 		beneficiaryVisitDetail.setrCHID("R CHID");
+		
+		beneficiaryVisitDetail.toString();
+		
 		when(commonNurseServiceImpl.getCSVisitDetails(Mockito.<Long>any(), Mockito.<Long>any()))
 				.thenReturn(beneficiaryVisitDetail);
 		when(commonNurseServiceImpl.getBenAdherence(Mockito.<Long>any(), Mockito.<Long>any()))
@@ -1040,71 +983,6 @@ class ANCServiceImplTest {
 	@Test
 	@Disabled("TODO: Complete this test")
 	void testGetBenANCHistoryDetails() {
-		// TODO: Diffblue Cover was only able to create a partial test for this method:
-		// Reason: No inputs found that don't throw a trivial exception.
-		// Diffblue Cover tried to run the arrange/act section, but the method under
-		// test threw
-		// com.google.gson.JsonIOException: Failed making field
-		// 'java.sql.Timestamp#nanos' accessible; either increase its visibility or
-		// write a custom TypeAdapter for its declaring type.
-		// at
-		// com.google.gson.internal.reflect.ReflectionHelper.makeAccessible(ReflectionHelper.java:38)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.getBoundFields(ReflectiveTypeAdapterFactory.java:286)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.create(ReflectiveTypeAdapterFactory.java:130)
-		// at com.google.gson.Gson.getAdapter(Gson.java:556)
-		// at
-		// com.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper.write(TypeAdapterRuntimeTypeWrapper.java:55)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$1.write(ReflectiveTypeAdapterFactory.java:196)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.write(ReflectiveTypeAdapterFactory.java:368)
-		// at
-		// com.google.gson.internal.bind.ObjectTypeAdapter.write(ObjectTypeAdapter.java:183)
-		// at
-		// com.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper.write(TypeAdapterRuntimeTypeWrapper.java:70)
-		// at
-		// com.google.gson.internal.bind.MapTypeAdapterFactory$Adapter.write(MapTypeAdapterFactory.java:207)
-		// at
-		// com.google.gson.internal.bind.MapTypeAdapterFactory$Adapter.write(MapTypeAdapterFactory.java:144)
-		// at com.google.gson.Gson.toJson(Gson.java:842)
-		// at com.google.gson.Gson.toJson(Gson.java:812)
-		// at com.google.gson.Gson.toJson(Gson.java:759)
-		// at com.google.gson.Gson.toJson(Gson.java:736)
-		// at
-		// com.iemr.mmu.service.anc.ANCServiceImpl.getBenANCHistoryDetails(ANCServiceImpl.java:1023)
-		// java.lang.reflect.InaccessibleObjectException: Unable to make field private
-		// int java.sql.Timestamp.nanos accessible: module java.sql does not "opens
-		// java.sql" to unnamed module @f87c6b6
-		// at
-		// com.google.gson.internal.reflect.ReflectionHelper.makeAccessible(ReflectionHelper.java:35)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.getBoundFields(ReflectiveTypeAdapterFactory.java:286)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.create(ReflectiveTypeAdapterFactory.java:130)
-		// at com.google.gson.Gson.getAdapter(Gson.java:556)
-		// at
-		// com.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper.write(TypeAdapterRuntimeTypeWrapper.java:55)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$1.write(ReflectiveTypeAdapterFactory.java:196)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.write(ReflectiveTypeAdapterFactory.java:368)
-		// at
-		// com.google.gson.internal.bind.ObjectTypeAdapter.write(ObjectTypeAdapter.java:183)
-		// at
-		// com.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper.write(TypeAdapterRuntimeTypeWrapper.java:70)
-		// at
-		// com.google.gson.internal.bind.MapTypeAdapterFactory$Adapter.write(MapTypeAdapterFactory.java:207)
-		// at
-		// com.google.gson.internal.bind.MapTypeAdapterFactory$Adapter.write(MapTypeAdapterFactory.java:144)
-		// at com.google.gson.Gson.toJson(Gson.java:842)
-		// at com.google.gson.Gson.toJson(Gson.java:812)
-		// at com.google.gson.Gson.toJson(Gson.java:759)
-		// at com.google.gson.Gson.toJson(Gson.java:736)
-		// at
-		// com.iemr.mmu.service.anc.ANCServiceImpl.getBenANCHistoryDetails(ANCServiceImpl.java:1023)
-		// See https://diff.blue/R013 to resolve this issue.
 
 		// Arrange
 		BenFamilyHistory benFamilyHistory = new BenFamilyHistory();
@@ -1175,6 +1053,8 @@ class ANCServiceImplTest {
 		benMedHistory.setYear_Of_Surgery(mock(Date.class));
 		benMedHistory.setYearofIllness(mock(Timestamp.class));
 		benMedHistory.setYearofSurgery(mock(Timestamp.class));
+		
+		benMedHistory.toString();
 
 		BenMenstrualDetails benMenstrualDetails = new BenMenstrualDetails();
 		benMenstrualDetails.setBenMenstrualID(1);
@@ -1208,6 +1088,8 @@ class ANCServiceImplTest {
 		benMenstrualDetails.setVehicalNo("Vehical No");
 		benMenstrualDetails.setVisitCode(1L);
 		benMenstrualDetails.setlMPDate(mock(Timestamp.class));
+		
+		benMenstrualDetails.toString();
 
 		BenPersonalHabit benPersonalHabit = new BenPersonalHabit();
 		benPersonalHabit.setAlcoholDuration(mock(Timestamp.class));
@@ -1252,6 +1134,8 @@ class ANCServiceImplTest {
 		benPersonalHabit.setVanSerialNo(1L);
 		benPersonalHabit.setVehicalNo("Vehical No");
 		benPersonalHabit.setVisitCode(1L);
+		
+		benPersonalHabit.toString();
 
 		WrapperChildOptionalVaccineDetail wrapperChildOptionalVaccineDetail = new WrapperChildOptionalVaccineDetail();
 		wrapperChildOptionalVaccineDetail.setBenVisitID(1L);
@@ -1262,6 +1146,8 @@ class ANCServiceImplTest {
 		wrapperChildOptionalVaccineDetail.setProviderServiceMapID(1);
 		wrapperChildOptionalVaccineDetail.setVanID(1);
 		wrapperChildOptionalVaccineDetail.setVisitCode(1L);
+		
+		wrapperChildOptionalVaccineDetail.toString();
 
 		WrapperComorbidCondDetails wrapperComorbidCondDetails = new WrapperComorbidCondDetails();
 		wrapperComorbidCondDetails.setBenVisitID(1L);
@@ -1272,6 +1158,8 @@ class ANCServiceImplTest {
 		wrapperComorbidCondDetails.setProviderServiceMapID(1);
 		wrapperComorbidCondDetails.setVanID(1);
 		wrapperComorbidCondDetails.setVisitCode(1L);
+		
+		wrapperComorbidCondDetails.toString();
 
 		WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory = new WrapperFemaleObstetricHistory();
 		wrapperFemaleObstetricHistory.setBenVisitID(1L);
@@ -1283,6 +1171,8 @@ class ANCServiceImplTest {
 		wrapperFemaleObstetricHistory.setTotalNoOfPreg((short) 1);
 		wrapperFemaleObstetricHistory.setVanID(1);
 		wrapperFemaleObstetricHistory.setVisitCode(1L);
+		
+		wrapperFemaleObstetricHistory.toString();
 
 		WrapperImmunizationHistory wrapperImmunizationHistory = new WrapperImmunizationHistory();
 		wrapperImmunizationHistory.setBenVisitID(1L);
@@ -1294,6 +1184,8 @@ class ANCServiceImplTest {
 		wrapperImmunizationHistory.setProviderServiceMapID(1);
 		wrapperImmunizationHistory.setVanID(1);
 		wrapperImmunizationHistory.setVisitCode(1L);
+		
+		wrapperImmunizationHistory.toString();
 
 		WrapperMedicationHistory wrapperMedicationHistory = new WrapperMedicationHistory();
 		wrapperMedicationHistory.setBenVisitID(1L);
@@ -1304,6 +1196,9 @@ class ANCServiceImplTest {
 		wrapperMedicationHistory.setProviderServiceMapID(1);
 		wrapperMedicationHistory.setVanID(1);
 		wrapperMedicationHistory.setVisitCode(1L);
+		
+		wrapperMedicationHistory.toString();
+		
 		when(commonNurseServiceImpl.getFamilyHistory(Mockito.<Long>any(), Mockito.<Long>any()))
 				.thenReturn(benFamilyHistory);
 		when(commonNurseServiceImpl.getPastHistoryData(Mockito.<Long>any(), Mockito.<Long>any()))
@@ -1363,71 +1258,6 @@ class ANCServiceImplTest {
 	@Test
 	@Disabled("TODO: Complete this test")
 	void testGetANCExaminationDetailsData() {
-		// TODO: Diffblue Cover was only able to create a partial test for this method:
-		// Reason: No inputs found that don't throw a trivial exception.
-		// Diffblue Cover tried to run the arrange/act section, but the method under
-		// test threw
-		// com.google.gson.JsonIOException: Failed making field
-		// 'java.sql.Timestamp#nanos' accessible; either increase its visibility or
-		// write a custom TypeAdapter for its declaring type.
-		// at
-		// com.google.gson.internal.reflect.ReflectionHelper.makeAccessible(ReflectionHelper.java:38)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.getBoundFields(ReflectiveTypeAdapterFactory.java:286)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.create(ReflectiveTypeAdapterFactory.java:130)
-		// at com.google.gson.Gson.getAdapter(Gson.java:556)
-		// at
-		// com.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper.write(TypeAdapterRuntimeTypeWrapper.java:55)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$1.write(ReflectiveTypeAdapterFactory.java:196)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.write(ReflectiveTypeAdapterFactory.java:368)
-		// at
-		// com.google.gson.internal.bind.ObjectTypeAdapter.write(ObjectTypeAdapter.java:183)
-		// at
-		// com.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper.write(TypeAdapterRuntimeTypeWrapper.java:70)
-		// at
-		// com.google.gson.internal.bind.MapTypeAdapterFactory$Adapter.write(MapTypeAdapterFactory.java:207)
-		// at
-		// com.google.gson.internal.bind.MapTypeAdapterFactory$Adapter.write(MapTypeAdapterFactory.java:144)
-		// at com.google.gson.Gson.toJson(Gson.java:842)
-		// at com.google.gson.Gson.toJson(Gson.java:812)
-		// at com.google.gson.Gson.toJson(Gson.java:759)
-		// at com.google.gson.Gson.toJson(Gson.java:736)
-		// at
-		// com.iemr.mmu.service.anc.ANCServiceImpl.getANCExaminationDetailsData(ANCServiceImpl.java:1065)
-		// java.lang.reflect.InaccessibleObjectException: Unable to make field private
-		// int java.sql.Timestamp.nanos accessible: module java.sql does not "opens
-		// java.sql" to unnamed module @f87c6b6
-		// at
-		// com.google.gson.internal.reflect.ReflectionHelper.makeAccessible(ReflectionHelper.java:35)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.getBoundFields(ReflectiveTypeAdapterFactory.java:286)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.create(ReflectiveTypeAdapterFactory.java:130)
-		// at com.google.gson.Gson.getAdapter(Gson.java:556)
-		// at
-		// com.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper.write(TypeAdapterRuntimeTypeWrapper.java:55)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$1.write(ReflectiveTypeAdapterFactory.java:196)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.write(ReflectiveTypeAdapterFactory.java:368)
-		// at
-		// com.google.gson.internal.bind.ObjectTypeAdapter.write(ObjectTypeAdapter.java:183)
-		// at
-		// com.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper.write(TypeAdapterRuntimeTypeWrapper.java:70)
-		// at
-		// com.google.gson.internal.bind.MapTypeAdapterFactory$Adapter.write(MapTypeAdapterFactory.java:207)
-		// at
-		// com.google.gson.internal.bind.MapTypeAdapterFactory$Adapter.write(MapTypeAdapterFactory.java:144)
-		// at com.google.gson.Gson.toJson(Gson.java:842)
-		// at com.google.gson.Gson.toJson(Gson.java:812)
-		// at com.google.gson.Gson.toJson(Gson.java:759)
-		// at com.google.gson.Gson.toJson(Gson.java:736)
-		// at
-		// com.iemr.mmu.service.anc.ANCServiceImpl.getANCExaminationDetailsData(ANCServiceImpl.java:1065)
-		// See https://diff.blue/R013 to resolve this issue.
 
 		// Arrange
 		SysObstetricExamination sysObstetricExamination = new SysObstetricExamination();
@@ -1458,6 +1288,9 @@ class ANCServiceImplTest {
 		sysObstetricExamination.setVisitCode(1L);
 		sysObstetricExamination.setfHAndPOA_Interpretation("F HAnd POA Interpretation");
 		sysObstetricExamination.setfHAndPOA_Status("F HAnd POA Status");
+		
+		sysObstetricExamination.toString();
+		
 		when(aNCNurseServiceImpl.getSysObstetricExamination(Mockito.<Long>any(), Mockito.<Long>any()))
 				.thenReturn(sysObstetricExamination);
 
@@ -1500,6 +1333,8 @@ class ANCServiceImplTest {
 		phyGeneralExamination.setVanSerialNo(1L);
 		phyGeneralExamination.setVehicalNo("Vehical No");
 		phyGeneralExamination.setVisitCode(1L);
+		
+		phyGeneralExamination.toString();
 
 		PhyHeadToToeExamination phyHeadToToeExamination = new PhyHeadToToeExamination();
 		phyHeadToToeExamination.setBenVisitID(1L);
@@ -1532,6 +1367,8 @@ class ANCServiceImplTest {
 		phyHeadToToeExamination.setVanSerialNo(1L);
 		phyHeadToToeExamination.setVehicalNo("Vehical No");
 		phyHeadToToeExamination.setVisitCode(1L);
+		
+		phyHeadToToeExamination.toString();
 
 		SysCardiovascularExamination sysCardiovascularExamination = new SysCardiovascularExamination();
 		sysCardiovascularExamination.setAdditionalHeartSounds("Additional Heart Sounds");
@@ -1559,6 +1396,8 @@ class ANCServiceImplTest {
 		sysCardiovascularExamination.setVanSerialNo(1L);
 		sysCardiovascularExamination.setVehicalNo("Vehical No");
 		sysCardiovascularExamination.setVisitCode(1L);
+		
+		sysCardiovascularExamination.toString();
 
 		SysCentralNervousExamination sysCentralNervousExamination = new SysCentralNervousExamination();
 		sysCentralNervousExamination.setAutonomicSystem("Autonomic System");
@@ -1586,6 +1425,8 @@ class ANCServiceImplTest {
 		sysCentralNervousExamination.setVanSerialNo(1L);
 		sysCentralNervousExamination.setVehicalNo("Vehical No");
 		sysCentralNervousExamination.setVisitCode(1L);
+		
+		sysCentralNervousExamination.toString();
 
 		SysGenitourinarySystemExamination sysGenitourinarySystemExamination = new SysGenitourinarySystemExamination();
 		sysGenitourinarySystemExamination.setBenVisitID(1L);
@@ -1608,6 +1449,8 @@ class ANCServiceImplTest {
 		sysGenitourinarySystemExamination.setVanSerialNo(1L);
 		sysGenitourinarySystemExamination.setVehicalNo("Vehical No");
 		sysGenitourinarySystemExamination.setVisitCode(1L);
+		
+		sysGenitourinarySystemExamination.toString();
 
 		SysMusculoskeletalSystemExamination sysMusculoskeletalSystemExamination = new SysMusculoskeletalSystemExamination();
 		sysMusculoskeletalSystemExamination.setBenVisitID(1L);
@@ -1636,6 +1479,8 @@ class ANCServiceImplTest {
 		sysMusculoskeletalSystemExamination.setVanSerialNo(1L);
 		sysMusculoskeletalSystemExamination.setVehicalNo("Vehical No");
 		sysMusculoskeletalSystemExamination.setVisitCode(1L);
+		
+		sysMusculoskeletalSystemExamination.toString();
 
 		SysRespiratoryExamination sysRespiratoryExamination = new SysRespiratoryExamination();
 		sysRespiratoryExamination.setAuscultation("Auscultation");
@@ -1667,6 +1512,9 @@ class ANCServiceImplTest {
 		sysRespiratoryExamination.setVanSerialNo(1L);
 		sysRespiratoryExamination.setVehicalNo("Vehical No");
 		sysRespiratoryExamination.setVisitCode(1L);
+		
+		sysRespiratoryExamination.toString();
+		
 		when(commonNurseServiceImpl.getGeneralExaminationData(Mockito.<Long>any(), Mockito.<Long>any()))
 				.thenReturn(phyGeneralExamination);
 		when(commonNurseServiceImpl.getHeadToToeExaminationData(Mockito.<Long>any(), Mockito.<Long>any()))
@@ -1689,75 +1537,6 @@ class ANCServiceImplTest {
 	@Test
 	@Disabled("TODO: Complete this test")
 	void testGetBenANCNurseData() {
-		// TODO: Diffblue Cover was only able to create a partial test for this method:
-		// Reason: No inputs found that don't throw a trivial exception.
-		// Diffblue Cover tried to run the arrange/act section, but the method under
-		// test threw
-		// com.google.gson.JsonIOException: Failed making field
-		// 'java.sql.Timestamp#nanos' accessible; either increase its visibility or
-		// write a custom TypeAdapter for its declaring type.
-		// at
-		// com.google.gson.internal.reflect.ReflectionHelper.makeAccessible(ReflectionHelper.java:38)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.getBoundFields(ReflectiveTypeAdapterFactory.java:286)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.create(ReflectiveTypeAdapterFactory.java:130)
-		// at com.google.gson.Gson.getAdapter(Gson.java:556)
-		// at
-		// com.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper.write(TypeAdapterRuntimeTypeWrapper.java:55)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$1.write(ReflectiveTypeAdapterFactory.java:196)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.write(ReflectiveTypeAdapterFactory.java:368)
-		// at
-		// com.google.gson.internal.bind.ObjectTypeAdapter.write(ObjectTypeAdapter.java:183)
-		// at
-		// com.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper.write(TypeAdapterRuntimeTypeWrapper.java:70)
-		// at
-		// com.google.gson.internal.bind.MapTypeAdapterFactory$Adapter.write(MapTypeAdapterFactory.java:207)
-		// at
-		// com.google.gson.internal.bind.MapTypeAdapterFactory$Adapter.write(MapTypeAdapterFactory.java:144)
-		// at com.google.gson.Gson.toJson(Gson.java:842)
-		// at com.google.gson.Gson.toJson(Gson.java:812)
-		// at com.google.gson.Gson.toJson(Gson.java:759)
-		// at com.google.gson.Gson.toJson(Gson.java:736)
-		// at
-		// com.iemr.mmu.service.anc.ANCServiceImpl.getBenANCHistoryDetails(ANCServiceImpl.java:1023)
-		// at
-		// com.iemr.mmu.service.anc.ANCServiceImpl.getBenANCNurseData(ANCServiceImpl.java:1438)
-		// java.lang.reflect.InaccessibleObjectException: Unable to make field private
-		// int java.sql.Timestamp.nanos accessible: module java.sql does not "opens
-		// java.sql" to unnamed module @f87c6b6
-		// at
-		// com.google.gson.internal.reflect.ReflectionHelper.makeAccessible(ReflectionHelper.java:35)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.getBoundFields(ReflectiveTypeAdapterFactory.java:286)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.create(ReflectiveTypeAdapterFactory.java:130)
-		// at com.google.gson.Gson.getAdapter(Gson.java:556)
-		// at
-		// com.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper.write(TypeAdapterRuntimeTypeWrapper.java:55)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$1.write(ReflectiveTypeAdapterFactory.java:196)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.write(ReflectiveTypeAdapterFactory.java:368)
-		// at
-		// com.google.gson.internal.bind.ObjectTypeAdapter.write(ObjectTypeAdapter.java:183)
-		// at
-		// com.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper.write(TypeAdapterRuntimeTypeWrapper.java:70)
-		// at
-		// com.google.gson.internal.bind.MapTypeAdapterFactory$Adapter.write(MapTypeAdapterFactory.java:207)
-		// at
-		// com.google.gson.internal.bind.MapTypeAdapterFactory$Adapter.write(MapTypeAdapterFactory.java:144)
-		// at com.google.gson.Gson.toJson(Gson.java:842)
-		// at com.google.gson.Gson.toJson(Gson.java:812)
-		// at com.google.gson.Gson.toJson(Gson.java:759)
-		// at com.google.gson.Gson.toJson(Gson.java:736)
-		// at
-		// com.iemr.mmu.service.anc.ANCServiceImpl.getBenANCHistoryDetails(ANCServiceImpl.java:1023)
-		// at
-		// com.iemr.mmu.service.anc.ANCServiceImpl.getBenANCNurseData(ANCServiceImpl.java:1438)
-		// See https://diff.blue/R013 to resolve this issue.
 
 		// Arrange
 		SysObstetricExamination sysObstetricExamination = new SysObstetricExamination();
@@ -1788,6 +1567,9 @@ class ANCServiceImplTest {
 		sysObstetricExamination.setVisitCode(1L);
 		sysObstetricExamination.setfHAndPOA_Interpretation("F HAnd POA Interpretation");
 		sysObstetricExamination.setfHAndPOA_Status("F HAnd POA Status");
+		
+		sysObstetricExamination.toString();
+		
 		when(aNCNurseServiceImpl.getSysObstetricExamination(Mockito.<Long>any(), Mockito.<Long>any()))
 				.thenReturn(sysObstetricExamination);
 		when(aNCNurseServiceImpl.getANCCareDetails(Mockito.<Long>any(), Mockito.<Long>any()))
@@ -1825,6 +1607,8 @@ class ANCServiceImplTest {
 		benFamilyHistory.setVanSerialNo(1L);
 		benFamilyHistory.setVehicalNo("Vehical No");
 		benFamilyHistory.setVisitCode(1L);
+		
+		benFamilyHistory.toString();
 
 		BenMedHistory benMedHistory = new BenMedHistory();
 		benMedHistory.setBenMedHistoryID(1L);
@@ -1863,6 +1647,8 @@ class ANCServiceImplTest {
 		benMedHistory.setYear_Of_Surgery(mock(Date.class));
 		benMedHistory.setYearofIllness(mock(Timestamp.class));
 		benMedHistory.setYearofSurgery(mock(Timestamp.class));
+		
+		benMedHistory.toString();
 
 		BenMenstrualDetails benMenstrualDetails = new BenMenstrualDetails();
 		benMenstrualDetails.setBenMenstrualID(1);
@@ -1896,6 +1682,8 @@ class ANCServiceImplTest {
 		benMenstrualDetails.setVehicalNo("Vehical No");
 		benMenstrualDetails.setVisitCode(1L);
 		benMenstrualDetails.setlMPDate(mock(Timestamp.class));
+		
+		benMenstrualDetails.toString();
 
 		BenPersonalHabit benPersonalHabit = new BenPersonalHabit();
 		benPersonalHabit.setAlcoholDuration(mock(Timestamp.class));
@@ -1940,6 +1728,8 @@ class ANCServiceImplTest {
 		benPersonalHabit.setVanSerialNo(1L);
 		benPersonalHabit.setVehicalNo("Vehical No");
 		benPersonalHabit.setVisitCode(1L);
+		
+		benPersonalHabit.toString();
 
 		PhyGeneralExamination phyGeneralExamination = new PhyGeneralExamination();
 		phyGeneralExamination.setBenVisitID(1L);
@@ -1980,6 +1770,8 @@ class ANCServiceImplTest {
 		phyGeneralExamination.setVanSerialNo(1L);
 		phyGeneralExamination.setVehicalNo("Vehical No");
 		phyGeneralExamination.setVisitCode(1L);
+		
+		phyGeneralExamination.toString();
 
 		PhyHeadToToeExamination phyHeadToToeExamination = new PhyHeadToToeExamination();
 		phyHeadToToeExamination.setBenVisitID(1L);
@@ -2012,6 +1804,8 @@ class ANCServiceImplTest {
 		phyHeadToToeExamination.setVanSerialNo(1L);
 		phyHeadToToeExamination.setVehicalNo("Vehical No");
 		phyHeadToToeExamination.setVisitCode(1L);
+		
+		phyHeadToToeExamination.toString();
 
 		SysCardiovascularExamination sysCardiovascularExamination = new SysCardiovascularExamination();
 		sysCardiovascularExamination.setAdditionalHeartSounds("Additional Heart Sounds");
@@ -2039,6 +1833,8 @@ class ANCServiceImplTest {
 		sysCardiovascularExamination.setVanSerialNo(1L);
 		sysCardiovascularExamination.setVehicalNo("Vehical No");
 		sysCardiovascularExamination.setVisitCode(1L);
+		
+		sysCardiovascularExamination.toString();
 
 		SysCentralNervousExamination sysCentralNervousExamination = new SysCentralNervousExamination();
 		sysCentralNervousExamination.setAutonomicSystem("Autonomic System");
@@ -2066,6 +1862,8 @@ class ANCServiceImplTest {
 		sysCentralNervousExamination.setVanSerialNo(1L);
 		sysCentralNervousExamination.setVehicalNo("Vehical No");
 		sysCentralNervousExamination.setVisitCode(1L);
+		
+		sysCentralNervousExamination.toString();
 
 		SysGenitourinarySystemExamination sysGenitourinarySystemExamination = new SysGenitourinarySystemExamination();
 		sysGenitourinarySystemExamination.setBenVisitID(1L);
@@ -2088,6 +1886,8 @@ class ANCServiceImplTest {
 		sysGenitourinarySystemExamination.setVanSerialNo(1L);
 		sysGenitourinarySystemExamination.setVehicalNo("Vehical No");
 		sysGenitourinarySystemExamination.setVisitCode(1L);
+		
+		sysGenitourinarySystemExamination.toString();
 
 		SysMusculoskeletalSystemExamination sysMusculoskeletalSystemExamination = new SysMusculoskeletalSystemExamination();
 		sysMusculoskeletalSystemExamination.setBenVisitID(1L);
@@ -2116,6 +1916,8 @@ class ANCServiceImplTest {
 		sysMusculoskeletalSystemExamination.setVanSerialNo(1L);
 		sysMusculoskeletalSystemExamination.setVehicalNo("Vehical No");
 		sysMusculoskeletalSystemExamination.setVisitCode(1L);
+		
+		sysMusculoskeletalSystemExamination.toString();
 
 		SysRespiratoryExamination sysRespiratoryExamination = new SysRespiratoryExamination();
 		sysRespiratoryExamination.setAuscultation("Auscultation");
@@ -2147,6 +1949,8 @@ class ANCServiceImplTest {
 		sysRespiratoryExamination.setVanSerialNo(1L);
 		sysRespiratoryExamination.setVehicalNo("Vehical No");
 		sysRespiratoryExamination.setVisitCode(1L);
+		
+		sysRespiratoryExamination.toString();
 
 		WrapperChildOptionalVaccineDetail wrapperChildOptionalVaccineDetail = new WrapperChildOptionalVaccineDetail();
 		wrapperChildOptionalVaccineDetail.setBenVisitID(1L);
@@ -2157,6 +1961,8 @@ class ANCServiceImplTest {
 		wrapperChildOptionalVaccineDetail.setProviderServiceMapID(1);
 		wrapperChildOptionalVaccineDetail.setVanID(1);
 		wrapperChildOptionalVaccineDetail.setVisitCode(1L);
+		
+		wrapperChildOptionalVaccineDetail.toString();
 
 		WrapperComorbidCondDetails wrapperComorbidCondDetails = new WrapperComorbidCondDetails();
 		wrapperComorbidCondDetails.setBenVisitID(1L);
@@ -2167,6 +1973,8 @@ class ANCServiceImplTest {
 		wrapperComorbidCondDetails.setProviderServiceMapID(1);
 		wrapperComorbidCondDetails.setVanID(1);
 		wrapperComorbidCondDetails.setVisitCode(1L);
+		
+		wrapperComorbidCondDetails.toString();
 
 		WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory = new WrapperFemaleObstetricHistory();
 		wrapperFemaleObstetricHistory.setBenVisitID(1L);
@@ -2178,6 +1986,8 @@ class ANCServiceImplTest {
 		wrapperFemaleObstetricHistory.setTotalNoOfPreg((short) 1);
 		wrapperFemaleObstetricHistory.setVanID(1);
 		wrapperFemaleObstetricHistory.setVisitCode(1L);
+		
+		wrapperFemaleObstetricHistory.toString();
 
 		WrapperImmunizationHistory wrapperImmunizationHistory = new WrapperImmunizationHistory();
 		wrapperImmunizationHistory.setBenVisitID(1L);
@@ -2189,6 +1999,8 @@ class ANCServiceImplTest {
 		wrapperImmunizationHistory.setProviderServiceMapID(1);
 		wrapperImmunizationHistory.setVanID(1);
 		wrapperImmunizationHistory.setVisitCode(1L);
+		
+		wrapperImmunizationHistory.toString();
 
 		WrapperMedicationHistory wrapperMedicationHistory = new WrapperMedicationHistory();
 		wrapperMedicationHistory.setBenVisitID(1L);
@@ -2199,6 +2011,9 @@ class ANCServiceImplTest {
 		wrapperMedicationHistory.setProviderServiceMapID(1);
 		wrapperMedicationHistory.setVanID(1);
 		wrapperMedicationHistory.setVisitCode(1L);
+		
+		wrapperMedicationHistory.toString();
+		
 		when(commonNurseServiceImpl.getFamilyHistory(Mockito.<Long>any(), Mockito.<Long>any()))
 				.thenReturn(benFamilyHistory);
 		when(commonNurseServiceImpl.getPastHistoryData(Mockito.<Long>any(), Mockito.<Long>any()))

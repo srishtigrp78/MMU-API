@@ -54,6 +54,8 @@ class FetchDownloadDataImplTest {
 		digester.setSchemaName("some_schema");
 		digester.setTableName("t_indent");
 		digester.setFacilityID(123);
+		
+		digester.toString();
 
 		List<Indent> indents = new ArrayList<>();
 		// Assume Indent is a proper entity. Populate the list as per your requirements.

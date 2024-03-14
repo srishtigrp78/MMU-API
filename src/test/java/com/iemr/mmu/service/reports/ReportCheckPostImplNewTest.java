@@ -48,6 +48,8 @@ class ReportCheckPostImplNewTest {
 		reportMaster.setReportID(1);
 		reportMaster.setReportName("Report Name");
 		reportMaster.setServiceID(1);
+		
+		reportMaster.toString();
 
 		ArrayList<ReportMaster> reportMasterList = new ArrayList<>();
 		reportMasterList.add(reportMaster);

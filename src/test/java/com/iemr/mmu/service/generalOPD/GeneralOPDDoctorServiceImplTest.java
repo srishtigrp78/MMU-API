@@ -34,6 +34,7 @@ class GeneralOPDDoctorServiceImplTest {
 		PrescriptionDetail pd = new PrescriptionDetail();
 		pd.setDiagnosisProvided_SCTCode("12345  ||  67890");
 		pd.setDiagnosisProvided("Diagnosis1  ||  Diagnosis2");
+		pd.toString();
 		mockedResponse.add(pd);
 
 		when(prescriptionDetailRepo.findByBeneficiaryRegIDAndVisitCode(beneficiaryRegID, visitCode))

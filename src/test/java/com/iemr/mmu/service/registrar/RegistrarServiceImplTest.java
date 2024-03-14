@@ -1,28 +1,32 @@
 package com.iemr.mmu.service.registrar;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.iemr.mmu.data.registrar.BenGovIdMapping;
 import com.iemr.mmu.data.registrar.BeneficiaryData;
 import com.iemr.mmu.data.registrar.BeneficiaryDemographicAdditional;
 import com.iemr.mmu.data.registrar.BeneficiaryDemographicData;
@@ -78,8 +82,11 @@ class RegistrarServiceImplTest {
 	@Mock
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
 
+	@Mock
+	private RestTemplate restTemplate;
+
 	@InjectMocks
-	RegistrarServiceImpl registrarServiceImpl;
+	private RegistrarServiceImpl registrarServiceImpl;
 
 	@Test
 	void testCreateBeneficiary() {
@@ -223,6 +230,8 @@ class RegistrarServiceImplTest {
 		fail("Not yet implemented");
 	}
 
+	
+
 	@Test
 	void testGetBenImage() {
 		fail("Not yet implemented");
@@ -280,12 +289,34 @@ class RegistrarServiceImplTest {
 
 	@Test
 	void testBeneficiaryAdvanceSearch() {
-		fail("Not yet implemented");
+		// Arrange
+		String requestObj = "{\"key\":\"value\"}";
+		String authorization = "Bearer token";
+		String registrarAdvanceSearchUrl = "https://example.com/api/search";
+
+		String expectedResponseBody = "{\"response\":\"data\"}";
+		ResponseEntity<String> mockedResponse = new ResponseEntity<>(expectedResponseBody, HttpStatus.OK);
+
+		when(restTemplate.exchange(eq(registrarAdvanceSearchUrl), eq(HttpMethod.POST), any(HttpEntity.class),
+				eq(String.class))).thenReturn(mockedResponse);
+
+		// Act
+		String result = registrarServiceImpl.beneficiaryAdvanceSearch(requestObj, authorization);
+
+		// Assert
+		assertEquals(expectedResponseBody, result);
 	}
 
 	@Test
-	void testSearchAndSubmitBeneficiaryToNurse() {
-		fail("Not yet implemented");
+	void testSearchAndSubmitBeneficiaryToNurse() throws Exception {
+		String requestOBJ = "test";
+		int i = 1;
+		when(commonBenStatusFlowServiceImpl.createBenFlowRecord(requestOBJ, null, null)).thenReturn(i);
+
+		int expResponse = registrarServiceImpl.searchAndSubmitBeneficiaryToNurse(requestOBJ);
+
+		assertEquals(i, expResponse);
+
 	}
 
 }

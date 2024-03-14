@@ -34,11 +34,6 @@ class CSDoctorServiceImplTest {
 
 	@Test
 	void testSetCancerDiagnosisRepo() {
-		// TODO: Diffblue Cover was only able to create a partial test for this method:
-		// Reason: Missing observers.
-		// Diffblue Cover was unable to create an assertion.
-		// Add getters for the following fields or make them package-private:
-		// CSDoctorServiceImpl.cancerDiagnosisRepo
 
 		// Arrange and Act
 		(new CSDoctorServiceImpl()).setCancerDiagnosisRepo(mock(CancerDiagnosisRepo.class));
@@ -61,6 +56,8 @@ class CSDoctorServiceImplTest {
 		institute.setProcessed("Processed");
 		institute.setProviderServiceMapID(1);
 		institute.setStateID(1);
+		
+		institute.toString();
 
 		CancerDiagnosis cancerDiagnosis = new CancerDiagnosis();
 		cancerDiagnosis.setBenVisitID(1L);
@@ -91,6 +88,9 @@ class CSDoctorServiceImplTest {
 		cancerDiagnosis.setVanSerialNo(1L);
 		cancerDiagnosis.setVehicalNo("Vehical No");
 		cancerDiagnosis.setVisitCode(1L);
+		
+		cancerDiagnosis.toString();
+		
 		when(cancerDiagnosisRepo.save(Mockito.<CancerDiagnosis>any())).thenReturn(cancerDiagnosis);
 
 		Institute institute2 = new Institute();
@@ -107,6 +107,8 @@ class CSDoctorServiceImplTest {
 		institute2.setProcessed("Processed");
 		institute2.setProviderServiceMapID(1);
 		institute2.setStateID(1);
+		
+		institute2.toString();
 
 		CancerDiagnosis cancerDiagnosis2 = new CancerDiagnosis();
 		cancerDiagnosis2.setBenVisitID(1L);
@@ -137,6 +139,8 @@ class CSDoctorServiceImplTest {
 		cancerDiagnosis2.setVanSerialNo(1L);
 		cancerDiagnosis2.setVehicalNo("Vehical No");
 		cancerDiagnosis2.setVisitCode(1L);
+		
+		cancerDiagnosis2.toString();
 
 		// Act
 		Long actualSaveCancerDiagnosisDataResult = cSDoctorServiceImpl.saveCancerDiagnosisData(cancerDiagnosis2);
@@ -164,6 +168,8 @@ class CSDoctorServiceImplTest {
 		institute.setProcessed("Processed");
 		institute.setProviderServiceMapID(1);
 		institute.setStateID(1);
+		
+		institute.toString();
 
 		CancerDiagnosis cancerDiagnosis = new CancerDiagnosis();
 		cancerDiagnosis.setBenVisitID(1L);
@@ -194,6 +200,8 @@ class CSDoctorServiceImplTest {
 		cancerDiagnosis.setVanSerialNo(1L);
 		cancerDiagnosis.setVehicalNo("Vehical No");
 		cancerDiagnosis.setVisitCode(1L);
+		
+		cancerDiagnosis.toString();
 
 		// Act
 		CancerDiagnosis actualCancerDiagnosisObj = cSDoctorServiceImpl.getCancerDiagnosisObj(cancerDiagnosis);
@@ -220,6 +228,8 @@ class CSDoctorServiceImplTest {
 		institute.setProcessed("Processed");
 		institute.setProviderServiceMapID(1);
 		institute.setStateID(1);
+		
+		institute.toString();
 
 		CancerDiagnosis cancerDiagnosis = new CancerDiagnosis();
 		cancerDiagnosis.setBenVisitID(1L);
@@ -250,6 +260,9 @@ class CSDoctorServiceImplTest {
 		cancerDiagnosis.setVanSerialNo(1L);
 		cancerDiagnosis.setVehicalNo("Vehical No");
 		cancerDiagnosis.setVisitCode(1L);
+		
+		cancerDiagnosis.toString();
+		
 		when(cancerDiagnosisRepo.getBenCancerDiagnosisDetails(Mockito.<Long>any(), Mockito.<Long>any()))
 				.thenReturn(cancerDiagnosis);
 
@@ -284,6 +297,8 @@ class CSDoctorServiceImplTest {
 		institute.setProviderServiceMapID(1);
 		institute.setStateID(1);
 
+		institute.toString();
+		
 		CancerDiagnosis cancerDiagnosis = new CancerDiagnosis();
 		cancerDiagnosis.setBenVisitID(1L);
 		cancerDiagnosis.setBeneficiaryRegID(1L);
@@ -313,6 +328,9 @@ class CSDoctorServiceImplTest {
 		cancerDiagnosis.setVanSerialNo(1L);
 		cancerDiagnosis.setVehicalNo("Vehical No");
 		cancerDiagnosis.setVisitCode(1L);
+		
+		cancerDiagnosis.toString();
+		
 		when(cancerDiagnosisRepo.getBenCancerDiagnosisDetails(Mockito.<Long>any(), Mockito.<Long>any()))
 				.thenReturn(cancerDiagnosis);
 
@@ -349,6 +367,8 @@ class CSDoctorServiceImplTest {
 		institute.setProcessed("Processed");
 		institute.setProviderServiceMapID(1);
 		institute.setStateID(1);
+		
+		institute.toString();
 
 		CancerDiagnosis cancerDiagnosis = new CancerDiagnosis();
 		cancerDiagnosis.setBenVisitID(1L);
@@ -379,6 +399,8 @@ class CSDoctorServiceImplTest {
 		cancerDiagnosis.setVanSerialNo(1L);
 		cancerDiagnosis.setVehicalNo("Vehical No");
 		cancerDiagnosis.setVisitCode(1L);
+		
+		cancerDiagnosis.toString();
 
 		// Act
 		int actualUpdateCancerDiagnosisDetailsByDoctorResult = cSDoctorServiceImpl

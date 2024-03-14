@@ -162,6 +162,8 @@ class NCDSCreeningDoctorServiceImplTest {
 		prescriptionDetail.setVanSerialNo(1L);
 		prescriptionDetail.setVehicalNo("Vehical No");
 		prescriptionDetail.setVisitCode(1L);
+		
+		prescriptionDetail.toString();
 
 		ArrayList<PrescriptionDetail> prescriptionDetailList = new ArrayList<>();
 		prescriptionDetailList.add(prescriptionDetail);

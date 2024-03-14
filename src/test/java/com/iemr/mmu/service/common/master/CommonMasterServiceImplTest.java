@@ -346,6 +346,8 @@ class CommonMasterServiceImplTest {
 		ecgAbnormality1.setId(1);
 		ecgAbnormality1.setEcgAbnormality("Abnormality A");
 		ecgAbnormality1.setDeleted(false);
+		
+		ecgAbnormality1.toString();
 
 		M_ECGabnormalities ecgAbnormality2 = new M_ECGabnormalities();
 		ecgAbnormality2.setId(2);

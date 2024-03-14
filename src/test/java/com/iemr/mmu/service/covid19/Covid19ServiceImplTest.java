@@ -108,11 +108,15 @@ class Covid19ServiceImplTest {
 		i_bendemographics.setDistrictName("District Name");
 		i_bendemographics.setServicePointID(1);
 		i_bendemographics.setServicePointName("Service Point Name");
+		
+		i_bendemographics.toString();
 
 		GenderMaster m_gender = new GenderMaster();
 		m_gender.setDeleted(true);
 		m_gender.setGenderID((short) 1);
 		m_gender.setGenderName("Gender Name");
+		
+		m_gender.toString();
 
 		BeneficiaryFlowStatus beneficiaryFlowStatus = new BeneficiaryFlowStatus();
 		beneficiaryFlowStatus.setAge("Age");
@@ -190,6 +194,9 @@ class Covid19ServiceImplTest {
 		beneficiaryFlowStatus.settCRequestDate(mock(Timestamp.class));
 		beneficiaryFlowStatus.settCSpecialistUserID(1);
 		beneficiaryFlowStatus.settC_SpecialistLabFlag((short) 1);
+		
+		beneficiaryFlowStatus.toString();
+		
 		when(beneficiaryFlowStatusRepo.checkExistData(Mockito.<Long>any(), Mockito.<Short>any()))
 				.thenReturn(beneficiaryFlowStatus);
 
@@ -1006,6 +1013,8 @@ class Covid19ServiceImplTest {
 		benChildDevelopmentHistory.setVanSerialNo(1L);
 		benChildDevelopmentHistory.setVehicalNo("Vehical No");
 		benChildDevelopmentHistory.setVisitCode(1L);
+		
+		benChildDevelopmentHistory.toString();
 
 		BenFamilyHistory benFamilyHistory = new BenFamilyHistory();
 		benFamilyHistory.setBenVisitID(1L);
@@ -1037,6 +1046,8 @@ class Covid19ServiceImplTest {
 		benFamilyHistory.setVanSerialNo(1L);
 		benFamilyHistory.setVehicalNo("Vehical No");
 		benFamilyHistory.setVisitCode(1L);
+		
+		benFamilyHistory.toString();
 
 		BenMedHistory benMedHistory = new BenMedHistory();
 		benMedHistory.setBenMedHistoryID(1L);
@@ -1075,6 +1086,8 @@ class Covid19ServiceImplTest {
 		benMedHistory.setYear_Of_Surgery(mock(Date.class));
 		benMedHistory.setYearofIllness(mock(Timestamp.class));
 		benMedHistory.setYearofSurgery(mock(Timestamp.class));
+		
+		benMedHistory.toString();
 
 		BenMenstrualDetails benMenstrualDetails = new BenMenstrualDetails();
 		benMenstrualDetails.setBenMenstrualID(1);
@@ -1152,6 +1165,8 @@ class Covid19ServiceImplTest {
 		benPersonalHabit.setVanSerialNo(1L);
 		benPersonalHabit.setVehicalNo("Vehical No");
 		benPersonalHabit.setVisitCode(1L);
+		
+		benPersonalHabit.toString();
 
 		ChildFeedingDetails childFeedingDetails = new ChildFeedingDetails();
 		childFeedingDetails.setBenMotherID(1L);
@@ -1178,6 +1193,8 @@ class Covid19ServiceImplTest {
 		childFeedingDetails.setVanSerialNo(1L);
 		childFeedingDetails.setVehicalNo("Vehical No");
 		childFeedingDetails.setVisitCode(1L);
+		
+		childFeedingDetails.toString();
 
 		PerinatalHistory perinatalHistory = new PerinatalHistory();
 		perinatalHistory.setBenVisitID(1L);
@@ -1208,6 +1225,8 @@ class Covid19ServiceImplTest {
 		perinatalHistory.setVehicalNo("Vehical No");
 		perinatalHistory.setVisitCode(1L);
 
+		perinatalHistory.toString();
+		
 		WrapperChildOptionalVaccineDetail wrapperChildOptionalVaccineDetail = new WrapperChildOptionalVaccineDetail();
 		wrapperChildOptionalVaccineDetail.setBenVisitID(1L);
 		wrapperChildOptionalVaccineDetail.setBeneficiaryRegID(1L);
@@ -1217,6 +1236,8 @@ class Covid19ServiceImplTest {
 		wrapperChildOptionalVaccineDetail.setProviderServiceMapID(1);
 		wrapperChildOptionalVaccineDetail.setVanID(1);
 		wrapperChildOptionalVaccineDetail.setVisitCode(1L);
+		
+		wrapperChildOptionalVaccineDetail.toString();
 
 		WrapperComorbidCondDetails wrapperComorbidCondDetails = new WrapperComorbidCondDetails();
 		wrapperComorbidCondDetails.setBenVisitID(1L);
@@ -1227,6 +1248,8 @@ class Covid19ServiceImplTest {
 		wrapperComorbidCondDetails.setProviderServiceMapID(1);
 		wrapperComorbidCondDetails.setVanID(1);
 		wrapperComorbidCondDetails.setVisitCode(1L);
+		
+		wrapperComorbidCondDetails.toString();
 
 		WrapperFemaleObstetricHistory wrapperFemaleObstetricHistory = new WrapperFemaleObstetricHistory();
 		wrapperFemaleObstetricHistory.setBenVisitID(1L);
@@ -1238,6 +1261,8 @@ class Covid19ServiceImplTest {
 		wrapperFemaleObstetricHistory.setTotalNoOfPreg((short) 1);
 		wrapperFemaleObstetricHistory.setVanID(1);
 		wrapperFemaleObstetricHistory.setVisitCode(1L);
+		
+		wrapperFemaleObstetricHistory.toString();
 
 		WrapperImmunizationHistory wrapperImmunizationHistory = new WrapperImmunizationHistory();
 		wrapperImmunizationHistory.setBenVisitID(1L);
@@ -1249,6 +1274,8 @@ class Covid19ServiceImplTest {
 		wrapperImmunizationHistory.setProviderServiceMapID(1);
 		wrapperImmunizationHistory.setVanID(1);
 		wrapperImmunizationHistory.setVisitCode(1L);
+		
+		wrapperImmunizationHistory.toString();
 
 		WrapperMedicationHistory wrapperMedicationHistory = new WrapperMedicationHistory();
 		wrapperMedicationHistory.setBenVisitID(1L);
@@ -1259,6 +1286,9 @@ class Covid19ServiceImplTest {
 		wrapperMedicationHistory.setProviderServiceMapID(1);
 		wrapperMedicationHistory.setVanID(1);
 		wrapperMedicationHistory.setVisitCode(1L);
+		
+		wrapperMedicationHistory.toString();
+		
 		when(commonNurseServiceImpl.getDevelopmentHistory(Mockito.<Long>any(), Mockito.<Long>any()))
 				.thenReturn(benChildDevelopmentHistory);
 		when(commonNurseServiceImpl.getFamilyHistory(Mockito.<Long>any(), Mockito.<Long>any()))
@@ -1500,6 +1530,8 @@ class Covid19ServiceImplTest {
 		prescriptionDetail.setVanSerialNo(1L);
 		prescriptionDetail.setVehicalNo("findings");
 		prescriptionDetail.setVisitCode(1L);
+		
+		prescriptionDetail.toString();
 
 		ArrayList<PrescriptionDetail> prescriptionDetailList = new ArrayList<>();
 		prescriptionDetailList.add(prescriptionDetail);

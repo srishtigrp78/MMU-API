@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -48,6 +49,34 @@ class IemrMmuLoginServiceImplTest {
 
 	@InjectMocks
 	IemrMmuLoginServiceImpl iemrMmuLoginServiceImpl;
+
+	@Test
+	void testGetUserServicePointVanDetailsWithEmptyVanAndServicePointLists() {
+		Integer userId = 1;
+		// Simulate the parking place list returned by the repo
+		when(userParkingplaceMappingRepo.getUserParkingPlce(userId)).thenReturn(Collections.singletonList(
+				new Object[] { 1, "stateId", "stateName", "districtId", "districtName", "blockId", "blockName" }));
+		// Simulate empty responses for van and service point lists
+		when(masterVanRepo.getUserVanDatails(anySet())).thenReturn(Collections.emptyList());
+		when(vanServicepointMappingRepo.getuserSpSessionDetails(anySet())).thenReturn(Collections.emptyList());
+
+		String result = iemrMmuLoginServiceImpl.getUserServicePointVanDetails(userId);
+		Map<String, Object> resultMap = new Gson().fromJson(result, Map.class);
+
+		assertTrue(resultMap.containsKey("userVanDetails"));
+		assertTrue(resultMap.containsKey("userSpDetails"));
+		assertTrue(resultMap.containsKey("parkingPlaceLocationList"));
+
+		List<Map<String, Object>> vanDetails = (List<Map<String, Object>>) resultMap.get("userVanDetails");
+		List<Map<String, Object>> spDetails = (List<Map<String, Object>>) resultMap.get("userSpDetails");
+
+		// Check if a single empty map was added to each list for the "else" conditions
+		assertEquals(1, vanDetails.size());
+		assertTrue(vanDetails.get(0).isEmpty());
+
+		assertEquals(1, spDetails.size());
+		assertTrue(spDetails.get(0).isEmpty());
+	}
 
 	@Test
 	void testGetUserServicePointVanDetailsWithNoParkingPlaces() {

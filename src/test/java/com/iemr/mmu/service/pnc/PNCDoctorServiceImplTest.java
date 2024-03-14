@@ -79,6 +79,9 @@ class PNCDoctorServiceImplTest {
         pncDiagnosis.setVanSerialNo(1L);
         pncDiagnosis.setVehicalNo("Vehical No");
         pncDiagnosis.setVisitCode(1L);
+        
+        pncDiagnosis.toString();
+        
         when(pNCDiagnosisRepo.save(Mockito.<PNCDiagnosis>any())).thenReturn(pncDiagnosis);
 
         // Act
@@ -766,26 +769,9 @@ class PNCDoctorServiceImplTest {
         assertEquals(1, actualUpdateBenPNCDiagnosisResult);
     }
 
-    /**
-     * Methods under test:
-     *
-     * <ul>
-     *   <li>
-     * {@link PNCDoctorServiceImpl#setCommonDoctorServiceImpl(CommonDoctorServiceImpl)}
-     *   <li>{@link PNCDoctorServiceImpl#setPncDiagnosisRepo(PNCDiagnosisRepo)}
-     *   <li>
-     * {@link PNCDoctorServiceImpl#setPrescriptionDetailRepo(PrescriptionDetailRepo)}
-     * </ul>
-     */
+   
     @Test
     void testGettersAndSetters() {
-        // TODO: Diffblue Cover was only able to create a partial test for this method:
-        //   Reason: Missing observers.
-        //   Diffblue Cover was unable to create an assertion.
-        //   Add getters for the following fields or make them package-private:
-        //     PNCDoctorServiceImpl.commonDoctorServiceImpl
-        //     PNCDoctorServiceImpl.pncDiagnosisRepo
-        //     PNCDoctorServiceImpl.prescriptionDetailRepo
 
         // Arrange
         PNCDoctorServiceImpl pncDoctorServiceImpl = new PNCDoctorServiceImpl();

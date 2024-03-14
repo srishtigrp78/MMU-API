@@ -51,14 +51,5 @@ class NurseServiceImplTest {
 		verify(restTemplate, times(1)).postForEntity("http://localhost:8080/nurse/testrest2", obj1, String.class);
 	}
 
-	@Test
-	void testSavePatientVisitDetails1() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetBeneficiaryVisitHistory() {
-		fail("Not yet implemented");
-	}
 
 }

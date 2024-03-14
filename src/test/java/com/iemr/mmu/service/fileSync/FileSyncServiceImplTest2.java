@@ -1,88 +1,104 @@
 package com.iemr.mmu.service.fileSync;
 
-import java.io.IOException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import org.junit.jupiter.api.BeforeEach;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
 import org.springframework.test.util.ReflectionTestUtils;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.anyMap;
-import static org.mockito.Mockito.when;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.iemr.mmu.utils.exception.IEMRException;
+import com.google.gson.Gson;
 import com.iemr.mmu.utils.http.HttpUtils;
-
-//class FileSyncServiceImplTest2 {
-
-//	@Test
-//	void testGetServerCredential() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	void testSyncFiles() {
-//		fail("Not yet implemented");
-//	}
 
 @ExtendWith(MockitoExtension.class)
 class FileSyncServiceImplTest2 {
-    
-    @InjectMocks
-    private FileSyncServiceImpl fileSyncServiceImplUnderTest;
 
-    @Mock
-    private HttpUtils httpUtilsMock;
+	@InjectMocks
+	private FileSyncServiceImpl fileSyncService;
 
-    // Assume ServerCredential and other classes are appropriately mocked or instantiated.
+	@Mock
+	private HttpUtils httpUtils;
 
-    @BeforeEach
-    void setUp() {
-        ReflectionTestUtils.setField(fileSyncServiceImplUnderTest, "serverIP", "testServerIP");
-        ReflectionTestUtils.setField(fileSyncServiceImplUnderTest, "serverDomain", "testServerDomain");
-        ReflectionTestUtils.setField(fileSyncServiceImplUnderTest, "serverUserName", "testServerUserName");
-        ReflectionTestUtils.setField(fileSyncServiceImplUnderTest, "serverPassword", "testServerPassword");
-        ReflectionTestUtils.setField(fileSyncServiceImplUnderTest, "getServerCredentialURL", "testGetServerCredentialURL");
-        ReflectionTestUtils.setField(fileSyncServiceImplUnderTest, "localFolderToSync", "testLocalFolderToSync");
-        ReflectionTestUtils.setField(fileSyncServiceImplUnderTest, "serverFolder", "testServerFolder");
-    }
+	@Mock
+	private Logger logger;
 
-    @Test
-    void testGetServerCredential() {
-        String expectedJson = "{\"serverIP\":\"testServerIP\",\"serverDomain\":\"testServerDomain\",\"serverUserName\":\"testServerUserName\",\"serverPassword\":\"testServerPassword\"}";
-        String actualJson = fileSyncServiceImplUnderTest.getServerCredential();
-        assertThat(actualJson).isEqualTo(expectedJson);
-    }
+	@Mock
+	private Process process;
 
-    @Test
-    void testSyncFilesSuccess() throws Exception {
-        when(httpUtilsMock.get(anyString())).thenReturn("{\"statusCode\":200,\"data\":\"{...}\"}"); // Mock successful response
+	@Mock
+	private Runtime runtime;
 
-        String result = fileSyncServiceImplUnderTest.syncFiles("ServerAuthorization");
-        assertThat(result).isEqualTo("File Sync activity Completed");
-    }
+	@Test
+	void testGetServerCredential() {
+		// Arrange
+		String expectedServerIP = "192.168.1.1";
+		String expectedServerDomain = "example.com";
+		String expectedServerUserName = "user";
+		String expectedServerPassword = "password";
 
-    @Test
-    void testSyncFilesFailureIEMRException() throws Exception {
-        when(httpUtilsMock.get(anyString())).thenReturn("{\"statusCode\":400,\"errorMessage\":\"User ID Failure\"}"); // Mock failure response
+		Map<String, String> expectedMap = new HashMap<>();
+		expectedMap.put("serverIP", expectedServerIP);
+		expectedMap.put("serverDomain", expectedServerDomain);
+		expectedMap.put("serverUserName", expectedServerUserName);
+		expectedMap.put("serverPassword", expectedServerPassword);
 
-        assertThatThrownBy(() -> fileSyncServiceImplUnderTest.syncFiles("ServerAuthorization"))
-                .isInstanceOf(IEMRException.class)
-                .hasMessageContaining("User ID Failure");
-    }
+		String expectedJsonResult = new Gson().toJson(expectedMap);
 
-    @Test
-    void testSyncFilesIOException() throws Exception {
-        when(httpUtilsMock.get(anyString())).thenThrow(new IOException("Network Error")); // Simulate IOException
+		// Set the private fields using ReflectionTestUtils
+		ReflectionTestUtils.setField(fileSyncService, "serverIP", expectedServerIP);
+		ReflectionTestUtils.setField(fileSyncService, "serverDomain", expectedServerDomain);
+		ReflectionTestUtils.setField(fileSyncService, "serverUserName", expectedServerUserName);
+		ReflectionTestUtils.setField(fileSyncService, "serverPassword", expectedServerPassword);
 
-        assertThatThrownBy(() -> fileSyncServiceImplUnderTest.syncFiles("ServerAuthorization"))
-                .isInstanceOf(IOException.class)
-                .hasMessageContaining("Network Error");
-    }
+		// Act
+		String actualJsonResult = fileSyncService.getServerCredential();
+
+		// Assert
+		assertEquals(expectedJsonResult, actualJsonResult);
+	}
+
+	@Test
+	void testSyncFilesSuccess() throws Exception {
+		// Setup mock behavior
+		when(httpUtils.get(anyString(),any(HashMap.class))).thenReturn(
+				"{\"statusCode\":200, \"data\":\"{\\\"serverIP\\\":\\\"127.0.0.1\\\",\\\"serverDomain\\\":\\\"local\\\",\\\"serverUserName\\\":\\\"user\\\",\\\"serverPassword\\\":\\\"pass\\\"}\"}");
+
+		// Execute the method
+		String result = fileSyncService.syncFiles("Bearer some-token");
+
+		// Verify result
+		assertEquals("File Sync activity Completed", result);
+
+		// Verify interactions
+		verify(httpUtils).get(anyString(),any(HashMap.class));
+	}
+
+	@Test
+	void testSyncFilesFailure()  {
+		// Assume your service behaves differently on a specific error condition
+		when(httpUtils.get(anyString())).thenThrow( IOException.class);
+
+		// Handling the exception in the test
+		Exception exception = assertThrows(IOException.class, () -> fileSyncService.syncFiles("Bearer some-token"));
+
+		// Verify the exception message
+		assertTrue(exception.getMessage().contains("Failed to connect"));
+
+		// Verify interactions
+		verify(httpUtils).get(anyString());
+	}
+
 }

@@ -16,8 +16,6 @@ import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import com.google.gson.JsonObject;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,14 +25,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.iemr.mmu.data.registrar.BeneficiaryData;
 import com.iemr.mmu.data.registrar.V_BenAdvanceSearch;
-import com.iemr.mmu.data.registrar.WrapperBeneficiaryRegistration;
+import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.master.RegistrarServiceMasterDataImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.nurse.NurseServiceImpl;
 import com.iemr.mmu.service.registrar.RegistrarServiceImpl;
-import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
@@ -57,6 +55,8 @@ class RegistrarControllerTest {
 	private NurseServiceImpl nurseServiceImpl;
 	@Mock
 	private CommonNurseServiceImpl commonNurseServiceImpl;
+	@Mock
+	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
 
 	@Test
 	void testGetRegistrarWorkList() throws JSONException {
@@ -584,8 +584,6 @@ class RegistrarControllerTest {
 		assertTrue(getBenImage.contains("Error while getting beneficiary image"));
 
 	}
-	
-	
 
 //	@Test
 //	void testCreateBeneficiary_if1() throws IEMRException {
@@ -1020,5 +1018,6 @@ class RegistrarControllerTest {
 		response.setError(5000, "Error while getting master data for registration");
 		assertEquals(response.toString(), registrarController.masterDataForRegistration(any()));
 	}
+	
 
 }

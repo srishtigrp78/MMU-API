@@ -116,6 +116,8 @@ class LabTechnicianServiceImplTest {
 		v_benLabTestOrderedDetails.setTestComponentID(1);
 		v_benLabTestOrderedDetails.setTestComponentName("amrith$%2022@&*piramal@@swasthya!#");
 		v_benLabTestOrderedDetails.setVisitCode(1L);
+		
+		v_benLabTestOrderedDetails.toString();
 
 		ArrayList<V_benLabTestOrderedDetails> v_benLabTestOrderedDetailsList = new ArrayList<>();
 		v_benLabTestOrderedDetailsList.add(v_benLabTestOrderedDetails);
@@ -325,6 +327,8 @@ class LabTechnicianServiceImplTest {
 		procedureData.setProcedureType("amrith$%2022@&*piramal@@swasthya!#");
 		procedureData.setProcessed("amrith$%2022@&*piramal@@swasthya!#");
 		procedureData.setProviderServiceMapID(1);
+		
+		procedureData.toString();
 
 		TestComponentMaster testComponentMaster = new TestComponentMaster();
 		testComponentMaster.setCreatedBy("Jan 1, 2020 8:00am GMT+0100");
@@ -346,6 +350,8 @@ class LabTechnicianServiceImplTest {
 		testComponentMaster.setTestComponentDesc("amrith$%2022@&*piramal@@swasthya!#");
 		testComponentMaster.setTestComponentID(1);
 		testComponentMaster.setTestComponentName("amrith$%2022@&*piramal@@swasthya!#");
+		
+		testComponentMaster.toString();
 
 		ProcedureData procedureData2 = new ProcedureData();
 		procedureData2.setCreatedBy("Jan 1, 2020 8:00am GMT+0100");
@@ -469,6 +475,8 @@ class LabTechnicianServiceImplTest {
 		labResultEntry.setVanSerialNo(1L);
 		labResultEntry.setVehicalNo("amrith$%2022@&*piramal@@swasthya!#");
 		labResultEntry.setVisitCode(1L);
+		
+		labResultEntry.toString();
 
 		ArrayList<LabResultEntry> labResultEntryList = new ArrayList<>();
 		labResultEntryList.add(labResultEntry);
@@ -578,6 +586,8 @@ class LabTechnicianServiceImplTest {
 		wrapperLabResults.setVanID(1);
 		wrapperLabResults.setVisitCode(1L);
 		wrapperLabResults.setVisitID(1L);
+		
+		wrapperLabResults.toString();
 
 		// Act and Assert
 		assertEquals(1, labTechnicianServiceImpl.saveLabTestResult(wrapperLabResults).intValue());
@@ -679,6 +689,8 @@ class LabTechnicianServiceImplTest {
 		testComponentMaster.setTestComponentDesc("Test Component Desc");
 		testComponentMaster.setTestComponentID(1);
 		testComponentMaster.setTestComponentName("Test Component Name");
+		
+		testComponentMaster.toString();
 
 		LabResultEntry labResultEntry = new LabResultEntry();
 		labResultEntry.setBenVisitID(1L);
@@ -752,6 +764,8 @@ class LabTechnicianServiceImplTest {
 		wrapperLabResults.setVanID(1);
 		wrapperLabResults.setVisitCode(1L);
 		wrapperLabResults.setVisitID(1L);
+		
+		wrapperLabResults.toString();
 
 		// Act
 		Integer actualSaveLabTestResultResult = labTechnicianServiceImpl.saveLabTestResult(wrapperLabResults);

@@ -1,39 +1,40 @@
 package com.iemr.mmu.service.common.transaction;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import com.google.gson.JsonObject;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-import org.springframework.http.*;
-import org.springframework.test.web.client.MockRestServiceServer;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.test.web.client.match.MockRestRequestMatchers;
-import org.springframework.test.web.client.response.MockRestResponseCreators;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
+import com.google.common.io.Files;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
-import com.iemr.mmu.data.nurse.CommonUtilityClass;
+import com.iemr.mmu.data.syncActivity_syncLayer.DownloadedCaseSheet;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.nurse.ncdscreening.IDRSDataRepo;
 import com.iemr.mmu.repo.provider.ProviderServiceMappingRepo;
@@ -50,6 +51,9 @@ import com.iemr.mmu.service.pnc.PNCServiceImpl;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
 import com.iemr.mmu.utils.AESEncryption.AESEncryptionDecryption;
 import com.iemr.mmu.utils.exception.IEMRException;
+import com.jayway.jsonpath.internal.Path;
+
+import jakarta.annotation.Resource;
 
 @ExtendWith(MockitoExtension.class)
 class CommonServiceImplTest {
@@ -87,6 +91,11 @@ class CommonServiceImplTest {
 	private IDRSDataRepo iDRSDataRepo;
 	@Mock
 	private EmployeeSignatureRepo employeeSignatureRepo;
+	@Mock
+	private ResponseEntity<String> responseEntity;
+	@Mock
+	private RestTemplate restTemplate;
+
 	@InjectMocks
 	CommonServiceImpl commonService;
 
@@ -95,22 +104,23 @@ class CommonServiceImplTest {
 		fail("Not yet implemented");
 	}
 
+	
 	@Test
 	void testGetCaseSheetPrintDataForBeneficiary() {
-		
-	BeneficiaryFlowStatus benFlowOBJ = new BeneficiaryFlowStatus() ;
-	
-	benFlowOBJ.setVisitCategory("Category1");
-	benFlowOBJ.toString();	
-	
-	String Authorization = "Authorization";
-	String visitCategory = benFlowOBJ.getVisitCategory();
-	String caseSheetData = null;
-	
-	
-	assertTrue(null != visitCategory && visitCategory.length() > 0);
-	
+
+		BeneficiaryFlowStatus benFlowOBJ = new BeneficiaryFlowStatus();
+
+		benFlowOBJ.setVisitCategory("Category1");
+		benFlowOBJ.toString();
+
+		String Authorization = "Authorization";
+		String visitCategory = benFlowOBJ.getVisitCategory();
+		String caseSheetData = null;
+
+		assertTrue(null != visitCategory && visitCategory.length() > 0);
+
 	}
+
 	@Test
 	void testGetBenPastHistoryData() {
 		// Arrange
@@ -382,10 +392,32 @@ class CommonServiceImplTest {
 		fail("Not yet implemented");
 	}
 
+//	@Test
+//	void testGetTmCaseSheetOffline() {
+//		fail("Not yet implemented");
+//	}
+
 	@Test
-	void testGetTmCaseSheetOffline() {
-		fail("Not yet implemented");
+	void testGetTmCaseSheetOfflineSuccess() throws IEMRException {
+		// Setup
+		Long visitCode = 1L;
+		String caseSheetResponseString = "Case Sheet Content";
+		BeneficiaryFlowStatus mmuBenFlowOBJ = new BeneficiaryFlowStatus();
+		mmuBenFlowOBJ.setVisitCode(visitCode);
+
+		DownloadedCaseSheet mockCaseSheet = mock(DownloadedCaseSheet.class);
+		when(mockCaseSheet.getTmCaseSheetResponse()).thenReturn(caseSheetResponseString);
+		when(downloadedCaseSheetRepo.getTmCaseSheetFromOffline(visitCode)).thenReturn(mockCaseSheet);
+
+		// Execution
+		String response = commonService.getTmCaseSheetOffline(mmuBenFlowOBJ);
+
+		// Assertions
+		assertEquals(caseSheetResponseString, response);
+		verify(downloadedCaseSheetRepo, times(1)).getTmCaseSheetFromOffline(visitCode);
 	}
+
+	// ************
 
 	@Test
 	void testGetBenPreviousReferralData() throws Exception {
@@ -430,19 +462,108 @@ class CommonServiceImplTest {
 		fail("Not yet implemented");
 	}
 
+//	@Test
+//	void testGetCaseSheetOfTm_Success() throws Exception {
+//		String mmuBenFlowReq = "{\"benVisitCode\":\"1\"}";
+//		String authCentralServer = "authToken";
+//
+//		// Use actual Gson for deserialization to avoid the complexity of mocking
+//		// TypeToken behavior.
+//		Gson gson = new Gson();
+//		BeneficiaryFlowStatus inputObj = gson.fromJson(mmuBenFlowReq, BeneficiaryFlowStatus.class);
+//
+//		// Assuming commonService.getTmVisitCode and commonService.getTmCaseSheet need
+//		// to be mocked
+//		BeneficiaryFlowStatus tmVisitCodeObj = new BeneficiaryFlowStatus();
+//		tmVisitCodeObj.setSpecialist_flag((short) 9);
+//		when(commonService.getTmVisitCode(anyLong())).thenReturn(tmVisitCodeObj);
+//
+//		ArrayList<String> mockData = new ArrayList<>();
+//		mockData.add("Sample Data");
+//		when(commonService.getTmCaseSheet(eq(tmVisitCodeObj), eq(inputObj), eq(authCentralServer)))
+//				.thenReturn(mockData);
+//
+//		// Call the method under test
+//		String result = commonService.getCaseSheetOfTm(mmuBenFlowReq, authCentralServer);
+//
+//		System.out.println(result);
+//
+//		assertNotNull(result);
+//		assertEquals("[Sample Data]", result);
+//	}
+
+//	@Test
+//	void testRestTemplatePost() {
+//		fail("Not yet implemented");
+//	}
+
 	@Test
 	void testRestTemplatePost() {
-		fail("Not yet implemented");
+		// Setup
+		String url = "https://example.com/api/data";
+		String authorization = "Bearer yourtoken";
+		String requestBody = "{\"name\":\"John\"}";
+		ResponseEntity<String> mockResponse = new ResponseEntity<>("{\"result\":\"success\"}", HttpStatus.OK);
+
+		// Mocking RestTemplate behavior
+		when(restTemplate.exchange(eq(url), eq(HttpMethod.POST), any(HttpEntity.class), eq(String.class)))
+				.thenReturn(mockResponse);
+
+		// Execute
+		ResponseEntity<String> response = commonService.restTemplatePost(url, authorization, requestBody);
+
+		System.out.println(response);
+		// Assert
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		assertEquals("{\"result\":\"success\"}", response.getBody());
 	}
+
+//	@Test
+//	void testRestTemplateGet() {
+//		fail("Not yet implemented");
+//	}
 
 	@Test
 	void testRestTemplateGet() {
-		fail("Not yet implemented");
+		// Given
+		String expectedResponse = "{\"key\":\"value\"}";
+		String url = "https://example.com/api/data";
+		String authorization = "Bearer yourtoken";
+
+		// Mocking RestTemplate behavior
+		when(restTemplate.exchange(eq(url), eq(HttpMethod.GET), any(HttpEntity.class), eq(String.class)))
+				.thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.OK));
+
+		// When
+		ResponseEntity<String> response = commonService.restTemplateGet(url, authorization);
+
+		// Then
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		assertEquals(expectedResponse, response.getBody());
 	}
+//
+//	@Test
+//	void testGetJsonObjj() {
+//		fail("Not yet implemented");
+//	}
 
 	@Test
-	void testGetJsonObjj() {
-		fail("Not yet implemented");
+	void testGetJsonObjWithValidJson() {
+		commonService = new CommonServiceImpl();
+		responseEntity = mock(ResponseEntity.class);
+		// Mocking the responseEntity to return a valid JSON string
+		String validJsonString = "{\"key\":\"value\"}";
+		when(responseEntity.getBody()).thenReturn(validJsonString);
+
+		// Calling the method under test
+		JsonObject result = commonService.getJsonObj(responseEntity);
+
+		// Preparing the expected result for comparison
+		JsonParser parser = new JsonParser();
+		JsonObject expected = parser.parse(validJsonString).getAsJsonObject();
+
+		// Asserting that the returned JsonObject matches the expected JsonObject
+		assertEquals(expected, result);
 	}
 
 }

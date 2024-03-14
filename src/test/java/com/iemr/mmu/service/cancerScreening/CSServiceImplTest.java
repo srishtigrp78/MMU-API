@@ -135,6 +135,8 @@ class CSServiceImplTest {
 		states.setStateID(1);
 		states.setStateIName("MD");
 		states.setStateName("MD");
+		
+		states.toString();
 
 		ZoneDistrictMapping zoneDistrictMapping = new ZoneDistrictMapping();
 		zoneDistrictMapping.setCreatedBy("Jan 1, 2020 8:00am GMT+0100");
@@ -148,6 +150,8 @@ class CSServiceImplTest {
 		zoneDistrictMapping.setProviderServiceMapID(1);
 		zoneDistrictMapping.setZoneDistrictMapID(1);
 		zoneDistrictMapping.setZoneID(1);
+		
+		zoneDistrictMapping.toString();
 
 		Districts m_district = new Districts();
 		m_district.setCreatedBy("Jan 1, 2020 8:00am GMT+0100");
@@ -160,6 +164,8 @@ class CSServiceImplTest {
 		m_district.setStateID(1);
 		m_district.setStates(states);
 		m_district.setZoneDistrictMapping(zoneDistrictMapping);
+		
+		m_district.toString();
 
 		States state = new States();
 		state.setCountryID(1);
@@ -191,6 +197,8 @@ class CSServiceImplTest {
 		providerServiceMapping.setState(state);
 		providerServiceMapping.setStateID(1);
 		providerServiceMapping.setStatusID(1);
+		
+		providerServiceMapping.toString();
 
 		BeneficiaryVisitDetail benVisitDetailsOBJ = new BeneficiaryVisitDetail();
 		benVisitDetailsOBJ.setBenVisitID(1L);
@@ -227,6 +235,8 @@ class CSServiceImplTest {
 		benVisitDetailsOBJ.setVisitReasonID((short) 1);
 		benVisitDetailsOBJ.setrCHID("R CHID");
 
+		benVisitDetailsOBJ.toString();
+		
 		CommonUtilityClass nurseUtilityClass = new CommonUtilityClass();
 		nurseUtilityClass.setBenFlowID(1L);
 		nurseUtilityClass.setBenVisitID(1L);
@@ -241,6 +251,8 @@ class CSServiceImplTest {
 		nurseUtilityClass.setSessionID(1);
 		nurseUtilityClass.setVanID(1);
 		nurseUtilityClass.setVisitCode(1L);
+		
+		nurseUtilityClass.toString();
 
 		// Act
 		Map<String, Long> actualSaveBenVisitDetailsResult = cSServiceImpl.saveBenVisitDetails(benVisitDetailsOBJ,
@@ -284,6 +296,8 @@ class CSServiceImplTest {
 		zoneDistrictMapping.setProviderServiceMapID(1);
 		zoneDistrictMapping.setZoneDistrictMapID(1);
 		zoneDistrictMapping.setZoneID(1);
+		
+		zoneDistrictMapping.toString();
 
 		Districts m_district = new Districts();
 		m_district.setCreatedBy("Jan 1, 2020 8:00am GMT+0100");
@@ -638,23 +652,7 @@ class CSServiceImplTest {
 
 	@Test
 	void testGettersAndSetters() {
-		// TODO: Diffblue Cover was only able to create a partial test for this method:
-		// Reason: Missing observers.
-		// Diffblue Cover was unable to create an assertion.
-		// Add getters for the following fields or make them package-private:
-		// CSServiceImpl.beneficiaryFlowStatusRepo
-		// CSServiceImpl.cSCarestreamServiceImpl
-		// CSServiceImpl.cSDoctorServiceImpl
-		// CSServiceImpl.cSNurseServiceImpl
-		// CSServiceImpl.commonBenStatusFlowServiceImpl
-		// CSServiceImpl.commonDoctorServiceImpl
-		// CSServiceImpl.commonNurseServiceImpl
-		// CSServiceImpl.csOncologistServiceImpl
-		// CSServiceImpl.logger
-		// CSServiceImpl.registrarQuickSearchByIdUrl
-		// CSServiceImpl.registrarRepoBenData
-		// CSServiceImpl.teleConsultationServiceImpl
-		// CSServiceImpl.tmReferCheckValue
+	
 
 		// Arrange
 		CSServiceImpl csServiceImpl = new CSServiceImpl();
@@ -756,6 +754,8 @@ class CSServiceImplTest {
 		benCancerVitalDetail.setWaistCircumference_cm(10.0d);
 		benCancerVitalDetail.setWeight_Kg(10.0d);
 		benCancerVitalDetail.setsPO2("S PO2");
+		
+		benCancerVitalDetail.toString();
 
 		// Act
 		int actualUpdateBenVitalDetailResult = cSServiceImpl.updateBenVitalDetail(benCancerVitalDetail);
@@ -969,6 +969,8 @@ class CSServiceImplTest {
 		benObstetricCancerHistory.setVanSerialNo(1L);
 		benObstetricCancerHistory.setVehicalNo("Vehical No");
 		benObstetricCancerHistory.setVisitCode(1L);
+		
+		benObstetricCancerHistory.toString();
 
 		BenPersonalCancerDietHistory benPersonalCancerDietHistory = new BenPersonalCancerDietHistory();
 		benPersonalCancerDietHistory.setBenVisitID(1L);
@@ -1003,6 +1005,8 @@ class CSServiceImplTest {
 		benPersonalCancerDietHistory.setVehicalNo("Vehical No");
 		benPersonalCancerDietHistory.setVisitCode(1L);
 
+		benPersonalCancerDietHistory.toString();
+		
 		BenPersonalCancerHistory benPersonalCancerHistory = new BenPersonalCancerHistory();
 		benPersonalCancerHistory.setAlcoholUse("Alcohol Use");
 		benPersonalCancerHistory.setBenVisitID(1L);
@@ -1037,6 +1041,9 @@ class CSServiceImplTest {
 		benPersonalCancerHistory.setVanSerialNo(1L);
 		benPersonalCancerHistory.setVehicalNo("Vehical No");
 		benPersonalCancerHistory.setVisitCode(1L);
+		
+		benPersonalCancerHistory.toString();
+		
 		when(cSNurseServiceImpl.getBenObstetricDetailsData(Mockito.<Long>any(), Mockito.<Long>any()))
 				.thenReturn(benObstetricCancerHistory);
 		when(cSNurseServiceImpl.getBenPersonalCancerDietHistoryData(Mockito.<Long>any(), Mockito.<Long>any()))
@@ -2259,6 +2266,8 @@ class CSServiceImplTest {
 		cancerDiagnosis.setVanSerialNo(1L);
 		cancerDiagnosis.setVehicalNo("Vehical No");
 		cancerDiagnosis.setVisitCode(1L);
+		
+		cancerDiagnosis.toString();
 
 		// Act
 		int actualUpdateCancerDiagnosisDetailsByOncologistResult = cSServiceImpl

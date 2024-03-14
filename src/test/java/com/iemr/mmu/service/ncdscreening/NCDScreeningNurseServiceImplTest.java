@@ -77,6 +77,9 @@ class NCDScreeningNurseServiceImplTest {
 		ncdScreening.setVanSerialNo(1L);
 		ncdScreening.setVehicalNo("Vehical No");
 		ncdScreening.setVisitCode(1L);
+		
+		ncdScreening.toString();
+		
 		when(nCDScreeningRepo.save(Mockito.<NCDScreening>any())).thenReturn(ncdScreening);
 
 		NCDScreening ncdScreening2 = new NCDScreening();

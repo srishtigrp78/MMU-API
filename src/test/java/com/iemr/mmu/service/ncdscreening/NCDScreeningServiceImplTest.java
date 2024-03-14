@@ -111,7 +111,7 @@ import com.iemr.mmu.service.tele_consultation.TeleConsultationServiceImpl;
 import com.iemr.mmu.utils.exception.IEMRException;
 
 @ExtendWith(MockitoExtension.class)
-class NCDScreeningServiceImplDiffblueTest {
+class NCDScreeningServiceImplTest {
 	@Mock
 	private BenVisitDetailRepo benVisitDetailRepo;
 
@@ -158,71 +158,6 @@ class NCDScreeningServiceImplDiffblueTest {
 	@Test
 	@Disabled("TODO: Complete this test")
 	void testGetBenHistoryDetails() {
-		// TODO: Diffblue Cover was only able to create a partial test for this method:
-		// Reason: No inputs found that don't throw a trivial exception.
-		// Diffblue Cover tried to run the arrange/act section, but the method under
-		// test threw
-		// com.google.gson.JsonIOException: Failed making field
-		// 'java.sql.Timestamp#nanos' accessible; either increase its visibility or
-		// write a custom TypeAdapter for its declaring type.
-		// at
-		// com.google.gson.internal.reflect.ReflectionHelper.makeAccessible(ReflectionHelper.java:38)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.getBoundFields(ReflectiveTypeAdapterFactory.java:286)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.create(ReflectiveTypeAdapterFactory.java:130)
-		// at com.google.gson.Gson.getAdapter(Gson.java:556)
-		// at
-		// com.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper.write(TypeAdapterRuntimeTypeWrapper.java:55)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$1.write(ReflectiveTypeAdapterFactory.java:196)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.write(ReflectiveTypeAdapterFactory.java:368)
-		// at
-		// com.google.gson.internal.bind.ObjectTypeAdapter.write(ObjectTypeAdapter.java:183)
-		// at
-		// com.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper.write(TypeAdapterRuntimeTypeWrapper.java:70)
-		// at
-		// com.google.gson.internal.bind.MapTypeAdapterFactory$Adapter.write(MapTypeAdapterFactory.java:207)
-		// at
-		// com.google.gson.internal.bind.MapTypeAdapterFactory$Adapter.write(MapTypeAdapterFactory.java:144)
-		// at com.google.gson.Gson.toJson(Gson.java:842)
-		// at com.google.gson.Gson.toJson(Gson.java:812)
-		// at com.google.gson.Gson.toJson(Gson.java:759)
-		// at com.google.gson.Gson.toJson(Gson.java:736)
-		// at
-		// com.iemr.mmu.service.ncdscreening.NCDScreeningServiceImpl.getBenHistoryDetails(NCDScreeningServiceImpl.java:972)
-		// java.lang.reflect.InaccessibleObjectException: Unable to make field private
-		// int java.sql.Timestamp.nanos accessible: module java.sql does not "opens
-		// java.sql" to unnamed module @9e90c9b
-		// at
-		// com.google.gson.internal.reflect.ReflectionHelper.makeAccessible(ReflectionHelper.java:35)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.getBoundFields(ReflectiveTypeAdapterFactory.java:286)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.create(ReflectiveTypeAdapterFactory.java:130)
-		// at com.google.gson.Gson.getAdapter(Gson.java:556)
-		// at
-		// com.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper.write(TypeAdapterRuntimeTypeWrapper.java:55)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$1.write(ReflectiveTypeAdapterFactory.java:196)
-		// at
-		// com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.write(ReflectiveTypeAdapterFactory.java:368)
-		// at
-		// com.google.gson.internal.bind.ObjectTypeAdapter.write(ObjectTypeAdapter.java:183)
-		// at
-		// com.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper.write(TypeAdapterRuntimeTypeWrapper.java:70)
-		// at
-		// com.google.gson.internal.bind.MapTypeAdapterFactory$Adapter.write(MapTypeAdapterFactory.java:207)
-		// at
-		// com.google.gson.internal.bind.MapTypeAdapterFactory$Adapter.write(MapTypeAdapterFactory.java:144)
-		// at com.google.gson.Gson.toJson(Gson.java:842)
-		// at com.google.gson.Gson.toJson(Gson.java:812)
-		// at com.google.gson.Gson.toJson(Gson.java:759)
-		// at com.google.gson.Gson.toJson(Gson.java:736)
-		// at
-		// com.iemr.mmu.service.ncdscreening.NCDScreeningServiceImpl.getBenHistoryDetails(NCDScreeningServiceImpl.java:972)
-		// See https://diff.blue/R013 to resolve this issue.
 
 		// Arrange
 		BenFamilyHistory benFamilyHistory = new BenFamilyHistory();
@@ -299,6 +234,8 @@ class NCDScreeningServiceImplDiffblueTest {
 		benPersonalHabit.setVanSerialNo(1L);
 		benPersonalHabit.setVehicalNo("Vehical No");
 		benPersonalHabit.setVisitCode(1L);
+		
+		benPersonalHabit.toString();
 
 		PhysicalActivityType physicalActivityType = new PhysicalActivityType();
 		physicalActivityType.setActivityType("Activity Type");
@@ -320,6 +257,8 @@ class NCDScreeningServiceImplDiffblueTest {
 		physicalActivityType.setVehicalNo("Vehical No");
 		physicalActivityType.setVisitCode(1L);
 		physicalActivityType.setpAID(1L);
+		
+		physicalActivityType.toString();
 		when(commonNurseServiceImpl.getFamilyHistoryDetail(Mockito.<Long>any(), Mockito.<Long>any()))
 				.thenReturn(benFamilyHistory);
 		when(commonNurseServiceImpl.getPersonalHistory(Mockito.<Long>any(), Mockito.<Long>any()))
@@ -390,42 +329,9 @@ class NCDScreeningServiceImplDiffblueTest {
 		assertEquals(0, actualUpdateNCDScreeningHistoryResult.intValue());
 	}
 
-	/**
-	 * Methods under test:
-	 *
-	 * <ul>
-	 * <li>
-	 * {@link NCDScreeningServiceImpl#setBeneficiaryFlowStatusRepo(BeneficiaryFlowStatusRepo)}
-	 * <li>
-	 * {@link NCDScreeningServiceImpl#setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl)}
-	 * <li>
-	 * {@link NCDScreeningServiceImpl#setCommonDoctorServiceImpl(CommonDoctorServiceImpl)}
-	 * <li>
-	 * {@link NCDScreeningServiceImpl#setCommonNurseServiceImpl(CommonNurseServiceImpl)}
-	 * <li>
-	 * {@link NCDScreeningServiceImpl#setLabTechnicianServiceImpl(LabTechnicianServiceImpl)}
-	 * <li>
-	 * {@link NCDScreeningServiceImpl#setNcdScreeningNurseServiceImpl(NCDScreeningNurseServiceImpl)}
-	 * </ul>
-	 */
+	
 	@Test
 	void testGettersAndSetters() {
-		// TODO: Diffblue Cover was only able to create a partial test for this method:
-		// Reason: Missing observers.
-		// Diffblue Cover was unable to create an assertion.
-		// Add getters for the following fields or make them package-private:
-		// NCDScreeningServiceImpl.benVisitDetailRepo
-		// NCDScreeningServiceImpl.beneficiaryFlowStatusRepo
-		// NCDScreeningServiceImpl.commonBenStatusFlowServiceImpl
-		// NCDScreeningServiceImpl.commonDoctorServiceImpl
-		// NCDScreeningServiceImpl.commonNurseServiceImpl
-		// NCDScreeningServiceImpl.commonServiceImpl
-		// NCDScreeningServiceImpl.iDrsDataRepo
-		// NCDScreeningServiceImpl.labTechnicianServiceImpl
-		// NCDScreeningServiceImpl.ncdSCreeningDoctorServiceImpl
-		// NCDScreeningServiceImpl.ncdScreeningNurseServiceImpl
-		// NCDScreeningServiceImpl.prescriptionDetailRepo
-		// NCDScreeningServiceImpl.teleConsultationServiceImpl
 
 		// Arrange
 		NCDScreeningServiceImpl ncdScreeningServiceImpl = new NCDScreeningServiceImpl();

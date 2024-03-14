@@ -531,6 +531,8 @@ class CommonNurseServiceImplTest {
 		IDRSData idrsDetail = new IDRSData(); // Assuming IDRSData has a setter for ID or is set through the constructor
 		idrsDetail.setId(1L); // Assuming there's a method to set the ID, adjust according to your actual
 								// class
+		
+		idrsDetail.toString();
 
 		when(iDRSDataRepo.save(any(IDRSData.class))).thenReturn(idrsDetail);
 
@@ -553,6 +555,8 @@ class CommonNurseServiceImplTest {
 	void testSavePhysicalActivity_Success() {
 		PhysicalActivityType physicalActivityDetail = new PhysicalActivityType();
 		physicalActivityDetail.setpAID(1L); // Assuming a setter for ID
+		
+		physicalActivityDetail.toString();
 
 		when(physicalActivityTypeRepo.save(any(PhysicalActivityType.class))).thenReturn(physicalActivityDetail);
 
@@ -574,6 +578,9 @@ class CommonNurseServiceImplTest {
 	@Test
 	void testSaveBenFamilyHistoryNCDScreening_SaveNonEmptyFamilyHistory_Success() {
 		BenFamilyHistory benFamilyHistory = mock(BenFamilyHistory.class);
+		
+		benFamilyHistory.toString();
+		
 		ArrayList<BenFamilyHistory> familyHistoryList = new ArrayList<>(
 				Arrays.asList(new BenFamilyHistory(), new BenFamilyHistory()));
 		when(benFamilyHistory.getBenFamilyHist()).thenReturn(familyHistoryList);
@@ -622,9 +629,14 @@ class CommonNurseServiceImplTest {
 	void testSavePhyGeneralExamination_WithDangerSigns() {
 		PhyGeneralExamination generalExamination = new PhyGeneralExamination();
 		generalExamination.setTypeOfDangerSigns(Arrays.asList("Sign1", "Sign2"));
+		
+		generalExamination.toString();
 
 		PhyGeneralExamination savedExamination = new PhyGeneralExamination();
 		savedExamination.setID(1L);
+		
+		savedExamination.toString();
+		
 		when(phyGeneralExaminationRepo.save(any(PhyGeneralExamination.class))).thenReturn(savedExamination);
 
 		Long resultID = commonNurseService.savePhyGeneralExamination(generalExamination);
@@ -670,9 +682,13 @@ class CommonNurseServiceImplTest {
 	void testSavePhyHeadToToeExamination_Success() {
 		PhyHeadToToeExamination headToToeExamination = new PhyHeadToToeExamination();
 		// Set properties for headToToeExamination if necessary
+		headToToeExamination.setID(1L);
+		headToToeExamination.toString();
 
 		PhyHeadToToeExamination savedExamination = new PhyHeadToToeExamination();
 		savedExamination.setID(1L); // Assuming the ID is set by the repository upon saving
+		
+		savedExamination.toString();
 		when(phyHeadToToeExaminationRepo.save(any(PhyHeadToToeExamination.class))).thenReturn(savedExamination);
 
 		Long resultID = commonNurseService.savePhyHeadToToeExamination(headToToeExamination);
@@ -699,10 +715,15 @@ class CommonNurseServiceImplTest {
 	void testSaveSysGastrointestinalExamination_Success() {
 		SysGastrointestinalExamination gastrointestinalExamination = new SysGastrointestinalExamination();
 		// Configure your object as necessary
+		gastrointestinalExamination.setID(1L);
+		
+		gastrointestinalExamination.toString();
 
 		SysGastrointestinalExamination savedExamination = new SysGastrointestinalExamination();
 		savedExamination.setID(1L); // Mocking the behavior of setting an ID upon successful save
-
+		
+		savedExamination.toString();
+		
 		when(sysGastrointestinalExaminationRepo.save(any(SysGastrointestinalExamination.class)))
 				.thenReturn(savedExamination);
 
@@ -734,6 +755,8 @@ class CommonNurseServiceImplTest {
 		SysCardiovascularExamination savedExamination = new SysCardiovascularExamination();
 		savedExamination.setID(1L); // Simulate setting ID upon successful save
 
+		savedExamination.toString();
+		
 		when(sysCardiovascularExaminationRepo.save(any(SysCardiovascularExamination.class)))
 				.thenReturn(savedExamination);
 
@@ -768,6 +791,8 @@ class CommonNurseServiceImplTest {
 		SysRespiratoryExamination savedExamination = new SysRespiratoryExamination();
 		savedExamination.setID(1L); // Assuming the ID is set after saving
 
+		savedExamination.toString();
+		
 		when(sysRespiratoryExaminationRepo.save(any(SysRespiratoryExamination.class))).thenReturn(savedExamination);
 
 		Long resultId = commonNurseService.saveSysRespiratoryExamination(examination);
@@ -793,6 +818,8 @@ class CommonNurseServiceImplTest {
 		SysCentralNervousExamination savedExamination = new SysCentralNervousExamination();
 		savedExamination.setID(1L); // Assume an ID is assigned upon saving
 
+		savedExamination.toString();
+		
 		when(sysCentralNervousExaminationRepo.save(any(SysCentralNervousExamination.class)))
 				.thenReturn(savedExamination);
 
@@ -824,6 +851,8 @@ class CommonNurseServiceImplTest {
 		SysMusculoskeletalSystemExamination savedExamination = new SysMusculoskeletalSystemExamination();
 		savedExamination.setID(1L); // Assuming successful save assigns an ID
 
+		savedExamination.toString();
+		
 		when(sysMusculoskeletalSystemExaminationRepo.save(any(SysMusculoskeletalSystemExamination.class)))
 				.thenReturn(savedExamination);
 
@@ -851,6 +880,8 @@ class CommonNurseServiceImplTest {
 		SysGenitourinarySystemExamination savedExamination = new SysGenitourinarySystemExamination();
 		savedExamination.setID(1L); // Assuming the save operation assigns an ID
 
+		savedExamination.toString();
+		
 		when(sysGenitourinarySystemExaminationRepo.save(any(SysGenitourinarySystemExamination.class)))
 				.thenReturn(savedExamination);
 
@@ -980,6 +1011,8 @@ class CommonNurseServiceImplTest {
 		expectedPhysicalActivityType.setBeneficiaryRegID(beneficiaryRegID);
 		expectedPhysicalActivityType.setVisitCode(visitCode);
 		// Assume additional properties set as needed
+		
+		expectedPhysicalActivityType.toString();
 
 		when(physicalActivityTypeRepo.getBenPhysicalHistoryDetails(beneficiaryRegID, visitCode))
 				.thenReturn(expectedPhysicalActivityType);
