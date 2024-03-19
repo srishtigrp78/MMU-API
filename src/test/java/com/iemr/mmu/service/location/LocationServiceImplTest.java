@@ -285,41 +285,7 @@ class LocationServiceImplTest {
 		}
 	}
 
-	@Test
-	void testGetLocDetails() {
-		// Setup
-		Integer spID = 1, spPSMID = 1;
-		ArrayList<Object[]> mockLocDetailsList = new ArrayList<>(); // Populate with mock data as needed
-		when(v_GetLocDetailsFromSPidAndPSMidRepo
-				.findByServicepointidAndSpproviderservicemapidAndPpproviderservicemapidAndZdmproviderservicemapid(spID,
-						spPSMID, spPSMID, spPSMID))
-				.thenReturn(mockLocDetailsList);
-		// Mock the static call - assuming getOtherLocDetails is a static method. If
-		// not, adjust accordingly.
-		V_GetLocDetailsFromSPidAndPSMid mockLocDetails = new V_GetLocDetailsFromSPidAndPSMid(); // Populate with mock
-																								// data
-		// Assume a static utility method - this would actually require PowerMock or
-		// refactoring for testing
-
-		ArrayList<Object[]> mockStateMasterList = new ArrayList<>(); // Populate with mock data
-		when(stateMasterRepo.getStateMaster()).thenReturn(mockStateMasterList);
-
-		List<Object[]> mockServicePointVillageList = new ArrayList<>(); // Populate with mock data
-		when(servicePointVillageMappingRepo.getServicePointVillages(spID)).thenReturn(mockServicePointVillageList);
-
-		// Action
-		String resultJson = locationServiceImpl.getLocDetails(spID, spPSMID);
-
-		// Assertion
-		assertNotNull(resultJson);
-		// Parse result to assert individual elements, assuming the method returns a
-		// well-structured JSON string
-		Map result = new Gson().fromJson(resultJson, Map.class);
-		assertTrue(result.containsKey("otherLoc"));
-		assertTrue(result.containsKey("stateMaster"));
-		assertTrue(result.containsKey("villageMaster"));
-
-	}
+	
 
 	@Test
 	void testGetLocDetailsNew() {

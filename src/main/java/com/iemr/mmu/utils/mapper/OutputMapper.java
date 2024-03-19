@@ -25,7 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class OutputMapper {
-	static GsonBuilder builder;
+	public static GsonBuilder builder;
 
 	public OutputMapper() {
 		if (builder == null) {

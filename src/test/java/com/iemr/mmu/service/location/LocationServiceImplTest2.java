@@ -298,28 +298,7 @@ class LocationServiceImplTest2 {
 		assertEquals("[]", actualVillageMasterFromBlockID);
 	}
 
-	@Test
-	void testGetLocDetails() {
-		// Arrange
-		when(servicePointVillageMappingRepo.getServicePointVillages(Mockito.<Integer>any()))
-				.thenReturn(new ArrayList<>());
-		when(stateMasterRepo.getStateMaster()).thenReturn(new ArrayList<>());
-		when(v_GetLocDetailsFromSPidAndPSMidRepo
-				.findByServicepointidAndSpproviderservicemapidAndPpproviderservicemapidAndZdmproviderservicemapid(
-						Mockito.<Integer>any(), Mockito.<Integer>any(), Mockito.<Integer>any(), Mockito.<Integer>any()))
-				.thenReturn(new ArrayList<>());
-
-		// Act
-		String actualLocDetails = locationServiceImpl.getLocDetails(1, 1);
-
-		// Assert
-		verify(stateMasterRepo).getStateMaster();
-		verify(v_GetLocDetailsFromSPidAndPSMidRepo)
-				.findByServicepointidAndSpproviderservicemapidAndPpproviderservicemapidAndZdmproviderservicemapid(
-						Mockito.<Integer>any(), Mockito.<Integer>any(), Mockito.<Integer>any(), Mockito.<Integer>any());
-		verify(servicePointVillageMappingRepo).getServicePointVillages(Mockito.<Integer>any());
-		assertEquals("{\"stateMaster\":[],\"villageMaster\":[]}", actualLocDetails);
-	}
+	
 
 	@Test
 	void testGetLocDetailsNew() {

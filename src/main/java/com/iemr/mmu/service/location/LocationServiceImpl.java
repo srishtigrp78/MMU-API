@@ -223,43 +223,7 @@ public class LocationServiceImpl implements LocationService {
 	}
 
 	// old, 11-10-2018
-	@Deprecated
-	public String getLocDetails(Integer spID, Integer spPSMID) {
-		Map<String, Object> resMap = new HashMap<String, Object>();
-		// other location details
-		ArrayList<Object[]> objList = v_GetLocDetailsFromSPidAndPSMidRepo
-				.findByServicepointidAndSpproviderservicemapidAndPpproviderservicemapidAndZdmproviderservicemapid(spID,
-						spPSMID, spPSMID, spPSMID);
-
-		V_GetLocDetailsFromSPidAndPSMid locOBJ = V_GetLocDetailsFromSPidAndPSMid.getOtherLocDetails(objList);
-
-		// state master
-		ArrayList<States> stateList = new ArrayList<>();
-		ArrayList<Object[]> stateMasterList = stateMasterRepo.getStateMaster();
-		if (stateMasterList != null && stateMasterList.size() > 0) {
-			for (Object[] objArr : stateMasterList) {
-				States states = new States((Integer) objArr[0], (String) objArr[1]);
-				stateList.add(states);
-			}
-		}
-		// village masters from service point
-		List<Object[]> servicePointVillageList = servicePointVillageMappingRepo.getServicePointVillages(spID);
-
-		ArrayList<ServicePointVillageMapping> villageList = new ArrayList<ServicePointVillageMapping>();
-		if (servicePointVillageList.size() > 0) {
-			ServicePointVillageMapping VillageMap;
-			for (Object[] obj : servicePointVillageList) {
-				VillageMap = new ServicePointVillageMapping((Integer) obj[0], (String) obj[1]);
-				villageList.add(VillageMap);
-			}
-		}
-
-		resMap.put("otherLoc", locOBJ);
-		resMap.put("stateMaster", stateList);
-		resMap.put("villageMaster", villageList);
-
-		return new Gson().toJson(resMap);
-	}
+	
 
 	// new, 11-10-2018
 	public String getLocDetailsNew(Integer spID, Integer spPSMID) {

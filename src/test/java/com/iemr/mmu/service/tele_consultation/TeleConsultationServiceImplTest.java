@@ -1,5 +1,6 @@
 package com.iemr.mmu.service.tele_consultation;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -11,16 +12,26 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 //import java.security.Timestamp;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Set;
+import java.util.TimeZone;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,10 +43,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
+import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.data.tele_consultation.TCRequestModel;
+import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.tc_consultation.TCRequestModelRepo;
+import com.iemr.mmu.service.anc.Utility;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
@@ -52,6 +68,8 @@ class TeleConsultationServiceImplTest {
 
 	@InjectMocks
 	TeleConsultationServiceImpl teleConsultationServiceImpl;
+	@Mock
+	CommonUtilityClass commonUtilityClass;
 
 	@Test
 	void testCreateTCRequest_Success() {
@@ -164,85 +182,16 @@ class TeleConsultationServiceImplTest {
 
 //**********
 	@Test
-	void cancelSlotForTCCancel() {
-		fail("Not yet implemented");
-	}
+	void cancelSlotForTCCancel() throws Exception {
 
-	@Test
-	void testCancelSlotForTCCancel_WithEmptyResultSetList() throws Exception {
 		when(tCRequestModelRepo.getTcDetailsList(anyLong(), anyLong(), anyInt(), anySet()))
 				.thenReturn(new ArrayList<>());
 		int result = teleConsultationServiceImpl.cancelSlotForTCCancel(1, 1L, 1L, "Authorization");
 		assertEquals(1, result);
+
 	}
 
-//**********
-//	private String calculateToDate(String fromTime, Long duration) {
-//		String toTime = "";
-//
-//		if (fromTime != null && duration != null) {
-//			LocalTime fTime = LocalTime.parse(fromTime);
-//			LocalTime tTime = fTime.plusMinutes(duration);
-//
-//			toTime = tTime.toString();
-//		}
-//
-//		return toTime;
-//	}
-//
-//	@Test
-//	public void testCalculateToDate_WithValidInputs() {
-//		// Setup
-//		String fromTime = "10:00";
-//		Long duration = 90L; // 1 hour and 30 minutes
-//
-//		// Execute
-//		String result = calculateToDate(fromTime, duration);
-//
-//		// Verify
-//		assertEquals("11:30", result, "The calculated toTime should be 11:30.");
-//	}
-//
-//	@Test
-//	public void testCalculateToDate_WithNullFromTime() {
-//		// Setup
-//		String fromTime = null;
-//		Long duration = 90L; // Duration is valid
-//
-//		// Execute
-//		String result = calculateToDate(fromTime, duration);
-//
-//		// Verify
-//		assertTrue(result.isEmpty(), "The result should be an empty string when fromTime is null.");
-//	}
-//
-//	@Test
-//	public void testCalculateToDate_WithNullDuration() {
-//		// Setup
-//		String fromTime = "10:00";
-//		Long duration = null; // Duration is null
-//
-//		// Execute
-//		String result = calculateToDate(fromTime, duration);
-//
-//		// Verify
-//		assertTrue(result.isEmpty(), "The result should be an empty string when duration is null.");
-//	}
-//
-//	@Test
-//	public void testCalculateToDate_WithBothInputsNull() {
-//		// Setup
-//		String fromTime = null;
-//		Long duration = null; // Both inputs are null
-//
-//		// Execute
-//		String result = calculateToDate(fromTime, duration);
-//
-//		// Verify
-//		assertTrue(result.isEmpty(), "The result should be an empty string when both inputs are null.");
-//	}
 
-//*****	
 	@Test
 	public void testCheckBeneficiaryStatusForSpecialistTransaction_ValidRequestWithActiveTeleconsultationSession()
 			throws Exception {
@@ -365,6 +314,8 @@ class TeleConsultationServiceImplTest {
 	}
 
 //**********
+	
+	
 	@Test
 	public void testGetTCRequestListBySpecialistIdAndDate_WithValidInputs() throws Exception {
 		// Setup

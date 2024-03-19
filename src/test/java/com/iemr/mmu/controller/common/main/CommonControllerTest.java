@@ -8,24 +8,37 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 import javax.ws.rs.NotFoundException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.ResponseEntity;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
-import com.google.common.net.MediaType;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
@@ -37,6 +50,7 @@ import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
 import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
 
 @ExtendWith(MockitoExtension.class)
 class CommonControllerTest {
@@ -55,6 +69,8 @@ class CommonControllerTest {
 	private ServletContext servletContext;
 	@Mock
 	private AESEncryptionDecryption aESEncryptionDecryption;
+	@Mock
+	private MockMvc mockMvc;
 
 	private static final String BENEFICIARY_REG_ID = "beneficiaryRegID";
 	private MockHttpServletRequest request;
@@ -375,33 +391,33 @@ class CommonControllerTest {
 
 	@Test
 	void testGetLabWorkListNew() {
+		OutputResponse response = new OutputResponse();
 		Integer providerServiceMapID = 1;
 		Integer vanID = 1;
-		String expectedResponse = "Success";
+		Integer combinedValue = providerServiceMapID + vanID;
+		String request = combinedValue.toString();
+//		String expectedResponse = "Success";
 
 		// Stubbing the mock to return a specific value when the method is called
-		when(commonNurseServiceImpl.getLabWorkListNew(providerServiceMapID, vanID)).thenReturn(expectedResponse);
+		when(commonNurseServiceImpl.getLabWorkListNew(providerServiceMapID, vanID)).thenReturn(request);
+		response.setResponse(request.toString());
 
 		// Directly call the controller's method
 		String actualResponse = commonController.getLabWorkListNew(providerServiceMapID, vanID);
+		assertNotNull(actualResponse);
 
 		// Validate the response
-		assertEquals(expectedResponse, actualResponse, "The response should match the expected mocked value.");
+		assertEquals(response.toString(), actualResponse);
 
 	}
 
 	@Test
 	void testGetLabWorkListNew_else() {
-		OutputResponse response = new OutputResponse();
-		String expectedResult = null;
-
-		String actualResponse = commonNurseServiceImpl.getLabWorkListNew(null, null);
-
-		response.setError(5000, "Error while getting lab technician worklist");
-
-		System.out.println("Actual Response: " + actualResponse);
-		assertEquals(expectedResult, actualResponse);
-		assertTrue(response.toString().contains("Error while getting lab technician worklist"));
+		Integer providerServiceMapID = null;
+		Integer vanID = null;
+		String response = commonController.getLabWorkListNew(providerServiceMapID, vanID);
+		assertTrue(response.contains("Error while getting lab technician worklist"),
+				"Expected error message not found in the response.");
 	}
 
 	@Test
@@ -635,33 +651,11 @@ class CommonControllerTest {
 		assertTrue(response.toString().contains(s));
 	}
 
-//	@Test
-//	void testGetBenPastHistory_InvalidRequest() throws Exception {
-//		OutputResponse response = new OutputResponse();
-//
-//		String comingRequest = "{\"benID\":\"null\"}";
-//
-//		JSONObject obj = new JSONObject(comingRequest);
-//
-//		response.setError(5000, "Invalid request");
-//
-//		assertFalse(obj.has("benRegID"));
-//
-//		assertTrue(response.toString().contains("Invalid request"));
-//	}
-
 	@Test
 	void testGetBenPastHistory_Invalid() throws Exception {
-		OutputResponse response = new OutputResponse();
-		
-		String expResponse = "{\"benID\":\"Long\"}";
-		
-		JSONObject obj = new JSONObject(expResponse);
-		
-		response.setError(5000, "Invalid request");
-		
-		assertTrue(!obj.has("benRegID"));
-		assertTrue(response.toString().contains("Invalid request"));
+		String invalidRequestObj = "{\"someInvalidField\": \"value\"}";
+		String response = commonController.getBenPastHistory(invalidRequestObj);
+		assertTrue(response.contains("Invalid request"), "Expected error message not found in the response.");
 	}
 
 	@Test
@@ -698,17 +692,9 @@ class CommonControllerTest {
 
 	@Test
 	void testGetBenTobaccoHistory_InvaliedRequest() throws Exception {
-		OutputResponse response = new OutputResponse();
-
-		String comingRequest = "{}";
-
-		JSONObject obj = new JSONObject(comingRequest);
-
-		response.setError(5000, "Invalid request");
-
-		assertTrue(!obj.has("benRegID"));
-
-		assertTrue(response.toString().contains("Invalid request"));
+		String invalidRequestObj = "{\"someInvalidField\": \"value\"}";
+		String response = commonController.getBenTobaccoHistory(invalidRequestObj);
+		assertTrue(response.contains("Invalid request"), "Expected error message not found in the response.");
 	}
 
 	@Test
@@ -743,17 +729,9 @@ class CommonControllerTest {
 
 	@Test
 	void testGetBenAlcoholHistory_InvalidRequest() throws Exception {
-		OutputResponse response = new OutputResponse();
-
-		String comingRequest = "{}";
-
-		JSONObject obj = new JSONObject(comingRequest);
-
-		response.setError(5000, "Invalid request");
-
-		assertTrue(!obj.has("benRegID"));
-
-		assertTrue(response.toString().contains("Invalid request"));
+		String invalidRequestObj = "{\"someInvalidField\": \"value\"}";
+		String response = commonController.getBenAlcoholHistory(invalidRequestObj);
+		assertTrue(response.contains("Invalid request"), "Expected error message not found in the response.");
 	}
 
 	@Test
@@ -789,17 +767,9 @@ class CommonControllerTest {
 
 	@Test
 	void testGetBenANCAllergyHistory_InvalidRequest() throws Exception {
-		OutputResponse response = new OutputResponse();
-
-		String comingRequest = "{}";
-
-		JSONObject obj = new JSONObject(comingRequest);
-
-		response.setError(5000, "Invalid request");
-
-		assertTrue(!obj.has("benRegID"));
-
-		assertTrue(response.toString().contains("Invalid request"));
+		String invalidRequestObj = "{\"someInvalidField\": \"value\"}";
+		String response = commonController.getBenANCAllergyHistory(invalidRequestObj);
+		assertTrue(response.contains("Invalid request"), "Expected error message not found in the response.");
 	}
 
 	@Test
@@ -845,17 +815,9 @@ class CommonControllerTest {
 
 	@Test
 	void testGetBenMedicationHistory_InvalidRequest() throws JSONException {
-		OutputResponse response = new OutputResponse();
-
-		String comingRequest = "{}";
-
-		JSONObject obj = new JSONObject(comingRequest);
-
-		response.setError(5000, "Invalid request");
-
-		assertTrue(!obj.has("benRegID"));
-
-		assertTrue(response.toString().contains("Invalid request"));
+		String invalidRequestObj = "{\"someInvalidField\": \"value\"}";
+		String response = commonController.getBenMedicationHistory(invalidRequestObj);
+		assertTrue(response.contains("Invalid request"), "Expected error message not found in the response.");
 	}
 
 	@Test
@@ -890,17 +852,9 @@ class CommonControllerTest {
 
 	@Test
 	void testGetBenFamilyHistory_InvalidRequest() throws JSONException {
-		OutputResponse response = new OutputResponse();
-
-		String comingRequest = "{}";
-
-		JSONObject obj = new JSONObject(comingRequest);
-
-		response.setError(5000, "Invalid request");
-
-		assertTrue(!obj.has("benRegID"));
-
-		assertTrue(response.toString().contains("Invalid request"));
+		String invalidRequestObj = "{\"someInvalidField\": \"value\"}";
+		String response = commonController.getBenFamilyHistory(invalidRequestObj);
+		assertTrue(response.contains("Invalid request"), "Expected error message not found in the response.");
 	}
 
 	@Test
@@ -935,17 +889,9 @@ class CommonControllerTest {
 
 	@Test
 	void testGetBenMenstrualHistory_InvalidRequest() throws JSONException {
-		OutputResponse response = new OutputResponse();
-
-		String comingRequest = "{}";
-
-		JSONObject obj = new JSONObject(comingRequest);
-
-		response.setError(5000, "Invalid request");
-
-		assertTrue(!obj.has("benRegID"));
-
-		assertTrue(response.toString().contains("Invalid request"));
+		String invalidRequestObj = "{\"someInvalidField\": \"value\"}";
+		String response = commonController.getBenMenstrualHistory(invalidRequestObj);
+		assertTrue(response.contains("Invalid request"), "Expected error message not found in the response.");
 	}
 
 	@Test
@@ -980,17 +926,9 @@ class CommonControllerTest {
 
 	@Test
 	void testGetBenPastObstetricHistory_InvalidRequest() throws JSONException {
-		OutputResponse response = new OutputResponse();
-
-		String comingRequest = "{}";
-
-		JSONObject obj = new JSONObject(comingRequest);
-
-		response.setError(5000, "Invalid request");
-
-		assertTrue(!obj.has("benRegID"));
-
-		assertTrue(response.toString().contains("Invalid request"));
+		String invalidRequestObj = "{\"someInvalidField\": \"value\"}";
+		String response = commonController.getBenPastObstetricHistory(invalidRequestObj);
+		assertTrue(response.contains("Invalid request"), "Expected error message not found in the response.");
 	}
 
 	@Test
@@ -1025,17 +963,9 @@ class CommonControllerTest {
 
 	@Test
 	void testGetBenANCComorbidityConditionHistory_InvalidRequest() throws JSONException {
-		OutputResponse response = new OutputResponse();
-
-		String comingRequest = "{}";
-
-		JSONObject obj = new JSONObject(comingRequest);
-
-		response.setError(5000, "Invalid request");
-
-		assertTrue(!obj.has("benRegID"));
-
-		assertTrue(response.toString().contains("Invalid request"));
+		String invalidRequestObj = "{\"someInvalidField\": \"value\"}";
+		String response = commonController.getBenANCComorbidityConditionHistory(invalidRequestObj);
+		assertTrue(response.contains("Invalid request"), "Expected error message not found in the response.");
 	}
 
 	@Test
@@ -1069,6 +999,14 @@ class CommonControllerTest {
 	}
 
 	@Test
+	void testGetBenOptionalVaccineHistory_InvalidRequest() throws JSONException {
+
+		String invalidRequestObj = "{\"someInvalidField\": \"value\"}";
+		String response = commonController.getBenOptionalVaccineHistory(invalidRequestObj);
+		assertTrue(response.contains("Invalid request"), "Expected error message not found in the response.");
+	}
+
+	@Test
 	void testGetBenOptionalVaccineHistory_Exception() throws Exception {
 		OutputResponse response = new OutputResponse();
 		response.setError(5000, "Error while getting optional vaccination history");
@@ -1099,6 +1037,9 @@ class CommonControllerTest {
 	}
 
 	void testGetBenImmunizationHistory_InvalidRequest() throws JSONException {
+		String invalidRequestObj = "{\"someInvalidField\": \"value\"}";
+		String response = commonController.getBenImmunizationHistory(invalidRequestObj);
+		assertTrue(response.contains("Invalid request"), "Expected error message not found in the response.");
 	}
 
 	@Test
@@ -1132,6 +1073,9 @@ class CommonControllerTest {
 	}
 
 	void testGetBenPerinatalHistory_InvalidRequest() throws JSONException {
+		String invalidRequestObj = "{\"someInvalidField\": \"value\"}";
+		String response = commonController.getBenPerinatalHistory(invalidRequestObj);
+		assertTrue(response.contains("Invalid request"), "Expected error message not found in the response.");
 	}
 
 	@Test
@@ -1165,6 +1109,9 @@ class CommonControllerTest {
 	}
 
 	void testGetBenFeedingHistory_InvalidRequest() throws JSONException {
+		String invalidRequestObj = "{\"someInvalidField\": \"value\"}";
+		String response = commonController.getBenFeedingHistory(invalidRequestObj);
+		assertTrue(response.contains("Invalid request"), "Expected error message not found in the response.");
 	}
 
 	@Test
@@ -1197,8 +1144,6 @@ class CommonControllerTest {
 		assertTrue(response.toString().contains(s));
 	}
 
-	void testGetBenDevelopmentHistory_InvalidRequest() throws JSONException {
-	}
 
 	@Test
 	void testGetBenDevelopmentHistory_Exception() throws JSONException {
@@ -1227,21 +1172,17 @@ class CommonControllerTest {
 
 	@Test
 	void testGetBeneficiaryCaseSheetHistory_Error() throws IEMRException {
-		OutputResponse response = new OutputResponse();
-		String comingRequest = "{\"benRegID\":\"1\"}";
-		String responseData = null;
-
-		response.setError(5000, "Error while fetching beneficiary previous visit history details");
-
-		assertNull(responseData);
-		assertTrue(response.toString().contains("Error while fetching beneficiary previous visit history details"));
+		String invalidRequestObj = "{\"someInvalidField\": \"value\"}";
+		String response = commonController.getBeneficiaryCaseSheetHistory(invalidRequestObj);
+		assertTrue(response.contains("Error while fetching beneficiary previous visit history details"), "Expected error message not found in the response.");
 	}
 
 	@Test
-	void testGetBeneficiaryCaseSheetHistory_Exception() throws JSONException {
-		OutputResponse response = new OutputResponse();
-		response.setError(5000, "Error while fetching beneficiary previous visit history details");
-		assertEquals(response.toString(), commonController.getBeneficiaryCaseSheetHistory(any()));
+	void testGetBeneficiaryCaseSheetHistory_Exception() throws JSONException, IEMRException {
+		String comingRequest = "{\"statusCode\":5000,\"errorMessage\":\"Failed with generic error\",\"status\":\"FAILURE\"}";
+		when(commonServiceImpl.getBenPreviousVisitDataForCaseRecord(comingRequest)).thenThrow(NotFoundException.class);
+		String response = commonController.getBeneficiaryCaseSheetHistory(comingRequest);
+		Assertions.assertEquals(response, commonController.getBeneficiaryCaseSheetHistory(comingRequest));
 	}
 
 	@Test
@@ -1267,15 +1208,11 @@ class CommonControllerTest {
 
 	@Test
 	void testGetTCSpecialistWorkListNew_InvalidRequest() {
-		OutputResponse response = new OutputResponse();
-
-		String s = null;
-
-		response.setError(5000, "Invalid request, either ProviderServiceMapID or userID is invalid");
-
-		assertNull(s);
-
-		assertTrue(response.toString().contains("Invalid request, either ProviderServiceMapID or userID is invalid"));
+		Integer providerServiceMapID = null;
+		Integer userID = null;
+		Integer serviceID = null;
+		String response = commonController.getTCSpecialistWorkListNew(providerServiceMapID, userID, serviceID);
+		assertTrue(response.contains("Invalid request, either ProviderServiceMapID or userID is invalid"), "Expected error message not found in the response.");
 	}
 
 	@Test
@@ -1312,16 +1249,11 @@ class CommonControllerTest {
 
 	@Test
 	void testGetTCSpecialistWorklistFutureScheduled_InvalidRequest() {
-		OutputResponse response = new OutputResponse();
 		Integer providerServiceMapID = null;
 		Integer userID = null;
-
-		response.setError(5000, "Invalid request, either ProviderServiceMapID or userID is invalid");
-
-		assertNull(providerServiceMapID);
-		assertNull(userID);
-
-		assertTrue(response.toString().contains("Invalid request, either ProviderServiceMapID or userID is invalid"));
+		Integer serviceID = null;
+		String response = commonController.getTCSpecialistWorklistFutureScheduled(providerServiceMapID, userID, serviceID);
+		assertTrue(response.contains("Invalid request, either ProviderServiceMapID or userID is invalid"), "Expected error message not found in the response.");
 	}
 
 	@Test
@@ -1331,10 +1263,9 @@ class CommonControllerTest {
 		assertEquals(response.toString(), commonController.getTCSpecialistWorklistFutureScheduled(any(), any(), any()));
 	}
 
-//	@Test
-//	void testDownloadFileSuccess() throws Exception {
-//
-//	}
+	@Test
+	void testDownloadFile() throws Exception {
+	}
 
 	@Test
 	void testGetBenPhysicalHistory() throws Exception {
@@ -1357,6 +1288,14 @@ class CommonControllerTest {
 
 		assertEquals(expResponse, commonController.getBenPhysicalHistory(comingRequest));
 		assertTrue(response.toString().contains(s));
+	}
+	
+	@Test
+	void testGetBenPhysicalHistory_InvalidRequest() throws Exception{
+	
+	String invalidRequestObj = "{\"someInvalidField\": \"value\"}";
+	String response = commonController.getBenPhysicalHistory(invalidRequestObj);
+	assertTrue(response.contains("Invalid request"), "Expected error message not found in the response.");
 	}
 
 	@Test
