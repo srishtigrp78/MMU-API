@@ -35,7 +35,7 @@ import com.iemr.mmu.data.pnc.PNCCare;
 import jakarta.transaction.Transactional;
 
 @Repository
-public interface PNCCareRepo extends CrudRepository<PNCCare, Long>{
+public interface PNCCareRepo extends CrudRepository<PNCCare, Integer>{
 	
 	@Query(" SELECT ID, beneficiaryRegID, benVisitID, providerServiceMapID, visitNo, deliveryTypeID, deliveryType, deliveryPlaceID, "
 			+ "deliveryPlace, otherDeliveryPlace, dateOfDelivery, deliveryComplicationID, deliveryComplication, otherDeliveryComplication, "

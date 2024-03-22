@@ -29,7 +29,7 @@ import org.springframework.stereotype.Repository;
 
 import com.iemr.mmu.data.masterdata.nurse.VisitReason;
 @Repository
-public interface VisitReasonMasterRepo extends CrudRepository<VisitReason, Short>{
+public interface VisitReasonMasterRepo extends CrudRepository<VisitReason, Long>{
 
 	@Query("select visitReasonID, visitReason from VisitReason where deleted = false order by visitReason ")
 	public ArrayList<Object[]> getVisitReasonMaster();

@@ -31,7 +31,7 @@ import org.springframework.stereotype.Repository;
 import com.iemr.mmu.data.institution.Institute;
 
 @Repository
-public interface InstituteRepo extends CrudRepository<Institute, Integer> {
+public interface InstituteRepo extends CrudRepository<Institute, Long> {
 	@Query("SELECT institutionID, institutionName FROM Institute WHERE providerServiceMapID = :psmID AND deleted != true order by institutionName")
 	public ArrayList<Object[]> getInstituteDetails(@Param("psmID") Integer psmID);
 
