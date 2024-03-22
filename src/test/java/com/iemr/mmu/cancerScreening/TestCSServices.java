@@ -29,7 +29,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import org.aspectj.lang.annotation.Before;
 import org.json.JSONException;
@@ -396,7 +395,7 @@ public class TestCSServices
 		List<CancerExaminationImageAnnotation> imgAntnsList = new ArrayList<CancerExaminationImageAnnotation>();
 		when(cancerExaminationImageAnnotationRepoMock.getCancerExaminationImageAnnotationList(beneficiaryRegID, benVisitID)).thenReturn(imgAntnsList);
 		
-		List<Objects[]> benDemoData = new ArrayList<Objects[]>();
+		List<Object[]> benDemoData = new ArrayList<Object[]>();
 		when(registrarRepoBenDemoDataMock.getBeneficiaryDemographicData(beneficiaryRegID)).thenReturn(benDemoData);
 		
 		List<Object[]> benData = new ArrayList<Object[]>();
