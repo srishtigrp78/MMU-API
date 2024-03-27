@@ -29,11 +29,10 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -583,25 +582,10 @@ public class RegistrarServiceImpl implements RegistrarService {
 
 	@Override
 	public int updateBenGovIdMapping(JsonObject benD, Long benRegID) {
-		Long tempBenGovMapID = null;
-		// Call repository for Delete Data from table m_bengovidmap and save
-		// Data to table m_bengovidmap
-		// Persistence Class = BenGovIdMapping
 		ArrayList<BenGovIdMapping> benGovIDMap = BenGovIdMapping.getBenGovIdMappingOBJList(benD, benRegID);
-		// List IDsToDelete = new ArrayList();
-		// for (BenGovIdMapping benGovID : benGovIDMap) {
-		// if (null != benGovID.getID()) {
-		// // delete
-		// //registrarRepoBenGovIdMapping.delete(benGovID);
-		// IDsToDelete.add(benGovID);
-		// benGovIDMap.remove(benGovIDMap.indexOf(benGovID));
-		// }
-		// }
-
-		int x = registrarRepoBenGovIdMapping.deletePreviousGovMapID(benRegID);
+		registrarRepoBenGovIdMapping.deletePreviousGovMapID(benRegID);
 		ArrayList<BenGovIdMapping> benGovIDMaps = (ArrayList<BenGovIdMapping>) registrarRepoBenGovIdMapping
 				.saveAll(benGovIDMap);
-
 		return benGovIDMaps.size();
 	}
 
@@ -670,7 +654,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 	}
 
 	public BeneficiaryData getBeneficiaryPersonalDetails(Long benRegID) {
-		List<Objects[]> beneficiaryDemographicData = registrarRepoBenDemoData.getBeneficiaryDemographicData(benRegID);
+		List<Object[]> beneficiaryDemographicData = registrarRepoBenDemoData.getBeneficiaryDemographicData(benRegID);
 
 		List<Object[]> benDetailsList = registrarRepoBenData.getBenDetailsByRegID(benRegID);
 		BeneficiaryData benDetails = null;
@@ -726,8 +710,6 @@ public class RegistrarServiceImpl implements RegistrarService {
 					response1.setResponse("Beneficiary successfully registered. Beneficiary ID is : " + beneficiaryID);
 			} else {
 				response1.setError(5000, "Error in registration; please contact administrator");
-				// log error that beneficiaryID generated but flow part is not
-				// done successfully.
 			}
 		} else {
 			// log error that registration failed.
@@ -742,7 +724,9 @@ public class RegistrarServiceImpl implements RegistrarService {
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
 		headers.add("Content-Type", "application/json");
 		headers.add("AUTHORIZATION", Authorization);
+		
 		HttpEntity<Object> request = new HttpEntity<Object>(comingRequest, headers);
+		
 		ResponseEntity<String> response = restTemplate.exchange(beneficiaryEditUrl, HttpMethod.POST, request,
 				String.class);
 
