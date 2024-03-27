@@ -110,7 +110,7 @@ class Covid19BenFeedbackTest {
         covid19BenFeedback.setVanID(1);
         covid19BenFeedback.setVanSerialNo(1L);
         covid19BenFeedback.setVisitCode(1L);
-        covid19BenFeedback.setcOVID19ID(1L);
+//        covid19BenFeedback.setcOVID19ID(1L);
         covid19BenFeedback.setcOVID19_contact_history("C OVID19 contact history");
         Long actualBenCallID = covid19BenFeedback.getBenCallID();
         Long actualBenMedHistoryID = covid19BenFeedback.getBenMedHistoryID();

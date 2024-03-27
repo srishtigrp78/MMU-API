@@ -412,7 +412,7 @@ class LabTechnicianServiceImplTest {
 		doNothing().when(labResultEntry).setEcgAbnormalities(Mockito.<String[]>any());
 		doNothing().when(labResultEntry).setEcgAbnormalitiesDB(Mockito.<String>any());
 		doNothing().when(labResultEntry).setFileIDs(Mockito.<String[]>any());
-		doNothing().when(labResultEntry).setID(Mockito.<Long>any());
+//		doNothing().when(labResultEntry).setID(Mockito.<Long>any());
 		doNothing().when(labResultEntry).setLabCompleted(Mockito.<Boolean>any());
 		doNothing().when(labResultEntry).setLastModDate(Mockito.<Timestamp>any());
 		doNothing().when(labResultEntry).setModifiedBy(Mockito.<String>any());
@@ -449,7 +449,7 @@ class LabTechnicianServiceImplTest {
 		labResultEntry.setEcgAbnormalities(new String[] { "amrith$%2022@&*piramal@@swasthya!#" });
 		labResultEntry.setEcgAbnormalitiesDB("amrith$%2022@&*piramal@@swasthya!#");
 		labResultEntry.setFileIDs(new String[] { "amrith$%2022@&*piramal@@swasthya!#" });
-		labResultEntry.setID(1L);
+//		labResultEntry.setID(1L);
 		labResultEntry.setLabCompleted(true);
 		labResultEntry.setLastModDate(mock(Timestamp.class));
 		labResultEntry.setModifiedBy("Jan 1, 2020 9:00am GMT+0100");
@@ -510,7 +510,7 @@ class LabTechnicianServiceImplTest {
 		verify(labResultEntry).setEcgAbnormalities(Mockito.<String[]>any());
 		verify(labResultEntry).setEcgAbnormalitiesDB(eq("amrith$%2022@&*piramal@@swasthya!#"));
 		verify(labResultEntry).setFileIDs(Mockito.<String[]>any());
-		verify(labResultEntry).setID(Mockito.<Long>any());
+//		verify(labResultEntry).setID(Mockito.<Long>any());
 		verify(labResultEntry).setLabCompleted(Mockito.<Boolean>any());
 		verify(labResultEntry).setLastModDate(Mockito.<Timestamp>any());
 		verify(labResultEntry).setModifiedBy(eq("Jan 1, 2020 9:00am GMT+0100"));
@@ -704,7 +704,7 @@ class LabTechnicianServiceImplTest {
 		labResultEntry.setEcgAbnormalities(new String[] { "Ecg Abnormalities" });
 		labResultEntry.setEcgAbnormalitiesDB("Ecg Abnormalities DB");
 		labResultEntry.setFileIDs(new String[] { "File IDs" });
-		labResultEntry.setID(1L);
+//		labResultEntry.setID(1L);
 		labResultEntry.setLabCompleted(true);
 		labResultEntry.setLastModDate(mock(Timestamp.class));
 		labResultEntry.setModifiedBy("Jan 1, 2020 9:00am GMT+0100");
@@ -843,7 +843,7 @@ class LabTechnicianServiceImplTest {
 		labResultEntry.setEcgAbnormalities(new String[] { "Ecg Abnormalities" });
 		labResultEntry.setEcgAbnormalitiesDB("Ecg Abnormalities DB");
 		labResultEntry.setFileIDs(new String[] { "File IDs" });
-		labResultEntry.setID(1L);
+//		labResultEntry.setID(1L);
 		labResultEntry.setLabCompleted(true);
 		labResultEntry.setLastModDate(mock(Timestamp.class));
 		labResultEntry.setModifiedBy("Jan 1, 2020 9:00am GMT+0100");
@@ -993,7 +993,7 @@ class LabTechnicianServiceImplTest {
 		labResultEntry.setEcgAbnormalities(new String[] { "Ecg Abnormalities" });
 		labResultEntry.setEcgAbnormalitiesDB("Ecg Abnormalities DB");
 		labResultEntry.setFileIDs(new String[] { "File IDs" });
-		labResultEntry.setID(1L);
+//		labResultEntry.setID(1L);
 		labResultEntry.setLabCompleted(true);
 		labResultEntry.setLastModDate(mock(Timestamp.class));
 		labResultEntry.setModifiedBy("Jan 1, 2020 9:00am GMT+0100");
@@ -1072,7 +1072,7 @@ class LabTechnicianServiceImplTest {
 		labResultEntry2.setEcgAbnormalities(new String[] { "Ecg Abnormalities" });
 		labResultEntry2.setEcgAbnormalitiesDB("Ecg Abnormalities DB");
 		labResultEntry2.setFileIDs(new String[] { "File IDs" });
-		labResultEntry2.setID(1L);
+//		labResultEntry2.setID(1L);
 		labResultEntry2.setLabCompleted(true);
 		labResultEntry2.setLastModDate(mock(Timestamp.class));
 		labResultEntry2.setModifiedBy("Jan 1, 2020 9:00am GMT+0100");
@@ -1224,7 +1224,7 @@ class LabTechnicianServiceImplTest {
 		doNothing().when(labResultEntry).setEcgAbnormalities(Mockito.<String[]>any());
 		doNothing().when(labResultEntry).setEcgAbnormalitiesDB(Mockito.<String>any());
 		doNothing().when(labResultEntry).setFileIDs(Mockito.<String[]>any());
-		doNothing().when(labResultEntry).setID(Mockito.<Long>any());
+//		doNothing().when(labResultEntry).setID(Mockito.<Long>any());
 		doNothing().when(labResultEntry).setLabCompleted(Mockito.<Boolean>any());
 		doNothing().when(labResultEntry).setLastModDate(Mockito.<Timestamp>any());
 		doNothing().when(labResultEntry).setModifiedBy(Mockito.<String>any());
@@ -1261,7 +1261,7 @@ class LabTechnicianServiceImplTest {
 		labResultEntry.setEcgAbnormalities(new String[] { "Ecg Abnormalities" });
 		labResultEntry.setEcgAbnormalitiesDB("Ecg Abnormalities DB");
 		labResultEntry.setFileIDs(new String[] { "File IDs" });
-		labResultEntry.setID(1L);
+//		labResultEntry.setID(1L);
 		labResultEntry.setLabCompleted(true);
 		labResultEntry.setLastModDate(mock(Timestamp.class));
 		labResultEntry.setModifiedBy("Jan 1, 2020 9:00am GMT+0100");
@@ -1345,7 +1345,7 @@ class LabTechnicianServiceImplTest {
 		verify(labResultEntry).setEcgAbnormalities(Mockito.<String[]>any());
 		verify(labResultEntry).setEcgAbnormalitiesDB(eq("Ecg Abnormalities DB"));
 		verify(labResultEntry).setFileIDs(Mockito.<String[]>any());
-		verify(labResultEntry).setID(Mockito.<Long>any());
+//		verify(labResultEntry).setID(Mockito.<Long>any());
 		verify(labResultEntry).setLabCompleted(Mockito.<Boolean>any());
 		verify(labResultEntry).setLastModDate(Mockito.<Timestamp>any());
 		verify(labResultEntry).setModifiedBy(eq("Jan 1, 2020 9:00am GMT+0100"));
@@ -1451,7 +1451,7 @@ class LabTechnicianServiceImplTest {
 		doNothing().when(labResultEntry).setEcgAbnormalities(Mockito.<String[]>any());
 		doNothing().when(labResultEntry).setEcgAbnormalitiesDB(Mockito.<String>any());
 		doNothing().when(labResultEntry).setFileIDs(Mockito.<String[]>any());
-		doNothing().when(labResultEntry).setID(Mockito.<Long>any());
+//		doNothing().when(labResultEntry).setID(Mockito.<Long>any());
 		doNothing().when(labResultEntry).setLabCompleted(Mockito.<Boolean>any());
 		doNothing().when(labResultEntry).setLastModDate(Mockito.<Timestamp>any());
 		doNothing().when(labResultEntry).setModifiedBy(Mockito.<String>any());
@@ -1488,7 +1488,7 @@ class LabTechnicianServiceImplTest {
 		labResultEntry.setEcgAbnormalities(new String[] { "Ecg Abnormalities" });
 		labResultEntry.setEcgAbnormalitiesDB("Ecg Abnormalities DB");
 		labResultEntry.setFileIDs(new String[] { "File IDs" });
-		labResultEntry.setID(1L);
+//		labResultEntry.setID(1L);
 		labResultEntry.setLabCompleted(true);
 		labResultEntry.setLastModDate(mock(Timestamp.class));
 		labResultEntry.setModifiedBy("Jan 1, 2020 9:00am GMT+0100");
@@ -1572,7 +1572,7 @@ class LabTechnicianServiceImplTest {
 		verify(labResultEntry).setEcgAbnormalities(Mockito.<String[]>any());
 		verify(labResultEntry).setEcgAbnormalitiesDB(eq("Ecg Abnormalities DB"));
 		verify(labResultEntry).setFileIDs(Mockito.<String[]>any());
-		verify(labResultEntry).setID(Mockito.<Long>any());
+//		verify(labResultEntry).setID(Mockito.<Long>any());
 		verify(labResultEntry).setLabCompleted(Mockito.<Boolean>any());
 		verify(labResultEntry).setLastModDate(Mockito.<Timestamp>any());
 		verify(labResultEntry).setModifiedBy(eq("Jan 1, 2020 9:00am GMT+0100"));
@@ -1678,7 +1678,7 @@ class LabTechnicianServiceImplTest {
 		doNothing().when(labResultEntry).setEcgAbnormalities(Mockito.<String[]>any());
 		doNothing().when(labResultEntry).setEcgAbnormalitiesDB(Mockito.<String>any());
 		doNothing().when(labResultEntry).setFileIDs(Mockito.<String[]>any());
-		doNothing().when(labResultEntry).setID(Mockito.<Long>any());
+//		doNothing().when(labResultEntry).setID(Mockito.<Long>any());
 		doNothing().when(labResultEntry).setLabCompleted(Mockito.<Boolean>any());
 		doNothing().when(labResultEntry).setLastModDate(Mockito.<Timestamp>any());
 		doNothing().when(labResultEntry).setModifiedBy(Mockito.<String>any());
@@ -1715,7 +1715,7 @@ class LabTechnicianServiceImplTest {
 		labResultEntry.setEcgAbnormalities(new String[] { "Ecg Abnormalities" });
 		labResultEntry.setEcgAbnormalitiesDB("Ecg Abnormalities DB");
 		labResultEntry.setFileIDs(new String[] { "File IDs" });
-		labResultEntry.setID(1L);
+//		labResultEntry.setID(1L);
 		labResultEntry.setLabCompleted(true);
 		labResultEntry.setLastModDate(mock(Timestamp.class));
 		labResultEntry.setModifiedBy("Jan 1, 2020 9:00am GMT+0100");
@@ -1799,7 +1799,7 @@ class LabTechnicianServiceImplTest {
 		verify(labResultEntry).setEcgAbnormalities(Mockito.<String[]>any());
 		verify(labResultEntry).setEcgAbnormalitiesDB(eq("Ecg Abnormalities DB"));
 		verify(labResultEntry).setFileIDs(Mockito.<String[]>any());
-		verify(labResultEntry).setID(Mockito.<Long>any());
+//		verify(labResultEntry).setID(Mockito.<Long>any());
 		verify(labResultEntry).setLabCompleted(Mockito.<Boolean>any());
 		verify(labResultEntry).setLastModDate(Mockito.<Timestamp>any());
 		verify(labResultEntry).setModifiedBy(eq("Jan 1, 2020 9:00am GMT+0100"));
