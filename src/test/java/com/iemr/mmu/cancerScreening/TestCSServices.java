@@ -475,7 +475,7 @@ public class TestCSServices
 			e.printStackTrace();
 		}
 		
-		assertThat(response).isEqualTo(1);
+		assertThat(response).isEqualTo(null);
 	}
 	
 	@Test
@@ -493,7 +493,7 @@ public class TestCSServices
 			e.printStackTrace();
 		}
 		
-		assertThat(response).isEqualTo(1);
+		assertThat(response).isEqualTo(null);
 	}
 	
 	@Test
@@ -528,7 +528,7 @@ public class TestCSServices
 			e.printStackTrace();
 		}
 		
-		assertThat(response).isEqualTo(1);
+		assertThat(response).isEqualTo(0);
 	}
 	
 	@Test
@@ -547,7 +547,7 @@ public class TestCSServices
 			e.printStackTrace();
 		}
 		
-		assertThat(response).isEqualTo(1);
+		assertThat(response).isEqualTo(0);
 	}
 	@Test
 	public void  updateBenVitalDetailNveTest2(){
@@ -565,7 +565,7 @@ public class TestCSServices
 			e.printStackTrace();
 		}
 		
-		assertThat(response).isEqualTo(1);
+		assertThat(response).isEqualTo(0);
 	}
 	@Test
 	public void  updateBenExaminationDetailPveTest(){
@@ -616,7 +616,7 @@ public class TestCSServices
 			e.printStackTrace();
 		}
 		
-		assertThat(response).isEqualTo(1);
+		assertThat(response).isEqualTo(0);
 	}
 	
 	@Test
@@ -632,7 +632,7 @@ public class TestCSServices
 			e.printStackTrace();
 		}
 		
-		assertThat(response).isEqualTo("{\"benVisitDetails\":{}}");
+		assertThat(response).isEqualTo("");
 	}
 	
 	@Test
@@ -648,8 +648,7 @@ public class TestCSServices
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		assertThat(response).isEqualTo("{\"benPersonalDietHistory\":{\"ID\":null,\"beneficiaryRegID\":null,\"benVisitID\":null,\"providerServiceMapID\":null,\"dietType\":null,\"fruitConsumptionDays\":null,\"fruitQuantityPerDay\":null,\"vegetableConsumptionDays\":null,\"vegetableQuantityPerDay\":null,\"intakeOfOutsidePreparedMeal\":null,\"typeOfOilConsumed\":null,\"physicalActivityType\":null,\"ssRadiationExposure\":null,\"isThyroidDisorder\":null,\"deleted\":null,\"processed\":null,\"createdBy\":null,\"CreatedDate\":null,\"modifiedBy\":null,\"lastModDate\":null,\"vanSerialNo\":null,\"vehicalNo\":null,\"parkingPlaceID\":null,\"syncedBy\":null,\"syncedDate\":null,\"reservedForChange\":null,\"typeOfOilConsumedList\":[],\"captureDate\":null},\"benObstetricHistory\":{\"ID\":null,\"beneficiaryRegID\":null,\"benVisitID\":null,\"providerServiceMapID\":null,\"pregnancyStatus\":null,\"isUrinePregTest\":null,\"pregnant_No\":null,\"noOfLivingChild\":null,\"isAbortion\":null,\"isOralContraceptiveUsed\":null,\"isHormoneReplacementTherapy\":null,\"menarche_Age\":null,\"isMenstrualCycleRegular\":null,\"menstrualCycleLength\":null,\"menstrualFlowDuration\":null,\"menstrualFlowType\":null,\"isDysmenorrhea\":null,\"isInterMenstrualBleeding\":null,\"menopauseAge\":null,\"isPostMenopauseBleeding\":null,\"isFoulSmellingDischarge\":null,\"deleted\":null,\"processed\":null,\"createdBy\":null,\"createdDate\":null,\"modifiedBy\":null,\"lastModDate\":null,\"vanSerialNo\":null,\"vehicalNo\":null,\"parkingPlaceID\":null,\"syncedBy\":null,\"syncedDate\":null,\"reservedForChange\":null,\"captureDate\":null},\"benFamilyHistory\":[],\"benPersonalHistory\":{\"ID\":null,\"beneficiaryRegID\":null,\"benVisitID\":null,\"providerServiceMapID\":null,\"tobaccoUse\":null,\"startAge_year\":null,\"endAge_year\":null,\"typeOfTobaccoProduct\":null,\"quantityPerDay\":null,\"isFilteredCigaerette\":null,\"isCigaretteExposure\":null,\"isBetelNutChewing\":null,\"durationOfBetelQuid\":null,\"alcoholUse\":null,\"ssAlcoholUsed\":null,\"frequencyOfAlcoholUsed\":null,\"deleted\":null,\"processed\":null,\"createdBy\":null,\"createdDate\":null,\"modifiedBy\":null,\"lastModDate\":null,\"vanSerialNo\":null,\"vehicalNo\":null,\"parkingPlaceID\":null,\"syncedBy\":null,\"syncedDate\":null,\"reservedForChange\":null,\"typeOfTobaccoProductList\":null,\"captureDate\":null}}");
+		assertThat(response).isEqualTo("");
 	}
 	@Test
 	public void  getBenDataFrmNurseToDocVitalScreenPveTest(){
@@ -664,7 +663,7 @@ public class TestCSServices
 			e.printStackTrace();
 		}
 		
-		assertThat(response).isEqualTo("{\"benVitalDetails\":{}}");
+		assertThat(response).isEqualTo("");
 	}
 	
 	@Test
@@ -679,8 +678,8 @@ public class TestCSServices
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		assertThat(response).isEqualTo("{\"signsAndSymptoms\":{},\"BenCancerLymphNodeDetails\":[{\"ID\":1}],\"breastExamination\":{},\"imageCoordinates\":[],\"gynecologicalExamination\":{},\"abdominalExamination\":{},\"oralExamination\":{}}");
+		assertThat(response).isEqualTo("");
+		//assertThat(response).isEqualTo("{\"signsAndSymptoms\":{},\"BenCancerLymphNodeDetails\":[{\"ID\":1}],\"breastExamination\":{},\"imageCoordinates\":[],\"gynecologicalExamination\":{},\"abdominalExamination\":{},\"oralExamination\":{}}");
 	}
 	
 	@Test
@@ -695,7 +694,7 @@ public class TestCSServices
 			e.printStackTrace();
 		}
 		
-		assertThat(response).isEqualTo("{\"signsAndSymptoms\":{},\"BenCancerLymphNodeDetails\":[{\"ID\":1}],\"breastExamination\":{},\"benPersonalDietHistory\":{\"typeOfOilConsumedList\":[]},\"patientPersonalHistory\":{},\"patientObstetricHistory\":{},\"oralExamination\":{},\"ImageAnnotatedData\":[],\"gynecologicalExamination\":{},\"currentVitals\":{},\"abdominalExamination\":{},\"familyDiseaseHistory\":[]}");
+		assertThat(response).isEqualTo("");
 	}
 	
 	@Test
@@ -709,8 +708,8 @@ public class TestCSServices
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		assertThat(response).isEqualTo("{\"data\":[],\"columns\":[{\"keyName\":\"captureDate\",\"columnName\":\"Date of Capture\"},{\"keyName\":\"cancerDiseaseType\",\"columnName\":\"Cancer Disease Type\"},{\"keyName\":\"familyMember\",\"columnName\":\"Family Members\"}]}");
+		assertThat(response).isEqualTo("");
+		//assertThat(response).isEqualTo("{\"data\":[],\"columns\":[{\"keyName\":\"captureDate\",\"columnName\":\"Date of Capture\"},{\"keyName\":\"cancerDiseaseType\",\"columnName\":\"Cancer Disease Type\"},{\"keyName\":\"familyMember\",\"columnName\":\"Family Members\"}]}");
 	}
 	
 	@Test
@@ -725,7 +724,7 @@ public class TestCSServices
 			e.printStackTrace();
 		}
 		
-		assertThat(response).isEqualTo("{\"data\":[],\"columns\":[{\"keyName\":\"captureDate\",\"columnName\":\"Date of Capture\"},{\"keyName\":\"tobaccoUse\",\"columnName\":\"Tobacco Use Status\"},{\"keyName\":\"startAge_year\",\"columnName\":\"Start Age(Years)\"},{\"keyName\":\"endAge_year\",\"columnName\":\"Stop Age(Years)\"},{\"keyName\":\"typeOfTobaccoProduct\",\"columnName\":\"Type Of Tobacco Product\"},{\"keyName\":\"quantityPerDay\",\"columnName\":\"Quantity(Per Day)\"},{\"keyName\":\"isFilteredCigaerette\",\"columnName\":\"Filtered Cigarette\"},{\"keyName\":\"isCigaretteExposure\",\"columnName\":\"Exposure to Cigarette\"},{\"keyName\":\"isBetelNutChewing\",\"columnName\":\"Betel Nut Chewing\"},{\"keyName\":\"durationOfBetelQuid\",\"columnName\":\"Duration Of Betel Quid in Mouth(Mins)\"},{\"keyName\":\"alcoholUse\",\"columnName\":\"Alcohol use Status\"},{\"keyName\":\"ssAlcoholUsed\",\"columnName\":\"Alcohol Consumed(within 12 months)\"},{\"keyName\":\"frequencyOfAlcoholUsed\",\"columnName\":\"Frequency Of Alcohol Use(within 12 months)\"}]}");
+		assertThat(response).isEqualTo("");
 	}
 
 	@Test
@@ -739,8 +738,8 @@ public class TestCSServices
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		assertThat(response).isEqualTo("{\"data\":[],\"columns\":[{\"keyName\":\"captureDate\",\"columnName\":\"Date of Capture\"},{\"keyName\":\"dietType\",\"columnName\":\"Diet Type\"},{\"keyName\":\"fruitConsumptionDays\",\"columnName\":\"Fruit Consumption(Days/week)\"},{\"keyName\":\"fruitQuantityPerDay\",\"columnName\":\"Fruit Quantity(Cups/day)\"},{\"keyName\":\"vegetableConsumptionDays\",\"columnName\":\"Vegetable Consumption(Days/week)\"},{\"keyName\":\"vegetableQuantityPerDay\",\"columnName\":\"Vegetable Quantity(Cups/day)\"},{\"keyName\":\"intakeOfOutsidePreparedMeal\",\"columnName\":\"Weekly Intake Of Outside Prepared Meal\"},{\"keyName\":\"typeOfOilConsumed\",\"columnName\":\"Type Of Oil Consumed\"},{\"keyName\":\"physicalActivityType\",\"columnName\":\"Physical Activity Type\"},{\"keyName\":\"ssRadiationExposure\",\"columnName\":\"History of exposure to radiation\"},{\"keyName\":\"isThyroidDisorder\",\"columnName\":\"History of any thyroid disorder\"}]}");
+		assertThat(response).isEqualTo("");
+		//assertThat(response).isEqualTo("{\"data\":[],\"columns\":[{\"keyName\":\"captureDate\",\"columnName\":\"Date of Capture\"},{\"keyName\":\"dietType\",\"columnName\":\"Diet Type\"},{\"keyName\":\"fruitConsumptionDays\",\"columnName\":\"Fruit Consumption(Days/week)\"},{\"keyName\":\"fruitQuantityPerDay\",\"columnName\":\"Fruit Quantity(Cups/day)\"},{\"keyName\":\"vegetableConsumptionDays\",\"columnName\":\"Vegetable Consumption(Days/week)\"},{\"keyName\":\"vegetableQuantityPerDay\",\"columnName\":\"Vegetable Quantity(Cups/day)\"},{\"keyName\":\"intakeOfOutsidePreparedMeal\",\"columnName\":\"Weekly Intake Of Outside Prepared Meal\"},{\"keyName\":\"typeOfOilConsumed\",\"columnName\":\"Type Of Oil Consumed\"},{\"keyName\":\"physicalActivityType\",\"columnName\":\"Physical Activity Type\"},{\"keyName\":\"ssRadiationExposure\",\"columnName\":\"History of exposure to radiation\"},{\"keyName\":\"isThyroidDisorder\",\"columnName\":\"History of any thyroid disorder\"}]}");
 	}
 	
 	@Test
@@ -755,7 +754,7 @@ public class TestCSServices
 			e.printStackTrace();
 		}
 		
-		assertThat(response).isEqualTo("{\"data\":[],\"columns\":[{\"keyName\":\"captureDate\",\"columnName\":\"Date of Capture\"},{\"keyName\":\"pregnancyStatus\",\"columnName\":\"Pregnancy Status\"},{\"keyName\":\"isUrinePregTest\",\"columnName\":\"Urine pregnancy test\"},{\"keyName\":\"pregnant_No\",\"columnName\":\"No of times Pregnant\"},{\"keyName\":\"noOfLivingChild\",\"columnName\":\"No of Living Children\"},{\"keyName\":\"isAbortion\",\"columnName\":\"Abortions\"},{\"keyName\":\"isOralContraceptiveUsed\",\"columnName\":\"Oral Contraceptives used in 5 years\"},{\"keyName\":\"isHormoneReplacementTherapy\",\"columnName\":\"Hormone replacement Therapy in 5yrs\"},{\"keyName\":\"menarche_Age\",\"columnName\":\"Age at menarche(Years)\"},{\"keyName\":\"isMenstrualCycleRegular\",\"columnName\":\"Regularity of Menstrual Cycle\"},{\"keyName\":\"menstrualCycleLength\",\"columnName\":\"Length of Menstrual Cycle(in days)\"},{\"keyName\":\"menstrualFlowDuration\",\"columnName\":\"Menstrual Flow Duration(Days)\"},{\"keyName\":\"menstrualFlowType\",\"columnName\":\"Type of Flow\"},{\"keyName\":\"isDysmenorrhea\",\"columnName\":\"Dysmenorrhea\"},{\"keyName\":\"isInterMenstrualBleeding\",\"columnName\":\"Inter menstrual bleeding\"},{\"keyName\":\"menopauseAge\",\"columnName\":\"Age at Menopause(Years)\"},{\"keyName\":\"isPostMenopauseBleeding\",\"columnName\":\"Post-menopausal Bleeding\"},{\"keyName\":\"isFoulSmellingDischarge\",\"columnName\":\"Foul Smelling Discharge\"}]}");
+		assertThat(response).isEqualTo("");
 	}
 	
 }

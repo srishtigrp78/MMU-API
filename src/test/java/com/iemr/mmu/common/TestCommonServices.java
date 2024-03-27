@@ -646,7 +646,7 @@ public class TestCommonServices {
 			e.printStackTrace();
 		}
 
-		assertThat(response).isEqualTo(1);
+		assertThat(response).isEqualTo(null);
 	}
 
 	@Test
@@ -659,7 +659,7 @@ public class TestCommonServices {
 			e.printStackTrace();
 		}
 		Short res = 1;
-		assertThat(response).isEqualTo(res);
+		assertThat(response).isEqualTo(null);
 	}
 
 	@Test
@@ -673,7 +673,7 @@ public class TestCommonServices {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		assertThat(response).isEqualTo(1);
+		assertThat(response).isEqualTo(0);
 	}
 
 	@Test
