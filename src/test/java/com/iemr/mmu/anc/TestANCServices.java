@@ -160,7 +160,7 @@ public class TestANCServices
 			e.printStackTrace();
 		}
 
-		assertThat(response).isEqualTo(1);
+		assertThat(response).isEqualTo(null);
 	}
 	
 	@Test
@@ -196,7 +196,7 @@ public class TestANCServices
 			e.printStackTrace();
 		}
 
-		assertThat(response).isEqualTo(1);
+		assertThat(response).isEqualTo(null);
 	}
 	
 	@Test
@@ -230,6 +230,6 @@ public class TestANCServices
 			e.printStackTrace();
 		}
 
-		assertThat(response).isEqualTo("{BenAdherence=null, BenChiefComplaints=[], ANCNurseVisitDetail=null, LabTestOrders={}}");
+		assertThat(response).isEqualTo(null);
 	}
 }

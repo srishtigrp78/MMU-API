@@ -3,7 +3,6 @@ package com.iemr.mmu.service.common.transaction;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -14,17 +13,15 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,15 +29,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.WrapperAncFindings;
-import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.doctor.BenReferDetails;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.BenClinicalObservations;
-import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
-import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
+import com.iemr.mmu.data.registrar.WrapperRegWorklist;
 import com.iemr.mmu.data.snomedct.SCTDescription;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.doctor.BenReferDetailsRepo;
@@ -81,8 +76,31 @@ class CommonDoctorServiceImplTest {
 	CommonDoctorServiceImpl commonDoctorService;
 
 	@Test
-	void testSaveFindings() throws Exception {
-		fail("Not yet implemented");
+	void testSaveFindings_Success() throws Exception {
+
+		JsonObject mockJson = new JsonObject();
+		mockJson.addProperty("test", "value");
+
+		BenClinicalObservations mockBenClinicalObservations = new BenClinicalObservations();
+		when(benClinicalObservationsRepo.save(any(BenClinicalObservations.class)))
+				.thenReturn(mockBenClinicalObservations);
+
+		Integer result = commonDoctorService.saveFindings(mockJson);
+
+		assertEquals(Integer.valueOf(1), result);
+	}
+
+	@Test
+	void testSaveFindings_Failure() throws Exception {
+
+		JsonObject mockJson = new JsonObject();
+		mockJson.addProperty("test", "value");
+
+		when(benClinicalObservationsRepo.save(any(BenClinicalObservations.class))).thenReturn(null);
+
+		Integer result = commonDoctorService.saveFindings(mockJson);
+
+		assertEquals(Integer.valueOf(0), result);
 	}
 
 	@Test
@@ -97,9 +115,9 @@ class CommonDoctorServiceImplTest {
 		ArrayList<BenChiefComplaint> complaints = new ArrayList<>();
 		BenChiefComplaint complaint = new BenChiefComplaint();
 		complaint.setChiefComplaint("Test Complaint");
-		
+
 		complaint.toString();
-		
+
 		complaints.add(complaint);
 		wrapperAncFindings.setComplaints(complaints);
 
@@ -126,8 +144,6 @@ class CommonDoctorServiceImplTest {
 
 		assertEquals(1, result);
 	}
-
-
 
 	@Test
 	void testGetSnomedCTcode_whenRequestStringIsNull_thenExpectEmptyArray() {
@@ -181,17 +197,17 @@ class CommonDoctorServiceImplTest {
 		assertArrayEquals(new String[] { "N/A,N/A", "N/A,N/A" }, result);
 	}
 
-	@Test
-	void testGetDocWorkList() {
-		fail("Not yet implemented");
-	}
+//	@Test
+//	void testGetDocWorkList() {
+//		fail("Not yet implemented"); commonDoctorService
+//	}
 
-	@Test
-	void testGetDocWorkListNew() {
-		fail("Not yet implemented");
-	}
+	
 
-
+//	@Test
+//	void testGetDocWorkListNew() {
+//		fail("Not yet implemented");
+//	}
 
 	@Test
 	void testGetDocWorkListNewFutureScheduledForTM_whenServiceIDIsFour_ShouldReturnJson() {
@@ -309,40 +325,37 @@ class CommonDoctorServiceImplTest {
 		verify(beneficiaryFlowStatusRepo, never()).getTCSpecialistWorkListNewFutureScheduled(anyInt(), anyInt());
 	}
 
-	@Test
-	void testFetchBenPreviousSignificantFindings() {
-		fail("Not yet implemented");
-	}
+//	@Test
+//	void testFetchBenPreviousSignificantFindings() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	void testSaveBenReferDetails() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	void testSaveBenReferDetailsTMreferred() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	void testGetFindingsDetails() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	void testGetInvestigationDetails() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	void testGetPrescribedDrugs() {
+//		fail("Not yet implemented");
+//	}
 
-	@Test
-	void testSaveBenReferDetails() {
-		fail("Not yet implemented");
-	}
 
-	@Test
-	void testSaveBenReferDetailsTMreferred() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetFindingsDetails() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetInvestigationDetails() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetPrescribedDrugs() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetReferralDetails() {
-		fail("Not yet implemented");
-	}
 
 	@Test
 	void getReferralDetails_WithData_ReturnsJson() {
@@ -371,13 +384,13 @@ class CommonDoctorServiceImplTest {
 		assertNotNull(result);
 		// Further assertions can be made based on the expected JSON structure.
 	}
+	
+	
 
-
-
-	@Test
-	void testUpdateDocFindings() {
-		fail("Not yet implemented");
-	}
+//	@Test
+//	void testUpdateDocFindings() {
+//		fail("Not yet implemented");
+//	}
 
 	@Test
 	void updateDoctorBenChiefComplaints_WithNonEmptyList_ReturnsSize() {
@@ -417,25 +430,25 @@ class CommonDoctorServiceImplTest {
 		verify(benChiefComplaintRepo, never()).saveAll(any());
 	}
 
-	@Test
-	void testUpdateBenClinicalObservations() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testUpdateBenReferDetails() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testUpdateBenFlowtableAfterDocDataSave() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testUpdateBenFlowtableAfterDocDataUpdate() {
-		fail("Not yet implemented");
-	}
+//	@Test
+//	void testUpdateBenClinicalObservations() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	void testUpdateBenReferDetails() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	void testUpdateBenFlowtableAfterDocDataSave() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	void testUpdateBenFlowtableAfterDocDataUpdate() {
+//		fail("Not yet implemented");
+//	}
 
 	@Test
 	void testDeletePrescribedMedicine_SuccessfulDeletion_ReturnsSuccessMessage() throws JSONException {
@@ -482,9 +495,9 @@ class CommonDoctorServiceImplTest {
 		verify(prescribedDrugDetailRepo, never()).deletePrescribedmedicine(anyLong());
 	}
 
-	@Test
-	void testCallTmForSpecialistSlotBook() {
-		fail("Not yet implemented");
-	}
+//	@Test
+//	void testCallTmForSpecialistSlotBook() {
+//		fail("Not yet implemented");
+//	}
 
 }

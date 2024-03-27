@@ -1,79 +1,106 @@
-//package com.iemr.mmu.service.fileSync;
-//
-//import org.junit.jupiter.api.Disabled;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.extension.ExtendWith;
-//import org.mockito.junit.jupiter.MockitoExtension;
-//
-//@ExtendWith(MockitoExtension.class)
-//class FileSyncServiceImplTest {
-//    @Test
-//    @Disabled("TODO: Complete this test")
-//    void testGetServerCredential() {
-//        // TODO: Diffblue Cover was only able to create a partial test for this method:
-//        //   Reason: Sandboxing policy violation.
-//        //   Diffblue Cover ran code in your project that tried
-//        //     to access files (file './fileSynclogs', permission 'write').
-//        //   Diffblue Cover's default sandboxing policy disallows this in order to prevent
-//        //   your code from damaging your system environment.
-//        //   See https://diff.blue/R011 to resolve this issue.
-//
-//        // Arrange
-//        // TODO: Populate arranged inputs
-//        FileSyncServiceImpl fileSyncServiceImpl = null;
-//
-//        // Act
-//        String actualServerCredential = fileSyncServiceImpl.getServerCredential();
-//
-//        // Assert
-//        // TODO: Add assertions on result
-//    }
-//}
 package com.iemr.mmu.service.fileSync;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.junit.jupiter.api.BeforeEach;
+import javax.ws.rs.NotFoundException;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import com.iemr.mmu.utils.exception.IEMRException;
+import com.google.gson.Gson;
+import com.iemr.mmu.utils.http.HttpUtils;
+
 @ExtendWith(MockitoExtension.class)
 class FileSyncServiceImplTest {
-	
+
 	@InjectMocks
-    private FileSyncServiceImpl fileSyncServiceImplUnderTest;
+	private FileSyncServiceImpl fileSyncService;
 
-    @BeforeEach
-    void setUp() {
-        fileSyncServiceImplUnderTest = new FileSyncServiceImpl();
-        ReflectionTestUtils.setField(fileSyncServiceImplUnderTest, "serverIP", "serverIP");
-        ReflectionTestUtils.setField(fileSyncServiceImplUnderTest, "serverDomain", "serverDomain");
-        ReflectionTestUtils.setField(fileSyncServiceImplUnderTest, "serverUserName", "serverUserName");
-        ReflectionTestUtils.setField(fileSyncServiceImplUnderTest, "serverPassword", "serverPassword");
-        ReflectionTestUtils.setField(fileSyncServiceImplUnderTest, "getServerCredentialURL", "getServerCredentialURL");
-        ReflectionTestUtils.setField(fileSyncServiceImplUnderTest, "localFolderToSync", "localFolderToSync");
-        ReflectionTestUtils.setField(fileSyncServiceImplUnderTest, "serverFolder", "serverFolder");
-    }
+	@Mock
+	private HttpUtils httpUtils;
 
-    @Test
-    void testGetServerCredential() {
-        assertThat(fileSyncServiceImplUnderTest.getServerCredential()).isEqualTo("result");
-    }
+	@Mock
+	private Logger logger;
 
-    @Test
-    void testSyncFiles() throws Exception {
-        assertThat(fileSyncServiceImplUnderTest.syncFiles("ServerAuthorization"))
-                .isEqualTo("File Sync activity Completed");
-        assertThatThrownBy(() -> fileSyncServiceImplUnderTest.syncFiles("ServerAuthorization"))
-                .isInstanceOf(IEMRException.class);
-        assertThatThrownBy(() -> fileSyncServiceImplUnderTest.syncFiles("ServerAuthorization"))
-                .isInstanceOf(IOException.class);
-    }
+	@Mock
+	private Process process;
+
+	@Mock
+	private Runtime runtime;
+
+	@Test
+	void testGetServerCredential() {
+		// Arrange
+		String expectedServerIP = "192.168.1.1";
+		String expectedServerDomain = "example.com";
+		String expectedServerUserName = "user";
+		String expectedServerPassword = "password";
+
+		Map<String, String> expectedMap = new HashMap<>();
+		expectedMap.put("serverIP", expectedServerIP);
+		expectedMap.put("serverDomain", expectedServerDomain);
+		expectedMap.put("serverUserName", expectedServerUserName);
+		expectedMap.put("serverPassword", expectedServerPassword);
+
+		String expectedJsonResult = new Gson().toJson(expectedMap);
+
+		// Set the private fields using ReflectionTestUtils
+		ReflectionTestUtils.setField(fileSyncService, "serverIP", expectedServerIP);
+		ReflectionTestUtils.setField(fileSyncService, "serverDomain", expectedServerDomain);
+		ReflectionTestUtils.setField(fileSyncService, "serverUserName", expectedServerUserName);
+		ReflectionTestUtils.setField(fileSyncService, "serverPassword", expectedServerPassword);
+
+		// Act
+		String actualJsonResult = fileSyncService.getServerCredential();
+
+		// Assert
+		assertEquals(expectedJsonResult, actualJsonResult);
+	}
+
+//	@Test
+//	void testSyncFilesSuccess() throws Exception {
+//		// Setup mock behavior
+//		when(httpUtils.get(anyString(),any(HashMap.class))).thenReturn(
+//				"{\"statusCode\":200, \"data\":\"{\\\"serverIP\\\":\\\"127.0.0.1\\\",\\\"serverDomain\\\":\\\"local\\\",\\\"serverUserName\\\":\\\"user\\\",\\\"serverPassword\\\":\\\"pass\\\"}\"}");
+//
+//		// Execute the method
+//		String result = fileSyncService.syncFiles("Bearer some-token");
+//
+//		// Verify result
+//		assertEquals("File Sync activity Completed", result);
+//
+//		// Verify interactions
+//		verify(httpUtils).get(anyString(),any(HashMap.class));
+//	}
+
+//	@Test
+//	void testSyncFilesFailure()  {
+//		// Assume your service behaves differently on a specific error condition
+//		when(httpUtils.get(anyString())).thenThrow( IllegalArgumentException.class);
+//
+//		// Handling the exception in the test
+//		Exception exception = assertThrows(IllegalArgumentException.class, () -> fileSyncService.syncFiles("Bearer some-token"));
+//
+//		System.out.println(exception);
+//		
+//		// Verify the exception message
+//		assertTrue(exception.getMessage().contains(" "));
+//
+//	}
+
 }

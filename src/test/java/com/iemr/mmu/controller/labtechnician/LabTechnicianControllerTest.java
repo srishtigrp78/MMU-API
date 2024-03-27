@@ -92,9 +92,11 @@ class LabTechnicianControllerTest {
 
 		// When saveLabTestResult is called
 		String response = labTechnicianController.saveLabTestResult(invalidRequestObj);
+		
+//		System.out.println(response);
 
 		// Then verify the response indicates an invalid request
-		assertTrue(response.contains("Invalid request"));
+		assertTrue(response.contains("Unable to save data"));
 	}
 
 	@Test

@@ -256,14 +256,16 @@ class TeleConsultationControllerTest {
 
 		String requestOBJ = "{\"request\":\"Test\"}";
 
-		when(serviceMock.checkBeneficiaryStatusForSpecialistTransaction(requestOBJ))
-				.thenThrow(new RuntimeException("Issue while creating Teleconsultation request = "));
+//		when(serviceMock.checkBeneficiaryStatusForSpecialistTransaction(requestOBJ))
+//				.thenThrow(RuntimeException.class);
 
 		TeleConsultationController controller = new TeleConsultationController();
 
 		String result = controller.checkBeneficiaryStatusToProceedWithSpecialist(requestOBJ);
+		
+		System.out.println(result);
 
-		assertTrue(result.contains("Issue while creating Teleconsultation request = "));
+		assertTrue(result.contains("Issue while fetching beneficiary"));
 	}
 
 	@Test

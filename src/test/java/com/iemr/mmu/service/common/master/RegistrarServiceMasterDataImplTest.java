@@ -95,15 +95,15 @@ class RegistrarServiceMasterDataImplTest {
 		assertTrue(resultObject.has("genderMaster"));
 	}
 
-	@Test
-	void testGetBenDetailsByRegID() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetBenDetailsForLeftSideByRegIDNew() {
-		fail("Not yet implemented");
-	}
+//	@Test
+//	void testGetBenDetailsByRegID() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	void testGetBenDetailsForLeftSideByRegIDNew() {
+//		fail("Not yet implemented");
+//	}
 
 	@Test
 	public void testGetBenDetailsWithNullBloodGroup() {
@@ -135,8 +135,8 @@ class RegistrarServiceMasterDataImplTest {
 		assertNotNull(result);
 	}
 
-	@Test
-	void testGetBenImageFromIdentityAPI() {
-		fail("Not yet implemented");
-	}
+//	@Test
+//	void testGetBenImageFromIdentityAPI() {
+//		fail("Not yet implemented");
+//	}
 }

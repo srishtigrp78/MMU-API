@@ -1,62 +1,55 @@
 package com.iemr.mmu.service.common.master;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.MockitoAnnotations;
 
+import com.google.gson.Gson;
 import com.iemr.mmu.data.masterdata.ncdcare.NCDCareType;
 import com.iemr.mmu.data.masterdata.ncdscreening.NCDScreeningCondition;
 import com.iemr.mmu.repo.masterrepo.ncdCare.NCDCareTypeRepo;
 
-@ExtendWith(MockitoExtension.class)
 class NCDCareMasterDataServiceImplTest {
 
 	@Mock
 	private NCDScreeningMasterServiceImpl ncdScreeningMasterServiceImpl;
+
 	@Mock
 	private NCDCareTypeRepo ncdCareTypeRepo;
-	@InjectMocks
-	NCDCareMasterDataServiceImpl ncdCareMasterDataService;
 
+	@InjectMocks
+	private NCDCareMasterDataServiceImpl service;
+
+	@BeforeEach
+	void setUp() {
+		MockitoAnnotations.openMocks(this);
+	}
 
 	@Test
-	void testGetNCDCareMasterData() {
-		// Prepare mock data
-		ArrayList<Object[]> mockScreeningConditions = new ArrayList<>();
-		mockScreeningConditions.add(new Object[] { /* Populate with test data */ });
-		ArrayList<Object[]> mockCareTypes = new ArrayList<>();
-		mockCareTypes.add(new Object[] { /* Populate with test data */ });
+	void testGetNCDCareMasterDataWithEmptyResults() {
+		// Simulate empty results from both methods
+		when(ncdScreeningMasterServiceImpl.getNCDScreeningConditions()).thenReturn(new ArrayList<>());
+		when(ncdCareTypeRepo.getNCDCareTypes()).thenReturn(new ArrayList<>());
 
-		when(ncdScreeningMasterServiceImpl.getNCDScreeningConditions()).thenReturn(mockScreeningConditions);
-		when(ncdCareTypeRepo.getNCDCareTypes()).thenReturn(mockCareTypes);
+		// Expected JSON for empty lists
+		String expectedJson = "{\"ncdCareTypes\":[],\"ncdCareConditions\":[]}";
 
-		// Call the method under test
-		String jsonResult = ncdCareMasterDataService.getNCDCareMasterData();
+		String actualJson = service.getNCDCareMasterData();
 
-		// Verify the result
-		assertNotNull(jsonResult);
-		Gson gson = new Gson();
-		Map<String, Object> resultMap = gson.fromJson(jsonResult, Map.class);
-		assertTrue(resultMap.containsKey("ncdCareConditions"));
-		assertTrue(resultMap.containsKey("ncdCareTypes"));
-
-		// Verify the interaction with mock objects
-		verify(ncdScreeningMasterServiceImpl).getNCDScreeningConditions();
-		verify(ncdCareTypeRepo).getNCDCareTypes();
+		// Verify the interaction and the result
+		verify(ncdScreeningMasterServiceImpl, times(1)).getNCDScreeningConditions();
+		verify(ncdCareTypeRepo, times(1)).getNCDCareTypes();
+		assertEquals(expectedJson, actualJson);
 	}
 }

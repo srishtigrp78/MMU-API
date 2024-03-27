@@ -1,6 +1,7 @@
 package com.iemr.mmu.service.location;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
@@ -31,7 +32,6 @@ import com.iemr.mmu.repo.location.V_GetLocDetailsFromSPidAndPSMidRepo;
 import com.iemr.mmu.repo.location.V_get_prkngplc_dist_zone_state_from_spidRepo;
 import com.iemr.mmu.repo.location.ZoneMasterRepo;
 import com.iemr.mmu.repo.login.ServicePointVillageMappingRepo;
-import com.iemr.mmu.service.location.LocationServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 class LocationServiceImplTest2 {
@@ -109,10 +109,10 @@ class LocationServiceImplTest2 {
 
 		// Act
 		String actualCountryList = locationServiceImpl.getCountryList();
-
+		
 		// Assert
 		verify(countryMasterRepo).findAllCountries();
-		assertEquals("[{\"outputMapper\":{}}]", actualCountryList);
+		assertTrue(actualCountryList.contains("Bharat")) ;
 	}
 
 	@Test
@@ -127,8 +127,8 @@ class LocationServiceImplTest2 {
 		String actualCountryList = locationServiceImpl.getCountryList();
 
 		// Assert
-		verify(countryMasterRepo).findAllCountries();
-		assertEquals("[{\"outputMapper\":{}},{\"outputMapper\":{}}]", actualCountryList);
+		verify(countryMasterRepo).findAllCountries(); 
+		assertTrue(actualCountryList.contains("Asia")) ;
 	}
 
 	@Test

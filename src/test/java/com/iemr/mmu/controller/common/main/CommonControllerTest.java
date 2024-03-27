@@ -7,15 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 
 import javax.ws.rs.NotFoundException;
 
@@ -26,31 +22,22 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonServiceImpl;
-import com.iemr.mmu.utils.MediaTypeUtils;
 import com.iemr.mmu.utils.AESEncryption.AESEncryptionDecryption;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
 import jakarta.servlet.ServletContext;
-import jakarta.servlet.http.HttpServletRequest;
 
 @ExtendWith(MockitoExtension.class)
 class CommonControllerTest {
@@ -1144,6 +1131,23 @@ class CommonControllerTest {
 		assertTrue(response.toString().contains(s));
 	}
 
+	@Test
+	void testGetBenDevelopmentHistory_WithValidBenRegID() throws Exception {
+		// Prepare the input JSON string
+		String requestJson = "{\"benRegID\":123}";
+		// Mock the behavior of commonServiceImpl to return a predetermined string
+		when(commonServiceImpl.getBenDevelopmentHistoryData(123L)).thenReturn("Development history data");
+
+		// Execute the method with the mocked request
+		String response = commonController.getBenDevelopmentHistory(requestJson);
+
+		// Validate the response contains the expected data
+		assertTrue(response.contains("Development history data"),
+				"Response should contain the expected development history data.");
+
+		// Verify the interaction with the mocked service
+		verify(commonServiceImpl).getBenDevelopmentHistoryData(123L);
+	}
 
 	@Test
 	void testGetBenDevelopmentHistory_Exception() throws JSONException {
@@ -1174,7 +1178,8 @@ class CommonControllerTest {
 	void testGetBeneficiaryCaseSheetHistory_Error() throws IEMRException {
 		String invalidRequestObj = "{\"someInvalidField\": \"value\"}";
 		String response = commonController.getBeneficiaryCaseSheetHistory(invalidRequestObj);
-		assertTrue(response.contains("Error while fetching beneficiary previous visit history details"), "Expected error message not found in the response.");
+		assertTrue(response.contains("Error while fetching beneficiary previous visit history details"),
+				"Expected error message not found in the response.");
 	}
 
 	@Test
@@ -1212,7 +1217,8 @@ class CommonControllerTest {
 		Integer userID = null;
 		Integer serviceID = null;
 		String response = commonController.getTCSpecialistWorkListNew(providerServiceMapID, userID, serviceID);
-		assertTrue(response.contains("Invalid request, either ProviderServiceMapID or userID is invalid"), "Expected error message not found in the response.");
+		assertTrue(response.contains("Invalid request, either ProviderServiceMapID or userID is invalid"),
+				"Expected error message not found in the response.");
 	}
 
 	@Test
@@ -1252,8 +1258,10 @@ class CommonControllerTest {
 		Integer providerServiceMapID = null;
 		Integer userID = null;
 		Integer serviceID = null;
-		String response = commonController.getTCSpecialistWorklistFutureScheduled(providerServiceMapID, userID, serviceID);
-		assertTrue(response.contains("Invalid request, either ProviderServiceMapID or userID is invalid"), "Expected error message not found in the response.");
+		String response = commonController.getTCSpecialistWorklistFutureScheduled(providerServiceMapID, userID,
+				serviceID);
+		assertTrue(response.contains("Invalid request, either ProviderServiceMapID or userID is invalid"),
+				"Expected error message not found in the response.");
 	}
 
 	@Test
@@ -1289,13 +1297,13 @@ class CommonControllerTest {
 		assertEquals(expResponse, commonController.getBenPhysicalHistory(comingRequest));
 		assertTrue(response.toString().contains(s));
 	}
-	
+
 	@Test
-	void testGetBenPhysicalHistory_InvalidRequest() throws Exception{
-	
-	String invalidRequestObj = "{\"someInvalidField\": \"value\"}";
-	String response = commonController.getBenPhysicalHistory(invalidRequestObj);
-	assertTrue(response.contains("Invalid request"), "Expected error message not found in the response.");
+	void testGetBenPhysicalHistory_InvalidRequest() throws Exception {
+
+		String invalidRequestObj = "{\"someInvalidField\": \"value\"}";
+		String response = commonController.getBenPhysicalHistory(invalidRequestObj);
+		assertTrue(response.contains("Invalid request"), "Expected error message not found in the response.");
 	}
 
 	@Test
@@ -1394,6 +1402,24 @@ class CommonControllerTest {
 		assertTrue(caseSheetStatus == 1);
 		assertEquals(expResponse,
 				commonController.getTMReferredPrintData(comingRequest, authorization, serverAuthorization));
+	}
+
+	@Test
+	void testGetTMReferredPrintData_WhenCaseSheetDataIsNotNull() throws IEMRException {
+		// Prepare the input JSON string and headers
+		String casesheetData = "1";
+		String comingRequest = "{\"benVisitCode\":\"1\"}";
+		String authorization = "Bearer someAuth";
+		String serverAuthorization = "Server Bearer someServerAuth";
+
+		when(commonServiceImpl.checkIsCaseSheetDownloaded(anyLong())).thenReturn(1); // or 0, based on your case
+		when(commonServiceImpl.getTmCaseSheetOffline(any(BeneficiaryFlowStatus.class))).thenReturn("1");
+
+		// Execute the method
+		String response = commonController.getTMReferredPrintData(comingRequest, authorization, serverAuthorization);
+
+		// Validate the response
+		assertTrue(response.contains("1"));
 	}
 
 	@Test
@@ -1592,16 +1618,24 @@ class CommonControllerTest {
 		assertTrue(response.toString().contains("Beneficiary pending for Tele-Consultation"));
 	}
 
-	void testGetTMCaseSheetFromCentralServer_Invalid() throws Exception {
-	}
+//	void testGetTMCaseSheetFromCentralServer_Invalid() throws Exception {
+//	}
 
 	@Test
-	void testGetTMCaseSheetFromCentralServer_Exception() throws Exception {
+	public void testGetTMCaseSheetFromCentralServer_ThrowsException() throws Exception {
+		String mockRequest = "testRequest";
+		String authorization = "Bearer testToken";
 
-		when(commonServiceImpl.getCaseSheetOfTm(any(), any())).thenThrow(RuntimeException.class);
+		when(commonServiceImpl.getCaseSheetOfTm(anyString(), anyString())).thenThrow(RuntimeException.class);
 
-		String response = commonController.getTMCaseSheetFromCentralServer(any(), any());
-		assertEquals(response, commonController.getTMCaseSheetFromCentralServer(any(), any()));
+		// Call the method under test
+		String result = commonController.getTMCaseSheetFromCentralServer(mockRequest, authorization);
+
+		// Validate the response
+		assertTrue(result.contains("Error in MMU central server case sheet"),
+				"The response should contain the expected error message.");
+
+		verify(commonServiceImpl).getCaseSheetOfTm(mockRequest, authorization);
 	}
 
 	@Test
@@ -1713,7 +1747,8 @@ class CommonControllerTest {
 	@Test
 	void testSaveBeneficiaryVisitDetail_Exception() throws JSONException {
 
-		when(commonNurseServiceImpl.updateBeneficiaryStatus(any(), any())).thenThrow(RuntimeException.class);
+		// when(commonNurseServiceImpl.updateBeneficiaryStatus(any(),
+		// any())).thenThrow(RuntimeException.class);
 
 		String response = commonController.saveBeneficiaryVisitDetail(any());
 		assertEquals(response, commonController.saveBeneficiaryVisitDetail(any()));
@@ -1725,7 +1760,7 @@ class CommonControllerTest {
 
 		response.setResponse("Session extended for 30 mins");
 
-		assertTrue(response.toString().contains("Session extended for 30 mins"));
+		assertEquals(response.toString(), commonController.extendRedisSession());
 	}
 
 	@Test

@@ -96,10 +96,10 @@ class NCDScreeningServiceImplTest2 {
 
 	private JsonObject exampleJson;
 
-	@Test
-	void testSaveNCDScreeningNurseData() {
-		fail("Not yet implemented");
-	}
+//	@Test
+//	void testSaveNCDScreeningNurseData() {
+//		fail("Not yet implemented");
+//	}
 
 //	@Test
 //	void testSaveBenNCDCareHistoryDetails() {
@@ -518,10 +518,10 @@ class NCDScreeningServiceImplTest2 {
 		assertNull(result); // Since one save failed, expecting null
 	}
 
-	@Test
-	void testUpdateNurseNCDScreeningDetails() {
-		fail("Not yet implemented");
-	}
+//	@Test
+//	void testUpdateNurseNCDScreeningDetails() {
+//		fail("Not yet implemented");
+//	}
 
 //	@Test
 //	void testUpdateBenVitalDetails() {
@@ -712,31 +712,31 @@ class NCDScreeningServiceImplTest2 {
 	}
 
 	// ***************
-
-	@Test
-	void testGetBenIdrsDetailsFrmNurse() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetBeneficiaryVitalDetails() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testUpdateNCDScreeningHistory() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testUpdateIDRSScreen() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testSaveDoctorData() {
-		fail("Not yet implemented");
-	}
+//
+//	@Test
+//	void testGetBenIdrsDetailsFrmNurse() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	void testGetBeneficiaryVitalDetails() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	void testUpdateNCDScreeningHistory() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	void testUpdateIDRSScreen() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	void testSaveDoctorData() {
+//		fail("Not yet implemented");
+//	}
 
 //	@Test
 //	void testGetBenCaseRecordFromDoctorNCDScreening() {

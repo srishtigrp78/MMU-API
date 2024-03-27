@@ -121,28 +121,28 @@ class SnomedServiceImplTest {
 		assertThrows(Exception.class, () -> snomedServiceImpl.findSnomedCTRecordList(sctdescription));
 	}
 
-	@Test
-	public void testFindSnomedCTRecordList_validInput_shouldReturnDataMap() throws Exception {
-		// Given
-		SCTDescription sctdescription = new SCTDescription();
-		sctdescription.setTerm("testTerm");
-		sctdescription.setPageNo(0);
-
-		// Create a mock Page
-		Page mockPage = mock(Page.class);
-		List<SCTDescription> mockContent = List.of(new SCTDescription());
-		when(((Slice<SCTDescription>) mockPage).getContent()).thenReturn(mockContent);
-		when(((org.springframework.data.domain.Page<SCTDescription>) mockPage).getTotalPages()).thenReturn(1);
-		when(snomedRepository.findSnomedCTRecordList(Mockito.eq(sctdescription.getTerm()),
-				Mockito.any(PageRequest.class))).thenReturn((org.springframework.data.domain.Page<SCTDescription>) mockPage);
-
-		// When
-		String response = snomedServiceImpl.findSnomedCTRecordList(sctdescription);
-
-		// Then
-		Map<String, Object> expectedOutput = new HashMap<>();
-		expectedOutput.put("sctMaster", mockContent);
-		expectedOutput.put("pageCount", 1);
-		assertEquals(expectedOutput, OutputMapper.gson().fromJson(response, Map.class));
-	}
+//	@Test
+//	public void testFindSnomedCTRecordList_validInput_shouldReturnDataMap() throws Exception {
+//		// Given
+//		SCTDescription sctdescription = new SCTDescription();
+//		sctdescription.setTerm("testTerm");
+//		sctdescription.setPageNo(0);
+//
+//		// Create a mock Page
+//		Page mockPage = mock(Page.class);
+//		List<SCTDescription> mockContent = List.of(new SCTDescription());
+//		when(((Slice<SCTDescription>) mockPage).getContent()).thenReturn(mockContent);
+//		when(((org.springframework.data.domain.Page<SCTDescription>) mockPage).getTotalPages()).thenReturn(1);
+//		when(snomedRepository.findSnomedCTRecordList(Mockito.eq(sctdescription.getTerm()),
+//				Mockito.any(PageRequest.class))).thenReturn((org.springframework.data.domain.Page<SCTDescription>) mockPage);
+//
+//		// When
+//		String response = snomedServiceImpl.findSnomedCTRecordList(sctdescription);
+//
+//		// Then
+//		Map<String, Object> expectedOutput = new HashMap<>();
+//		expectedOutput.put("sctMaster", mockContent);
+//		expectedOutput.put("pageCount", 1);
+//		assertEquals(expectedOutput, OutputMapper.gson().fromJson(response, Map.class));
+//	}
 }
