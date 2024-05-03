@@ -267,25 +267,25 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			return null;
 
 	}
-	
-	public int getMaxCurrentdate(Long beneficiaryRegID,String visitreason,String visitcategory) throws IEMRException{
-		String maxDate=benVisitDetailRepo.getMaxCreatedDate(beneficiaryRegID,visitreason,visitcategory);
-		
-	    int i=0;
-		if(maxDate!=null) {
-		try {
-			DateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			String maxdateTrim=maxDate.substring(0, maxDate.indexOf("."));
-			java.util.Date  d = timeFormat.parse(maxdateTrim);
-			Calendar cal = Calendar.getInstance();
-			Calendar currDate = Calendar.getInstance();
-			cal.setTime(d);
-			cal.add(Calendar.MINUTE, 10);
-			 i= cal.compareTo(currDate);
-			 
-		} catch (ParseException e) {
-			throw new IEMRException("Error while parseing created date :" + e.getMessage());
-		}
+
+	public int getMaxCurrentdate(Long beneficiaryRegID, String visitreason, String visitcategory) throws IEMRException {
+		String maxDate = benVisitDetailRepo.getMaxCreatedDate(beneficiaryRegID, visitreason, visitcategory);
+
+		int i = 0;
+		if (maxDate != null) {
+			try {
+				DateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				String maxdateTrim = maxDate.substring(0, maxDate.indexOf("."));
+				java.util.Date d = timeFormat.parse(maxdateTrim);
+				Calendar cal = Calendar.getInstance();
+				Calendar currDate = Calendar.getInstance();
+				cal.setTime(d);
+				cal.add(Calendar.MINUTE, 10);
+				i = cal.compareTo(currDate);
+
+			} catch (ParseException e) {
+				throw new IEMRException("Error while parseing created date :" + e.getMessage());
+			}
 		}
 		return i;
 	}
@@ -2606,7 +2606,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		prescriptionDetail.setExternalInvestigation(externalInvestigation);
 		prescriptionDetail.setVanID(vanID);
 		prescriptionDetail.setParkingPlaceID(parkingPlaceID);
-		if(provisionalDiagnosisList != null)
+		if (provisionalDiagnosisList != null)
 			prescriptionDetail.setProvisionalDiagnosisList(provisionalDiagnosisList);
 
 		Long prescriptionID = saveBenPrescription(prescriptionDetail);
@@ -2654,28 +2654,29 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		if (prescription != null && prescription.getProvisionalDiagnosisList() != null
 				&& prescription.getProvisionalDiagnosisList().size() > 0) {
-			int pointer = 1;
 			for (SCTDescription obj : prescription.getProvisionalDiagnosisList()) {
 				if (obj.getTerm() != null) {
-					if (pointer == prescription.getProvisionalDiagnosisList().size()) {
+					if (pdTerm.toString().isEmpty()) {
 						pdTerm.append(obj.getTerm());
-						if (obj.getConceptID() != null)
+						if (null != obj.getConceptID()) {
 							pdConceptID.append(obj.getConceptID());
-						else
+						} else {
 							pdConceptID.append("N/A");
+						}
 					} else {
-						pdTerm.append(obj.getTerm()).append("  ||  ");
-						if (obj.getConceptID() != null)
-							pdConceptID.append(obj.getConceptID()).append("  ||  ");
-						else
-							pdConceptID.append("N/A").append("  ||  ");
+						if (obj.getTerm() != null) {
+							pdTerm.append("  ||  ").append(obj.getTerm());
+						}
+						if (obj.getConceptID() != null) {
+							pdConceptID.append("  ||  ").append(obj.getConceptID());
+						} else {
+							pdConceptID.append("  ||  ").append("N/A");
+						}
 					}
 				}
-				pointer++;
 			}
 			prescription.setDiagnosisProvided(pdTerm.toString());
 			prescription.setDiagnosisProvided_SCTCode(pdConceptID.toString());
-			// prescription.setDiagnosisProvided_SCTTerm(pdTerm.toString());
 
 		}
 
