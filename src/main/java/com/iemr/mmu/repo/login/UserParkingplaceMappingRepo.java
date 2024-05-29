@@ -32,11 +32,18 @@ import com.iemr.mmu.data.login.UserParkingplaceMapping;
 
 @Repository
 public interface UserParkingplaceMappingRepo extends CrudRepository<UserParkingplaceMapping, Long> {
-	@Query("SELECT x.parkingPlaceID,p.stateID,s.stateName,p.districtID,d.districtName,p.districtBlockID,b.blockName from UserParkingplaceMapping x "
-			+ " INNER JOIN x.m_parkingplace p"
-			+ " INNER JOIN p.state s"
-			+ " INNER JOIN p.m_district d"
-			+ " INNER JOIN p.districtBlock b"
-			+ " WHERE x.userID = :userID and x.deleted != 1 ")
+	/*
+	 * @Query("SELECT x.parkingPlaceID,p.stateID,s.stateName,p.districtID,d.districtName,p.districtBlockID,b.blockName from UserParkingplaceMapping x "
+	 * + " INNER JOIN x.m_parkingplace p" + " INNER JOIN p.state s" +
+	 * " INNER JOIN p.m_district d" + " INNER JOIN p.districtBlock b" +
+	 * " WHERE x.userID = :userID and x.deleted != 1 ")
+	 */
+	@Query(value ="SELECT p.ParkingPlaceID,p.stateID,s.stateName,d.districtID,d.districtName, "
+			+ "p.districtBlockID,b.blockName "
+			+ "from m_userparkingplacemap x INNER JOIN m_parkingplace p on p.ParkingPlaceID=x.ParkingPlaceID "
+			+ "INNER JOIN m_state s on s.StateID=p.StateID "
+			+ "INNER JOIN m_district d on d.stateid = s.stateid "
+			+ "INNER JOIN m_districtBlock b on b.districtid = d.districtid "
+			+ "WHERE x.userID = :userID and x.deleted != 1",nativeQuery = true)
 	public List<Object[]> getUserParkingPlce(@Param("userID") Integer userID);
 }
