@@ -26,32 +26,34 @@ public class AnthropometryVitalsController {
 	@Autowired
 	private AnthropometryVitalsService anthropometryVitalsService;
 	
+
+	
+	
 	//Auto-patching height in anthropometry details
-		@CrossOrigin()	
-		@ApiOperation(value = "Get beneficiary height details", consumes = "application/json", produces = "application/json")
-		@RequestMapping(value = { "/getBenHeightDetailsFrmNurse" }, method = { RequestMethod.POST })
-		public String getBenHeightDetailsFrmNurse(
-				@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
-			OutputResponse response = new OutputResponse();
+			@CrossOrigin()	
+			@ApiOperation(value = "Get beneficiary height details", consumes = "application/json", produces = "application/json")
+			@RequestMapping(value = { "/getBenHeightDetailsFrmNurse" }, method = { RequestMethod.POST })
+			public String getBenHeightDetailsFrmNurse(
+					@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+				OutputResponse response = new OutputResponse();
 
-			logger.info("Request object for beneficiary height data fetching :" + comingRequest);
-			try {
-				JSONObject obj = new JSONObject(comingRequest);
-				if (obj.has("benRegID") && obj.has("visitCode")) {
-					Long benRegID = obj.getLong("benRegID");
-					Long visitCode = obj.getLong("visitCode");
+				logger.info("Request object for beneficiary height data fetching :" + comingRequest);
+				try {
+					JSONObject obj = new JSONObject(comingRequest);
+					if (obj.has("benRegID")) {
+						Long benRegID = obj.getLong("benRegID");
 
-					String res = anthropometryVitalsService.getBeneficiaryHeightDetails(benRegID, visitCode);
-					response.setResponse(res);
-				} else {
-					logger.info("Invalid request");
-					response.setError(5000, "Invalid request");
+						String res = anthropometryVitalsService.getBeneficiaryHeightDetails(benRegID);
+						response.setResponse(res);
+					} else {
+						logger.info("Invalid request");
+						response.setError(5000, "Invalid request");
+					}
+					logger.info("Beneficiary height data fetching Response:" + response);
+				} catch (Exception e) {
+					response.setError(5000, "Error while getting beneficiary height data");
+					logger.error("Error while getting beneficiary height data :" + e);
 				}
-				logger.info("Beneficiary height data fetching Response:" + response);
-			} catch (Exception e) {
-				response.setError(5000, "Error while getting beneficiary height data");
-				logger.error("Error while getting beneficiary height data :" + e);
+				return response.toString();
 			}
-			return response.toString();
-		}
 }
