@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 import com.iemr.mmu.repo.nurse.BenAnthropometryRepo;
 
 @Service
-public class AnthropometryVitalsServiceImpl {
+public class AnthropometryVitalsServiceImpl implements AnthropometryVitalsService {
 
 
 	@Autowired
