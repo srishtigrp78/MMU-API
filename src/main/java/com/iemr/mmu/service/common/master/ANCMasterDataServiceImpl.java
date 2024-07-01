@@ -623,17 +623,13 @@ public class ANCMasterDataServiceImpl {
 	public String getCommonDoctorMasterDataForGenopdAncNcdcarePnc(Integer visitCategoryID, int psmID, String gender,
 			Integer facilityID, Integer vanID) {
 		Map<String, Object> resMap = new HashMap<>();
-
+		ArrayList<Object[]> additionalServices = serviceMasterRepo.getAdditionalServices();
+		ArrayList<Object[]> instituteDetails = instituteRepo.getInstituteDetails(psmID);
+		resMap.put("higherHealthCare", Institute.getinstituteDetails(instituteDetails));
+		resMap.put("additionalServices", ServiceMaster.getServiceMaster(additionalServices));
 		if (visitCategoryID != 7) {
 			ArrayList<Object[]> counsellingTypes = counsellingTypeRepo.getCounsellingTypes();
-			ArrayList<Object[]> additionalServices = serviceMasterRepo.getAdditionalServices();
-			// Institute institute = new Institute();
-
-			ArrayList<Object[]> instituteDetails = instituteRepo.getInstituteDetails(psmID);
 			resMap.put("counsellingTypes", CounsellingType.getCounsellingType(counsellingTypes));
-			resMap.put("higherHealthCare", Institute.getinstituteDetails(instituteDetails));
-			resMap.put("additionalServices", ServiceMaster.getServiceMaster(additionalServices));
-
 		} else {
 			ArrayList<Object[]> procedures = procedureRepo.getProcedureMasterData(psmID, gender);
 			ArrayList<Object[]> ccList = chiefComplaintMasterRepo.getChiefComplaintMaster();
@@ -647,10 +643,10 @@ public class ANCMasterDataServiceImpl {
 		ArrayList<Object[]> ddumList = drugDurationUnitMasterRepo.getDrugDurationUnitMaster();
 		ArrayList<Object[]> dfrmList = drugFrequencyMasterRepo.getDrugFrequencyMaster();
 		ArrayList<Object[]> roaList = routeOfAdminRepo.getRouteOfAdminList();
-		ArrayList<ItemMaster> NonedlList=itemMasterRepo.searchEdl(psmID);
-		for(int i=0;i<NonedlList.size();i++)
+		ArrayList<ItemMaster> nonedlList=itemMasterRepo.searchEdl(psmID);
+		for(int i=0;i<nonedlList.size();i++)
 		{
-			NonedlList.get(i).setUnitOfMeasurement(NonedlList.get(i).getUom().getuOMName());
+			nonedlList.get(i).setUnitOfMeasurement(nonedlList.get(i).getUom().getuOMName());
 		}
 
 		ArrayList<V_DrugPrescription> itemList = new ArrayList<>();
@@ -668,7 +664,7 @@ public class ANCMasterDataServiceImpl {
 		resMap.put("drugFrequencyMaster", DrugFrequencyMaster.getDrugFrequencyMaster(dfrmList));
 		resMap.put("routeOfAdmin", RouteOfAdmin.getRouteOfAdminList(roaList));
 		resMap.put("itemMaster", itemList);
-		resMap.put("NonEdlMaster", NonedlList);
+		resMap.put("NonEdlMaster", nonedlList);
 
 		// NCD Care specific master data
 		if (visitCategoryID == 3) {
