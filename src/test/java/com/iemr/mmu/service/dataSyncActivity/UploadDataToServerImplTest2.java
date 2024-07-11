@@ -64,7 +64,7 @@ class UploadDataToServerImplTest2 {
 
 		String expectedSyncData = null;
 
-		String result = uploadDataToServerService.getDataToSyncToServer(vanID, groupID, user, authorization);
+		String result = uploadDataToServerService.getDataToSyncToServer(vanID, user, authorization);
 		// System.out.println(result);
 
 		assertEquals(expectedSyncData, result);
@@ -89,7 +89,7 @@ class UploadDataToServerImplTest2 {
 		List<SyncUtilityClass> syncUtilityClassList = new ArrayList<>(); // Add SyncUtilityClass objects for testing
 
 		// Call the method and verify the output
-		String result = uploadDataToServerService.syncIntercepter(vanID, groupID, user, Authorization);
+		String result = uploadDataToServerService.syncIntercepter(vanID, user, Authorization);
 
 		System.out.println(result);
 

@@ -21,6 +21,7 @@
 */
 package com.iemr.mmu.service.dataSyncActivity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,8 +36,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -75,7 +74,7 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	private DataSyncGroupsRepo dataSyncGroupsRepo;
 	@Autowired
 	private MasterVanRepo masterVanRepo;
-	
+
 	@Autowired
 	private SyncUtilityClassRepo syncutilityClassRepo;
 
@@ -88,11 +87,12 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	 * @param Authorization
 	 * @return
 	 */
-	//@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = { Exception.class })
-	public String getDataToSyncToServer(int vanID, int groupID, String user, String Authorization) throws Exception {
+	// @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {
+	// Exception.class })
+	public String getDataToSyncToServer(int vanID, String user, String Authorization) throws Exception {
 
 		String syncData = null;
-		syncData = syncIntercepter(vanID, groupID, user, Authorization);
+		syncData = syncIntercepter(vanID, user, Authorization);
 
 		return syncData;
 	}
@@ -102,10 +102,10 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	 * @param Authorization
 	 * @return
 	 */
-	public String syncIntercepter(int vanID, int groupID, String user, String Authorization) throws Exception {
+	public String syncIntercepter(int vanID, String user, String Authorization) throws Exception {
 
 		// sync activity trigger
-		String serverAcknowledgement = startDataSync(vanID, groupID, user, Authorization);
+		String serverAcknowledgement = startDataSync(vanID, user, Authorization);
 
 		return serverAcknowledgement;
 	}
@@ -117,48 +117,93 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 	 * @return
 	 */
 
-	private String startDataSync(int vanID, Integer groupID, String user, String Authorization) throws Exception {
+	private String startDataSync(int vanID, String user, String Authorization) throws Exception {
 		String serverAcknowledgement = null;
-		// fetch table-name, van-side-columns, server-side-columns
-		List<SyncUtilityClass> syncUtilityClassList = getVanAndServerColumns(groupID);
-		List<Map<String, Object>> syncData;
-		List<Map<String, Object>> syncDataBatch;
-		for (SyncUtilityClass obj : syncUtilityClassList) {
-			// get data from DB to sync to server
-			syncData = getDataToSync(obj.getSchemaName(), obj.getTableName(), obj.getVanColumnName());
-			// System.out.println(new Gson().toJson(syncData));
-			if (syncData != null && syncData.size() > 0) {
-				int dataSize = syncData.size();
-				int startIndex = 0;
-				int fullBatchCount = dataSize / BATCH_SIZE;
-				int remainder = dataSize % BATCH_SIZE;
+		List<Map<String, String>> responseStatus = new ArrayList<>();
+		boolean isProgress = false;
+		// fetch group masters
+		List<DataSyncGroups> dataSyncGroupList = dataSyncGroupsRepo.findByDeleted(false);
+		for (DataSyncGroups dataSyncGroups : dataSyncGroupList) {
+			int groupId = dataSyncGroups.getSyncTableGroupID();
+			List<SyncUtilityClass> syncUtilityClassList = getVanAndServerColumns(groupId);
+			List<Map<String, Object>> syncData;
+			List<Map<String, Object>> syncDataBatch;
+			Map<String, String> groupIdStatus = new HashMap<>();
+			for (SyncUtilityClass obj : syncUtilityClassList) {
+		//		if (!isProgress) {
+					// get data from DB to sync to server
+					syncData = getDataToSync(obj.getSchemaName(), obj.getTableName(), obj.getVanColumnName());
+					// System.out.println(new Gson().toJson(syncData));
+					if (syncData != null && syncData.size() > 0) {
+						int dataSize = syncData.size();
+						int startIndex = 0;
+						int fullBatchCount = dataSize / BATCH_SIZE;
+						int remainder = dataSize % BATCH_SIZE;
 
-				// sync data to server for batches
-				for (int i = 0; i < fullBatchCount; i++) {
-					// get data for each batch
-					syncDataBatch = getBatchOfAskedSizeDataToSync(syncData, startIndex, BATCH_SIZE);
-					// for each batch sync data to central server
-					serverAcknowledgement = syncDataToServer(vanID, obj.getSchemaName(), obj.getTableName(),
-							obj.getVanAutoIncColumnName(), obj.getServerColumnName(), syncDataBatch, user,
-							Authorization);
-					startIndex += BATCH_SIZE;
-				}
-				// sync data to server for rest data left from batch
-				if (remainder > 0) {
-					// get data for extra data from batch
-					syncDataBatch = getBatchOfAskedSizeDataToSync(syncData, startIndex, remainder);
-					// for extra data from batch sync data to central server
-					serverAcknowledgement = syncDataToServer(vanID, obj.getSchemaName(), obj.getTableName(),
-							obj.getVanAutoIncColumnName(), obj.getServerColumnName(), syncDataBatch, user,
-							Authorization);
-				}
+						// sync data to server for batches
+						for (int i = 0; i < fullBatchCount; i++) {
+							// get data for each batch
+							syncDataBatch = getBatchOfAskedSizeDataToSync(syncData, startIndex, BATCH_SIZE);
+							// for each batch sync data to central server
+							serverAcknowledgement = syncDataToServer(vanID, obj.getSchemaName(), obj.getTableName(),
+									obj.getVanAutoIncColumnName(), obj.getServerColumnName(), syncDataBatch, user,
+									Authorization);
+		//					isProgress = setResponseStatus(groupIdStatus, groupId, serverAcknowledgement, responseStatus, isProgress);
+							startIndex += BATCH_SIZE;
+//							if(isProgress) 
+//								break;
+						}
+						// sync data to server for rest data left from batch
+						if (remainder > 0 && !isProgress) {
+							// get data for extra data from batch
+							syncDataBatch = getBatchOfAskedSizeDataToSync(syncData, startIndex, remainder);
+							// for extra data from batch sync data to central server
+							serverAcknowledgement = syncDataToServer(vanID, obj.getSchemaName(), obj.getTableName(),
+									obj.getVanAutoIncColumnName(), obj.getServerColumnName(), syncDataBatch, user,
+									Authorization);
+			//				isProgress = setResponseStatus(groupIdStatus, groupId, serverAcknowledgement, responseStatus, isProgress);
 
-			} else {
-				// nothing to sync
-				serverAcknowledgement = "Data successfully synced";
+						}
+
+					} else {
+						// nothing to sync
+						serverAcknowledgement = "Data successfully synced";
+					}
+//				} else {
+//					groupIdStatus.put("groupId", String.valueOf(groupId));
+//					groupIdStatus.put("status", "pending");
+//					responseStatus.add(groupIdStatus);
+//				}
+			} if(isProgress) {
+				isProgress = setResponseStatus(groupIdStatus, groupId, serverAcknowledgement, responseStatus, isProgress);
 			}
 		}
-		return serverAcknowledgement;
+		if (isProgress) {
+			return responseStatus.toString();
+		} else {
+
+			return serverAcknowledgement;
+		}
+	}
+
+	private boolean setResponseStatus(Map<String, String> groupIdStatus, int groupId, String serverAcknowledgement,
+			List<Map<String, String>> responseStatus, boolean isProgress) {
+		if (serverAcknowledgement != null) {
+			groupIdStatus.put("groupId", String.valueOf(groupId));
+			groupIdStatus.put("status", serverAcknowledgement);
+			responseStatus.add(groupIdStatus);
+		} else if (isProgress) {
+			groupIdStatus.put("groupId", String.valueOf(groupId));
+			groupIdStatus.put("status", "pending");
+			responseStatus.add(groupIdStatus);
+		} else {
+			isProgress = true;
+			groupIdStatus.put("groupId", String.valueOf(groupId));
+			groupIdStatus.put("status", "failed");
+			responseStatus.add(groupIdStatus);
+		}
+		return isProgress;
+
 	}
 
 	/**
@@ -169,9 +214,10 @@ public class UploadDataToServerImpl implements UploadDataToServer {
 
 	private List<SyncUtilityClass> getVanAndServerColumns(Integer groupID) throws Exception {
 		List<SyncUtilityClass> syncUtilityClassList = getVanAndServerColumnList(groupID);
-		
+
 		return syncUtilityClassList;
 	}
+
 	public List<SyncUtilityClass> getVanAndServerColumnList(Integer groupID) throws Exception {
 		List<SyncUtilityClass> syncUtilityClassList = syncutilityClassRepo
 				.findBySyncTableGroupIDAndDeletedOrderBySyncTableDetailID(groupID, false);
