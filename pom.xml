@@ -263,7 +263,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>mmuapi-v1.0</finalName>
+		<finalName>mmuapi-v3.0.0</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.owasp</groupId>
