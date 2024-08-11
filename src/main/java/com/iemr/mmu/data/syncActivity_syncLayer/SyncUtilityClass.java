@@ -31,7 +31,7 @@ import jakarta.persistence.Table;
 import com.google.gson.annotations.Expose;
 
 @Entity
-@Table(name = "db_iemr.m_synctabledetail")
+@Table(name = "m_synctabledetail")
 public class SyncUtilityClass {
 
 	@Id

@@ -52,7 +52,7 @@ class StartSyncActivityTest {
 		String serverAuthorization = "ServerAuthorization";
 		String s = "test response";
 
-		when(uploadDataToServerImpl.getDataToSyncToServer(1, 2, "testUser", serverAuthorization)).thenReturn(s);
+		when(uploadDataToServerImpl.getDataToSyncToServer(1, "testUser", serverAuthorization)).thenReturn(s);
 
 		String expResponse = startSyncActivity.dataSyncToServer(requestOBJ, authorization, serverAuthorization);
 
@@ -66,7 +66,7 @@ class StartSyncActivityTest {
 		String authorization = "Authorization";
 		String serverAuthorization = "ServerAuthorization";
 
-		when(uploadDataToServerImpl.getDataToSyncToServer(anyInt(), anyInt(), anyString(), anyString()))
+		when(uploadDataToServerImpl.getDataToSyncToServer(anyInt(), anyString(), anyString()))
 				.thenReturn(null);
 
 		String actualResponse = startSyncActivity.dataSyncToServer(requestOBJ, authorization, serverAuthorization);
@@ -91,7 +91,7 @@ class StartSyncActivityTest {
 		String authorization = "Authorization";
 		String serverAuthorization = "ServerAuthorization";
 
-		when(uploadDataToServerImpl.getDataToSyncToServer(anyInt(), anyInt(), anyString(), anyString()))
+		when(uploadDataToServerImpl.getDataToSyncToServer(anyInt(), anyString(), anyString()))
 				.thenThrow(new RuntimeException("Error in data sync"));
 
 		String response = startSyncActivity.dataSyncToServer(requestOBJ, authorization, serverAuthorization);
