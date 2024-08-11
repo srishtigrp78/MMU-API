@@ -326,6 +326,8 @@ public class LocationServiceImpl implements LocationService {
 				distMap = new HashMap<>();
 				distMap.put("districtID", objArr[2]);
 				distMap.put("districtName", objArr[3]);
+				distMap.put("blockID", objArr[8]);
+				distMap.put("blockName", objArr[9]);
 
 				distLit.add(distMap);
 			}
