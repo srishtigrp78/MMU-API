@@ -384,10 +384,8 @@ public class LocationServiceImpl implements LocationService {
 				distTalukMap.put("districtID", objArr[3]);
 				distTalukList.add(distTalukMap);
 			}
-
 		}
 		return new Gson().toJson(distTalukList);
-
 	}
 
 }
