@@ -264,7 +264,7 @@ public class LocationServiceImpl implements LocationService {
 	}
 
 	// new, 11-10-2018
-	public String getLocDetailsNew(Integer spID, Integer spPSMID) {
+	public String getLocDetailsNew(Integer spID, Integer spPSMID, Integer userId) {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 		// other location details
 		ArrayList<Object[]> objList = v_get_prkngplc_dist_zone_state_from_spidRepo.getDefaultLocDetails(spID, spPSMID);
@@ -288,27 +288,60 @@ public class LocationServiceImpl implements LocationService {
 				villageList.add(villages);
 			}
 		}
-		// village masters from service point
-		// List<Object[]> servicePointVillageList =
-		// servicePointVillageMappingRepo.getServicePointVillages(spID);
-		//
-		// ArrayList<ServicePointVillageMapping> villageList = new
-		// ArrayList<ServicePointVillageMapping>();
-		// if (servicePointVillageList.size() > 0) {
-		// ServicePointVillageMapping VillageMap;
-		// for (Object[] obj : servicePointVillageList) {
-		// VillageMap = new ServicePointVillageMapping((Integer) obj[0], (String)
-		// obj[1]);
-		// villageList.add(VillageMap);
-		// }
-		// }
-
+	//get Block list for servicepoint
+		if(null != userId) {
+		List<Object[]> userServiceroleMapping = districtBlockMasterRepo.getUserservicerolemapping(userId);
+			resMap.put("userDetails", getUserServiceroleMapping(userServiceroleMapping));
+		}
+		
 		resMap.put("otherLoc", getDefaultLocDetails(objList));
 		resMap.put("stateMaster", stateList);
 		resMap.put("villageList", villageList);
 		// resMap.put("villageMaster", villageList);
 
 		return new Gson().toJson(resMap);
+	}
+
+	private Map<String, Object> getUserServiceroleMapping(List<Object[]> userServiceroleMapping) {
+		Map<String, Object> returnObj = new HashMap<>();
+		ArrayList<Map<String, Object>> blockList = new ArrayList<>();
+		ArrayList<Map<String, Object>> villageList = new ArrayList<>();
+		Map<String, Object> blockMap = new HashMap<>();
+		Map<String, Object> villageMap = new HashMap<>();
+		if (userServiceroleMapping != null && userServiceroleMapping.size() > 0) {
+			returnObj.put("stateID", userServiceroleMapping.get(0)[0]);
+			returnObj.put("stateName", userServiceroleMapping.get(0)[1]);
+			returnObj.put("districtID", userServiceroleMapping.get(0)[2]);
+			returnObj.put("districtName", userServiceroleMapping.get(0)[3]);
+			for (Object[] objArray : userServiceroleMapping) {
+				if (null != objArray[4]) {
+					String[] blockIds = objArray[4].toString().split(",");
+					String[] blockName = objArray[5].toString().split(",");
+					int blockLength = blockIds.length;
+					for (int i = 0; i < blockLength; i++) {
+						blockMap = new HashMap<>();
+						blockMap.put("blockId", blockIds[i]);
+						blockMap.put("blockName", blockName[i]);
+						blockList.add(blockMap);
+					}
+				}
+				if (null != objArray[6]) {
+					String[] villageId = objArray[6].toString().split(",");
+					String[] villageName = objArray[7].toString().split(",");
+					int villageLength = villageId.length;
+					for (int i = 0; i < villageLength; i++) {
+						villageMap = new HashMap<>();
+						villageMap.put("villageId", villageId[i]);
+						villageMap.put("villageName", villageName[i]);
+						villageList.add(villageMap);
+					}
+				}
+			}
+			returnObj.put("blockList", blockList);
+			returnObj.put("villageList", villageList);
+
+		}
+		return returnObj;
 	}
 
 	private Map<String, Object> getDefaultLocDetails(ArrayList<Object[]> objList) {
@@ -338,42 +371,11 @@ public class LocationServiceImpl implements LocationService {
 
 	}
 
-	/* New code-fetching villages */
-	/*
-	 * @Override public String getVillageStateList(Integer stateID) {
-	 * 
-	 * ArrayList<Object[]> villageStateMasterList =
-	 * districtBranchMasterRepo.getVillageStateList(stateID); ArrayList<Object>
-	 * villageList = new ArrayList<>(); if (villageStateMasterList != null &&
-	 * villageStateMasterList.size() > 0) { for (Object[] objArr :
-	 * villageStateMasterList) { DistrictBranchMapping districtBranch = new
-	 * DistrictBranchMapping((Integer) objArr[0], (String) objArr[1]);
-	 * villageList.add(districtBranch); } }
-	 * 
-	 * return new Gson().toJson(villageList);
-	 * 
-	 * 
-	 * }
-	 */
-	/* New code-fetching district and Taluk */
 	@Override
 	public String getDistrictTalukList(Integer districtBranchID) {
 
 		ArrayList<Object[]> districtTalukeMasterList = districtBranchMasterRepo.getDistrictTalukList(districtBranchID);
-		/*
-		 * ArrayList<Object> distTalukList = new ArrayList<>(); if
-		 * (districtTalukeMasterList != null && districtTalukeMasterList.size() > 0) {
-		 * for (Object[] objArr : districtTalukeMasterList) { DistrictBranchMapping
-		 * districtBranch = new DistrictBranchMapping((String) objArr[0], (Integer)
-		 * objArr[1]); distTalukList.add(districtBranch); DistrictBlock districtblock =
-		 * new DistrictBlock((String) objArr[2], (Integer) objArr[3]);
-		 * distTalukList.add(districtblock);
-		 * 
-		 * } }
-		 */
-
-		// return new Gson().toJson(distTalukList);
-		// Map<String, Object> resMap = new HashMap<>();
+		
 		ArrayList<Object> distTalukList = new ArrayList<>();
 		Map<String, Object> distTalukMap = new HashMap<String, Object>();
 		if (districtTalukeMasterList != null && districtTalukeMasterList.size() > 0) {
@@ -383,13 +385,9 @@ public class LocationServiceImpl implements LocationService {
 				distTalukMap.put("districtName", objArr[2]);
 				distTalukMap.put("districtID", objArr[3]);
 				distTalukList.add(distTalukMap);
-				// resMap.put("districtTalukDetails",distTalukMap);
 			}
-
 		}
-		// return new Gson().toJson(resMap);
 		return new Gson().toJson(distTalukList);
-
 	}
 
 }
