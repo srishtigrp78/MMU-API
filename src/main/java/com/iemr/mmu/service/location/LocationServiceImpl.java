@@ -289,8 +289,10 @@ public class LocationServiceImpl implements LocationService {
 			}
 		}
 	//get Block list for servicepoint
+		if(null != userId) {
 		List<Object[]> userServiceroleMapping = districtBlockMasterRepo.getUserservicerolemapping(userId);
-		resMap.put("userDetails", getUserServiceroleMapping(userServiceroleMapping));
+			resMap.put("userDetails", getUserServiceroleMapping(userServiceroleMapping));
+		}
 		
 		resMap.put("otherLoc", getDefaultLocDetails(objList));
 		resMap.put("stateMaster", stateList);
@@ -312,32 +314,32 @@ public class LocationServiceImpl implements LocationService {
 			returnObj.put("districtID", userServiceroleMapping.get(0)[2]);
 			returnObj.put("districtName", userServiceroleMapping.get(0)[3]);
 			for (Object[] objArray : userServiceroleMapping) {
-				if(null != objArray[4]) {
-				String[] blockIds = objArray[4].toString().split(",");
-				String[] blockName = objArray[5].toString().split(",");
-				int blockLength = blockIds.length;
-				for(int i=0;i<blockLength;i++ ) {
-					blockMap = new HashMap<>();
-					blockMap.put("blockId", blockIds[i]);
-					blockMap.put("blockName", blockName[i]);
-					blockList.add(blockMap);
+				if (null != objArray[4]) {
+					String[] blockIds = objArray[4].toString().split(",");
+					String[] blockName = objArray[5].toString().split(",");
+					int blockLength = blockIds.length;
+					for (int i = 0; i < blockLength; i++) {
+						blockMap = new HashMap<>();
+						blockMap.put("blockId", blockIds[i]);
+						blockMap.put("blockName", blockName[i]);
+						blockList.add(blockMap);
+					}
 				}
-				}
-				if(null != objArray[6]) {
-				String[] villageId = objArray[6].toString().split(",");
-				String[] villageName = objArray[7].toString().split(",");
-				int villageLength = villageId.length;
-				for(int i=0;i<villageLength;i++ ) {
-					villageMap = new HashMap<>();
-					villageMap.put("villageId", villageId[i]);
-					villageMap.put("villageName", villageName[i]);
-					villageList.add(villageMap);
-				}
+				if (null != objArray[6]) {
+					String[] villageId = objArray[6].toString().split(",");
+					String[] villageName = objArray[7].toString().split(",");
+					int villageLength = villageId.length;
+					for (int i = 0; i < villageLength; i++) {
+						villageMap = new HashMap<>();
+						villageMap.put("villageId", villageId[i]);
+						villageMap.put("villageName", villageName[i]);
+						villageList.add(villageMap);
+					}
 				}
 			}
 			returnObj.put("blockList", blockList);
 			returnObj.put("villageList", villageList);
-			
+
 		}
 		return returnObj;
 	}
