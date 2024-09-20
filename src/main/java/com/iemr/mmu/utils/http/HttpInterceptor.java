@@ -30,10 +30,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.iemr.mmu.utils.exception.CustomExceptionResponse;
-import com.iemr.mmu.utils.redis.RedisStorage;
 import com.iemr.mmu.utils.response.OutputResponse;
-import com.iemr.mmu.utils.sessionObject.SessionObject;
+import com.iemr.mmu.utils.sessionobject.SessionObject;
 import com.iemr.mmu.utils.validator.Validator;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -62,15 +60,14 @@ public class HttpInterceptor implements HandlerInterceptor {
 		boolean status = true;
 		logger.debug("In preHandle we are Intercepting the Request");
 		String authorization = request.getHeader("Authorization");
-		logger.debug("RequestURI::" + request.getRequestURI() + " || Authorization ::" + authorization
-				+ " || method :: " + request.getMethod());
+		logger.debug("RequestURI::" , request.getRequestURI() , " || Authorization ::" , authorization
+				+ " || method :: " , request.getMethod());
 		if (!request.getMethod().equalsIgnoreCase("OPTIONS")) {
 			try {
 				String[] requestURIParts = request.getRequestURI().split("/");
 				String requestAPI = requestURIParts[requestURIParts.length - 1];
 				switch (requestAPI) {
-				// case "getBenCaseRecordFromDoctorGeneralOPD":
-				// case "doctorData":
+				
 				case "startMasterDownload":
 				case "checkMastersDownloadProgress":
 				case "getVanDetailsForMasterDownload":
@@ -122,7 +119,7 @@ public class HttpInterceptor implements HandlerInterceptor {
 		try {
 			logger.debug("In postHandle we are Intercepting the Request");
 			String authorization = request.getHeader("Authorization");
-			logger.debug("RequestURI::" + request.getRequestURI() + " || Authorization ::" + authorization);
+			logger.debug("RequestURI::" , request.getRequestURI() , " || Authorization ::" + authorization);
 			if (authorization != null) {
 				sessionObject.updateSessionObject(authorization, sessionObject.getSessionObject(authorization));
 			}

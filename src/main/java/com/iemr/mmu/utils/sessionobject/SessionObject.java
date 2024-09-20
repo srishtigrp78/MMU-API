@@ -1,4 +1,4 @@
-package com.iemr.mmu.utils.sessionObject;
+package com.iemr.mmu.utils.sessionobject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,10 +32,9 @@ public class SessionObject {
 	private int sessionExpiryTime;
 
 	public String getSessionObject(String key) throws RedisSessionException {
-		Boolean extendExpirationTime = ConfigProperties.getExtendExpiryTime();
 		Integer sessionExpiryTime = ConfigProperties.getSessionExpiryTime();
 		
-		return objectStore.getObject(key, Boolean.valueOf(extendExpirationTime), sessionExpiryTime);
+		return objectStore.getObject(key, sessionExpiryTime);
 	}
 
 	public String setSessionObject(String key, String value) throws RedisSessionException {
@@ -66,7 +65,7 @@ public class SessionObject {
 	}
 	public void deleteSessionObject(String key) throws RedisSessionException {
 		
-		System.out.println(objectStore.deleteObject(key));
+		objectStore.deleteObject(key);
 	}
 
 	

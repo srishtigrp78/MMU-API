@@ -40,7 +40,7 @@ public class RedisStorage {
 
 	
 
-	public String setObject(String key, String value, int expirationTime) throws RedisSessionException {
+	public String setObject(String key, String value, int expirationTime) {
 		RedisConnection redCon = connection.getConnection();
 		
 		byte[] sessionData = redCon.get(key.getBytes());
@@ -50,7 +50,6 @@ public class RedisStorage {
 		}
 		
 		if ((userRespFromRedis == null) || (userRespFromRedis.isEmpty())) {
-			logger.info("updating session time of redis for " + key);
 			redCon.set(key.getBytes(), value.getBytes(), Expiration.seconds(expirationTime), SetOption.UPSERT);
 			
 		}
@@ -58,7 +57,7 @@ public class RedisStorage {
 		return key;
 	}
 
-	public String getObject(String key, Boolean extendExpirationTime, int expirationTime) throws RedisSessionException {
+	public String getObject(String key, int expirationTime) throws RedisSessionException {
 		
 
 		RedisConnection redCon = connection.getConnection();
@@ -69,8 +68,6 @@ public class RedisStorage {
 		}
 		if ((userRespFromRedis != null) && (userRespFromRedis.trim().length() != 0)) {
 			
-
-			logger.info("updating session time of redis for " + key);
 			redCon.expire(key.getBytes(), expirationTime);
 		} else {
 			throw new RedisSessionException("Unable to fetch session object from Redis server");
@@ -101,8 +98,6 @@ public class RedisStorage {
 		
 		if ((userRespFromRedis != null) && (userRespFromRedis.trim().length() != 0)) {
 			
-
-			logger.info("updating session time of redis for " + key);
 			redCon.set(key.getBytes(), value.getBytes(), Expiration.seconds(expirationTime), SetOption.UPSERT);
 		} else {
 			throw new RedisSessionException("Unable to fetch session object from Redis server");

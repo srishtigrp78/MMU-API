@@ -7,11 +7,9 @@ import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,8 +18,6 @@ import org.springframework.stereotype.Component;
 public class ConfigProperties {
 	private static Properties properties;
 	private static Logger logger = LoggerFactory.getLogger(ConfigProperties.class);
-
-	private static Environment environment;
 
 	public ConfigProperties() {
 		initalizeProperties();
@@ -39,10 +35,6 @@ public class ConfigProperties {
 		}
 	}
 
-	@Autowired
-	public void setEnvironment(Environment environment) {
-		this.environment = environment;
-	}
 
 	@Value("${iemr.extend.expiry.time:false}")
 	private static Boolean extendExpiryTime;
