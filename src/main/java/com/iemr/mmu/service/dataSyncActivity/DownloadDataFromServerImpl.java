@@ -94,7 +94,7 @@ public class DownloadDataFromServerImpl implements DownloadDataFromServer {
 
 		if (totalCounter != progressCounter) {
 			return "inProgress";
-		}
+		} 
 
 		String successFlag = " Master download started ";
 
