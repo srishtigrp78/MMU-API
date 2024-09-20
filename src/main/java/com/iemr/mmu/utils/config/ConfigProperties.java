@@ -19,10 +19,6 @@ public class ConfigProperties {
 	private static Properties properties;
 	private static Logger logger = LoggerFactory.getLogger(ConfigProperties.class);
 
-	public ConfigProperties() {
-		initalizeProperties();
-	}
-
 	private static void initalizeProperties() {
 		if (properties == null) {
 			properties = new Properties();
@@ -139,5 +135,5 @@ public class ConfigProperties {
 		return password;
 	}
 
-	private static Class<ConfigProperties> configProperties = ConfigProperties.class;
+	private static Class<ConfigProperties> property = ConfigProperties.class;
 }

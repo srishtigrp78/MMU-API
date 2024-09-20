@@ -23,11 +23,9 @@ public class SessionObject {
 
 	public SessionObject() {
 		
-		extendExpirationTime = ConfigProperties.getExtendExpiryTime();
 		sessionExpiryTime = ConfigProperties.getSessionExpiryTime();
 	}
 
-	private boolean extendExpirationTime;
 											
 	private int sessionExpiryTime;
 
@@ -43,22 +41,19 @@ public class SessionObject {
 	}
 
 	public String updateSessionObject(String key, String value) throws RedisSessionException {
-		Boolean extendExpirationTime = ConfigProperties.getExtendExpiryTime();
 		Integer sessionExpiryTime = ConfigProperties.getSessionExpiryTime();
 		
-		updateConcurrentSessionObject(key, value, extendExpirationTime, sessionExpiryTime);
-		return objectStore.updateObject(key, value, Boolean.valueOf(extendExpirationTime), sessionExpiryTime);
+		updateConcurrentSessionObject(key, value , sessionExpiryTime);
+		return objectStore.updateObject(key, value , sessionExpiryTime);
 	}
-	private void updateConcurrentSessionObject(String key, String value, Boolean extendExpirationTime,
-			Integer sessionExpiryTime) {
+	private void updateConcurrentSessionObject(String key, String value, Integer sessionExpiryTime) {
 		try {
 			JsonObject jsnOBJ = new JsonObject();
 			JsonParser jsnParser = new JsonParser();
 			JsonElement jsnElmnt = jsnParser.parse(value);
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 			if (jsnOBJ.has("userName") && jsnOBJ.get("userName") != null) {
-				objectStore.updateObject(jsnOBJ.get("userName").getAsString().trim().toLowerCase(), key,
-						extendExpirationTime, sessionExpiryTime);
+				objectStore.updateObject(jsnOBJ.get("userName").getAsString().trim().toLowerCase(), key, sessionExpiryTime);
 			}
 		} catch (Exception e) {
 		}

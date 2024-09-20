@@ -60,8 +60,8 @@ public class HttpInterceptor implements HandlerInterceptor {
 		boolean status = true;
 		logger.debug("In preHandle we are Intercepting the Request");
 		String authorization = request.getHeader("Authorization");
-		logger.debug("RequestURI::" , request.getRequestURI() , " || Authorization ::" , authorization
-				+ " || method :: " , request.getMethod());
+		logger.debug("RequestURI:: {} " , request.getRequestURI() , " || Authorization :: {} " , authorization
+				+ " || method :: {} " , request.getMethod());
 		if (!request.getMethod().equalsIgnoreCase("OPTIONS")) {
 			try {
 				String[] requestURIParts = request.getRequestURI().split("/");
@@ -119,12 +119,12 @@ public class HttpInterceptor implements HandlerInterceptor {
 		try {
 			logger.debug("In postHandle we are Intercepting the Request");
 			String authorization = request.getHeader("Authorization");
-			logger.debug("RequestURI::" , request.getRequestURI() , " || Authorization ::" + authorization);
+			logger.debug("RequestURI:: {} " , request.getRequestURI() , " || Authorization :: {} " + authorization);
 			if (authorization != null) {
 				sessionObject.updateSessionObject(authorization, sessionObject.getSessionObject(authorization));
 			}
 		} catch (Exception e) {
-			logger.debug("postHandle failed with error " + e.getMessage());
+			logger.debug("postHandle failed with error {} " , e.getMessage());
 		}
 	}
 

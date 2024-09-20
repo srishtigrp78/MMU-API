@@ -85,8 +85,7 @@ public class RedisStorage {
 		return userRespFromRedis;
 	}
 
-	public String updateObject(String key, String value, Boolean extendExpirationTime, int expirationTime)
-			throws RedisSessionException {
+	public String updateObject(String key, String value , int expirationTime) throws RedisSessionException {
 		RedisConnection redCon = connection.getConnection();
 		
 
