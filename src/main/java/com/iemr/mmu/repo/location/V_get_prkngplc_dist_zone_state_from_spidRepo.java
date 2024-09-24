@@ -34,9 +34,9 @@ import com.iemr.mmu.data.location.V_get_prkngplc_dist_zone_state_from_spid;
 public interface V_get_prkngplc_dist_zone_state_from_spidRepo
 		extends CrudRepository<V_get_prkngplc_dist_zone_state_from_spid, Long> {
 
-	@Query(" SELECT Distinct parkingPlaceID, parkingPlaceName, districtID, districtName,"
-			+ " zoneID, zoneName, stateID, stateName " + " FROM V_get_prkngplc_dist_zone_state_from_spid "
-			+ " WHERE servicePointID =:spID AND providerServiceMapID =:psmID ")
+	@Query(" SELECT Distinct v.parkingPlaceID, v.parkingPlaceName, v.districtID, v.districtName,"
+			+ " v.zoneID, v.zoneName, v.stateID, v.stateName, v.blockID, v.blockName FROM V_get_prkngplc_dist_zone_state_from_spid v"
+			+ " WHERE v.servicePointID =:spID AND v.providerServiceMapID =:psmID ")
 	ArrayList<Object[]> getDefaultLocDetails(@Param("spID") Integer spID, @Param("psmID") Integer psmID);
 
 }
