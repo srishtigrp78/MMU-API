@@ -34,11 +34,11 @@ import com.iemr.mmu.data.syncActivity_syncLayer.SyncDownloadMaster;
 
 @Repository
 public interface SyncDownloadMasterRepo extends CrudRepository<SyncDownloadMaster, Integer> {
-	@Query(" SELECT u FROM SyncDownloadMaster u WHERE u.deleted is false ")
+	@Query(" SELECT u FROM SyncDownloadMaster u WHERE u.deleted = false ")
 	ArrayList<SyncDownloadMaster> getDownloadTables();
 
 	@Transactional
 	@Modifying
-	@Query(value =" UPDATE SyncDownloadMaster u SET u.lastDownloadDate = current_date() WHERE u.downloadMasterTableID =:ID ",nativeQuery = true)
+	@Query(" UPDATE SyncDownloadMaster u SET u.lastDownloadDate = current_timestamp() WHERE u.downloadMasterTableID =:ID ")
 	int updateTableSyncDownloadMasterForLastDownloadDate(@Param("ID") Integer ID);
 }

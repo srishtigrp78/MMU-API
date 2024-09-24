@@ -41,7 +41,6 @@ import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 
-
 /***
  * @purpose Class used for data sync from van-to-server & server-to-van
  */
@@ -59,6 +58,7 @@ public class StartSyncActivity {
 	private DownloadDataFromServerTransactionalImpl downloadDataFromServerTransactionalImpl;
 	private static final String GROUP_ID = "groupID";
 	private static final String PROVIDER_SERVICE_MAP_ID = "providerServiceMapID";
+
 	@CrossOrigin()
 	@Operation(summary = "Start data sync from van to Server")
 	@PostMapping(value = { "/van-to-server" })
@@ -68,14 +68,13 @@ public class StartSyncActivity {
 		OutputResponse response = new OutputResponse();
 		try {
 			JSONObject obj = new JSONObject(requestOBJ);
-			if (obj.has(GROUP_ID) && obj.get(GROUP_ID) != null && obj.has("user")
-					&& obj.get("user") != null && obj.has("vanID") && obj.get("vanID") != null) {
-				String s = uploadDataToServerImpl.getDataToSyncToServer(obj.getInt("vanID"), obj.getInt(GROUP_ID),
-						obj.getString("user"), serverAuthorization);
-				if (s != null)
+			if (obj.has("user") && obj.get("user") != null && obj.has("vanID") && obj.get("vanID") != null) {
+				String s = uploadDataToServerImpl.getDataToSyncToServer(obj.getInt("vanID"), obj.getString("user"),
+						serverAuthorization);
+//				if (s != null)
 					response.setResponse(s);
-				else
-					response.setError(5000, "Error in data sync");
+//				else
+//					response.setError(5000, "Error in data sync");
 			} else {
 				response.setError(5000, "Invalid request, Either of groupID or user is invalid or null");
 			}

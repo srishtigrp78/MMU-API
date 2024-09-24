@@ -67,6 +67,13 @@ public class V_get_prkngplc_dist_zone_state_from_spid {
 	@Expose
 	@Column(name = "StateName")
 	private String stateName;
+	@Expose
+	@Column(name = "blockid")
+	private Integer blockID;
+	
+	@Expose
+	@Column(name = "blockname")
+	private String blockName;
 
 	public V_get_prkngplc_dist_zone_state_from_spid() {
 	}

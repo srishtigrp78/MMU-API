@@ -70,7 +70,6 @@ public class ANCController {
 		OutputResponse response = new OutputResponse();
 		try {
 			JsonObject jsnOBJ = parseJsonRequest(requestObj);
-
 			if (jsnOBJ != null) {
 				Long ancRes = ancService.saveANCNurseData(jsnOBJ);
 				if (null != ancRes && ancRes > 0) {

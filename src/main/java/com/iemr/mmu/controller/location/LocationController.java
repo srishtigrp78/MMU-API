@@ -145,7 +145,11 @@ public class LocationController {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj != null && obj.has("spID") && obj.has("spPSMID") && obj.get("spID") != null
 					&& obj.get("spPSMID") != null) {
-				String s = locationServiceImpl.getLocDetailsNew(obj.getInt("spID"), obj.getInt("spPSMID"));
+				Integer userId = null;
+				if(obj.has("userId") && null != obj.get("userId")) {
+					userId = Integer.valueOf(obj.get("userId").toString());
+				}
+				String s = locationServiceImpl.getLocDetailsNew(obj.getInt("spID"), obj.getInt("spPSMID"),userId);
 
 				response.setResponse(s);
 			} else {
