@@ -21,6 +21,7 @@
 */
 package com.iemr.mmu.service.dataSyncActivity;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -286,8 +287,14 @@ public class DownloadDataFromServerImpl implements DownloadDataFromServer {
 					if (String.valueOf(entry.getValue()).equalsIgnoreCase("false")
 							|| String.valueOf(entry.getValue()).equalsIgnoreCase("true"))
 						objArr[pointer] = entry.getValue();
-					else
-						objArr[pointer] = String.valueOf(entry.getValue());
+					else {
+						if(pointer==0) {
+							DecimalFormat decimalFormat = new DecimalFormat("#");
+							objArr[pointer] = decimalFormat.format(entry.getValue());
+						}else {
+							objArr[pointer] = String.valueOf(entry.getValue());
+						}
+					}
 				} else
 					objArr[pointer] = entry.getValue();
 
