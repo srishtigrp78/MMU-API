@@ -52,11 +52,12 @@ public class AESEncryptionDecryption {
 	private final String secret = "amrith$%2022@&*piramal@@swasthya!#";
 	private static final int IV_SIZE = 12;
 	private static final int TAG_SIZE = 128;
+	private final String UTF_8 = "UTF-8";
 
 	public void setKey(String myKey) {
 		try {
-			key = myKey.getBytes("UTF-8");
-			MessageDigest sha = MessageDigest.getInstance("SHA-1");
+			key = myKey.getBytes(UTF_8);
+			MessageDigest sha = MessageDigest.getInstance("SHA-512");
 			key = sha.digest(key);
 			key = Arrays.copyOf(key, 16);
 			secretKey = new SecretKeySpec(key, "AES");
@@ -76,7 +77,7 @@ public class AESEncryptionDecryption {
 		random.nextBytes(iv);
 		cipher.init(Cipher.ENCRYPT_MODE, secretKey, new GCMParameterSpec(TAG_SIZE, iv));
 
-		byte[] encryptedBytes = cipher.doFinal(strToEncrypt.getBytes("UTF-8"));
+		byte[] encryptedBytes = cipher.doFinal(strToEncrypt.getBytes(UTF_8));
 		byte[] encryptedIvAndText = new byte[IV_SIZE + encryptedBytes.length];
 		System.arraycopy(iv, 0, encryptedIvAndText, 0, IV_SIZE);
 		System.arraycopy(encryptedBytes, 0, encryptedIvAndText, IV_SIZE, encryptedBytes.length);
@@ -96,6 +97,6 @@ public class AESEncryptionDecryption {
 		cipher.init(Cipher.DECRYPT_MODE, secretKey, new GCMParameterSpec(TAG_SIZE, iv));
 		byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
 
-		return new String(decryptedBytes, "UTF-8");
+		return new String(decryptedBytes, UTF_8);
 	}
 }
