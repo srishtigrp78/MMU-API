@@ -24,16 +24,17 @@ package com.iemr.mmu.utils.AESEncryption;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Base64;
 
 import javax.crypto.Cipher;
+import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
 
 /*
 *
@@ -44,56 +45,57 @@ DE40034072 - Internal path disclosure - AES Encryption and Decryption
 */
 @Component
 public class AESEncryptionDecryption {
-	
 
-	private  Logger logger = LoggerFactory.getLogger(AESEncryptionDecryption.class);
+	private Logger logger = LoggerFactory.getLogger(AESEncryptionDecryption.class);
 	private static SecretKeySpec secretKey;
-	private  byte[] key;
-	final String secret = "amrith$%2022@&*piramal@@swasthya!#";
+	private byte[] key;
+	private final String secret = "amrith$%2022@&*piramal@@swasthya!#";
+	private static final int IV_SIZE = 12;
+	private static final int TAG_SIZE = 128;
 
-	public  void setKey(String myKey) {
-		MessageDigest sha = null;
+	public void setKey(String myKey) {
 		try {
 			key = myKey.getBytes("UTF-8");
-			sha = MessageDigest.getInstance("SHA-1");
+			MessageDigest sha = MessageDigest.getInstance("SHA-1");
 			key = sha.digest(key);
 			key = Arrays.copyOf(key, 16);
 			secretKey = new SecretKeySpec(key, "AES");
 		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-			 logger.error("context", e);
+			logger.error("context", e);
 		}
 	}
 
+	public String encrypt(String strToEncrypt) throws Exception {
+		if (secretKey == null)
+			setKey(secret);
+		Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
 
-	public  String encrypt(String strToEncrypt) throws Exception {
-		 String encryptedString=null;
-		try {
-			if (secretKey == null)
-			     setKey(secret);
-			Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-			cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-			encryptedString= Base64.getEncoder().encodeToString(cipher.doFinal(strToEncrypt.getBytes("UTF-8")));
-		} catch (Exception e) {
-			logger.error("Error while encrypting: "+e.toString());
-			throw new Exception("Error while encrypting: "+e.toString());
-		}
-		return encryptedString;
+		// Generate IV
+		byte[] iv = new byte[IV_SIZE];
+		SecureRandom random = new SecureRandom();
+		random.nextBytes(iv);
+		cipher.init(Cipher.ENCRYPT_MODE, secretKey, new GCMParameterSpec(TAG_SIZE, iv));
+
+		byte[] encryptedBytes = cipher.doFinal(strToEncrypt.getBytes("UTF-8"));
+		byte[] encryptedIvAndText = new byte[IV_SIZE + encryptedBytes.length];
+		System.arraycopy(iv, 0, encryptedIvAndText, 0, IV_SIZE);
+		System.arraycopy(encryptedBytes, 0, encryptedIvAndText, IV_SIZE, encryptedBytes.length);
+
+		return Base64.getEncoder().encodeToString(encryptedIvAndText);
 	}
 
+	public String decrypt(String strToDecrypt) throws Exception {
+		if (secretKey == null)
+			setKey(secret);
 
-	public  String decrypt(String strToDecrypt) throws Exception {
-		 String decryptedString=null;
-		try {
-			if (secretKey == null)
-				setKey(secret);
-			Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-			cipher.init(Cipher.DECRYPT_MODE, secretKey);
-			decryptedString= new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));
-		} catch (Exception e) {
-			logger.error("Error while decrypting: "+e.toString());
-			throw new Exception("Error while decrypting: "+e.toString());
-		}
-		return decryptedString;
+		byte[] encryptedIvAndText = Base64.getDecoder().decode(strToDecrypt);
+		byte[] iv = Arrays.copyOfRange(encryptedIvAndText, 0, IV_SIZE);
+		byte[] encryptedBytes = Arrays.copyOfRange(encryptedIvAndText, IV_SIZE, encryptedIvAndText.length);
+
+		Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+		cipher.init(Cipher.DECRYPT_MODE, secretKey, new GCMParameterSpec(TAG_SIZE, iv));
+		byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
+
+		return new String(decryptedBytes, "UTF-8");
 	}
-
 }
