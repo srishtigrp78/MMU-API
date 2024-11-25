@@ -97,9 +97,9 @@ public class ANCServiceImpl implements ANCService {
 	// private NurseServiceImpl nurseServiceImpl;
 	@Autowired
 	private ANCDoctorServiceImpl ancDoctorServiceImpl;
-	@Autowired
+	//@Autowired
 	private CommonNurseServiceImpl commonNurseServiceImpl;
-	@Autowired
+	//@Autowired
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
 	@Autowired
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
@@ -126,6 +126,11 @@ public class ANCServiceImpl implements ANCService {
 	}
 
 	@Autowired
+	public void setANCDoctorServiceImpl(ANCDoctorServiceImpl ancDoctorServiceImpl) {
+		this.ancDoctorServiceImpl = ancDoctorServiceImpl;
+	}
+*/
+	@Autowired
 	public void setCommonDoctorServiceImpl(CommonDoctorServiceImpl commonDoctorServiceImpl) {
 		this.commonDoctorServiceImpl = commonDoctorServiceImpl;
 	}
@@ -134,12 +139,6 @@ public class ANCServiceImpl implements ANCService {
 	public void setCommonNurseServiceImpl(CommonNurseServiceImpl commonNurseServiceImpl) {
 		this.commonNurseServiceImpl = commonNurseServiceImpl;
 	}
-
-	@Autowired
-	public void setANCDoctorServiceImpl(ANCDoctorServiceImpl ancDoctorServiceImpl) {
-		this.ancDoctorServiceImpl = ancDoctorServiceImpl;
-	}
-*/
 	@Autowired
 	public void setAncNurseServiceImpl(ANCNurseServiceImpl ancNurseServiceImpl) {
 		this.ancNurseServiceImpl = ancNurseServiceImpl;
