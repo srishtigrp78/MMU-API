@@ -94,12 +94,8 @@ import com.iemr.mmu.utils.mapper.InputMapper;
 public class ANCServiceImpl implements ANCService {
 	@Autowired
 	private ANCNurseServiceImpl ancNurseServiceImpl;
-	// private NurseServiceImpl nurseServiceImpl;
-	//@Autowired
 	private ANCDoctorServiceImpl ancDoctorServiceImpl;
-	//@Autowired
 	private CommonNurseServiceImpl commonNurseServiceImpl;
-	//@Autowired
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
 	@Autowired
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
