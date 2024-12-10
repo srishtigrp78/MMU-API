@@ -60,12 +60,6 @@ public class Users {
 	@Column(name = "MaritalStatusID")
 	private Short maritalStatusID;
 	@Expose
-	@Column(name = "AadhaarNo")
-	private String aadhaarNo;
-	@Expose
-	@Column(name = "PAN")
-	private String pan;
-	@Expose
 	@Column(name = "DOB")
 	private Timestamp dob;
 	@Expose
@@ -77,30 +71,6 @@ public class Users {
 	@Expose
 	@Column(name = "UserName")
 	private String userName;
-	@Expose
-	@Column(name = "Password")
-	private String password;
-	@Expose
-	@Column(name = "AgentID")
-	private String agentID;
-	@Expose
-	@Column(name = "AgentPassword")
-	private String agentPassword;
-	@Expose
-	@Column(name = "EmailID")
-	private String emailID;
-	@Expose
-	@Column(name = "StatusID")
-	private Short statusID;
-	@Expose
-	@Column(name = "EmergencyContactPerson")
-	private String emergencyContactPerson;
-	@Expose
-	@Column(name = "EmergencyContactNo")
-	private String emergencyContactNo;
-	@Expose
-	@Column(name = "IsSupervisor")
-	private Boolean isSupervisor;
 	@Expose
 	@Column(name = "Deleted")
 	private Boolean deleted;
